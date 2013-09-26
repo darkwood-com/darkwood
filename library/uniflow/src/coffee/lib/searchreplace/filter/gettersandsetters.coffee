@@ -30,14 +30,22 @@ The main class required to get started with searchreplace
 
 @class GettersAndSettersFilter
 ###
-define (require, exports, module) ->
+define ['php', 'php.xhr'], ->
   "use strict"
 
   ###
-  searchreplace
-  
   @param {*} input
   @returns {*}
   ###
-  exports.searchreplace = (input) ->
-    'coucou'
+  (input) ->
+    path = window.location.pathname
+    console.log path
+    opts =
+      SERVER:
+        'couuoc': 'too'
+        SCRIPT_FILENAME: path.substring(0, path.length - 1)
+      filesystem: new PHP.Adapters.XHRFileSystem()
+
+    php = new PHP(input, opts)
+    php.vm.OUTPUT_BUFFER
+

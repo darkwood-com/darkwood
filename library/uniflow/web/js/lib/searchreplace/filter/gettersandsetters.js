@@ -6,17 +6,26 @@ The main class required to get started with searchreplace
 
 
 (function() {
-  define(function(require, exports, module) {
+  define(['php', 'php.xhr'], function() {
     "use strict";
     /*
-    searchreplace
-    
     @param {*} input
     @returns {*}
     */
 
-    return exports.searchreplace = function(input) {
-      return 'coucou';
+    return function(input) {
+      var opts, path, php;
+      path = window.location.pathname;
+      console.log(path);
+      opts = {
+        SERVER: {
+          'couuoc': 'too',
+          SCRIPT_FILENAME: path.substring(0, path.length - 1)
+        },
+        filesystem: new PHP.Adapters.XHRFileSystem()
+      };
+      php = new PHP(input, opts);
+      return php.vm.OUTPUT_BUFFER;
     };
   });
 
