@@ -30,15 +30,18 @@ The main class required to get started with searchreplace
 
 @class SearchReplace
 ###
-define () ->
+define ->
   "use strict"
 
-  ###
-  searchreplace
-  
-  @param {*} input
-  @param filter
-  @returns {*}
-  ###
-  (input, filter) ->
-    filter input if filter
+  class SRBase
+    constructor: ->
+      @pointer = null
+      @datas = null
+      @filters = {}
+
+    add: (input, filter) ->
+
+    update: (pointer = null) ->
+      filter input if filter
+
+  SRBase
