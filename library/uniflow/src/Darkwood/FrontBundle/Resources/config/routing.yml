@@ -5,6 +5,10 @@ remove_trailing_slash:
     url: .*/$
   methods: [GET]
 
+component_sftp:
+  resource: '@FrontBundle/Resources/config/components/sftp.yml'
+  prefix:   /component/sftp
+
 home:
   path: /
   defaults: { _controller: FrontBundle:Default:home }
