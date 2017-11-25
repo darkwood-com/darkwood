@@ -12,10 +12,12 @@ export default Vue.extend({
     },
     created: function () {
         this.bus.$on('reset', this.deserialise);
+        this.bus.$on('compile', this.onCompile);
         this.bus.$on('execute', this.onExecute);
     },
     destroyed: function () {
         this.bus.$off('reset', this.deserialise);
+        this.bus.$off('compile', this.onCompile);
         this.bus.$off('execute', this.onExecute);
     },
     watch: {
@@ -54,6 +56,9 @@ export default Vue.extend({
             this.textlist.push('');
 
             this.onUpdate();
+        },
+        onCompile: function(interpreter) {
+
         },
         onExecute: function (runner) {
             if(this.variable) {
