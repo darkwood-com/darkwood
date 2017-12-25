@@ -5,7 +5,29 @@ import {
     SET_FLOW,
 } from './actionsTypes'
 
-export const pushFlow = ''
-export const popFlow = ''
-export const updateFlow = ''
-export const setFlow = ''
+export const pushFlow = (index, component) => {
+    return {
+        type: PUSH_FLOW,
+        index,
+        component
+    }
+}
+export const popFlow = (index) => {
+    return {
+        type: POP_FLOW,
+        index
+    }
+}
+export const updateFlow = (index, data) => {
+    return {
+        type: UPDATE_FLOW,
+        index,
+        data
+    }
+}
+export const setFlow = (stack) => {
+    return {
+        type: SET_FLOW,
+        stack
+    }
+}
