@@ -3,7 +3,7 @@ import Interpreter from 'acorn-interpreter'
 import {transform} from 'babel-standalone'
 import _ from 'lodash'
 import axios from 'axios'
-import {Ace, ComponentSearch, TagIt} from 'uniflow/components/index'
+import {Ace, ComponentList, ComponentSearch, TagIt} from 'uniflow/components/index'
 import {History} from 'uniflow/models/index'
 import components from 'uniflow/uniflow/components';
 import {
