@@ -20,7 +20,7 @@ class TagTransformer implements DataTransformerInterface
      * 
      * @param $tagService
      */
-    public function __construct($tagService)
+    public function __construct(TagService $tagService)
     {
         $this->tagService = $tagService;
     }
