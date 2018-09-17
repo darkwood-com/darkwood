@@ -70,7 +70,7 @@ class History extends Component {
                                 {getOrderedHistory(this.props.history, this.state.search).map((item, i) => (
                                     <li className={isActive(this.props.history, item)} key={i}>
                                         <Link
-                                            to={pathTo('homeDetail', {id: item.id})}>{item.title} {item.tags.map((tag, j) => (
+                                            to={pathTo('flow', {id: item.id})}>{item.title} {item.tags.map((tag, j) => (
                                             <span key={j} className="badge">{tag}</span>
                                         ))}</Link>
                                     </li>
