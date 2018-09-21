@@ -3,10 +3,11 @@ import {connect} from 'react-redux'
 import {
     login,
 } from '../../reducers/auth/actions'
-import { withRouter } from 'react-router'
+import {withRouter} from 'react-router'
 import {pathTo} from '../../routes'
 import {commitAddLog} from "../../reducers/log/actions";
 import {Log} from '../../models/index'
+import {Link} from "react-router-dom";
 
 class Login extends Component {
     state = {
@@ -27,7 +28,7 @@ class Login extends Component {
 
         this.props.dispatch(login(this.state.username, this.state.password))
             .then(() => {
-                if(this.props.auth.isAuthenticated) {
+                if (this.props.auth.isAuthenticated) {
                     this.props.history.push(pathTo('dashboard'))
                 } else {
                     return this.props.dispatch(commitAddLog(this.props.auth.statusText, Log.USER_LOGIN_FAIL))
@@ -36,8 +37,8 @@ class Login extends Component {
     }
 
     render() {
-        const { auth } = this.props
-        const { username, password } = this.state
+        const {auth}               = this.props
+        const {username, password} = this.state
 
         return (
             <div className="content-wrapper">
@@ -66,18 +67,23 @@ class Login extends Component {
                                     <form>
 
                                         <div className="form-group col-sm-12">
-                                            <input className="form-control" id="username{{ _uid }}" type="text" value={username || ''} onChange={this.onChangeUsername} placeholder="Email or Username" />
+                                            <input className="form-control" id="username{{ _uid }}" type="text"
+                                                   value={username || ''} onChange={this.onChangeUsername}
+                                                   placeholder="Email or Username"/>
                                         </div>
 
                                         <div className="form-group col-sm-12">
-                                            <input className="form-control" id="password{{ _uid }}" type="password" value={password || ''} onChange={this.onChangePassword} placeholder="Password"/>
+                                            <input className="form-control" id="password{{ _uid }}" type="password"
+                                                   value={password || ''} onChange={this.onChangePassword}
+                                                   placeholder="Password"/>
                                         </div>
 
                                         <div className="form-group col-sm-12">
                                             <button type="submit"
                                                     className="btn btn-primary btn-block btn-flat"
                                                     disabled={auth.isAuthenticating}
-                                                    onClick={this.onSubmit}>Login</button>
+                                                    onClick={this.onSubmit}>Login
+                                            </button>
                                         </div>
 
                                         {/*<div class="form-group col-sm-12">
@@ -95,13 +101,13 @@ class Login extends Component {
                         </div>
                     </div>
 
-                    {/*<div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
-                        <p><a href="{{ path('fos_user_registration_register') }}"><span
-                        class="glyphicon glyphicon-log-in register"
-                        aria-hidden="true"></span> {{'user.register.new' | trans}}</a></p>
+                    <div className="row">
+                        <div className="col-sm-6 col-sm-offset-3">
+                            <p><Link to={pathTo('register')}><span
+                                className="glyphicon glyphicon-log-in register"
+                                aria-hidden="true"/> Register</Link></p>
                         </div>
-                        </div>*/}
+                    </div>
 
                 </div>
             </div>
