@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import debounce from 'lodash/debounce'
-import { AceComponent, ListComponent, TagItComponent, ICheckBoxComponent } from 'uniflow/src/components'
+import { AceComponent, ListComponent, TagItComponent, ICheckBoxComponent, Select2Component } from 'uniflow/src/components'
 import { History, Runner } from '../../../models'
 import {
   commitPushFlow,
@@ -21,7 +21,6 @@ import {
 } from '../../../reducers/history/actions'
 import { commitAddLog } from '../../../reducers/logs/actions'
 import { connect } from 'react-redux'
-import { Select2Component } from 'uniflow/src/components'
 import components from '../../../uniflow'
 
 class Show extends Component {
