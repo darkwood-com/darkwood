@@ -1,5 +1,5 @@
 const onCode = function (client) {
-  if(!this.state.variable) {
+  if (!this.state.variable) {
     return ''
   }
 
@@ -9,18 +9,18 @@ const onCode = function (client) {
   return this.state.variable + ' = ' + text
 }
 
-const onExecute = function(runner) {
+const onExecute = function (runner) {
   return Promise
     .resolve()
     .then(() => {
       return new Promise(resolve => {
-        this.setState({ running: true }, resolve)
+        this.setState({running: true}, resolve)
       })
     }).then(() => {
       if (this.state.variable) {
         let context = runner.getContext()
         if (context[this.state.variable]) {
-          this.setState({ text: context[this.state.variable] }, this.onUpdate)
+          this.setState({text: context[this.state.variable]}, this.onUpdate)
         } else {
           runner.run(onCode.bind(this)('uniflow'))
         }
@@ -33,7 +33,7 @@ const onExecute = function(runner) {
     })
     .then(() => {
       return new Promise(resolve => {
-        this.setState({ running: false }, resolve)
+        this.setState({running: false}, resolve)
       })
     })
 }
