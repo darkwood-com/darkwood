@@ -1,0 +1,37 @@
+{
+  "name": "@uniflow-io/object-flow",
+  "version": "1.1.11",
+  "description": "Uniflow object flow",
+  "author": "Mathieu Ledru <matyo91@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/uniflow-io/uniflow/issues"
+  },
+  "homepage": "https://github.com/uniflow-io/uniflow/tree/master/library/object-flow#readme",
+  "keywords": [
+    "uniflow",
+    "uniflow-flow"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uniflow-io/uniflow.git",
+    "directory": "library/object-flow"
+  },
+  "uniflow": {
+    "name": "Object",
+    "tags": [
+      "ui"
+    ],
+    "clients": [
+      "uniflow",
+      "jetbrains",
+      "chrome",
+      "node",
+      "rust"
+    ]
+  },
+  "dependencies": {
+    "@uniflow-io/uniflow-client": "^1.1.11"
+  }
+}

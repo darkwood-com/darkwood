@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { onCode, onExecute } from './runner'
-import { Ace, FlowHeader } from '@uniflow-io/app/src/components'
+import { Ace, FlowHeader } from '@uniflow-io/uniflow-client/src/components'
 import {
   setBusEvents,
   componentDidMount,
@@ -9,7 +9,7 @@ import {
   onExecuteHelper,
   onUpdate,
   onDelete,
-} from '@uniflow-io/app/src/utils/flow'
+} from '@uniflow-io/uniflow-client/src/utils/flow'
 
 class JavascriptFlow extends Component {
   state = {

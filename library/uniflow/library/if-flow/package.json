@@ -1,0 +1,33 @@
+{
+  "name": "@uniflow-io/if-flow",
+  "version": "1.1.11",
+  "description": "Uniflow if flow",
+  "author": "Mathieu Ledru <matyo91@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/uniflow-io/uniflow/issues"
+  },
+  "homepage": "https://github.com/uniflow-io/uniflow/tree/master/library/if-flow#readme",
+  "keywords": [
+    "uniflow",
+    "uniflow-flow"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uniflow-io/uniflow.git",
+    "directory": "library/if-flow"
+  },
+  "uniflow": {
+    "name": "If",
+    "tags": [
+      "core"
+    ],
+    "clients": [
+      "uniflow"
+    ]
+  },
+  "dependencies": {
+    "@uniflow-io/uniflow-client": "^1.1.11"
+  }
+}
