@@ -15,7 +15,7 @@ final class Version20200229140909 extends AbstractMigration
 {
     public function getDescription() : string
     {
-        return '';
+        return 'Set program title to name';
     }
 
     public function up(Schema $schema) : void
