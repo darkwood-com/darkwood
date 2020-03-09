@@ -1,10 +1,10 @@
-import convict from 'convict';
+import * as convict from 'convict';
 import * as dotenv from 'dotenv';
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+const activeEnv = process.env.NODE_ENV || 'development';
 
 const envFound = dotenv.config({
-  path: '.env.local',
+  path: `.env.${activeEnv}`,
 });
 if (!envFound) {
   // Throw generic error
@@ -19,6 +19,14 @@ const config = convict({
       default: 'sqlite',
       env: 'DB_TYPE'
     },
+    sqlite: {
+      database: {
+        doc: 'sqlite Database',
+        format: String,
+        default: './database.sqlite',
+        env: 'DB_POSTGRESDB_DATABASE'
+      }
+    },
     mongodb: {
       connectionUrl: {
         doc: 'MongoDB Connection URL',
@@ -26,38 +34,6 @@ const config = convict({
         default: 'mongodb://user:password@localhost:27017/database',
         env: 'DB_MONGODB_CONNECTION_URL'
       }
-    },
-    postgresdb: {
-      database: {
-        doc: 'PostgresDB Database',
-        format: String,
-        default: 'uniflow',
-        env: 'DB_POSTGRESDB_DATABASE'
-      },
-      host: {
-        doc: 'PostgresDB Host',
-        format: String,
-        default: 'localhost',
-        env: 'DB_POSTGRESDB_HOST'
-      },
-      password: {
-        doc: 'PostgresDB Password',
-        format: String,
-        default: '',
-        env: 'DB_POSTGRESDB_PASSWORD'
-      },
-      port: {
-        doc: 'PostgresDB Port',
-        format: Number,
-        default: 5432,
-        env: 'DB_POSTGRESDB_PORT'
-      },
-      user: {
-        doc: 'PostgresDB User',
-        format: String,
-        default: 'root',
-        env: 'DB_POSTGRESDB_USER'
-      },
     },
     mysqldb: {
       database: {
@@ -91,11 +67,43 @@ const config = convict({
         env: 'DB_MYSQLDB_USER'
       },
     },
+    postgresdb: {
+      database: {
+        doc: 'PostgresDB Database',
+        format: String,
+        default: 'uniflow',
+        env: 'DB_POSTGRESDB_DATABASE'
+      },
+      host: {
+        doc: 'PostgresDB Host',
+        format: String,
+        default: 'localhost',
+        env: 'DB_POSTGRESDB_HOST'
+      },
+      password: {
+        doc: 'PostgresDB Password',
+        format: String,
+        default: '',
+        env: 'DB_POSTGRESDB_PASSWORD'
+      },
+      port: {
+        doc: 'PostgresDB Port',
+        format: Number,
+        default: 5432,
+        env: 'DB_POSTGRESDB_PORT'
+      },
+      user: {
+        doc: 'PostgresDB User',
+        format: String,
+        default: 'root',
+        env: 'DB_POSTGRESDB_USER'
+      },
+    },
   },
 
   port: {
     format: Number,
-    default: 5678,
+    default: 8091,
     arg: 'port',
     env: 'PORT',
     doc: 'HTTP port uniflow can be reached'
