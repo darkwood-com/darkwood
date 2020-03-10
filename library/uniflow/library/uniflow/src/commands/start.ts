@@ -63,7 +63,7 @@ export class Start extends Command {
 				await app();
 
 				const url = `http://localhost:${config.get('port')}`;
-				this.log(`\nUniflow is now accessible via:\n${url}`);
+				this.log(`\nUniflow v${require('../../package.json').version} is ready on:\n${url}`);
 
 				// Allow to open uniflow editor by pressing "o"
 				if (Boolean(process.stdout.isTTY) && process.stdin.setRawMode) {
