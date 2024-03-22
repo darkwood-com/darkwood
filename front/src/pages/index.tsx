@@ -1,3 +1,4 @@
+import "../app/globals.css";
 import { useEffect } from "react";
 import axios from 'axios';
 import Image from "next/image";
@@ -20,7 +21,7 @@ export default function Token() {
         <blockquote>
           <p className="text-lg">
             “Tailwind CSS is the only framework that I've seen scale
-            on large teams. It’s easy to customize, adapts to any design,
+            on large teams. It s easy to customize, adapts to any design,
             and the build size is tiny.”
           </p>
         </blockquote>
