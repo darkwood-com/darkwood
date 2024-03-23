@@ -22,3 +22,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\Bitget:
+        arguments:
+            $apiSecret: '%env(BITGET_API_SECRET)%'
+            $apiKey: '%env(BITGET_API_KEY)%'
+            $passphrase: '%env(BITGET_API_PHRASE)%'

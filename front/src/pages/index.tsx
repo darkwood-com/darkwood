@@ -1,39 +1,26 @@
 import "../app/globals.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
-import Image from "next/image";
+
+const apiUrl = 'https://127.0.0.1:8000'
 
 export default function Token() {
+  const [price, setPrice] = useState(0)
+
   useEffect(() => {
-    axios.get('https://127.0.0.1:8000/api/trade')
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const interval = setInterval(function() {
+      axios.get(apiUrl + '/api/ticker')
+        .then(function (response) {
+          setPrice(response.data.data[0].lastPr)
+        });
+    }, 1000)
+
+    return () => clearInterval(interval)
   }, []);
+
+  useEffect(() => {
+    console.log(price)
+  }, [price]);
   
-  return <main className="flex min-h-screen flex-col items-center justify-between p-24">
-    <figure className="bg-slate-100 rounded-xl p-8 dark:bg-slate-800">
-      <Image className="w-24 h-24 rounded-full mx-au" src="/vercel.svg" alt="" width="384" height="512" />
-      <div className="pt-6 space-y-4">
-        <blockquote>
-          <p className="text-lg">
-            “Tailwind CSS is the only framework that I've seen scale
-            on large teams. It s easy to customize, adapts to any design,
-            and the build size is tiny.”
-          </p>
-        </blockquote>
-        <figcaption>
-          <div>
-            Sarah Dayan
-          </div>
-          <div>
-            Staff Engineer, Algolia
-          </div>
-        </figcaption>
-      </div>
-    </figure>
-  </main>
+  return <div>Token price {price}</div>
 }
