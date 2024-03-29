@@ -20,9 +20,34 @@ class Bitget
     {
     }
 
+    public function getTickers($params)
+    {
+        return $this->doGet("/api/v2/mix/market/tickers", $params);
+    }
+
     public function getTicker($params)
     {
         return $this->doGet("/api/v2/mix/market/ticker", $params);
+    }
+
+    public function getAccount($params)
+    {
+        return $this->doGet("/api/v2/mix/account/accounts", $params);
+    }
+
+    public function getPositions($params)
+    {
+        return $this->doGet("/api/v2/mix/position/all-position", $params);
+    }
+
+    public function placeOrder($params)
+    {
+        return $this->doPost("/api/v2/mix/order/place-order", $params);
+    }
+
+    public function setLeverage($params)
+    {
+        return $this->doPost("/api/v2/mix/account/set-leverage", $params);
     }
 
     public function doGet($url, $body)
