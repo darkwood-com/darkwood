@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 
 //const apiUrl = 'https://192.168.1.11:8000'
-const apiUrl = 'https://127.0.0.1:8000'
+//const apiUrl = 'https://127.0.0.1:8000'
+const apiUrl = 'http://127.0.0.1:8000'
 const timeout = 1000
 const maxSize = 300
 const taker = 0.06
@@ -58,10 +59,10 @@ export default function Token() {
               symbols[i].acceleration.push((symbols[i].variations[j+1] - symbols[i].variations[j]) / symbols[i].variations[j+1])
             }
           }
-          /*symbols.sort((symbol1: any, symbol2: any) => {
+          symbols.sort((symbol1: any, symbol2: any) => {
             return Math.abs(symbol2.variations[0]) - Math.abs(symbol1.variations[0])
             //return Math.abs(symbol2.acceleration[0]) - Math.abs(symbol1.acceleration[0])
-          })*/
+          })
           setSymbols(symbols)
         });
       axios.post(apiUrl + '/api/ticker', {symbol: currentSymbol})
