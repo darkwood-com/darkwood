@@ -1,0 +1,78 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpotOrderApi = void 0;
+const BaseApi_1 = require("../BaseApi");
+class SpotOrderApi extends BaseApi_1.BaseApi {
+    orders(qsOrBody) {
+        const url = '/api/spot/v1/trade/orders';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    batchOrders(qsOrBody) {
+        const url = '/api/spot/v1/trade/batch-orders';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    cancelOrder(qsOrBody) {
+        const url = '/api/spot/v1/trade/cancel-order';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    cancelBatchOrder(qsOrBody) {
+        const url = '/api/spot/v1/trade/cancel-batch-orders';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    openOrders(qsOrBody) {
+        const url = '/api/spot/v1/trade/open-orders';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    history(qsOrBody) {
+        const url = '/api/spot/v1/trade/history';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    fills(qsOrBody) {
+        const url = '/api/spot/v1/trade/fills';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    placePlanOrder(qsOrBody) {
+        const url = '/api/spot/v1/plan/placePlan';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    cancelPlanOrder(qsOrBody) {
+        const url = '/api/spot/v1/plan/cancelPlan';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    currentPlanOrder(qsOrBody) {
+        const url = '/api/spot/v1/plan/currentPlan';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    historyPlanOrder(qsOrBody) {
+        const url = '/api/spot/v1/plan/historyPlan';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    traderOrderCloseTracking(qsOrBody) {
+        const url = '/api/spot/v1/trace/order/closeTrackingOrder';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    traderOrderCurrentTrack(qsOrBody) {
+        const url = '/api/spot/v1/trace/order/orderCurrentList';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+    traderOrderHistoryTrack(qsOrBody) {
+        const url = '/api/spot/v1/trace/order/orderHistoryList';
+        const headers = this.signer('POST', url, qsOrBody);
+        return this.axiosInstance.post(url, qsOrBody, { headers });
+    }
+}
+exports.SpotOrderApi = SpotOrderApi;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU3BvdE9yZGVyQXBpLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vc3JjL2xpYi92MS9TcG90T3JkZXJBcGkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsd0NBQW1DO0FBRW5DLE1BQWEsWUFBYSxTQUFRLGlCQUFPO0lBRXJDLE1BQU0sQ0FBQyxRQUFnQjtRQUNuQixNQUFNLEdBQUcsR0FBRywyQkFBMkIsQ0FBQztRQUN4QyxNQUFNLE9BQU8sR0FBRyxJQUFJLENBQUMsTUFBTSxDQUFDLE1BQU0sRUFBRSxHQUFHLEVBQUUsUUFBUSxDQUFDLENBQUE7UUFDbEQsT0FBTyxJQUFJLENBQUMsYUFBYSxDQUFDLElBQUksQ0FBQyxHQUFHLEVBQUUsUUFBUSxFQUFFLEVBQUMsT0FBTyxFQUFDLENBQUMsQ0FBQTtJQUM1RCxDQUFDO0lBRUQsV0FBVyxDQUFDLFFBQWdCO1FBQ3hCLE1BQU0sR0FBRyxHQUFHLGlDQUFpQyxDQUFDO1FBQzlDLE1BQU0sT0FBTyxHQUFHLElBQUksQ0FBQyxNQUFNLENBQUMsTUFBTSxFQUFFLEdBQUcsRUFBRSxRQUFRLENBQUMsQ0FBQTtRQUNsRCxPQUFPLElBQUksQ0FBQyxhQUFhLENBQUMsSUFBSSxDQUFDLEdBQUcsRUFBRSxRQUFRLEVBQUUsRUFBQyxPQUFPLEVBQUMsQ0FBQyxDQUFBO0lBQzVELENBQUM7SUFFRCxXQUFXLENBQUMsUUFBZ0I7UUFDeEIsTUFBTSxHQUFHLEdBQUcsaUNBQWlDLENBQUM7UUFDOUMsTUFBTSxPQUFPLEdBQUcsSUFBSSxDQUFDLE1BQU0sQ0FBQyxNQUFNLEVBQUUsR0FBRyxFQUFFLFFBQVEsQ0FBQyxDQUFBO1FBQ2xELE9BQU8sSUFBSSxDQUFDLGFBQWEsQ0FBQyxJQUFJLENBQUMsR0FBRyxFQUFFLFFBQVEsRUFBRSxFQUFDLE9BQU8sRUFBQyxDQUFDLENBQUE7SUFDNUQsQ0FBQztJQUVELGdCQUFnQixDQUFDLFFBQWdCO1FBQzdCLE1BQU0sR0FBRyxHQUFHLHdDQUF3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
