@@ -24,24 +24,24 @@ $driver = match (random_int(3, 3)) {
 
 // from https://github.com/loophp/combinator?tab=readme-ov-file#available-combinators
 
-$handle = function (string $expression, array $params) {
+$handle = static function (string $expression, array $params) {
     $job = new LambdaJob($expression);
-    $result = array_reduce($params, static fn($carry, $param) => empty($carry) ? $job($param) : $carry($param));
-    $encodedParams = array_map(static fn($param) => $param instanceof Closure ? 'Closure' : (is_object($param) ? get_class($param) : $param), $params);
+    $result = array_reduce($params, static fn ($carry, $param) => empty($carry) ? $job($param) : $carry($param));
+    $encodedParams = array_map(static fn ($param) => $param instanceof Closure ? 'Closure' : (is_object($param) ? get_class($param) : $param), $params);
     echo 'Evaluating ' . $expression . ' with params ' . json_encode($encodedParams) . ' : ' . $result . "\n";
 };
 
 // | A         | Apply         | `SK(SK)`          | `$`     | `λab.ab`                    | `a => b => a(b)`                         | `(a -> b) -> a -> b`                                 | 2           |
 $handle('λa.λb.a(b)', [
     static fn ($a) => $a,
-    8
+    8,
 ]);
 
 // | B         | Bluebird      | `S(KS)K`          | `.`     | `λabc.a(bc)`                | `a => b => c => a(b(c))`                 | `(a -> b) -> (c -> a) -> c -> b`                     | 3           |
 $handle('λa.λb.λc.a(b c)', [
     static fn ($a) => $a,
     static fn ($b) => $b,
-    7
+    7,
 ]);
 
 // | Blackbird | Blackbird     | `BBB`             | `...`   | `λabcd.a(bcd)`              | `a => b => c => => d => a(b(c)(d))`      | `(c -> d) -> (a -> b -> c) -> a -> b -> d`           | 4           |
@@ -61,21 +61,21 @@ $handle('λa.λb.λc.a(b c)', [
 // | I         | Idiot         | `SKK`             | `id`    | `λa.a`                      | `a => a`                                 | `a -> a`                                             | 1           |
 $handle('λa.a', [
     static fn ($a) => $a,
-    6
+    6,
 ]);
 
 // | J         | Jay           | `B(BC)(W(BC(E)))` |         | `λabcd.ab(adc)`             | `a => b => c => d => a(b)(a(d)(c))`      | `(a -> b -> b) -> a -> b -> a -> b`                  | 4           |
 
 // | K         | Kestrel       | `K`               | `const` | `λab.a`                     | `a => b => a`                            | `a -> b -> a`                                        | 2           |
 $handle('λa.λb.a', [
-    static fn ($a) => $a,
-    6
+    5,
+    6,
 ]);
 
 // | Ki        | Kite          | `KI`              |         | `λab.b`                     | `a => b => b`                            | `a -> b -> b`                                        | 2           |
 $handle('λa.λb.b', [
-    static fn ($a) => $a,
-    6
+    5,
+    6,
 ]);
 
 // | L         | Lark          | `CBM`             |         | `λab.a(bb)`                 | `a => b => a(b(b))`                      |                                                      | 2           |
@@ -121,7 +121,6 @@ $handle('λf.(λx.f (λy.(x x) y)) (λx.f (λy.(x x) y))', [
     },
     new YFlowData(1, 6),
 ]);
-
 
 // | Z         | Z-Fixed point |                   |         | `λa.M(λb(a(Mb)))`           |                                          |                                                      | 1           |
 
