@@ -38,6 +38,9 @@ class LambdaJob implements JobInterface
         return $lambda($data);
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function tokenize(UnicodeString $expression): array
     {
         $tokens = [];
@@ -90,6 +93,10 @@ class LambdaJob implements JobInterface
         return $tokens;
     }
 
+    /**
+     * @param array<mixed> $tokens
+     * @return array<mixed>
+     */
     private function parse(array $tokens): array
     {
         $position = 0;
@@ -162,6 +169,10 @@ class LambdaJob implements JobInterface
         return $ast;
     }
 
+    /**
+     * @param mixed $exp
+     * @param array<string, mixed> $env
+     */
     private function evaluate($exp, array $env = []): mixed
     {
         // Variable reference

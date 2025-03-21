@@ -13,7 +13,7 @@ use Flow\Driver\SwooleDriver;
 use Flow\Examples\Model\YFlowData;
 use Flow\Job\LambdaJob;
 
-$driver = match (random_int(3, 3)) {
+$driver = match (random_int(1, 4)) {
     1 => new AmpDriver(),
     2 => new ReactDriver(),
     3 => new FiberDriver(),
@@ -21,6 +21,8 @@ $driver = match (random_int(3, 3)) {
     // 5 => new SpatieDriver(),
     // 6 => new ParallelDriver(),
 };
+
+printf("Use %s\n", $driver::class);
 
 // from https://github.com/loophp/combinator?tab=readme-ov-file#available-combinators
 
