@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.4
+
+- Add LambdaFlow
+
 ## v1.2.3
 
 - Add event Event::POOL occurs when Flow needs to count IPs to process.
