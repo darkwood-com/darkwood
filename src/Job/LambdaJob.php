@@ -95,6 +95,7 @@ class LambdaJob implements JobInterface
 
     /**
      * @param array<mixed> $tokens
+     *
      * @return array<mixed>
      */
     private function parse(array $tokens): array
@@ -170,7 +171,7 @@ class LambdaJob implements JobInterface
     }
 
     /**
-     * @param mixed $exp
+     * @param mixed                $exp
      * @param array<string, mixed> $env
      */
     private function evaluate($exp, array $env = []): mixed

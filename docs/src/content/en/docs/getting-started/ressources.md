@@ -45,7 +45,7 @@ Video of this project : [https://www.youtube.com/watch?v=mxxdhGsaIjY](https://ww
 
 - [Nikita Popov](https://github.com/nikic) talk about Coroutines in PHP : [https://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html](https://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html)
 - 100% Asynchrone - 0% Callback en PHP - [Joel Wurtz](https://jolicode.com/equipe/joel-wurtz) - PHP Tour Montpellier 2018 : [https://www.youtube.com/watch?v=g1UgU5KMyMA](https://www.youtube.com/watch?v=g1UgU5KMyMA)
-- Générateurs et Programmation Asynchrone: Mode d’emploi - [Benoit Viguier](https://twitter.com/b_viguier) - Forum PHP 2018 : [https://www.youtube.com/watch?v=7TvIIt4c8uY](https://www.youtube.com/watch?v=7TvIIt4c8uY)
+- Générateurs et Programmation Asynchrone: Mode d'emploi - [Benoit Viguier](https://twitter.com/b_viguier) - Forum PHP 2018 : [https://www.youtube.com/watch?v=7TvIIt4c8uY](https://www.youtube.com/watch?v=7TvIIt4c8uY)
 - En route vers le multi-tâche ! - Julien Bianchi - PHP Tour 2016 [https://www.youtube.com/watch?v=FOeGfSbKkuY](https://www.youtube.com/watch?v=FOeGfSbKkuY)
 - Differences between Multiprocessing, Multithreading and Coroutines execution in PHP : [https://divinglaravel.com/asynchronous-php](https://divinglaravel.com/asynchronous-php)
 - Differences between PHP Fibers RFC in PHP 8.1 vs Swoole Fibers and Coroutines : [https://openswoole.com/article/php-fibers-rfc-vs-swoole-co](https://openswoole.com/article/php-fibers-rfc-vs-swoole-co)
@@ -54,7 +54,7 @@ Video of this project : [https://www.youtube.com/watch?v=mxxdhGsaIjY](https://ww
 
 ## Fibers in PHP
 
-- PHP Fibers, l’asynchrone au bout de la trompe : [https://blog.ineat-group.com/2023/01/php-fibers-lasynchrone-au-bout-de-la-trompe](https://blog.ineat-group.com/2023/01/php-fibers-lasynchrone-au-bout-de-la-trompe)
+- PHP Fibers, l'asynchrone au bout de la trompe : [https://blog.ineat-group.com/2023/01/php-fibers-lasynchrone-au-bout-de-la-trompe](https://blog.ineat-group.com/2023/01/php-fibers-lasynchrone-au-bout-de-la-trompe)
 - PHP RFC on Fibers : [https://wiki.php.net/rfc/fibers](https://wiki.php.net/rfc/fibers)
 - What Color is Your Function? Understand related issues with asynchronous code execution [https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function)
 - Wikipedia on Gree Threads [https://en.wikipedia.org/wiki/Green_thread](https://en.wikipedia.org/wiki/Green_thread)
@@ -105,3 +105,29 @@ Video of Y-Combinator : [https://www.youtube.com/watch?v=QSS_ZcO8Q1g](https://ww
 Article of Chunk computing : [https://blog.darkwood.com/article/chunk-computing-en-php](https://blog.darkwood.com/article/chunk-computing-en-php)  
 Slides of Chunk computing : [https://speakerdeck.com/matyo91/chunk-computing](https://speakerdeck.com/matyo91/chunk-computing)  
 Video of Chunk computing : [https://www.youtube.com/watch?v=JBx4bjB8HIM](https://www.youtube.com/watch?v=JBx4bjB8HIM)
+
+## Lambda Interpreter in PHP
+
+Article about creating a Lambda Interpreter: [https://blog.darkwood.com/article/create-a-lambda-interpreter-in-php](https://blog.darkwood.com/article/create-a-lambda-interpreter-in-php)
+Slides about creating a Lambda Interpreter: [https://speakerdeck.com/matyo91/lambda-interpreter-in-php](https://speakerdeck.com/matyo91/lambda-interpreter-in-php)
+Video about creating a Lambda Interpreter: [https://www.youtube.com/watch?v=TsVHdYLQorM](https://www.youtube.com/watch?v=TsVHdYLQorM)
+
+Lambda calculus is a formal system in mathematical logic for expressing computation based on function abstraction and application. Key resources and implementations:
+
+- Core Concepts:
+  - Functions as first-class citizens
+  - Pure functions without side effects
+  - Immutable data
+  - No state or assignments
+
+- Notable Implementations:
+  - [lambda-php](https://github.com/igorw/lambda-php) - A Lambda interpreter in PHP by Igor Wiedler
+  - [loophp/combinator](https://github.com/loophp/combinator) - A collection of PHP combinators
+  - [Symfony Expression Language Integration](https://github.com/symfony/symfony/tree/7.3/src/Symfony/Component/ExpressionLanguage) - For extending with lambda expressions
+
+- Educational Resources:
+  - [Introduction to Lambda Calculus](https://personal.utdallas.edu/~gupta/courses/apl/lambda.pdf)
+  - [Lambda Syntax](https://opendsa.cs.vt.edu/ODSA/Books/PL/html/Syntax.html)
+  - [Programming with Nothing](https://tomstu.art/programming-with-nothing)
+
+The lambda calculus serves as the theoretical foundation for functional programming and provides powerful abstractions for data transformation and computation.
