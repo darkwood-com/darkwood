@@ -41,6 +41,10 @@ TransportFlow will interact with Flow with Producer and Sender.
 
 YFlow use YCombinator to provide recursion.
 
+## LambdaFlow
+
+LambdaFlow provides a simple way to create flows using lambda functions or closures. This allows for quick, inline flow definitions without creating separate flow classes.
+
 ## Make your own Flow
 
 You can make your custom Flow by implementing `Flow\FlowInterface`.
