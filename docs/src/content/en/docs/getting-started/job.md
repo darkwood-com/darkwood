@@ -25,6 +25,32 @@ ClosureJob simplifies job handling by allowing the use of closures or custom job
 
 The YJob class defines the Y combinator to recursively apply the job function, making it particularly useful in scenarios where you need to perform recursive tasks without explicitly writing recursive functions.
 
+## LambdaJob
+
+The LambdaJob class provides a way to evaluate lambda calculus expressions in PHP. It implements the `Flow\JobInterface` and allows you to:
+
+- Parse and evaluate lambda expressions
+- Work with functional programming concepts directly in PHP
+- Transform lambda calculus notation into executable PHP code
+
+Example usage:
+
+```php
+$job = new LambdaJob('λx.x + 1');
+$result = $job(5); // Returns 6
+
+// Using with multiple parameters
+$job = new LambdaJob('λx.λy.x + y');
+$result = $job(5)(3); // Returns 8
+```
+
+The LambdaJob is particularly useful when you want to:
+- Express mathematical functions in lambda calculus notation
+- Work with pure functions in a functional programming style
+- Create composable function transformations
+
+For more complex examples and detailed implementation, refer to the [Lambda Interpreter article](https://blog.darkwood.com/article/create-a-lambda-interpreter-in-php).
+
 ## Make your own Job
 
 You can make your custom Job by implementing `Flow\JobInterface`.
