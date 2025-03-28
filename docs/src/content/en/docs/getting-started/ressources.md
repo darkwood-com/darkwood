@@ -131,3 +131,9 @@ Lambda calculus is a formal system in mathematical logic for expressing computat
   - [Programming with Nothing](https://tomstu.art/programming-with-nothing)
 
 The lambda calculus serves as the theoretical foundation for functional programming and provides powerful abstractions for data transformation and computation.
+
+## Functional Programming
+
+- Functional Programming from Wikipedia : [https://en.wikipedia.org/wiki/Functional_programming](https://en.wikipedia.org/wiki/Functional_programming)
+- Functional Programming from [Graham Hutton](https://x.com/haskellhutt) : [https://people.cs.nott.ac.uk/pszgmh/pgp.html](https://people.cs.nott.ac.uk/pszgmh/pgp.html)
+- Advanced Functional Programming from [Graham Hutton](https://x.com/haskellhutt) : [https://people.cs.nott.ac.uk/pszgmh/afp.html](https://people.cs.nott.ac.uk/pszgmh/pgp.html)
