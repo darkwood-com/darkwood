@@ -17,8 +17,7 @@ class SettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('firstname', TextType::class);
-        $builder->add('lastname', TextType::class);
+        $builder->add('customer', SettingsCustomerType::class);
         $builder->add('username', TextType::class);
         $builder->add('apiKey', TextType::class);
         $builder->add('facebookId', TextType::class);
