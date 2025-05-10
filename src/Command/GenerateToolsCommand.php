@@ -27,6 +27,7 @@ class GenerateToolsCommand extends Command
     {
         $this
             ->addOption('action', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'The action(s) to perform. You can specify multiple --action options.')
+            ->addOption('entityId', null, InputOption::VALUE_REQUIRED, 'The entity ID to use for the actions')
         ;
     }
 
@@ -34,16 +35,22 @@ class GenerateToolsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $actions = $input->getOption('action');
+        $entityId = $input->getOption('entityId');
 
         if (empty($actions)) {
             $io->error('At least one --action option is required.');
             return Command::FAILURE;
         }
 
+        if (empty($entityId)) {
+            $io->error('The --entityId option is required.');
+            return Command::FAILURE;
+        }
+
         $methods = [];
         foreach ($actions as $action) {
             $actionData = $this->composio->actions->get(['actionName' => $action]);
-            $methods[] = $this->generateMethodFromAction($actionData[0]);
+            $methods[] = $this->generateMethodFromAction($actionData[0], $entityId);
         }
 
         $this->writeMethodsToFile($methods, __DIR__ . '/../ComposioMcpTools.php');
@@ -52,7 +59,7 @@ class GenerateToolsCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function generateMethodFromAction(array $actionData): string
+    private function generateMethodFromAction(array $actionData, string $entityId): string
     {
         $name = $actionData['name'] ?? 'unknownAction';
         $methodName = $this->camelCase($name);
@@ -67,7 +74,9 @@ class GenerateToolsCommand extends Command
             $type = $this->phpType($paramData['type'] ?? 'mixed', $paramData);
             $desc = $paramData['description'] ?? '';
             $phpdoc .= "      * @param {$type} \${$paramName} {$desc}\n";
-            $default = isset($paramData['default']) ? ' = ' . var_export($paramData['default'], true) : '';
+            $default = isset($paramData['default']) 
+                ? ' = ' . var_export($paramData['default'], true) 
+                : ' = ' . $this->phpDefaultType($type);
             $args[] = "{$type} \${$paramName}{$default}";
         }
         $phpdoc .= "      * @return array The response data from the action execution.\n";
@@ -76,12 +85,18 @@ class GenerateToolsCommand extends Command
         // Build method
         $argsString = implode(', ', $args);
         $toolName = strtolower($name);
+        $dataArray = [];
+        foreach ($parameters as $paramName => $paramData) {
+            $dataArray[] = "'{$paramName}' => \${$paramName}";
+        }
+        $dataString = implode(', ', $dataArray);
         return <<<EOD
     {$phpdoc}
     #[McpTool(name: '{$toolName}')]
     public function {$methodName}({$argsString}): array
     {
-        throw new \Exception("Not implemented");
+        \$data = [{$dataString}];
+        return \$this->composioToolSet->execute_action('{$name}', \$data, '{$entityId}');
     }
 
 EOD;
@@ -95,9 +110,17 @@ EOD;
 namespace App;
 
 use PhpMcp\Server\Attributes\McpTool;
+use App\ComposioSdk\ComposioToolSet;
 
 class ComposioMcpTools
 {
+    private ComposioToolSet \$composioToolSet;
+
+    public function __construct(ComposioToolSet \$composioToolSet)
+    {
+        \$this->composioToolSet = \$composioToolSet;
+    }
+
 EOD;
 
         $classFooter = "}\n";
@@ -131,5 +154,17 @@ EOD;
             case 'object': return 'array';
             default: return 'mixed';
         }
+    }
+
+    private function phpDefaultType(string $type): string
+    {
+        return match ($type) {
+            'int' => '0',
+            'float' => '0.0',
+            'bool' => 'false',
+            'string' => "''",
+            'array' => '[]',
+            default => 'null'
+        };
     }
 }

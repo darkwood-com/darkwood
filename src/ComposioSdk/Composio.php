@@ -25,9 +25,9 @@ class Composio
     public array $config;
 
     public function __construct(
+        HttpClientInterface $httpClient,
         ?string $apiKey = null,
-        ?string $baseUrl = null,
-        HttpClientInterface $httpClient
+        ?string $baseUrl = null
     )
     {
         $this->apiKey = $apiKey ?? $_ENV['COMPOSIO_API_KEY'] ?? '';
@@ -85,7 +85,7 @@ class Composio
         return $data['key'] ?? null;
     }
 
-    public static function validateAuthSession(HttpClientInterface $httpClient, string $key, string $code, string $baseUrl = null): ?string
+    public static function validateAuthSession(HttpClientInterface $httpClient, string $key, string $code, ?string $baseUrl = null): ?string
     {
         $response = $httpClient->request('GET', ($baseUrl ?? 'https://backend.composio.dev/api') . '/v1/cli/verify_cli_code', [
             'headers' => [

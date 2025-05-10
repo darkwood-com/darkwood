@@ -3,9 +3,17 @@
 namespace App;
 
 use PhpMcp\Server\Attributes\McpTool;
+use App\ComposioSdk\ComposioToolSet;
 
 class ComposioMcpTools
 {
+    private ComposioToolSet $composioToolSet;
+
+    public function __construct(ComposioToolSet $composioToolSet)
+    {
+        $this->composioToolSet = $composioToolSet;
+    }
+
     /**
       * Action to fetch all emails from gmail.
       * @param bool $include_payload Include the payload of the message in the results.
@@ -18,9 +26,10 @@ class ComposioMcpTools
       * @return array The response data from the action execution.
       */
     #[McpTool(name: 'gmail_fetch_emails')]
-    public function gmailFetchEmails(bool $include_payload = true, bool $include_spam_trash = false, array $label_ids, int $max_results = 1, string $page_token, string $query, string $user_id = 'me'): array
+    public function gmailFetchEmails(bool $include_payload = true, bool $include_spam_trash = false, array $label_ids = [], int $max_results = 1, string $page_token = '', string $query = '', string $user_id = 'me'): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['include_payload' => $include_payload, 'include_spam_trash' => $include_spam_trash, 'label_ids' => $label_ids, 'max_results' => $max_results, 'page_token' => $page_token, 'query' => $query, 'user_id' => $user_id];
+        return $this->composioToolSet->execute_action('GMAIL_FETCH_EMAILS', $data, 'default');
     }
 
     /**
@@ -31,9 +40,10 @@ class ComposioMcpTools
       * @return array The response data from the action execution.
       */
     #[McpTool(name: 'gmail_fetch_message_by_message_id')]
-    public function gmailFetchMessageByMessageId(string $format = 'full', string $message_id, string $user_id = 'me'): array
+    public function gmailFetchMessageByMessageId(string $format = 'full', string $message_id = '', string $user_id = 'me'): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['format' => $format, 'message_id' => $message_id, 'user_id' => $user_id];
+        return $this->composioToolSet->execute_action('GMAIL_FETCH_MESSAGE_BY_MESSAGE_ID', $data, 'default');
     }
 
     /**
@@ -44,9 +54,10 @@ class ComposioMcpTools
       * @return array The response data from the action execution.
       */
     #[McpTool(name: 'gmail_fetch_message_by_thread_id')]
-    public function gmailFetchMessageByThreadId(string $page_token = '', string $thread_id, string $user_id = 'me'): array
+    public function gmailFetchMessageByThreadId(string $page_token = '', string $thread_id = '', string $user_id = 'me'): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['page_token' => $page_token, 'thread_id' => $thread_id, 'user_id' => $user_id];
+        return $this->composioToolSet->execute_action('GMAIL_FETCH_MESSAGE_BY_THREAD_ID', $data, 'default');
     }
 
     /**
@@ -63,12 +74,13 @@ class ComposioMcpTools
       * @return array The response data from the action execution.
       */
     #[McpTool(name: 'gmail_send_email')]
-    public function gmailSendEmail(array $attachment, array $bcc = array (
-), string $body, array $cc = array (
+    public function gmailSendEmail(array $attachment = [], array $bcc = array (
+), string $body = '', array $cc = array (
 ), array $extra_recipients = array (
-), bool $is_html = false, string $recipient_email, string $subject, string $user_id = 'me'): array
+), bool $is_html = false, string $recipient_email = '', string $subject = '', string $user_id = 'me'): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['attachment' => $attachment, 'bcc' => $bcc, 'body' => $body, 'cc' => $cc, 'extra_recipients' => $extra_recipients, 'is_html' => $is_html, 'recipient_email' => $recipient_email, 'subject' => $subject, 'user_id' => $user_id];
+        return $this->composioToolSet->execute_action('GMAIL_SEND_EMAIL', $data, 'default');
     }
 
     /**
@@ -94,9 +106,10 @@ class ComposioMcpTools
       * @return array The response data from the action execution.
       */
     #[McpTool(name: 'googlecalendar_create_event')]
-    public function googlecalendarCreateEvent(array $attendees, string $calendar_id = 'primary', bool $create_meeting_room, string $description, string $eventType = 'default', int $event_duration_hour = 0, int $event_duration_minutes = 30, bool $guestsCanInviteOthers, bool $guestsCanSeeOtherGuests, bool $guests_can_modify = false, string $location, array $recurrence, bool $send_updates, string $start_datetime, string $summary, string $timezone, string $transparency = 'opaque', string $visibility = 'default'): array
+    public function googlecalendarCreateEvent(array $attendees = [], string $calendar_id = 'primary', bool $create_meeting_room = false, string $description = '', string $eventType = 'default', int $event_duration_hour = 0, int $event_duration_minutes = 30, bool $guestsCanInviteOthers = false, bool $guestsCanSeeOtherGuests = false, bool $guests_can_modify = false, string $location = '', array $recurrence = [], bool $send_updates = false, string $start_datetime = '', string $summary = '', string $timezone = '', string $transparency = 'opaque', string $visibility = 'default'): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['attendees' => $attendees, 'calendar_id' => $calendar_id, 'create_meeting_room' => $create_meeting_room, 'description' => $description, 'eventType' => $eventType, 'event_duration_hour' => $event_duration_hour, 'event_duration_minutes' => $event_duration_minutes, 'guestsCanInviteOthers' => $guestsCanInviteOthers, 'guestsCanSeeOtherGuests' => $guestsCanSeeOtherGuests, 'guests_can_modify' => $guests_can_modify, 'location' => $location, 'recurrence' => $recurrence, 'send_updates' => $send_updates, 'start_datetime' => $start_datetime, 'summary' => $summary, 'timezone' => $timezone, 'transparency' => $transparency, 'visibility' => $visibility];
+        return $this->composioToolSet->execute_action('GOOGLECALENDAR_CREATE_EVENT', $data, 'default');
     }
 
     /**
@@ -129,9 +142,10 @@ class ComposioMcpTools
   1 => 'outOfOffice',
   2 => 'focusTime',
   3 => 'workingLocation',
-), int $max_results = 10, string $order_by, string $page_token, string $query, bool $show_deleted, bool $single_events = true, string $timeMax, string $timeMin, string $updated_min): array
+), int $max_results = 10, string $order_by = '', string $page_token = '', string $query = '', bool $show_deleted = false, bool $single_events = true, string $timeMax = '', string $timeMin = '', string $updated_min = ''): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['calendar_id' => $calendar_id, 'event_types' => $event_types, 'max_results' => $max_results, 'order_by' => $order_by, 'page_token' => $page_token, 'query' => $query, 'show_deleted' => $show_deleted, 'single_events' => $single_events, 'timeMax' => $timeMax, 'timeMin' => $timeMin, 'updated_min' => $updated_min];
+        return $this->composioToolSet->execute_action('GOOGLECALENDAR_FIND_EVENT', $data, 'default');
     }
 
     /**
@@ -153,9 +167,10 @@ class ComposioMcpTools
     #[McpTool(name: 'googlecalendar_find_free_slots')]
     public function googlecalendarFindFreeSlots(int $calendar_expansion_max = 50, int $group_expansion_max = 100, array $items = array (
   0 => 'primary',
-), string $time_max, string $time_min, string $timezone = 'UTC'): array
+), string $time_max = '', string $time_min = '', string $timezone = 'UTC'): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['calendar_expansion_max' => $calendar_expansion_max, 'group_expansion_max' => $group_expansion_max, 'items' => $items, 'time_max' => $time_max, 'time_min' => $time_min, 'timezone' => $timezone];
+        return $this->composioToolSet->execute_action('GOOGLECALENDAR_FIND_FREE_SLOTS', $data, 'default');
     }
 
     /**
@@ -166,7 +181,8 @@ class ComposioMcpTools
     #[McpTool(name: 'googlecalendar_get_calendar')]
     public function googlecalendarGetCalendar(string $calendar_id = 'primary'): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['calendar_id' => $calendar_id];
+        return $this->composioToolSet->execute_action('GOOGLECALENDAR_GET_CALENDAR', $data, 'default');
     }
 
     /**
@@ -177,7 +193,8 @@ class ComposioMcpTools
     #[McpTool(name: 'googlecalendar_get_current_date_time')]
     public function googlecalendarGetCurrentDateTime(mixed $timezone = 0): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['timezone' => $timezone];
+        return $this->composioToolSet->execute_action('GOOGLECALENDAR_GET_CURRENT_DATE_TIME', $data, 'default');
     }
 
     /**
@@ -191,9 +208,10 @@ class ComposioMcpTools
       * @return array The response data from the action execution.
       */
     #[McpTool(name: 'googlecalendar_list_calendars')]
-    public function googlecalendarListCalendars(int $max_results = 10, string $min_access_role, string $page_token, bool $show_deleted = false, bool $show_hidden = false, string $sync_token): array
+    public function googlecalendarListCalendars(int $max_results = 10, string $min_access_role = '', string $page_token = '', bool $show_deleted = false, bool $show_hidden = false, string $sync_token = ''): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['max_results' => $max_results, 'min_access_role' => $min_access_role, 'page_token' => $page_token, 'show_deleted' => $show_deleted, 'show_hidden' => $show_hidden, 'sync_token' => $sync_token];
+        return $this->composioToolSet->execute_action('GOOGLECALENDAR_LIST_CALENDARS', $data, 'default');
     }
 
     /**
@@ -206,6 +224,7 @@ class ComposioMcpTools
     #[McpTool(name: 'googlecalendar_quick_add')]
     public function googlecalendarQuickAdd(string $calendar_id = 'primary', string $send_updates = 'none', string $text = ''): array
     {
-        throw new \Exception("Not implemented");
+        $data = ['calendar_id' => $calendar_id, 'send_updates' => $send_updates, 'text' => $text];
+        return $this->composioToolSet->execute_action('GOOGLECALENDAR_QUICK_ADD', $data, 'default');
     }
 }
