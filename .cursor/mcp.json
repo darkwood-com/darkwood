@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "composio-php-mcp-server": {
+      "name": "Composio MCP Server",
+      "command": "php /Users/math/Sites/darkwood/composio-php-mcp-server/mcp-server.php"
+    }
+  }
+}
