@@ -59,7 +59,7 @@ class Entity
             'requestBody' => [
                 'connectedAccountId' => $connectedAccount['id'],
                 'input' => $params,
-                'appName' => $action['appKey'],
+                'appName' => $action['appKey'] ?? null,
                 'text' => $text
             ]
         ]);
