@@ -14,7 +14,7 @@ run: ## Run MCP server
 	$(NIX) --command php mcp-server.php
 
 generate-actions: ## Generate actions
-	$(NIX) --command php bin/console app:generate-tools --action GMAIL_FETCH_EMAILS --action GOOGLECALENDAR_CREATE_EVENT --action GOOGLECALENDAR_FIND_EVENT
+	$(NIX) --command php bin/console app:generate-tools --action GMAIL_FETCH_EMAILS --action GOOGLECALENDAR_CREATE_EVENT --action GOOGLECALENDAR_FIND_EVENT --entityId matyo91
 
 serve: ## Run Symfony development server
 	$(NIX) --command ./bin/console server:start --port=8000
