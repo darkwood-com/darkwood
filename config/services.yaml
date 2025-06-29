@@ -3,11 +3,6 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-parameters:
-    app.slack.client_id: '%env(SLACK_CLIENT_ID)%'
-    app.slack.client_secret: '%env(SLACK_CLIENT_SECRET)%'
-    app.slack.redirect_uri: '%env(SLACK_REDIRECT_URI)%'
-
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -26,6 +21,7 @@ services:
     App\Controller\SlackController:
         public: true
         arguments:
-            $clientId: '%app.slack.client_id%'
-            $clientSecret: '%app.slack.client_secret%'
-            $redirectUri: '%app.slack.redirect_uri%'
+            $clientId: '%env(SLACK_CLIENT_ID)%'
+            $clientSecret: '%env(SLACK_CLIENT_SECRET)%'
+            $redirectUri: '%env(SLACK_REDIRECT_URI)%'
+            $slackToken: '%env(SLACK_TOKEN)%'
