@@ -9,4 +9,6 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 final class Flow
 {
     use DefaultActionTrait;
+
+    public array $flow;
 }
