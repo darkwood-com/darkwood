@@ -36,6 +36,8 @@ The LambdaJob class provides a way to evaluate lambda calculus expressions in PH
 Example usage:
 
 ```php
+<?php
+
 $job = new LambdaJob('λx.x + 1');
 $result = $job(5); // Returns 6
 
