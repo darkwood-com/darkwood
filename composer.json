@@ -1,19 +1,23 @@
 {
     "type": "project",
     "license": "proprietary",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "php-mcp/server": "^1.1",
+        "darkwood/flow": "^1.2",
+        "symfony/ai-agent": "dev-main",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.2.*",
         "symfony/http-client": "7.2.*",
+        "symfony/mcp-bundle": "dev-main",
         "symfony/runtime": "7.2.*",
+        "symfony/string": "7.2.*",
+        "symfony/translation-contracts": "^3.6",
         "symfony/yaml": "7.2.*"
     },
     "config": {

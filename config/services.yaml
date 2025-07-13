@@ -20,22 +20,28 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # MCP Server configuration
-    PhpMcp\Server\Server:
-        factory: ['PhpMcp\Server\Server', 'make']
-        calls:
-            - [withBasePath, ['%kernel.project_dir%']]
-            - [withScanDirectories, [['src']]]
-            - [discover, []]
-
-    PhpMcp\Server\Transports\HttpTransportHandler:
-        arguments:
-            $server: '@PhpMcp\Server\Server'
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    App\Capability\ComposioToolChain:
+        autowire: true
+        arguments:
+            $entityId: '%env(COMPOSIO_ENTITY_ID)%'
+            $actions: '%env(COMPOSIO_ACTIONS)%'
+
     App\ComposioSdk\Composio:
+        autowire: true
         arguments:
             $apiKey: '%env(COMPOSIO_API_KEY)%'
-            $baseUrl:
+            $baseUrl: null
+
+    App\Command\ComposioCommand:
+        autowire: true
+        arguments:
+            $anthropicApiKey: '%env(ANTHROPIC_API_KEY)%'
+
+    Symfony\AI\McpSdk\Capability\Tool\ToolExecutorInterface:
+        alias: App\Capability\ComposioToolChain
+
+    Symfony\AI\McpSdk\Capability\Tool\CollectionInterface:
+        alias: App\Capability\ComposioToolChain

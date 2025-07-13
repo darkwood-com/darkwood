@@ -27,18 +27,23 @@ class ConnectedAccounts
      */
     public function list(array $data = []): array
     {
-        $url = $this->client->baseUrl . '/v1/connectedAccounts';
+        $url = $this->client->baseUrl . '/v3/connected_accounts';
         $response = $this->client->http->request('GET', $url, [
             'headers' => [
-                'X-API-KEY' => $this->client->apiKey
+                'x-api-key' => $this->client->apiKey
             ],
             'query' => [
-                'user_uuid' => $data['user_uuid'] ?? null,
-                'page' => $data['page'] ?? null,
-                'pageSize' => $data['pageSize'] ?? null,
-                'integrationId' => $data['integrationId'] ?? null,
+                'user_ids' => $data['user_uuid'] ?? null,
+                'cursor' => $data['page'] ?? null,
+                'limit' => $data['pageSize'] ?? null,
+                'toolkit_slugs' => $data['integrationId'] ?? null,
+                'statuses' => $data['statuses'] ?? null,
+                'auth_config_ids' => $data['auth_config_ids'] ?? null,
+                'order_by' => $data['order_by'] ?? null,
+                'labels' => $data['labels'] ?? null,
             ]
         ]);
+
         return $response->toArray();
     }
 
@@ -57,7 +62,7 @@ class ConnectedAccounts
         $url = $this->client->baseUrl . '/v1/connectedAccounts';
         $response = $this->client->http->request('POST', $url, [
             'headers' => [
-                'X-API-KEY' => $this->client->apiKey
+                'x-api-key' => $this->client->apiKey
             ],
             'json' => $data['requestBody'] ?? [],
         ]);
@@ -83,7 +88,7 @@ class ConnectedAccounts
         $url = $this->client->baseUrl . '/v1/connectedAccounts/' . urlencode($data['connectedAccountId']);
         $response = $this->client->http->request('GET', $url, [
             'headers' => [
-                'X-API-KEY' => $this->client->apiKey
+                'x-api-key' => $this->client->apiKey
             ]
         ]);
         return $response->toArray();
@@ -103,7 +108,7 @@ class ConnectedAccounts
         $url = $this->client->baseUrl . '/v1/connectedAccounts';
         $response = $this->client->http->request('POST', $url, [
             'headers' => [
-                'X-API-KEY' => $this->client->apiKey
+                'x-api-key' => $this->client->apiKey
             ],
             'json' => $data
         ]);

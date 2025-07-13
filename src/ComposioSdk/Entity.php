@@ -51,7 +51,21 @@ class Entity
                 throw new \Exception('No connected account found');
             }
 
-            $connectedAccount = $connectedAccounts['items'][0];
+
+            // Find the connected account for the specific toolkit
+            $toolkitSlug = $action['toolkit']['slug'] ?? null;
+            $connectedAccount = null;
+            
+            foreach ($connectedAccounts['items'] as $account) {
+                if (isset($account['toolkit']['slug']) && $account['toolkit']['slug'] === $toolkitSlug) {
+                    $connectedAccount = $account;
+                    break;
+                }
+            }
+            
+            if (!$connectedAccount) {
+                throw new \Exception('No connected account found');
+            }
         }
 
         return $this->client->actions->execute([

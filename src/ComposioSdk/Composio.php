@@ -38,7 +38,7 @@ class Composio
         $this->http = $httpClient;
         $this->config = [
             'HEADERS' => [
-                'X-API-Key' => $this->apiKey
+                'x-api-key' => $this->apiKey
             ]
         ];
         // Models should be instantiated with $this as dependency (to be implemented)
@@ -54,7 +54,7 @@ class Composio
     {
         $response = $this->http->request('GET', $this->baseUrl . '/v1/client/auth/client_info', [
             'headers' => [
-                'X-API-KEY' => $this->apiKey
+                'x-api-key' => $this->apiKey
             ]
         ]);
         $statusCode = $response->getStatusCode();
