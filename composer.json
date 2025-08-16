@@ -7,11 +7,11 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "php-llm/mcp-bundle": "dev-main",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.8.1",
         "symfony/framework-bundle": "7.2.*",
+        "symfony/http-client": "7.2.*",
         "symfony/runtime": "7.2.*",
         "symfony/yaml": "7.2.*"
     },
@@ -70,6 +70,6 @@
         }
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.63"
+        "symfony/maker-bundle": "^1.64"
     }
 }

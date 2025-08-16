@@ -25,7 +25,7 @@ use function sprintf;
 )]
 class JoplinCreateTaskCommand extends Command
 {
-    private const DEFAULT_FOLDER_ID = 'b97b3a4fe9034368b084ba2826913d9a';
+    private const DEFAULT_FOLDER_ID = '045feac2008e4481bf3fdf5d87332cc4';
 
     public function __construct(
         private JoplinService $joplinService,
@@ -104,7 +104,7 @@ class JoplinCreateTaskCommand extends Command
                 $folderId
             );
 
-            $io->success(sprintf('Joplin Task created successfully with ID: %s and folder: %s', $result['id'], $taskPath));
+            $io->success(sprintf('Joplin Task created successfully with ID: %s', $result['id']));
 
             return Command::SUCCESS;
         } catch (Exception $e) {
