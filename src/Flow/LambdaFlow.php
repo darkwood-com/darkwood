@@ -29,7 +29,7 @@ class LambdaFlow extends Flow
      */
     public function __construct(
         string $expression,
-        null|Closure|JobInterface $errorJob = null,
+        Closure|JobInterface|null $errorJob = null,
         ?IpStrategyInterface $ipStrategy = null,
         ?EventDispatcherInterface $dispatcher = null,
         ?AsyncHandlerInterface $asyncHandler = null,

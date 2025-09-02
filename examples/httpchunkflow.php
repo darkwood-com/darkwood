@@ -27,16 +27,19 @@ printf("Using %s driver\n", $driver::class);
 // Y-combinator wrapper for recursive functions
 $Ywrap = static function (callable $func, callable $wrapperFunc): JobInterface {
     $wrappedFunc = static fn ($recurse) => $wrapperFunc(static fn (...$args) => $func($recurse)(...$args));
+
     return new YJob($wrappedFunc);
 };
 
 // Memoization wrapper for caching results
 $memoWrapperGenerator = static function (callable $f): Closure {
     static $cache = [];
+
     return static function ($y) use ($f, &$cache) {
         if (!isset($cache[$y])) {
             $cache[$y] = $f($y);
         }
+
         return $cache[$y];
     };
 };
@@ -62,12 +65,16 @@ $httpRequestJob = static function (HttpRequestData $requestData) use ($driver): 
         $content = json_encode([
             ['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com'],
             ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@example.com'],
-            ['id' => 3, 'name' => 'Bob Johnson', 'email' => 'bob@example.com']
+            ['id' => 3, 'name' => 'Bob Johnson', 'email' => 'bob@example.com'],
         ]);
     }
 
-    printf("*. #%d - HTTP request completed with status %d (took %.01f seconds)\n",
-           $requestData->id, $statusCode, $delay);
+    printf(
+        "*. #%d - HTTP request completed with status %d (took %.01f seconds)\n",
+        $requestData->id,
+        $statusCode,
+        $delay
+    );
 
     return new HttpResponseData($requestData->id, $content, $statusCode);
 };
@@ -85,7 +92,7 @@ $parseResponseJob = static function (HttpResponseData $responseData) use ($drive
         $driver->delay(1);
         $responseData = new HttpResponseData($responseData->id, json_encode([
             ['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com'],
-            ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@example.com']
+            ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@example.com'],
         ]), 200);
     }
 
@@ -102,7 +109,7 @@ $parseResponseJob = static function (HttpResponseData $responseData) use ($drive
 
 // Job 3: Process chunks recursively using Y-combinator
 $processChunksJob = static function ($processChunks) {
-    return static function (ChunkData $chunkData) use ($processChunks): ChunkData {
+    return static function (ChunkData $chunkData): ChunkData {
         printf("..* #%d - Processing chunks recursively with Y-combinator\n", $chunkData->id);
 
         if (!$chunkData->additionalRequests || !is_array($chunkData->additionalRequests)) {
@@ -129,13 +136,14 @@ $processChunksJob = static function ($processChunks) {
 
         // Store additional requests in the chunk data
         $chunkData->additionalRequests = $additionalRequests;
+
         return $chunkData;
     };
 };
 
 // Job 4: Make additional HTTP requests with Y-combinator
 $makeAdditionalRequestsJob = new YJob(static function ($makeRequests) use ($driver) {
-    return static function (ChunkData $chunkData) use ($makeRequests, $driver): ChunkData {
+    return static function (ChunkData $chunkData) use ($driver): ChunkData {
         if (!$chunkData->additionalRequests || !is_array($chunkData->additionalRequests)) {
             return $chunkData;
         }
@@ -154,11 +162,11 @@ $makeAdditionalRequestsJob = new YJob(static function ($makeRequests) use ($driv
                     'todos' => json_encode([
                         ['id' => 1, 'title' => 'Todo 1', 'completed' => false],
                         ['id' => 2, 'title' => 'Todo 2', 'completed' => true],
-                        ['id' => 3, 'title' => 'Todo 3', 'completed' => false]
+                        ['id' => 3, 'title' => 'Todo 3', 'completed' => false],
                     ]),
                     'posts' => json_encode([
                         ['id' => 1, 'title' => 'Post 1', 'body' => 'Content 1'],
-                        ['id' => 2, 'title' => 'Post 2', 'body' => 'Content 2']
+                        ['id' => 2, 'title' => 'Post 2', 'body' => 'Content 2'],
                     ]),
                     default => '[]'
                 };
@@ -169,12 +177,13 @@ $makeAdditionalRequestsJob = new YJob(static function ($makeRequests) use ($driv
 
         // Store responses in chunk data
         $chunkData->additionalRequests = $responses;
+
         return $chunkData;
     };
 });
 
 // Job 5: Merge additional data with main response
-$mergeDataJob = static function (ChunkData $chunkData) use ($driver): array {
+$mergeDataJob = static function (ChunkData $chunkData): array {
     printf("....* Merging additional data with main response\n");
 
     // Get the original user data from the chunk
@@ -199,7 +208,7 @@ $mergeDataJob = static function (ChunkData $chunkData) use ($driver): array {
                 $responseData = json_decode($response->content, true);
 
                 // Check if this response belongs to the current user
-                $responseUserId = intval(($response->id % 10000) / 100);
+                $responseUserId = (int) (($response->id % 10000) / 100);
                 if ($responseUserId === $userId) {
                     if ($response->id % 1000 < 100) { // todos
                         $todos = $responseData;
