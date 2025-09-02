@@ -7,8 +7,8 @@ namespace Flow\Examples\Model;
 class HttpResponseData
 {
     /**
-     * @param array<string, string> $headers
-     * @param array<string, mixed>|null $parsedData
+     * @param array<string, string>     $headers
+     * @param null|array<string, mixed> $parsedData
      */
     public function __construct(
         public int $id,

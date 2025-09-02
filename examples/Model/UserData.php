@@ -7,8 +7,8 @@ namespace Flow\Examples\Model;
 class UserData
 {
     /**
-     * @param array<string, mixed>|null $availabilities
-     * @param array<string, mixed>|null $posts
+     * @param null|array<string, mixed> $availabilities
+     * @param null|array<string, mixed> $posts
      */
     public function __construct(
         public int $id,
