@@ -2,7 +2,7 @@
 
 ## What do we do?
 
-- Create a Composio MCP server with https://github.com/php-mcp/server
+- Create a Composio MCP server with https://github.com/symfony/ai
 
 ```bash
 composer create-project symfony/skeleton
