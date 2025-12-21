@@ -119,7 +119,7 @@ class SwooleDriver implements DriverInterface
         $tickId = Timer::tick((int) $interval, $callback);
 
         return function () use ($tickId) {
-            Timer::clear($tickId); // @phpstan-ignore-line
+            Timer::clear($tickId);
             $this->ticks--;
         };
     }

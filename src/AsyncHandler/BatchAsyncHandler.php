@@ -37,7 +37,7 @@ final class BatchAsyncHandler implements BatchHandlerInterface, AsyncHandlerInte
         $this->asyncHandler = $asyncHandler ?? new AsyncHandler();
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Event::ASYNC => 'async',

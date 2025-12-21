@@ -25,7 +25,7 @@ class DeferAsyncHandlerTest extends TestCase
                 $result = $n1 + $n2;
 
                 return static function ($callback) use ($result) {
-                    $callback($result);
+                    $callback([$result]);
                 };
             },
             new Ip([1, 7]),

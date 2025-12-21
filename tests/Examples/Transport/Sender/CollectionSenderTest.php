@@ -16,7 +16,7 @@ class CollectionSenderTest extends TestCase
     public function testSend(): void
     {
         $counter = new ArrayObject(['send' => 0]);
-        $senders = array_map(function () use ($counter) {
+        $senders = array_map(static function () use ($counter) {
             return new class($counter) implements SenderInterface {
                 /**
                  * @param ArrayObject<string, int> $counter

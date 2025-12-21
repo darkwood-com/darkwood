@@ -117,30 +117,6 @@ class FlowTest extends TestCase
     }
 
     /**
-     * @dataProvider provideDoCases
-     *
-     * @param DriverInterface<T1,T2> $driver
-     * @param array<mixed>           $config
-     */
-    public function testDo(DriverInterface $driver, callable $callable, ?array $config, int $resultNumber): void
-    {
-        $ip = new Ip(new ArrayObject(['number' => 0]));
-        $flow = (new FlowFactory())->create($callable, [
-            ...['driver' => $driver],
-            ...($config ?? []),
-        ])->fn(static function (ArrayObject $data) use ($resultNumber) {
-            self::assertSame(ArrayObject::class, $data::class);
-            self::assertSame($resultNumber, $data['number']);
-
-            return $data;
-        });
-
-        ($flow)($ip);
-
-        $flow->await();
-    }
-
-    /**
      * @return array<array<mixed>>
      */
     public static function provideJobCases(): iterable
@@ -198,6 +174,30 @@ class FlowTest extends TestCase
 
             return $cases;
         });
+    }
+
+    /**
+     * @dataProvider provideDoCases
+     *
+     * @param DriverInterface<T1,T2> $driver
+     * @param array<mixed>           $config
+     */
+    public function testDo(DriverInterface $driver, callable $callable, ?array $config, int $resultNumber): void
+    {
+        $ip = new Ip(new ArrayObject(['number' => 0]));
+        $flow = (new FlowFactory())->create($callable, [
+            ...['driver' => $driver],
+            ...($config ?? []),
+        ])->fn(static function (ArrayObject $data) use ($resultNumber) {
+            self::assertSame(ArrayObject::class, $data::class);
+            self::assertSame($resultNumber, $data['number']);
+
+            return $data;
+        });
+
+        ($flow)($ip);
+
+        $flow->await();
     }
 
     /**

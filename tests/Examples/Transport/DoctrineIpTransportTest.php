@@ -17,7 +17,7 @@ class DoctrineIpTransportTest extends TestCase
 {
     public function testMultipleClientTransport(): void
     {
-        $connection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
+        $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $supervisorTransport = new DoctrineIpTransport($connection);
 
         $clientTransports = [];

@@ -42,7 +42,7 @@ class MaxIpStrategy implements IpStrategyInterface
         $this->dispatcher->addSubscriber($this->ipStrategy);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Event::PUSH => 'push',

@@ -21,17 +21,22 @@
         "php"
     ],
     "require": {
-        "php": ">=8.3",
-        "symfony/event-dispatcher": "^7.0",
-        "symfony/messenger": "^7.0"
+        "php": ">=8.5",
+        "symfony/config": "^8.0",
+        "symfony/dependency-injection": "^8.0",
+        "symfony/event-dispatcher": "^8.0",
+        "symfony/http-kernel": "^8.0",
+        "symfony/messenger": "^8.0",
+        "symfony/string": "^8.0"
     },
     "require-dev": {
-        "amphp/amp": "^3.0",
-        "openswoole/ide-helper": "^22.1.5",
+        "amphp/amp": "^3.1",
+        "doctrine/dbal": "^4.3",
+        "openswoole/ide-helper": "^22.1",
         "react/async": "^4.3",
-        "spatie/async": "^1.6",
-        "symfony/doctrine-messenger": "^7.0",
-        "symfony/orm-pack": "^2.4"
+        "spatie/async": "^1.8",
+        "symfony/doctrine-messenger": "^8.0",
+        "symfony/http-client": "^8.0"
     },
     "suggest": {
         "amphp/amp": "Provide asynchronous with AMP",
@@ -76,6 +81,11 @@
         "phpstan": "Execute PHPStan analysis",
         "phpunit": "Launch PHPUnit test suite",
         "psalm": "Run Psalm"
+    },
+    "config": {
+        "platform": {
+            "ext-openswoole": "22.0"
+        }
     },
     "minimum-stability": "stable"
 }
