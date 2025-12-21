@@ -12,7 +12,8 @@
         "react/async": "^4.3",
         "spatie/async": "^1.6",
         "symfony/doctrine-messenger": "^7.0",
-        "symfony/orm-pack": "^2.4"
+        "symfony/orm-pack": "^2.4",
+        "symfony/http-client": "^7.3"
     },
     "autoload": {
         "psr-4": {

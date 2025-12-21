@@ -63,7 +63,7 @@ class Flow implements FlowInterface
      */
     public function __construct(
         Closure|JobInterface $job,
-        null|Closure|JobInterface $errorJob = null,
+        Closure|JobInterface|null $errorJob = null,
         ?IpStrategyInterface $ipStrategy = null,
         ?EventDispatcherInterface $dispatcher = null,
         ?AsyncHandlerInterface $asyncHandler = null,
