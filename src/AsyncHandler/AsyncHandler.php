@@ -27,7 +27,7 @@ final class AsyncHandler implements AsyncHandlerInterface
         $this->ipPool = new IpPool();
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Event::ASYNC => 'async',

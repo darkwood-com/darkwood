@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.5
+
+- Update to PHP 8.5 and Symfony 8.0
+- Add exemples/httpchunkflow.php
+
 ## v1.2.4
 
 - Add LambdaFlow
