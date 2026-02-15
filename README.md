@@ -50,7 +50,23 @@ darkwood_ia_exception:
   cache_ttl: 600                 # Cache TTL in seconds (0 = disabled)
   cache: 'cache.app'             # PSR-6 cache service
   include_trace: false           # Dev only; never true in production
+  async: false                   # When true, AI analysis loads asynchronously (see below)
+  async_route_prefix: '__ai_exception'
+  async_context_ttl: 300        # Seconds to keep exception context for async (min 60)
 ```
+
+### Async AI analysis (Symfony UX–style)
+
+When `async: true`, the exception page is returned **immediately** with standard content and a placeholder “AI analysis loading…”. No blocking AI call during `kernel.exception`. A small inline script then fetches the analysis from `GET /__ai_exception/{error_id}` and injects the result. If the request fails or times out (30s), a graceful fallback message is shown.
+
+- **Requirement:** Your app must import the bundle routes so the async endpoint is registered. In `config/routes.yaml` (or equivalent):
+
+```yaml
+darkwood_ia_exception:
+  resource: '@DarkwoodIaExceptionBundle/Resources/config/routes.yaml'
+```
+
+- **Production-safe:** Async is configurable; leave `async: false` in production if you prefer synchronous behavior or do not expose the route.
 
 ### Enforcing Timeout
 

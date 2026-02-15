@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Darkwood\IaExceptionBundle\EventSubscriber;
 
 use Darkwood\IaExceptionBundle\Model\ExceptionAiAnalysis;
+use Darkwood\IaExceptionBundle\Model\ExceptionContext;
 use Darkwood\IaExceptionBundle\Service\ExceptionAiAnalyzer;
+use Darkwood\IaExceptionBundle\Service\ExceptionContextStore;
 use Darkwood\IaExceptionBundle\Service\TraceFormatter;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,12 +26,15 @@ final class IaExceptionSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly ExceptionAiAnalyzer $analyzer,
+        private readonly ExceptionContextStore $contextStore,
         private readonly TraceFormatter $traceFormatter,
         private readonly Environment $twig,
         private readonly bool $enabled,
         /** @var list<int> */
         private readonly array $onlyStatusCodes,
         private readonly ?string $errorIdGenerator = null,
+        private readonly bool $async = false,
+        private readonly string $asyncRoutePrefix = '__ai_exception',
     ) {
     }
 
@@ -55,20 +60,32 @@ final class IaExceptionSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $errorId = $this->generateErrorId($request);
+        $wantsJson = $this->wantsJson($request);
+
+        // Async mode: render page immediately with placeholder; store context for async endpoint
+        if ($this->async && !$wantsJson) {
+            try {
+                $this->contextStore->store($errorId, ExceptionContext::fromThrowable($throwable));
+                $response = $this->createHtmlResponse(null, $errorId, $statusCode, $throwable);
+                $event->setResponse($response);
+            } catch (\Throwable) {
+                // Fallback: do not set response
+            }
+            return;
+        }
+
+        // Sync mode (or JSON): compute AI analysis before responding
         $analysis = null;
         try {
             $analysis = $this->analyzer->analyze($throwable);
         } catch (\Throwable) {
-            // Fallback: do not set response, let Symfony handle it
             return;
         }
 
         if ($analysis === null) {
             return;
         }
-
-        $errorId = $this->generateErrorId($request);
-        $wantsJson = $this->wantsJson($request);
 
         try {
             if ($wantsJson) {
@@ -139,8 +156,11 @@ final class IaExceptionSubscriber implements EventSubscriberInterface
         ]);
     }
 
+    /**
+     * @param ExceptionAiAnalysis|null $analysis Null when async: show placeholder and load via UX.
+     */
     private function createHtmlResponse(
-        ExceptionAiAnalysis $analysis,
+        ?ExceptionAiAnalysis $analysis,
         string $errorId,
         int $statusCode,
         \Throwable $throwable
@@ -148,9 +168,14 @@ final class IaExceptionSubscriber implements EventSubscriberInterface
         $flatten = FlattenException::createFromThrowable($throwable);
         $exceptions = $this->traceFormatter->format($flatten);
 
+        $asyncUrl = $this->async
+            ? '/' . trim($this->asyncRoutePrefix, '/') . '/' . $errorId
+            : null;
+
         $content = $this->twig->render('@DarkwoodIaException/error500.html.twig', [
             'error_id' => $errorId,
             'analysis' => $analysis,
+            'ai_analysis_async_url' => $asyncUrl,
             'exception_class' => $throwable::class,
             'exception_message' => $throwable->getMessage(),
             'exceptions' => $exceptions,

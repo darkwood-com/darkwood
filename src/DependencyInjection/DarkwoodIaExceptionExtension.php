@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Darkwood\IaExceptionBundle\DependencyInjection;
 
 use Darkwood\IaExceptionBundle\Service\ExceptionAiAnalyzer;
+use Darkwood\IaExceptionBundle\Service\ExceptionContextStore;
 use Darkwood\IaExceptionBundle\Service\TraceFormatter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,10 +33,16 @@ final class DarkwoodIaExceptionExtension extends Extension
         $container->setParameter('darkwood_ia_exception.cache', $config['cache']);
         $container->setParameter('darkwood_ia_exception.include_trace', $config['include_trace']);
         $container->setParameter('darkwood_ia_exception.error_id_generator', $config['error_id_generator']);
+        $container->setParameter('darkwood_ia_exception.async', $config['async']);
+        $container->setParameter('darkwood_ia_exception.async_route_prefix', trim($config['async_route_prefix'], '/'));
+        $container->setParameter('darkwood_ia_exception.async_context_ttl', $config['async_context_ttl']);
 
         $analyzerDef = $container->getDefinition(ExceptionAiAnalyzer::class);
         $analyzerDef->setArgument('$agent', new Reference($config['agent']));
         $analyzerDef->setArgument('$cache', new Reference($config['cache']));
+
+        $contextStoreDef = $container->getDefinition(ExceptionContextStore::class);
+        $contextStoreDef->setArgument('$cache', new Reference($config['cache']));
 
         if ($container->has('debug.file_link_formatter')) {
             $container->getDefinition(TraceFormatter::class)
