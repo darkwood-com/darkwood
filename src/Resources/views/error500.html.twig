@@ -47,8 +47,9 @@
     <div class="container">
         <div class="sf-tabs" data-processed="false">
             <div class="tab active">
-                <h3 class="tab-title">AI Analysis <span class="badge">Confidence: {{ (analysis.confidence * 100)|round }}%</span></h3>
+                <h3 class="tab-title">AI Analysis{% if analysis %} <span class="badge">Confidence: {{ (analysis.confidence * 100)|round }}%</span>{% endif %}</h3>
                 <div class="tab-content">
+                    {% if analysis %}
                     <div class="ai-analysis-section">
                         <p class="break-long-words"><strong>{{ analysis.englishException }}</strong></p>
                         {% if analysis.probableCauses is not empty %}
@@ -69,6 +70,16 @@
                         {% endif %}
                         <p class="ai-disclaimer">Results are AI-generated hypotheses. Verify before acting. Error ID: {{ error_id }}</p>
                     </div>
+                    {% elseif ai_analysis_async_url is defined and ai_analysis_async_url %}
+                    <div id="ai-analysis-placeholder" class="ai-analysis-loading" data-ai-load-url="{{ ai_analysis_async_url }}">
+                        <p>AI analysis loading…</p>
+                    </div>
+                    {% else %}
+                    <div class="ai-analysis-section ai-analysis-fallback">
+                        <p>AI analysis is not available for this error.</p>
+                        <p class="ai-disclaimer">Error ID: {{ error_id }}</p>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 
@@ -185,5 +196,32 @@
         }
     })();
     </script>
+    {% if ai_analysis_async_url is defined and ai_analysis_async_url %}
+    <script>
+    (function() {
+        var placeholder = document.getElementById('ai-analysis-placeholder');
+        if (!placeholder) return;
+        var url = placeholder.getAttribute('data-ai-load-url');
+        if (!url) return;
+        var timeoutMs = 30000;
+        var controller = new AbortController();
+        var timeoutId = setTimeout(function() { controller.abort(); }, timeoutMs);
+        fetch(url, {
+            headers: { 'Accept': 'text/html' },
+            signal: controller.signal
+        }).then(function(res) {
+            clearTimeout(timeoutId);
+            if (!res.ok) throw new Error('Load failed');
+            return res.text();
+        }).then(function(html) {
+            placeholder.outerHTML = html;
+        }).catch(function() {
+            clearTimeout(timeoutId);
+            placeholder.className = 'ai-analysis-section ai-analysis-fallback';
+            placeholder.innerHTML = '<p class="break-long-words">AI analysis could not be loaded (timeout or temporary error). You can still use the Exception tab for the stack trace.</p><p class="ai-disclaimer">Error ID: {{ error_id }}</p>';
+        });
+    })();
+    </script>
+    {% endif %}
 </body>
 </html>

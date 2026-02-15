@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Darkwood\IaExceptionBundle\Service;
 
 use Darkwood\IaExceptionBundle\Model\ExceptionAiAnalysis;
+use Darkwood\IaExceptionBundle\Model\ExceptionContext;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Platform\Message\Message;
@@ -70,6 +71,37 @@ PROMPT;
         return $analysis;
     }
 
+    /**
+     * Analyzes from stored exception context (for async endpoint). Returns null on any failure.
+     */
+    public function analyzeFromContext(ExceptionContext $context): ?ExceptionAiAnalysis
+    {
+        $fingerprint = $this->buildFingerprintFromContext($context);
+
+        if ($this->cacheTtl > 0) {
+            $cached = $this->cache->getItem($fingerprint);
+            if ($cached->isHit()) {
+                $data = $cached->get();
+                return $this->hydrate($data);
+            }
+        }
+
+        try {
+            $analysis = $this->callAgentWithUserContent($this->buildUserContentFromContext($context));
+        } catch (\Throwable) {
+            return null;
+        }
+
+        if ($analysis !== null && $this->cacheTtl > 0) {
+            $item = $this->cache->getItem($fingerprint);
+            $item->set($analysis->toArray());
+            $item->expiresAfter($this->cacheTtl);
+            $this->cache->save($item);
+        }
+
+        return $analysis;
+    }
+
     private function buildFingerprint(\Throwable $exception): string
     {
         $parts = [
@@ -86,9 +118,29 @@ PROMPT;
         return 'darkwood_ia_exception_' . hash('xxh128', implode("\0", $parts));
     }
 
+    private function buildFingerprintFromContext(ExceptionContext $context): string
+    {
+        $parts = [
+            $context->class,
+            $context->message,
+        ];
+
+        if ($this->includeTrace && $context->trace !== '') {
+            $top = implode("\n", array_slice(explode("\n", $context->trace), 0, 10));
+            $parts[] = hash('xxh128', $top);
+        }
+
+        return 'darkwood_ia_exception_' . hash('xxh128', implode("\0", $parts));
+    }
+
     private function callAgent(\Throwable $exception): ?ExceptionAiAnalysis
     {
         $userContent = $this->buildUserContent($exception);
+        return $this->callAgentWithUserContent($userContent);
+    }
+
+    private function callAgentWithUserContent(string $userContent): ?ExceptionAiAnalysis
+    {
 
         $messages = new MessageBag(
             Message::forSystem(self::SYSTEM_PROMPT),
@@ -110,6 +162,23 @@ PROMPT;
         }
 
         return $this->hydrate($data);
+    }
+
+    private function buildUserContentFromContext(ExceptionContext $context): string
+    {
+        $parts = [
+            'Exception: ' . $context->class,
+            'Message: ' . $context->message,
+            'File: ' . $context->file,
+            'Line: ' . (string) $context->line,
+        ];
+
+        if ($this->includeTrace && $context->trace !== '') {
+            $parts[] = 'Trace:';
+            $parts[] = $context->trace;
+        }
+
+        return implode("\n", $parts);
     }
 
     private function buildUserContent(\Throwable $exception): string

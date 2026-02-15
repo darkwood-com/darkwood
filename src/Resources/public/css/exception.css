@@ -145,5 +145,7 @@ header .container{display:flex;justify-content:space-between}
 .ai-analysis-section ul{margin:.5em 0;padding-left:1.5rem}
 .ai-analysis-section .badge{display:inline-block;background:var(--selected-badge-background);padding:2px 8px;border-radius:4px;font-size:12px;margin-left:8px}
 .ai-disclaimer{font-size:12px;color:var(--color-muted);margin-top:1em}
+.ai-analysis-loading{margin:1em 0;color:var(--color-muted)}
+.ai-analysis-fallback{margin:1em 0;color:var(--color-muted)}
 
 @media(min-width:575px){.hidden-xs-down{display:initial}}
