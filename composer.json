@@ -26,13 +26,12 @@
         "symfony/dependency-injection": "^8.0",
         "symfony/event-dispatcher": "^8.0",
         "symfony/http-kernel": "^8.0",
-        "symfony/messenger": "^8.0",
         "symfony/string": "^8.0"
     },
     "require-dev": {
         "amphp/amp": "^3.1",
         "doctrine/dbal": "^4.3",
-        "openswoole/ide-helper": "^22.1",
+        "openswoole/ide-helper": "^26.2.0",
         "react/async": "^4.3",
         "spatie/async": "^1.8",
         "symfony/doctrine-messenger": "^8.0",
@@ -84,7 +83,7 @@
     },
     "config": {
         "platform": {
-            "ext-openswoole": "22.0"
+            "ext-openswoole": "26.2.0"
         }
     },
     "minimum-stability": "stable"

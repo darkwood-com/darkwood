@@ -8,19 +8,20 @@ use Flow\AsyncHandlerInterface;
 use Flow\Event;
 use Flow\Event\AsyncEvent;
 use Flow\Event\PoolEvent;
-use Symfony\Component\Messenger\Handler\Acknowledger;
-use Symfony\Component\Messenger\Handler\BatchHandlerInterface;
-use Symfony\Component\Messenger\Handler\BatchHandlerTrait;
-use Throwable;
+
+use function count;
 
 /**
  * @template T
  *
  * @implements AsyncHandlerInterface<T>
  */
-final class BatchAsyncHandler implements BatchHandlerInterface, AsyncHandlerInterface
+final class BatchAsyncHandler implements AsyncHandlerInterface
 {
-    use BatchHandlerTrait;
+    /**
+     * @var array<AsyncEvent<T>>
+     */
+    private array $jobs = [];
 
     /**
      * @var AsyncHandlerInterface<T>
@@ -47,11 +48,18 @@ final class BatchAsyncHandler implements BatchHandlerInterface, AsyncHandlerInte
 
     public function async(AsyncEvent $event): void
     {
-        $ack = new Acknowledger(get_debug_type($this), function (?Throwable $e = null, $event = null) {
-            $this->asyncHandler->async($event);
-        });
+        $this->jobs[] = [$event];
 
-        $this->handle($event, $ack);
+        if (!$this->shouldFlush()) {
+            return;
+        }
+
+        $jobs = $this->jobs;
+        $this->jobs = [];
+
+        foreach ($jobs as [$event]) {
+            $this->asyncHandler->async($event);
+        }
     }
 
     public function pool(PoolEvent $event): void
@@ -59,31 +67,8 @@ final class BatchAsyncHandler implements BatchHandlerInterface, AsyncHandlerInte
         $this->asyncHandler->pool($event);
     }
 
-    /**
-     * PHPStan should normaly pass for method.unused
-     * https://github.com/phpstan/phpstan/issues/6039
-     * https://phpstan.org/r/8f7de023-9888-4dcb-b12c-e2fcf9547b6c.
-     *
-     * @param array{0: AsyncEvent<T>, 1: Acknowledger}[] $jobs
-     *
-     * @phpstan-ignore method.unused
-     */
-    private function process(array $jobs): void
+    private function shouldFlush(): bool
     {
-        foreach ($jobs as [$event, $ack]) {
-            $ack->ack($event);
-        }
-    }
-
-    /**
-     * PHPStan should normaly pass for method.unused
-     * https://github.com/phpstan/phpstan/issues/6039
-     * https://phpstan.org/r/8f7de023-9888-4dcb-b12c-e2fcf9547b6c.
-     *
-     * @phpstan-ignore method.unused
-     */
-    private function getBatchSize(): int
-    {
-        return $this->batchSize;
+        return $this->batchSize <= count($this->jobs);
     }
 }

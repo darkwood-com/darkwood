@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.6
+
+- Remove symfony messenger
+
 ## v1.2.5
 
 - Update to PHP 8.5 and Symfony 8.0
