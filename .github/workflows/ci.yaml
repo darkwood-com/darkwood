@@ -71,7 +71,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: xsl, openswoole
+          extensions: xsl, openswoole-26.2.0
           tools: composer
           coverage: none # disable XDebug for tests
 
@@ -172,7 +172,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: xsl, openswoole
+          extensions: xsl, openswoole-26.2.0
           tools: composer
           coverage: none # disable XDebug for tests
 
@@ -198,7 +198,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: xsl, openswoole
+          extensions: xsl, openswoole-26.2.0
           tools: composer
           coverage: none # disable XDebug for tests
 

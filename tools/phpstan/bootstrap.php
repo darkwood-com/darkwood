@@ -28,8 +28,3 @@ if (!class_exists('co', false)) {
         public static function sleep(int $seconds): bool {}
     }
 }
-
-// Load OpenSwoole\Timer stub file
-if (!class_exists('\OpenSwoole\Timer', false)) {
-    require_once __DIR__ . '/stubs/OpenSwoole.stub.php';
-}
