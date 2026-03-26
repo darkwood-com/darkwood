@@ -1,6 +1,8 @@
 {
+    "name": "darkwood/navi",
+    "description": "Public architectural layer for structured workflow execution.",
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
@@ -48,6 +50,8 @@
         "symfony/polyfill-php84": "*"
     },
     "scripts": {
+        "demo": "php bin/console navi:workflow:run",
+        "test": "php tests/WorkflowRunnerTest.php",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
