@@ -13,8 +13,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'navi:workflow:inspect', description: 'Emit a structural workflow snapshot.')]
-final class InspectWorkflowCommand extends Command
+#[AsCommand(name: 'navi:workflow:run', description: 'Run the minimal public execution path (wire check).')]
+final class RunWorkflowCommand extends Command
 {
     public function __construct(private readonly WorkflowRunner $workflowRunner)
     {
@@ -25,23 +25,21 @@ final class InspectWorkflowCommand extends Command
     {
         $result = $this->workflowRunner->run(
             Context::fromArray([
-                'channel' => 'public',
-                'source' => 'cli',
+                'execution' => 'public-core',
             ]),
             [
                 new MergeContextAction(
-                    ActionName::fromString('register_input'),
-                    ['state' => 'received']
+                    ActionName::fromString('prepare'),
+                    ['phase' => 'prepared']
                 ),
                 new MergeContextAction(
-                    ActionName::fromString('finalize_execution'),
-                    ['status' => 'completed']
+                    ActionName::fromString('complete'),
+                    ['status' => 'done']
                 ),
             ]
         );
 
         $payload = [
-            'executionId' => $result->state()->executionId()->toString(),
             'context' => $result->state()->context()->toArray(),
             'events' => array_map(
                 static fn ($event) => [

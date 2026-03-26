@@ -11,7 +11,6 @@ final readonly class ExecutionState
      * @param Event[] $events
      */
     private function __construct(
-        private ExecutionId $executionId,
         private Context $context,
         private array $completedActions,
         private array $events
@@ -20,12 +19,7 @@ final readonly class ExecutionState
 
     public static function start(Context $context): self
     {
-        return new self(ExecutionId::generate(), $context, [], []);
-    }
-
-    public function executionId(): ExecutionId
-    {
-        return $this->executionId;
+        return new self($context, [], []);
     }
 
     public function context(): Context
@@ -52,7 +46,6 @@ final readonly class ExecutionState
     public function record(ActionName $actionName, ActionResult $result): self
     {
         return new self(
-            $this->executionId,
             $result->context(),
             [...$this->completedActions, $actionName],
             [...$this->events, ...$result->events()]
