@@ -13,7 +13,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'navi:workflow:run', description: 'Run the public workflow example.')]
+#[AsCommand(name: 'navi:workflow:run', description: 'Run the minimal public execution path (wire check).')]
 final class RunWorkflowCommand extends Command
 {
     public function __construct(private readonly WorkflowRunner $workflowRunner)
