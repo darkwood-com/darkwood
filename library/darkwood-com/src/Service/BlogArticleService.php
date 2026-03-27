@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Service;
 
 use App\Entity\Article;
 use App\Entity\ArticleTranslation;
@@ -19,11 +19,11 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 use function count;
 
 /**
- * Class ArticleService.
+ * Class BlogArticleService.
  *
  * Object manager of articleTranslation.
  */
-class ArticleService
+class BlogArticleService
 {
     protected ArticleRepository $articleRepository;
 
