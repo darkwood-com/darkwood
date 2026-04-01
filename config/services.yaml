@@ -8,8 +8,19 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     env(OLLAMA_MODEL): 'ministral-3b:8b'
+    # Default when OLLAMA_HTTP_TIMEOUT is unset (seconds; Symfony HttpClient idle default is ~60)
+    env(OLLAMA_HTTP_TIMEOUT): '600'
 
 services:
+    # Long timeouts for local LLM: default http_client caps idle read at ~60s, which breaks slow generations.
+    http_client.ollama:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            -
+                timeout: '%env(float:OLLAMA_HTTP_TIMEOUT)%'
+                max_duration: '%env(float:OLLAMA_HTTP_TIMEOUT)%'
+
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
