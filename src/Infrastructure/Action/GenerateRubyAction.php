@@ -34,8 +34,8 @@ final class GenerateRubyAction implements Action
     public function execute(Context $context, ExecutionState $state): ActionResult
     {
         $rawResponse = $this->aiService->generate(
-            systemPrompt: (string) $context->get('system_prompt'),
-            userPrompt: (string) $context->get('user_prompt'),
+            systemPrompt: (string) $context->get('code_prompt_system'),
+            userPrompt: (string) $context->get('code_prompt_user'),
         );
 
         return ActionResult::continueWith(

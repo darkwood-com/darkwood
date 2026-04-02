@@ -6,8 +6,11 @@ namespace App\Command;
 
 use App\Application\Workflow\WorkflowRunner;
 use App\Domain\Execution\Context;
-use App\Infrastructure\Action\BuildPromptAction;
+use App\Infrastructure\Action\BuildCodePromptAction;
+use App\Infrastructure\Action\BuildDesignPromptAction;
+use App\Infrastructure\Action\ExtractDesignSpecAction;
 use App\Infrastructure\Action\ExtractScriptAction;
+use App\Infrastructure\Action\GenerateDesignAction;
 use App\Infrastructure\Action\GenerateRubyAction;
 use App\Infrastructure\Action\ParseIntentAction;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -27,8 +30,14 @@ final class GenerateShapeCommand extends Command
 {
     public function __construct(
         private readonly WorkflowRunner $runner,
+        // --- Stage 1: parse ---
         private readonly ParseIntentAction $parseIntent,
-        private readonly BuildPromptAction $buildPrompt,
+        // --- Stage 2: design agent ---
+        private readonly BuildDesignPromptAction $buildDesignPrompt,
+        private readonly GenerateDesignAction $generateDesign,
+        private readonly ExtractDesignSpecAction $extractDesignSpec,
+        // --- Stage 3: code agent ---
+        private readonly BuildCodePromptAction $buildCodePrompt,
         private readonly GenerateRubyAction $generateRuby,
         private readonly ExtractScriptAction $extractScript,
         private readonly Filesystem $filesystem,
@@ -40,7 +49,8 @@ final class GenerateShapeCommand extends Command
     {
         $this
             ->addArgument('intention', InputArgument::REQUIRED, 'Natural language description of the shape to generate')
-            ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, 'Write the Ruby script to this file path instead of stdout');
+            ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, 'Write the Ruby script to this file path instead of stdout')
+            ->addOption('spec', null, InputOption::VALUE_OPTIONAL, 'Also write the JSON design spec to this file path');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -51,31 +61,44 @@ final class GenerateShapeCommand extends Command
             $context = Context::fromArray(['intention' => $input->getArgument('intention')]);
 
             $result = $this->runner->run($context, [
+                // Stage 1 — validate intention
                 $this->parseIntent,
-                $this->buildPrompt,
+                // Stage 2 — design agent: intention → JSON design spec
+                $this->buildDesignPrompt,
+                $this->generateDesign,
+                $this->extractDesignSpec,
+                // Stage 3 — code agent: JSON spec → Ruby script
+                $this->buildCodePrompt,
                 $this->generateRuby,
                 $this->extractScript,
             ]);
 
-            $rubyScript = (string) $result->state()->context()->get('ruby_script');
+            $finalContext = $result->state()->context();
+            $rubyScript   = (string) $finalContext->get('ruby_script');
+            $designSpec   = (string) $finalContext->get('design_spec');
 
-            $outputPath = $input->getOption('output');
+            // --- Output: design spec (optional) ---
+            if ($specPath = $input->getOption('spec')) {
+                $this->filesystem->dumpFile($specPath, $designSpec);
+                $io->success(sprintf('Design spec written to %s', $specPath));
+            }
 
-            if ($outputPath) {
+            // --- Output: Ruby script ---
+            if ($outputPath = $input->getOption('output')) {
                 $this->filesystem->dumpFile($outputPath, $rubyScript);
                 $io->success(sprintf('Ruby script written to %s', $outputPath));
             } else {
                 $output->writeln($rubyScript);
             }
 
+            // --- Verbose: workflow trace ---
             if ($output->isVerbose()) {
                 $io->section('Workflow trace');
                 foreach ($result->state()->completedActions() as $actionName) {
                     $io->text(sprintf('  ✓ %s', $actionName->toString()));
                 }
-                foreach ($result->state()->events() as $event) {
-                    $io->text(sprintf('  · %s', $event->name()));
-                }
+                $io->section('Design spec');
+                $io->text($designSpec);
             }
 
             return Command::SUCCESS;

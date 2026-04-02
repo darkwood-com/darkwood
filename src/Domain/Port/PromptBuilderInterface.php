@@ -10,5 +10,5 @@ interface PromptBuilderInterface
 {
     public function buildSystemPrompt(): string;
 
-    public function buildUserPrompt(string $intention): string;
+    public function buildUserPrompt(string $designSpec): string;
 }

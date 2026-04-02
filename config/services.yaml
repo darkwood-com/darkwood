@@ -34,7 +34,10 @@ services:
     # WorkflowRunner lives in vendor (darkwood/navi) — register explicitly
     App\Application\Workflow\WorkflowRunner: ~
 
-    # Bind the PromptBuilderInterface port to the SketchUp implementation
+    # DESIGN AGENT — interprets intention → JSON design spec
+    App\Domain\Port\DesignPromptBuilderInterface: '@App\Infrastructure\AI\DesignPromptBuilder'
+
+    # CODE AGENT — converts JSON design spec → Ruby script
     App\Domain\Port\PromptBuilderInterface: '@App\Infrastructure\AI\SketchUpPromptBuilder'
 
     # Wire LocalAiService to the local Ollama platform (RGPD: no external calls)
