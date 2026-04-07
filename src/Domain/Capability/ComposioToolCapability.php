@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Capability;
 
 /**
- * Maps the MVP to a single Composio tool (action) name configured via COMPOSIO_ACTION.
+ * Holds the configured Composio action(s) string from COMPOSIO_ACTION (verbatim).
+ * Parsing comma-separated tool names is done in Infrastructure.
  */
 final readonly class ComposioToolCapability
 {

@@ -52,4 +52,18 @@ final class ComposioClientTest extends TestCase
 
         self::assertSame(['x' => 1], $out['data']);
     }
+
+    public function testExecuteToolSendsEmptyArgumentsAsJsonObject(): void
+    {
+        $http = new MockHttpClient([
+            function (string $method, string $url, array $options): MockResponse {
+                self::assertStringContainsString('"arguments":{}', (string) ($options['body'] ?? ''));
+
+                return new MockResponse(json_encode(['ok' => true], JSON_THROW_ON_ERROR));
+            },
+        ]);
+
+        $client = new ComposioClient($http, 'k', 'https://api.example/api');
+        $client->executeTool('ACTION', 'ca1', [], 'user-1');
+    }
 }

@@ -82,7 +82,7 @@ final class ComposioClient
         $url = rtrim($this->baseUrl, '/') . '/v3/tools/execute/' . rawurlencode($actionName);
         $payload = [
             'connected_account_id' => $connectedAccountId,
-            'arguments' => $arguments,
+            'arguments' => $this->argumentsAsJsonObject($arguments),
             'user_id' => $userId,
         ];
 
@@ -113,5 +113,17 @@ final class ComposioClient
         if ($this->apiKey === '') {
             throw new \RuntimeException('COMPOSIO_API_KEY is not set.');
         }
+    }
+
+    /**
+     * @param array<string, mixed> $arguments
+     */
+    private function argumentsAsJsonObject(array $arguments): object
+    {
+        if ($arguments === []) {
+            return new \stdClass();
+        }
+
+        return (object) $arguments;
     }
 }

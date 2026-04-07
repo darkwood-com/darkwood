@@ -15,7 +15,8 @@ use App\Infrastructure\Composio\ComposioClient;
 use App\Infrastructure\Composio\ConnectedAccountResolver;
 
 /**
- * Navi Action: loads tool metadata, resolves connected account, executes via Composio HTTP API.
+ * Navi Action: for each configured Composio tool name (comma-separated in COMPOSIO_ACTION), loads metadata,
+ * resolves connected account, executes via Composio HTTP API.
  */
 final readonly class ExecuteComposioToolAction implements Action
 {
@@ -48,22 +49,44 @@ final readonly class ExecuteComposioToolAction implements Action
         $forced = $context->get('composio_connected_account_id');
         $forcedId = \is_string($forced) && $forced !== '' ? $forced : null;
 
-        $actionName = trim($this->capability->actionName());
-        if ($actionName === '') {
-            throw new \RuntimeException('COMPOSIO_ACTION is not set.');
+        $toolNames = $this->toolNamesFromCapability();
+        $results = [];
+        foreach ($toolNames as $toolName) {
+            $meta = $this->client->getTool($toolName);
+            $accountId = $this->resolver->resolve($userId, $meta, $forcedId);
+            $results[$toolName] = $this->client->executeTool($toolName, $accountId, $input, $userId);
         }
 
-        $meta = $this->client->getTool($actionName);
-        $accountId = $this->resolver->resolve($userId, $meta, $forcedId);
-        $result = $this->client->executeTool($actionName, $accountId, $input, $userId);
+        $payload = \count($results) === 1 ? reset($results) : $results;
 
         $next = $context->merge([
-            'composio_result' => $result,
+            'composio_result' => $payload,
         ]);
 
         return ActionResult::continueWith(
             $next,
-            Event::fromName('composio.executed', ['action' => $actionName])
+            Event::fromName('composio.executed', ['tool_names' => array_keys($results)])
         );
+    }
+
+    /**
+     * Composio tool names from COMPOSIO_ACTION (one or comma-separated).
+     *
+     * @return list<string>
+     */
+    private function toolNamesFromCapability(): array
+    {
+        $raw = trim($this->capability->actionName());
+        if ($raw === '') {
+            throw new \RuntimeException('COMPOSIO_ACTION is not set.');
+        }
+
+        $toolNames = array_values(array_filter(array_map(trim(...), explode(',', $raw))));
+
+        if ($toolNames === []) {
+            throw new \RuntimeException('COMPOSIO_ACTION is not set.');
+        }
+
+        return $toolNames;
     }
 }
