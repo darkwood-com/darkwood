@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Workflow;
+namespace Navi\Application\Workflow;
 
-use App\Domain\Execution\Action;
-use App\Domain\Execution\Context;
-use App\Domain\Execution\ExecutionState;
+use Navi\Domain\Execution\Action;
+use Navi\Domain\Execution\Context;
+use Navi\Domain\Execution\ExecutionState;
 
 final class WorkflowRunner
 {

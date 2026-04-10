@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Execution;
+namespace Navi\Domain\Execution;
 
 final readonly class ExecutionState
 {
     /**
      * @param ActionName[] $completedActions
-     * @param Event[] $events
+     * @param Event[]      $events
      */
     private function __construct(
         private Context $context,
         private array $completedActions,
         private array $events
-    ) {
-    }
+    ) {}
 
     public static function start(Context $context): self
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Execution;
+namespace Navi\Domain\Execution;
 
 final readonly class ActionResult
 {
@@ -12,8 +12,7 @@ final readonly class ActionResult
     private function __construct(
         private Context $context,
         private array $events
-    ) {
-    }
+    ) {}
 
     public static function continueWith(Context $context, Event ...$events): self
     {

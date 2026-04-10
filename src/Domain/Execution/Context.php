@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Execution;
+namespace Navi\Domain\Execution;
 
 final readonly class Context
 {
     /**
      * @param array<string, mixed> $values
      */
-    private function __construct(private array $values)
-    {
-    }
+    private function __construct(private array $values) {}
 
     /**
      * @param array<string, mixed> $values

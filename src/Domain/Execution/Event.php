@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Execution;
+namespace Navi\Domain\Execution;
+
+use InvalidArgumentException;
 
 final readonly class Event
 {
@@ -12,8 +14,7 @@ final readonly class Event
     private function __construct(
         private string $name,
         private array $payload
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $payload
@@ -23,7 +24,7 @@ final readonly class Event
         $normalized = trim($name);
 
         if ($normalized === '') {
-            throw new \InvalidArgumentException('Event name cannot be empty.');
+            throw new InvalidArgumentException('Event name cannot be empty.');
         }
 
         return new self($normalized, $payload);

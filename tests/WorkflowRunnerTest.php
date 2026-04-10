@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use App\Application\Workflow\WorkflowRunner;
-use App\Domain\Execution\ActionName;
-use App\Domain\Execution\Context;
-use App\Infrastructure\Action\MergeContextAction;
+use Navi\Application\Workflow\WorkflowRunner;
+use Navi\Domain\Execution\ActionName;
+use Navi\Domain\Execution\Context;
+use Navi\Infrastructure\Action\MergeContextAction;
 
 function assertSameValue(mixed $expected, mixed $actual, string $message): void
 {

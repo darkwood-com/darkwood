@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Command;
+namespace Navi\Command;
 
-use App\Application\Workflow\WorkflowRunner;
-use App\Domain\Execution\ActionName;
-use App\Domain\Execution\Context;
-use App\Infrastructure\Action\MergeContextAction;
+use Navi\Application\Workflow\WorkflowRunner;
+use Navi\Domain\Execution\ActionName;
+use Navi\Domain\Execution\Context;
+use Navi\Infrastructure\Action\MergeContextAction;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

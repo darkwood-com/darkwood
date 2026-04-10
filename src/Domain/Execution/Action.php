@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Execution;
+namespace Navi\Domain\Execution;
 
 interface Action
 {

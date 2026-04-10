@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Action;
+namespace Navi\Infrastructure\Action;
 
-use App\Domain\Execution\Action;
-use App\Domain\Execution\ActionName;
-use App\Domain\Execution\ActionResult;
-use App\Domain\Execution\Context;
-use App\Domain\Execution\Event;
-use App\Domain\Execution\ExecutionState;
+use Navi\Domain\Execution\Action;
+use Navi\Domain\Execution\ActionName;
+use Navi\Domain\Execution\ActionResult;
+use Navi\Domain\Execution\Context;
+use Navi\Domain\Execution\Event;
+use Navi\Domain\Execution\ExecutionState;
 
 final readonly class MergeContextAction implements Action
 {
@@ -19,8 +19,7 @@ final readonly class MergeContextAction implements Action
     public function __construct(
         private ActionName $name,
         private array $values
-    ) {
-    }
+    ) {}
 
     public function name(): ActionName
     {

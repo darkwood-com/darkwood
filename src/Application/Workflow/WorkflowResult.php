@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Workflow;
+namespace Navi\Application\Workflow;
 
-use App\Domain\Execution\ExecutionState;
+use Navi\Domain\Execution\ExecutionState;
 
 final readonly class WorkflowResult
 {
-    public function __construct(private ExecutionState $state)
-    {
-    }
+    public function __construct(private ExecutionState $state) {}
 
     public function state(): ExecutionState
     {
