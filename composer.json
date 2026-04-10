@@ -51,7 +51,7 @@
     },
     "scripts": {
         "demo": "php bin/console navi:workflow:run",
-        "test": "php tests/WorkflowRunnerTest.php",
+        "test": "tools/phpunit/vendor/bin/phpunit --configuration=tools/phpunit/phpunit.xml",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
