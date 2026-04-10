@@ -4,29 +4,29 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39db9f02b62bf211b78a9cdec9da0022",
+    "content-hash": "11a6d98c9dac291caa24edca527808ce",
     "packages": [
         {
             "name": "darkwood/navi",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/darkwood-com/navi.git",
-                "reference": "7eb00e04376ae11269484c80c2c8a8350f5d544d"
+                "reference": "5df352925b0624820e4333451c4f675cfae0c449"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/navi/zipball/7eb00e04376ae11269484c80c2c8a8350f5d544d",
-                "reference": "7eb00e04376ae11269484c80c2c8a8350f5d544d",
+                "url": "https://api.github.com/repos/darkwood-com/navi/zipball/5df352925b0624820e4333451c4f675cfae0c449",
+                "reference": "5df352925b0624820e4333451c4f675cfae0c449",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-iconv": "*",
-                "php": ">=8.4",
+                "php": ">=8.5",
                 "symfony/console": "8.0.*",
                 "symfony/dotenv": "8.0.*",
-                "symfony/flex": "^2",
+                "symfony/flex": "^2.10",
                 "symfony/framework-bundle": "8.0.*",
                 "symfony/runtime": "8.0.*",
                 "symfony/yaml": "8.0.*"
@@ -55,7 +55,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "App\\": "src/"
+                    "Navi\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -65,9 +65,15 @@
             "description": "Public architectural layer for structured workflow execution.",
             "support": {
                 "issues": "https://github.com/darkwood-com/navi/issues",
-                "source": "https://github.com/darkwood-com/navi/tree/v1.0.0"
+                "source": "https://github.com/darkwood-com/navi/tree/v1.0.1"
             },
-            "time": "2026-03-26T10:13:58+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/matyo91",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-04-10T13:29:32+00:00"
         },
         {
             "name": "psr/cache",

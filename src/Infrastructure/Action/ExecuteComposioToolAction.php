@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Infrastructure\Action;
 
 use App\Domain\Capability\ComposioToolCapability;
-use App\Domain\Execution\Action;
-use App\Domain\Execution\ActionName;
-use App\Domain\Execution\ActionResult;
-use App\Domain\Execution\Context;
-use App\Domain\Execution\Event;
-use App\Domain\Execution\ExecutionState;
+use Navi\Domain\Execution\Action;
+use Navi\Domain\Execution\ActionName;
+use Navi\Domain\Execution\ActionResult;
+use Navi\Domain\Execution\Context;
+use Navi\Domain\Execution\Event;
+use Navi\Domain\Execution\ExecutionState;
 use App\Infrastructure\Composio\ComposioClient;
 use App\Infrastructure\Composio\ConnectedAccountResolver;
 

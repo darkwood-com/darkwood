@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Application\Workflow\WorkflowRunner;
+use Navi\Application\Workflow\WorkflowRunner;
 use App\Domain\Execution\Context;
 use App\Infrastructure\Action\ExecuteComposioToolAction;
 use Symfony\Component\Console\Attribute\AsCommand;

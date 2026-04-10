@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use App\Application\Workflow\WorkflowRunner;
+use Navi\Application\Workflow\WorkflowRunner;
 use App\Domain\Capability\ComposioToolCapability;
-use App\Domain\Execution\Context;
+use Navi\Domain\Execution\Context;
 use App\Infrastructure\Action\ExecuteComposioToolAction;
 use App\Infrastructure\Composio\ComposioClient;
 use App\Infrastructure\Composio\ConnectedAccountResolver;

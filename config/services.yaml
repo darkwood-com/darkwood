@@ -21,7 +21,7 @@ services:
         exclude:
             - '../src/Kernel.php'
 
-    App\Application\Workflow\WorkflowRunner: ~
+    Navi\Application\Workflow\WorkflowRunner: ~
 
     App\Infrastructure\Composio\ComposioClient:
         arguments:
