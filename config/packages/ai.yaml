@@ -1,0 +1,9 @@
+ai:
+    platform:
+        # Local inference platforms are configured in dedicated bridge files.
+
+    agent:
+        # No agent layer for connect-flow. LanguageCapability uses the platform directly.
+
+    store:
+        # No vector store configuration for this project.

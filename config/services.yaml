@@ -31,7 +31,7 @@ services:
 
     App\Infrastructure\AI\OllamaLocalAiClient:
         arguments:
-            $baseUrl: '%env(OLLAMA_BASE_URL)%'
+            $platform: '@ai.platform.ollama'
             $model: '%env(OLLAMA_MODEL)%'
 
     App\Command\LambdaRunCommand:

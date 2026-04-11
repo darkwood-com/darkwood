@@ -5,42 +5,29 @@ declare(strict_types=1);
 namespace App\Infrastructure\AI;
 
 use App\Domain\Port\LocalAiClientInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\AI\Platform\Message\Message;
+use Symfony\AI\Platform\Message\MessageBag;
+use Symfony\AI\Platform\PlatformInterface;
 
 /**
- * Local Ollama HTTP API (no cloud fallback).
+ * Thin wrapper around the Symfony AI PlatformInterface wired to the local Ollama instance.
+ * All inference stays on-device — no data leaves the machine.
  */
 final readonly class OllamaLocalAiClient implements LocalAiClientInterface
 {
     public function __construct(
-        private HttpClientInterface $http,
-        private string $baseUrl,
+        private PlatformInterface $platform,
         private string $model,
     ) {
     }
 
     public function generate(string $systemPrompt, string $userPrompt): string
     {
-        $url = rtrim($this->baseUrl, '/') . '/api/chat';
-        $response = $this->http->request('POST', $url, [
-            'headers' => ['Content-Type' => 'application/json'],
-            'json' => [
-                'model' => $this->model,
-                'messages' => [
-                    ['role' => 'system', 'content' => $systemPrompt],
-                    ['role' => 'user', 'content' => $userPrompt],
-                ],
-                'stream' => false,
-            ],
-        ]);
+        $messages = new MessageBag(
+            Message::forSystem($systemPrompt),
+            Message::ofUser($userPrompt),
+        );
 
-        if ($response->getStatusCode() !== 200) {
-            throw new \RuntimeException('Ollama request failed: ' . $response->getContent(false));
-        }
-
-        $data = $response->toArray();
-        $content = $data['message']['content'] ?? '';
-
-        return \is_string($content) ? $content : '';
+        return $this->platform->invoke($this->model, $messages)->asText();
     }
 }
