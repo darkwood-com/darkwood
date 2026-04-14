@@ -1,6 +1,14 @@
+<p align="center">
+  <a href="https://github.com/darkwood-com/navi">
+    <img src="docs/logo.svg" width="auto" height="128px" alt="Navi">
+  </a>
+</p>
+
 # Navi
 
-Public architectural surface of a production system whose business core stays private.
+Navi is a Personnal Assistant
+
+It's a public architectural surface of a production system whose business core stays private.
 
 This repository is not a sample app or a learning scaffold. It exists so the structural layer—how workflows are composed and executed—can be inspected, versioned, and evolved in the open while rules, scoring, integrations, and real workflow definitions remain on the private side.
 
