@@ -4,8 +4,77 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87b6f6d43e0d002cd078c6381dfe1ec9",
+    "content-hash": "4010933c2e6dbbd6796c792f20686384",
     "packages": [
+        {
+            "name": "darkwood/navi",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/darkwood-com/navi.git",
+                "reference": "5df352925b0624820e4333451c4f675cfae0c449"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/darkwood-com/navi/zipball/5df352925b0624820e4333451c4f675cfae0c449",
+                "reference": "5df352925b0624820e4333451c4f675cfae0c449",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-iconv": "*",
+                "php": ">=8.5",
+                "symfony/console": "8.0.*",
+                "symfony/dotenv": "8.0.*",
+                "symfony/flex": "^2.10",
+                "symfony/framework-bundle": "8.0.*",
+                "symfony/runtime": "8.0.*",
+                "symfony/yaml": "8.0.*"
+            },
+            "conflict": {
+                "symfony/symfony": "*"
+            },
+            "replace": {
+                "symfony/polyfill-ctype": "*",
+                "symfony/polyfill-iconv": "*",
+                "symfony/polyfill-php72": "*",
+                "symfony/polyfill-php73": "*",
+                "symfony/polyfill-php74": "*",
+                "symfony/polyfill-php80": "*",
+                "symfony/polyfill-php81": "*",
+                "symfony/polyfill-php82": "*",
+                "symfony/polyfill-php83": "*",
+                "symfony/polyfill-php84": "*"
+            },
+            "type": "project",
+            "extra": {
+                "symfony": {
+                    "require": "8.0.*",
+                    "allow-contrib": false
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Navi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Public architectural layer for structured workflow execution.",
+            "support": {
+                "issues": "https://github.com/darkwood-com/navi/issues",
+                "source": "https://github.com/darkwood-com/navi/tree/v1.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/matyo91",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-04-10T13:29:32+00:00"
+        },
         {
             "name": "psr/cache",
             "version": "3.0.0",
@@ -2469,7 +2538,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -2477,6 +2546,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
