@@ -19,5 +19,10 @@ services:
     App\:
         resource: '../src/'
 
+    App\Application\Port\RepositoryCatalogPort: '@App\Infrastructure\RepositoryCatalog\JsonRepositoryCatalog'
+    App\Application\Port\RepositoryContentReaderPort: '@App\Infrastructure\RepositoryContent\GitRepositoryContentReader'
+    App\Application\Port\StoragePort: '@App\Infrastructure\Persistence\JsonFileStorage'
+    Navi\Application\Workflow\WorkflowRunner: ~
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
