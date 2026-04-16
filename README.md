@@ -8,3 +8,8 @@ Bitget Api documentation
 ------------------------
 
 URL : https://bitgetlimited.github.io/apidoc/en/spot
+
+Ressources
+----------
+
+Business automation from https://www.youtube.com/@NateNeedham for investors : https://github.com/aiautomatedbusinesssolutions-del
