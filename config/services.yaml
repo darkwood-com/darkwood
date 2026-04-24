@@ -21,6 +21,7 @@ services:
 
     App\Domain\LambdaLanguage\ProgramExecutorInterface: '@App\Infrastructure\LambdaLanguage\FlowProgramExecutor'
     App\Domain\Evolution\RandomGeneratorInterface: '@App\Infrastructure\Evolution\MtRandomGenerator'
+    Navi\Application\Workflow\WorkflowRunner: ~
 
     App\Domain\LambdaLanguage\LambdaEvaluationService:
         arguments:
@@ -29,6 +30,10 @@ services:
                 - 'kill'
                 - 'paint'
                 - 'next'
+
+    App\Infrastructure\Navi\LogRunEventAction:
+        arguments:
+            $logFile: '%kernel.project_dir%/var/log/life_llm_runs.ndjson'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

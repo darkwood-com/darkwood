@@ -15,6 +15,9 @@ use App\Domain\Evolution\TournamentSelector;
 use App\Infrastructure\Evolution\MtRandomGenerator;
 use App\Infrastructure\LambdaLanguage\FlowProgramExecutor;
 use App\Infrastructure\LambdaLanguage\GameOfLifePrimitiveInvoker;
+use App\Infrastructure\Navi\LifeRunLogger;
+use App\Infrastructure\Navi\LogRunEventAction;
+use Navi\Application\Workflow\WorkflowRunner;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -39,7 +42,7 @@ final class TrainUnsupervisedCommandTest extends TestCase
             ),
             $random,
         );
-        $command = new TrainUnsupervisedCommand($service);
+        $command = new TrainUnsupervisedCommand($service, $this->createLogger());
         $tester = new CommandTester($command);
 
         $status = $tester->execute([
@@ -80,7 +83,7 @@ final class TrainUnsupervisedCommandTest extends TestCase
             ),
             $random,
         );
-        $command = new TrainUnsupervisedCommand($service);
+        $command = new TrainUnsupervisedCommand($service, $this->createLogger());
         $tester = new CommandTester($command);
 
         $baseDir = sys_get_temp_dir() . '/llm_game_of_life_tests';
@@ -103,5 +106,13 @@ final class TrainUnsupervisedCommandTest extends TestCase
         self::assertSame(Command::SUCCESS, $status);
         self::assertFileExists($outputPath);
         self::assertFileExists($baseDir . '/unsupervised.summary.json');
+    }
+
+    private function createLogger(): LifeRunLogger
+    {
+        return new LifeRunLogger(
+            new WorkflowRunner(),
+            new LogRunEventAction(sys_get_temp_dir() . '/llm_game_of_life_tests/life_llm_runs.ndjson'),
+        );
     }
 }

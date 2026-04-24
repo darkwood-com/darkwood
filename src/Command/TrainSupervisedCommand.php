@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Application\Training\SupervisedTrainingService;
 use App\Domain\LambdaLanguage\ProgramValidationException;
+use App\Infrastructure\Navi\LifeRunLogger;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -22,6 +23,7 @@ final class TrainSupervisedCommand extends Command
 {
     public function __construct(
         private readonly SupervisedTrainingService $training,
+        private readonly LifeRunLogger $runLogger,
         #[Autowire('%kernel.project_dir%')]
         private readonly string $projectDir,
     ) {
@@ -42,6 +44,7 @@ final class TrainSupervisedCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $runId = 'supervised_' . bin2hex(random_bytes(6));
 
         try {
             $datasetName = (string) $input->getOption('dataset');
@@ -52,16 +55,42 @@ final class TrainSupervisedCommand extends Command
             $maxFrames = $this->readPositiveInt((string) $input->getOption('max-frames'), 'max-frames');
             $outputPath = $this->readOptionalOutputPath($input->getOption('output'));
 
+            $this->runLogger->log($runId, 'training_started', [
+                'mode' => 'supervised',
+                'dataset' => $datasetName,
+                'population' => $population,
+                'generations' => $generations,
+                'seed' => $seed,
+            ]);
+
             $chunks = [];
             foreach ($this->training->train($dataset, $datasetName, $population, $generations, $seed, $maxFrames) as $chunk) {
                 $chunks[] = $chunk;
                 $output->writeln(json_encode($chunk, JSON_THROW_ON_ERROR));
+                $this->runLogger->log($runId, 'generation_completed', [
+                    'mode' => 'supervised',
+                    'dataset' => $datasetName,
+                    'generation' => $chunk['generation'] ?? null,
+                    'best_fitness' => $chunk['best_fitness'] ?? null,
+                    'average_fitness' => $chunk['average_fitness'] ?? null,
+                ]);
             }
 
             if ($outputPath !== null) {
                 $this->writeOutputs($outputPath, $chunks);
             }
+
+            $this->runLogger->log($runId, 'training_completed', [
+                'mode' => 'supervised',
+                'dataset' => $datasetName,
+                'output' => $outputPath,
+                'chunks' => \count($chunks),
+            ]);
         } catch (\Throwable $exception) {
+            $this->runLogger->log($runId, 'training_failed', [
+                'mode' => 'supervised',
+                'error' => $exception->getMessage(),
+            ]);
             $io->error($exception->getMessage());
             return Command::FAILURE;
         }

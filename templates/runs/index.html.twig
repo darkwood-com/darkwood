@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Run Stream{% endblock %}
+
+{% block body %}
+    <main
+        class="run-stream"
+        data-controller="run-stream"
+        data-run-stream-default-run-value="{{ runs[0] ?? '' }}"
+    >
+        <h1>Run Stream</h1>
+        <p>Choisis un run NDJSON puis lis le flux SSE en direct.</p>
+
+        <div class="run-stream__controls">
+            <label for="run-id">Run ID</label>
+            <input
+                id="run-id"
+                type="text"
+                list="run-options"
+                placeholder="ex: unsupervised"
+                data-run-stream-target="runId"
+            >
+            <datalist id="run-options">
+                {% for run in runs %}
+                    <option value="{{ run }}"></option>
+                {% endfor %}
+            </datalist>
+
+            <button type="button" data-action="run-stream#start">Start</button>
+            <button type="button" data-action="run-stream#stop">Stop</button>
+            <button type="button" data-action="run-stream#reset">Reset</button>
+        </div>
+
+        <div class="run-stream__meta">
+            <span>Generation: <strong data-run-stream-target="generation">-</strong></span>
+            <span>Fitness: <strong data-run-stream-target="fitness">-</strong></span>
+            <span>Seed: <strong data-run-stream-target="seed">-</strong></span>
+        </div>
+
+        <canvas
+            width="320"
+            height="320"
+            class="run-stream__canvas"
+            data-run-stream-target="canvas"
+        ></canvas>
+        <pre class="run-stream__status" data-run-stream-target="status">Idle</pre>
+    </main>
+{% endblock %}

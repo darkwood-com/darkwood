@@ -1,0 +1,54 @@
+body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    background: #101216;
+    color: #f4f7fb;
+}
+
+.run-stream {
+    max-width: 760px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+}
+
+.run-stream__controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.run-stream__controls input,
+.run-stream__controls button {
+    border: 1px solid #2a3441;
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+    background: #161b22;
+    color: #f4f7fb;
+}
+
+.run-stream__meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.run-stream__canvas {
+    border: 1px solid #2a3441;
+    image-rendering: pixelated;
+    width: 320px;
+    height: 320px;
+    display: block;
+}
+
+.run-stream__status {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #161b22;
+    border: 1px solid #2a3441;
+    border-radius: 6px;
+}
+body {
+    background-color: skyblue;
+}
