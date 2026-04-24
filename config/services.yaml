@@ -19,5 +19,15 @@ services:
     App\:
         resource: '../src/'
 
+    App\Domain\LambdaLanguage\ProgramExecutorInterface: '@App\Infrastructure\LambdaLanguage\FlowProgramExecutor'
+
+    App\Domain\LambdaLanguage\LambdaEvaluationService:
+        arguments:
+            $registeredPrimitives:
+                - 'birth'
+                - 'kill'
+                - 'paint'
+                - 'next'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
