@@ -74,4 +74,37 @@ final class LambdaRunCommandTest extends TestCase
 
         self::assertSame(Command::FAILURE, $status);
     }
+
+    public function testItWritesNdjsonWhenOutputIsProvided(): void
+    {
+        $executor = new class implements ProgramExecutorInterface {
+            public function execute(Program $program, Grid $initialGrid, int $maxFrames = 120): array
+            {
+                return [
+                    new Frame(0, $initialGrid),
+                    new Frame(1, $initialGrid->withCellState(0, 0, \App\Domain\CellularAutomaton\CellState::Alive)),
+                ];
+            }
+        };
+
+        $command = new LambdaRunCommand($executor);
+        $tester = new CommandTester($command);
+
+        $baseDir = sys_get_temp_dir() . '/llm_game_of_life_tests';
+        if (!is_dir($baseDir)) {
+            mkdir($baseDir, 0777, true);
+        }
+        $outputPath = $baseDir . '/lambda-run.ndjson';
+        @unlink($outputPath);
+
+        $status = $tester->execute([
+            '--size' => '8',
+            '--max-frames' => '10',
+            '--ast' => '{"type":"sequence","nodes":[{"type":"next"}]}',
+            '--output' => $outputPath,
+        ]);
+
+        self::assertSame(Command::SUCCESS, $status);
+        self::assertFileExists($outputPath);
+    }
 }

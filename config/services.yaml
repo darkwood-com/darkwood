@@ -20,6 +20,7 @@ services:
         resource: '../src/'
 
     App\Domain\LambdaLanguage\ProgramExecutorInterface: '@App\Infrastructure\LambdaLanguage\FlowProgramExecutor'
+    App\Domain\Evolution\RandomGeneratorInterface: '@App\Infrastructure\Evolution\MtRandomGenerator'
 
     App\Domain\LambdaLanguage\LambdaEvaluationService:
         arguments:
