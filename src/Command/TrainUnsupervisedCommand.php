@@ -63,12 +63,15 @@ final class TrainUnsupervisedCommand extends Command
             foreach ($this->training->train($size, $population, $generations, $seed, $maxFrames) as $chunk) {
                 $chunks[] = $chunk;
                 $output->writeln(json_encode($chunk, JSON_THROW_ON_ERROR));
-                $this->runLogger->log($runId, 'generation_completed', [
+                $generationPayload = [
                     'mode' => 'unsupervised',
                     'generation' => $chunk['generation'] ?? null,
                     'best_fitness' => $chunk['best_fitness'] ?? null,
                     'average_fitness' => $chunk['average_fitness'] ?? null,
-                ]);
+                ];
+                $this->runLogger->log($runId, 'generation_completed', $generationPayload);
+                $this->runLogger->logGeneration($runId, $generationPayload);
+                $this->runLogger->logChunk($runId, ['mode' => 'unsupervised', 'chunk' => $chunk]);
             }
 
             if ($outputPath !== null) {

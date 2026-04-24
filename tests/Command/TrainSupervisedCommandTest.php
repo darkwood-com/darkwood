@@ -70,6 +70,9 @@ final class TrainSupervisedCommandTest extends TestCase
         return new LifeRunLogger(
             new WorkflowRunner(),
             new LogRunEventAction(sys_get_temp_dir() . '/llm_game_of_life_tests/life_llm_runs.ndjson'),
+            new \App\Infrastructure\Navi\LogGenerationAction(sys_get_temp_dir() . '/llm_game_of_life_tests/life_llm_runs.ndjson'),
+            new \App\Infrastructure\Navi\LogChunkAction(sys_get_temp_dir() . '/llm_game_of_life_tests/life_llm_runs.ndjson'),
+            new \App\Infrastructure\Navi\LogBenchmarkAction(sys_get_temp_dir() . '/llm_game_of_life_tests/life_llm_runs.ndjson'),
         );
     }
 }

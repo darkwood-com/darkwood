@@ -34,6 +34,15 @@ services:
     App\Infrastructure\Navi\LogRunEventAction:
         arguments:
             $logFile: '%kernel.project_dir%/var/log/life_llm_runs.ndjson'
+    App\Infrastructure\Navi\LogGenerationAction:
+        arguments:
+            $logFile: '%kernel.project_dir%/var/log/life_llm_runs.ndjson'
+    App\Infrastructure\Navi\LogChunkAction:
+        arguments:
+            $logFile: '%kernel.project_dir%/var/log/life_llm_runs.ndjson'
+    App\Infrastructure\Navi\LogBenchmarkAction:
+        arguments:
+            $logFile: '%kernel.project_dir%/var/log/life_llm_runs.ndjson'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

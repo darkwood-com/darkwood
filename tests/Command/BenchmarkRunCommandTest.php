@@ -1,0 +1,101 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Tests\Command;
+
+use App\Application\Training\SupervisedTrainingService;
+use App\Application\Training\UnsupervisedTrainingService;
+use App\Command\BenchmarkRunCommand;
+use App\Domain\CellularAutomaton\GameOfLifeStepper;
+use App\Domain\Evolution\AstCrossoverOperator;
+use App\Domain\Evolution\AstMutationOperator;
+use App\Domain\Evolution\EvolutionEngine;
+use App\Domain\Evolution\TournamentSelector;
+use App\Domain\LambdaLanguage\LambdaEvaluationService;
+use App\Infrastructure\Evolution\MtRandomGenerator;
+use App\Infrastructure\LambdaLanguage\FlowProgramExecutor;
+use App\Infrastructure\LambdaLanguage\GameOfLifePrimitiveInvoker;
+use App\Infrastructure\Navi\LifeRunLogger;
+use App\Infrastructure\Navi\LogBenchmarkAction;
+use App\Infrastructure\Navi\LogChunkAction;
+use App\Infrastructure\Navi\LogGenerationAction;
+use App\Infrastructure\Navi\LogRunEventAction;
+use Navi\Application\Workflow\WorkflowRunner;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Tester\CommandTester;
+
+final class BenchmarkRunCommandTest extends TestCase
+{
+    public function testItRunsUnsupervisedBenchmarkAndWritesJson(): void
+    {
+        $randomA = new MtRandomGenerator();
+        $randomB = new MtRandomGenerator();
+        $executor = new FlowProgramExecutor(
+            new LambdaEvaluationService(new GameOfLifePrimitiveInvoker(), ['birth', 'kill', 'paint', 'next']),
+            new GameOfLifeStepper(),
+        );
+
+        $unsupervised = new UnsupervisedTrainingService(
+            $executor,
+            new EvolutionEngine(
+                new TournamentSelector($randomA),
+                new AstCrossoverOperator($randomA),
+                new AstMutationOperator($randomA),
+                $randomA,
+            ),
+            $randomA,
+        );
+
+        $supervised = new SupervisedTrainingService(
+            $executor,
+            new EvolutionEngine(
+                new TournamentSelector($randomB),
+                new AstCrossoverOperator($randomB),
+                new AstMutationOperator($randomB),
+                $randomB,
+            ),
+            $randomB,
+        );
+
+        $command = new BenchmarkRunCommand(
+            $supervised,
+            $unsupervised,
+            $this->createLogger(),
+            '/Users/math/Sites/darkwood/llm-game-of-life',
+        );
+        $tester = new CommandTester($command);
+
+        $outputPath = 'var/benchmarks/test-result.json';
+        $status = $tester->execute([
+            '--mode' => 'unsupervised',
+            '--size' => '8',
+            '--population' => '6',
+            '--generations' => '2',
+            '--seed' => '42',
+            '--max-frames' => '6',
+            '--output' => $outputPath,
+        ]);
+
+        self::assertSame(Command::SUCCESS, $status);
+        self::assertFileExists('/Users/math/Sites/darkwood/llm-game-of-life/' . $outputPath);
+
+        $decoded = json_decode(trim($tester->getDisplay()), true, 512, JSON_THROW_ON_ERROR);
+        self::assertArrayHasKey('sequence_hash', $decoded);
+        self::assertArrayHasKey('reproducible', $decoded);
+    }
+
+    private function createLogger(): LifeRunLogger
+    {
+        $logPath = sys_get_temp_dir() . '/llm_game_of_life_tests/life_llm_runs.ndjson';
+
+        return new LifeRunLogger(
+            new WorkflowRunner(),
+            new LogRunEventAction($logPath),
+            new LogGenerationAction($logPath),
+            new LogChunkAction($logPath),
+            new LogBenchmarkAction($logPath),
+        );
+    }
+}
