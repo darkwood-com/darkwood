@@ -43,6 +43,8 @@ final class TrainSupervisedCommandTest extends TestCase
         self::assertSame('block', $first['dataset']);
         self::assertSame(0, $first['generation']);
         self::assertArrayHasKey('best_fitness', $first);
+        self::assertArrayHasKey('best_frame', $first);
+        self::assertArrayHasKey('cells', $first['best_frame']);
     }
 
     public function testItStreamsBeaconDatasetChunksAsNdjson(): void
@@ -64,6 +66,8 @@ final class TrainSupervisedCommandTest extends TestCase
         self::assertSame('beacon', $first['dataset']);
         self::assertSame(0, $first['generation']);
         self::assertArrayHasKey('best_fitness', $first);
+        self::assertArrayHasKey('best_frame', $first);
+        self::assertArrayHasKey('cells', $first['best_frame']);
     }
 
     private function createCommand(): TrainSupervisedCommand

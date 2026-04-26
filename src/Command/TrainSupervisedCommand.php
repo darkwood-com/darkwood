@@ -176,6 +176,7 @@ final class TrainSupervisedCommand extends Command
             'seed' => $lastChunk['seed'] ?? null,
             'population' => $lastChunk['population'] ?? null,
             'best_program' => $lastChunk['best_program'] ?? null,
+            'best_frame' => $lastChunk['best_frame'] ?? null,
         ];
         $encoded = json_encode($summary, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
         if (file_put_contents($summaryPath, $encoded . "\n") === false) {

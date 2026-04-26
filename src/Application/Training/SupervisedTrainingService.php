@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Training;
 
+use App\Domain\CellularAutomaton\Frame;
 use App\Domain\CellularAutomaton\Grid;
 use App\Domain\Evolution\EvolutionEngine;
 use App\Domain\Evolution\Individual;
@@ -23,7 +24,7 @@ final class SupervisedTrainingService
     }
 
     /**
-     * @return \Generator<int,array{generation:int,best_fitness:float,average_fitness:float,best_program:array<string,mixed>,dataset:string,seed:int,population:int}>
+     * @return \Generator<int,array{generation:int,best_fitness:float,average_fitness:float,best_program:array<string,mixed>,best_frame:array{frame:int,size:int,cells:list<list<int>>},dataset:string,seed:int,population:int}>
      */
     public function train(
         array $dataset,
@@ -56,22 +57,27 @@ final class SupervisedTrainingService
                     $frames = $this->executor->execute($program, Grid::empty($size), $maxFrames);
                     $fitness = $this->supervisedFitness($frames, $targetFrames, $size, \count($programAst['nodes']));
                 } catch (\Throwable) {
+                    $frames = [new Frame(0, Grid::empty($size))];
                     $fitness = 0.0;
                 }
 
-                $scored[] = ['ast' => $programAst, 'fitness' => $fitness];
+                $scored[] = ['ast' => $programAst, 'fitness' => $fitness, 'frames' => $frames];
                 $individuals[] = new Individual($programAst, $fitness);
             }
 
             usort($scored, static fn (array $a, array $b): int => $b['fitness'] <=> $a['fitness']);
             $best = $scored[0];
             $avg = array_sum(array_column($scored, 'fitness')) / max(1, \count($scored));
+            /** @var list<Frame> $bestFrames */
+            $bestFrames = $best['frames'];
+            $bestFrame = $bestFrames[array_key_last($bestFrames)];
 
             yield [
                 'generation' => $generation,
                 'best_fitness' => round((float) $best['fitness'], 6),
                 'average_fitness' => round((float) $avg, 6),
                 'best_program' => $best['ast'],
+                'best_frame' => $bestFrame->toArray(),
                 'dataset' => $datasetName,
                 'seed' => $seed,
                 'population' => $population,

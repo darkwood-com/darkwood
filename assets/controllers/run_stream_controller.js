@@ -28,6 +28,7 @@ export default class extends Controller {
         this.timer = null;
         this.frameCount = 0;
         this.speedMs = 250;
+        this.streamCompleted = false;
         if (this.hasDefaultRunValue && this.defaultRunValue !== '') {
             this.runIdTarget.value = this.defaultRunValue;
         }
@@ -38,6 +39,7 @@ export default class extends Controller {
     start() {
         this.stop();
         this.clearPlayback();
+        this.streamCompleted = false;
         const runId = (this.runIdTarget.value || '').trim();
         if (runId === '') {
             this.setStatus('Missing run id');
@@ -56,8 +58,11 @@ export default class extends Controller {
         });
 
         this.eventSource.addEventListener('done', () => {
-            this.setStatus(`Stream completed (${this.frameCount} frames)`);
-            this.stop();
+            this.streamCompleted = true;
+            this.closeEventSource();
+            if (this.buffer.length === 0 && !this.timer) {
+                this.setStatus(`Stream completed (${this.frameCount} frames)`);
+            }
         });
 
         this.eventSource.addEventListener('error', (event) => {
@@ -69,13 +74,17 @@ export default class extends Controller {
     }
 
     stop() {
-        if (this.eventSource) {
-            this.eventSource.close();
-            this.eventSource = null;
-        }
+        this.closeEventSource();
         if (this.timer) {
             clearTimeout(this.timer);
             this.timer = null;
+        }
+    }
+
+    closeEventSource() {
+        if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = null;
         }
     }
 
@@ -126,6 +135,10 @@ export default class extends Controller {
             if (frame) {
                 this.renderFrame(frame);
             }
+            if (this.buffer.length === 0 && this.streamCompleted) {
+                this.setStatus(`Stream completed (${this.frameCount} frames)`);
+                return;
+            }
             this.schedulePlayback();
         }, this.speedMs);
     }
@@ -134,6 +147,7 @@ export default class extends Controller {
         this.buffer = [];
         this.currentFrame = null;
         this.frameCount = 0;
+        this.streamCompleted = false;
         if (this.timer) {
             clearTimeout(this.timer);
             this.timer = null;
