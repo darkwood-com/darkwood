@@ -82,8 +82,25 @@ final class BenchmarkRunCommandTest extends TestCase
         self::assertFileExists($outputPath);
 
         $decoded = json_decode(trim($tester->getDisplay()), true, 512, JSON_THROW_ON_ERROR);
+        self::assertSame(1, $decoded['schema_version']);
+        self::assertSame('unsupervised_8', $decoded['case']);
+        self::assertSame('unsupervised', $decoded['mode']);
+        self::assertSame(8, $decoded['size']);
+        self::assertSame([
+            'population' => 6,
+            'generations' => 2,
+            'max_frames' => 6,
+        ], $decoded['hyperparameters']);
         self::assertArrayHasKey('sequence_hash', $decoded);
         self::assertArrayHasKey('reproducible', $decoded);
+        self::assertSame($decoded['reproducible'], $decoded['reproducibility']['match']);
+        self::assertSame('double_run_identical_params', $decoded['reproducibility']['method']);
+        self::assertArrayHasKey('stability', $decoded);
+        self::assertArrayHasKey('diversity', $decoded);
+        self::assertArrayHasKey('visual_perplexity', $decoded);
+
+        $written = json_decode((string) file_get_contents($outputPath), true, 512, JSON_THROW_ON_ERROR);
+        self::assertSame($decoded['sequence_hash'], $written['sequence_hash']);
     }
 
     public function testItRunsSupervisedBenchmarkAndWritesJson(): void
@@ -141,9 +158,18 @@ final class BenchmarkRunCommandTest extends TestCase
 
         $decoded = json_decode(trim($tester->getDisplay()), true, 512, JSON_THROW_ON_ERROR);
         self::assertSame('supervised_block', $decoded['case']);
+        self::assertSame(1, $decoded['schema_version']);
+        self::assertSame('supervised', $decoded['mode']);
         self::assertSame('block', $decoded['dataset']);
+        self::assertSame([
+            'population' => 6,
+            'generations' => 2,
+            'max_frames' => 6,
+        ], $decoded['hyperparameters']);
+        self::assertArrayHasKey('final_average_fitness', $decoded);
         self::assertArrayHasKey('sequence_hash', $decoded);
         self::assertTrue($decoded['reproducible']);
+        self::assertTrue($decoded['reproducibility']['match']);
     }
 
     private function createLogger(): LifeRunLogger

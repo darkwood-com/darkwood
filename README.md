@@ -116,11 +116,22 @@ php bin/console app:benchmark:run \
 
 Le benchmark produit notamment:
 
+- `schema_version`,
+- `case`,
+- `mode`,
+- `hyperparameters`,
+- `php_version`,
 - `duration_ms`,
 - `peak_memory_mb`,
 - `final_fitness`,
+- `final_average_fitness`,
+- `program_size`,
 - `sequence_hash`,
-- `reproducible` (double run, meme seed).
+- `reproducible` (double run, meme seed),
+- `reproducibility`,
+- `stability`.
+
+Pour comparer un nouveau dataset supervise, remplacez `--dataset=block` par `--dataset=beacon` et ecrivez vers `var/benchmarks/supervised_beacon.json`.
 
 ## Streaming Web (SSE + canvas)
 

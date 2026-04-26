@@ -71,18 +71,35 @@ final class BenchmarkRunCommand extends Command
             $last = $chunksA[array_key_last($chunksA)] ?? [];
 
             $result = [
+                'schema_version' => 1,
                 'case' => $meta['case'],
+                'mode' => $mode,
+                'dataset' => $mode === 'supervised' ? $datasetName : null,
+                'size' => $mode === 'unsupervised' ? $size : null,
                 'seed' => $seed,
+                'hyperparameters' => [
+                    'population' => $population,
+                    'generations' => $generations,
+                    'max_frames' => $maxFrames,
+                ],
+                'php_version' => \PHP_VERSION,
                 'duration_ms' => $durationMs,
                 'peak_memory_mb' => $peakMemoryMb,
                 'final_fitness' => $last['best_fitness'] ?? null,
+                'final_average_fitness' => $last['average_fitness'] ?? null,
                 'generations' => $generations,
                 'program_size' => isset($last['best_program']['nodes']) && \is_array($last['best_program']['nodes']) ? \count($last['best_program']['nodes']) : null,
                 'sequence_hash' => $hashA,
                 'reproducible' => $hashA === $hashB,
-                'mode' => $mode,
-                'dataset' => $mode === 'supervised' ? $datasetName : null,
-                'size' => $mode === 'unsupervised' ? $size : null,
+                'reproducibility' => [
+                    'method' => 'double_run_identical_params',
+                    'match' => $hashA === $hashB,
+                    'first_hash' => $hashA,
+                    'second_hash' => $hashB,
+                ],
+                'stability' => $this->stability($chunksA),
+                'diversity' => null,
+                'visual_perplexity' => null,
             ];
 
             $outputPath = $this->resolveOutputPath((string) $input->getOption('output'));
@@ -118,6 +135,31 @@ final class BenchmarkRunCommand extends Command
         $chunks = iterator_to_array($this->unsupervised->train($size, $population, $generations, $seed, $maxFrames), false);
 
         return [$chunks, ['case' => 'unsupervised_' . $size]];
+    }
+
+    /**
+     * @param list<array<string,mixed>> $chunks
+     *
+     * @return array{window:int,best_fitness_range:float}|null
+     */
+    private function stability(array $chunks): ?array
+    {
+        $fitnessValues = [];
+        foreach (\array_slice($chunks, -5) as $chunk) {
+            $fitness = $chunk['best_fitness'] ?? null;
+            if (\is_int($fitness) || \is_float($fitness)) {
+                $fitnessValues[] = (float) $fitness;
+            }
+        }
+
+        if ($fitnessValues === []) {
+            return null;
+        }
+
+        return [
+            'window' => \count($fitnessValues),
+            'best_fitness_range' => round(max($fitnessValues) - min($fitnessValues), 6),
+        ];
     }
 
     /**
