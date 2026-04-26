@@ -6,7 +6,7 @@ body {
 }
 
 .run-stream {
-    max-width: 760px;
+    max-width: 980px;
     margin: 2rem auto;
     padding: 1.5rem;
 }
@@ -28,10 +28,33 @@ body {
     color: #f4f7fb;
 }
 
+.run-stream__controls--secondary {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+}
+
+.run-stream__controls input[type="checkbox"] {
+    vertical-align: middle;
+}
+
 .run-stream__meta {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 1rem;
     margin-bottom: 1rem;
+}
+
+.run-stream__meta span,
+.run-stream__program,
+.run-stream__status {
+    overflow-wrap: anywhere;
+}
+
+.run-stream__viewer {
+    display: grid;
+    grid-template-columns: minmax(320px, 360px) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
 }
 
 .run-stream__canvas {
@@ -42,6 +65,24 @@ body {
     display: block;
 }
 
+.run-stream__program {
+    border: 1px solid #2a3441;
+    border-radius: 6px;
+    background: #161b22;
+    padding: 0.75rem;
+}
+
+.run-stream__program summary {
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.run-stream__program pre {
+    max-height: 280px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+
 .run-stream__status {
     margin-top: 1rem;
     padding: 0.75rem;
@@ -49,6 +90,9 @@ body {
     border: 1px solid #2a3441;
     border-radius: 6px;
 }
-body {
-    background-color: skyblue;
+
+@media (max-width: 760px) {
+    .run-stream__viewer {
+        grid-template-columns: 1fr;
+    }
 }

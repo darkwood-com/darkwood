@@ -25,7 +25,10 @@ final class RunStreamChunkNormalizerTest extends TestCase
         $normalized = $this->normalizer()->normalize([
             'generation' => 2,
             'best_fitness' => 0.75,
+            'average_fitness' => 0.5,
             'seed' => 42,
+            'dataset' => 'beacon',
+            'best_program' => ['type' => 'sequence', 'nodes' => [['type' => 'next']]],
             'best_frame' => [
                 'frame' => 6,
                 'size' => 2,
@@ -37,8 +40,12 @@ final class RunStreamChunkNormalizerTest extends TestCase
         self::assertSame([[0, 1], [1, 0]], $normalized['cells']);
         self::assertSame([
             'fitness' => 0.75,
+            'average_fitness' => 0.5,
             'generation' => 2,
             'seed' => 42,
+            'mode' => 'supervised',
+            'dataset' => 'beacon',
+            'best_program' => ['type' => 'sequence', 'nodes' => [['type' => 'next']]],
         ], $normalized['metadata']);
     }
 
@@ -58,6 +65,21 @@ final class RunStreamChunkNormalizerTest extends TestCase
             'generation' => 4,
             'seed' => 99,
         ], $normalized['metadata']);
+    }
+
+    public function testItInfersUnsupervisedModeWhenBestFrameIsPresent(): void
+    {
+        $normalized = $this->normalizer()->normalize([
+            'generation' => 1,
+            'best_fitness' => 0.25,
+            'best_frame' => [
+                'frame' => 1,
+                'size' => 1,
+                'cells' => [[1]],
+            ],
+        ]);
+
+        self::assertSame('unsupervised', $normalized['metadata']['mode']);
     }
 
     private function normalizer(): RunStreamChunkNormalizer

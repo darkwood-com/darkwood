@@ -40,10 +40,33 @@ final class RunStreamChunkNormalizer
      */
     private function metadataFromChunk(array $chunk): array
     {
-        return [
+        $metadata = [
             'fitness' => $chunk['best_fitness'] ?? null,
+            'average_fitness' => $chunk['average_fitness'] ?? null,
             'generation' => $chunk['generation'] ?? null,
             'seed' => $chunk['seed'] ?? null,
+            'mode' => $chunk['mode'] ?? $this->inferMode($chunk),
+            'dataset' => $chunk['dataset'] ?? null,
+            'sequence_hash' => $chunk['sequence_hash'] ?? null,
+            'best_program' => $chunk['best_program'] ?? null,
         ];
+
+        return array_filter($metadata, static fn (mixed $value): bool => $value !== null);
+    }
+
+    /**
+     * @param array<string,mixed> $chunk
+     */
+    private function inferMode(array $chunk): ?string
+    {
+        if (isset($chunk['dataset'])) {
+            return 'supervised';
+        }
+
+        if (isset($chunk['best_frame'])) {
+            return 'unsupervised';
+        }
+
+        return null;
     }
 }

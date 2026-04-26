@@ -144,8 +144,14 @@ Le frontend consomme les chunks SSE et affiche:
 
 - la matrice dans un canvas,
 - `fitness`,
+- `average_fitness`,
 - `generation`,
-- `seed`.
+- `seed`,
+- `mode`,
+- `dataset`,
+- le programme lambda gagnant quand il est present.
+
+L'interface reste secondaire par rapport au CLI, mais elle permet maintenant pause/play, vitesse de lecture, index de frame et grille optionnelle pour faciliter les captures d'article.
 
 ## Logs Navi (NDJSON)
 
