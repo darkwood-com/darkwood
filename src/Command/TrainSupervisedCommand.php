@@ -33,7 +33,7 @@ final class TrainSupervisedCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('dataset', null, InputOption::VALUE_REQUIRED, 'Dataset name (glider|blinker|block).', 'glider')
+            ->addOption('dataset', null, InputOption::VALUE_REQUIRED, 'Dataset name (glider|blinker|block|beacon).', 'glider')
             ->addOption('population', null, InputOption::VALUE_REQUIRED, 'Population size.', '40')
             ->addOption('generations', null, InputOption::VALUE_REQUIRED, 'Generation count.', '25')
             ->addOption('seed', null, InputOption::VALUE_REQUIRED, 'Deterministic random seed.', '42')

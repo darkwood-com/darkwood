@@ -52,7 +52,7 @@ Sorties:
 
 ### 3) Entrainement supervise
 
-Datasets disponibles: `glider`, `blinker`, `block`.
+Datasets disponibles: `glider`, `blinker`, `block`, `beacon`.
 
 ```bash
 php bin/console app:train:supervised \
