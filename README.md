@@ -72,7 +72,23 @@ Sorties:
 - `var/runs/supervised-block.ndjson`,
 - `var/runs/supervised-block.summary.json`.
 
-### 4) Benchmark reproductible
+### 4) Preferences pairwise / DPO simplifie
+
+`app:preferences:record` enregistre une comparaison entre deux programmes AST dans `data/preferences/`.
+C'est une analogie educative de preference pairwise: le projet stocke `score_preferred - score_rejected`, mais ne fait pas de RLHF/DPO reel.
+
+```bash
+php bin/console app:preferences:record \
+  --preferred-ast-file=preferred.json \
+  --rejected-ast-file=rejected.json \
+  --preferred-score=0.8 \
+  --rejected-score=0.3 \
+  --mode=supervised \
+  --dataset=block \
+  --seed=42
+```
+
+### 5) Benchmark reproductible
 
 ```bash
 php bin/console app:benchmark:run \
