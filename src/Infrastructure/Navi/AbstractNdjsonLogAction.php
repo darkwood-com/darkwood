@@ -38,4 +38,52 @@ abstract readonly class AbstractNdjsonLogAction implements Action
      * @return array<string,mixed>
      */
     abstract protected function buildRecord(Context $context): array;
+
+    /**
+     * @param array<string,mixed> $payload
+     *
+     * @return array<string,mixed>
+     */
+    protected function record(Context $context, string $event, array $payload): array
+    {
+        $record = [
+            'schema_version' => 1,
+            'at' => gmdate('c'),
+            'run_id' => $context->get('run_id'),
+            'channel' => $context->get('channel', 'cli'),
+            'event' => $event,
+            'payload' => $payload,
+        ];
+
+        foreach ($this->indexedFields($payload) as $key => $value) {
+            $record[$key] = $value;
+        }
+
+        return $record;
+    }
+
+    /**
+     * @param array<string,mixed> $payload
+     *
+     * @return array<string,mixed>
+     */
+    private function indexedFields(array $payload): array
+    {
+        $fields = [];
+        foreach (['mode', 'dataset', 'seed', 'generation', 'program_size', 'sequence_hash'] as $key) {
+            if (array_key_exists($key, $payload)) {
+                $fields[$key] = $payload[$key];
+            }
+        }
+
+        if (array_key_exists('best_fitness', $payload)) {
+            $fields['fitness'] = $payload['best_fitness'];
+        } elseif (array_key_exists('fitness', $payload)) {
+            $fields['fitness'] = $payload['fitness'];
+        } elseif (array_key_exists('final_fitness', $payload)) {
+            $fields['fitness'] = $payload['final_fitness'];
+        }
+
+        return $fields;
+    }
 }

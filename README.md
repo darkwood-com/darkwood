@@ -155,11 +155,13 @@ Fichier:
 
 Evenements journalises:
 
-- run/training start,
-- generation,
-- chunk,
+- `training_started`,
+- `generation_completed`,
+- `chunk_recorded`,
 - training completed/failed,
-- benchmark.
+- `benchmark_completed` / `benchmark_failed`.
+
+Chaque ligne contient `schema_version`, `run_id`, `event`, `payload` et des champs indexes utiles (`mode`, `dataset`, `seed`, `generation`, `fitness`, `program_size`, `sequence_hash` quand disponibles). Les chunks sont volontairement resumes par hash/metriques pour eviter de dupliquer de grosses matrices ou AST dans les logs.
 
 ## Tests
 

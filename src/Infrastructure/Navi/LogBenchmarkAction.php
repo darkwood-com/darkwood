@@ -16,12 +16,14 @@ final readonly class LogBenchmarkAction extends AbstractNdjsonLogAction
 
     protected function buildRecord(Context $context): array
     {
-        return [
-            'at' => gmdate('c'),
-            'run_id' => $context->get('run_id'),
-            'channel' => 'cli',
-            'event' => 'benchmark',
-            'payload' => $context->get('payload', []),
-        ];
+        $payload = $context->get('payload', []);
+        if (!\is_array($payload)) {
+            $payload = [];
+        }
+
+        $event = ($payload['event'] ?? null) === 'benchmark_failed' ? 'benchmark_failed' : 'benchmark_completed';
+        unset($payload['event']);
+
+        return $this->record($context, $event, $payload);
     }
 }

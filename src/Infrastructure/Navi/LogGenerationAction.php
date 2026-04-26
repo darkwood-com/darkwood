@@ -16,12 +16,11 @@ final readonly class LogGenerationAction extends AbstractNdjsonLogAction
 
     protected function buildRecord(Context $context): array
     {
-        return [
-            'at' => gmdate('c'),
-            'run_id' => $context->get('run_id'),
-            'channel' => 'cli',
-            'event' => 'generation',
-            'payload' => $context->get('payload', []),
-        ];
+        $payload = $context->get('payload', []);
+        if (!\is_array($payload)) {
+            $payload = [];
+        }
+
+        return $this->record($context, 'generation_completed', $payload);
     }
 }
