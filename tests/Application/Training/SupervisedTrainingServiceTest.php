@@ -21,7 +21,7 @@ final class SupervisedTrainingServiceTest extends TestCase
     public function testItIsDeterministicForGivenSeed(): void
     {
         $dataset = json_decode(
-            (string) file_get_contents('/Users/math/Sites/darkwood/llm-game-of-life/data/patterns/block.json'),
+            (string) file_get_contents($this->projectDir() . '/data/patterns/block.json'),
             true,
             512,
             JSON_THROW_ON_ERROR,
@@ -51,5 +51,10 @@ final class SupervisedTrainingServiceTest extends TestCase
             ),
             $random,
         );
+    }
+
+    private function projectDir(): string
+    {
+        return \dirname(__DIR__, 3);
     }
 }

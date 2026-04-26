@@ -44,7 +44,7 @@ final class TrainSupervisedCommandTest extends TestCase
         $command = new TrainSupervisedCommand(
             $service,
             $this->createLogger(),
-            '/Users/math/Sites/darkwood/llm-game-of-life',
+            $this->projectDir(),
         );
         $tester = new CommandTester($command);
 
@@ -74,5 +74,10 @@ final class TrainSupervisedCommandTest extends TestCase
             new \App\Infrastructure\Navi\LogChunkAction(sys_get_temp_dir() . '/llm_game_of_life_tests/life_llm_runs.ndjson'),
             new \App\Infrastructure\Navi\LogBenchmarkAction(sys_get_temp_dir() . '/llm_game_of_life_tests/life_llm_runs.ndjson'),
         );
+    }
+
+    private function projectDir(): string
+    {
+        return \dirname(__DIR__, 2);
     }
 }

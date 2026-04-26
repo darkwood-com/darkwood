@@ -63,11 +63,11 @@ final class BenchmarkRunCommandTest extends TestCase
             $supervised,
             $unsupervised,
             $this->createLogger(),
-            '/Users/math/Sites/darkwood/llm-game-of-life',
+            $this->projectDir(),
         );
         $tester = new CommandTester($command);
 
-        $outputPath = 'var/benchmarks/test-result.json';
+        $outputPath = sys_get_temp_dir() . '/llm_game_of_life_tests/benchmarks/test-unsupervised-result.json';
         $status = $tester->execute([
             '--mode' => 'unsupervised',
             '--size' => '8',
@@ -79,11 +79,71 @@ final class BenchmarkRunCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::SUCCESS, $status);
-        self::assertFileExists('/Users/math/Sites/darkwood/llm-game-of-life/' . $outputPath);
+        self::assertFileExists($outputPath);
 
         $decoded = json_decode(trim($tester->getDisplay()), true, 512, JSON_THROW_ON_ERROR);
         self::assertArrayHasKey('sequence_hash', $decoded);
         self::assertArrayHasKey('reproducible', $decoded);
+    }
+
+    public function testItRunsSupervisedBenchmarkAndWritesJson(): void
+    {
+        $randomA = new MtRandomGenerator();
+        $randomB = new MtRandomGenerator();
+        $executor = new FlowProgramExecutor(
+            new LambdaEvaluationService(new GameOfLifePrimitiveInvoker(), ['birth', 'kill', 'paint', 'next']),
+            new GameOfLifeStepper(),
+        );
+
+        $unsupervised = new UnsupervisedTrainingService(
+            $executor,
+            new EvolutionEngine(
+                new TournamentSelector($randomA),
+                new AstCrossoverOperator($randomA),
+                new AstMutationOperator($randomA),
+                $randomA,
+            ),
+            $randomA,
+        );
+
+        $supervised = new SupervisedTrainingService(
+            $executor,
+            new EvolutionEngine(
+                new TournamentSelector($randomB),
+                new AstCrossoverOperator($randomB),
+                new AstMutationOperator($randomB),
+                $randomB,
+            ),
+            $randomB,
+        );
+
+        $command = new BenchmarkRunCommand(
+            $supervised,
+            $unsupervised,
+            $this->createLogger(),
+            $this->projectDir(),
+        );
+        $tester = new CommandTester($command);
+
+        $outputPath = sys_get_temp_dir() . '/llm_game_of_life_tests/benchmarks/test-supervised-result.json';
+        $status = $tester->execute([
+            '--mode' => 'supervised',
+            '--dataset' => 'block',
+            '--population' => '6',
+            '--generations' => '2',
+            '--seed' => '42',
+            '--max-frames' => '6',
+            '--output' => $outputPath,
+        ]);
+
+        self::assertSame(Command::SUCCESS, $status);
+        self::assertFileExists($outputPath);
+
+        $decoded = json_decode(trim($tester->getDisplay()), true, 512, JSON_THROW_ON_ERROR);
+        self::assertSame('supervised_block', $decoded['case']);
+        self::assertSame('block', $decoded['dataset']);
+        self::assertArrayHasKey('sequence_hash', $decoded);
+        self::assertTrue($decoded['reproducible']);
     }
 
     private function createLogger(): LifeRunLogger
@@ -97,5 +157,10 @@ final class BenchmarkRunCommandTest extends TestCase
             new LogChunkAction($logPath),
             new LogBenchmarkAction($logPath),
         );
+    }
+
+    private function projectDir(): string
+    {
+        return \dirname(__DIR__, 2);
     }
 }

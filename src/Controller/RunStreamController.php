@@ -12,6 +12,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class RunStreamController extends AbstractController
 {
+    public function __construct(private readonly RunStreamChunkNormalizer $chunkNormalizer)
+    {
+    }
+
     #[Route('/runs', name: 'app_runs_index', methods: ['GET'])]
     public function index(): Response
     {
@@ -66,7 +70,7 @@ final class RunStreamController extends AbstractController
                     }
 
                     yield new ServerEvent(
-                        json_encode($this->normalizeChunk($decoded), JSON_THROW_ON_ERROR),
+                        json_encode($this->chunkNormalizer->normalize($decoded), JSON_THROW_ON_ERROR),
                         'chunk',
                         id: (string) $eventIndex++
                     );
@@ -79,41 +83,6 @@ final class RunStreamController extends AbstractController
 
             yield new ServerEvent('done', 'done');
         });
-    }
-
-    /**
-     * @param array<string,mixed> $chunk
-     *
-     * @return array<string,mixed>
-     */
-    private function normalizeChunk(array $chunk): array
-    {
-        if (isset($chunk['frame'], $chunk['cells'])) {
-            return $chunk;
-        }
-
-        if (isset($chunk['best_frame']) && \is_array($chunk['best_frame'])) {
-            /** @var array<string,mixed> $frame */
-            $frame = $chunk['best_frame'];
-            $frame['metadata'] = [
-                'fitness' => $chunk['best_fitness'] ?? null,
-                'generation' => $chunk['generation'] ?? null,
-                'seed' => $chunk['seed'] ?? null,
-            ];
-
-            return $frame;
-        }
-
-        return [
-            'frame' => $chunk['generation'] ?? 0,
-            'size' => 1,
-            'cells' => [[0]],
-            'metadata' => [
-                'fitness' => $chunk['best_fitness'] ?? null,
-                'generation' => $chunk['generation'] ?? null,
-                'seed' => $chunk['seed'] ?? null,
-            ],
-        ];
     }
 
     private function getRunsDirectory(): string
