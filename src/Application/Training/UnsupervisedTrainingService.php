@@ -16,11 +16,15 @@ use App\Domain\LambdaLanguage\ProgramValidator;
 
 final class UnsupervisedTrainingService
 {
+    private readonly UnsupervisedFitnessScorer $fitnessScorer;
+
     public function __construct(
         private readonly ProgramExecutorInterface $executor,
         private readonly EvolutionEngine $evolution,
         private readonly RandomGeneratorInterface $random,
+        ?UnsupervisedFitnessScorer $fitnessScorer = null,
     ) {
+        $this->fitnessScorer = $fitnessScorer ?? new UnsupervisedFitnessScorer();
     }
 
     /**
@@ -48,7 +52,7 @@ final class UnsupervisedTrainingService
                 try {
                     $program = Program::fromArray($programAst, $validator);
                     $frames = $this->executor->execute($program, Grid::empty($size), $maxFrames);
-                    $fitness = $this->fitness($frames, $size);
+                    $fitness = $this->fitnessScorer->score($frames, $size);
                 } catch (\Throwable) {
                     $frames = [new Frame(0, Grid::empty($size))];
                     $fitness = 0.0;
@@ -86,40 +90,6 @@ final class UnsupervisedTrainingService
                 $size,
             );
         }
-    }
-
-    /**
-     * @param list<Frame> $frames
-     */
-    private function fitness(array $frames, int $size): float
-    {
-        $last = $frames[array_key_last($frames)]->grid()->toBinaryMatrix();
-        $alive = 0;
-        foreach ($last as $row) {
-            $alive += array_sum($row);
-        }
-
-        $totalCells = $size * $size;
-        $aliveRatio = $alive / max(1, $totalCells);
-        $entropyScore = 1.0 - abs(0.5 - $aliveRatio) * 2.0;
-
-        $motionScore = 0.0;
-        if (count($frames) > 1) {
-            $previous = $frames[count($frames) - 2]->grid()->toBinaryMatrix();
-            $changes = 0;
-            for ($y = 0; $y < $size; ++$y) {
-                for ($x = 0; $x < $size; ++$x) {
-                    if ($previous[$y][$x] !== $last[$y][$x]) {
-                        ++$changes;
-                    }
-                }
-            }
-            $motionScore = $changes / max(1, $totalCells);
-        }
-
-        $lifetimeScore = min(1.0, count($frames) / 20.0);
-
-        return (0.5 * $entropyScore) + (0.3 * $motionScore) + (0.2 * $lifetimeScore);
     }
 
     /**

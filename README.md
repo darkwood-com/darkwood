@@ -50,6 +50,8 @@ Sorties:
 - `var/runs/unsupervised.ndjson`,
 - `var/runs/unsupervised.summary.json`.
 
+Fitness V2: score pedagogique leger combinant non-effondrement, mouvement moyen, complexite de bords, symetrie, variation temporelle et duree de vie. Les grilles entierement mortes ou entierement vivantes sont ramenees a `0`.
+
 ### 3) Entrainement supervise
 
 Datasets disponibles: `glider`, `blinker`, `block`, `beacon`.
