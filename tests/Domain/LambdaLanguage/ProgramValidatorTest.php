@@ -19,6 +19,7 @@ final class ProgramValidatorTest extends TestCase
             'nodes' => [
                 ['type' => 'birth', 'x' => 1, 'y' => 2],
                 ['type' => 'paint', 'x' => 1, 'y' => 2, 'color' => '#ffffff'],
+                ['type' => 'mirror', 'axis' => 'vertical'],
                 [
                     'type' => 'compose',
                     'first' => ['type' => 'repeat', 'n' => 2, 'node' => ['type' => 'next']],
@@ -68,6 +69,20 @@ final class ProgramValidatorTest extends TestCase
             'type' => 'sequence',
             'nodes' => [
                 ['type' => 'paint', 'x' => 1, 'y' => 1, 'color' => 'white'],
+            ],
+        ]);
+    }
+
+    public function testItRejectsInvalidMirrorAxis(): void
+    {
+        $validator = new ProgramValidator(gridSize: 16);
+
+        $this->expectException(ProgramValidationException::class);
+
+        $validator->validate([
+            'type' => 'sequence',
+            'nodes' => [
+                ['type' => 'mirror', 'axis' => 'diagonal'],
             ],
         ]);
     }

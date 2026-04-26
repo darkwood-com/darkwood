@@ -21,6 +21,7 @@ final class ProgramTokenizerTest extends TestCase
                 ['type' => 'kill', 'x' => 2, 'y' => 3],
                 ['type' => 'paint', 'x' => 0, 'y' => 1, 'color' => '#ff0000'],
                 ['type' => 'paint', 'x' => 1, 'y' => 0, 'color' => '#0000ff'],
+                ['type' => 'mirror', 'axis' => 'vertical'],
                 ['type' => 'next'],
             ],
         ], new ProgramValidator(gridSize: 4));
@@ -30,6 +31,7 @@ final class ProgramTokenizerTest extends TestCase
             'KILL_2_3',
             'PAINT_0_1_' . VisualToken::RED_COLOR,
             'PAINT_1_0_' . VisualToken::BLUE_COLOR,
+            'MIRROR_VERTICAL',
             VisualToken::NEXT_FRAME,
         ], (new ProgramTokenizer())->tokenizeProgram($program));
     }

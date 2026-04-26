@@ -17,6 +17,7 @@ final class GameOfLifePrimitiveInvoker implements PrimitiveInvokerInterface
             'kill' => $this->invokeKill($invocation, $context),
             'paint' => $this->invokePaint($invocation, $context),
             'next' => $this->invokeNext($context),
+            'mirror' => $this->invokeMirror($invocation, $context),
             default => throw new \InvalidArgumentException(\sprintf('Unknown primitive "%s".', $invocation->primitiveName)),
         };
     }
@@ -60,6 +61,18 @@ final class GameOfLifePrimitiveInvoker implements PrimitiveInvokerInterface
     private function invokeNext(LambdaExecutionContext $context): null
     {
         $context->state->next();
+
+        return null;
+    }
+
+    private function invokeMirror(PrimitiveInvocation $invocation, LambdaExecutionContext $context): null
+    {
+        $axis = $invocation->arguments['axis'] ?? null;
+        if (!\is_string($axis) || !\in_array($axis, ['horizontal', 'vertical'], true)) {
+            throw new \InvalidArgumentException('mirror payload must contain a valid axis.');
+        }
+
+        $context->state->mirror($axis);
 
         return null;
     }

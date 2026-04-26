@@ -30,7 +30,7 @@ final class TrainUnsupervisedCommandTest extends TestCase
             new FlowProgramExecutor(
                 new LambdaEvaluationService(
                     new GameOfLifePrimitiveInvoker(),
-                    ['birth', 'kill', 'paint', 'next'],
+                    ['birth', 'kill', 'paint', 'next', 'mirror'],
                 ),
                 new GameOfLifeStepper(),
             ),
@@ -71,7 +71,7 @@ final class TrainUnsupervisedCommandTest extends TestCase
             new FlowProgramExecutor(
                 new LambdaEvaluationService(
                     new GameOfLifePrimitiveInvoker(),
-                    ['birth', 'kill', 'paint', 'next'],
+                    ['birth', 'kill', 'paint', 'next', 'mirror'],
                 ),
                 new GameOfLifeStepper(),
             ),

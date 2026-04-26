@@ -32,7 +32,7 @@ final class UnsupervisedTrainingServiceTest extends TestCase
         return new \App\Infrastructure\LambdaLanguage\FlowProgramExecutor(
             new \App\Domain\LambdaLanguage\LambdaEvaluationService(
                 new \App\Infrastructure\LambdaLanguage\GameOfLifePrimitiveInvoker(),
-                ['birth', 'kill', 'paint', 'next'],
+                ['birth', 'kill', 'paint', 'next', 'mirror'],
             ),
             new \App\Domain\CellularAutomaton\GameOfLifeStepper(),
         );

@@ -29,7 +29,7 @@ final class TrainSupervisedCommandTest extends TestCase
         $random = new MtRandomGenerator();
         $service = new SupervisedTrainingService(
             new FlowProgramExecutor(
-                new LambdaEvaluationService(new GameOfLifePrimitiveInvoker(), ['birth', 'kill', 'paint', 'next']),
+                new LambdaEvaluationService(new GameOfLifePrimitiveInvoker(), ['birth', 'kill', 'paint', 'next', 'mirror']),
                 new GameOfLifeStepper(),
             ),
             new EvolutionEngine(

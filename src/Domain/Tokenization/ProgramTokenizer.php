@@ -43,6 +43,7 @@ final class ProgramTokenizer
                 $this->colorToken($this->readString($node, 'color')),
             )],
             'next' => [VisualToken::NEXT_FRAME],
+            'mirror' => [sprintf('MIRROR_%s', strtoupper($this->readString($node, 'axis')))],
             'repeat' => $this->tokenizeRepeat($node),
             'compose' => $this->tokenizeCompose($node),
             default => throw new \InvalidArgumentException(sprintf('Unsupported program node type "%s".', $type)),

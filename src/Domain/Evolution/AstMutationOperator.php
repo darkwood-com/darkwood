@@ -59,7 +59,7 @@ final readonly class AstMutationOperator
      */
     private function randomNode(int $size): array
     {
-        $kind = $this->random->int(0, 3);
+        $kind = $this->random->int(0, 4);
         $x = $this->random->int(0, $size - 1);
         $y = $this->random->int(0, $size - 1);
 
@@ -67,6 +67,7 @@ final readonly class AstMutationOperator
             0 => ['type' => 'birth', 'x' => $x, 'y' => $y],
             1 => ['type' => 'kill', 'x' => $x, 'y' => $y],
             2 => ['type' => 'paint', 'x' => $x, 'y' => $y, 'color' => $this->random->int(0, 1) ? '#ffffff' : '#000000'],
+            3 => ['type' => 'mirror', 'axis' => $this->random->int(0, 1) === 0 ? 'horizontal' : 'vertical'],
             default => ['type' => 'next'],
         };
     }

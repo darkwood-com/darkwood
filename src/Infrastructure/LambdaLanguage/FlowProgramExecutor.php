@@ -47,7 +47,7 @@ final readonly class FlowProgramExecutor implements ProgramExecutorInterface
 
         match ($type) {
             'sequence' => $this->executeSequence($node, $context),
-            'birth', 'kill', 'paint', 'next' => $this->executePrimitive($node, $context),
+            'birth', 'kill', 'paint', 'next', 'mirror' => $this->executePrimitive($node, $context),
             'repeat' => $this->executeRepeat($node, $context),
             'compose' => $this->executeCompose($node, $context),
             default => throw new ProgramValidationException(\sprintf('Unsupported node type "%s".', $type)),
@@ -85,6 +85,7 @@ final readonly class FlowProgramExecutor implements ProgramExecutorInterface
             'kill' => 'λkill.λpayload.kill(payload)',
             'paint' => 'λpaint.λpayload.paint(payload)',
             'next' => 'λnext.next',
+            'mirror' => 'λmirror.λpayload.mirror(payload)',
             default => throw new ProgramValidationException(\sprintf('Unsupported primitive "%s".', $type)),
         };
 
@@ -97,6 +98,9 @@ final readonly class FlowProgramExecutor implements ProgramExecutorInterface
                 'x' => $node['x'] ?? null,
                 'y' => $node['y'] ?? null,
                 'color' => $node['color'] ?? null,
+            ]],
+            'mirror' => [[
+                'axis' => $node['axis'] ?? null,
             ]],
             'next' => [],
             default => [],

@@ -30,6 +30,7 @@ services:
                 - 'kill'
                 - 'paint'
                 - 'next'
+                - 'mirror'
 
     App\Infrastructure\Navi\LogRunEventAction:
         arguments:

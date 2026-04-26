@@ -33,7 +33,7 @@ final class BenchmarkRunCommandTest extends TestCase
         $randomA = new MtRandomGenerator();
         $randomB = new MtRandomGenerator();
         $executor = new FlowProgramExecutor(
-            new LambdaEvaluationService(new GameOfLifePrimitiveInvoker(), ['birth', 'kill', 'paint', 'next']),
+            new LambdaEvaluationService(new GameOfLifePrimitiveInvoker(), ['birth', 'kill', 'paint', 'next', 'mirror']),
             new GameOfLifeStepper(),
         );
 
@@ -91,7 +91,7 @@ final class BenchmarkRunCommandTest extends TestCase
         $randomA = new MtRandomGenerator();
         $randomB = new MtRandomGenerator();
         $executor = new FlowProgramExecutor(
-            new LambdaEvaluationService(new GameOfLifePrimitiveInvoker(), ['birth', 'kill', 'paint', 'next']),
+            new LambdaEvaluationService(new GameOfLifePrimitiveInvoker(), ['birth', 'kill', 'paint', 'next', 'mirror']),
             new GameOfLifeStepper(),
         );
 

@@ -131,7 +131,7 @@ final class UnsupervisedTrainingService
         $instructionCount = $this->random->int(2, 8);
 
         for ($i = 0; $i < $instructionCount; ++$i) {
-            $kind = $this->random->int(0, 3);
+            $kind = $this->random->int(0, 4);
             $x = $this->random->int(0, $size - 1);
             $y = $this->random->int(0, $size - 1);
 
@@ -139,6 +139,7 @@ final class UnsupervisedTrainingService
                 0 => ['type' => 'birth', 'x' => $x, 'y' => $y],
                 1 => ['type' => 'kill', 'x' => $x, 'y' => $y],
                 2 => ['type' => 'paint', 'x' => $x, 'y' => $y, 'color' => $this->random->int(0, 1) ? '#ffffff' : '#000000'],
+                3 => ['type' => 'mirror', 'axis' => $this->random->int(0, 1) === 0 ? 'horizontal' : 'vertical'],
                 default => ['type' => 'next'],
             };
         }

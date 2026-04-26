@@ -55,6 +55,7 @@ final class ProgramValidator
             'birth', 'kill' => $this->validateCoordinateNode($node),
             'paint' => $this->validatePaintNode($node),
             'next' => $this->validateNextNode($node),
+            'mirror' => $this->validateMirrorNode($node),
             'repeat' => $this->validateRepeatNode($node, $depth, $instructionCount),
             'compose' => $this->validateComposeNode($node, $depth, $instructionCount),
             default => throw new ProgramValidationException(\sprintf('Unsupported node type "%s".', $type)),
@@ -116,6 +117,21 @@ final class ProgramValidator
     {
         if (\count($node) !== 1) {
             throw new ProgramValidationException('Next node does not accept arguments.');
+        }
+    }
+
+    /**
+     * @param array<string,mixed> $node
+     */
+    private function validateMirrorNode(array $node): void
+    {
+        if (\count($node) !== 2) {
+            throw new ProgramValidationException('Mirror node requires only an axis argument.');
+        }
+
+        $axis = $node['axis'] ?? null;
+        if (!\is_string($axis) || !\in_array($axis, ['horizontal', 'vertical'], true)) {
+            throw new ProgramValidationException('Mirror node axis must be horizontal or vertical.');
         }
     }
 
