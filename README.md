@@ -54,6 +54,18 @@ Validation:
 php bin/phpunit
 ```
 
+
+## Structure technique du projet
+Le depot suit une organisation simple, proche DDD, avec une regle pratique: le coeur du modele reste dans `src/Domain`, les cas d'usage dans `src/Application`, les details Symfony/IO dans `src/Command`, `src/Controller` et `src/Infrastructure`.
+```txt
+src/
+  Domain/
+    CellularAutomaton/   Grille, cellules, frames, stepper Game of Life
+    LambdaLanguage/      AST, validation, contexte d'execution, primitives
+    Evolution/           Mutation, crossover, selection, population
+    Tokenization/        Tokens visuels de frames et de programmes
+  Application/
+
 ## Lambda AST et generation
 
 Les programmes sont des AST JSON valides par `ProgramValidator`. Le noeud racine est une `sequence`.
