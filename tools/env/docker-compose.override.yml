@@ -1,5 +1,4 @@
 services:
-  mysql:
-    #platform: linux/x86_64
+  postgres:
     ports:
-      - '3311:3306'
+      - '3333:5432'

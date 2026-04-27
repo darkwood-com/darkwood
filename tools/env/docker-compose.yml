@@ -1,9 +1,10 @@
 services:
-  mysql:
-    container_name: navi_mysql
-    hostname: navi_mysql
-    image: mysql:5.7
+  postgres:
+    container_name: navi_postgres
+    hostname: navi_postgres
+    image: pgvector/pgvector:pg16
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
     volumes:
-      - ../../var/db:/var/lib/mysql
+      - ../../var/postgres:/var/lib/postgresql/data
