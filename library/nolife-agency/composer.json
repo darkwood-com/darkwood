@@ -7,6 +7,13 @@
         "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "darkwood/flow": "^1.2",
+        "darkwood/ia-exception-bundle": "*",
+        "darkwood/media-bundle": "^1.0",
+        "darkwood/navi": "^1.0",
+        "symfony/ai-agent": "^0.8.0",
+        "symfony/ai-bundle": "^0.8.0",
+        "symfony/ai-open-ai-platform": "^0.8.0",
         "symfony/console": "8.0.*",
         "symfony/dotenv": "8.0.*",
         "symfony/flex": "^2",
@@ -15,6 +22,7 @@
         "symfony/yaml": "8.0.*"
     },
     "require-dev": {
+        "phpunit/phpunit": "^13.1"
     },
     "config": {
         "allow-plugins": {

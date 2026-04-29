@@ -1,0 +1,14 @@
+parameters:
+  nolife.ai.enabled: false
+  nolife.ai.default_agent_service: 'ai.agent.nolife_demo'
+  nolife.ai.demo_agent_service: 'ai.agent.nolife_demo'
+  nolife.ai.default_model: 'gpt-5-mini'
+
+ai:
+  agent:
+    nolife_demo:
+      platform: 'ai.platform.openai'
+      model: '%nolife.ai.default_model%'
+      prompt:
+        text: 'You are a helpful assistant generating marketing copy for SaaS landing pages.'
+      tools: false

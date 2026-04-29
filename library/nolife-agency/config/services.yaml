@@ -18,6 +18,134 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Agent\:
+        resource: '../src/Agent/'
+
+    App\Integration\:
+        resource: '../src/Integration/'
+
+    App\Governance\:
+        resource: '../src/Governance/'
+
+    App\Agent\Registry\ConfiguredAgentRegistry:
+        arguments:
+            $agents:
+                - '@App\Agent\Builtin\CeoAgent'
+                - '@App\Agent\Builtin\CtoAgent'
+                - '@App\Agent\Builtin\ProductOwnerAgent'
+                - '@App\Agent\Builtin\DeliveryManagerAgent'
+                - '@App\Agent\Builtin\ArchitectAgent'
+                - '@App\Agent\Builtin\DeveloperAgent'
+                - '@App\Agent\Builtin\SeoGeoSpecialistAgent'
+                - '@App\Agent\Builtin\ContentAgent'
+                - '@App\Agent\Builtin\MediaMotionAgent'
+                - '@App\Agent\Builtin\QaAgent'
+    App\Integration\Navi\DarkwoodNaviTraceClient:
+        arguments:
+            $runBaseDir: '%nolife.run_root_dir%'
+
+    App\Workflow\WorkflowDefinitionLoader:
+        arguments:
+            $workflowRoot: '%nolife.workflow_root%'
+
+
+    App\Governance\Audit\FilesystemAuditLogger:
+        arguments:
+            $auditBaseDir: '%nolife.audit_dir%'
+
+    App\Governance\Rule\:
+        resource: '../src/Governance/Rule/'
+        tags: ['nolife.governance_rule']
+
+    App\Governance\Policy\DefaultPolicyEngine:
+        arguments:
+            $rules: !tagged_iterator nolife.governance_rule
+
+    App\Service\AgentRunner:
+        arguments:
+            $registry: '@App\Agent\Contract\AgentRegistryInterface'
+            $auditLogger: '@App\Governance\Audit\AuditLoggerInterface'
+            $policyEngine: '@App\Governance\Policy\PolicyEngineInterface'
+            $traceClient: '@App\Integration\Navi\NaviTraceClient'
+            $aiClient: '@App\Integration\Ai\AiAgentClient'
+            $flowWorkflowClient: '@App\Integration\Flow\FlowWorkflowClient'
+            $mediaGenerationClient: '@App\Integration\Media\MediaGenerationClient'
+            $clientWebsiteWorkflow: '@App\Workflow\ClientWebsiteWorkflow'
+            $runRootDir: '%nolife.run_root_dir%'
+
+    App\Agent\Contract\AgentRegistryInterface:
+        alias: App\Agent\Registry\ConfiguredAgentRegistry
+
+    App\Integration\Ai\SymfonyAiAgentClient:
+        arguments:
+            $agentServices: []
+            $agentServiceIds:
+                default: '%nolife.ai.default_agent_service%'
+                ceo: 'ai.agent.nolife_ceo'
+                cto: 'ai.agent.nolife_cto'
+                product_owner: 'ai.agent.nolife_product_owner'
+                architect: 'ai.agent.nolife_architect'
+                developer: 'ai.agent.nolife_developer'
+                content: '%nolife.ai.demo_agent_service%'
+                seo_geo_specialist: 'ai.agent.nolife_seo_geo'
+                media_motion: 'ai.agent.nolife_media_motion'
+                qa: 'ai.agent.nolife_qa'
+                delivery_manager: 'ai.agent.nolife_delivery_manager'
+
+    App\Integration\Ai\ConfiguredAiAgentClient:
+        arguments:
+            $adapter: '%nolife.adapter.ai%'
+            $symfonyAiClient: '@App\Integration\Ai\SymfonyAiAgentClient'
+            $nullAiClient: '@App\Integration\Ai\NullAiAgentClient'
+
+    App\Integration\Ai\AiAgentClient:
+        alias: App\Integration\Ai\ConfiguredAiAgentClient
+
+    ai.agent.default:
+        alias: ai.agent.nolife_demo
+
+    App\Integration\Navi\NaviTraceClient:
+        alias: App\Integration\Navi\NullNaviTraceClient
+
+    App\Integration\Navi\NaviTraceClientInterface:
+        alias: App\Integration\Navi\NullNaviTraceClient
+
+    App\Integration\Flow\FlowWorkflowClient:
+        alias: App\Integration\Flow\NullFlowWorkflowClient
+
+    App\Integration\Flow\FlowClientInterface:
+        alias: App\Integration\Flow\NullFlowWorkflowClient
+
+    App\Integration\Media\MediaGenerationClient:
+        alias: App\Integration\Media\NullMediaGenerationClient
+
+    App\Governance\Audit\AuditLoggerInterface:
+        alias: App\Governance\Audit\FilesystemAuditLogger
+
+    App\Governance\Policy\PolicyEngineInterface:
+        alias: App\Governance\Policy\DefaultPolicyEngine
+
+    App\Command\CampaignCreateCommand:
+        arguments:
+            $agentRunsDir: '%nolife.agent_runs_dir%'
+
+    App\Command\DeliveryReviewCommand:
+        arguments:
+            $deliveriesDir: '%nolife.deliveries_dir%'
+
+    App\Command\GovernanceAuditCommand:
+        arguments:
+            $auditDir: '%nolife.audit_dir%'
+
+    App\Command\DemoClientWebsiteCommand:
+        arguments:
+            $configuredAiAdapter: '%nolife.adapter.ai%'
+            $runRootDir: '%nolife.run_root_dir%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

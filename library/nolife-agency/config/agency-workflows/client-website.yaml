@@ -1,0 +1,39 @@
+key: client_website
+states:
+  - lead_qualified
+  - brief_created
+  - architecture_defined
+  - content_generated
+  - seo_optimized
+  - media_brief_created
+  - delivery_reviewed
+  - human_approval_required
+steps:
+  - key: qualify_lead
+    agent: ceo
+    from: lead_qualified
+    to: brief_created
+  - key: define_architecture
+    agent: architect
+    from: brief_created
+    to: architecture_defined
+  - key: generate_content
+    agent: content
+    from: architecture_defined
+    to: content_generated
+  - key: optimize_seo_geo
+    agent: seo_geo_specialist
+    from: content_generated
+    to: seo_optimized
+  - key: prepare_media_brief
+    agent: media_motion
+    from: seo_optimized
+    to: media_brief_created
+  - key: review_delivery
+    agent: delivery_manager
+    from: media_brief_created
+    to: delivery_reviewed
+  - key: request_human_approval
+    agent: qa
+    from: delivery_reviewed
+    to: human_approval_required

@@ -1,0 +1,33 @@
+parameters:
+  nolife_agents:
+    organization:
+      concept: paperclip
+      description: 'Paperclip is modeled as an organizational operating concept, not as a technical dependency.'
+    specialization:
+      concept: hermes
+      description: 'Hermes is modeled as an agent specialization concept, not as a concrete platform dependency.'
+    roots:
+      navi: '%env(default::NOLIFE_NAVI_ROOT)%'
+      flow: '%env(default::NOLIFE_FLOW_ROOT)%'
+      media_bundle: '%env(default::NOLIFE_MEDIA_BUNDLE_ROOT)%'
+    agents:
+      ceo:
+        class: App\Agent\Builtin\CeoAgent
+      cto:
+        class: App\Agent\Builtin\CtoAgent
+      product_owner:
+        class: App\Agent\Builtin\ProductOwnerAgent
+      delivery_manager:
+        class: App\Agent\Builtin\DeliveryManagerAgent
+      architect:
+        class: App\Agent\Builtin\ArchitectAgent
+      developer:
+        class: App\Agent\Builtin\DeveloperAgent
+      seo_geo_specialist:
+        class: App\Agent\Builtin\SeoGeoSpecialistAgent
+      content:
+        class: App\Agent\Builtin\ContentAgent
+      media_motion:
+        class: App\Agent\Builtin\MediaMotionAgent
+      qa:
+        class: App\Agent\Builtin\QaAgent
