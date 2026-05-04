@@ -1,0 +1,100 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - 1.x
+  pull_request:
+
+jobs:
+  php-cs-fixer:
+    name: Check and fix coding styles using PHP CS Fixer
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '8.5' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: xsl, openswoole
+          tools: composer
+          coverage: none # disable XDebug for tests
+
+      - name: Install dependencies
+        run: |
+          composer install
+          composer install -d tools/php-cs-fixer
+
+      - name: Check and fix coding styles using PHP CS Fixer
+        run: (cd tools && php-cs-fixer/vendor/bin/php-cs-fixer fix --config php-cs-fixer/.php-cs-fixer.php  --diff --dry-run)
+
+  phpstan:
+    name: Execute PHPStan analysis
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '8.5' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: xsl, openswoole
+          tools: composer
+          coverage: none # disable XDebug for tests
+
+      - name: 'Install dependencies'
+        run: |
+          composer install
+          composer install -d tools/phpstan
+
+      - name: Execute PHPStan analysis
+        run: (cd tools && phpstan/vendor/bin/phpstan --configuration=phpstan/phpstan.neon)
+
+  phpunit:
+    name: Launch PHPUnit test suite
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - 3311:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        # https://hub.docker.com/_/elasticsearch/
+    strategy:
+      matrix:
+        php: [ '8.5' ]
+    steps:
+      - name: Init repository
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: xsl, openswoole
+          tools: composer
+          coverage: none # disable XDebug for tests
+
+      - name: Install dependencies
+        run: |
+          composer install
+          composer install -d tools/phpunit
+
+#      - name: Load Fixtures
+#        run: |
+#          bin/console --env=test doctrine:database:create
+#          bin/console --env=test doctrine:schema:update --force
+
+      - name: Launch PHPUnit test suite
+        run: (cd tools && phpunit/vendor/bin/phpunit --configuration phpunit/phpunit.xml)
