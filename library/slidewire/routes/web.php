@@ -6,3 +6,4 @@ Route::slidewire('/', 'symfony-ai-in-action');
 Route::slidewire('/slides/symfony-ai-in-action', 'symfony-ai-in-action');
 Route::slidewire('/slides/llm-game-of-life', 'llm-game-of-life');
 Route::slidewire('/slides/nolife-agency', 'nolife-agency');
+Route::slidewire('/slides/mario-ai-agents', 'mario-ai-agents');
