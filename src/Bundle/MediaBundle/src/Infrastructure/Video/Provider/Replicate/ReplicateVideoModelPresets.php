@@ -14,10 +14,18 @@ final class ReplicateVideoModelPresets
 {
     public const HAILUO = 'hailuo';
     public const SEEDANCE = 'seedance';
+    /** Same model as {@see self::SEEDANCE} with vertical aspect ratio for short-form / reels. */
+    public const SEEDANCE_9_16 = 'seedance_9_16';
     public const P_VIDEO_DRAFT = 'p_video_draft';
 
     /** CLI alias for {@see self::P_VIDEO_DRAFT} (`prunaai/p-video`). */
     public const CLI_VIDEO_PVIDEO = 'pvideo';
+
+    /** Defaults for {@see self::SEEDANCE} and {@see self::SEEDANCE_9_16} (bytedance/seedance-1-lite). */
+    private const SEEDANCE_DEFAULT_INPUT = [
+        'fps' => 24,
+        'resolution' => '480p', //'resolution' => '720p',
+    ];
 
     /** @var array<string, array{model: string, input: array<string, mixed>}> */
     private const PRESETS = [
@@ -27,7 +35,13 @@ final class ReplicateVideoModelPresets
         ],
         self::SEEDANCE => [
             'model' => 'bytedance/seedance-1-lite',
-            'input' => [],
+            'input' => self::SEEDANCE_DEFAULT_INPUT,
+        ],
+        self::SEEDANCE_9_16 => [
+            'model' => 'bytedance/seedance-1-lite',
+            'input' => self::SEEDANCE_DEFAULT_INPUT + [
+                'aspect_ratio' => '9:16',
+            ],
         ],
         self::P_VIDEO_DRAFT => [
             'model' => 'prunaai/p-video',

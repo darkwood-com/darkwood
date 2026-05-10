@@ -95,6 +95,13 @@ final class GenerateVideoCliCommand extends Command
             InputOption::VALUE_REQUIRED,
             'Override Replicate model (slug or version id) for scene 1 video',
         );
+
+        $this->addOption(
+            'replicate-image-file',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Scene 1 only: local image path passed to Replicate as a data URI (Seedance image-to-video; <= 1 MiB recommended)',
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -330,26 +337,82 @@ final class GenerateVideoCliCommand extends Command
             $presetList = [ReplicateVideoModelPresets::presetKeyFromCliVideoModel($videoModelCli)];
         }
 
-        if ($presetList === [] && $model === null) {
-            return null;
+        $opts = null;
+        if ($presetList !== [] || $model !== null) {
+            $opts = [];
+            if ($model !== null) {
+                $opts['replicate_model'] = $model;
+            }
+
+            if (count($presetList) > 1) {
+                $opts['replicate_benchmark_presets'] = $presetList;
+            } elseif (count($presetList) === 1) {
+                $opts['replicate_preset'] = $presetList[0];
+            }
         }
 
-        $opts = [];
-        if ($model !== null) {
-            $opts['replicate_model'] = $model;
+        $merged = $this->appendReplicateImageFileToOptions($opts, $input);
+
+        return $merged === [] ? null : $merged;
+    }
+
+    /**
+     * Merges `--replicate-image-file` into `replicate_input.image` as a data URI (Replicate file input option 3).
+     *
+     * @param array<string, mixed>|null $opts
+     *
+     * @return array<string, mixed>
+     */
+    private function appendReplicateImageFileToOptions(?array $opts, InputInterface $input): array
+    {
+        $base = $opts ?? [];
+
+        $raw = $input->getOption('replicate-image-file');
+        if (!is_string($raw) || trim($raw) === '') {
+            return $base;
         }
 
-        if (count($presetList) > 1) {
-            $opts['replicate_benchmark_presets'] = $presetList;
-
-            return $opts;
+        $path = trim($raw);
+        if (!is_file($path) || !is_readable($path)) {
+            throw new \InvalidArgumentException(sprintf(
+                '--replicate-image-file is not a readable file: %s',
+                $path
+            ));
         }
 
-        if (count($presetList) === 1) {
-            $opts['replicate_preset'] = $presetList[0];
+        $maxBytes = 1_048_576;
+        $size = filesize($path);
+        if ($size === false || $size > $maxBytes) {
+            throw new \InvalidArgumentException(sprintf(
+                'Image for --replicate-image-file must be <= %d bytes for a data URI (got %s). Use a smaller file or a hosted URL.',
+                $maxBytes,
+                $size === false ? 'unknown' : (string) $size
+            ));
         }
 
-        return $opts;
+        $contents = file_get_contents($path);
+        if ($contents === false || $contents === '') {
+            throw new \InvalidArgumentException(sprintf('Could not read --replicate-image-file: %s', $path));
+        }
+
+        $mime = 'application/octet-stream';
+        if (\function_exists('finfo_open')) {
+            $finfo = finfo_open(\FILEINFO_MIME_TYPE);
+            if ($finfo !== false) {
+                $detected = finfo_file($finfo, $path);
+                finfo_close($finfo);
+                if (is_string($detected) && $detected !== '') {
+                    $mime = $detected;
+                }
+            }
+        }
+
+        $dataUri = sprintf('data:%s;base64,%s', $mime, base64_encode($contents));
+        $base['replicate_input'] = array_merge($base['replicate_input'] ?? [], [
+            'image' => $dataUri,
+        ]);
+
+        return $base;
     }
 
     /**
