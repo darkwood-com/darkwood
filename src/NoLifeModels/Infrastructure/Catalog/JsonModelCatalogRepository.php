@@ -53,14 +53,42 @@ final class JsonModelCatalogRepository implements ModelCatalogRepositoryInterfac
             if ($provider === '') {
                 continue;
             }
+            $caps = self::stringList($row['capabilities'] ?? []);
+            if ([] === $caps) {
+                if (!empty($row['reasoning'])) {
+                    $caps[] = 'reasoning';
+                }
+                if (!empty($row['tool_call'])) {
+                    $caps[] = 'tool_call';
+                }
+                if (!empty($row['attachment'])) {
+                    $caps[] = 'attachment';
+                }
+            }
+            $ctx = CatalogModelPayloadMapper::resolvedContextLength($row);
+            $d = CatalogModelPayloadMapper::displayFields($row);
             $out[] = new ModelCatalogEntry(
                 new ModelId($id),
                 new ProviderId($provider),
                 (string) ($row['name'] ?? $id),
-                isset($row['contextLength']) ? (int) $row['contextLength'] : null,
+                $ctx,
                 self::stringList($row['inputModalities'] ?? ['text']),
                 self::stringList($row['outputModalities'] ?? ['text']),
-                self::stringList($row['capabilities'] ?? []),
+                $caps,
+                family: $d['family'],
+                costPerMillionInput: $d['costPerMillionInput'],
+                costPerMillionOutput: $d['costPerMillionOutput'],
+                costPerMillionReasoning: $d['costPerMillionReasoning'],
+                costPerMillionOver200kInput: $d['costPerMillionOver200kInput'],
+                costPerMillionOver200kOutput: $d['costPerMillionOver200kOutput'],
+                limitMaxInput: $d['limitMaxInput'],
+                limitMaxOutput: $d['limitMaxOutput'],
+                reasoningEnabled: $d['reasoningEnabled'],
+                toolCallEnabled: $d['toolCallEnabled'],
+                structuredOutput: $d['structuredOutput'],
+                openWeights: $d['openWeights'],
+                knowledge: $d['knowledge'],
+                releaseDate: $d['releaseDate'],
             );
         }
 

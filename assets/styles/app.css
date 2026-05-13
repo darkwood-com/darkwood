@@ -91,7 +91,7 @@ a:hover {
 .main {
     flex: 1;
     padding: 1.5rem;
-    max-width: 1200px;
+    /*max-width: 1200px;*/
     width: 100%;
     margin: 0 auto;
 }
@@ -185,6 +185,23 @@ table.data td {
 table.data th {
     color: var(--muted);
     font-weight: 600;
+}
+
+.catalog-scroll {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 1rem;
+    -webkit-overflow-scrolling: touch;
+}
+
+table.catalog-table {
+    min-width: 1100px;
+}
+
+table.data th.num,
+table.data td.num {
+    text-align: right;
+    white-space: nowrap;
 }
 
 button,

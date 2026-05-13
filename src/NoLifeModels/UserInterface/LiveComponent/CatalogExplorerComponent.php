@@ -59,4 +59,15 @@ final class CatalogExplorerComponent
 
         return $this->searchCatalogModels->handle($criteria);
     }
+
+    public function getShowOver200kCostColumns(): bool
+    {
+        foreach ($this->getRows() as $entry) {
+            if (null !== $entry->costPerMillionOver200kInput || null !== $entry->costPerMillionOver200kOutput) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

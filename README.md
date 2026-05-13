@@ -1,6 +1,6 @@
 # NoLife Models
 
-Local explorer and comparator for AI models: merged **catalog** (models.dev-inspired metadata, no upstream dependency), **Ollama** inventory and `/api/generate` runs, lightweight **benchmarks**, and **JSON / CSV / Markdown** exports. Built for **Symfony 8**, **PHP 8.4+**, **DDD / hexagonal** layering under `src/NoLifeModels/`.
+Local explorer and comparator for AI models: merged **catalog** from the live **[models.dev `api.json`](https://models.dev/api.json)** (cached), optional local overrides in [`data/catalog.json`](data/catalog.json), **Ollama** inventory and `/api/generate` runs, lightweight **benchmarks**, and **JSON / CSV / Markdown** exports. Built for **Symfony 8**, **PHP 8.4+**, **DDD / hexagonal** layering under `src/NoLifeModels/`.
 
 ## Requirements
 
@@ -30,6 +30,14 @@ Set `APP_SECRET` to a non-empty random string in `.env` or `.env.local` for non-
 | `OLLAMA_TIMEOUT` | `120` | Request timeout (seconds) |
 | `OLLAMA_VERIFY_PEER` | `1` | TLS verify (`0` to disable for dev-only custom certs) |
 
+### models.dev catalog API
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `MODELS_DEV_API_URL` | `https://models.dev/api.json` | JSON document (nested providers → models) |
+| `MODELS_DEV_ENABLED` | `1` | Set to `0` to skip HTTP fetch (offline / tests) |
+| `MODELS_DEV_CACHE_TTL` | `3600` | `cache.app` TTL for the **parsed** catalog (seconds); first fill may take ~1–2 minutes (HTTP + decode + map) |
+
 ## Run (development)
 
 ```bash
@@ -47,12 +55,12 @@ Asset pipeline uses **AssetMapper** + **Stimulus**; **Turbo** is enabled via UX 
 1. **Ollama** page (`/{locale}/ollama`) lists tags from `GET /api/tags`.
 2. **Compare** (`/{locale}/compare`): two different model tags, a prompt → **Results** shows side-by-side text and metrics (`wall`, `total_duration`, `load_duration`, `prompt_eval_count`, `eval_count`, `tokens/s`, `done_reason` when Ollama returns them).
 3. **Exports** page or result actions → download JSON (stable `schema` + `version` fields).
-4. **Catalog** (`/{locale}/catalog`): merged **in-memory** rows + [`data/catalog.json`](data/catalog.json); filters update live.
+4. **Catalog** (`/{locale}/catalog`): merged **models.dev API** + [`data/catalog.json`](data/catalog.json) overrides + in-memory rows only for ids missing from both; filters update live.
 5. **Benchmarks** (`/{locale}/benchmark`): run EN/FR micro-cases against two models; matrix on result page; CSV/MD/JSON export.
 
 ## Catalog file
 
-Editable JSON (optional): [`data/catalog.json`](data/catalog.json). Entries override in-memory seeds when their `id` matches; otherwise both sources appear in the merged list.
+Editable JSON (optional): [`data/catalog.json`](data/catalog.json). Merge order: **models.dev** (primary), then **`data/catalog.json`** replaces any matching `id`, then **in-memory** seeds fill ids still absent (handy for demos when the API is disabled).
 
 ## Tests
 
@@ -64,7 +72,7 @@ php bin/phpunit -c phpunit.dist.xml
 
 - **Domain** — value objects, `PromptComparisonResult`, ports (`LocalModelRuntimeInterface`, `ModelCatalogRepositoryInterface`, `ResultExporterInterface`, …).
 - **Application** — use cases (`RunPromptComparisonHandler`, `SearchCatalogModelsHandler`, `RunBenchmarkSuiteHandler`, …).
-- **Infrastructure** — `OllamaLocalModelRuntime` (Symfony HttpClient), catalog repositories, `MultiFormatResultExporter`, `ComparisonSessionStore` (session persistence for last runs).
+- **Infrastructure** — `OllamaLocalModelRuntime` (Symfony HttpClient), `ModelsDevApiCatalogRepository` + `MergedModelCatalogRepository`, `MultiFormatResultExporter`, `ComparisonSessionStore` (session persistence for last runs).
 - **UserInterface** — Twig, HTTP controllers, forms, `CatalogExplorer` live component.
 
 Future: additional `LocalModelRuntimeInterface` implementations (OpenAI-compatible, LM Studio, vLLM) without changing domain contracts.

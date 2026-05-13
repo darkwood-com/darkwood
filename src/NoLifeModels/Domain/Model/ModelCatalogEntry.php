@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\NoLifeModels\Domain\Model;
 
 /**
- * Reduced catalog row inspired by models.dev metadata (not a full mirror).
+ * Catalog row aligned with models.dev model metadata for listing / comparison tables.
  */
 final readonly class ModelCatalogEntry
 {
@@ -22,6 +22,20 @@ final readonly class ModelCatalogEntry
         public array $inputModalities,
         public array $outputModalities,
         public array $capabilities,
+        public ?string $family = null,
+        public ?float $costPerMillionInput = null,
+        public ?float $costPerMillionOutput = null,
+        public ?float $costPerMillionReasoning = null,
+        public ?float $costPerMillionOver200kInput = null,
+        public ?float $costPerMillionOver200kOutput = null,
+        public ?int $limitMaxInput = null,
+        public ?int $limitMaxOutput = null,
+        public bool $reasoningEnabled = false,
+        public bool $toolCallEnabled = false,
+        public ?bool $structuredOutput = null,
+        public bool $openWeights = false,
+        public ?string $knowledge = null,
+        public ?string $releaseDate = null,
     ) {
     }
 }

@@ -27,6 +27,20 @@ services:
         arguments:
             $jsonPath: '%app.catalog_json%'
 
+    models_dev.http_client:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - { timeout: 120 }
+
+    App\NoLifeModels\Infrastructure\Catalog\ModelsDevApiCatalogRepository:
+        arguments:
+            $httpClient: '@models_dev.http_client'
+            $cache: '@cache.app'
+            $apiUrl: '%env(MODELS_DEV_API_URL)%'
+            $enabled: '%env(bool:MODELS_DEV_ENABLED)%'
+            $cacheTtlSeconds: '%env(int:MODELS_DEV_CACHE_TTL)%'
+
     ollama.http_client:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
         factory: ['Symfony\Component\HttpClient\HttpClient', 'createForBaseUri']
