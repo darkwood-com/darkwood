@@ -1,0 +1,252 @@
+:root {
+    --bg: #0f1115;
+    --panel: #161a22;
+    --border: #2a3140;
+    --text: #e8ecf1;
+    --muted: #9aa5b5;
+    --accent: #6c9fff;
+    --danger: #f87171;
+    --success: #4ade80;
+    --radius: 10px;
+    --font: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body.layout {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+}
+
+.header__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.header__title {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--text);
+}
+
+.header__tag {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+}
+
+.nav a {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.nav a:hover {
+    color: var(--text);
+}
+
+.locale {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.locale a.is-active {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.main {
+    flex: 1;
+    padding: 1.5rem;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    text-align: center;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.panel h1,
+.panel h2 {
+    margin-top: 0;
+}
+
+.flash {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+}
+
+.flash--success {
+    background: rgba(74, 222, 128, 0.12);
+    border: 1px solid var(--success);
+}
+
+.flash--error {
+    background: rgba(248, 113, 113, 0.12);
+    border: 1px solid var(--danger);
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.compare-col {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    background: #12151c;
+}
+
+.compare-col h3 {
+    margin-top: 0;
+    font-size: 1rem;
+}
+
+.metrics {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0.5rem 0 1rem;
+}
+
+.metrics dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 0.75rem;
+    margin: 0;
+}
+
+.metrics dt {
+    font-weight: 600;
+    color: var(--text);
+}
+
+table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+table.data th,
+table.data td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0.35rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+table.data th {
+    color: var(--muted);
+    font-weight: 600;
+}
+
+button,
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #0a0c10;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+button.secondary,
+.btn.secondary {
+    background: transparent;
+    color: var(--accent);
+}
+
+input[type="text"],
+input[type="search"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.5rem 0.65rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #0c0e12;
+    color: var(--text);
+    font: inherit;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.form-row {
+    margin-bottom: 1rem;
+}
+
+.catalog-explorer .filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}

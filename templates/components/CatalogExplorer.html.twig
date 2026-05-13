@@ -1,0 +1,61 @@
+<div{{ attributes.defaults({class: 'catalog-explorer panel'}) }}>
+    <h2>{{ 'catalog.filters'|trans }}</h2>
+    <div class="filters">
+        <div class="form-row">
+            <label for="catalog-q">{{ 'catalog.query'|trans }}</label>
+            <input id="catalog-q" type="search" data-model="query">
+        </div>
+        <div class="form-row">
+            <label for="catalog-provider">{{ 'catalog.provider'|trans }}</label>
+            <input id="catalog-provider" type="text" data-model="providerId">
+        </div>
+        <div class="form-row">
+            <label for="catalog-modality">{{ 'catalog.modality'|trans }}</label>
+            <select id="catalog-modality" data-model="modality">
+                <option value="">{{ 'catalog.any'|trans }}</option>
+                <option value="text">text</option>
+                <option value="image">image</option>
+                <option value="audio">audio</option>
+                <option value="video">video</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="catalog-minctx">{{ 'catalog.min_context'|trans }}</label>
+            <input id="catalog-minctx" type="number" min="0" step="1024" data-model="minContext">
+        </div>
+    </div>
+
+    <table class="data">
+        <thead>
+        <tr>
+            <th>{{ 'table.id'|trans }}</th>
+            <th>{{ 'table.provider'|trans }}</th>
+            <th>{{ 'table.name'|trans }}</th>
+            <th>{{ 'table.context'|trans }}</th>
+            <th>{{ 'table.modalities'|trans }}</th>
+            <th>{{ 'table.capabilities'|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in this.rows %}
+            <tr>
+                <td class="mono">{{ row.id.value }}</td>
+                <td class="mono">{{ row.providerId.value }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.contextLength ?? '—' }}</td>
+                <td class="mono">{{ row.inputModalities|join(', ') }} → {{ row.outputModalities|join(', ') }}</td>
+                <td class="mono">{{ row.capabilities|join(', ') }}</td>
+                <td>
+                    <button type="button" class="btn secondary" title="{{ 'catalog.copy_id'|trans }}"
+                            onclick="navigator.clipboard.writeText('{{ row.id.value|e('js') }}')">{{ 'catalog.copy_id'|trans }}</button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">{{ 'catalog.no_results'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
