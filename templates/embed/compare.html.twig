@@ -1,0 +1,21 @@
+{% extends 'embed_base.html.twig' %}
+{% block title %}{{ 'page.compare'|trans }} — {{ parent() }}{% endblock %}
+{% block body %}
+    <div class="panel">
+        <h1>{{ 'page.compare'|trans }}</h1>
+        <p>{{ 'page.compare_intro'|trans }}</p>
+    </div>
+    <div class="panel">
+        {{ form_start(form, {attr: {}}) }}
+        {{ form_row(form.modelA) }}
+        {{ form_row(form.modelB) }}
+        {{ form_row(form.prompt) }}
+        {{ form_row(form.system) }}
+        <div class="grid-2">
+            <div class="form-row">{{ form_row(form.temperature) }}</div>
+            <div class="form-row">{{ form_row(form.topP) }}</div>
+        </div>
+        {{ form_row(form.submit) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

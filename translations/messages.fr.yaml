@@ -2,6 +2,9 @@ app.name: 'NoLife Models'
 app.tagline: 'Catalogue models.dev, runtime Ollama, benchmarks, exports'
 app.footer: 'Darkwood — souveraineté locale pour le travail sur les modèles.'
 
+embed.banner: 'Vue intégrée — sans Stimulus / Turbo / LiveComponent (fiable dans les iframes).'
+embed.catalog_truncated: 'Vue intégrée : seulement les %count% premières lignes. Ouvrez le catalogue complet pour l’explorateur live.'
+
 nav.main: 'Navigation principale'
 nav.dashboard: 'Tableau de bord'
 nav.catalog: 'Catalogue'

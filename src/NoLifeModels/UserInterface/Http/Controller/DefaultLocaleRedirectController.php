@@ -16,6 +16,36 @@ final class DefaultLocaleRedirectController extends AbstractController
 {
     private const DEFAULT_LOCALE = 'en';
 
+    #[Route('/embed/compare', name: 'app_nolife_redirect_embed_compare', methods: ['GET', 'POST'])]
+    public function embedCompare(Request $request): Response
+    {
+        return $this->redirectNoLife('no_life_models_embed_compare', $request);
+    }
+
+    #[Route('/embed/catalog', name: 'app_nolife_redirect_embed_catalog', methods: ['GET'])]
+    public function embedCatalog(Request $request): Response
+    {
+        return $this->redirectNoLife('no_life_models_embed_catalog', $request);
+    }
+
+    #[Route('/embed/ollama', name: 'app_nolife_redirect_embed_ollama', methods: ['GET'])]
+    public function embedOllama(Request $request): Response
+    {
+        return $this->redirectNoLife('no_life_models_embed_ollama', $request);
+    }
+
+    #[Route('/embed/benchmark', name: 'app_nolife_redirect_embed_benchmark', methods: ['GET', 'POST'])]
+    public function embedBenchmark(Request $request): Response
+    {
+        return $this->redirectNoLife('no_life_models_embed_benchmark', $request);
+    }
+
+    #[Route('/embed/exports', name: 'app_nolife_redirect_embed_exports', methods: ['GET'])]
+    public function embedExports(Request $request): Response
+    {
+        return $this->redirectNoLife('no_life_models_embed_exports', $request);
+    }
+
     #[Route('/dashboard', name: 'app_nolife_redirect_dashboard', methods: ['GET'])]
     public function dashboard(Request $request): Response
     {

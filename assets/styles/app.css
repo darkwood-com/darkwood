@@ -26,6 +26,17 @@ body.layout {
     line-height: 1.5;
 }
 
+.embed-banner {
+    margin: 0 auto 1rem;
+    max-width: min(1180px, calc(100vw - 48px));
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(108, 159, 255, 0.08);
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
 a {
     color: var(--accent);
     text-decoration: none;
