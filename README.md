@@ -36,7 +36,7 @@ Set `APP_SECRET` to a non-empty random string in `.env` or `.env.local` for non-
 |----------|---------|---------|
 | `MODELS_DEV_API_URL` | `https://models.dev/api.json` | JSON document (nested providers → models) |
 | `MODELS_DEV_ENABLED` | `1` | Set to `0` to skip HTTP fetch (offline / tests) |
-| `MODELS_DEV_CACHE_TTL` | `3600` | `cache.app` TTL for the **parsed** catalog (seconds); first fill may take ~1–2 minutes (HTTP + decode + map) |
+| `MODELS_DEV_CACHE_TTL` | `3600` | `cache.app` TTL for the **parsed** catalog (JSON rows in cache; first fill may take ~1–2 minutes: HTTP + decode + map) |
 
 ## Run (development)
 

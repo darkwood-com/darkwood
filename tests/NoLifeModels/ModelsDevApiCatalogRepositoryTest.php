@@ -70,6 +70,47 @@ final class ModelsDevApiCatalogRepositoryTest extends TestCase
         self::assertSame('2026-01-01', $e->releaseDate);
     }
 
+    public function testJsonCacheCodecRoundTrip(): void
+    {
+        $fixture = [
+            'acme' => [
+                'id' => 'acme',
+                'name' => 'Acme',
+                'models' => [
+                    'widget-1' => [
+                        'id' => 'widget-1',
+                        'name' => 'Widget 1',
+                        'family' => 'widgets',
+                        'modalities' => [
+                            'input' => ['text'],
+                            'output' => ['text', 'image'],
+                        ],
+                        'limit' => ['context' => 8192],
+                        'tool_call' => true,
+                        'reasoning' => false,
+                        'attachment' => true,
+                        'structured_output' => false,
+                    ],
+                ],
+            ],
+        ];
+
+        $entries = ModelsDevApiCatalogRepository::parseDecodedApi($fixture);
+        self::assertCount(1, $entries);
+
+        $ref = new \ReflectionClass(ModelsDevApiCatalogRepository::class);
+        $encode = $ref->getMethod('encodeCachedCatalog');
+        $decode = $ref->getMethod('decodeCachedCatalogBlob');
+
+        $blob = $encode->invoke(null, $entries);
+        self::assertStringContainsString('"v":3', $blob);
+
+        $back = $decode->invoke(null, $blob);
+        self::assertCount(1, $back);
+        self::assertSame('acme/widget-1', $back[0]->id->value);
+        self::assertFalse($back[0]->structuredOutput);
+    }
+
     public function testParseDecodedApiSkipsNonProviderShapes(): void
     {
         $rows = ModelsDevApiCatalogRepository::parseDecodedApi([

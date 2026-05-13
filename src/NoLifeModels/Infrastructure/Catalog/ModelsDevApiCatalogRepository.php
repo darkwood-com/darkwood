@@ -14,18 +14,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Loads catalog rows from models.dev public API (nested providers → models map).
+ *
+ * Cached payload is JSON (plain rows), not PHP serialize(), so large catalogs do not
+ * hit multi‑second {@see unserialize()} on every catalog page view.
  */
 final class ModelsDevApiCatalogRepository implements ModelCatalogRepositoryInterface
 {
-    /** Parsed {@see ModelCatalogEntry} list (not raw JSON) — avoids json_decode on every request. */
-    private const CACHE_KEY = 'no_life_models.models_dev_parsed_entries_v2';
+    private const CACHE_KEY = 'no_life_models.models_dev_parsed_json_v3';
 
-    /** @var list<class-string> */
-    private const UNSERIALIZE_CLASSES = [
-        ModelCatalogEntry::class,
-        ModelId::class,
-        ProviderId::class,
-    ];
+    private const CACHE_FORMAT_VERSION = 3;
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
@@ -42,6 +39,10 @@ final class ModelsDevApiCatalogRepository implements ModelCatalogRepositoryInter
             return [];
         }
 
+        if (\function_exists('set_time_limit')) {
+            @set_time_limit(120);
+        }
+
         try {
             $blob = $this->cache->get(self::CACHE_KEY, function (ItemInterface $item): string {
                 $item->expiresAfter($this->cacheTtlSeconds);
@@ -53,14 +54,14 @@ final class ModelsDevApiCatalogRepository implements ModelCatalogRepositoryInter
                     if (200 !== $response->getStatusCode()) {
                         $item->expiresAfter(60);
 
-                        return self::serializeEntries([]);
+                        return self::encodeCachedCatalog([]);
                     }
 
                     $raw = $response->getContent();
                 } catch (\Throwable) {
                     $item->expiresAfter(60);
 
-                    return self::serializeEntries([]);
+                    return self::encodeCachedCatalog([]);
                 }
 
                 try {
@@ -68,47 +69,177 @@ final class ModelsDevApiCatalogRepository implements ModelCatalogRepositoryInter
                 } catch (\JsonException) {
                     $item->expiresAfter(60);
 
-                    return self::serializeEntries([]);
+                    return self::encodeCachedCatalog([]);
                 }
 
-                return self::serializeEntries(self::parseDecodedApi($data));
+                return self::encodeCachedCatalog(self::parseDecodedApi($data));
             });
         } catch (\Throwable) {
             return [];
         }
 
-        return self::unserializeEntriesBlob($blob);
+        return self::decodeCachedCatalogBlob($blob);
     }
 
     /**
      * @param list<ModelCatalogEntry> $entries
      */
-    private static function serializeEntries(array $entries): string
+    private static function encodeCachedCatalog(array $entries): string
     {
-        return serialize($entries);
+        $rows = [];
+        foreach ($entries as $e) {
+            if (!$e instanceof ModelCatalogEntry) {
+                continue;
+            }
+            $rows[] = self::entryToPlainRow($e);
+        }
+
+        return json_encode(
+            ['v' => self::CACHE_FORMAT_VERSION, 'rows' => $rows],
+            \JSON_THROW_ON_ERROR,
+        );
     }
 
     /**
      * @return list<ModelCatalogEntry>
      */
-    private static function unserializeEntriesBlob(mixed $blob): array
+    private static function decodeCachedCatalogBlob(mixed $blob): array
     {
         if (!\is_string($blob) || '' === $blob) {
             return [];
         }
 
-        $data = @unserialize($blob, ['allowed_classes' => self::UNSERIALIZE_CLASSES]);
-        if (!\is_array($data)) {
+        try {
+            $wrap = json_decode($blob, true, 32, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
             return [];
         }
+
+        if (!\is_array($wrap) || (int) ($wrap['v'] ?? 0) !== self::CACHE_FORMAT_VERSION) {
+            return [];
+        }
+        $rows = $wrap['rows'] ?? null;
+        if (!\is_array($rows)) {
+            return [];
+        }
+
         $out = [];
-        foreach ($data as $row) {
-            if ($row instanceof ModelCatalogEntry) {
-                $out[] = $row;
+        foreach ($rows as $r) {
+            if (!\is_array($r)) {
+                continue;
+            }
+            $e = self::entryFromPlainRow($r);
+            if ($e instanceof ModelCatalogEntry) {
+                $out[] = $e;
             }
         }
 
         return $out;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function entryToPlainRow(ModelCatalogEntry $e): array
+    {
+        return [
+            'id' => $e->id->value,
+            'providerId' => $e->providerId->value,
+            'name' => $e->name,
+            'contextLength' => $e->contextLength,
+            'inputModalities' => $e->inputModalities,
+            'outputModalities' => $e->outputModalities,
+            'capabilities' => $e->capabilities,
+            'family' => $e->family,
+            'costPerMillionInput' => $e->costPerMillionInput,
+            'costPerMillionOutput' => $e->costPerMillionOutput,
+            'costPerMillionReasoning' => $e->costPerMillionReasoning,
+            'costPerMillionOver200kInput' => $e->costPerMillionOver200kInput,
+            'costPerMillionOver200kOutput' => $e->costPerMillionOver200kOutput,
+            'limitMaxInput' => $e->limitMaxInput,
+            'limitMaxOutput' => $e->limitMaxOutput,
+            'reasoningEnabled' => $e->reasoningEnabled,
+            'toolCallEnabled' => $e->toolCallEnabled,
+            'structuredOutput' => $e->structuredOutput,
+            'openWeights' => $e->openWeights,
+            'knowledge' => $e->knowledge,
+            'releaseDate' => $e->releaseDate,
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $r
+     */
+    private static function entryFromPlainRow(array $r): ?ModelCatalogEntry
+    {
+        try {
+            $id = (string) ($r['id'] ?? '');
+            $providerId = (string) ($r['providerId'] ?? '');
+            if ('' === $id || '' === $providerId) {
+                return null;
+            }
+
+            $in = self::stringList($r['inputModalities'] ?? ['text']);
+            $outM = self::stringList($r['outputModalities'] ?? ['text']);
+            if ([] === $in) {
+                $in = ['text'];
+            }
+            if ([] === $outM) {
+                $outM = ['text'];
+            }
+
+            return new ModelCatalogEntry(
+                new ModelId($id),
+                new ProviderId($providerId),
+                (string) ($r['name'] ?? $id),
+                isset($r['contextLength']) && is_numeric($r['contextLength']) ? (int) $r['contextLength'] : null,
+                $in,
+                $outM,
+                self::stringList($r['capabilities'] ?? []),
+                family: self::optionalString($r['family'] ?? null),
+                costPerMillionInput: self::optionalFloat($r['costPerMillionInput'] ?? null),
+                costPerMillionOutput: self::optionalFloat($r['costPerMillionOutput'] ?? null),
+                costPerMillionReasoning: self::optionalFloat($r['costPerMillionReasoning'] ?? null),
+                costPerMillionOver200kInput: self::optionalFloat($r['costPerMillionOver200kInput'] ?? null),
+                costPerMillionOver200kOutput: self::optionalFloat($r['costPerMillionOver200kOutput'] ?? null),
+                limitMaxInput: isset($r['limitMaxInput']) && is_numeric($r['limitMaxInput']) ? (int) $r['limitMaxInput'] : null,
+                limitMaxOutput: isset($r['limitMaxOutput']) && is_numeric($r['limitMaxOutput']) ? (int) $r['limitMaxOutput'] : null,
+                reasoningEnabled: (bool) ($r['reasoningEnabled'] ?? false),
+                toolCallEnabled: (bool) ($r['toolCallEnabled'] ?? false),
+                structuredOutput: \array_key_exists('structuredOutput', $r)
+                    ? (null === $r['structuredOutput'] ? null : (bool) $r['structuredOutput'])
+                    : null,
+                openWeights: (bool) ($r['openWeights'] ?? false),
+                knowledge: self::optionalString($r['knowledge'] ?? null),
+                releaseDate: self::optionalString($r['releaseDate'] ?? null),
+            );
+        } catch (\InvalidArgumentException) {
+            return null;
+        }
+    }
+
+    private static function optionalString(mixed $v): ?string
+    {
+        if (!\is_string($v) || '' === $v) {
+            return null;
+        }
+
+        return $v;
+    }
+
+    private static function optionalFloat(mixed $v): ?float
+    {
+        if (null === $v) {
+            return null;
+        }
+        if (\is_int($v) || \is_float($v)) {
+            return (float) $v;
+        }
+        if (\is_string($v) && is_numeric($v)) {
+            return (float) $v;
+        }
+
+        return null;
     }
 
     /**
