@@ -43,6 +43,16 @@ final class BenchmarkVideoArtifactSuffixTest extends TestCase
         );
     }
 
+    public function test_seedance_2_fast_preset(): void
+    {
+        self::assertSame(
+            'seedance-2-0-fast',
+            BenchmarkVideoArtifactSuffix::resolve([
+                'replicate_preset' => ReplicateVideoModelPresets::SEEDANCE_2_FAST,
+            ])
+        );
+    }
+
     public function test_p_video_draft_preset_appends_draft(): void
     {
         self::assertSame(

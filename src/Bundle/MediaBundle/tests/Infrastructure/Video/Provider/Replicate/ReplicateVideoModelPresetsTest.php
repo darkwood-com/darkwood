@@ -20,6 +20,22 @@ final class ReplicateVideoModelPresetsTest extends TestCase
     {
         $r = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE);
         self::assertSame('bytedance/seedance-1-lite', $r['model']);
+        self::assertSame(24, $r['input']['fps'] ?? null);
+        self::assertSame('480p', $r['input']['resolution'] ?? null);
+    }
+
+    public function test_resolve_seedance_2_fast(): void
+    {
+        $r = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE_2_FAST);
+        self::assertSame('bytedance/seedance-2.0-fast', $r['model']);
+        self::assertSame('480p', $r['input']['resolution'] ?? null);
+    }
+
+    public function test_resolve_seedance_2_fast_9_16(): void
+    {
+        $r = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE_2_FAST_9_16);
+        self::assertSame('bytedance/seedance-2.0-fast', $r['model']);
+        self::assertSame('9:16', $r['input']['aspect_ratio'] ?? null);
     }
 
     public function test_resolve_p_video_draft_sets_draft_flag(): void
@@ -52,6 +68,10 @@ final class ReplicateVideoModelPresetsTest extends TestCase
         self::assertSame(
             ReplicateVideoModelPresets::HAILUO,
             ReplicateVideoModelPresets::presetKeyFromCliVideoModel('HAILUO')
+        );
+        self::assertSame(
+            ReplicateVideoModelPresets::SEEDANCE_2_FAST,
+            ReplicateVideoModelPresets::presetKeyFromCliVideoModel('seedance2fast')
         );
     }
 

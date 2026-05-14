@@ -8,7 +8,7 @@ use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
 
 /**
  * Derives the filename middle segment for benchmark scene videos: video--{suffix}.mp4
- * (e.g. hailuo-02-fast, seedance-1-lite, p-video-draft).
+ * (e.g. hailuo-02-fast, seedance-1-lite, seedance-2-0-fast, p-video-draft).
  *
  * Only returns a suffix when the caller passed explicit benchmark-related options
  * (preset, model override, or video_artifact_key). Provider-internal defaults alone

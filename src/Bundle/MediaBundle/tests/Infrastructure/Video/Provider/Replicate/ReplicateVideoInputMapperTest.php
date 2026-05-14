@@ -32,6 +32,19 @@ final class ReplicateVideoInputMapperTest extends TestCase
 
         self::assertSame('Scene', $out['prompt']);
         self::assertSame(5, $out['duration']);
+        self::assertSame(24, $out['fps']);
+        self::assertSame('480p', $out['resolution']);
+    }
+
+    public function test_seedance_2_fast_maps_prompt_and_resolution(): void
+    {
+        $m = new ReplicateVideoInputMapper();
+        $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE_2_FAST);
+        $out = $m->buildInput($preset['model'], $preset['input'], 'Clip', ['duration' => 8]);
+
+        self::assertSame('Clip', $out['prompt']);
+        self::assertSame(8, $out['duration']);
+        self::assertSame('480p', $out['resolution']);
     }
 
     public function test_p_video_coerces_draft_boolean(): void
