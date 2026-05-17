@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C37347702FBA10060090AB91 /* HotwireNative in Frameworks */ = {isa = PBXBuildFile; productRef = C373476F2FBA10060090AB91 /* HotwireNative */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C37347562FBA0FB60090AB91 /* FlowvoxNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlowvoxNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C37347702FBA10060090AB91 /* HotwireNative in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = FlowvoxNative;
 			packageProductDependencies = (
+				C373476F2FBA10060090AB91 /* HotwireNative */,
 			);
 			productName = FlowvoxNative;
 			productReference = C37347562FBA0FB60090AB91 /* FlowvoxNative.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = C373474D2FBA0FB60090AB91;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C373476E2FBA10060090AB91 /* XCRemoteSwiftPackageReference "hotwire-native-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C37347572FBA0FB60090AB91 /* Products */;
 			projectDirPath = "";
@@ -145,6 +154,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7RMZ4Y24P3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FlowvoxNative/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -176,6 +186,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7RMZ4Y24P3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FlowvoxNative/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -341,6 +352,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C373476E2FBA10060090AB91 /* XCRemoteSwiftPackageReference "hotwire-native-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hotwired/hotwire-native-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C373476F2FBA10060090AB91 /* HotwireNative */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C373476E2FBA10060090AB91 /* XCRemoteSwiftPackageReference "hotwire-native-ios" */;
+			productName = HotwireNative;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C373474E2FBA0FB60090AB91 /* Project object */;
 }
