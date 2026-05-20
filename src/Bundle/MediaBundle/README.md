@@ -12,5 +12,6 @@ php bin/console app:video:generate examples/video.yaml
 Run tests (no live Replicate calls; HTTP is mocked in provider tests):
 
 ```bash
-./bin/phpunit
+make phpunit
+# or: ./bin/phpunit (delegates to tools/phpunit)
 ```

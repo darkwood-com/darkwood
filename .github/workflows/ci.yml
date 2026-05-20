@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 1.x
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  resolve-packages:
+    name: Resolve packages to test
+    runs-on: ubuntu-24.04
+    outputs:
+      packages: ${{ steps.set-matrix.outputs.packages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine modified files
+        id: modified
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "mode=all" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          BASE_REF="${{ github.event.pull_request.base.ref }}"
+          git fetch origin "${BASE_REF}"
+          {
+            echo 'files<<EOF'
+            git diff --name-only "origin/${BASE_REF}...HEAD"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+          echo "mode=pr" >> "$GITHUB_OUTPUT"
+
+      - name: Build package matrix
+        id: set-matrix
+        run: |
+          if [ "${{ steps.modified.outputs.mode }}" = "all" ]; then
+            PACKAGES=$(php .github/get-modified-packages.php all)
+          else
+            PACKAGES=$(printf '%s\n' "${{ steps.modified.outputs.files }}" | php .github/get-modified-packages.php -)
+          fi
+          echo "packages=${PACKAGES}" >> "$GITHUB_OUTPUT"
+          echo "Packages to test: ${PACKAGES}"
+
+  qa:
+    name: QA
+    needs: resolve-packages
+    if: needs.resolve-packages.outputs.packages != '[]'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.resolve-packages.outputs.packages) }}
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3311:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    # MySQL is only required by Navi tests; other packages ignore the service.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.package.php }}
+          extensions: ${{ matrix.package.php_extensions }}
+          tools: composer
+          coverage: none
+
+      - name: Run package QA
+        run: .github/ci-run-package.sh "${{ matrix.package.id }}"

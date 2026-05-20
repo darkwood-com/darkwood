@@ -1,0 +1,56 @@
+{
+    "packages": [
+        {
+            "id": "navi",
+            "directory": "src/Component/Navi",
+            "composer_name": "darkwood/navi",
+            "php": "8.5",
+            "php_extensions": "xsl, openswoole",
+            "mysql": true,
+            "checks": {
+                "php_cs_fixer": "tools/php-cs-fixer",
+                "phpstan": "tools/phpstan",
+                "phpunit": "tools/phpunit"
+            }
+        },
+        {
+            "id": "flow",
+            "directory": "src/Component/Flow",
+            "composer_name": "darkwood/flow",
+            "php": "8.5",
+            "php_extensions": "xsl, openswoole",
+            "mysql": false,
+            "checks": {
+                "php_cs_fixer": "tools/php-cs-fixer",
+                "phpstan": "tools/phpstan",
+                "phpunit": "tools/phpunit"
+            }
+        },
+        {
+            "id": "media-bundle",
+            "directory": "src/Bundle/MediaBundle",
+            "composer_name": "darkwood/media-bundle",
+            "php": "8.5",
+            "php_extensions": "ctype, iconv",
+            "mysql": false,
+            "checks": {
+                "php_cs_fixer": "tools/php-cs-fixer",
+                "phpstan": "tools/phpstan",
+                "phpunit": "tools/phpunit"
+            }
+        },
+        {
+            "id": "ia-exception-bundle",
+            "directory": "src/Bundle/IaExceptionBundle",
+            "composer_name": "darkwood/ia-exception-bundle",
+            "php": "8.5",
+            "php_extensions": "ctype, iconv",
+            "mysql": false,
+            "checks": {
+                "php_cs_fixer": "tools/php-cs-fixer",
+                "phpstan": "tools/phpstan",
+                "phpunit": "tools/phpunit"
+            }
+        }
+    ]
+}

@@ -49,12 +49,14 @@ For tools isolated under `tools/` (PHPStan, PHPUnit, PHP CS Fixer), run `compose
 From the package directory:
 
 ```bash
-make php-cs-fixer   # Flow, Navi
-make phpstan
-make phpunit
+make php-cs-fixer   # PHP CS Fixer ^3.94
+make phpstan        # PHPStan ^2.0
+make phpunit        # PHPUnit ^13.0
 ```
 
-Fix style issues with the package PHP CS Fixer config (`tools/php-cs-fixer/` or documented `make` target).
+Replicate CI locally: `.github/ci-run-package.sh navi` (replace `navi` with the package id you changed).
+
+Fix style issues with the package PHP CS Fixer config under `tools/php-cs-fixer/`.
 
 ### 5. Changelog
 
@@ -92,11 +94,12 @@ The target project must have run `composer install` and depend on at least one `
 ### `splitsh.json` — satellite repositories
 
 Maps monorepo paths to GitHub repository names used for subtree splits and releases.
-Keep this file updated when adding or renaming packages.
+**Navi** is listed as `reference_package` in `splitsh.json`. Keep this file updated when adding or renaming packages.
 
 ## Review expectations
 
-- CI (fabbot + package workflows) must pass.
+- CI must pass: **Fabbot** (`.github/workflows/fabbot.yml`) and **QA** (`.github/workflows/ci.yml`).
+- QA runs only on packages modified by your PR; replicate locally with `.github/ci-run-package.sh navi` (or the relevant package id).
 - Tests cover the change or explain why not (docs-only PRs).
 - No secrets, `.env.local`, or large binary artefacts in commits.
 

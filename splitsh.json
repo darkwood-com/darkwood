@@ -1,16 +1,17 @@
 {
     "repository": "darkwood-com/darkwood",
     "branch": "1.x",
+    "reference_package": "navi",
     "subtrees": {
-        "flow": "src/Component/Flow",
         "navi": "src/Component/Navi",
-        "ia-exception-bundle": "src/Bundle/IaExceptionBundle",
-        "media-bundle": "src/Bundle/MediaBundle"
+        "flow": "src/Component/Flow",
+        "media-bundle": "src/Bundle/MediaBundle",
+        "ia-exception-bundle": "src/Bundle/IaExceptionBundle"
     },
     "remotes": {
-        "flow": "git@github.com:darkwood-com/flow.git",
         "navi": "git@github.com:darkwood-com/navi.git",
-        "ia-exception-bundle": "git@github.com:darkwood-com/ia-exception-bundle.git",
-        "media-bundle": "git@github.com:darkwood-com/media-bundle.git"
+        "flow": "git@github.com:darkwood-com/flow.git",
+        "media-bundle": "git@github.com:darkwood-com/media-bundle.git",
+        "ia-exception-bundle": "git@github.com:darkwood-com/ia-exception-bundle.git"
     }
 }

@@ -9,7 +9,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Navi\\Tests\\": "tests/"
+            "Navi\\Tests\\": "../../tests"
         }
     }
 }
