@@ -13,24 +13,3 @@ var/
 .env
 .env.local
 .env.*.local
-
-# IDE and OS
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
-
-# Tool caches (root and packages)
-.php-cs-fixer.cache
-.phpstan.cache/
-psalm.cache/
-
-# Local PHP CS Fixer override at monorepo root only (committed configs: tools/php-cs-fixer/.php-cs-fixer.php)
-/.php-cs-fixer.php
-
-# Node (Flow docs, etc.)
-node_modules/
-
-# Build artefacts
-*.log
