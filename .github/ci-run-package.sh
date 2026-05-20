@@ -51,7 +51,12 @@ echo "::group::PHPStan (${PACKAGE_DIR})"
 echo "::endgroup::"
 
 echo "::group::PHPUnit (${PACKAGE_DIR})"
-(cd tools/phpunit && vendor/bin/phpunit --configuration phpunit.xml)
+PHPUNIT_CONFIG="${ROOT_DIR}/${PACKAGE_DIR}/tools/phpunit/phpunit.xml"
+if [ ! -f "${PHPUNIT_CONFIG}" ]; then
+    echo "Missing PHPUnit config: ${PHPUNIT_CONFIG}" >&2
+    exit 1
+fi
+(cd tools/phpunit && vendor/bin/phpunit --configuration "${PHPUNIT_CONFIG}")
 echo "::endgroup::"
 
 echo "All checks passed for ${PACKAGE_DIR}"

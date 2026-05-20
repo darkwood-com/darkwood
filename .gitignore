@@ -3,7 +3,7 @@ vendor/
 composer.phar
 .phpunit.cache/
 .phpunit.result.cache/
-phpunit.xml
+/phpunit.xml
 
 # Symfony runtime (packages that embed an app)
 var/
