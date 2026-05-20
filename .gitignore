@@ -1,0 +1,35 @@
+# Composer / PHP
+vendor/
+composer.lock
+composer.phar
+.phpunit.cache/
+.phpunit.result.cache/
+phpunit.xml
+
+# Symfony runtime (packages that embed an app)
+var/
+/public/bundles/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# IDE and OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Tool caches (root and packages)
+.php-cs-fixer.cache
+.php-cs-fixer.php
+.phpstan.cache/
+psalm.cache/
+
+# Node (Flow docs, etc.)
+node_modules/
+
+# Build artefacts
+*.log

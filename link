@@ -1,0 +1,181 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Links darkwood/* Composer packages in a project vendor/ directory to this monorepo.
+ *
+ * Inspired by symfony/symfony's link script.
+ *
+ * Usage:
+ *   ./link /path/to/project
+ *   ./link --copy /path/to/project
+ *   ./link --rollback /path/to/project
+ */
+
+declare(strict_types=1);
+
+$monorepoRoot = __DIR__;
+$argv = $_SERVER['argv'];
+$script = array_shift($argv);
+
+$copy = false !== ($k = array_search('--copy', $argv, true));
+$copy && array_splice($argv, $k, 1);
+$rollback = false !== ($k = array_search('--rollback', $argv, true));
+$rollback && array_splice($argv, $k, 1);
+$pathToProject = $argv[0] ?? getcwd();
+
+$vendorDarkwood = rtrim($pathToProject, '/\\').'/vendor/darkwood';
+
+if (!is_dir($vendorDarkwood)) {
+    fwrite(STDERR, "Link darkwood monorepo packages into a consuming project's vendor/ directory.\n\n");
+    fwrite(STDERR, "Usage: {$script} [--copy|--rollback] /path/to/project\n\n");
+    fwrite(STDERR, "  --copy      Copy files instead of symlinking (useful on Windows)\n");
+    fwrite(STDERR, "  --rollback  Remove links/copies; run \"composer install\" in the project afterward\n\n");
+    fwrite(STDERR, "Directory not found or no darkwood packages installed: {$vendorDarkwood}\n");
+    fwrite(STDERR, "Run \"composer install\" in the target project first.\n");
+    exit(1);
+}
+
+/** @return array<string, string> composer package name => absolute monorepo path */
+function discoverPackages(string $monorepoRoot): array
+{
+    $packages = ['darkwood/darkwood' => $monorepoRoot];
+    $roots = [
+        $monorepoRoot.'/src/Component',
+        $monorepoRoot.'/src/Bundle',
+    ];
+
+    foreach ($roots as $root) {
+        if (!is_dir($root)) {
+            continue;
+        }
+        foreach (scandir($root) ?: [] as $entry) {
+            if ('.' === $entry || '..' === $entry) {
+                continue;
+            }
+            $dir = $root.'/'.$entry;
+            $composer = $dir.'/composer.json';
+            if (!is_file($composer)) {
+                continue;
+            }
+            $data = json_decode((string) file_get_contents($composer), true, 512, JSON_THROW_ON_ERROR);
+            if (isset($data['name']) && is_string($data['name'])) {
+                $packages[$data['name']] = $dir;
+            }
+        }
+    }
+
+    return $packages;
+}
+
+/** @param list<string> $paths */
+function removePath(string $path): void
+{
+    if (is_link($path) || is_file($path)) {
+        unlink($path);
+
+        return;
+    }
+    if (!is_dir($path)) {
+        return;
+    }
+    $items = scandir($path) ?: [];
+    foreach ($items as $item) {
+        if ('.' === $item || '..' === $item) {
+            continue;
+        }
+        removePath($path.'/'.$item);
+    }
+    rmdir($path);
+}
+
+/** @param list<string> $paths */
+function copyDirectory(string $source, string $destination): void
+{
+    if (!is_dir($destination)) {
+        mkdir($destination, 0777, true);
+    }
+    $items = scandir($source) ?: [];
+    foreach ($items as $item) {
+        if ('.' === $item || '..' === $item) {
+            continue;
+        }
+        $src = $source.'/'.$item;
+        $dst = $destination.'/'.$item;
+        if (is_dir($src)) {
+            copyDirectory($src, $dst);
+        } else {
+            copy($src, $dst);
+        }
+    }
+}
+
+$packages = discoverPackages($monorepoRoot);
+
+foreach (scandir($vendorDarkwood) ?: [] as $entry) {
+    if ('.' === $entry || '..' === $entry) {
+        continue;
+    }
+    $dir = $vendorDarkwood.'/'.$entry;
+    if (!is_dir($dir) && !is_link($dir)) {
+        continue;
+    }
+
+    $package = 'darkwood/'.$entry;
+    if (!isset($packages[$package])) {
+        fwrite(STDERR, "Skipping unknown package \"{$package}\".\n");
+        continue;
+    }
+
+    if ($rollback) {
+        removePath($dir);
+        echo "\"{$package}\" removed from vendor (was linked to monorepo).\n";
+        continue;
+    }
+
+    if (!$copy && is_link($dir)) {
+        echo "\"{$package}\" is already a symlink, skipping.\n";
+        continue;
+    }
+
+    $source = $packages[$package];
+    if ('\\' === DIRECTORY_SEPARATOR || $copy) {
+        $target = $source;
+    } else {
+        $target = rtrim((string) realpath($source), '/');
+        $vendorReal = realpath(dirname($dir));
+        if (false === $vendorReal) {
+            fwrite(STDERR, "Cannot resolve vendor path for \"{$package}\".\n");
+            exit(1);
+        }
+        $relative = '';
+        $from = $vendorReal;
+        $to = $target;
+        while (!str_starts_with($to, $from.DIRECTORY_SEPARATOR) && $from !== dirname($from)) {
+            $relative .= '../';
+            $from = dirname($from);
+        }
+        $relative .= ltrim(substr($to, strlen($from)), DIRECTORY_SEPARATOR);
+        $target = $relative;
+    }
+
+    removePath($dir);
+
+    if ($copy) {
+        copyDirectory($source, $dir);
+        echo "\"{$package}\" copied from \"{$source}\".\n";
+    } else {
+        symlink($target, $dir);
+        echo "\"{$package}\" linked to \"{$source}\".\n";
+    }
+}
+
+foreach (glob(rtrim($pathToProject, '/\\').'/var/cache/*') ?: [] as $cacheDir) {
+    if (is_dir($cacheDir)) {
+        removePath($cacheDir);
+    }
+}
+
+if ($rollback) {
+    echo PHP_EOL."Rollback done. Run \"composer install\" in \"{$pathToProject}\" to restore packages from Packagist.\n";
+}
