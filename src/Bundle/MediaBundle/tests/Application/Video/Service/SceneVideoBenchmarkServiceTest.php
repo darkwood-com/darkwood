@@ -13,11 +13,17 @@ use App\Infrastructure\Video\Provider\FakeVideoGenerationProvider;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
 use App\Infrastructure\Video\Storage\LocalArtifactStorage;
 use App\Infrastructure\Video\Storage\VideoPathResolver;
+use FilesystemIterator;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+
+use function is_string;
 
 final class SceneVideoBenchmarkServiceTest extends TestCase
 {
-    public function test_generates_one_video_asset_per_preset_same_prompt(): void
+    public function testGeneratesOneVideoAssetPerPresetSamePrompt(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-bench-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -56,7 +62,7 @@ final class SceneVideoBenchmarkServiceTest extends TestCase
         }
     }
 
-    public function test_each_preset_asset_carries_replicate_like_metadata(): void
+    public function testEachPresetAssetCarriesReplicateLikeMetadata(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-bench-meta-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -70,7 +76,7 @@ final class SceneVideoBenchmarkServiceTest extends TestCase
                 {
                     $targetPath = $options['target_path'];
                     if (!is_string($targetPath) || $targetPath === '') {
-                        throw new \RuntimeException('expected target_path');
+                        throw new RuntimeException('expected target_path');
                     }
                     file_put_contents($targetPath, 'mp4-bytes');
 
@@ -132,9 +138,9 @@ final class SceneVideoBenchmarkServiceTest extends TestCase
         if (!is_dir($dir)) {
             return;
         }
-        $it = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST,
+        $it = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST,
         );
         foreach ($it as $f) {
             $p = $f->getPathname();

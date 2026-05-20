@@ -71,7 +71,7 @@ final class PrepareVideoProjectFlow extends Flow
 
     private function createProjectId(string $yamlPath): string
     {
-        $base = pathinfo($yamlPath, \PATHINFO_FILENAME);
+        $base = pathinfo($yamlPath, PATHINFO_FILENAME);
         $slug = preg_replace('/[^a-z0-9-]/', '-', strtolower((string) $base));
         $slug = trim((string) $slug, '-') ?: 'video';
 

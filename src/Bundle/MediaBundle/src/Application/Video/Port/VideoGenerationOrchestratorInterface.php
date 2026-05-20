@@ -12,7 +12,7 @@ use App\Application\Video\DTO\VideoGenerationResult;
 interface VideoGenerationOrchestratorInterface
 {
     /**
-     * @param array<string, mixed>|null $firstSceneVideoOptions
+     * @param null|array<string, mixed> $firstSceneVideoOptions
      */
     public function generateFromYaml(string $yamlPath, ?array $firstSceneVideoOptions = null): VideoGenerationResult;
 }

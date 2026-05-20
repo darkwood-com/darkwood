@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\Video\Exception;
 
-class SceneNotFoundException extends \InvalidArgumentException
+use InvalidArgumentException;
+
+use function sprintf;
+
+class SceneNotFoundException extends InvalidArgumentException
 {
     public function __construct(string $projectId, string $sceneId)
     {

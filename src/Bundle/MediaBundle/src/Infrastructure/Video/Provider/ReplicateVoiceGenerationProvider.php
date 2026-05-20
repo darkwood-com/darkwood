@@ -9,6 +9,18 @@ use App\Application\Video\Port\VoiceGenerationProviderInterface;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateClient;
 use App\Infrastructure\Video\Provider\Replicate\ReplicatePredictionFailedException;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVoiceProviderConfig;
+use DateTimeImmutable;
+use DateTimeInterface;
+use RuntimeException;
+
+use function array_key_exists;
+use function in_array;
+use function is_array;
+use function is_float;
+use function is_int;
+use function is_scalar;
+use function is_string;
+use function sprintf;
 
 /**
  * Text-to-speech via Replicate (MiniMax Speech 2.6 Turbo and compatible schemas).
@@ -20,8 +32,7 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
     public function __construct(
         private readonly ReplicateClient $replicateClient,
         private readonly ReplicateVoiceProviderConfig $config,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $options
@@ -29,16 +40,16 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
     public function generateVoice(string $text, array $options = []): GeneratedAssetResult
     {
         if (!$this->config->enabled) {
-            throw new \RuntimeException('Replicate voice provider is disabled by configuration.');
+            throw new RuntimeException('Replicate voice provider is disabled by configuration.');
         }
 
         if (!$this->replicateClient->hasApiToken()) {
-            throw new \RuntimeException('Replicate voice provider is misconfigured (missing API token).');
+            throw new RuntimeException('Replicate voice provider is misconfigured (missing API token).');
         }
 
         $model = $this->resolveModel($options);
         if ($model === '') {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Replicate voice provider: set VIDEO_VOICE_REPLICATE_MODEL or pass replicate_model in options.'
             );
         }
@@ -47,7 +58,7 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
         $sceneId = $options['scene_id'] ?? null;
 
         $wallClockStart = microtime(true);
-        $startedAt = new \DateTimeImmutable('now');
+        $startedAt = new DateTimeImmutable('now');
         $startPoll = $wallClockStart;
 
         $input = $this->buildInput($text, $options);
@@ -62,7 +73,8 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
         $predictionId = (string) ($initialPrediction['id'] ?? '');
         if ($predictionId === '') {
             $hint = $this->summarizePredictionBodyForMissingId($initialPrediction);
-            throw new \RuntimeException(
+
+            throw new RuntimeException(
                 'Replicate voice provider did not return a prediction id after a successful HTTP response.'
                 . ($hint !== null ? ' ' . $hint : '')
             );
@@ -92,6 +104,7 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
                 $remoteError,
                 (string) ($input['voice_id'] ?? '')
             );
+
             throw ReplicatePredictionFailedException::terminalPredictionFailure(
                 $predictionId,
                 $model,
@@ -104,7 +117,7 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
         $output = $finalPrediction['output'] ?? null;
         $outputUrl = $this->replicateClient->extractFirstOutputUrl($output);
         if ($outputUrl === null) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Replicate prediction %s succeeded but did not return a usable output URL.',
                 $predictionId
             ));
@@ -112,7 +125,7 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
 
         $this->replicateClient->downloadToPath($outputUrl, $targetPath);
 
-        $completedAt = new \DateTimeImmutable('now');
+        $completedAt = new DateTimeImmutable('now');
         $audioFormat = $input['audio_format'] ?? $this->config->audioFormat;
 
         $metadata = [
@@ -123,8 +136,8 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
             'replicate_version' => $version,
             'remote_output_url' => $outputUrl,
             'poll_attempts' => $attempts,
-            'started_at' => $startedAt->format(\DateTimeInterface::ATOM),
-            'completed_at' => $completedAt->format(\DateTimeInterface::ATOM),
+            'started_at' => $startedAt->format(DateTimeInterface::ATOM),
+            'completed_at' => $completedAt->format(DateTimeInterface::ATOM),
             'generation_time_seconds' => round(microtime(true) - $wallClockStart, 3),
             'scene_id' => $sceneId,
             'narration' => $text,
@@ -293,7 +306,7 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
         $maxDuration = $this->config->maxPollDurationSeconds;
 
         while (true) {
-            ++$attempts;
+            $attempts++;
 
             if ($maxDuration > 0 && (microtime(true) - $pollStartedAt) >= $maxDuration) {
                 throw new ReplicatePredictionFailedException(
@@ -354,7 +367,7 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
     private function assertVoiceIdIsConfigured(string $voiceId): void
     {
         if (trim($voiceId) === '') {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Replicate voice provider: voice_id is empty. Set VIDEO_VOICE_REPLICATE_VOICE_ID (or pass voice_id in options) '
                 . 'to a valid MiniMax voice for minimax/speech-2.6-turbo — see the model’s API tab on Replicate (example: Wise_Woman).'
             );
@@ -375,7 +388,7 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
         ];
         foreach ($placeholderNeedles as $needle) {
             if (str_contains($lower, $needle)) {
-                throw new \RuntimeException(sprintf(
+                throw new RuntimeException(sprintf(
                     'Replicate voice provider: voice_id "%s" looks like a placeholder. '
                     . 'Set VIDEO_VOICE_REPLICATE_VOICE_ID to a real MiniMax voice id from the Replicate model page (e.g. Wise_Woman).',
                     $voiceId
@@ -384,7 +397,7 @@ final class ReplicateVoiceGenerationProvider implements VoiceGenerationProviderI
         }
 
         if (preg_match('/_id$/i', $voiceId) === 1 && !preg_match('/[a-z]/', $voiceId)) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Replicate voice provider: voice_id "%s" looks like a template (all capitals with an _ID suffix). '
                 . 'Replace VIDEO_VOICE_REPLICATE_VOICE_ID with a valid MiniMax voice from Replicate (e.g. Wise_Woman).',
                 $voiceId

@@ -11,7 +11,10 @@ use App\Domain\Video\Enum\AssetType;
 use App\Domain\Video\Scene;
 use App\Domain\Video\VideoProject;
 use App\Infrastructure\Video\Rendering\VideoBenchmarkReportWriter;
+use FilesystemIterator;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 final class VideoBenchmarkReportWriterTest extends TestCase
 {
@@ -27,7 +30,7 @@ final class VideoBenchmarkReportWriterTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_write_returns_null_when_only_one_video_asset(): void
+    public function testWriteReturnsNullWhenOnlyOneVideoAsset(): void
     {
         $renderRoot = sys_get_temp_dir() . '/vbw_' . uniqid('', true);
         $this->tempRoots[] = $renderRoot;
@@ -56,10 +59,10 @@ final class VideoBenchmarkReportWriterTest extends TestCase
         self::assertNull($writer->writeIfApplicable($project));
     }
 
-    public function test_writes_json_and_markdown_for_multi_video_scene(): void
+    public function testWritesJsonAndMarkdownForMultiVideoScene(): void
     {
         $renderRoot = sys_get_temp_dir() . '/vbw_' . uniqid('', true);
-        mkdir($renderRoot . '/render', 0755, true);
+        mkdir($renderRoot . '/render', 0o755, true);
         $this->tempRoots[] = $renderRoot;
 
         $setup = $this->createMock(VideoProjectSetupInterface::class);
@@ -108,7 +111,7 @@ final class VideoBenchmarkReportWriterTest extends TestCase
         self::assertFileExists($paths['json']);
         self::assertFileExists($paths['markdown']);
 
-        $data = json_decode((string) file_get_contents($paths['json']), true, 512, \JSON_THROW_ON_ERROR);
+        $data = json_decode((string) file_get_contents($paths['json']), true, 512, JSON_THROW_ON_ERROR);
         self::assertSame('bench-proj', $data['project_id']);
         self::assertSame('Shared prompt text', $data['shared_video_prompt']);
         self::assertCount(2, $data['models']);
@@ -125,9 +128,9 @@ final class VideoBenchmarkReportWriterTest extends TestCase
         if (!is_dir($dir)) {
             return;
         }
-        $it = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST,
+        $it = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST,
         );
         foreach ($it as $fileInfo) {
             $path = $fileInfo->getPathname();

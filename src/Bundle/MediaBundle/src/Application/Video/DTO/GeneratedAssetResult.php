@@ -13,6 +13,5 @@ final readonly class GeneratedAssetResult
         public string $path,
         public ?float $duration = null,
         public array $metadata = [],
-    ) {
-    }
+    ) {}
 }

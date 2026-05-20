@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Video\Storage;
 
+use function strlen;
+
 /**
  * Centralizes path generation for video artifacts under var/videos/<project-id>/.
  */
@@ -22,11 +24,10 @@ final class VideoPathResolver
 
     public function __construct(
         private readonly string $projectDir,
-    ) {
-    }
+    ) {}
 
     /**
-     * Base directory for a project: var/videos/<project-id>
+     * Base directory for a project: var/videos/<project-id>.
      */
     public function baseDir(string $projectId): string
     {
@@ -34,7 +35,7 @@ final class VideoPathResolver
     }
 
     /**
-     * Input directory: var/videos/<project-id>/input/
+     * Input directory: var/videos/<project-id>/input/.
      */
     public function inputDir(string $projectId): string
     {
@@ -42,16 +43,17 @@ final class VideoPathResolver
     }
 
     /**
-     * Scene directory: var/videos/<project-id>/scenes/<scene-number>-<scene-id>/
+     * Scene directory: var/videos/<project-id>/scenes/<scene-number>-<scene-id>/.
      */
     public function sceneDir(string $projectId, int $sceneNumber, string $sceneId): string
     {
         $segment = $sceneNumber . '-' . $sceneId;
+
         return $this->baseDir($projectId) . '/' . self::SCENES_DIR . '/' . $segment . '/';
     }
 
     /**
-     * Render directory: var/videos/<project-id>/render/
+     * Render directory: var/videos/<project-id>/render/.
      */
     public function renderDir(string $projectId): string
     {
@@ -59,7 +61,7 @@ final class VideoPathResolver
     }
 
     /**
-     * Path to the copied input definition YAML: input/definition.yaml
+     * Path to the copied input definition YAML: input/definition.yaml.
      */
     public function inputDefinitionPath(string $projectId): string
     {
@@ -67,7 +69,7 @@ final class VideoPathResolver
     }
 
     /**
-     * Path to scene voice output: scenes/<n>-<id>/voice.mp3
+     * Path to scene voice output: scenes/<n>-<id>/voice.mp3.
      */
     public function sceneVoicePath(string $projectId, int $sceneNumber, string $sceneId): string
     {
@@ -96,7 +98,7 @@ final class VideoPathResolver
     }
 
     /**
-     * Path to final render output: render/final.mp4
+     * Path to final render output: render/final.mp4.
      */
     public function renderOutputPath(string $projectId): string
     {
@@ -104,7 +106,7 @@ final class VideoPathResolver
     }
 
     /**
-     * Path to concatenated scenario review output: render/scenario.mp4
+     * Path to concatenated scenario review output: render/scenario.mp4.
      */
     public function scenarioOutputPath(string $projectId): string
     {
@@ -121,6 +123,7 @@ final class VideoPathResolver
         if (str_starts_with($fullPath, $base)) {
             return substr($fullPath, strlen($base));
         }
+
         return null;
     }
 

@@ -23,8 +23,7 @@ final class Scene
         private ?string $lastError = null,
         /** @var array<string, mixed> Persisted scene.mp4 render outcome (see VideoRenderingMetadata). */
         private array $clipRender = [],
-    ) {
-    }
+    ) {}
 
     public function id(): string
     {

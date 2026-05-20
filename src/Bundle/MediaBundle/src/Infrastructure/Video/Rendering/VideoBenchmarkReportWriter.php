@@ -10,6 +10,16 @@ use App\Domain\Video\Enum\AssetStatus;
 use App\Domain\Video\Enum\AssetType;
 use App\Domain\Video\VideoProject;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
+use DateTimeImmutable;
+use DateTimeInterface;
+use Exception;
+use InvalidArgumentException;
+
+use function count;
+use function dirname;
+use function is_array;
+use function is_string;
+use function sprintf;
 
 /**
  * When scene 1 has multiple video assets (benchmark / multi-preset), writes
@@ -23,11 +33,10 @@ final class VideoBenchmarkReportWriter
 
     public function __construct(
         private readonly VideoProjectSetupInterface $projectSetup,
-    ) {
-    }
+    ) {}
 
     /**
-     * @return array{json: string, markdown: string}|null
+     * @return null|array{json: string, markdown: string}
      */
     public function writeIfApplicable(VideoProject $project): ?array
     {
@@ -43,7 +52,7 @@ final class VideoBenchmarkReportWriter
             }
         }
 
-        if (\count($videoAssets) < 2) {
+        if (count($videoAssets) < 2) {
             return null;
         }
 
@@ -51,9 +60,9 @@ final class VideoBenchmarkReportWriter
             return strcmp($a->id(), $b->id());
         });
 
-        $renderDir = \dirname($this->projectSetup->getRenderOutputPath($project->id()));
+        $renderDir = dirname($this->projectSetup->getRenderOutputPath($project->id()));
         if (!is_dir($renderDir)) {
-            mkdir($renderDir, 0755, true);
+            mkdir($renderDir, 0o755, true);
         }
 
         $sharedPrompt = $firstScene->videoPrompt();
@@ -64,7 +73,7 @@ final class VideoBenchmarkReportWriter
 
         $payload = [
             'report_version' => 1,
-            'generated_at' => (new \DateTimeImmutable('now'))->format(\DateTimeInterface::ATOM),
+            'generated_at' => (new DateTimeImmutable('now'))->format(DateTimeInterface::ATOM),
             'project_id' => $project->id(),
             'scene_id' => $firstScene->id(),
             'scene_number' => $firstScene->number(),
@@ -77,7 +86,7 @@ final class VideoBenchmarkReportWriter
 
         file_put_contents(
             $jsonPath,
-            json_encode($payload, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR),
+            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
         );
         file_put_contents($mdPath, $this->toMarkdown($payload));
 
@@ -130,7 +139,7 @@ final class VideoBenchmarkReportWriter
         if ($preset !== null && $preset !== '') {
             try {
                 return ReplicateVideoModelPresets::resolve($preset)['model'];
-            } catch (\InvalidArgumentException) {
+            } catch (InvalidArgumentException) {
             }
         }
 
@@ -155,13 +164,13 @@ final class VideoBenchmarkReportWriter
         }
 
         try {
-            $a = new \DateTimeImmutable($started);
-            $b = new \DateTimeImmutable($completed);
+            $a = new DateTimeImmutable($started);
+            $b = new DateTimeImmutable($completed);
             $seconds = $b->getTimestamp() - $a->getTimestamp();
             $seconds += ((int) $b->format('u') - (int) $a->format('u')) / 1_000_000;
 
             return round(max(0.0, $seconds), 3);
-        } catch (\Exception) {
+        } catch (Exception) {
             return null;
         }
     }
@@ -235,11 +244,11 @@ final class VideoBenchmarkReportWriter
                 continue;
             }
             $preset = $row['preset_key'] ?? '—';
-            $model = str_replace('|', '\\|', (string) ($row['model_name'] ?? ''));
+            $model = str_replace('|', '\|', (string) ($row['model_name'] ?? ''));
             $wall = $row['generation_time_seconds'] !== null ? (string) $row['generation_time_seconds'] : '—';
             $pred = $row['replicate_predict_time_seconds'] !== null ? (string) $row['replicate_predict_time_seconds'] : '—';
             $cost = $row['cost_estimate_usd'] !== null ? (string) $row['cost_estimate_usd'] : '—';
-            $file = str_replace('|', '\\|', basename((string) ($row['local_file_path'] ?? '')));
+            $file = str_replace('|', '\|', basename((string) ($row['local_file_path'] ?? '')));
             $status = (string) ($row['asset_status'] ?? '');
             $lines[] = sprintf(
                 '| %s | %s | %s | %s | %s | `%s` | %s |',

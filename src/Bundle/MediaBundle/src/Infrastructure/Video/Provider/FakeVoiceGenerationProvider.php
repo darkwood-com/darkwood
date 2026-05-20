@@ -6,6 +6,12 @@ namespace App\Infrastructure\Video\Provider;
 
 use App\Application\Video\DTO\GeneratedAssetResult;
 use App\Application\Video\Port\VoiceGenerationProviderInterface;
+use DateTimeImmutable;
+use DateTimeInterface;
+use RuntimeException;
+
+use function dirname;
+use function is_string;
 
 final class FakeVoiceGenerationProvider implements VoiceGenerationProviderInterface
 {
@@ -16,9 +22,9 @@ final class FakeVoiceGenerationProvider implements VoiceGenerationProviderInterf
     {
         $targetPath = $options['target_path'] ?? $this->defaultPath($text, 'mp3');
         $sceneId = $options['scene_id'] ?? null;
-        $timestamp = (new \DateTimeImmutable('now'))->format(\DateTimeInterface::ATOM);
+        $timestamp = (new DateTimeImmutable('now'))->format(DateTimeInterface::ATOM);
 
-        $dir = \dirname($targetPath);
+        $dir = dirname($targetPath);
         if (!is_dir($dir)) {
             mkdir($dir, 0o755, true);
         }
@@ -46,6 +52,7 @@ final class FakeVoiceGenerationProvider implements VoiceGenerationProviderInterf
     private function defaultPath(string $text, string $ext): string
     {
         $hash = substr(hash('xxh128', $text), 0, 16);
+
         return sys_get_temp_dir() . '/fake_voice_' . $hash . '.' . $ext;
     }
 
@@ -79,7 +86,7 @@ final class FakeVoiceGenerationProvider implements VoiceGenerationProviderInterf
     {
         $decoded = base64_decode(self::FALLBACK_MP3_BASE64, true);
         if ($decoded === false) {
-            throw new \RuntimeException('Failed to decode bundled fake MP3 asset.');
+            throw new RuntimeException('Failed to decode bundled fake MP3 asset.');
         }
 
         return $decoded;

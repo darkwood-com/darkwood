@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Video\Provider\Replicate;
 
+use InvalidArgumentException;
+
+use function sprintf;
+
 /**
  * Named Replicate video targets for Scene 1 benchmarking.
  *
@@ -118,7 +122,7 @@ final class ReplicateVideoModelPresets
             return $normalized;
         }
 
-        throw new \InvalidArgumentException(sprintf(
+        throw new InvalidArgumentException(sprintf(
             'Unknown --video-model "%s". Use one of: %s',
             $cli,
             implode(', ', self::cliVideoModelChoices())
@@ -131,7 +135,7 @@ final class ReplicateVideoModelPresets
     public static function resolve(string $presetKey): array
     {
         if (!isset(self::PRESETS[$presetKey])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown Replicate video preset "%s". Known: %s',
                 $presetKey,
                 implode(', ', self::presetKeys())

@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Video\Provider\Replicate;
 
+use RuntimeException;
+
+use function count;
+use function dirname;
+use function is_array;
+use function is_float;
+use function is_int;
+use function sprintf;
+
 /**
  * File-backed sliding-window limiter so rate limits apply across forked PHP processes (Spatie Fork).
  * Defaults stay slightly under Replicate's documented caps (600 prediction creates / min, 3000 other / min).
@@ -16,8 +25,7 @@ final class ReplicateSlidingWindowRateLimiter
         private readonly string $stateFilePath,
         private readonly int $predictionCreatesPerMinute,
         private readonly int $otherApiCallsPerMinute,
-    ) {
-    }
+    ) {}
 
     /**
      * Blocks until a prediction create (POST /predictions) may proceed.
@@ -36,7 +44,7 @@ final class ReplicateSlidingWindowRateLimiter
     }
 
     /**
-     * @param 'prediction_timestamps'|'other_timestamps' $key
+     * @param 'other_timestamps'|'prediction_timestamps' $key
      */
     private function acquireSlot(string $key, int $limit): void
     {
@@ -44,7 +52,7 @@ final class ReplicateSlidingWindowRateLimiter
             return;
         }
 
-        $dir = \dirname($this->stateFilePath);
+        $dir = dirname($this->stateFilePath);
         if (!is_dir($dir)) {
             mkdir($dir, 0o775, true);
         }
@@ -53,15 +61,16 @@ final class ReplicateSlidingWindowRateLimiter
         $maxIterations = 50_000;
         $wait = 0.05;
 
-        for ($i = 0; $i < $maxIterations; ++$i) {
+        for ($i = 0; $i < $maxIterations; $i++) {
             $fh = fopen($lockPath, 'c+');
             if ($fh === false) {
-                throw new \RuntimeException(sprintf('Replicate rate limiter could not open lock file "%s".', $lockPath));
+                throw new RuntimeException(sprintf('Replicate rate limiter could not open lock file "%s".', $lockPath));
             }
 
-            if (!flock($fh, \LOCK_EX)) {
+            if (!flock($fh, LOCK_EX)) {
                 fclose($fh);
-                throw new \RuntimeException(sprintf('Replicate rate limiter could not acquire lock "%s".', $lockPath));
+
+                throw new RuntimeException(sprintf('Replicate rate limiter could not acquire lock "%s".', $lockPath));
             }
 
             try {
@@ -85,7 +94,7 @@ final class ReplicateSlidingWindowRateLimiter
                 ));
                 sort($timestamps);
 
-                if (\count($timestamps) < $limit) {
+                if (count($timestamps) < $limit) {
                     $timestamps[] = $now;
                     $data[$key] = $timestamps;
                     $this->writeState($data);
@@ -100,7 +109,7 @@ final class ReplicateSlidingWindowRateLimiter
                 }
                 $wait = min($wait, 5.0);
             } finally {
-                flock($fh, \LOCK_UN);
+                flock($fh, LOCK_UN);
                 fclose($fh);
             }
 
@@ -130,7 +139,7 @@ final class ReplicateSlidingWindowRateLimiter
      */
     private function writeState(array $data): void
     {
-        $json = json_encode($data, \JSON_THROW_ON_ERROR);
-        file_put_contents($this->stateFilePath, $json, \LOCK_EX);
+        $json = json_encode($data, JSON_THROW_ON_ERROR);
+        file_put_contents($this->stateFilePath, $json, LOCK_EX);
     }
 }

@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace App\Tests\Infrastructure\Video\Provider\Replicate;
 
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class ReplicateVideoModelPresetsTest extends TestCase
 {
-    public function test_resolve_hailuo(): void
+    public function testResolveHailuo(): void
     {
         $r = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::HAILUO);
         self::assertSame('minimax/hailuo-02-fast', $r['model']);
         self::assertSame([], $r['input']);
     }
 
-    public function test_resolve_seedance(): void
+    public function testResolveSeedance(): void
     {
         $r = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE);
         self::assertSame('bytedance/seedance-1-lite', $r['model']);
@@ -24,34 +25,34 @@ final class ReplicateVideoModelPresetsTest extends TestCase
         self::assertSame('480p', $r['input']['resolution'] ?? null);
     }
 
-    public function test_resolve_seedance_2_fast(): void
+    public function testResolveSeedance2Fast(): void
     {
         $r = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE_2_FAST);
         self::assertSame('bytedance/seedance-2.0-fast', $r['model']);
         self::assertSame('480p', $r['input']['resolution'] ?? null);
     }
 
-    public function test_resolve_seedance_2_fast_9_16(): void
+    public function testResolveSeedance2Fast916(): void
     {
         $r = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE_2_FAST_9_16);
         self::assertSame('bytedance/seedance-2.0-fast', $r['model']);
         self::assertSame('9:16', $r['input']['aspect_ratio'] ?? null);
     }
 
-    public function test_resolve_p_video_draft_sets_draft_flag(): void
+    public function testResolvePVideoDraftSetsDraftFlag(): void
     {
         $r = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::P_VIDEO_DRAFT);
         self::assertSame('prunaai/p-video', $r['model']);
         self::assertTrue($r['input']['draft'] ?? false);
     }
 
-    public function test_resolve_unknown_throws(): void
+    public function testResolveUnknownThrows(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         ReplicateVideoModelPresets::resolve('no-such-preset');
     }
 
-    public function test_core_benchmark_excludes_p_video(): void
+    public function testCoreBenchmarkExcludesPVideo(): void
     {
         self::assertSame(
             [ReplicateVideoModelPresets::HAILUO, ReplicateVideoModelPresets::SEEDANCE],
@@ -59,7 +60,7 @@ final class ReplicateVideoModelPresetsTest extends TestCase
         );
     }
 
-    public function test_preset_key_from_cli_video_model(): void
+    public function testPresetKeyFromCliVideoModel(): void
     {
         self::assertSame(
             ReplicateVideoModelPresets::P_VIDEO_DRAFT,
@@ -75,9 +76,9 @@ final class ReplicateVideoModelPresetsTest extends TestCase
         );
     }
 
-    public function test_preset_key_from_cli_unknown_throws(): void
+    public function testPresetKeyFromCliUnknownThrows(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         ReplicateVideoModelPresets::presetKeyFromCliVideoModel('other');
     }
 }

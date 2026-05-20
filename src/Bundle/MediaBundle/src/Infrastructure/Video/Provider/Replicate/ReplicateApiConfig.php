@@ -13,6 +13,5 @@ final class ReplicateApiConfig
     public function __construct(
         public readonly string $apiToken,
         public readonly string $baseUrl = 'https://api.replicate.com/v1',
-    ) {
-    }
+    ) {}
 }

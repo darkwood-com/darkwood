@@ -36,7 +36,7 @@ final class RenderingSummaryJsonWriter
 
         file_put_contents(
             $path,
-            json_encode($payload, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR),
+            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
         );
     }
 }

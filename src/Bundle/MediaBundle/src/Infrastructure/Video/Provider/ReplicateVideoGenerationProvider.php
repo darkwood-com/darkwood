@@ -11,6 +11,14 @@ use App\Infrastructure\Video\Provider\Replicate\ReplicatePredictionFailedExcepti
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoInputMapper;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoProviderConfig;
+use DateTimeImmutable;
+use DateTimeInterface;
+use RuntimeException;
+
+use function in_array;
+use function is_array;
+use function is_string;
+use function sprintf;
 
 /**
  * Real video generation provider backed by Replicate's HTTP API.
@@ -26,8 +34,7 @@ final class ReplicateVideoGenerationProvider implements VideoGenerationProviderI
         private readonly ReplicateClient $replicateClient,
         private readonly ReplicateVideoInputMapper $videoInputMapper,
         private readonly ReplicateVideoProviderConfig $config,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $options
@@ -35,17 +42,17 @@ final class ReplicateVideoGenerationProvider implements VideoGenerationProviderI
     public function generateVideo(string $prompt, array $options = []): GeneratedAssetResult
     {
         if (!$this->config->enabled) {
-            throw new \RuntimeException('Replicate video provider is disabled by configuration.');
+            throw new RuntimeException('Replicate video provider is disabled by configuration.');
         }
 
         if (!$this->replicateClient->hasApiToken()) {
-            throw new \RuntimeException('Replicate video provider is misconfigured (missing API token).');
+            throw new RuntimeException('Replicate video provider is misconfigured (missing API token).');
         }
 
         $presetKey = $this->resolvePresetKey($options);
         $resolvedModel = $this->resolveModelIdentifier($options, $presetKey);
         if ($resolvedModel === '') {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Replicate video provider: set VIDEO_VIDEO_REPLICATE_MODEL or VIDEO_VIDEO_REPLICATE_DEFAULT_PRESET, or pass replicate_preset / replicate_model in options.'
             );
         }
@@ -55,7 +62,7 @@ final class ReplicateVideoGenerationProvider implements VideoGenerationProviderI
         $sceneId = $options['scene_id'] ?? null;
 
         $wallClockStart = microtime(true);
-        $startedAt = new \DateTimeImmutable('now');
+        $startedAt = new DateTimeImmutable('now');
         $startPoll = $wallClockStart;
 
         $input = $this->videoInputMapper->buildInput($resolvedModel, $presetInput, $prompt, $options);
@@ -69,7 +76,8 @@ final class ReplicateVideoGenerationProvider implements VideoGenerationProviderI
 
         if ($predictionId === '') {
             $hint = $this->summarizePredictionBodyForMissingId($initialPrediction);
-            throw new \RuntimeException(
+
+            throw new RuntimeException(
                 'Replicate video provider did not return a prediction id after a successful HTTP response.'
                 . ($hint !== null ? ' ' . $hint : '')
             );
@@ -113,7 +121,7 @@ final class ReplicateVideoGenerationProvider implements VideoGenerationProviderI
         $outputUrl = $this->replicateClient->extractFirstOutputUrl($output);
 
         if ($outputUrl === null) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Replicate prediction %s succeeded but did not return a usable output URL.',
                 $predictionId
             ));
@@ -121,7 +129,7 @@ final class ReplicateVideoGenerationProvider implements VideoGenerationProviderI
 
         $this->replicateClient->downloadToPath($outputUrl, $targetPath);
 
-        $completedAt = new \DateTimeImmutable('now');
+        $completedAt = new DateTimeImmutable('now');
 
         $metadata = [
             'provider' => self::PROVIDER_NAME,
@@ -131,8 +139,8 @@ final class ReplicateVideoGenerationProvider implements VideoGenerationProviderI
             'replicate_preset' => $presetKey,
             'remote_output_url' => $outputUrl,
             'poll_attempts' => $attempts,
-            'started_at' => $startedAt->format(\DateTimeInterface::ATOM),
-            'completed_at' => $completedAt->format(\DateTimeInterface::ATOM),
+            'started_at' => $startedAt->format(DateTimeInterface::ATOM),
+            'completed_at' => $completedAt->format(DateTimeInterface::ATOM),
             'generation_time_seconds' => round(microtime(true) - $wallClockStart, 3),
             'scene_id' => $sceneId,
             'prompt' => $prompt,
@@ -212,7 +220,7 @@ final class ReplicateVideoGenerationProvider implements VideoGenerationProviderI
         $maxDuration = $this->config->maxPollDurationSeconds;
 
         while (true) {
-            ++$attempts;
+            $attempts++;
 
             if ($maxDuration > 0 && (microtime(true) - $pollStartedAt) >= $maxDuration) {
                 throw new ReplicatePredictionFailedException(

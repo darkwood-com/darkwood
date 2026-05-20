@@ -9,7 +9,7 @@ use App\Domain\Video\VideoProject;
 final readonly class VideoGenerationResult
 {
     /**
-     * @param array{json: string, markdown: string}|null $benchmarkReportPaths
+     * @param null|array{json: string, markdown: string} $benchmarkReportPaths
      */
     public function __construct(
         public VideoProject $project,
@@ -17,6 +17,5 @@ final readonly class VideoGenerationResult
         public ?array $benchmarkReportPaths = null,
         public ?string $scenarioOutputPath = null,
         public ?string $scenarioSkipReason = null,
-    ) {
-    }
+    ) {}
 }

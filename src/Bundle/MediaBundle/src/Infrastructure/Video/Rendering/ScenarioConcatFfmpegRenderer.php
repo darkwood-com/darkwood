@@ -7,13 +7,20 @@ namespace App\Infrastructure\Video\Rendering;
 use App\Domain\Video\Enum\SceneStatus;
 use App\Domain\Video\Scene;
 use App\Domain\Video\VideoProject;
+use App\Flow\FinalizeVideoProjectFlow;
 use App\Infrastructure\Video\Storage\LocalArtifactStorage;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Throwable;
+
+use function count;
+use function dirname;
+use function is_resource;
+use function sprintf;
 
 /**
  * Builds render/scenario.mp4 by FFmpeg concat demuxer (single sequential pass).
- * Call only after all scene flows have finished — typically from {@see \App\Flow\FinalizeVideoProjectFlow}.
+ * Call only after all scene flows have finished — typically from {@see FinalizeVideoProjectFlow}.
  * Scenes are concatenated in ascending {@see Scene::number()} order. Only {@see SceneStatus::Completed}
  * scenes with a valid on-disk scene.mp4 are included; others are excluded without failing the whole concat.
  */
@@ -24,14 +31,13 @@ final class ScenarioConcatFfmpegRenderer
         private readonly string $ffmpegBinary = 'ffmpeg',
         private readonly string $ffprobeBinary = 'ffprobe',
         private readonly LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     public function concatIfPossible(string $projectId, VideoProject $project): ScenarioConcatResult
     {
         try {
             return $this->concatIfPossibleInner($projectId, $project);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return new ScenarioConcatResult(
                 null,
                 'Scenario concat failed unexpectedly: ' . $e->getMessage(),
@@ -104,7 +110,7 @@ final class ScenarioConcatFfmpegRenderer
         }
 
         $outputPath = $this->artifactStorage->getScenarioOutputPath($projectId);
-        $renderDir = \dirname($outputPath);
+        $renderDir = dirname($outputPath);
         if (!is_dir($renderDir)) {
             mkdir($renderDir, 0o755, true);
         }
@@ -129,7 +135,7 @@ final class ScenarioConcatFfmpegRenderer
                         null,
                         sprintf(
                             'Skipped scenario.mp4: FFmpeg could not concatenate %d valid scene clip(s) for project %s.',
-                            \count($clipPaths),
+                            count($clipPaths),
                             $projectId,
                         ),
                         [],
@@ -289,7 +295,7 @@ final class ScenarioConcatFfmpegRenderer
             2 => ['pipe', 'w'],
         ];
         $process = proc_open($command, $descriptorspec, $pipes, null, null);
-        if (!\is_resource($process)) {
+        if (!is_resource($process)) {
             return false;
         }
         fclose($pipes[0]);

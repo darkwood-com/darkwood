@@ -16,6 +16,5 @@ final class VideoScenePayload
         public VideoGenerationPayload $generation,
         public int $sceneIndex,
         public ?SceneClipRenderReport $clipReport = null,
-    ) {
-    }
+    ) {}
 }

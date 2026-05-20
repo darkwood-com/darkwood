@@ -21,7 +21,7 @@ PACKAGE_DIR=$(echo "$PACKAGE_JSON" | jq -r '.directory')
 cd "${ROOT_DIR}/${PACKAGE_DIR}"
 
 echo "::group::Composer install (${PACKAGE_DIR})"
-composer install --no-progress --ansi
+composer install --no-progress --ansi --ignore-platform-req=ext-openswoole
 echo "::endgroup::"
 
 for TOOL in tools/php-cs-fixer tools/phpstan tools/phpunit; do
@@ -31,18 +31,26 @@ for TOOL in tools/php-cs-fixer tools/phpstan tools/phpunit; do
     fi
 done
 
+echo "::group::Install QA tools (${PACKAGE_DIR})"
+for TOOL in tools/php-cs-fixer tools/phpstan tools/phpunit; do
+    composer install --no-progress --ansi -d "${TOOL}" --ignore-platform-req=ext-openswoole
+done
+echo "::endgroup::"
+
 echo "::group::PHP CS Fixer (${PACKAGE_DIR})"
-composer install --no-progress --ansi -d tools/php-cs-fixer
-(cd tools/php-cs-fixer && vendor/bin/php-cs-fixer fix --config .php-cs-fixer.php --diff --dry-run)
+PHP_CS_FIXER_CONFIG="${ROOT_DIR}/${PACKAGE_DIR}/tools/php-cs-fixer/.php-cs-fixer.php"
+if [ ! -f "${PHP_CS_FIXER_CONFIG}" ]; then
+    echo "Missing PHP CS Fixer config: ${PHP_CS_FIXER_CONFIG}" >&2
+    exit 1
+fi
+(cd tools/php-cs-fixer && vendor/bin/php-cs-fixer fix --config "${PHP_CS_FIXER_CONFIG}" --diff --dry-run)
 echo "::endgroup::"
 
 echo "::group::PHPStan (${PACKAGE_DIR})"
-composer install --no-progress --ansi -d tools/phpstan
 (cd tools/phpstan && vendor/bin/phpstan analyse --configuration=phpstan.neon --memory-limit=1024M)
 echo "::endgroup::"
 
 echo "::group::PHPUnit (${PACKAGE_DIR})"
-composer install --no-progress --ansi -d tools/phpunit
 (cd tools/phpunit && vendor/bin/phpunit --configuration phpunit.xml)
 echo "::endgroup::"
 

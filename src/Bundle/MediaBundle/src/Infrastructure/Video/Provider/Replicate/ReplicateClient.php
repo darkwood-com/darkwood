@@ -4,8 +4,19 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Video\Provider\Replicate;
 
+use Closure;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+
+use function array_key_exists;
+use function dirname;
+use function is_array;
+use function is_scalar;
+use function is_string;
+use function sprintf;
+use function strlen;
 
 /**
  * Thin HTTP wrapper around Replicate's predictions API and output downloads.
@@ -16,15 +27,14 @@ final class ReplicateClient
     private const MAX_429_RETRIES = 10;
 
     /**
-     * @param \Closure(int): void|null $sleeper Injected in tests to avoid real sleeps on 429 backoff; production uses {@see sleep()}.
+     * @param null|Closure(int): void $sleeper injected in tests to avoid real sleeps on 429 backoff; production uses {@see sleep()}
      */
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly ReplicateApiConfig $apiConfig,
         private readonly ReplicateSlidingWindowRateLimiter $rateLimiter,
-        private readonly ?\Closure $sleeper = null,
-    ) {
-    }
+        private readonly ?Closure $sleeper = null,
+    ) {}
 
     public function hasApiToken(): bool
     {
@@ -46,7 +56,7 @@ final class ReplicateClient
     {
         $model = trim($model);
         if ($model === '') {
-            throw new \InvalidArgumentException('Empty Replicate model or version identifier.');
+            throw new InvalidArgumentException('Empty Replicate model or version identifier.');
         }
 
         if (preg_match('/^[a-f0-9]{64}$/i', $model) === 1) {
@@ -105,7 +115,7 @@ final class ReplicateClient
 
     public function downloadToPath(string $url, string $targetPath): void
     {
-        $dir = \dirname($targetPath);
+        $dir = dirname($targetPath);
         if (!is_dir($dir)) {
             mkdir($dir, 0o755, true);
         }
@@ -115,7 +125,7 @@ final class ReplicateClient
         $content = $response->getContent(false);
 
         if ($statusCode >= 400) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Failed to download Replicate output from "%s" (HTTP %d).',
                 $url,
                 $statusCode
@@ -123,16 +133,13 @@ final class ReplicateClient
         }
 
         if (@file_put_contents($targetPath, $content) === false) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Failed to write Replicate output to "%s".',
                 $targetPath
             ));
         }
     }
 
-    /**
-     * @param mixed $output
-     */
     public function extractFirstOutputUrl(mixed $output): ?string
     {
         $url = $this->findFirstHttpUrl($output);
@@ -156,7 +163,7 @@ final class ReplicateClient
     }
 
     /**
-     * @param 'prediction'|'other' $rateKind
+     * @param 'other'|'prediction' $rateKind
      */
     private function requestWithRateLimitAnd429Retry(
         string $method,
@@ -166,7 +173,7 @@ final class ReplicateClient
         string $rateKind,
     ): ResponseInterface {
         $lastStatus = 0;
-        for ($attempt = 0; $attempt <= self::MAX_429_RETRIES; ++$attempt) {
+        for ($attempt = 0; $attempt <= self::MAX_429_RETRIES; $attempt++) {
             if ($rateKind === 'prediction') {
                 $this->rateLimiter->acquireBeforePredictionCreate();
             } else {
@@ -178,13 +185,14 @@ final class ReplicateClient
 
             if ($lastStatus === 429) {
                 $this->sleepAfter429($response, $attempt);
+
                 continue;
             }
 
             return $response;
         }
 
-        throw new \RuntimeException(sprintf(
+        throw new RuntimeException(sprintf(
             'Replicate %s failed: HTTP %d (too many 429 throttling responses).',
             $contextLabel,
             $lastStatus
@@ -226,7 +234,7 @@ final class ReplicateClient
         $data = $this->decodeJsonAssociative($raw);
 
         if ($statusCode < 200 || $statusCode >= 300) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Replicate model lookup failed for "%s/%s" (HTTP %d): %s',
                 $owner,
                 $name,
@@ -237,7 +245,7 @@ final class ReplicateClient
 
         $latest = $data['latest_version'] ?? null;
         if (!is_array($latest)) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Replicate model "%s/%s" returned no latest_version.',
                 $owner,
                 $name
@@ -246,7 +254,7 @@ final class ReplicateClient
 
         $id = $latest['id'] ?? '';
         if (!is_string($id) || $id === '') {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Replicate model "%s/%s" latest_version has no id.',
                 $owner,
                 $name
@@ -266,7 +274,7 @@ final class ReplicateClient
         $data = $this->decodeJsonAssociative($raw);
 
         if ($statusCode < 200 || $statusCode >= 300) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Replicate %s failed (HTTP %d): %s',
                 $contextLabel,
                 $statusCode,
@@ -277,9 +285,6 @@ final class ReplicateClient
         return $data;
     }
 
-    /**
-     * @param mixed $value
-     */
     private function findFirstHttpUrl(mixed $value): ?string
     {
         if (is_string($value)) {

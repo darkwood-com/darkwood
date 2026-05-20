@@ -11,6 +11,11 @@ use App\Domain\Video\Scene;
 use App\Infrastructure\Video\Storage\LocalArtifactStorage;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Throwable;
+
+use function count;
+use function dirname;
+use function is_resource;
 
 /**
  * Builds a reviewable scenes/<n>-<id>/scene.mp4 via FFmpeg: mux video + voice when both are usable,
@@ -24,8 +29,7 @@ final class SceneClipFfmpegRenderer
         private readonly string $ffmpegBinary = 'ffmpeg',
         private readonly string $ffprobeBinary = 'ffprobe',
         private readonly LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     /**
      * Inspect an existing scene without writing: uses domain status, video assets, and scene.mp4 on disk.
@@ -74,7 +78,7 @@ final class SceneClipFfmpegRenderer
     {
         try {
             return $this->renderIfPossibleInner($projectId, $scene);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->warning('Video scene clip: unexpected error', [
                 'project_id' => $projectId,
                 'scene_id' => $scene->id(),
@@ -130,7 +134,7 @@ final class SceneClipFfmpegRenderer
 
         $voicePath = $this->resolveUsableVoicePath($scene);
         $outputPath = $this->artifactStorage->getSceneClipOutputPath($projectId, $scene);
-        $dir = \dirname($outputPath);
+        $dir = dirname($outputPath);
         if (!is_dir($dir)) {
             mkdir($dir, 0o755, true);
         }
@@ -206,7 +210,7 @@ final class SceneClipFfmpegRenderer
     }
 
     /**
-     * @param array<string, bool|string|int|float|null> $details
+     * @param array<string, null|bool|float|int|string> $details
      */
     private function report(Scene $scene, string $outcome, array $details = []): SceneClipRenderReport
     {
@@ -214,7 +218,7 @@ final class SceneClipFfmpegRenderer
     }
 
     /**
-     * @param array<string, bool|string|int|float|null> $details
+     * @param array<string, null|bool|float|int|string> $details
      */
     private function logRendered(string $projectId, Scene $scene, string $outcome, array $details): void
     {
@@ -403,7 +407,7 @@ final class SceneClipFfmpegRenderer
             2 => ['pipe', 'w'],
         ];
         $process = proc_open($command, $descriptorspec, $pipes, null, null);
-        if (!\is_resource($process)) {
+        if (!is_resource($process)) {
             return false;
         }
         fclose($pipes[0]);
@@ -413,7 +417,7 @@ final class SceneClipFfmpegRenderer
         fclose($pipes[2]);
         $code = proc_close($process);
 
-        return $code === 0 && is_file($command[\count($command) - 1]);
+        return $code === 0 && is_file($command[count($command) - 1]);
     }
 
     /**
@@ -427,7 +431,7 @@ final class SceneClipFfmpegRenderer
             2 => ['pipe', 'w'],
         ];
         $process = proc_open($command, $descriptorspec, $pipes, null, null);
-        if (!\is_resource($process)) {
+        if (!is_resource($process)) {
             return false;
         }
         fclose($pipes[0]);

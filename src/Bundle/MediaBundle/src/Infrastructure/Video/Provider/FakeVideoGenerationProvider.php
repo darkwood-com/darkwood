@@ -7,6 +7,13 @@ namespace App\Infrastructure\Video\Provider;
 use App\Application\Video\DTO\GeneratedAssetResult;
 use App\Application\Video\Port\VideoGenerationProviderInterface;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
+use DateTimeImmutable;
+use DateTimeInterface;
+use InvalidArgumentException;
+use RuntimeException;
+
+use function dirname;
+use function is_string;
 
 final class FakeVideoGenerationProvider implements VideoGenerationProviderInterface
 {
@@ -18,10 +25,10 @@ final class FakeVideoGenerationProvider implements VideoGenerationProviderInterf
         $wallStart = microtime(true);
         $targetPath = $options['target_path'] ?? $this->defaultPath($prompt, 'mp4');
         $sceneId = $options['scene_id'] ?? null;
-        $startedAt = new \DateTimeImmutable('now');
-        $timestamp = $startedAt->format(\DateTimeInterface::ATOM);
+        $startedAt = new DateTimeImmutable('now');
+        $timestamp = $startedAt->format(DateTimeInterface::ATOM);
 
-        $dir = \dirname($targetPath);
+        $dir = dirname($targetPath);
         if (!is_dir($dir)) {
             mkdir($dir, 0o755, true);
         }
@@ -29,7 +36,7 @@ final class FakeVideoGenerationProvider implements VideoGenerationProviderInterf
         $content = $this->minimalMp4();
         file_put_contents($targetPath, $content);
 
-        $completedAt = new \DateTimeImmutable('now');
+        $completedAt = new DateTimeImmutable('now');
 
         $modelLabel = 'fake-video';
         if (isset($options['replicate_model']) && is_string($options['replicate_model']) && $options['replicate_model'] !== '') {
@@ -37,7 +44,7 @@ final class FakeVideoGenerationProvider implements VideoGenerationProviderInterf
         } elseif (isset($options['replicate_preset']) && is_string($options['replicate_preset']) && $options['replicate_preset'] !== '') {
             try {
                 $modelLabel = ReplicateVideoModelPresets::resolve($options['replicate_preset'])['model'];
-            } catch (\InvalidArgumentException) {
+            } catch (InvalidArgumentException) {
                 $modelLabel = $options['replicate_preset'];
             }
         }
@@ -45,8 +52,8 @@ final class FakeVideoGenerationProvider implements VideoGenerationProviderInterf
         $metadata = [
             'provider' => self::PROVIDER_NAME,
             'generated_at' => $timestamp,
-            'started_at' => $startedAt->format(\DateTimeInterface::ATOM),
-            'completed_at' => $completedAt->format(\DateTimeInterface::ATOM),
+            'started_at' => $startedAt->format(DateTimeInterface::ATOM),
+            'completed_at' => $completedAt->format(DateTimeInterface::ATOM),
             'generation_time_seconds' => round(microtime(true) - $wallStart, 3),
             'scene_id' => $sceneId,
             'prompt' => $prompt,
@@ -69,6 +76,7 @@ final class FakeVideoGenerationProvider implements VideoGenerationProviderInterf
     private function defaultPath(string $prompt, string $ext): string
     {
         $hash = substr(hash('xxh128', $prompt), 0, 16);
+
         return sys_get_temp_dir() . '/fake_video_' . $hash . '.' . $ext;
     }
 
@@ -103,7 +111,7 @@ final class FakeVideoGenerationProvider implements VideoGenerationProviderInterf
     {
         $decoded = base64_decode(self::FALLBACK_MP4_BASE64, true);
         if ($decoded === false) {
-            throw new \RuntimeException('Failed to decode bundled fake MP4 asset.');
+            throw new RuntimeException('Failed to decode bundled fake MP4 asset.');
         }
 
         return $decoded;

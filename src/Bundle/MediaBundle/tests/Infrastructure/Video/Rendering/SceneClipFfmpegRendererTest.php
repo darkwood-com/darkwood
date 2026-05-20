@@ -12,11 +12,17 @@ use App\Infrastructure\Video\Rendering\SceneClipFfmpegRenderer;
 use App\Infrastructure\Video\Rendering\SceneClipRenderReport;
 use App\Infrastructure\Video\Storage\LocalArtifactStorage;
 use App\Infrastructure\Video\Storage\VideoPathResolver;
+use FilesystemIterator;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
+use function is_string;
+use function sprintf;
 
 final class SceneClipFfmpegRendererTest extends TestCase
 {
-    public function test_skips_when_scene_not_completed(): void
+    public function testSkipsWhenSceneNotCompleted(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-clip-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -35,7 +41,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_classify_skips_when_scene_not_completed(): void
+    public function testClassifySkipsWhenSceneNotCompleted(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-clip-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -53,7 +59,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_classify_skips_when_no_usable_video_asset(): void
+    public function testClassifySkipsWhenNoUsableVideoAsset(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-clip-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -80,7 +86,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_classify_skips_when_video_asset_not_decodable_per_ffprobe(): void
+    public function testClassifySkipsWhenVideoAssetNotDecodablePerFfprobe(): void
     {
         if (!is_executable('/bin/false')) {
             self::markTestSkipped('/bin/false not available');
@@ -118,7 +124,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_skips_when_no_usable_video_asset(): void
+    public function testSkipsWhenNoUsableVideoAsset(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-clip-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -146,7 +152,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_writes_scene_mp4_from_video_only_when_ffmpeg_available(): void
+    public function testWritesSceneMp4FromVideoOnlyWhenFfmpegAvailable(): void
     {
         $ffmpeg = self::findFfmpegBinary();
         if ($ffmpeg === null) {
@@ -161,7 +167,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
             $sceneDir = $tmp . '/var/videos/' . $projectId . '/scenes/1-moon/';
             self::assertTrue(mkdir($sceneDir, 0o755, true));
             $videoPath = $sceneDir . 'video.mp4';
-            $this->assertSame(0, $this->runShell(
+            self::assertSame(0, $this->runShell(
                 sprintf(
                     '%s -y -nostdin -hide_banner -loglevel error -f lavfi -i testsrc=duration=0.4:size=64x64:rate=10 -pix_fmt yuv420p %s',
                     escapeshellarg($ffmpeg),
@@ -184,7 +190,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_muxes_voice_when_present_and_ffmpeg_available(): void
+    public function testMuxesVoiceWhenPresentAndFfmpegAvailable(): void
     {
         $ffmpeg = self::findFfmpegBinary();
         if ($ffmpeg === null) {
@@ -201,14 +207,14 @@ final class SceneClipFfmpegRendererTest extends TestCase
             $videoPath = $sceneDir . 'video.mp4';
             $voicePath = $sceneDir . 'voice.mp3';
 
-            $this->assertSame(0, $this->runShell(
+            self::assertSame(0, $this->runShell(
                 sprintf(
                     '%s -y -nostdin -hide_banner -loglevel error -f lavfi -i testsrc=duration=0.6:size=64x64:rate=10 -pix_fmt yuv420p %s',
                     escapeshellarg($ffmpeg),
                     escapeshellarg($videoPath),
                 ),
             ));
-            $this->assertSame(0, $this->runShell(
+            self::assertSame(0, $this->runShell(
                 sprintf(
                     '%s -y -nostdin -hide_banner -loglevel error -f lavfi -i sine=frequency=440:duration=0.6 -c:a libmp3lame -q:a 6 %s',
                     escapeshellarg($ffmpeg),
@@ -250,7 +256,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
     private static function findFfmpegBinary(): ?string
     {
         $out = shell_exec('command -v ffmpeg 2>/dev/null');
-        if (!\is_string($out)) {
+        if (!is_string($out)) {
             return null;
         }
         $path = trim($out);
@@ -293,9 +299,9 @@ final class SceneClipFfmpegRendererTest extends TestCase
         if (!is_dir($dir)) {
             return;
         }
-        $it = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST,
+        $it = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST,
         );
         foreach ($it as $file) {
             $p = $file->getPathname();

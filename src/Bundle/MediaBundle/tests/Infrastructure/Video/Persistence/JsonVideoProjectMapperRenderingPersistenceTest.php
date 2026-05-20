@@ -9,14 +9,15 @@ use App\Domain\Video\Enum\SceneStatus;
 use App\Domain\Video\Scene;
 use App\Domain\Video\VideoProject;
 use App\Infrastructure\Video\Persistence\JsonVideoProjectMapper;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 final class JsonVideoProjectMapperRenderingPersistenceTest extends TestCase
 {
-    public function test_clip_render_and_project_rendering_round_trip(): void
+    public function testClipRenderAndProjectRenderingRoundTrip(): void
     {
-        $created = new \DateTimeImmutable('2025-01-01T12:00:00+00:00');
-        $updated = new \DateTimeImmutable('2025-01-01T12:30:00+00:00');
+        $created = new DateTimeImmutable('2025-01-01T12:00:00+00:00');
+        $updated = new DateTimeImmutable('2025-01-01T12:30:00+00:00');
 
         $scene = new Scene(
             id: 'intro',

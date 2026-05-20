@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Video;
 
 use App\Domain\Video\Enum\ProjectStatus;
+use DateTimeImmutable;
 
 final class VideoProject
 {
@@ -16,12 +17,12 @@ final class VideoProject
         private string $sourceScenarioPath,
         private string $title,
         private ProjectStatus $status = ProjectStatus::Draft,
-        private ?\DateTimeImmutable $createdAt = null,
-        private ?\DateTimeImmutable $updatedAt = null,
+        private ?DateTimeImmutable $createdAt = null,
+        private ?DateTimeImmutable $updatedAt = null,
         /** @var array<string, mixed> Persisted scenario.mp4 concat summary (see VideoRenderingMetadata). */
         private array $rendering = [],
     ) {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $this->createdAt ??= $now;
         $this->updatedAt ??= $now;
     }
@@ -52,12 +53,12 @@ final class VideoProject
         return $this->scenes;
     }
 
-    public function createdAt(): \DateTimeImmutable
+    public function createdAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function updatedAt(): \DateTimeImmutable
+    public function updatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -105,6 +106,6 @@ final class VideoProject
 
     private function touch(): void
     {
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 }

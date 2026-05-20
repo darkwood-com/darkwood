@@ -6,6 +6,9 @@ namespace App\Infrastructure\Video\Storage;
 
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
 
+use function is_array;
+use function is_string;
+
 /**
  * Derives the filename middle segment for benchmark scene videos: video--{suffix}.mp4
  * (e.g. hailuo-02-fast, seedance-1-lite, seedance-2-0-fast, p-video-draft).

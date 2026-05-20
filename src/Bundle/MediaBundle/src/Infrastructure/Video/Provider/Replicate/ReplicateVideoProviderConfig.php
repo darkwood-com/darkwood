@@ -25,6 +25,5 @@ final class ReplicateVideoProviderConfig
          * Wall-clock cap for polling; 0 = rely on maxAttempts only.
          */
         public readonly int $maxPollDurationSeconds,
-    ) {
-    }
+    ) {}
 }

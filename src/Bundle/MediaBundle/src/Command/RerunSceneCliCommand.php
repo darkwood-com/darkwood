@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Throwable;
 
 #[AsCommand(
     name: 'app:video:rerun-scene',
@@ -51,11 +52,13 @@ final class RerunSceneCliCommand extends Command
 
         try {
             $result = $this->sceneRerunService->rerunScene($projectId, $sceneId);
-        } catch (ProjectNotFoundException | SceneNotFoundException $e) {
+        } catch (ProjectNotFoundException|SceneNotFoundException $e) {
             $io->error($e->getMessage());
+
             return Command::FAILURE;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $io->error($e->getMessage());
+
             return Command::FAILURE;
         }
 

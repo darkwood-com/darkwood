@@ -13,6 +13,5 @@ final readonly class SceneDefinition
         public string $videoPrompt = '',
         public string $narration = '',
         public ?float $duration = null,
-    ) {
-    }
+    ) {}
 }

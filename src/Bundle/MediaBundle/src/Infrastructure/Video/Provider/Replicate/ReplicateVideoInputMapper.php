@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Video\Provider\Replicate;
 
+use function array_key_exists;
+use function is_array;
+
 /**
  * Maps video-level options into Replicate `input` objects per model family.
  * Preset defaults and `replicate_input` are merged first; this class only
@@ -12,7 +15,7 @@ namespace App\Infrastructure\Video\Provider\Replicate;
 final class ReplicateVideoInputMapper
 {
     /**
-     * @param array<string, mixed> $presetInput   From {@see ReplicateVideoModelPresets}
+     * @param array<string, mixed> $presetInput From {@see ReplicateVideoModelPresets}
      * @param array<string, mixed> $callOptions Provider options (duration, seed, replicate_input, …)
      *
      * @return array<string, mixed>

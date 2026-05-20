@@ -11,6 +11,14 @@ use App\Domain\Video\Enum\ProjectStatus;
 use App\Domain\Video\Enum\SceneStatus;
 use App\Domain\Video\Scene;
 use App\Domain\Video\VideoProject;
+use BackedEnum;
+use DateTimeImmutable;
+use DateTimeInterface;
+use ReflectionClass;
+use ValueError;
+
+use function is_array;
+use function is_string;
 
 /**
  * Maps VideoProject domain model to/from JSON-friendly array structure.
@@ -20,7 +28,7 @@ use App\Domain\Video\VideoProject;
  */
 final class JsonVideoProjectMapper
 {
-    private const DATE_FORMAT = \DateTimeInterface::ATOM;
+    private const DATE_FORMAT = DateTimeInterface::ATOM;
 
     /**
      * @return array<string, mixed>
@@ -135,6 +143,16 @@ final class JsonVideoProjectMapper
         return $scene;
     }
 
+    public function replaceSceneAtIndex(VideoProject $project, int $index, Scene $scene): void
+    {
+        $scenes = $project->scenes();
+        if (!isset($scenes[$index])) {
+            return;
+        }
+        $scenes[$index] = $scene;
+        $this->setPrivateProperty($project, 'scenes', array_values($scenes));
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -170,19 +188,20 @@ final class JsonVideoProjectMapper
     }
 
     /**
-     * @param array<string, mixed> $data
-     * @param class-string<\BackedEnum> $enumClass
+     * @param array<string, mixed>     $data
+     * @param class-string<BackedEnum> $enumClass
      */
-    private function enum(array $data, string $key, string $enumClass, \BackedEnum $default): \BackedEnum
+    private function enum(array $data, string $key, string $enumClass, BackedEnum $default): BackedEnum
     {
         $v = $data[$key] ?? null;
         if ($v === null || $v === '') {
             return $default;
         }
         $s = is_string($v) ? $v : (string) $v;
+
         try {
             return $enumClass::from($s);
-        } catch (\ValueError) {
+        } catch (ValueError) {
             return $default;
         }
     }
@@ -193,6 +212,7 @@ final class JsonVideoProjectMapper
     private function string(array $data, string $key): string
     {
         $v = $data[$key] ?? null;
+
         return is_string($v) ? $v : '';
     }
 
@@ -205,6 +225,7 @@ final class JsonVideoProjectMapper
         if ($v === null || $v === '') {
             return null;
         }
+
         return is_string($v) ? $v : (string) $v;
     }
 
@@ -214,6 +235,7 @@ final class JsonVideoProjectMapper
     private function int(array $data, string $key): int
     {
         $v = $data[$key] ?? 0;
+
         return is_numeric($v) ? (int) $v : 0;
     }
 
@@ -226,28 +248,28 @@ final class JsonVideoProjectMapper
         if ($v === null) {
             return null;
         }
+
         return is_numeric($v) ? (float) $v : null;
     }
 
     /**
      * @param array<string, mixed> $data
-     *
-     * @return \DateTimeImmutable
      */
-    private function date(array $data, string $key): \DateTimeImmutable
+    private function date(array $data, string $key): DateTimeImmutable
     {
         $v = $data[$key] ?? null;
-        if ($v instanceof \DateTimeImmutable) {
+        if ($v instanceof DateTimeImmutable) {
             return $v;
         }
         if (is_string($v) && $v !== '') {
-            $d = \DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $v)
-                ?: \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, $v);
+            $d = DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $v)
+                ?: DateTimeImmutable::createFromFormat(DateTimeInterface::ISO8601, $v);
             if ($d !== false) {
                 return $d;
             }
         }
-        return new \DateTimeImmutable();
+
+        return new DateTimeImmutable();
     }
 
     /**
@@ -309,22 +331,13 @@ final class JsonVideoProjectMapper
                 $out[$k] = $val;
             }
         }
-        return $out;
-    }
 
-    public function replaceSceneAtIndex(VideoProject $project, int $index, Scene $scene): void
-    {
-        $scenes = $project->scenes();
-        if (!isset($scenes[$index])) {
-            return;
-        }
-        $scenes[$index] = $scene;
-        $this->setPrivateProperty($project, 'scenes', array_values($scenes));
+        return $out;
     }
 
     private function setPrivateProperty(object $object, string $property, mixed $value): void
     {
-        $ref = new \ReflectionClass($object);
+        $ref = new ReflectionClass($object);
         $prop = $ref->getProperty($property);
         $prop->setValue($object, $value);
     }

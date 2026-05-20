@@ -12,14 +12,15 @@ use App\Domain\Video\Enum\SceneStatus;
 use App\Domain\Video\Scene;
 use App\Domain\Video\VideoProject;
 use App\Infrastructure\Video\Persistence\JsonVideoProjectMapper;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 final class JsonVideoProjectMapperAssetMetadataTest extends TestCase
 {
-    public function test_asset_metadata_round_trips_including_failure_fields(): void
+    public function testAssetMetadataRoundTripsIncludingFailureFields(): void
     {
-        $created = new \DateTimeImmutable('2025-01-01T12:00:00+00:00');
-        $updated = new \DateTimeImmutable('2025-01-01T12:30:00+00:00');
+        $created = new DateTimeImmutable('2025-01-01T12:00:00+00:00');
+        $updated = new DateTimeImmutable('2025-01-01T12:30:00+00:00');
 
         $project = new VideoProject(
             id: 'video-abcd',

@@ -7,6 +7,8 @@ namespace App\Domain\Video;
 use App\Domain\Video\Enum\AssetStatus;
 use App\Domain\Video\Enum\AssetType;
 
+use function is_string;
+
 final class Asset
 {
     public function __construct(
@@ -19,8 +21,7 @@ final class Asset
         /** @var array<string, mixed> */
         private array $metadata = [],
         private ?string $lastError = null,
-    ) {
-    }
+    ) {}
 
     public function id(): string
     {

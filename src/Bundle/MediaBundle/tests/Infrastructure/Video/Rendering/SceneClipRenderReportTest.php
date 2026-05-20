@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class SceneClipRenderReportTest extends TestCase
 {
-    public function test_sort_by_scene_number_matches_finalize_and_scenario_ordering(): void
+    public function testSortBySceneNumberMatchesFinalizeAndScenarioOrdering(): void
     {
         $reports = [
             new SceneClipRenderReport('c', 3, SceneClipRenderReport::OUTCOME_RENDERED_VIDEO_ONLY),

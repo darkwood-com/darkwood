@@ -7,6 +7,10 @@ namespace App\Application\Video\Service;
 use App\Application\Video\DTO\GeneratedAssetResult;
 use App\Application\Video\Port\VoiceGenerationProviderInterface;
 use App\Infrastructure\Video\Provider\Replicate\ReplicatePredictionFailedException;
+use Throwable;
+
+use function is_int;
+use function is_string;
 
 /**
  * Same routing as video: VIDEO_REAL_FOR_FIRST_SCENE_ONLY=1 → only scene 1 real when wired;
@@ -20,8 +24,7 @@ final class SceneAwareVoiceGenerationProvider implements VoiceGenerationProvider
         private readonly VoiceGenerationProviderInterface $fakeProvider,
         private readonly ?VoiceGenerationProviderInterface $realProvider = null,
         private readonly bool $realForFirstSceneOnly = false,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $options
@@ -33,7 +36,7 @@ final class SceneAwareVoiceGenerationProvider implements VoiceGenerationProvider
 
         try {
             return $provider->generateVoice($text, $options);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             if ($provider === $this->realProvider && $this->fakeProvider !== $this->realProvider) {
                 $options['fallback_from'] = 'real';
                 $options['real_attempt_error_message'] = $e->getMessage();

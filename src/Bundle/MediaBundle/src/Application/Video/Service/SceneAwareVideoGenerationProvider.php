@@ -7,6 +7,10 @@ namespace App\Application\Video\Service;
 use App\Application\Video\DTO\GeneratedAssetResult;
 use App\Application\Video\Port\VideoGenerationProviderInterface;
 use App\Infrastructure\Video\Provider\Replicate\ReplicatePredictionFailedException;
+use Throwable;
+
+use function is_int;
+use function is_string;
 
 /**
  * Routes to Replicate when wired: VIDEO_REAL_FOR_FIRST_SCENE_ONLY=1 means only scene 1 uses
@@ -24,8 +28,7 @@ final class SceneAwareVideoGenerationProvider implements VideoGenerationProvider
         private readonly VideoGenerationProviderInterface $fakeProvider,
         private readonly ?VideoGenerationProviderInterface $realProvider = null,
         private readonly bool $realForFirstSceneOnly = false,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $options
@@ -37,7 +40,7 @@ final class SceneAwareVideoGenerationProvider implements VideoGenerationProvider
 
         try {
             return $provider->generateVideo($prompt, $options);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             if ($provider === $this->realProvider && $this->fakeProvider !== $this->realProvider) {
                 $options['fallback_from'] = 'real';
                 $options['real_attempt_error_message'] = $e->getMessage();

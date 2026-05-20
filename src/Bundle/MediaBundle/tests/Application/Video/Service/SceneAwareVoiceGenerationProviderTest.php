@@ -10,10 +10,11 @@ use App\Application\Video\Service\SceneAwareVoiceGenerationProvider;
 use App\Infrastructure\Video\Provider\FakeVoiceGenerationProvider;
 use App\Infrastructure\Video\Provider\Replicate\ReplicatePredictionFailedException;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 final class SceneAwareVoiceGenerationProviderTest extends TestCase
 {
-    public function test_scene_one_uses_real_when_first_scene_only_mode_and_real_is_configured(): void
+    public function testSceneOneUsesRealWhenFirstSceneOnlyModeAndRealIsConfigured(): void
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -23,7 +24,8 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $real->expects(self::once())
             ->method('generateVoice')
             ->with('Hello', self::callback(static fn (array $o): bool => ($o['scene_number'] ?? null) === 1))
-            ->willReturn($out);
+            ->willReturn($out)
+        ;
 
         $fake->expects(self::never())->method('generateVoice');
 
@@ -33,7 +35,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         self::assertSame('/tmp/real.mp3', $result->path);
     }
 
-    public function test_scene_one_string_number_still_routes_to_real_in_first_scene_only_mode(): void
+    public function testSceneOneStringNumberStillRoutesToRealInFirstSceneOnlyMode(): void
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -47,7 +49,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => '1']);
     }
 
-    public function test_scene_two_plus_uses_fake_when_first_scene_only_mode(): void
+    public function testSceneTwoPlusUsesFakeWhenFirstSceneOnlyMode(): void
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -55,7 +57,8 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $fake->expects(self::once())
             ->method('generateVoice')
             ->with('Hi', self::callback(static fn (array $o): bool => ($o['scene_number'] ?? null) === 2))
-            ->willReturn(new GeneratedAssetResult(path: '/f.mp3', duration: 0.0, metadata: []));
+            ->willReturn(new GeneratedAssetResult(path: '/f.mp3', duration: 0.0, metadata: []))
+        ;
 
         $real->expects(self::never())->method('generateVoice');
 
@@ -63,7 +66,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => 2, 'target_path' => '/f.mp3']);
     }
 
-    public function test_scene_two_uses_real_when_all_scenes_real_flag(): void
+    public function testSceneTwoUsesRealWhenAllScenesRealFlag(): void
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -71,7 +74,8 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $real->expects(self::once())
             ->method('generateVoice')
             ->with('Hi', self::callback(static fn (array $o): bool => ($o['scene_number'] ?? null) === 2))
-            ->willReturn(new GeneratedAssetResult(path: '/r2.mp3', duration: 0.0, metadata: []));
+            ->willReturn(new GeneratedAssetResult(path: '/r2.mp3', duration: 0.0, metadata: []))
+        ;
 
         $fake->expects(self::never())->method('generateVoice');
 
@@ -79,7 +83,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => 2, 'target_path' => '/r2.mp3']);
     }
 
-    public function test_when_real_unconfigured_scene_one_uses_fake(): void
+    public function testWhenRealUnconfiguredSceneOneUsesFake(): void
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $fake->expects(self::once())->method('generateVoice')->willReturn(
@@ -90,40 +94,42 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => 1]);
     }
 
-    public function test_real_failure_falls_back_to_fake_with_metadata_hint(): void
+    public function testRealFailureFallsBackToFakeWithMetadataHint(): void
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
 
-        $real->expects(self::once())->method('generateVoice')->willThrowException(new \RuntimeException('api down'));
+        $real->expects(self::once())->method('generateVoice')->willThrowException(new RuntimeException('api down'));
 
         $fake->expects(self::once())
             ->method('generateVoice')
             ->with('Hi', self::callback(static fn (array $o): bool => ($o['fallback_from'] ?? null) === 'real'))
-            ->willReturn(new GeneratedAssetResult(path: '/fallback.mp3', duration: 0.0, metadata: []));
+            ->willReturn(new GeneratedAssetResult(path: '/fallback.mp3', duration: 0.0, metadata: []))
+        ;
 
         $router = new SceneAwareVoiceGenerationProvider($fake, $real, true);
         $router->generateVoice('Hi', ['scene_number' => 1, 'target_path' => '/fallback.mp3']);
     }
 
-    public function test_real_failure_on_scene_two_falls_back_when_all_scenes_real(): void
+    public function testRealFailureOnSceneTwoFallsBackWhenAllScenesReal(): void
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
 
-        $real->expects(self::once())->method('generateVoice')->willThrowException(new \RuntimeException('timeout'));
+        $real->expects(self::once())->method('generateVoice')->willThrowException(new RuntimeException('timeout'));
 
         $fake->expects(self::once())
             ->method('generateVoice')
             ->with('Hi', self::callback(static fn (array $o): bool => ($o['fallback_from'] ?? null) === 'real'
                 && ($o['scene_number'] ?? null) === 2))
-            ->willReturn(new GeneratedAssetResult(path: '/fb2.mp3', duration: 0.0, metadata: []));
+            ->willReturn(new GeneratedAssetResult(path: '/fb2.mp3', duration: 0.0, metadata: []))
+        ;
 
         $router = new SceneAwareVoiceGenerationProvider($fake, $real, false);
         $router->generateVoice('Hi', ['scene_number' => 2, 'target_path' => '/fb2.mp3']);
     }
 
-    public function test_fallback_records_replicate_failure_on_voice_metadata(): void
+    public function testFallbackRecordsReplicateFailureOnVoiceMetadata(): void
     {
         $fake = new FakeVoiceGenerationProvider();
         $real = $this->createMock(VoiceGenerationProviderInterface::class);

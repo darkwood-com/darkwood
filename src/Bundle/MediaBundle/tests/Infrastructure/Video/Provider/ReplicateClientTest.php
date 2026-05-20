@@ -8,12 +8,13 @@ use App\Infrastructure\Video\Provider\Replicate\ReplicateApiConfig;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateClient;
 use App\Tests\Support\ReplicateTestRateLimiterFactory;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class ReplicateClientTest extends TestCase
 {
-    public function test_resolve_prediction_version_passes_through_64_char_hex(): void
+    public function testResolvePredictionVersionPassesThrough64CharHex(): void
     {
         $hex = str_repeat('a', 64);
         $client = new ReplicateClient(
@@ -25,7 +26,7 @@ final class ReplicateClientTest extends TestCase
         self::assertSame($hex, $client->resolvePredictionVersion($hex));
     }
 
-    public function test_resolve_prediction_version_fetches_latest_version_for_owner_model_slug(): void
+    public function testResolvePredictionVersionFetchesLatestVersionForOwnerModelSlug(): void
     {
         $resolved = str_repeat('f', 64);
         $httpClient = $this->createMock(HttpClientInterface::class);
@@ -41,14 +42,15 @@ final class ReplicateClientTest extends TestCase
                 'https://api.replicate.com/v1/models/acme/cool-model',
                 self::anything(),
             )
-            ->willReturn($response);
+            ->willReturn($response)
+        ;
 
         $client = new ReplicateClient($httpClient, new ReplicateApiConfig('token'), ReplicateTestRateLimiterFactory::create());
 
         self::assertSame($resolved, $client->resolvePredictionVersion('acme/cool-model'));
     }
 
-    public function test_create_prediction_non_2xx_includes_replicate_detail_in_exception(): void
+    public function testCreatePredictionNon2xxIncludesReplicateDetailInException(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $response = $this->jsonResponse(['detail' => 'version is invalid'], 422);
@@ -56,11 +58,12 @@ final class ReplicateClientTest extends TestCase
         $httpClient
             ->expects(self::once())
             ->method('request')
-            ->willReturn($response);
+            ->willReturn($response)
+        ;
 
         $client = new ReplicateClient($httpClient, new ReplicateApiConfig('token'), ReplicateTestRateLimiterFactory::create());
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('prediction create failed');
         $this->expectExceptionMessage('HTTP 422');
         $this->expectExceptionMessage('version is invalid');
@@ -68,7 +71,7 @@ final class ReplicateClientTest extends TestCase
         $client->createPrediction(['version' => 'x', 'input' => []]);
     }
 
-    public function test_extract_first_output_url_finds_nested_https_url(): void
+    public function testExtractFirstOutputUrlFindsNestedHttpsUrl(): void
     {
         $client = new ReplicateClient(
             $this->createMock(HttpClientInterface::class),
@@ -83,7 +86,7 @@ final class ReplicateClientTest extends TestCase
         self::assertSame('https://cdn.example.com/out.mp4', $url);
     }
 
-    public function test_create_prediction_retries_on_429_then_succeeds(): void
+    public function testCreatePredictionRetriesOn429ThenSucceeds(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient
@@ -92,7 +95,8 @@ final class ReplicateClientTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 $this->throttledResponse(),
                 $this->jsonResponse(['id' => 'pred', 'status' => 'starting'], 200),
-            );
+            )
+        ;
 
         $client = new ReplicateClient(
             $httpClient,
@@ -106,13 +110,14 @@ final class ReplicateClientTest extends TestCase
         self::assertSame('pred', $out['id']);
     }
 
-    public function test_create_prediction_fails_after_max_429_retries(): void
+    public function testCreatePredictionFailsAfterMax429Retries(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient
             ->expects(self::exactly(11))
             ->method('request')
-            ->willReturn($this->throttledResponse());
+            ->willReturn($this->throttledResponse())
+        ;
 
         $client = new ReplicateClient(
             $httpClient,
@@ -121,13 +126,13 @@ final class ReplicateClientTest extends TestCase
             self::noopSleeper(),
         );
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('too many 429');
 
         $client->createPrediction(['version' => 'v', 'input' => []]);
     }
 
-    public function test_get_prediction_retries_on_429_then_succeeds(): void
+    public function testGetPredictionRetriesOn429ThenSucceeds(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient
@@ -136,7 +141,8 @@ final class ReplicateClientTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 $this->throttledResponse(),
                 $this->jsonResponse(['id' => 'pred', 'status' => 'succeeded'], 200),
-            );
+            )
+        ;
 
         $client = new ReplicateClient(
             $httpClient,
@@ -156,8 +162,7 @@ final class ReplicateClientTest extends TestCase
      */
     private static function noopSleeper(): callable
     {
-        return static function (int $_s): void {
-        };
+        return static function (int $_s): void {};
     }
 
     private function throttledResponse(): ResponseInterface

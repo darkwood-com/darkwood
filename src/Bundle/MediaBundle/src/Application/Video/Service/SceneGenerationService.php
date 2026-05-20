@@ -6,13 +6,17 @@ namespace App\Application\Video\Service;
 
 use App\Application\Video\DTO\SceneDefinition;
 use App\Application\Video\Port\ArtifactStorageInterface;
-use App\Application\Video\Port\VoiceGenerationProviderInterface;
 use App\Application\Video\Port\VideoGenerationProviderInterface;
+use App\Application\Video\Port\VoiceGenerationProviderInterface;
 use App\Domain\Video\Asset;
 use App\Domain\Video\Enum\AssetStatus;
 use App\Domain\Video\Enum\AssetType;
 use App\Domain\Video\Scene;
 use Spatie\Fork\Fork;
+use Throwable;
+
+use function function_exists;
+use function is_string;
 
 /**
  * Generates all assets (voice, video) for a single scene.
@@ -25,8 +29,7 @@ final class SceneGenerationService
         private readonly VideoGenerationProviderInterface $videoProvider,
         private readonly ArtifactStorageInterface $artifactStorage,
         private readonly SceneVideoBenchmarkService $sceneVideoBenchmarkService,
-    ) {
-    }
+    ) {}
 
     /**
      * Generate voice and video assets for the scene end-to-end.
@@ -87,8 +90,8 @@ final class SceneGenerationService
     /**
      * Scene 1 benchmark: voice skipped (no TTS); one video file + video asset per preset, same prompt.
      *
-     * @param list<string>           $presetKeys
-     * @param array<string, mixed>   $baseVideoOptions merged before each replicate_preset (e.g. replicate_model)
+     * @param list<string>         $presetKeys
+     * @param array<string, mixed> $baseVideoOptions merged before each replicate_preset (e.g. replicate_model)
      */
     public function generateSceneWithVideoBenchmarkPresets(
         string $projectId,
@@ -135,7 +138,7 @@ final class SceneGenerationService
 
     private function isForkParallelEnabled(): bool
     {
-        if (!\function_exists('pcntl_fork')) {
+        if (!function_exists('pcntl_fork')) {
             return false;
         }
         if (!class_exists(Fork::class)) {
@@ -151,7 +154,7 @@ final class SceneGenerationService
     }
 
     /**
-     * @return array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>}|array{ok: false, error: string, metadata: array<string, mixed>}
+     * @return array{ok: false, error: string, metadata: array<string, mixed>}|array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>}
      */
     private function forkExecuteVoice(string $narration, string $targetPath, string $sceneId, int $sceneNumber): array
     {
@@ -168,7 +171,7 @@ final class SceneGenerationService
                 'duration' => $result->duration,
                 'metadata' => $result->metadata,
             ];
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return [
                 'ok' => false,
                 'error' => 'Voice generation failed: ' . $e->getMessage(),
@@ -180,7 +183,7 @@ final class SceneGenerationService
     /**
      * @param array<string, mixed> $extraOptions
      *
-     * @return array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>}|array{ok: false, error: string, metadata: array<string, mixed>}
+     * @return array{ok: false, error: string, metadata: array<string, mixed>}|array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>}
      */
     private function forkExecuteVideo(
         string $prompt,
@@ -202,7 +205,7 @@ final class SceneGenerationService
                 'duration' => $result->duration,
                 'metadata' => $result->metadata,
             ];
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return [
                 'ok' => false,
                 'error' => 'Video generation failed: ' . $e->getMessage(),
@@ -212,7 +215,7 @@ final class SceneGenerationService
     }
 
     /**
-     * @param array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>}|array{ok: false, error: string, metadata: array<string, mixed>} $out
+     * @param array{ok: false, error: string, metadata: array<string, mixed>}|array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>} $out
      */
     private function applyVoiceForkOutcome(Scene $scene, Asset $asset, array $out): void
     {
@@ -231,8 +234,8 @@ final class SceneGenerationService
     }
 
     /**
-     * @param array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>}|array{ok: false, error: string, metadata: array<string, mixed>} $out
-     * @param array<string, mixed> $videoProviderOptions
+     * @param array{ok: false, error: string, metadata: array<string, mixed>}|array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>} $out
+     * @param array<string, mixed>                                                                                                                            $videoProviderOptions
      */
     private function applyVideoForkOutcome(Scene $scene, Asset $asset, array $out, array $videoProviderOptions = []): void
     {
@@ -251,8 +254,8 @@ final class SceneGenerationService
     }
 
     /**
-     * @param array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>}|array{ok: false, error: string, metadata: array<string, mixed>} $voiceOut
-     * @param array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>}|array{ok: false, error: string, metadata: array<string, mixed>} $videoOut
+     * @param array{ok: false, error: string, metadata: array<string, mixed>}|array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>} $voiceOut
+     * @param array{ok: false, error: string, metadata: array<string, mixed>}|array{ok: true, path: string, duration: ?float, metadata: array<string, mixed>} $videoOut
      */
     private function finalizeSceneAfterParallelAssets(Scene $scene, array $voiceOut, array $videoOut): void
     {
@@ -364,7 +367,7 @@ final class SceneGenerationService
             }
 
             return true;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $message = 'Voice generation failed: ' . $e->getMessage();
             $asset->updateMetadata(ProviderFailureMetadata::forThrowable($e));
             $asset->fail($message);
@@ -394,7 +397,7 @@ final class SceneGenerationService
             }
 
             return true;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $message = 'Video generation failed: ' . $e->getMessage();
             $asset->updateMetadata(ProviderFailureMetadata::forThrowable($e));
             $asset->fail($message);

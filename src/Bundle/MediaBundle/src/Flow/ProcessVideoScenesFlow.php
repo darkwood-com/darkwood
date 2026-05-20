@@ -15,6 +15,9 @@ use Flow\Flow\Flow;
 use Flow\IpStrategy\LinearIpStrategy;
 use Spatie\Fork\Fork;
 
+use function count;
+use function function_exists;
+
 /**
  * Flow step: run one scene flow per scene; scenes may execute in parallel (Spatie Fork) when enabled.
  * Fork workers persist each scene via {@see VideoProjectRepositoryInterface::mergeSceneAtIndex} as they finish;
@@ -49,6 +52,21 @@ final class ProcessVideoScenesFlow extends Flow
         );
     }
 
+    /**
+     * Ensures fork worker results are merged in scene index order (completion order may differ).
+     *
+     * @param list<array{sceneIndex: int, sceneData: array<string, mixed>, clipReport: array<string, mixed>, anyFailed?: bool}> $results
+     *
+     * @return list<array{sceneIndex: int, sceneData: array<string, mixed>, clipReport: array<string, mixed>, anyFailed?: bool}>
+     */
+    public static function sortForkSceneResultsBySceneIndex(array $results): array
+    {
+        $ordered = array_values($results);
+        usort($ordered, static fn (array $a, array $b): int => ($a['sceneIndex'] ?? 0) <=> ($b['sceneIndex'] ?? 0));
+
+        return $ordered;
+    }
+
     private function processScenes(VideoGenerationPayload $payload): VideoGenerationPayload
     {
         $project = $payload->project;
@@ -56,7 +74,7 @@ final class ProcessVideoScenesFlow extends Flow
             return $payload;
         }
 
-        $count = \count($project->scenes());
+        $count = count($project->scenes());
         if ($count === 0) {
             return $payload;
         }
@@ -94,21 +112,6 @@ final class ProcessVideoScenesFlow extends Flow
     }
 
     /**
-     * Ensures fork worker results are merged in scene index order (completion order may differ).
-     *
-     * @param list<array{sceneIndex: int, sceneData: array<string, mixed>, clipReport: array<string, mixed>, anyFailed?: bool}> $results
-     *
-     * @return list<array{sceneIndex: int, sceneData: array<string, mixed>, clipReport: array<string, mixed>, anyFailed?: bool}>
-     */
-    public static function sortForkSceneResultsBySceneIndex(array $results): array
-    {
-        $ordered = array_values($results);
-        usort($ordered, static fn (array $a, array $b): int => ($a['sceneIndex'] ?? 0) <=> ($b['sceneIndex'] ?? 0));
-
-        return $ordered;
-    }
-
-    /**
      * @param array{sceneIndex: int, sceneData: array<string, mixed>, clipReport: array<string, mixed>, anyFailed: bool} $result
      */
     private function mergeForkSceneResult(VideoGenerationPayload $payload, array $result): void
@@ -129,7 +132,7 @@ final class ProcessVideoScenesFlow extends Flow
 
     private function isSceneForkParallelEnabled(): bool
     {
-        if (!\function_exists('pcntl_fork')) {
+        if (!function_exists('pcntl_fork')) {
             return false;
         }
         if (!class_exists(Fork::class)) {

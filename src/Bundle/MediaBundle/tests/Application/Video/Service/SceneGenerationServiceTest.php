@@ -6,10 +6,11 @@ namespace App\Tests\Application\Video\Service;
 
 use App\Application\Video\DTO\GeneratedAssetResult;
 use App\Application\Video\DTO\SceneDefinition;
-use App\Application\Video\Port\VoiceGenerationProviderInterface;
 use App\Application\Video\Port\VideoGenerationProviderInterface;
+use App\Application\Video\Port\VoiceGenerationProviderInterface;
 use App\Application\Video\Service\SceneGenerationService;
 use App\Application\Video\Service\SceneVideoBenchmarkService;
+use App\Domain\Video\Asset;
 use App\Domain\Video\Enum\AssetStatus;
 use App\Domain\Video\Enum\AssetType;
 use App\Domain\Video\Enum\SceneStatus;
@@ -17,11 +18,14 @@ use App\Domain\Video\Scene;
 use App\Infrastructure\Video\Provider\Replicate\ReplicatePredictionFailedException;
 use App\Infrastructure\Video\Storage\LocalArtifactStorage;
 use App\Infrastructure\Video\Storage\VideoPathResolver;
+use FilesystemIterator;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 final class SceneGenerationServiceTest extends TestCase
 {
-    public function test_success_merges_lifecycle_metadata_on_assets(): void
+    public function testSuccessMergesLifecycleMetadataOnAssets(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-gen-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -35,7 +39,7 @@ final class SceneGenerationServiceTest extends TestCase
             $benchmark = new SceneVideoBenchmarkService($unusedBenchVideo, $storage);
 
             $voice->expects(self::once())->method('generateVoice')->willReturnCallback(
-                function (string $text, array $options): GeneratedAssetResult {
+                static function (string $text, array $options): GeneratedAssetResult {
                     $path = $options['target_path'];
                     self::assertIsString($path);
                     self::assertNotFalse(file_put_contents($path, 'a'));
@@ -54,7 +58,7 @@ final class SceneGenerationServiceTest extends TestCase
             );
 
             $video->expects(self::once())->method('generateVideo')->willReturnCallback(
-                function (string $prompt, array $options): GeneratedAssetResult {
+                static function (string $prompt, array $options): GeneratedAssetResult {
                     $path = $options['target_path'];
                     self::assertIsString($path);
                     self::assertNotFalse(file_put_contents($path, 'v'));
@@ -114,7 +118,7 @@ final class SceneGenerationServiceTest extends TestCase
         }
     }
 
-    public function test_video_failure_records_replicate_fields_on_asset(): void
+    public function testVideoFailureRecordsReplicateFieldsOnAsset(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-fail-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -128,7 +132,7 @@ final class SceneGenerationServiceTest extends TestCase
             $benchmark = new SceneVideoBenchmarkService($unusedBenchVideo, $storage);
 
             $voice->method('generateVoice')->willReturnCallback(
-                function (string $text, array $options): GeneratedAssetResult {
+                static function (string $text, array $options): GeneratedAssetResult {
                     $path = $options['target_path'];
                     file_put_contents($path, 'a');
 
@@ -173,7 +177,7 @@ final class SceneGenerationServiceTest extends TestCase
         }
     }
 
-    private function assetByType(Scene $scene, AssetType $type): \App\Domain\Video\Asset
+    private function assetByType(Scene $scene, AssetType $type): Asset
     {
         foreach ($scene->assets() as $asset) {
             if ($asset->type() === $type) {
@@ -189,9 +193,9 @@ final class SceneGenerationServiceTest extends TestCase
         if (!is_dir($dir)) {
             return;
         }
-        $it = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST,
+        $it = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST,
         );
         foreach ($it as $f) {
             $p = $f->getPathname();

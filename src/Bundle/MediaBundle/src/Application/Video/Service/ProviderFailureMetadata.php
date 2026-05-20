@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Application\Video\Service;
 
 use App\Infrastructure\Video\Provider\Replicate\ReplicatePredictionFailedException;
+use DateTimeImmutable;
+use DateTimeInterface;
+use Throwable;
 
 /**
  * Normalized failure fields for persisted asset metadata after provider errors.
@@ -14,12 +17,12 @@ final class ProviderFailureMetadata
     /**
      * @return array<string, mixed>
      */
-    public static function forThrowable(\Throwable $e): array
+    public static function forThrowable(Throwable $e): array
     {
         $meta = [
             'provider_state' => 'error',
             'provider_error_message' => $e->getMessage(),
-            'failure_at' => (new \DateTimeImmutable('now'))->format(\DateTimeInterface::ATOM),
+            'failure_at' => (new DateTimeImmutable('now'))->format(DateTimeInterface::ATOM),
         ];
 
         if ($e instanceof ReplicatePredictionFailedException) {

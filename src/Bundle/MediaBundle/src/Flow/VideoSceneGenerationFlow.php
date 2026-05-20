@@ -9,11 +9,12 @@ use Flow\AsyncHandler\AsyncHandler;
 use Flow\Driver\FiberDriver;
 use Flow\DriverInterface;
 use Flow\Flow\Flow;
+use Flow\Ip;
 use Flow\IpStrategy\LinearIpStrategy;
 
 /**
  * Standalone Flow for one scene: same business logic as {@see VideoSceneStep}, wrapped as a Flow step.
- * Parent orchestration can push an {@see \Flow\Ip} with {@see VideoScenePayload} and await this flow
+ * Parent orchestration can push an {@see Ip} with {@see VideoScenePayload} and await this flow
  * to dispatch scene work asynchronously (e.g. separate worker or concurrent scheduling at the caller).
  *
  * @extends Flow<VideoScenePayload, VideoScenePayload>

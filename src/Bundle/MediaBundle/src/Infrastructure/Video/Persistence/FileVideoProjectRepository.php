@@ -7,6 +7,14 @@ namespace App\Infrastructure\Video\Persistence;
 use App\Application\Video\Port\VideoProjectRepositoryInterface;
 use App\Domain\Video\Scene;
 use App\Domain\Video\VideoProject;
+use RuntimeException;
+
+use function dirname;
+use function is_array;
+use function sprintf;
+use function strlen;
+
+use const DIRECTORY_SEPARATOR;
 
 final class FileVideoProjectRepository implements VideoProjectRepositoryInterface
 {
@@ -15,8 +23,7 @@ final class FileVideoProjectRepository implements VideoProjectRepositoryInterfac
     public function __construct(
         private string $projectDir,
         private JsonVideoProjectMapper $mapper,
-    ) {
-    }
+    ) {}
 
     public function get(string $id): ?VideoProject
     {
@@ -44,13 +51,13 @@ final class FileVideoProjectRepository implements VideoProjectRepositoryInterfac
         $dir = dirname($path);
 
         if (!is_dir($dir)) {
-            mkdir($dir, 0775, true);
+            mkdir($dir, 0o775, true);
         }
 
         $data = $this->mapper->toArray($project);
-        $json = json_encode($data, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR);
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
 
-        file_put_contents($path, $json, \LOCK_EX);
+        file_put_contents($path, $json, LOCK_EX);
     }
 
     public function mergeSceneAtIndex(string $projectId, int $index, Scene $scene): void
@@ -58,12 +65,13 @@ final class FileVideoProjectRepository implements VideoProjectRepositoryInterfac
         $path = $this->projectFilePath($projectId);
         $fp = fopen($path, 'r+');
         if ($fp === false) {
-            throw new \RuntimeException(sprintf('Cannot open project file for scene merge: %s', $path));
+            throw new RuntimeException(sprintf('Cannot open project file for scene merge: %s', $path));
         }
 
-        if (!flock($fp, \LOCK_EX)) {
+        if (!flock($fp, LOCK_EX)) {
             fclose($fp);
-            throw new \RuntimeException(sprintf('Cannot lock project file for scene merge: %s', $path));
+
+            throw new RuntimeException(sprintf('Cannot lock project file for scene merge: %s', $path));
         }
 
         try {
@@ -72,38 +80,39 @@ final class FileVideoProjectRepository implements VideoProjectRepositoryInterfac
                 $raw = '';
             }
             if ($raw === '') {
-                throw new \RuntimeException(sprintf('Project file is empty: %s', $path));
+                throw new RuntimeException(sprintf('Project file is empty: %s', $path));
             }
 
-            $data = json_decode($raw, true, 512, \JSON_THROW_ON_ERROR);
+            $data = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
             if (!is_array($data)) {
-                throw new \RuntimeException(sprintf('Project file is not a JSON object: %s', $path));
+                throw new RuntimeException(sprintf('Project file is not a JSON object: %s', $path));
             }
 
             $project = $this->mapper->fromArray($data);
             $this->mapper->replaceSceneAtIndex($project, $index, $scene);
-            $json = json_encode($this->mapper->toArray($project), \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR);
+            $json = json_encode($this->mapper->toArray($project), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
 
             rewind($fp);
             if (!ftruncate($fp, 0)) {
-                throw new \RuntimeException(sprintf('Cannot truncate project file: %s', $path));
+                throw new RuntimeException(sprintf('Cannot truncate project file: %s', $path));
             }
 
             $written = fwrite($fp, $json);
-            if ($written === false || $written !== \strlen($json)) {
-                throw new \RuntimeException(sprintf('Failed to write merged project file: %s', $path));
+            if ($written === false || $written !== strlen($json)) {
+                throw new RuntimeException(sprintf('Failed to write merged project file: %s', $path));
             }
 
             fflush($fp);
         } finally {
-            flock($fp, \LOCK_UN);
+            flock($fp, LOCK_UN);
             fclose($fp);
         }
     }
 
     private function projectFilePath(string $projectId): string
     {
-        $base = rtrim($this->projectDir, \DIRECTORY_SEPARATOR);
-        return $base . \DIRECTORY_SEPARATOR . 'var' . \DIRECTORY_SEPARATOR . 'videos' . \DIRECTORY_SEPARATOR . $projectId . \DIRECTORY_SEPARATOR . self::PROJECT_FILE;
+        $base = rtrim($this->projectDir, DIRECTORY_SEPARATOR);
+
+        return $base . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'videos' . DIRECTORY_SEPARATOR . $projectId . DIRECTORY_SEPARATOR . self::PROJECT_FILE;
     }
 }

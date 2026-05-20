@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Video\Port;
 
 use App\Application\Video\DTO\GeneratedAssetResult;
+use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
 
 interface VideoGenerationProviderInterface
 {
@@ -16,7 +17,7 @@ interface VideoGenerationProviderInterface
      * scene_number is used by SceneAwareVideoGenerationProvider (see VIDEO_REAL_FOR_FIRST_SCENE_ONLY).
      *
      * Replicate (real provider) also accepts:
-     *  - replicate_preset: preset key (see {@see \App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets} / `presetKeys()`)
+     *  - replicate_preset: preset key (see {@see ReplicateVideoModelPresets} / `presetKeys()`)
      *  - replicate_model: model slug or version id (overrides preset / default config)
      *  - replicate_input: array merged into the API input object after preset defaults
      *  - video_artifact_key: optional slug for local filename (video--{slug}.mp4); takes precedence over preset/model naming

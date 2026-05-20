@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Video\Provider\Replicate;
 
+use RuntimeException;
+
+use function is_scalar;
+use function is_string;
+use function sprintf;
+
 /**
  * Thrown when a Replicate prediction ends without a downloadable success output.
  * Lets upper layers persist prediction id, model, and remote status without parsing messages.
  */
-final class ReplicatePredictionFailedException extends \RuntimeException
+final class ReplicatePredictionFailedException extends RuntimeException
 {
     public function __construct(
         string $message,

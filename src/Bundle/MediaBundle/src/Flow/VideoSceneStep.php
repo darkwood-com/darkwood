@@ -16,6 +16,10 @@ use App\Infrastructure\Video\Rendering\SceneClipFfmpegRenderer;
 use App\Infrastructure\Video\Rendering\SceneClipRenderReport;
 use App\Infrastructure\Video\Rendering\VideoRenderingMetadata;
 use App\Infrastructure\Video\Storage\LocalArtifactStorage;
+use LogicException;
+
+use function is_array;
+use function is_string;
 
 /**
  * Single-scene pipeline: generate assets, render clip, persist scene clip metadata, save project.
@@ -31,8 +35,7 @@ class VideoSceneStep
         private readonly LocalArtifactStorage $artifactStorage,
         private readonly VideoProjectRepositoryInterface $projectRepository,
         private readonly JsonVideoProjectMapper $projectMapper,
-    ) {
-    }
+    ) {}
 
     public function process(VideoScenePayload $payload): VideoScenePayload
     {
@@ -75,12 +78,12 @@ class VideoSceneStep
 
         $project = $generation->project;
         if ($project === null) {
-            throw new \LogicException('VideoGenerationPayload has no project during fork merge.');
+            throw new LogicException('VideoGenerationPayload has no project during fork merge.');
         }
 
         $scene = $project->scenes()[$sceneIndex] ?? null;
         if (!$scene instanceof Scene) {
-            throw new \LogicException('Scene not found at index ' . $sceneIndex . ' during fork merge.');
+            throw new LogicException('Scene not found at index ' . $sceneIndex . ' during fork merge.');
         }
 
         $this->projectRepository->mergeSceneAtIndex($generation->projectId, $sceneIndex, $scene);

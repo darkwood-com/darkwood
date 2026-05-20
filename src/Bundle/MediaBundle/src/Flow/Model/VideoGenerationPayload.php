@@ -9,6 +9,7 @@ use App\Application\Video\DTO\VideoGenerationResult;
 use App\Domain\Video\VideoProject;
 use App\Infrastructure\Video\Rendering\ScenarioConcatResult;
 use App\Infrastructure\Video\Rendering\SceneClipRenderReport;
+use LogicException;
 
 /**
  * Mutable Ip payload for video generation flows. Mutated in place through prepare,
@@ -21,7 +22,7 @@ final class VideoGenerationPayload
 
     public bool $anyFailed = false;
 
-    /** @var array{json: string, markdown: string}|null */
+    /** @var null|array{json: string, markdown: string} */
     public ?array $benchmarkReportPaths = null;
 
     public ?ScenarioConcatResult $scenarioConcat = null;
@@ -32,18 +33,17 @@ final class VideoGenerationPayload
 
     public function __construct(
         public string $yamlPath,
-        /** @var array<string, mixed>|null */
+        /** @var null|array<string, mixed> */
         public ?array $firstSceneVideoOptions = null,
         public ?VideoDefinition $definition = null,
         public ?VideoProject $project = null,
         public string $projectId = '',
-    ) {
-    }
+    ) {}
 
     public function getResult(): VideoGenerationResult
     {
         if ($this->result === null) {
-            throw new \LogicException('Video generation did not produce a result (finalize step missing or failed).');
+            throw new LogicException('Video generation did not produce a result (finalize step missing or failed).');
         }
 
         return $this->result;

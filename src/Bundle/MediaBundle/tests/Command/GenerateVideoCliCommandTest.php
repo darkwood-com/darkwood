@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class GenerateVideoCliCommandTest extends TestCase
 {
-    public function test_scene1_routing_shows_voice_fallback_and_real_error(): void
+    public function testScene1RoutingShowsVoiceFallbackAndRealError(): void
     {
         $yaml = tempnam(sys_get_temp_dir(), 'dw-yml-');
         self::assertNotFalse($yaml);
@@ -47,7 +47,8 @@ final class GenerateVideoCliCommandTest extends TestCase
         $orchestrator->expects(self::once())
             ->method('generateFromYaml')
             ->with($yaml, null)
-            ->willReturn(new VideoGenerationResult($project, null, null));
+            ->willReturn(new VideoGenerationResult($project, null, null))
+        ;
 
         $kernel = $this->createMock(KernelInterface::class);
         $kernel->method('getProjectDir')->willReturn('/tmp/dw-proj-root');
@@ -56,6 +57,7 @@ final class GenerateVideoCliCommandTest extends TestCase
         (new Application())->addCommand($command);
 
         $tester = new CommandTester($command);
+
         try {
             $tester->execute(['command' => $command->getName(), 'yaml' => $yaml], ['decorated' => false]);
         } finally {
@@ -72,7 +74,7 @@ final class GenerateVideoCliCommandTest extends TestCase
         self::assertStringContainsString('replicate-video', $out);
     }
 
-    public function test_scene1_routing_shows_real_success_without_fallback(): void
+    public function testScene1RoutingShowsRealSuccessWithoutFallback(): void
     {
         $yaml = tempnam(sys_get_temp_dir(), 'dw-yml-');
         self::assertNotFalse($yaml);
@@ -102,6 +104,7 @@ final class GenerateVideoCliCommandTest extends TestCase
         (new Application())->addCommand($command);
 
         $tester = new CommandTester($command);
+
         try {
             $tester->execute(['command' => $command->getName(), 'yaml' => $yaml], ['decorated' => false]);
         } finally {

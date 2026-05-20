@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Infrastructure\Video\Rendering;
 
 use App\Application\Video\Port\VideoRendererInterface;
-use App\Domain\Video\Asset;
 use App\Domain\Video\Scene;
 use App\Domain\Video\VideoProject;
 
+use function dirname;
+
 /**
  * MVP renderer: writes a structured JSON manifest instead of a video.
- * Output: var/videos/<project-id>/render/video-manifest.json
+ * Output: var/videos/<project-id>/render/video-manifest.json.
  */
 final class ManifestVideoRenderer implements VideoRendererInterface
 {
@@ -19,14 +20,14 @@ final class ManifestVideoRenderer implements VideoRendererInterface
 
     public function render(VideoProject $project, string $outputPath): string
     {
-        $renderDir = \dirname($outputPath);
+        $renderDir = dirname($outputPath);
         $manifestPath = $renderDir . '/' . self::MANIFEST_FILENAME;
 
         $manifest = $this->buildManifest($project);
-        $json = json_encode($manifest, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR);
+        $json = json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
 
         if (!is_dir($renderDir)) {
-            mkdir($renderDir, 0755, true);
+            mkdir($renderDir, 0o755, true);
         }
         file_put_contents($manifestPath, $json);
 
@@ -98,11 +99,12 @@ final class ManifestVideoRenderer implements VideoRendererInterface
         foreach ($project->scenes() as $scene) {
             $narration[] = $scene->narrationText();
         }
+
         return $narration;
     }
 
     /**
-     * @return list<string|null>
+     * @return list<null|string>
      */
     private function collectAssetPaths(VideoProject $project): array
     {
@@ -112,6 +114,7 @@ final class ManifestVideoRenderer implements VideoRendererInterface
                 $paths[] = $asset->path();
             }
         }
+
         return $paths;
     }
 
@@ -126,6 +129,7 @@ final class ManifestVideoRenderer implements VideoRendererInterface
                 $statuses[] = $asset->status()->value;
             }
         }
+
         return $statuses;
     }
 }

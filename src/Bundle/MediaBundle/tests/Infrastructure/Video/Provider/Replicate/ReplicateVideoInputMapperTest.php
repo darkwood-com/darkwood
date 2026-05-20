@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ReplicateVideoInputMapperTest extends TestCase
 {
-    public function test_hailuo_maps_prompt_duration_seed(): void
+    public function testHailuoMapsPromptDurationSeed(): void
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::HAILUO);
@@ -24,7 +24,7 @@ final class ReplicateVideoInputMapperTest extends TestCase
         self::assertSame(42, $out['seed']);
     }
 
-    public function test_seedance_maps_like_hailuo(): void
+    public function testSeedanceMapsLikeHailuo(): void
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE);
@@ -36,7 +36,7 @@ final class ReplicateVideoInputMapperTest extends TestCase
         self::assertSame('480p', $out['resolution']);
     }
 
-    public function test_seedance_2_fast_maps_prompt_and_resolution(): void
+    public function testSeedance2FastMapsPromptAndResolution(): void
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE_2_FAST);
@@ -47,7 +47,7 @@ final class ReplicateVideoInputMapperTest extends TestCase
         self::assertSame('480p', $out['resolution']);
     }
 
-    public function test_p_video_coerces_draft_boolean(): void
+    public function testPVideoCoercesDraftBoolean(): void
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::P_VIDEO_DRAFT);
@@ -57,7 +57,7 @@ final class ReplicateVideoInputMapperTest extends TestCase
         self::assertSame('Draft clip', $out['prompt']);
     }
 
-    public function test_replicate_input_merges_over_preset(): void
+    public function testReplicateInputMergesOverPreset(): void
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::P_VIDEO_DRAFT);

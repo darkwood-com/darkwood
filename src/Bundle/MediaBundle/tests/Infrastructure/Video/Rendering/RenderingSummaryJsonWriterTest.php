@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RenderingSummaryJsonWriterTest extends TestCase
 {
-    public function test_writes_json_with_scene_and_scenario_sections(): void
+    public function testWritesJsonWithSceneAndScenarioSections(): void
     {
         $dir = sys_get_temp_dir() . '/dw-summary-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($dir, 0o755, true));
@@ -32,7 +32,7 @@ final class RenderingSummaryJsonWriterTest extends TestCase
 
             $path = $dir . '/rendering-summary.json';
             self::assertFileExists($path);
-            $data = json_decode((string) file_get_contents($path), true, 512, \JSON_THROW_ON_ERROR);
+            $data = json_decode((string) file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
             self::assertSame('rendered_video_only', $data['scene_clips'][0]['outcome']);
             self::assertSame('a', $data['scenario']['included_in_scenario'][0]['scene_id']);
             self::assertSame('scene_mp4_missing', $data['scenario']['excluded_from_scenario'][0]['reason']);

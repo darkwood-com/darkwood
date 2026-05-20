@@ -10,6 +10,9 @@ use App\Domain\Video\Asset;
 use App\Domain\Video\Enum\AssetStatus;
 use App\Domain\Video\Enum\AssetType;
 use App\Domain\Video\Scene;
+use Throwable;
+
+use function is_string;
 
 /**
  * Scene 1 video-only benchmark: same prompt, multiple Replicate presets, distinct artifact files.
@@ -25,8 +28,7 @@ final class SceneVideoBenchmarkService
     public function __construct(
         private readonly VideoGenerationProviderInterface $videoProvider,
         private readonly ArtifactStorageInterface $artifactStorage,
-    ) {
-    }
+    ) {}
 
     /**
      * @param list<string>         $presetKeys
@@ -121,7 +123,7 @@ final class SceneVideoBenchmarkService
             }
 
             return true;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $message = 'Video generation failed: ' . $e->getMessage();
             $asset->updateMetadata(ProviderFailureMetadata::forThrowable($e));
             $asset->fail($message);

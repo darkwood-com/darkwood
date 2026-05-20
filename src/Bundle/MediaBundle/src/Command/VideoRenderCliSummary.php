@@ -9,6 +9,10 @@ use App\Domain\Video\VideoProject;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function is_array;
+use function is_string;
+use function sprintf;
+
 /**
  * Concise CLI summary for per-scene scene.mp4 rendering and scenario.mp4 concat.
  */
@@ -36,6 +40,7 @@ final class VideoRenderCliSummary
                     '—',
                     '<comment>no render metadata</>',
                 ];
+
                 continue;
             }
 

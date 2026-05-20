@@ -7,17 +7,18 @@ namespace App\Tests\Infrastructure\Video\Provider;
 use App\Application\Video\DTO\GeneratedAssetResult;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateApiConfig;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateClient;
-use App\Tests\Support\ReplicateTestRateLimiterFactory;
 use App\Infrastructure\Video\Provider\Replicate\ReplicatePredictionFailedException;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVoiceProviderConfig;
 use App\Infrastructure\Video\Provider\ReplicateVoiceGenerationProvider;
+use App\Tests\Support\ReplicateTestRateLimiterFactory;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class ReplicateVoiceGenerationProviderTest extends TestCase
 {
-    public function test_generate_voice_happy_path_with_mocked_http(): void
+    public function testGenerateVoiceHappyPathWithMockedHttp(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -45,19 +46,21 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
 
         $downloadResponse
             ->method('getStatusCode')
-            ->willReturn(200);
+            ->willReturn(200)
+        ;
 
         $downloadResponse
             ->method('getContent')
             ->with(false)
-            ->willReturn('FAKE-MP3-BYTES');
+            ->willReturn('FAKE-MP3-BYTES')
+        ;
 
         $postJson = null;
         $pollCount = 0;
         $httpClient
-            ->expects($this->exactly(5))
+            ->expects(self::exactly(5))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url, array $opts = []) use (
+            ->willReturnCallback(static function (string $method, string $url, array $opts = []) use (
                 &$postJson,
                 &$pollCount,
                 $modelMetaResponse,
@@ -75,7 +78,7 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
                     return $createResponse;
                 }
                 if ($method === 'GET' && str_contains($url, '/predictions/pred-voice-1')) {
-                    ++$pollCount;
+                    $pollCount++;
 
                     return $pollCount === 1 ? $pollResponse1 : $pollResponse2;
                 }
@@ -83,8 +86,9 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
                     return $downloadResponse;
                 }
 
-                throw new \RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
-            });
+                throw new RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
+            })
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVoiceProviderConfig(
             enabled: true,
@@ -135,7 +139,7 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         }
     }
 
-    public function test_generate_voice_failure_when_prediction_fails(): void
+    public function testGenerateVoiceFailureWhenPredictionFails(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -150,9 +154,9 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         ]);
 
         $httpClient
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url) use ($createResponse, $failedPollResponse) {
+            ->willReturnCallback(static function (string $method, string $url) use ($createResponse, $failedPollResponse) {
                 if ($method === 'POST' && str_contains($url, '/predictions')) {
                     return $createResponse;
                 }
@@ -160,8 +164,9 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
                     return $failedPollResponse;
                 }
 
-                throw new \RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
-            });
+                throw new RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
+            })
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVoiceProviderConfig(
             enabled: true,
@@ -184,10 +189,10 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         }
     }
 
-    public function test_empty_voice_id_rejected_before_http(): void
+    public function testEmptyVoiceIdRejectedBeforeHttp(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
-        $httpClient->expects($this->never())->method('request');
+        $httpClient->expects(self::never())->method('request');
 
         $provider = $this->makeProvider($httpClient, new ReplicateVoiceProviderConfig(
             enabled: true,
@@ -199,13 +204,13 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
             maxPollDurationSeconds: 0,
         ));
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('voice_id is empty');
 
         $provider->generateVoice('Hello');
     }
 
-    public function test_create_prediction_422_surfaces_replicate_detail(): void
+    public function testCreatePrediction422SurfacesReplicateDetail(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -215,9 +220,9 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         $errorCreate = $this->jsonHttpResponse(['detail' => 'Input validation failed'], 422);
 
         $httpClient
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url) use ($modelMeta, $errorCreate) {
+            ->willReturnCallback(static function (string $method, string $url) use ($modelMeta, $errorCreate) {
                 if ($method === 'GET' && str_contains($url, '/models/minimax/speech-2.6-turbo')) {
                     return $modelMeta;
                 }
@@ -225,8 +230,9 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
                     return $errorCreate;
                 }
 
-                throw new \RuntimeException('Unexpected: ' . $method . ' ' . $url);
-            });
+                throw new RuntimeException('Unexpected: ' . $method . ' ' . $url);
+            })
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVoiceProviderConfig(
             enabled: true,
@@ -238,17 +244,17 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
             maxPollDurationSeconds: 0,
         ));
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Input validation failed');
         $this->expectExceptionMessage('HTTP 422');
 
         $provider->generateVoice('Hi');
     }
 
-    public function test_placeholder_voice_id_fails_before_http(): void
+    public function testPlaceholderVoiceIdFailsBeforeHttp(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
-        $httpClient->expects($this->never())->method('request');
+        $httpClient->expects(self::never())->method('request');
 
         $provider = $this->makeProvider($httpClient, new ReplicateVoiceProviderConfig(
             enabled: true,
@@ -260,13 +266,13 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
             maxPollDurationSeconds: 0,
         ));
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('VIDEO_VOICE_REPLICATE_VOICE_ID');
 
         $provider->generateVoice('Hello');
     }
 
-    public function test_remote_voice_id_error_includes_config_hint(): void
+    public function testRemoteVoiceIdErrorIncludesConfigHint(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -281,9 +287,9 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         ]);
 
         $httpClient
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url) use ($createResponse, $failedPollResponse) {
+            ->willReturnCallback(static function (string $method, string $url) use ($createResponse, $failedPollResponse) {
                 if ($method === 'POST' && str_contains($url, '/predictions')) {
                     return $createResponse;
                 }
@@ -291,8 +297,9 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
                     return $failedPollResponse;
                 }
 
-                throw new \RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
-            });
+                throw new RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
+            })
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVoiceProviderConfig(
             enabled: true,

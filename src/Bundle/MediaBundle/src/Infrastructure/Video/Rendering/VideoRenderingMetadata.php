@@ -7,6 +7,8 @@ namespace App\Infrastructure\Video\Rendering;
 use App\Domain\Video\Scene;
 use App\Infrastructure\Video\Storage\LocalArtifactStorage;
 
+use function in_array;
+
 /**
  * Shapes clip/scenario render decisions for persistence on VideoProject / Scene (project.json).
  */
@@ -22,7 +24,7 @@ final class VideoRenderingMetadata
         Scene $scene,
     ): array {
         $base = $report->toArray();
-        $rendered = \in_array(
+        $rendered = in_array(
             $report->outcome,
             [
                 SceneClipRenderReport::OUTCOME_RENDERED_WITH_VOICE,

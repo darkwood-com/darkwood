@@ -7,19 +7,20 @@ namespace App\Tests\Infrastructure\Video\Provider;
 use App\Application\Video\DTO\GeneratedAssetResult;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateApiConfig;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateClient;
-use App\Tests\Support\ReplicateTestRateLimiterFactory;
 use App\Infrastructure\Video\Provider\Replicate\ReplicatePredictionFailedException;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoInputMapper;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoProviderConfig;
 use App\Infrastructure\Video\Provider\ReplicateVideoGenerationProvider;
+use App\Tests\Support\ReplicateTestRateLimiterFactory;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class ReplicateVideoGenerationProviderTest extends TestCase
 {
-    public function test_generate_video_happy_path_with_mocked_http(): void
+    public function testGenerateVideoHappyPathWithMockedHttp(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -41,19 +42,21 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
 
         $downloadResponse
             ->method('getStatusCode')
-            ->willReturn(200);
+            ->willReturn(200)
+        ;
 
         $downloadResponse
             ->method('getContent')
             ->with(false)
-            ->willReturn('FAKE-VIDEO-DATA');
+            ->willReturn('FAKE-VIDEO-DATA')
+        ;
 
         $postJson = null;
         $pollCount = 0;
         $httpClient
-            ->expects($this->exactly(4))
+            ->expects(self::exactly(4))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url, array $opts = []) use (
+            ->willReturnCallback(static function (string $method, string $url, array $opts = []) use (
                 &$postJson,
                 &$pollCount,
                 $createResponse,
@@ -67,7 +70,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
                     return $createResponse;
                 }
                 if ($method === 'GET' && str_contains($url, '/predictions/pred-123')) {
-                    ++$pollCount;
+                    $pollCount++;
 
                     return $pollCount === 1 ? $pollResponse1 : $pollResponse2;
                 }
@@ -75,8 +78,9 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
                     return $downloadResponse;
                 }
 
-                throw new \RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
-            });
+                throw new RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
+            })
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVideoProviderConfig(
             enabled: true,
@@ -130,7 +134,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         }
     }
 
-    public function test_generate_video_failure_when_prediction_fails(): void
+    public function testGenerateVideoFailureWhenPredictionFails(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -145,9 +149,9 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         ]);
 
         $httpClient
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url) use ($createResponse, $failedPollResponse) {
+            ->willReturnCallback(static function (string $method, string $url) use ($createResponse, $failedPollResponse) {
                 if ($method === 'POST' && str_contains($url, '/predictions')) {
                     return $createResponse;
                 }
@@ -155,8 +159,9 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
                     return $failedPollResponse;
                 }
 
-                throw new \RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
-            });
+                throw new RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
+            })
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVideoProviderConfig(
             enabled: true,
@@ -178,7 +183,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         }
     }
 
-    public function test_generate_video_preset_and_replicate_input_shape(): void
+    public function testGenerateVideoPresetAndReplicateInputShape(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -201,9 +206,9 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         $postJson = null;
         $pollCount = 0;
         $httpClient
-            ->expects($this->exactly(4))
+            ->expects(self::exactly(4))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url, array $opts = []) use (
+            ->willReturnCallback(static function (string $method, string $url, array $opts = []) use (
                 &$postJson,
                 &$pollCount,
                 $modelMetaResponse,
@@ -220,7 +225,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
                     return $createResponse;
                 }
                 if ($method === 'GET' && str_contains($url, '/predictions/pred-789')) {
-                    ++$pollCount;
+                    $pollCount++;
 
                     return $pollResponse;
                 }
@@ -228,8 +233,9 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
                     return $downloadResponse;
                 }
 
-                throw new \RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
-            });
+                throw new RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
+            })
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVideoProviderConfig(
             enabled: true,
@@ -263,15 +269,16 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         }
     }
 
-    public function test_create_prediction_http_error_surfaces_replicate_body_not_missing_id(): void
+    public function testCreatePredictionHttpErrorSurfacesReplicateBodyNotMissingId(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $errorResponse = $this->jsonHttpResponse(['detail' => 'Invalid version or input'], 422);
 
         $httpClient
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('request')
-            ->willReturn($errorResponse);
+            ->willReturn($errorResponse)
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVideoProviderConfig(
             enabled: true,
@@ -282,14 +289,14 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
             maxPollDurationSeconds: 0,
         ));
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Invalid version or input');
         $this->expectExceptionMessage('HTTP 422');
 
         $provider->generateVideo('prompt');
     }
 
-    public function test_owner_model_slug_resolves_via_models_api_and_prediction_id_in_metadata(): void
+    public function testOwnerModelSlugResolvesViaModelsApiAndPredictionIdInMetadata(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -311,9 +318,9 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
 
         $postJson = null;
         $httpClient
-            ->expects($this->exactly(4))
+            ->expects(self::exactly(4))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url, array $opts = []) use (
+            ->willReturnCallback(static function (string $method, string $url, array $opts = []) use (
                 &$postJson,
                 $modelMeta,
                 $create,
@@ -335,8 +342,9 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
                     return $download;
                 }
 
-                throw new \RuntimeException('Unexpected: ' . $method . ' ' . $url);
-            });
+                throw new RuntimeException('Unexpected: ' . $method . ' ' . $url);
+            })
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVideoProviderConfig(
             enabled: true,
@@ -363,7 +371,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         }
     }
 
-    public function test_poll_timeout_exceeded(): void
+    public function testPollTimeoutExceeded(): void
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -375,7 +383,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
 
         $httpClient
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url) use ($createResponse, $processingResponse) {
+            ->willReturnCallback(static function (string $method, string $url) use ($createResponse, $processingResponse) {
                 if ($method === 'POST' && str_contains($url, '/predictions')) {
                     return $createResponse;
                 }
@@ -383,8 +391,9 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
                     return $processingResponse;
                 }
 
-                throw new \RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
-            });
+                throw new RuntimeException('Unexpected HTTP request: ' . $method . ' ' . $url);
+            })
+        ;
 
         $provider = $this->makeProvider($httpClient, new ReplicateVideoProviderConfig(
             enabled: true,

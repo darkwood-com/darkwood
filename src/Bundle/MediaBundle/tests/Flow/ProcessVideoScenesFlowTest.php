@@ -23,12 +23,12 @@ use PHPUnit\Framework\TestCase;
  */
 final class ProcessVideoScenesFlowTest extends TestCase
 {
-    public function test_failed_scene_does_not_stop_other_scenes_from_processing(): void
+    public function testFailedSceneDoesNotStopOtherScenesFromProcessing(): void
     {
         $sceneStep = $this->createMock(VideoSceneStep::class);
         $sceneStep->expects(self::exactly(3))
             ->method('processForGeneration')
-            ->willReturnCallback(function (VideoGenerationPayload $payload, int $index): void {
+            ->willReturnCallback(static function (VideoGenerationPayload $payload, int $index): void {
                 $scene = $payload->project->scenes()[$index];
                 if ($index === 0) {
                     $scene->fail('first scene failed');
@@ -48,7 +48,8 @@ final class ProcessVideoScenesFlowTest extends TestCase
                 if ($scene->status() === SceneStatus::Failed) {
                     $payload->anyFailed = true;
                 }
-            });
+            })
+        ;
 
         $repo = $this->createMock(VideoProjectRepositoryInterface::class);
 
@@ -77,7 +78,7 @@ final class ProcessVideoScenesFlowTest extends TestCase
         self::assertCount(3, $payload->sceneClipReports);
     }
 
-    public function test_sort_fork_scene_results_orders_by_scene_index(): void
+    public function testSortForkSceneResultsOrdersBySceneIndex(): void
     {
         $sorted = ProcessVideoScenesFlow::sortForkSceneResultsBySceneIndex([
             ['sceneIndex' => 2, 'sceneData' => [], 'clipReport' => [], 'anyFailed' => false],

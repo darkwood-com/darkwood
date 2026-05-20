@@ -11,11 +11,11 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 final class VideoFirstSceneRoutingParameterTest extends KernelTestCase
 {
-    public function test_video_and_voice_first_scene_flags_share_the_same_resolved_parameter(): void
+    public function testVideoAndVoiceFirstSceneFlagsShareTheSameResolvedParameter(): void
     {
         self::bootKernel();
 
-        $container = static::getContainer();
+        $container = self::getContainer();
         $video = $container->getParameter('video.video.real_for_first_scene_only');
         $voice = $container->getParameter('video.voice.real_for_first_scene_only');
         $shared = $container->getParameter('video.real_for_first_scene_only');

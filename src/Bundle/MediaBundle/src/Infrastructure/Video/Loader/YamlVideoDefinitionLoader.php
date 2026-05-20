@@ -11,6 +11,12 @@ use App\Application\Video\Port\VideoDefinitionLoaderInterface;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
+use function array_key_exists;
+use function is_array;
+use function is_float;
+use function is_int;
+use function is_string;
+
 final class YamlVideoDefinitionLoader implements VideoDefinitionLoaderInterface
 {
     public function load(string $path): VideoDefinition

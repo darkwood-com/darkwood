@@ -6,19 +6,19 @@ namespace App\Application\Video\Service;
 
 use App\Application\Video\DTO\SceneDefinition;
 use App\Application\Video\DTO\VideoGenerationResult;
-use App\Application\Video\Port\VideoProjectRepositoryInterface;
-use App\Application\Video\Port\VideoProjectSetupInterface;
 use App\Application\Video\Exception\ProjectNotFoundException;
 use App\Application\Video\Exception\SceneNotFoundException;
+use App\Application\Video\Port\VideoProjectRepositoryInterface;
+use App\Application\Video\Port\VideoProjectSetupInterface;
 use App\Application\Video\Port\VideoRendererInterface;
 use App\Domain\Video\Enum\SceneStatus;
+use App\Domain\Video\Scene;
+use App\Domain\Video\VideoProject;
 use App\Infrastructure\Video\Rendering\RenderingSummaryJsonWriter;
 use App\Infrastructure\Video\Rendering\ScenarioConcatFfmpegRenderer;
 use App\Infrastructure\Video\Rendering\SceneClipFfmpegRenderer;
 use App\Infrastructure\Video\Rendering\SceneClipRenderReport;
 use App\Infrastructure\Video\Rendering\VideoRenderingMetadata;
-use App\Domain\Video\Scene;
-use App\Domain\Video\VideoProject;
 use App\Infrastructure\Video\Storage\LocalArtifactStorage;
 
 /**
@@ -37,8 +37,7 @@ final class SceneRerunService
         private readonly ScenarioConcatFfmpegRenderer $scenarioConcatRenderer,
         private readonly RenderingSummaryJsonWriter $renderingSummaryWriter,
         private readonly LocalArtifactStorage $artifactStorage,
-    ) {
-    }
+    ) {}
 
     /**
      * Load project from repository, regenerate the given scene, update state, and rerender manifest.
@@ -134,6 +133,7 @@ final class SceneRerunService
                 return $scene;
             }
         }
+
         return null;
     }
 
@@ -142,6 +142,7 @@ final class SceneRerunService
         foreach ($project->scenes() as $scene) {
             if ($scene->status() === SceneStatus::Failed) {
                 $project->fail();
+
                 return;
             }
         }

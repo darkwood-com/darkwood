@@ -10,17 +10,27 @@ use App\Domain\Video\Enum\AssetStatus;
 use App\Domain\Video\Enum\AssetType;
 use App\Domain\Video\Enum\ProjectStatus;
 use App\Domain\Video\Scene;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Formatter\OutputFormatter;
-use Symfony\Component\Console\Command\Command;
 use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
+use InvalidArgumentException;
+use JsonException;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Throwable;
+
+use function count;
+use function function_exists;
+use function is_array;
+use function is_string;
+use function sprintf;
+use function strlen;
 
 #[AsCommand(
     name: 'app:video:generate',
@@ -57,9 +67,7 @@ final class GenerateVideoCliCommand extends Command
             'benchmark-video',
             null,
             InputOption::VALUE_NONE,
-            sprintf(
-                'Scene 1 only: benchmark hailuo + seedance (voice skipped). Use --include-pvideo to add prunaai/p-video',
-            ),
+            'Scene 1 only: benchmark hailuo + seedance (voice skipped). Use --include-pvideo to add prunaai/p-video',
         );
 
         $this->addOption(
@@ -115,12 +123,13 @@ final class GenerateVideoCliCommand extends Command
 
         if (!is_file($yamlPath)) {
             $io->error(sprintf('YAML file not found: %s', $yamlPath));
+
             return Command::FAILURE;
         }
 
         try {
             $firstSceneVideoOptions = $this->buildFirstSceneVideoOptions($input);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $io->error($e->getMessage());
 
             return Command::FAILURE;
@@ -131,8 +140,9 @@ final class GenerateVideoCliCommand extends Command
 
         try {
             $result = $this->orchestrator->generateFromYaml($yamlPath, $firstSceneVideoOptions);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $io->error($e->getMessage());
+
             return Command::FAILURE;
         }
 
@@ -184,7 +194,7 @@ final class GenerateVideoCliCommand extends Command
                     if (is_string($jsonRaw) && $jsonRaw !== '') {
                         try {
                             /** @var array<string, mixed> $report */
-                            $report = json_decode($jsonRaw, true, 512, \JSON_THROW_ON_ERROR);
+                            $report = json_decode($jsonRaw, true, 512, JSON_THROW_ON_ERROR);
                             $modelRows = $report['models'] ?? [];
                             if (is_array($modelRows) && $modelRows !== []) {
                                 $table = [];
@@ -210,7 +220,7 @@ final class GenerateVideoCliCommand extends Command
                                     $table,
                                 );
                             }
-                        } catch (\JsonException) {
+                        } catch (JsonException) {
                             $io->warning('Could not parse benchmark JSON for CLI summary.');
                         }
                     }
@@ -273,9 +283,9 @@ final class GenerateVideoCliCommand extends Command
     }
 
     /**
-     * @return array<string, mixed>|null
+     * @return null|array<string, mixed>
      *
-     * @throws \InvalidArgumentException on conflicting scene-1 video flags or unknown presets
+     * @throws InvalidArgumentException on conflicting scene-1 video flags or unknown presets
      */
     private function buildFirstSceneVideoOptions(InputInterface $input): ?array
     {
@@ -317,13 +327,13 @@ final class GenerateVideoCliCommand extends Command
         }
 
         if ($videoModelCli !== null && ($benchmarkPresets !== null || $fromPresetOption !== [])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Use only one of --video-model, --video-preset / --video-benchmark, or --benchmark-video.'
             );
         }
 
         if ($benchmarkPresets !== null && $fromPresetOption !== []) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Do not combine --video-preset with --video-benchmark or --benchmark-video.'
             );
         }
@@ -359,7 +369,7 @@ final class GenerateVideoCliCommand extends Command
     /**
      * Merges `--replicate-image-file` into `replicate_input.image` as a data URI (Replicate file input option 3).
      *
-     * @param array<string, mixed>|null $opts
+     * @param null|array<string, mixed> $opts
      *
      * @return array<string, mixed>
      */
@@ -374,7 +384,7 @@ final class GenerateVideoCliCommand extends Command
 
         $path = trim($raw);
         if (!is_file($path) || !is_readable($path)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 '--replicate-image-file is not a readable file: %s',
                 $path
             ));
@@ -383,7 +393,7 @@ final class GenerateVideoCliCommand extends Command
         $maxBytes = 1_048_576;
         $size = filesize($path);
         if ($size === false || $size > $maxBytes) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Image for --replicate-image-file must be <= %d bytes for a data URI (got %s). Use a smaller file or a hosted URL.',
                 $maxBytes,
                 $size === false ? 'unknown' : (string) $size
@@ -392,12 +402,12 @@ final class GenerateVideoCliCommand extends Command
 
         $contents = file_get_contents($path);
         if ($contents === false || $contents === '') {
-            throw new \InvalidArgumentException(sprintf('Could not read --replicate-image-file: %s', $path));
+            throw new InvalidArgumentException(sprintf('Could not read --replicate-image-file: %s', $path));
         }
 
         $mime = 'application/octet-stream';
-        if (\function_exists('finfo_open')) {
-            $finfo = finfo_open(\FILEINFO_MIME_TYPE);
+        if (function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
             if ($finfo !== false) {
                 $detected = finfo_file($finfo, $path);
                 finfo_close($finfo);

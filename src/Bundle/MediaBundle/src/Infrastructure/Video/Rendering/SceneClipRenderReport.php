@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Video\Rendering;
 
+use function is_array;
+use function is_string;
+
 /**
  * Per-scene outcome for scene.mp4 rendering (distinct from scenario inclusion).
  */
@@ -22,15 +25,14 @@ final readonly class SceneClipRenderReport
     public const OUTCOME_SKIPPED_FFMPEG_FAILED = 'skipped_scene_ffmpeg_failed';
 
     /**
-     * @param array<string, bool|string|int|float|null> $details
+     * @param array<string, null|bool|float|int|string> $details
      */
     public function __construct(
         public string $sceneId,
         public int $sceneNumber,
         public string $outcome,
         public array $details = [],
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, mixed>

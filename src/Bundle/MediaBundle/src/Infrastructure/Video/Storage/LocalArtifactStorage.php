@@ -8,15 +8,16 @@ use App\Application\Video\Port\ArtifactStorageInterface;
 use App\Application\Video\Port\VideoProjectSetupInterface;
 use App\Domain\Video\Scene;
 
+use function dirname;
+
 final class LocalArtifactStorage implements ArtifactStorageInterface, VideoProjectSetupInterface
 {
     public function __construct(
         private readonly VideoPathResolver $pathResolver,
-    ) {
-    }
+    ) {}
 
     /**
-     * Prepare project directories: input/, scenes/, render/ under var/videos/<project-id>/
+     * Prepare project directories: input/, scenes/, render/ under var/videos/<project-id>/.
      */
     public function prepareProjectDirectories(string $projectId): void
     {
@@ -39,15 +40,16 @@ final class LocalArtifactStorage implements ArtifactStorageInterface, VideoProje
     {
         $this->prepareProjectDirectories($projectId);
         $targetPath = $this->pathResolver->inputDefinitionPath($projectId);
-        if (!is_dir(\dirname($targetPath))) {
-            mkdir(\dirname($targetPath), 0o755, true);
+        if (!is_dir(dirname($targetPath))) {
+            mkdir(dirname($targetPath), 0o755, true);
         }
         copy($sourcePath, $targetPath);
+
         return $targetPath;
     }
 
     /**
-     * Target path for scene voice output: scenes/<scene-number>-<scene-id>/voice.mp3
+     * Target path for scene voice output: scenes/<scene-number>-<scene-id>/voice.mp3.
      */
     public function getSceneVoiceOutputPath(string $projectId, Scene $scene): string
     {
@@ -84,7 +86,7 @@ final class LocalArtifactStorage implements ArtifactStorageInterface, VideoProje
     }
 
     /**
-     * Render output directory: var/videos/<project-id>/render/
+     * Render output directory: var/videos/<project-id>/render/.
      */
     public function getRenderOutputDir(string $projectId): string
     {
@@ -92,7 +94,7 @@ final class LocalArtifactStorage implements ArtifactStorageInterface, VideoProje
     }
 
     /**
-     * Path to the final render output file: render/final.mp4
+     * Path to the final render output file: render/final.mp4.
      */
     public function getRenderOutputPath(string $projectId): string
     {
@@ -100,7 +102,7 @@ final class LocalArtifactStorage implements ArtifactStorageInterface, VideoProje
     }
 
     /**
-     * Path to concatenated scenario clip: render/scenario.mp4
+     * Path to concatenated scenario clip: render/scenario.mp4.
      */
     public function getScenarioOutputPath(string $projectId): string
     {
@@ -108,7 +110,7 @@ final class LocalArtifactStorage implements ArtifactStorageInterface, VideoProje
     }
 
     /**
-     * Path to per-scene review clip: scenes/<n>-<id>/scene.mp4
+     * Path to per-scene review clip: scenes/<n>-<id>/scene.mp4.
      */
     public function getSceneClipOutputPath(string $projectId, Scene $scene): string
     {
@@ -137,17 +139,19 @@ final class LocalArtifactStorage implements ArtifactStorageInterface, VideoProje
     public function put(string $key, string $sourcePath): string
     {
         $targetPath = $this->pathResolver->keyToPath($key);
-        $dir = \dirname($targetPath);
+        $dir = dirname($targetPath);
         if (!is_dir($dir)) {
             mkdir($dir, 0o755, true);
         }
         copy($sourcePath, $targetPath);
+
         return $targetPath;
     }
 
     public function getPath(string $key): ?string
     {
         $path = $this->pathResolver->keyToPath($key);
+
         return file_exists($path) ? $path : null;
     }
 

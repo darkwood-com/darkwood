@@ -10,11 +10,17 @@ use App\Domain\Video\VideoProject;
 use App\Infrastructure\Video\Rendering\ScenarioConcatFfmpegRenderer;
 use App\Infrastructure\Video\Storage\LocalArtifactStorage;
 use App\Infrastructure\Video\Storage\VideoPathResolver;
+use FilesystemIterator;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
+use function is_string;
+use function sprintf;
 
 final class ScenarioConcatFfmpegRendererTest extends TestCase
 {
-    public function test_concat_lists_only_valid_clips_included_ffprobe_never_succeeds(): void
+    public function testConcatListsOnlyValidClipsIncludedFfprobeNeverSucceeds(): void
     {
         if (!is_executable('/bin/false')) {
             self::markTestSkipped('/bin/false not available');
@@ -54,7 +60,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_skips_when_no_valid_scene_clips(): void
+    public function testSkipsWhenNoValidSceneClips(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-scenario-concat-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -77,7 +83,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_removes_stale_scenario_when_no_valid_clips(): void
+    public function testRemovesStaleScenarioWhenNoValidClips(): void
     {
         $tmp = sys_get_temp_dir() . '/dw-scenario-concat-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -103,7 +109,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_skips_empty_scene_mp4_and_concatenates_valid_in_order(): void
+    public function testSkipsEmptySceneMp4AndConcatenatesValidInOrder(): void
     {
         $ffmpeg = self::findFfmpegBinary();
         $ffprobe = self::findFfprobeBinary();
@@ -119,7 +125,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
             $base = $tmp . '/var/videos/' . $projectId . '/scenes';
 
             self::assertTrue(mkdir($base . '/1-a', 0o755, true));
-            $this->assertSame(0, $this->runShell(sprintf(
+            self::assertSame(0, $this->runShell(sprintf(
                 '%s -y -nostdin -hide_banner -loglevel error -f lavfi -i testsrc=duration=0.35:size=64x48:rate=10 -pix_fmt yuv420p %s',
                 escapeshellarg($ffmpeg),
                 escapeshellarg($base . '/1-a/scene.mp4'),
@@ -127,7 +133,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
             self::assertTrue(mkdir($base . '/2-b', 0o755, true));
             file_put_contents($base . '/2-b/scene.mp4', '');
             self::assertTrue(mkdir($base . '/3-c', 0o755, true));
-            $this->assertSame(0, $this->runShell(sprintf(
+            self::assertSame(0, $this->runShell(sprintf(
                 '%s -y -nostdin -hide_banner -loglevel error -f lavfi -i testsrc=duration=0.35:size=64x48:rate=10 -pix_fmt yuv420p %s',
                 escapeshellarg($ffmpeg),
                 escapeshellarg($base . '/3-c/scene.mp4'),
@@ -157,7 +163,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
         }
     }
 
-    public function test_concatenates_in_scene_number_order_when_scenes_added_out_of_order(): void
+    public function testConcatenatesInSceneNumberOrderWhenScenesAddedOutOfOrder(): void
     {
         $ffmpeg = self::findFfmpegBinary();
         $ffprobe = self::findFfprobeBinary();
@@ -175,7 +181,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
             foreach ([['1', 'a'], ['2', 'b'], ['3', 'c']] as [$num, $id]) {
                 $dir = $base . '/' . $num . '-' . $id;
                 self::assertTrue(mkdir($dir, 0o755, true));
-                $this->assertSame(0, $this->runShell(sprintf(
+                self::assertSame(0, $this->runShell(sprintf(
                     '%s -y -nostdin -hide_banner -loglevel error -f lavfi -i testsrc=duration=0.2:size=64x48:rate=10 -pix_fmt yuv420p %s',
                     escapeshellarg($ffmpeg),
                     escapeshellarg($dir . '/scene.mp4'),
@@ -210,7 +216,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
     private static function findFfmpegBinary(): ?string
     {
         $out = shell_exec('command -v ffmpeg 2>/dev/null');
-        if (!\is_string($out)) {
+        if (!is_string($out)) {
             return null;
         }
         $path = trim($out);
@@ -221,7 +227,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
     private static function findFfprobeBinary(): ?string
     {
         $out = shell_exec('command -v ffprobe 2>/dev/null');
-        if (!\is_string($out)) {
+        if (!is_string($out)) {
             return null;
         }
         $path = trim($out);
@@ -241,9 +247,9 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
         if (!is_dir($dir)) {
             return;
         }
-        $it = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST,
+        $it = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST,
         );
         foreach ($it as $file) {
             $p = $file->getPathname();

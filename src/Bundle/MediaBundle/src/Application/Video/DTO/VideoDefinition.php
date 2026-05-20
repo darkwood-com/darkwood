@@ -12,6 +12,5 @@ final readonly class VideoDefinition
     public function __construct(
         public string $title,
         public array $scenes,
-    ) {
-    }
+    ) {}
 }

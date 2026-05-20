@@ -1,6 +1,5 @@
 # Composer / PHP
 vendor/
-composer.lock
 composer.phar
 .phpunit.cache/
 .phpunit.result.cache/
@@ -24,9 +23,11 @@ var/
 
 # Tool caches (root and packages)
 .php-cs-fixer.cache
-.php-cs-fixer.php
 .phpstan.cache/
 psalm.cache/
+
+# Local PHP CS Fixer override at monorepo root only (committed configs: tools/php-cs-fixer/.php-cs-fixer.php)
+/.php-cs-fixer.php
 
 # Node (Flow docs, etc.)
 node_modules/
