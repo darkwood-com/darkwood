@@ -3,9 +3,13 @@
 </a></p>
 
 Development repository for [Darkwood](https://github.com/darkwood-com) PHP libraries and Symfony bundles.
-Each package lives under `src/` and is published independently on Packagist / GitHub.
 
-**Default branch:** `1.x`
+All packages share a **single global version line** (Symfony-style): one tag
+(`v1.3.0`, `v1.3.1`, …) applies to the monorepo and to every satellite
+repository published on Packagist.
+
+**Default branch:** `1.x`  
+**Current unified release:** see [CHANGELOG-1.x.md](CHANGELOG-1.x.md)
 
 ## Packages
 
@@ -64,6 +68,9 @@ darkwood/
 │   └── Bundle/        # Symfony bundles
 ├── link               # Symlink darkwood/* packages from vendor to this monorepo
 ├── splitsh.json       # Monorepo path → satellite Git repository mapping
+├── CHANGELOG-1.x.md   # Unified release changelog
+├── RELEASING.md       # Release process for maintainers
+├── UPGRADE-1.x.md     # Upgrade notes between unified versions
 ├── CONTRIBUTING.md
 └── .github/           # CI, fabbot, PR template, packages manifest
 ```
@@ -83,10 +90,17 @@ Run the same checks locally for one package:
 .github/ci-run-package.sh navi
 ```
 
-## Split repositories
+## Releases
 
-Published packages are mirrored to standalone GitHub repositories (see `splitsh.json`).
-Develop here in `darkwood-com/darkwood`, then sync subtrees to the satellite repos before tagging releases.
+Darkwood uses **unified global versioning**. When we release `v1.3.1`, every
+package is tagged `v1.3.1` on its satellite repository.
+
+- Changelog: [CHANGELOG-1.x.md](CHANGELOG-1.x.md)
+- Maintainer guide: [RELEASING.md](RELEASING.md)
+- Upgrading from pre-unified tags: [UPGRADE-1.x.md](UPGRADE-1.x.md)
+
+Develop in `darkwood-com/darkwood`, sync subtrees with `scripts/splitsh-run.sh`,
+then tag with `scripts/release.sh` (see `RELEASING.md`).
 
 ## Contributing
 

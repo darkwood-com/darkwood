@@ -1,0 +1,20 @@
+{
+    "name": "darkwood/darkwood",
+    "description": "Darkwood monorepo meta-package (unified versioning for all darkwood/* packages)",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.5"
+    },
+    "replace": {
+        "darkwood/navi": "self.version",
+        "darkwood/flow": "self.version",
+        "darkwood/media-bundle": "self.version",
+        "darkwood/ia-exception-bundle": "self.version"
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    }
+}

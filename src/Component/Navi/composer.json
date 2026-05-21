@@ -1,5 +1,6 @@
 {
     "name": "darkwood/navi",
+    "version": "1.3.0",
     "description": "Public architectural layer for structured workflow execution.",
     "type": "project",
     "license": "MIT",

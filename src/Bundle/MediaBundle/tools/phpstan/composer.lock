@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24d6bac448db5ca5320fc48df48dc9ab",
+    "content-hash": "cca1a7e0001da1f125d4201eac72106f",
     "packages": [
         {
             "name": "darkwood/flow",
-            "version": "v1.2.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/darkwood-com/flow.git",
-                "reference": "393dc4264f4b365b176172be72ccd181f5aa92e3"
-            },
+            "version": "1.3.0",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/flow/zipball/393dc4264f4b365b176172be72ccd181f5aa92e3",
-                "reference": "393dc4264f4b365b176172be72ccd181f5aa92e3",
-                "shasum": ""
+                "type": "path",
+                "url": "../../../../Component/Flow",
+                "reference": "4ddbdd2ad0deff3c12dcafc6b2e7abc9ebd99740"
             },
             "require": {
                 "php": ">=8.5",
@@ -50,7 +44,50 @@
                     "Flow\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Flow\\Examples\\": "examples",
+                    "Flow\\Test\\": "tests"
+                }
+            },
+            "scripts": {
+                "dev": [
+                    "cd tools && castor flow:tools:dev"
+                ],
+                "docs-serve": [
+                    "cd tools && castor flow:tools:docs-serve"
+                ],
+                "infection": [
+                    "cd tools && castor flow:tools:infection"
+                ],
+                "phan": [
+                    "cd tools && castor flow:tools:phan"
+                ],
+                "php-cs-fixer": [
+                    "cd tools && castor flow:tools:php-cs-fixer --dry-run"
+                ],
+                "test": [
+                    "tools/phpunit/vendor/bin/phpunit --configuration=tools/phpunit/phpunit.xml"
+                ],
+                "phpcbf": [
+                    "cd tools && castor flow:tools:phpcbf"
+                ],
+                "phpcs": [
+                    "cd tools && castor flow:tools:phpcs"
+                ],
+                "phpmd": [
+                    "cd tools && castor flow:tools:phpmd"
+                ],
+                "phpstan": [
+                    "cd tools && castor flow:tools:phpstan"
+                ],
+                "phpunit": [
+                    "cd tools && castor flow:tools:phpunit"
+                ],
+                "psalm": [
+                    "cd tools && castor flow:tools:psalm"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -72,17 +109,10 @@
                 "swoole",
                 "symfony"
             ],
-            "support": {
-                "issues": "https://github.com/darkwood-com/flow/issues",
-                "source": "https://github.com/darkwood-com/flow/tree/v1.2.6"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/matyo91",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-03-08T20:51:11+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "psr/cache",

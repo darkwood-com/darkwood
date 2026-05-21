@@ -3,13 +3,24 @@
 Thank you for contributing. This document describes how to work in the **monorepo**
 ([darkwood-com/darkwood](https://github.com/darkwood-com/darkwood)).
 
+## Versioning
+
+Darkwood uses **unified global versioning** (Symfony-style):
+
+- One version number for the whole project (`1.3.0`, `1.3.1`, …).
+- One git tag (`v1.3.0`) on the monorepo **and** on each satellite repository.
+- Changelog entries use the **Darkwood version**, not independent package semver.
+
+See [CHANGELOG-1.x.md](CHANGELOG-1.x.md), [RELEASING.md](RELEASING.md), and
+[UPGRADE-1.x.md](UPGRADE-1.x.md).
+
 ## Branches
 
 | Change type | Target branch |
 |-------------|---------------|
 | Bug fixes | `1.x` |
 | New features | `1.x` |
-| Breaking changes | `1.x` + document in package `CHANGELOG.md` (and `UPGRADE-*.md` when introduced) |
+| Breaking changes | `1.x` + document in package `CHANGELOG.md`, [CHANGELOG-1.x.md](CHANGELOG-1.x.md), and [UPGRADE-1.x.md](UPGRADE-1.x.md) |
 
 There is currently a single maintained line (`1.x`). Satellite repositories use the same branch name.
 
@@ -17,7 +28,7 @@ There is currently a single maintained line (`1.x`). Satellite repositories use 
 
 1. Search existing issues on the monorepo or the relevant satellite repository.
 2. Identify which **package** your change belongs to (see [README.md](README.md)).
-3. Make changes only inside that package directory unless the change is monorepo-wide (docs, `link`, CI).
+3. Make changes only inside that package directory unless the change is monorepo-wide (docs, `link`, CI, release tooling).
 
 ## Development workflow
 
@@ -26,6 +37,7 @@ There is currently a single maintained line (`1.x`). Satellite repositories use 
 ```bash
 git clone git@github.com:darkwood-com/darkwood.git
 cd darkwood
+git checkout 1.x
 git checkout -b fix-or-feature-short-description
 ```
 
@@ -60,17 +72,18 @@ Fix style issues with the package PHP CS Fixer config under `tools/php-cs-fixer/
 
 ### 5. Changelog
 
-For user-visible changes, add an entry to the package **`CHANGELOG.md`** under a new version or `Unreleased` section:
+For user-visible changes, add entries under the upcoming **Darkwood version** (or an `Unreleased` section until the release is cut):
 
-- **Bug fix:** one line describing the fix.
-- **Feature:** one line describing what users gain.
-- **BC break:** describe before/after with a short code sample when helpful (see Symfony component changelogs for inspiration).
+1. **Package** [`CHANGELOG.md`](src/Component/Navi/CHANGELOG.md) in the affected package directory — use the Darkwood version as the section header (for example `## 1.3.1`), not an independent package semver.
+2. **Monorepo** [CHANGELOG-1.x.md](CHANGELOG-1.x.md) — one line per notable change, prefixed with `bug`, `feature`, or `[BC BREAK]`, and the package name in brackets when relevant.
+
+Maintainers consolidate entries when cutting a release (see [RELEASING.md](RELEASING.md)).
 
 ### 6. Pull request
 
 Open a PR against `1.x` on `darkwood-com/darkwood`. Fill in the PR template checklist.
 
-If the change should also ship on Packagist, plan a subtree sync to the satellite repository before tagging (see `splitsh.json`).
+Releases are cut from `1.x` after merge; contributors do not tag satellite repositories themselves.
 
 ## Coding standards
 
@@ -96,6 +109,12 @@ The target project must have run `composer install` and depend on at least one `
 Maps monorepo paths to GitHub repository names used for subtree splits and releases.
 **Navi** is listed as `reference_package` in `splitsh.json`. Keep this file updated when adding or renaming packages.
 
+Push splits with:
+
+```bash
+scripts/splitsh-run.sh --all
+```
+
 ## Review expectations
 
 - CI must pass: **Fabbot** (`.github/workflows/fabbot.yml`) and **QA** (`.github/workflows/ci.yml`).
@@ -105,4 +124,4 @@ Maps monorepo paths to GitHub repository names used for subtree splits and relea
 
 ## Security
 
-Do not open public issues for security vulnerabilities. Contact the maintainers privately.
+Do not open public issues for security vulnerabilities. See [SECURITY.md](SECURITY.md).

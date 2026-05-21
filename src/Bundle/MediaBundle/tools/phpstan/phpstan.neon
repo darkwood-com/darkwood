@@ -4,4 +4,3 @@ parameters:
         - ../../vendor/autoload.php
     paths:
         - ../../src
-        - ../../tests
