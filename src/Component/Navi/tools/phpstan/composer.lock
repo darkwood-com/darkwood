@@ -382,12 +382,12 @@
                 "symfony/ai-agent": "^0.8",
                 "symfony/ai-bundle": "^0.8",
                 "symfony/ai-platform": "^0.8",
-                "symfony/cache": "8.0.*",
-                "symfony/config": "8.0.*",
-                "symfony/dependency-injection": "8.0.*",
-                "symfony/error-handler": "8.0.*",
-                "symfony/http-kernel": "8.0.*",
-                "symfony/twig-bundle": "8.0.*"
+                "symfony/cache": "^8.0",
+                "symfony/config": "^8.0",
+                "symfony/dependency-injection": "^8.0",
+                "symfony/error-handler": "^8.0",
+                "symfony/http-kernel": "^8.0",
+                "symfony/twig-bundle": "^8.0"
             },
             "conflict": {
                 "symfony/symfony": "*"
@@ -396,7 +396,7 @@
             "extra": {
                 "symfony": {
                     "allow-contrib": false,
-                    "require": "8.0.*"
+                    "require": "^8.0"
                 }
             },
             "autoload": {

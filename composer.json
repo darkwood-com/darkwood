@@ -1,7 +1,7 @@
 {
     "name": "darkwood/darkwood",
-    "description": "Darkwood monorepo meta-package (unified versioning for all darkwood/* packages)",
     "type": "library",
+    "description": "The Darkwood PHP framework",
     "license": "MIT",
     "minimum-stability": "stable",
     "prefer-stable": true,

@@ -1,8 +1,7 @@
 {
     "name": "darkwood/navi",
-    "version": "1.3.0",
+    "type": "library",
     "description": "Public architectural layer for structured workflow execution.",
-    "type": "project",
     "license": "MIT",
     "minimum-stability": "stable",
     "prefer-stable": true,
@@ -10,12 +9,12 @@
         "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "symfony/console": "8.0.*",
-        "symfony/dotenv": "8.0.*",
+        "symfony/console": "^8.0",
+        "symfony/dotenv": "^8.0",
         "symfony/flex": "^2.10",
-        "symfony/framework-bundle": "8.0.*",
-        "symfony/runtime": "8.0.*",
-        "symfony/yaml": "8.0.*"
+        "symfony/framework-bundle": "^8.0",
+        "symfony/runtime": "^8.0",
+        "symfony/yaml": "^8.0"
     },
     "require-dev": {
     },
@@ -62,7 +61,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.0.*"
+            "require": "^8.0"
         }
     }
 }
