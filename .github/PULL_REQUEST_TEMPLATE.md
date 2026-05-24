@@ -1,10 +1,10 @@
 | Q             | A
 | ------------- | ---
-| Branch?       | `1.x`
+| Branch?       | `8.0`
 | Package?      | Navi / Flow / MediaBundle / IaExceptionBundle / monorepo
 | Bug fix?      | yes/no
-| New feature?  | yes/no <!-- if yes, update package CHANGELOG.md and CHANGELOG-1.x.md -->
-| BC break?     | yes/no <!-- if yes, update CHANGELOG-1.x.md, package CHANGELOG.md, and UPGRADE-1.x.md -->
+| New feature?  | yes/no <!-- if yes, update package CHANGELOG.md and CHANGELOG-8.0.md -->
+| BC break?     | yes/no <!-- if yes, update CHANGELOG-8.0.md, package CHANGELOG.md, and UPGRADE-8.0.md -->
 | Tests added?  | yes/no
 | Issues        | Fix #... <!-- prefix each issue with "Fix #" -->
 | License       | MIT
@@ -19,7 +19,7 @@ Checklist:
 - [ ] Tests pass in the affected package (`make phpunit`, as in Navi)
 - [ ] PHP CS Fixer / PHPStan pass when applicable
 - [ ] Package CHANGELOG.md updated (Darkwood version section, not independent semver)
-- [ ] CHANGELOG-1.x.md updated for user-visible changes
-- [ ] UPGRADE-1.x.md updated if BC break
+- [ ] CHANGELOG-8.0.md updated for user-visible changes
+- [ ] UPGRADE-8.0.md updated if BC break
 - [ ] No `vendor/`, `var/`, caches, or secrets committed
 -->

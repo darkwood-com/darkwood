@@ -13,7 +13,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 CONFIG="${ROOT_DIR}/splitsh.json"
-CHANGELOG="${ROOT_DIR}/CHANGELOG-1.x.md"
+CHANGELOG="${ROOT_DIR}/CHANGELOG-8.0.md"
 MONOREPO="${GITHUB_REPOSITORY:-darkwood-com/darkwood}"
 BRANCH="$(jq -r '.branch' "$CONFIG")"
 
@@ -103,17 +103,17 @@ if [ ! -f "$CHANGELOG" ]; then
     exit 1
 fi
 
-if ! grep -q "^\* ${VERSION}" "$CHANGELOG"; then
-    echo "No section '* ${VERSION}' found in ${CHANGELOG}" >&2
+if ! grep -q "^\* ${TAG}" "$CHANGELOG"; then
+    echo "No section '* ${TAG}' found in ${CHANGELOG}" >&2
     exit 1
 fi
 
 NOTES_FILE="$(mktemp /tmp/darkwood-release-notes.XXXXXX.md)"
 trap 'rm -f "$NOTES_FILE"' EXIT
 
-awk -v ver="$VERSION" '
-    $0 ~ "^\\* " ver { found=1; print; next }
-    found && /^\* [0-9]/ { exit }
+awk -v tag="$TAG" '
+    $0 ~ "^\\* " tag { found=1; print; next }
+    found && /^\* v[0-9]/ { exit }
     found { print }
 ' "$CHANGELOG" > "$NOTES_FILE"
 

@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - 1.x
+      - 8.0
   pull_request:
 
 concurrency:

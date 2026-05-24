@@ -12,7 +12,7 @@ $finder = Finder::create()
         __FILE__,
     ])
     ->notPath('.castor.stub.php')
-    ->notName('reference.php')
+    ->notPath('config/reference.php') // Symfony auto-generated; do not hand-fix
 ;
 
 return (new Config())

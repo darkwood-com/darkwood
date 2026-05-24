@@ -3,7 +3,7 @@
 Darkwood uses **unified global versioning**: one tag (`vX.Y.Z`) applies to the
 monorepo and to every satellite package published on Packagist.
 
-**Default branch:** `1.x`  
+**Default branch:** `8.0`  
 **Reference package for splits:** `navi` (see `splitsh.json`)
 
 ## Prerequisites
@@ -20,7 +20,7 @@ monorepo and to every satellite package published on Packagist.
 |------|------|
 | **PATCH** (`1.3.0` → `1.3.1`) | Backward-compatible bug fixes |
 | **MINOR** (`1.3.x` → `1.4.0`) | Backward-compatible features |
-| **MAJOR** (`1.x` → `2.0.0`) | Breaking changes (document in `UPGRADE-1.x.md`) |
+| **MAJOR** (`8.0` → `9.0.0`) | Breaking changes (document in `UPGRADE-8.0.md`) |
 
 All packages are tagged with the **same** version number.
 
@@ -32,7 +32,7 @@ can resolve `^1.3` before the unified tag exists on Packagist.
 
 ### 1. Prepare the changelog
 
-- Add entries under the new version in [`CHANGELOG-1.x.md`](CHANGELOG-1.x.md).
+- Add entries under the new version in [`CHANGELOG-8.0.md`](CHANGELOG-8.0.md).
 - Add matching sections in each affected package `CHANGELOG.md` under the
   **Darkwood version** (not an independent package semver).
 
@@ -50,7 +50,7 @@ From the monorepo root:
 ### 3. Commit and merge
 
 ```bash
-git checkout 1.x
+git checkout 8.0
 git pull
 # merge your PR, then:
 git pull
@@ -84,10 +84,10 @@ git push origin v1.3.0
 
 scripts/splitsh-run.sh --all
 
-# Tag each satellite at the tip of 1.x after split
+# Tag each satellite at the tip of 8.0 after split
 for repo in navi flow media-bundle ia-exception-bundle; do
   gh api repos/darkwood-com/$repo/git/refs -f ref="refs/tags/v1.3.0" \
-    -f sha="$(gh api repos/darkwood-com/$repo/git/ref/heads/1.x --jq .object.sha)"
+    -f sha="$(gh api repos/darkwood-com/$repo/git/ref/heads/8.0 --jq .object.sha)"
 done
 
 gh release create v1.3.0 --repo darkwood-com/darkwood \
@@ -122,15 +122,15 @@ SPLITSH_FORCE=1 scripts/splitsh-run.sh navi
 Override split origin ref (advanced):
 
 ```bash
-SPLITSH_ORIGIN=refs/heads/1.x scripts/splitsh-run.sh --all
+SPLITSH_ORIGIN=refs/heads/8.0 scripts/splitsh-run.sh --all
 ```
 
 ## GitHub repository settings
 
 These steps are manual (or via `gh` API) and only need to be done once:
 
-1. **Default branch:** set to `1.x` (Settings → General → Default branch).
-2. **Branch protection** on `1.x`: require PR, require status checks `CI` and `CS` (Fabbot).
+1. **Default branch:** set to `8.0` (Settings → General → Default branch).
+2. **Branch protection** on `8.0`: require PR, require status checks `CI` and `CS` (Fabbot).
 3. **Labels:** `bug`, `feature`, `BC break`, `release`, `documentation`.
 
 ## Pre-releases (optional)
@@ -140,4 +140,4 @@ Use annotated tags with suffixes when needed:
 - `v1.4.0-BETA1`
 - `v1.4.0-RC1`
 
-Document pre-releases in `CHANGELOG-1.x.md` before the stable tag.
+Document pre-releases in `CHANGELOG-8.0.md` before the stable tag.

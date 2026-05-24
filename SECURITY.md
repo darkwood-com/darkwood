@@ -19,5 +19,5 @@ Report security issues privately to **mathieu@darkwood.fr**. Include:
 - Any suggested fix or mitigation
 
 You should receive a response within a few business days. We will coordinate
-disclosure and release a patched version on the unified `1.x` line when
+disclosure and release a patched version on the unified `8.0` line when
 appropriate.

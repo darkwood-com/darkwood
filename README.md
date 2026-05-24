@@ -8,8 +8,8 @@ All packages share a **single global version line** (Symfony-style): one tag
 (`v1.3.0`, `v1.3.1`, …) applies to the monorepo and to every satellite
 repository published on Packagist.
 
-**Default branch:** `1.x`  
-**Current unified release:** see [CHANGELOG-1.x.md](CHANGELOG-1.x.md)
+**Default branch:** `8.0`  
+**Current unified release:** see [CHANGELOG-8.0.md](CHANGELOG-8.0.md)
 
 ## Packages
 
@@ -68,21 +68,21 @@ darkwood/
 │   └── Bundle/        # Symfony bundles
 ├── link               # Symlink darkwood/* packages from vendor to this monorepo
 ├── splitsh.json       # Monorepo path → satellite Git repository mapping
-├── CHANGELOG-1.x.md   # Unified release changelog
+├── CHANGELOG-8.0.md   # Unified release changelog
 ├── RELEASING.md       # Release process for maintainers
-├── UPGRADE-1.x.md     # Upgrade notes between unified versions
+├── UPGRADE-8.0.md     # Upgrade notes between unified versions
 ├── CONTRIBUTING.md
 └── .github/           # CI, fabbot, PR template, packages manifest
 ```
 
 ### Continuous integration
 
-GitHub Actions at `.github/workflows/ci.yml` runs on every pull request and push to `1.x`:
+GitHub Actions at `.github/workflows/ci.yml` runs on every pull request and push to `8.0`:
 
 - **Fabbot** — coding standards and license headers
 - **QA** — only for packages touched by the PR (PHP CS Fixer, PHPStan, PHPUnit per `packages.json`)
 
-On push to `1.x`, all packages are tested. Changing files under `.github/` triggers a full run.
+On push to `8.0`, all packages are tested. Changing files under `.github/` triggers a full run.
 
 Run the same checks locally for one package:
 
@@ -95,9 +95,9 @@ Run the same checks locally for one package:
 Darkwood uses **unified global versioning**. When we release `v1.3.1`, every
 package is tagged `v1.3.1` on its satellite repository.
 
-- Changelog: [CHANGELOG-1.x.md](CHANGELOG-1.x.md)
+- Changelog: [CHANGELOG-8.0.md](CHANGELOG-8.0.md)
 - Maintainer guide: [RELEASING.md](RELEASING.md)
-- Upgrading from pre-unified tags: [UPGRADE-1.x.md](UPGRADE-1.x.md)
+- Upgrading from pre-unified tags: [UPGRADE-8.0.md](UPGRADE-8.0.md)
 
 Develop in `darkwood-com/darkwood`, sync subtrees with `scripts/splitsh-run.sh`,
 then tag with `scripts/release.sh` (see `RELEASING.md`).

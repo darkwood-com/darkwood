@@ -1,6 +1,6 @@
 {
     "repository": "darkwood-com/darkwood",
-    "branch": "1.x",
+    "branch": "8.0",
     "reference_package": "navi",
     "subtrees": {
         "navi": "src/Component/Navi",

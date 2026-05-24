@@ -12,6 +12,7 @@ $finder = Finder::create()
         __FILE__,
     ])
     ->notPath('.castor.stub.php')
+    ->notPath('config/reference.php') // Symfony auto-generated; do not hand-fix
     ->notPath('tools/phpstan/bootstrap.php') // Exclude: class must be named 'co' for PHPStan, not 'bootstrap'
 ;
 

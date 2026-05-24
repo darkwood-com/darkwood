@@ -12,6 +12,7 @@ $finder = Finder::create()
     ->append([
         __FILE__,
     ])
+    ->notPath('config/reference.php') // Symfony auto-generated; do not hand-fix
 ;
 
 return (new Config())

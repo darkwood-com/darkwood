@@ -43,7 +43,7 @@ unified release line:
 From **v1.3.0** onward, install `^1.3` (or a specific unified tag such as
 `1.3.0`) for every Darkwood package you use.
 
-## Breaking changes in 1.x
+## Breaking changes in 8.0
 
 Breaking changes will be listed below with the `[BC BREAK]` prefix as they are
 introduced in future releases.

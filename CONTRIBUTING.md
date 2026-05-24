@@ -11,18 +11,18 @@ Darkwood uses **unified global versioning** (Symfony-style):
 - One git tag (`v1.3.0`) on the monorepo **and** on each satellite repository.
 - Changelog entries use the **Darkwood version**, not independent package semver.
 
-See [CHANGELOG-1.x.md](CHANGELOG-1.x.md), [RELEASING.md](RELEASING.md), and
-[UPGRADE-1.x.md](UPGRADE-1.x.md).
+See [CHANGELOG-8.0.md](CHANGELOG-8.0.md), [RELEASING.md](RELEASING.md), and
+[UPGRADE-8.0.md](UPGRADE-8.0.md).
 
 ## Branches
 
 | Change type | Target branch |
 |-------------|---------------|
-| Bug fixes | `1.x` |
-| New features | `1.x` |
-| Breaking changes | `1.x` + document in package `CHANGELOG.md`, [CHANGELOG-1.x.md](CHANGELOG-1.x.md), and [UPGRADE-1.x.md](UPGRADE-1.x.md) |
+| Bug fixes | `8.0` |
+| New features | `8.0` |
+| Breaking changes | `8.0` + document in package `CHANGELOG.md`, [CHANGELOG-8.0.md](CHANGELOG-8.0.md), and [UPGRADE-8.0.md](UPGRADE-8.0.md) |
 
-There is currently a single maintained line (`1.x`). Satellite repositories use the same branch name.
+There is currently a single maintained line (`8.0`). Satellite repositories use the same branch name.
 
 ## Before you start
 
@@ -37,7 +37,7 @@ There is currently a single maintained line (`1.x`). Satellite repositories use 
 ```bash
 git clone git@github.com:darkwood-com/darkwood.git
 cd darkwood
-git checkout 1.x
+git checkout 8.0
 git checkout -b fix-or-feature-short-description
 ```
 
@@ -75,15 +75,15 @@ Fix style issues with the package PHP CS Fixer config under `tools/php-cs-fixer/
 For user-visible changes, add entries under the upcoming **Darkwood version** (or an `Unreleased` section until the release is cut):
 
 1. **Package** [`CHANGELOG.md`](src/Component/Navi/CHANGELOG.md) in the affected package directory — use the Darkwood version as the section header (for example `## 1.3.1`), not an independent package semver.
-2. **Monorepo** [CHANGELOG-1.x.md](CHANGELOG-1.x.md) — one line per notable change, prefixed with `bug`, `feature`, or `[BC BREAK]`, and the package name in brackets when relevant.
+2. **Monorepo** [CHANGELOG-8.0.md](CHANGELOG-8.0.md) — one line per notable change, prefixed with `bug`, `feature`, or `[BC BREAK]`, and the package name in brackets when relevant.
 
 Maintainers consolidate entries when cutting a release (see [RELEASING.md](RELEASING.md)).
 
 ### 6. Pull request
 
-Open a PR against `1.x` on `darkwood-com/darkwood`. Fill in the PR template checklist.
+Open a PR against `8.0` on `darkwood-com/darkwood`. Fill in the PR template checklist.
 
-Releases are cut from `1.x` after merge; contributors do not tag satellite repositories themselves.
+Releases are cut from `8.0` after merge; contributors do not tag satellite repositories themselves.
 
 ## Coding standards
 

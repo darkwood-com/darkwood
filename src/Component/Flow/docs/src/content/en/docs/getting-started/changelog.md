@@ -15,4 +15,4 @@ toc: true
 
 # Changelog
 
-Changelog can be found [https://github.com/darkwood-com/flow/blob/1.x/CHANGELOG.md](https://github.com/darkwood-com/flow/blob/1.x/CHANGELOG.md)
+Changelog can be found [https://github.com/darkwood-com/flow/blob/8.0/CHANGELOG.md](https://github.com/darkwood-com/flow/blob/8.0/CHANGELOG.md)

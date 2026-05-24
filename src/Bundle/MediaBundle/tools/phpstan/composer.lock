@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cca1a7e0001da1f125d4201eac72106f",
+    "content-hash": "348a242caf9692b333e7a83ce8a7aae1",
     "packages": [
         {
             "name": "darkwood/flow",
@@ -12,15 +12,15 @@
             "dist": {
                 "type": "path",
                 "url": "../../../../Component/Flow",
-                "reference": "4ddbdd2ad0deff3c12dcafc6b2e7abc9ebd99740"
+                "reference": "404c463fbc82580150e7976000e5db59405e13bd"
             },
             "require": {
                 "php": ">=8.5",
-                "symfony/config": "^8.0",
-                "symfony/dependency-injection": "^8.0",
-                "symfony/event-dispatcher": "^8.0",
-                "symfony/http-kernel": "^8.0",
-                "symfony/string": "^8.0"
+                "symfony/config": "8.0.*",
+                "symfony/dependency-injection": "8.0.*",
+                "symfony/event-dispatcher": "8.0.*",
+                "symfony/http-kernel": "8.0.*",
+                "symfony/string": "8.0.*"
             },
             "require-dev": {
                 "amphp/amp": "^3.1",
@@ -28,8 +28,8 @@
                 "openswoole/ide-helper": "^26.2.0",
                 "react/async": "^4.3",
                 "spatie/async": "^1.8",
-                "symfony/doctrine-messenger": "^8.0",
-                "symfony/http-client": "^8.0"
+                "symfony/doctrine-messenger": "8.0.*",
+                "symfony/http-client": "8.0.*"
             },
             "suggest": {
                 "amphp/amp": "Provide asynchronous with AMP",
