@@ -136,4 +136,4 @@ The lambda calculus serves as the theoretical foundation for functional programm
 
 - Functional Programming from Wikipedia : [https://en.wikipedia.org/wiki/Functional_programming](https://en.wikipedia.org/wiki/Functional_programming)
 - Functional Programming from [Graham Hutton](https://x.com/haskellhutt) : [https://people.cs.nott.ac.uk/pszgmh/pgp.html](https://people.cs.nott.ac.uk/pszgmh/pgp.html)
-- Advanced Functional Programming from [Graham Hutton](https://x.com/haskellhutt) : [https://people.cs.nott.ac.uk/pszgmh/afp.html](https://people.cs.nott.ac.uk/pszgmh/pgp.html)
+- Advanced Functional Programming from [Graham Hutton](https://x.com/haskellhutt) : [https://people.cs.nott.ac.uk/pszgmh/afp.html](https://people.cs.nott.ac.uk/pszgmh/afp.html)
