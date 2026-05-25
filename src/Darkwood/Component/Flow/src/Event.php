@@ -36,7 +36,7 @@ final class Event
     /**
      * The POP event occurs when Flow finish async process of an IP.
      *
-     * This event allows you to take into account that IP went asyncronously proceed throught the Flow and can now jump to the next one.
+     * This event allows you to take into account that IP went asynchronously processed through the Flow and can now jump to the next one.
      *
      * @Event("Flow\Event\PopEvent")
      */

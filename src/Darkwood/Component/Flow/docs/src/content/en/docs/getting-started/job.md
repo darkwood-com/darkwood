@@ -15,7 +15,7 @@ toc: true
 
 # Job
 
-When using Flow, you can pass Closure or JobInterface, it's useful when you want to specialize your Job, that come with dependecy injection.
+When using Flow, you can pass Closure or JobInterface, it's useful when you want to specialize your Job, that come with dependency injection.
 
 ## ClosureJob
 

@@ -19,7 +19,7 @@ trait FlowTrait
     /**
      * @return array<array<mixed>>
      */
-    protected static function matrix(Closure $datas): array
+    protected static function matrix(Closure $data): array
     {
         $drivers = [
             'amp' => static fn (): AmpDriver => new AmpDriver(),
@@ -35,17 +35,17 @@ trait FlowTrait
             'stack' => static fn (): StackIpStrategy => new StackIpStrategy(),
         ];
 
-        $matrixDatas = [];
+        $matrixData = [];
         foreach ($drivers as $keyDriver => $driverBuilder) {
             foreach ($strategies as $keyStrategy => $strategyBuilder) {
                 $driver = $driverBuilder();
-                $dataValues = $datas($driver, $strategyBuilder);
+                $dataValues = $data($driver, $strategyBuilder);
                 foreach ($dataValues as $key => $values) {
-                    $matrixDatas["{$keyDriver}.{$keyStrategy}.{$key}"] = [$driver, ...$values];
+                    $matrixData["{$keyDriver}.{$keyStrategy}.{$key}"] = [$driver, ...$values];
                 }
             }
         }
 
-        return $matrixDatas;
+        return $matrixData;
     }
 }

@@ -27,9 +27,9 @@ class FlowFactory
      * Syntax sugar for sequential {@see FlowInterface::fn()} calls
      *
      * Syntax "$flow = yield $wrapedFlow" mean:
-     * 1) $wrapedFlow can be Closure as Job, array constructor arguments for Flow instanciation, array configuration for Flow instanciation or FlowInterface instance
+     * 1) $wrapedFlow can be Closure as Job, array constructor arguments for Flow instantiation, array configuration for Flow instantiation or FlowInterface instance
      * 2) $flow is assigned as FlowInterface instance
-     * 3) optionnaly you can return another wrapedFlow
+     * 3) optionally you can return another wrapedFlow
      *
      * ```php
      * $flow = (new FlowFactory())->create(static function() {
@@ -39,7 +39,7 @@ class FlowFactory
      *     return [$flow, [fn($d) => $d - 8]];
      * });
      * ```
-     * $config if provided will be the fallback array configuration for Flow instanciation
+     * $config if provided will be the fallback array configuration for Flow instantiation
      *
      * @param callable(): Generator|Closure $callable
      * @param ?array<mixed>                 $config

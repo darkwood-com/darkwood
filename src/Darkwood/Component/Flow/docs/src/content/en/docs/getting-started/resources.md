@@ -1,7 +1,7 @@
 ---
-title: "Ressources"
-description: "Ressources."
-lead: "Ressources."
+title: "Resources"
+description: "Resources."
+lead: "Resources."
 date: 2020-10-13T15:21:01+02:00
 lastmod: 2020-10-13T15:21:01+02:00
 draft: false
@@ -35,7 +35,7 @@ Video of this project : [https://www.youtube.com/watch?v=mxxdhGsaIjY](https://ww
 
 ## Railway Oriented Programming
 
-- Presentation from [Sarmiento Calle](https://twitter.com/rrramiro) : [https://www.youtube.com/watch?v=RNTo7Y2wMyI](https://www.youtube.com/watch?v=RNTo7Y2wMyI)
+- Presentation from [Ramiro Sarmiento](https://twitter.com/rrramiro) : [https://www.youtube.com/watch?v=RNTo7Y2wMyI](https://www.youtube.com/watch?v=RNTo7Y2wMyI)
 - Presentation from [Scott Wlaschin](https://fr.slideshare.net/scottwlaschin) : [https://fr.slideshare.net/ScottWlaschin/railway-oriented-programming](https://fr.slideshare.net/ScottWlaschin/railway-oriented-programming)
 - Railway Oriented Programming: C# Edition - Tama Waddell : [https://www.youtube.com/watch?v=45yk2nuRjj8](https://www.youtube.com/watch?v=45yk2nuRjj8)
 - Implementation in PHP from [Turanct](https://github.com/turanct) : [https://github.com/turanct/railway](https://github.com/turanct/railway)

@@ -6,7 +6,7 @@
 
 # Navi
 
-Navi is a Personnal Assistant
+Navi is a Personal Assistant
 
 It's a public architectural surface of a production system whose business core stays private.
 

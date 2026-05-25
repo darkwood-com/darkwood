@@ -121,12 +121,12 @@ final class ScenarioConcatFfmpegRenderer
         try {
             $this->writeConcatListFile($listPath, $clipPaths);
 
-            $copyOk = $this->runConcatFfmpeg($listPath, $tmpOut, reencode: false);
+            $copyOk = $this->runConcatFfmpeg($listPath, $tmpOut, reEncode: false);
             if (!$copyOk) {
                 if (is_file($tmpOut)) {
                     unlink($tmpOut);
                 }
-                if (!$this->runConcatFfmpeg($listPath, $tmpOut, reencode: true)) {
+                if (!$this->runConcatFfmpeg($listPath, $tmpOut, reEncode: true)) {
                     if (is_file($tmpOut)) {
                         unlink($tmpOut);
                     }
@@ -202,7 +202,7 @@ final class ScenarioConcatFfmpegRenderer
         file_put_contents($listPath, $lines);
     }
 
-    private function runConcatFfmpeg(string $listPath, string $outputPath, bool $reencode): bool
+    private function runConcatFfmpeg(string $listPath, string $outputPath, bool $reEncode): bool
     {
         $cmd = [
             $this->ffmpegBinary,
@@ -218,7 +218,7 @@ final class ScenarioConcatFfmpegRenderer
             '-i',
             $listPath,
         ];
-        if ($reencode) {
+        if ($reEncode) {
             array_push(
                 $cmd,
                 '-c:v',
