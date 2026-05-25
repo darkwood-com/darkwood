@@ -5,7 +5,7 @@
 Development repository for [Darkwood](https://github.com/darkwood-com) PHP libraries and Symfony bundles.
 
 All packages share a **single global version line** (Symfony-style): one tag
-(`v1.3.0`, `v1.3.1`, …) applies to the monorepo and to every satellite
+(`v8.0.11`, `v8.0.12`, …) applies to the monorepo and to every satellite
 repository published on Packagist.
 
 **Default branch:** `8.0`  

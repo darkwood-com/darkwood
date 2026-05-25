@@ -4,8 +4,8 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.3.x   | :white_check_mark: |
-| < 1.3   | :x: (pre-unified satellite tags only) |
+| 8.0.12  | :white_check_mark: |
+| < 8.0   | :x: (pre-unified satellite tags only) |
 
 ## Reporting a Vulnerability
 
