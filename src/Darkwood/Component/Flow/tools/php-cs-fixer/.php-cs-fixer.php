@@ -28,7 +28,6 @@ return (new Config())
         'php_unit_internal_class' => false, // From @PhpCsFixer but we don't want it
         'php_unit_test_class_requires_covers' => false, // From @PhpCsFixer but we don't want it
         'phpdoc_add_missing_param_annotation' => false, // From @PhpCsFixer but we don't want it
-        'phpdoc_to_comment' => false, // We want PHPStan keep pass with anotation line comments
         'concat_space' => ['spacing' => 'one'],
         'ordered_class_elements' => true, // Symfony(PSR12) override the default value, but we don't want
         'blank_line_before_statement' => true, // Symfony(PSR12) override the default value, but we don't want
@@ -41,7 +40,7 @@ return (new Config())
         'logical_operators' => false, // https://cs.symfony.com/doc/rules/operator/logical_operators.html prefer use 'or' and 'and' operators by design
         'yoda_style' => false, // https://cs.symfony.com/doc/rules/control_structure/yoda_style.html
         'increment_style' => ['style' => 'post'],
-        'modernize_types_casting' => false,
+        'modernize_types_casting' => false, // https://cs.symfony.com/doc/rules/cast_notation/modernize_types_casting.html
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__ . '/.php-cs-fixer.cache')
