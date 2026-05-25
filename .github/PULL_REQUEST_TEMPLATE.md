@@ -1,7 +1,6 @@
 | Q             | A
 | ------------- | ---
 | Branch?       | `8.0`
-| Package?      | Navi / Flow / MediaBundle / IaExceptionBundle / monorepo
 | Bug fix?      | yes/no
 | New feature?  | yes/no <!-- if yes, update package CHANGELOG.md and CHANGELOG-8.0.md -->
 | BC break?     | yes/no <!-- if yes, update CHANGELOG-8.0.md, package CHANGELOG.md, and UPGRADE-8.0.md -->

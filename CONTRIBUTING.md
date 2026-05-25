@@ -44,7 +44,7 @@ git checkout -b fix-or-feature-short-description
 ### 2. Install dependencies in the affected package
 
 ```bash
-cd src/Component/Navi   # example
+cd src/Darkwood/Component/Navi   # example
 composer install
 ```
 
@@ -74,7 +74,7 @@ Fix style issues with the package PHP CS Fixer config under `tools/php-cs-fixer/
 
 For user-visible changes, add entries under the upcoming **Darkwood version** (or an `Unreleased` section until the release is cut):
 
-1. **Package** [`CHANGELOG.md`](src/Component/Navi/CHANGELOG.md) in the affected package directory — use the Darkwood version as the section header (for example `## 1.3.1`), not an independent package semver.
+1. **Package** [`CHANGELOG.md`](src/Darkwood/Component/Navi/CHANGELOG.md) in the affected package directory — use the Darkwood version as the section header (for example `## 1.3.1`), not an independent package semver.
 2. **Monorepo** [CHANGELOG-8.0.md](CHANGELOG-8.0.md) — one line per notable change, prefixed with `bug`, `feature`, or `[BC BREAK]`, and the package name in brackets when relevant.
 
 Maintainers consolidate entries when cutting a release (see [RELEASING.md](RELEASING.md)).

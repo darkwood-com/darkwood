@@ -2,7 +2,7 @@
     "packages": [
         {
             "id": "navi",
-            "directory": "src/Component/Navi",
+            "directory": "src/Darkwood/Component/Navi",
             "composer_name": "darkwood/navi",
             "php": "8.5",
             "php_extensions": "xsl, openswoole",
@@ -15,7 +15,7 @@
         },
         {
             "id": "flow",
-            "directory": "src/Component/Flow",
+            "directory": "src/Darkwood/Component/Flow",
             "composer_name": "darkwood/flow",
             "php": "8.5",
             "php_extensions": "xsl, openswoole",
@@ -28,7 +28,7 @@
         },
         {
             "id": "media-bundle",
-            "directory": "src/Bundle/MediaBundle",
+            "directory": "src/Darkwood/Bundle/MediaBundle",
             "composer_name": "darkwood/media-bundle",
             "php": "8.5",
             "php_extensions": "ctype, iconv",
@@ -41,7 +41,7 @@
         },
         {
             "id": "ia-exception-bundle",
-            "directory": "src/Bundle/IaExceptionBundle",
+            "directory": "src/Darkwood/Bundle/IaExceptionBundle",
             "composer_name": "darkwood/ia-exception-bundle",
             "php": "8.5",
             "php_extensions": "ctype, iconv",

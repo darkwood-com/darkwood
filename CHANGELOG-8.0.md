@@ -14,6 +14,10 @@ Note: the monorepo tag `v1.0.0` (2026-05-20) was created before unified
 versioning was in place. **`v1.3.0` is the first official unified release**
 for the whole project.
 
+* Unreleased
+
+ * feature Move monorepo packages under `src/Darkwood/` (no impact on satellite repositories or Packagist consumers)
+
 * v8.0.12 (2026-05-24)
 
  * update to symfony v8.0.12
