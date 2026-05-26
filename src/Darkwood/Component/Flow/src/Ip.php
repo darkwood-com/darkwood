@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Flow;
 
 /**
- * @template-covariant T
+ * @template T
  */
 final class Ip
 {

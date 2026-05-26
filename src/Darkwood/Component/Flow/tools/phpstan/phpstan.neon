@@ -10,3 +10,6 @@ parameters:
 		- ../../examples
 		- ../../src
 		- ../../tests
+	ignoreErrors:
+		-
+			message: '#^Method Flow\\Test\\.* has no return type specified\.$#'
