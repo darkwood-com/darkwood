@@ -8,8 +8,9 @@ All packages share a **single global version line** (Symfony-style): one tag
 (`v8.0.11`, `v8.0.12`, …) applies to the monorepo and to every satellite
 repository published on Packagist.
 
-**Default branch:** `8.0`  
-**Current unified release:** see [CHANGELOG-8.0.md](CHANGELOG-8.0.md)
+- Default branch: `8.0`  
+- Changelog: [CHANGELOG-8.0.md](CHANGELOG-8.0.md)
+- Upgrading from pre-unified tags: [UPGRADE-8.0.md](UPGRADE-8.0.md)
 
 ## Packages
 
@@ -25,7 +26,7 @@ Package-specific documentation, installation, and usage live in each package `RE
 ## Requirements
 
 - PHP **8.5+** for Navi, Flow, MediaBundle, and IaExceptionBundle
-- [Composer](https://getcomposer.org/)
+- [Composer](https://getcomposer.org)
 - OpenSwoole extension for Navi and Flow CI runtime tests
 
 ## Local development
@@ -57,12 +58,11 @@ After `composer install` in a consuming application, symlink local clones from t
 
 Use `./link --rollback /path/to/your/symfony-app` to restore vendor copies, then run `composer install` in the app.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution workflow.
-
 ## Repository layout
 
 ```text
 darkwood/
+└── .github/           # CI, fabbot, PR template, packages manifest
 ├── src/
 │   └── Darkwood/
 │       ├── Component/     # Standalone libraries (Navi, Flow)
@@ -73,7 +73,6 @@ darkwood/
 ├── RELEASING.md       # Release process for maintainers
 ├── UPGRADE-8.0.md     # Upgrade notes between unified versions
 ├── CONTRIBUTING.md
-└── .github/           # CI, fabbot, PR template, packages manifest
 ```
 
 ### Continuous integration
@@ -90,18 +89,6 @@ Run the same checks locally for one package:
 ```bash
 .github/ci-run-package.sh navi
 ```
-
-## Releases
-
-Darkwood uses **unified global versioning**. When we release `v1.3.1`, every
-package is tagged `v1.3.1` on its satellite repository.
-
-- Changelog: [CHANGELOG-8.0.md](CHANGELOG-8.0.md)
-- Maintainer guide: [RELEASING.md](RELEASING.md)
-- Upgrading from pre-unified tags: [UPGRADE-8.0.md](UPGRADE-8.0.md)
-
-Develop in `darkwood-com/darkwood`, sync subtrees with `scripts/splitsh-run.sh`,
-then tag with `scripts/release.sh` (see `RELEASING.md`).
 
 ## Contributing
 
