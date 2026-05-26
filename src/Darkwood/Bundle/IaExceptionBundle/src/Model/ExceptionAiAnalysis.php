@@ -7,7 +7,7 @@ namespace Darkwood\IaExceptionBundle\Model;
 /**
  * DTO for AI-generated exception analysis.
  */
-final readonly class ExceptionAiAnalysis
+final class ExceptionAiAnalysis
 {
     public function __construct(
         public string $englishException,

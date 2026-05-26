@@ -9,7 +9,7 @@ use Throwable;
 /**
  * Serializable exception context for async AI analysis (stored in cache keyed by error_id).
  */
-final readonly class ExceptionContext
+final class ExceptionContext
 {
     public function __construct(
         public string $class,

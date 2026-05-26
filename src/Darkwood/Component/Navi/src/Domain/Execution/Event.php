@@ -6,7 +6,7 @@ namespace Navi\Domain\Execution;
 
 use InvalidArgumentException;
 
-final readonly class Event
+final class Event
 {
     /**
      * @param array<string, mixed> $payload

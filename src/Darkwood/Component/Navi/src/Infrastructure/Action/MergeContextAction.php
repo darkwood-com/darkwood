@@ -11,7 +11,7 @@ use Navi\Domain\Execution\Context;
 use Navi\Domain\Execution\Event;
 use Navi\Domain\Execution\ExecutionState;
 
-final readonly class MergeContextAction implements Action
+final class MergeContextAction implements Action
 {
     /**
      * @param array<string, mixed> $values
