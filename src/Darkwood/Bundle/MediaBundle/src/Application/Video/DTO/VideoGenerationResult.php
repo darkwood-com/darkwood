@@ -6,7 +6,7 @@ namespace App\Application\Video\DTO;
 
 use App\Domain\Video\VideoProject;
 
-final readonly class VideoGenerationResult
+final class VideoGenerationResult
 {
     /**
      * @param null|array{json: string, markdown: string} $benchmarkReportPaths

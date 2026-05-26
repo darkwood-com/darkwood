@@ -7,7 +7,7 @@ namespace App\Infrastructure\Video\Rendering;
 /**
  * Outcome of building render/scenario.mp4 from per-scene scene.mp4 clips.
  */
-final readonly class ScenarioConcatResult
+final class ScenarioConcatResult
 {
     /**
      * @param list<array{scene_number: int, scene_id: string}>                 $scenesIncludedInScenario

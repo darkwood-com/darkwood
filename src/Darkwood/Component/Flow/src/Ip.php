@@ -7,7 +7,7 @@ namespace Flow;
 /**
  * @template-covariant T
  */
-final readonly class Ip
+final class Ip
 {
     /**
      * @param T $data

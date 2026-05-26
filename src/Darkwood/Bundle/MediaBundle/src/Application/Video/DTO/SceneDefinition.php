@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Video\DTO;
 
-final readonly class SceneDefinition
+final class SceneDefinition
 {
     public function __construct(
         public string $id,

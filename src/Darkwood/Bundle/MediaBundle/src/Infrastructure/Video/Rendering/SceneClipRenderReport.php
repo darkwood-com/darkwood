@@ -10,7 +10,7 @@ use function is_string;
 /**
  * Per-scene outcome for scene.mp4 rendering (distinct from scenario inclusion).
  */
-final readonly class SceneClipRenderReport
+final class SceneClipRenderReport
 {
     public const OUTCOME_SKIPPED_NOT_COMPLETED = 'skipped_scene_not_completed';
 
