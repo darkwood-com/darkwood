@@ -96,7 +96,7 @@ class AmpDriver implements DriverInterface
                 $future = $async($data);
 
                 return static function (Closure $map) use ($future): void {
-                    /** @var Closure(TReturn): mixed $map */
+                    // @var Closure(TReturn): mixed $map
                     $future->map($map);
                 };
             };
