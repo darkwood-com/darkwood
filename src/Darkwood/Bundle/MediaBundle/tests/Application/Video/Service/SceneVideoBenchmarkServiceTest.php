@@ -23,7 +23,7 @@ use function is_string;
 
 final class SceneVideoBenchmarkServiceTest extends TestCase
 {
-    public function testGeneratesOneVideoAssetPerPresetSamePrompt(): void
+    public function testGeneratesOneVideoAssetPerPresetSamePrompt()
     {
         $tmp = sys_get_temp_dir() . '/dw-bench-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -62,7 +62,7 @@ final class SceneVideoBenchmarkServiceTest extends TestCase
         }
     }
 
-    public function testEachPresetAssetCarriesReplicateLikeMetadata(): void
+    public function testEachPresetAssetCarriesReplicateLikeMetadata()
     {
         $tmp = sys_get_temp_dir() . '/dw-bench-meta-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));

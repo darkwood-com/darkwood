@@ -25,7 +25,7 @@ use RecursiveIteratorIterator;
 
 final class SceneGenerationServiceTest extends TestCase
 {
-    public function testSuccessMergesLifecycleMetadataOnAssets(): void
+    public function testSuccessMergesLifecycleMetadataOnAssets()
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-gen-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -118,7 +118,7 @@ final class SceneGenerationServiceTest extends TestCase
         }
     }
 
-    public function testVideoFailureRecordsReplicateFieldsOnAsset(): void
+    public function testVideoFailureRecordsReplicateFieldsOnAsset()
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-fail-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));

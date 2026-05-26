@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class DoctrineIpTransportIdStampTest extends TestCase
 {
-    public function testId(): void
+    public function testId()
     {
         $stamp = new DoctrineIpTransportIdStamp('custom_id');
         self::assertSame('custom_id', $stamp->getId());

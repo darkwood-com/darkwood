@@ -14,7 +14,7 @@ use RuntimeException;
 
 final class SceneAwareVoiceGenerationProviderTest extends TestCase
 {
-    public function testSceneOneUsesRealWhenFirstSceneOnlyModeAndRealIsConfigured(): void
+    public function testSceneOneUsesRealWhenFirstSceneOnlyModeAndRealIsConfigured()
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -35,7 +35,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         self::assertSame('/tmp/real.mp3', $result->path);
     }
 
-    public function testSceneOneStringNumberStillRoutesToRealInFirstSceneOnlyMode(): void
+    public function testSceneOneStringNumberStillRoutesToRealInFirstSceneOnlyMode()
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -49,7 +49,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => '1']);
     }
 
-    public function testSceneTwoPlusUsesFakeWhenFirstSceneOnlyMode(): void
+    public function testSceneTwoPlusUsesFakeWhenFirstSceneOnlyMode()
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -66,7 +66,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => 2, 'target_path' => '/f.mp3']);
     }
 
-    public function testSceneTwoUsesRealWhenAllScenesRealFlag(): void
+    public function testSceneTwoUsesRealWhenAllScenesRealFlag()
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -83,7 +83,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => 2, 'target_path' => '/r2.mp3']);
     }
 
-    public function testWhenRealUnconfiguredSceneOneUsesFake(): void
+    public function testWhenRealUnconfiguredSceneOneUsesFake()
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $fake->expects(self::once())->method('generateVoice')->willReturn(
@@ -94,7 +94,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => 1]);
     }
 
-    public function testRealFailureFallsBackToFakeWithMetadataHint(): void
+    public function testRealFailureFallsBackToFakeWithMetadataHint()
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -111,7 +111,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => 1, 'target_path' => '/fallback.mp3']);
     }
 
-    public function testRealFailureOnSceneTwoFallsBackWhenAllScenesReal(): void
+    public function testRealFailureOnSceneTwoFallsBackWhenAllScenesReal()
     {
         $fake = $this->createMock(VoiceGenerationProviderInterface::class);
         $real = $this->createMock(VoiceGenerationProviderInterface::class);
@@ -129,7 +129,7 @@ final class SceneAwareVoiceGenerationProviderTest extends TestCase
         $router->generateVoice('Hi', ['scene_number' => 2, 'target_path' => '/fb2.mp3']);
     }
 
-    public function testFallbackRecordsReplicateFailureOnVoiceMetadata(): void
+    public function testFallbackRecordsReplicateFailureOnVoiceMetadata()
     {
         $fake = new FakeVoiceGenerationProvider();
         $real = $this->createMock(VoiceGenerationProviderInterface::class);

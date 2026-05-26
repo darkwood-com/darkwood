@@ -18,7 +18,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class ReplicateVoiceGenerationProviderTest extends TestCase
 {
-    public function testGenerateVoiceHappyPathWithMockedHttp(): void
+    public function testGenerateVoiceHappyPathWithMockedHttp()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -139,7 +139,7 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         }
     }
 
-    public function testGenerateVoiceFailureWhenPredictionFails(): void
+    public function testGenerateVoiceFailureWhenPredictionFails()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -189,7 +189,7 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         }
     }
 
-    public function testEmptyVoiceIdRejectedBeforeHttp(): void
+    public function testEmptyVoiceIdRejectedBeforeHttp()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient->expects(self::never())->method('request');
@@ -210,7 +210,7 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         $provider->generateVoice('Hello');
     }
 
-    public function testCreatePrediction422SurfacesReplicateDetail(): void
+    public function testCreatePrediction422SurfacesReplicateDetail()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -251,7 +251,7 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         $provider->generateVoice('Hi');
     }
 
-    public function testPlaceholderVoiceIdFailsBeforeHttp(): void
+    public function testPlaceholderVoiceIdFailsBeforeHttp()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient->expects(self::never())->method('request');
@@ -272,7 +272,7 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         $provider->generateVoice('Hello');
     }
 
-    public function testRemoteVoiceIdErrorIncludesConfigHint(): void
+    public function testRemoteVoiceIdErrorIncludesConfigHint()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 

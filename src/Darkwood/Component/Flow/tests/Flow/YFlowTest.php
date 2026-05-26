@@ -26,7 +26,7 @@ class YFlowTest extends TestCase
      * @param IpStrategyInterface<T1> $ipStrategy
      */
     #[DataProvider('provideJobCases')]
-    public function testJob(DriverInterface $driver, Closure $job, IpStrategyInterface $ipStrategy, int $resultNumber): void
+    public function testJob(DriverInterface $driver, Closure $job, IpStrategyInterface $ipStrategy, int $resultNumber)
     {
         $ip = new Ip(new ArrayObject(['number' => 6]));
         $errorJob = static function (): void {};

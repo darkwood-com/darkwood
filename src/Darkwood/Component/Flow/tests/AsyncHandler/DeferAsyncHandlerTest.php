@@ -13,7 +13,7 @@ use function PHPUnit\Framework\assertSame;
 
 class DeferAsyncHandlerTest extends TestCase
 {
-    public function testAsyncEvent(): void
+    public function testAsyncEvent()
     {
         $result = null;
 

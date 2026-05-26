@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 abstract class DriverTestCase extends TestCase
 {
-    public function testAsync(): void
+    public function testAsync()
     {
         self::markTestSkipped('Driver async test is temporarily disabled.');
         /*$driver = $this->createDriver();
@@ -35,7 +35,7 @@ abstract class DriverTestCase extends TestCase
         self::assertNull($value);
     }
 
-    public function testAsyncReturn(): void
+    public function testAsyncReturn()
     {
         $driver = $this->createDriver();
         $stream = $driver->async(static function () {
@@ -45,7 +45,7 @@ abstract class DriverTestCase extends TestCase
         self::assertSame(2, $value);
     }
 
-    public function testAsyncError(): void
+    public function testAsyncError()
     {
         $driver = $this->createDriver();
         $stream = $driver->async(static function () {
@@ -56,7 +56,7 @@ abstract class DriverTestCase extends TestCase
         self::assertInstanceOf(Exception::class, $value->getPrevious());
     }
 
-    public function testDelay(): void
+    public function testDelay()
     {
         $driver = $this->createDriver();
         $stream = $driver->async(static function () use ($driver) {
@@ -66,7 +66,7 @@ abstract class DriverTestCase extends TestCase
         self::assertNull($value);
     }
 
-    public function testTick(): void
+    public function testTick()
     {
         $i = 0;
         $driver = $this->createDriver();

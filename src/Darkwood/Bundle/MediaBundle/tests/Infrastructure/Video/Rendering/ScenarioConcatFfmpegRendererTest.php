@@ -20,7 +20,7 @@ use function sprintf;
 
 final class ScenarioConcatFfmpegRendererTest extends TestCase
 {
-    public function testConcatListsOnlyValidClipsIncludedFfprobeNeverSucceeds(): void
+    public function testConcatListsOnlyValidClipsIncludedFfprobeNeverSucceeds()
     {
         if (!is_executable('/bin/false')) {
             self::markTestSkipped('/bin/false not available');
@@ -60,7 +60,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testSkipsWhenNoValidSceneClips(): void
+    public function testSkipsWhenNoValidSceneClips()
     {
         $tmp = sys_get_temp_dir() . '/dw-scenario-concat-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -83,7 +83,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testRemovesStaleScenarioWhenNoValidClips(): void
+    public function testRemovesStaleScenarioWhenNoValidClips()
     {
         $tmp = sys_get_temp_dir() . '/dw-scenario-concat-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -109,7 +109,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testSkipsEmptySceneMp4AndConcatenatesValidInOrder(): void
+    public function testSkipsEmptySceneMp4AndConcatenatesValidInOrder()
     {
         $ffmpeg = self::findFfmpegBinary();
         $ffprobe = self::findFfprobeBinary();
@@ -163,7 +163,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testConcatenatesInSceneNumberOrderWhenScenesAddedOutOfOrder(): void
+    public function testConcatenatesInSceneNumberOrderWhenScenesAddedOutOfOrder()
     {
         $ffmpeg = self::findFfmpegBinary();
         $ffprobe = self::findFfprobeBinary();

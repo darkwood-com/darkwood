@@ -20,7 +20,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class ReplicateVideoGenerationProviderTest extends TestCase
 {
-    public function testGenerateVideoHappyPathWithMockedHttp(): void
+    public function testGenerateVideoHappyPathWithMockedHttp()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -134,7 +134,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         }
     }
 
-    public function testGenerateVideoFailureWhenPredictionFails(): void
+    public function testGenerateVideoFailureWhenPredictionFails()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -183,7 +183,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         }
     }
 
-    public function testGenerateVideoPresetAndReplicateInputShape(): void
+    public function testGenerateVideoPresetAndReplicateInputShape()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -269,7 +269,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         }
     }
 
-    public function testCreatePredictionHttpErrorSurfacesReplicateBodyNotMissingId(): void
+    public function testCreatePredictionHttpErrorSurfacesReplicateBodyNotMissingId()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $errorResponse = $this->jsonHttpResponse(['detail' => 'Invalid version or input'], 422);
@@ -296,7 +296,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         $provider->generateVideo('prompt');
     }
 
-    public function testOwnerModelSlugResolvesViaModelsApiAndPredictionIdInMetadata(): void
+    public function testOwnerModelSlugResolvesViaModelsApiAndPredictionIdInMetadata()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 
@@ -371,7 +371,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         }
     }
 
-    public function testPollTimeoutExceeded(): void
+    public function testPollTimeoutExceeded()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
 

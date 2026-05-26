@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class JsonVideoProjectMapperRenderingPersistenceTest extends TestCase
 {
-    public function testClipRenderAndProjectRenderingRoundTrip(): void
+    public function testClipRenderAndProjectRenderingRoundTrip()
     {
         $created = new DateTimeImmutable('2025-01-01T12:00:00+00:00');
         $updated = new DateTimeImmutable('2025-01-01T12:30:00+00:00');

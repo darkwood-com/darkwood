@@ -10,12 +10,12 @@ use PHPUnit\Framework\TestCase;
 
 final class BenchmarkVideoArtifactSuffixTest extends TestCase
 {
-    public function testEmptyOptionsReturnsNull(): void
+    public function testEmptyOptionsReturnsNull()
     {
         self::assertNull(BenchmarkVideoArtifactSuffix::resolve([]));
     }
 
-    public function testExplicitVideoArtifactKey(): void
+    public function testExplicitVideoArtifactKey()
     {
         self::assertSame(
             'my-custom-key',
@@ -23,7 +23,7 @@ final class BenchmarkVideoArtifactSuffixTest extends TestCase
         );
     }
 
-    public function testHailuoPresetMatchesModelBasename(): void
+    public function testHailuoPresetMatchesModelBasename()
     {
         self::assertSame(
             'hailuo-02-fast',
@@ -33,7 +33,7 @@ final class BenchmarkVideoArtifactSuffixTest extends TestCase
         );
     }
 
-    public function testSeedancePreset(): void
+    public function testSeedancePreset()
     {
         self::assertSame(
             'seedance-1-lite',
@@ -43,7 +43,7 @@ final class BenchmarkVideoArtifactSuffixTest extends TestCase
         );
     }
 
-    public function testSeedance2FastPreset(): void
+    public function testSeedance2FastPreset()
     {
         self::assertSame(
             'seedance-2-0-fast',
@@ -53,7 +53,7 @@ final class BenchmarkVideoArtifactSuffixTest extends TestCase
         );
     }
 
-    public function testPVideoDraftPresetAppendsDraft(): void
+    public function testPVideoDraftPresetAppendsDraft()
     {
         self::assertSame(
             'p-video-draft',
@@ -63,7 +63,7 @@ final class BenchmarkVideoArtifactSuffixTest extends TestCase
         );
     }
 
-    public function testModelOverrideWithoutPreset(): void
+    public function testModelOverrideWithoutPreset()
     {
         self::assertSame(
             'some-model',
@@ -73,7 +73,7 @@ final class BenchmarkVideoArtifactSuffixTest extends TestCase
         );
     }
 
-    public function testReplicateInputDraftSuffixWithoutPresetDraftDefaults(): void
+    public function testReplicateInputDraftSuffixWithoutPresetDraftDefaults()
     {
         self::assertSame(
             'p-video-draft',

@@ -30,7 +30,7 @@ final class VideoBenchmarkReportWriterTest extends TestCase
         parent::tearDown();
     }
 
-    public function testWriteReturnsNullWhenOnlyOneVideoAsset(): void
+    public function testWriteReturnsNullWhenOnlyOneVideoAsset()
     {
         $renderRoot = sys_get_temp_dir() . '/vbw_' . uniqid('', true);
         $this->tempRoots[] = $renderRoot;
@@ -59,7 +59,7 @@ final class VideoBenchmarkReportWriterTest extends TestCase
         self::assertNull($writer->writeIfApplicable($project));
     }
 
-    public function testWritesJsonAndMarkdownForMultiVideoScene(): void
+    public function testWritesJsonAndMarkdownForMultiVideoScene()
     {
         $renderRoot = sys_get_temp_dir() . '/vbw_' . uniqid('', true);
         mkdir($renderRoot . '/render', 0o755, true);

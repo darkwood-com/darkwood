@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RenderingSummaryJsonWriterTest extends TestCase
 {
-    public function testWritesJsonWithSceneAndScenarioSections(): void
+    public function testWritesJsonWithSceneAndScenarioSections()
     {
         $dir = sys_get_temp_dir() . '/dw-summary-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($dir, 0o755, true));

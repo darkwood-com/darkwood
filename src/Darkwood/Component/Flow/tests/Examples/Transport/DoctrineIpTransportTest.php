@@ -15,7 +15,7 @@ use function count;
 
 class DoctrineIpTransportTest extends TestCase
 {
-    public function testMultipleClientTransport(): void
+    public function testMultipleClientTransport()
     {
         $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $supervisorTransport = new DoctrineIpTransport($connection);

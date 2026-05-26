@@ -26,7 +26,7 @@ class TransportFlowTest extends TestCase
      * @param array<mixed>           $jobs
      */
     #[DataProvider('provideJobsCases')]
-    public function testJobs(DriverInterface $driver, array $jobs, int $resultNumber): void
+    public function testJobs(DriverInterface $driver, array $jobs, int $resultNumber)
     {
         self::markTestSkipped('Transport flow test is temporarily disabled.');
 

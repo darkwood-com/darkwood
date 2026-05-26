@@ -23,7 +23,7 @@ class CollectionReceiverTest extends TestCase
      * @param SplObjectStorage<ReceiverInterface, array<Envelope>> $expectedReceiversIps
      */
     #[DataProvider('provideGetCases')]
-    public function testGet($receivers, $expectedReceiversIps): void
+    public function testGet($receivers, $expectedReceiversIps)
     {
         $collectionReceiver = new CollectionReceiver($receivers);
         $envelopes = $collectionReceiver->get();
@@ -59,7 +59,7 @@ class CollectionReceiverTest extends TestCase
      * @param array<mixed, ReceiverInterface>                      $expectedRejectIpsReceivers
      */
     #[DataProvider('provideAckAndRejectCases')]
-    public function testAckAndReject($receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers): void
+    public function testAckAndReject($receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers)
     {
         $collectionReceiver = new CollectionReceiver($receivers);
 

@@ -35,7 +35,7 @@ class FlowTest extends TestCase
      * @param array<mixed>           $jobs
      */
     #[DataProvider('provideJobCases')]
-    public function testJob(DriverInterface $driver, array $jobs, int $resultNumber): void
+    public function testJob(DriverInterface $driver, array $jobs, int $resultNumber)
     {
         $count = 0;
         $flow = array_reduce(
@@ -76,7 +76,7 @@ class FlowTest extends TestCase
      * @param array<mixed>           $jobs
      */
     #[DataProvider('provideJobCases')]
-    public function testTick(DriverInterface $driver, array $jobs, int $resultNumber): void
+    public function testTick(DriverInterface $driver, array $jobs, int $resultNumber)
     {
         $cancel = $driver->tick(1, static function () use (&$flow): void {
             $ip = new Ip(new ArrayObject(['number' => 0]));
@@ -180,7 +180,7 @@ class FlowTest extends TestCase
      * @param array<mixed>           $config
      */
     #[DataProvider('provideDoCases')]
-    public function testDo(DriverInterface $driver, callable $callable, ?array $config, int $resultNumber): void
+    public function testDo(DriverInterface $driver, callable $callable, ?array $config, int $resultNumber)
     {
         $ip = new Ip(new ArrayObject(['number' => 0]));
         $flow = (new FlowFactory())->create($callable, [

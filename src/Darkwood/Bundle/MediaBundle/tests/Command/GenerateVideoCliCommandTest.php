@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class GenerateVideoCliCommandTest extends TestCase
 {
-    public function testScene1RoutingShowsVoiceFallbackAndRealError(): void
+    public function testScene1RoutingShowsVoiceFallbackAndRealError()
     {
         $yaml = tempnam(sys_get_temp_dir(), 'dw-yml-');
         self::assertNotFalse($yaml);
@@ -74,7 +74,7 @@ final class GenerateVideoCliCommandTest extends TestCase
         self::assertStringContainsString('replicate-video', $out);
     }
 
-    public function testScene1RoutingShowsRealSuccessWithoutFallback(): void
+    public function testScene1RoutingShowsRealSuccessWithoutFallback()
     {
         $yaml = tempnam(sys_get_temp_dir(), 'dw-yml-');
         self::assertNotFalse($yaml);

@@ -13,7 +13,7 @@ use function PHPUnit\Framework\assertSame;
 
 class BatchAsyncHandlerTest extends TestCase
 {
-    public function testAsyncEvent(): void
+    public function testAsyncEvent()
     {
         $result1 = null;
 

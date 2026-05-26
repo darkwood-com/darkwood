@@ -22,7 +22,7 @@ use function sprintf;
 
 final class SceneClipFfmpegRendererTest extends TestCase
 {
-    public function testSkipsWhenSceneNotCompleted(): void
+    public function testSkipsWhenSceneNotCompleted()
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-clip-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -41,7 +41,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testClassifySkipsWhenSceneNotCompleted(): void
+    public function testClassifySkipsWhenSceneNotCompleted()
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-clip-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -59,7 +59,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testClassifySkipsWhenNoUsableVideoAsset(): void
+    public function testClassifySkipsWhenNoUsableVideoAsset()
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-clip-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -86,7 +86,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testClassifySkipsWhenVideoAssetNotDecodablePerFfprobe(): void
+    public function testClassifySkipsWhenVideoAssetNotDecodablePerFfprobe()
     {
         if (!is_executable('/bin/false')) {
             self::markTestSkipped('/bin/false not available');
@@ -124,7 +124,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testSkipsWhenNoUsableVideoAsset(): void
+    public function testSkipsWhenNoUsableVideoAsset()
     {
         $tmp = sys_get_temp_dir() . '/dw-scene-clip-' . bin2hex(random_bytes(4));
         self::assertTrue(mkdir($tmp, 0o755, true));
@@ -152,7 +152,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testWritesSceneMp4FromVideoOnlyWhenFfmpegAvailable(): void
+    public function testWritesSceneMp4FromVideoOnlyWhenFfmpegAvailable()
     {
         $ffmpeg = self::findFfmpegBinary();
         if ($ffmpeg === null) {
@@ -190,7 +190,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
         }
     }
 
-    public function testMuxesVoiceWhenPresentAndFfmpegAvailable(): void
+    public function testMuxesVoiceWhenPresentAndFfmpegAvailable()
     {
         $ffmpeg = self::findFfmpegBinary();
         if ($ffmpeg === null) {

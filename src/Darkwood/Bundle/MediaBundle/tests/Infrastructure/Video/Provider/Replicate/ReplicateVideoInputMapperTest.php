@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ReplicateVideoInputMapperTest extends TestCase
 {
-    public function testHailuoMapsPromptDurationSeed(): void
+    public function testHailuoMapsPromptDurationSeed()
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::HAILUO);
@@ -24,7 +24,7 @@ final class ReplicateVideoInputMapperTest extends TestCase
         self::assertSame(42, $out['seed']);
     }
 
-    public function testSeedanceMapsLikeHailuo(): void
+    public function testSeedanceMapsLikeHailuo()
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE);
@@ -36,7 +36,7 @@ final class ReplicateVideoInputMapperTest extends TestCase
         self::assertSame('480p', $out['resolution']);
     }
 
-    public function testSeedance2FastMapsPromptAndResolution(): void
+    public function testSeedance2FastMapsPromptAndResolution()
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::SEEDANCE_2_FAST);
@@ -47,7 +47,7 @@ final class ReplicateVideoInputMapperTest extends TestCase
         self::assertSame('480p', $out['resolution']);
     }
 
-    public function testPVideoCoercesDraftBoolean(): void
+    public function testPVideoCoercesDraftBoolean()
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::P_VIDEO_DRAFT);
@@ -57,7 +57,7 @@ final class ReplicateVideoInputMapperTest extends TestCase
         self::assertSame('Draft clip', $out['prompt']);
     }
 
-    public function testReplicateInputMergesOverPreset(): void
+    public function testReplicateInputMergesOverPreset()
     {
         $m = new ReplicateVideoInputMapper();
         $preset = ReplicateVideoModelPresets::resolve(ReplicateVideoModelPresets::P_VIDEO_DRAFT);

@@ -14,7 +14,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class ReplicateClientTest extends TestCase
 {
-    public function testResolvePredictionVersionPassesThrough64CharHex(): void
+    public function testResolvePredictionVersionPassesThrough64CharHex()
     {
         $hex = str_repeat('a', 64);
         $client = new ReplicateClient(
@@ -26,7 +26,7 @@ final class ReplicateClientTest extends TestCase
         self::assertSame($hex, $client->resolvePredictionVersion($hex));
     }
 
-    public function testResolvePredictionVersionFetchesLatestVersionForOwnerModelSlug(): void
+    public function testResolvePredictionVersionFetchesLatestVersionForOwnerModelSlug()
     {
         $resolved = str_repeat('f', 64);
         $httpClient = $this->createMock(HttpClientInterface::class);
@@ -50,7 +50,7 @@ final class ReplicateClientTest extends TestCase
         self::assertSame($resolved, $client->resolvePredictionVersion('acme/cool-model'));
     }
 
-    public function testCreatePredictionNon2xxIncludesReplicateDetailInException(): void
+    public function testCreatePredictionNon2xxIncludesReplicateDetailInException()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $response = $this->jsonResponse(['detail' => 'version is invalid'], 422);
@@ -71,7 +71,7 @@ final class ReplicateClientTest extends TestCase
         $client->createPrediction(['version' => 'x', 'input' => []]);
     }
 
-    public function testExtractFirstOutputUrlFindsNestedHttpsUrl(): void
+    public function testExtractFirstOutputUrlFindsNestedHttpsUrl()
     {
         $client = new ReplicateClient(
             $this->createMock(HttpClientInterface::class),
@@ -86,7 +86,7 @@ final class ReplicateClientTest extends TestCase
         self::assertSame('https://cdn.example.com/out.mp4', $url);
     }
 
-    public function testCreatePredictionRetriesOn429ThenSucceeds(): void
+    public function testCreatePredictionRetriesOn429ThenSucceeds()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient
@@ -110,7 +110,7 @@ final class ReplicateClientTest extends TestCase
         self::assertSame('pred', $out['id']);
     }
 
-    public function testCreatePredictionFailsAfterMax429Retries(): void
+    public function testCreatePredictionFailsAfterMax429Retries()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient
@@ -132,7 +132,7 @@ final class ReplicateClientTest extends TestCase
         $client->createPrediction(['version' => 'v', 'input' => []]);
     }
 
-    public function testGetPredictionRetriesOn429ThenSucceeds(): void
+    public function testGetPredictionRetriesOn429ThenSucceeds()
     {
         $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient

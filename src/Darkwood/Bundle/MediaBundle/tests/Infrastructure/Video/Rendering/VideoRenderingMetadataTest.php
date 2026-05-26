@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class VideoRenderingMetadataTest extends TestCase
 {
-    public function testSceneClipPersistSkippedNotCompleted(): void
+    public function testSceneClipPersistSkippedNotCompleted()
     {
         $tmp = sys_get_temp_dir() . '/dw-meta-' . bin2hex(random_bytes(4));
         $storage = new LocalArtifactStorage(new VideoPathResolver($tmp));
@@ -33,7 +33,7 @@ final class VideoRenderingMetadataTest extends TestCase
         self::assertNull($row['audio_mode']);
     }
 
-    public function testSceneClipPersistRenderedWithVoiceMuxFallbackDetail(): void
+    public function testSceneClipPersistRenderedWithVoiceMuxFallbackDetail()
     {
         $tmp = sys_get_temp_dir() . '/dw-meta-' . bin2hex(random_bytes(4));
         $storage = new LocalArtifactStorage(new VideoPathResolver($tmp));
@@ -58,7 +58,7 @@ final class VideoRenderingMetadataTest extends TestCase
         self::assertNull($row['skip_reason']);
     }
 
-    public function testProjectRenderingFromScenario(): void
+    public function testProjectRenderingFromScenario()
     {
         $r = new ScenarioConcatResult(
             '/out/scenario.mp4',
@@ -75,7 +75,7 @@ final class VideoRenderingMetadataTest extends TestCase
         self::assertCount(1, $row['scenes_excluded_from_scenario']);
     }
 
-    public function testSceneClipPersistRenderedWithVoice(): void
+    public function testSceneClipPersistRenderedWithVoice()
     {
         $tmp = sys_get_temp_dir() . '/dw-meta-' . bin2hex(random_bytes(4));
         $storage = new LocalArtifactStorage(new VideoPathResolver($tmp));
@@ -99,7 +99,7 @@ final class VideoRenderingMetadataTest extends TestCase
         self::assertSame('voice_muxed', $row['audio_mode']);
     }
 
-    public function testSceneClipPersistRenderedSilentVideoOnly(): void
+    public function testSceneClipPersistRenderedSilentVideoOnly()
     {
         $tmp = sys_get_temp_dir() . '/dw-meta-' . bin2hex(random_bytes(4));
         $storage = new LocalArtifactStorage(new VideoPathResolver($tmp));
@@ -123,7 +123,7 @@ final class VideoRenderingMetadataTest extends TestCase
         self::assertSame('silent_video_only', $row['audio_mode']);
     }
 
-    public function testSceneClipPersistSkippedNoUsableVideo(): void
+    public function testSceneClipPersistSkippedNoUsableVideo()
     {
         $tmp = sys_get_temp_dir() . '/dw-meta-' . bin2hex(random_bytes(4));
         $storage = new LocalArtifactStorage(new VideoPathResolver($tmp));
@@ -142,7 +142,7 @@ final class VideoRenderingMetadataTest extends TestCase
         self::assertNull($row['audio_mode']);
     }
 
-    public function testSceneClipPersistSkippedFfmpegFailed(): void
+    public function testSceneClipPersistSkippedFfmpegFailed()
     {
         $tmp = sys_get_temp_dir() . '/dw-meta-' . bin2hex(random_bytes(4));
         $storage = new LocalArtifactStorage(new VideoPathResolver($tmp));
@@ -161,7 +161,7 @@ final class VideoRenderingMetadataTest extends TestCase
         self::assertNull($row['audio_mode']);
     }
 
-    public function testProjectRenderingFromScenarioWhenSkipped(): void
+    public function testProjectRenderingFromScenarioWhenSkipped()
     {
         $r = new ScenarioConcatResult(
             null,

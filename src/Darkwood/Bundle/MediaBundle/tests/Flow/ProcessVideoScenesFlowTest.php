@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ProcessVideoScenesFlowTest extends TestCase
 {
-    public function testFailedSceneDoesNotStopOtherScenesFromProcessing(): void
+    public function testFailedSceneDoesNotStopOtherScenesFromProcessing()
     {
         $sceneStep = $this->createMock(VideoSceneStep::class);
         $sceneStep->expects(self::exactly(3))
@@ -78,7 +78,7 @@ final class ProcessVideoScenesFlowTest extends TestCase
         self::assertCount(3, $payload->sceneClipReports);
     }
 
-    public function testSortForkSceneResultsOrdersBySceneIndex(): void
+    public function testSortForkSceneResultsOrdersBySceneIndex()
     {
         $sorted = ProcessVideoScenesFlow::sortForkSceneResultsBySceneIndex([
             ['sceneIndex' => 2, 'sceneData' => [], 'clipReport' => [], 'anyFailed' => false],

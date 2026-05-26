@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class JsonVideoProjectMapperAssetMetadataTest extends TestCase
 {
-    public function testAssetMetadataRoundTripsIncludingFailureFields(): void
+    public function testAssetMetadataRoundTripsIncludingFailureFields()
     {
         $created = new DateTimeImmutable('2025-01-01T12:00:00+00:00');
         $updated = new DateTimeImmutable('2025-01-01T12:30:00+00:00');
