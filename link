@@ -41,8 +41,8 @@ function discoverPackages(string $monorepoRoot): array
 {
     $packages = ['darkwood/darkwood' => $monorepoRoot];
     $roots = [
-        $monorepoRoot.'/src/Component',
-        $monorepoRoot.'/src/Bundle',
+        $monorepoRoot.'/src/Darkwood/Component',
+        $monorepoRoot.'/src/Darkwood/Bundle',
     ];
 
     foreach ($roots as $root) {

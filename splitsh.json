@@ -3,10 +3,10 @@
     "branch": "8.0",
     "reference_package": "navi",
     "subtrees": {
-        "navi": "src/Component/Navi",
-        "flow": "src/Component/Flow",
-        "media-bundle": "src/Bundle/MediaBundle",
-        "ia-exception-bundle": "src/Bundle/IaExceptionBundle"
+        "navi": "src/Darkwood/Component/Navi",
+        "flow": "src/Darkwood/Component/Flow",
+        "media-bundle": "src/Darkwood/Bundle/MediaBundle",
+        "ia-exception-bundle": "src/Darkwood/Bundle/IaExceptionBundle"
     },
     "remotes": {
         "navi": "git@github.com:darkwood-com/navi.git",

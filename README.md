@@ -5,7 +5,7 @@
 Development repository for [Darkwood](https://github.com/darkwood-com) PHP libraries and Symfony bundles.
 
 All packages share a **single global version line** (Symfony-style): one tag
-(`v1.3.0`, `v1.3.1`, …) applies to the monorepo and to every satellite
+(`v8.0.11`, `v8.0.12`, …) applies to the monorepo and to every satellite
 repository published on Packagist.
 
 **Default branch:** `8.0`  
@@ -15,10 +15,10 @@ repository published on Packagist.
 
 | Path | Composer name | Public repository |
 |------|---------------|-------------------|
-| `src/Component/Navi` | `darkwood/navi` | [darkwood-com/navi](https://github.com/darkwood-com/navi) |
-| `src/Component/Flow` | `darkwood/flow` | [darkwood-com/flow](https://github.com/darkwood-com/flow) |
-| `src/Bundle/MediaBundle` | `darkwood/media-bundle` | [darkwood-com/media-bundle](https://github.com/darkwood-com/media-bundle) |
-| `src/Bundle/IaExceptionBundle` | `darkwood/ia-exception-bundle` | [darkwood-com/ia-exception-bundle](https://github.com/darkwood-com/ia-exception-bundle) |
+| `src/Darkwood/Component/Navi` | `darkwood/navi` | [darkwood-com/navi](https://github.com/darkwood-com/navi) |
+| `src/Darkwood/Component/Flow` | `darkwood/flow` | [darkwood-com/flow](https://github.com/darkwood-com/flow) |
+| `src/Darkwood/Bundle/MediaBundle` | `darkwood/media-bundle` | [darkwood-com/media-bundle](https://github.com/darkwood-com/media-bundle) |
+| `src/Darkwood/Bundle/IaExceptionBundle` | `darkwood/ia-exception-bundle` | [darkwood-com/ia-exception-bundle](https://github.com/darkwood-com/ia-exception-bundle) |
 
 Package-specific documentation, installation, and usage live in each package `README.md`.
 
@@ -33,7 +33,7 @@ Package-specific documentation, installation, and usage live in each package `RE
 Work inside the package directory you are changing:
 
 ```bash
-cd src/Component/Navi   # or Flow, MediaBundle, IaExceptionBundle
+cd src/Darkwood/Component/Navi   # or Flow, MediaBundle, IaExceptionBundle
 composer install
 ```
 
@@ -64,8 +64,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution workflow.
 ```text
 darkwood/
 ├── src/
-│   ├── Component/     # Standalone libraries (Navi, Flow)
-│   └── Bundle/        # Symfony bundles
+│   └── Darkwood/
+│       ├── Component/     # Standalone libraries (Navi, Flow)
+│       └── Bundle/        # Symfony bundles
 ├── link               # Symlink darkwood/* packages from vendor to this monorepo
 ├── splitsh.json       # Monorepo path → satellite Git repository mapping
 ├── CHANGELOG-8.0.md   # Unified release changelog
