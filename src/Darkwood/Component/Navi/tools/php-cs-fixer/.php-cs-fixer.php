@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Finder;
 
 $finder = Finder::create()
@@ -13,6 +14,7 @@ $finder = Finder::create()
     ])
     ->notPath('.castor.stub.php')
     ->notPath('config/reference.php') // Symfony auto-generated; do not hand-fix
+    ->notPath('tools/phpstan/bootstrap.php') // Exclude: class must be named 'co' for PHPStan, not 'bootstrap'
 ;
 
 return (new Config())
@@ -41,7 +43,7 @@ return (new Config())
         'increment_style' => ['style' => 'post'],
         'modernize_types_casting' => false, // https://cs.symfony.com/doc/rules/cast_notation/modernize_types_casting.html
     ])
-    ->setRuleCustomisationPolicy(new class implements PhpCsFixer\Config\RuleCustomisationPolicyInterface {
+    ->setRuleCustomisationPolicy(new class implements RuleCustomisationPolicyInterface {
         public function getPolicyVersionForCache(): string
         {
             return hash_file('xxh128', __FILE__);
