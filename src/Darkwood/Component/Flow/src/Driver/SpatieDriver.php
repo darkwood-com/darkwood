@@ -39,12 +39,12 @@ class SpatieDriver implements DriverInterface
     public function __construct()
     {
         if (!class_exists('Spatie\Async\Pool')) {
-            throw new NativeRuntimeException('Spatie Async is not loaded. Suggest install it with composer require spatie/async');
+            throw new NativeRuntimeException('Spatie Async is not loaded. Suggest install it with composer require spatie/async.');
         }
 
         $this->pool = Pool::create();
         if (!$this->pool->isSupported()) {
-            throw new NativeRuntimeException('Spatie Async will not run asynchronously. PHP pcntl and posix extension are required');
+            throw new NativeRuntimeException('Spatie Async will not run asynchronously. PHP pcntl and posix extension are required.');
         }
     }
 

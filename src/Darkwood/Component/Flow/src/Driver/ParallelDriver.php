@@ -39,7 +39,7 @@ class ParallelDriver implements DriverInterface
     public function __construct()
     {
         if (!class_exists(Runtime::class)) {
-            throw new NativeRuntimeException('Parallel extension is not loaded. Suggest install it with pecl install parallel');
+            throw new NativeRuntimeException('Parallel extension is not loaded. Suggest install it with pecl install parallel.');
         }
     }
 

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class MaxIpStrategyTest extends TestCase
 {
     #[DataProvider('provideStrategyCases')]
-    public function testStrategy(int $doneIndex): void
+    public function testStrategy(int $doneIndex)
     {
         $strategy = new MaxIpStrategy(2);
         $strategy->push(new PushEvent(new Ip()));

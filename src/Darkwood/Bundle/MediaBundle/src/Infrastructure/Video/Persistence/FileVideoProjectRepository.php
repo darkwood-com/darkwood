@@ -94,12 +94,12 @@ final class FileVideoProjectRepository implements VideoProjectRepositoryInterfac
 
             rewind($fp);
             if (!ftruncate($fp, 0)) {
-                throw new RuntimeException(sprintf('Cannot truncate project file: %s', $path));
+                throw new RuntimeException(sprintf('Cannot truncate project file: "%s".', $path));
             }
 
             $written = fwrite($fp, $json);
             if ($written === false || $written !== strlen($json)) {
-                throw new RuntimeException(sprintf('Failed to write merged project file: %s', $path));
+                throw new RuntimeException(sprintf('Failed to write merged project file: "%s".', $path));
             }
 
             fflush($fp);

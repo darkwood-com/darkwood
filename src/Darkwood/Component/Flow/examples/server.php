@@ -49,7 +49,7 @@ $multbyTwoJob = static function (Envelope $envelope) use ($driver): Envelope {
 
     // simulating 1 chance on 3 to produce an exception from the "heavy" operation
     if (1 === random_int(1, 3)) {
-        throw new Error(sprintf('Client %s #%d : Exception Failure when processing "Mult by two"', $message['client'], $message['id']));
+        throw new Error(sprintf('Client "%s" #%d : Exception Failure when processing "Mult by two".', $message['client'], $message['id']));
     }
 
     $message['number'] *= 2;

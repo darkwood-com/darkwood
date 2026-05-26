@@ -78,7 +78,7 @@ class DoctrineIpTransport implements TransportInterface
         if ('supervisor' === $this->id) {
             $stamp = $envelope->last(DoctrineIpTransportIdStamp::class);
             if (!$stamp instanceof DoctrineIpTransportIdStamp) {
-                throw new RuntimeException('Sender not found');
+                throw new RuntimeException('Sender not found.');
             }
 
             $queue = $stamp->getId();

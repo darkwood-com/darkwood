@@ -43,7 +43,7 @@ class ReactDriver implements DriverInterface
     public function __construct(?LoopInterface $eventLoop = null)
     {
         if (!function_exists('React\Async\async')) {
-            throw new NativeRuntimeException('ReactPHP is not loaded. Suggest install it with composer require react/event-loop');
+            throw new NativeRuntimeException('ReactPHP is not loaded. Suggest install it with composer require react/event-loop.');
         }
 
         $this->eventLoop = $eventLoop ?? Loop::get();

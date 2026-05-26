@@ -41,7 +41,7 @@ class AmpDriver implements DriverInterface
     public function __construct(?Driver $driver = null)
     {
         if (!function_exists('Amp\async')) {
-            throw new NativeRuntimeException('Amp is not loaded. Suggest install it with composer require amphp/amp');
+            throw new NativeRuntimeException('Amp is not loaded. Suggest install it with composer require amphp/amp.');
         }
 
         if ($driver !== null) {
