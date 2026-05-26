@@ -15,7 +15,7 @@ use RuntimeException;
 final class SceneAwareVideoGenerationProviderTest extends TestCase
 {
     /** VIDEO_REAL_FOR_FIRST_SCENE_ONLY=1 → scene 1 real, scenes 2+ fake */
-    public function testSceneOneUsesRealWhenFirstSceneOnlyModeAndRealIsConfigured(): void
+    public function testSceneOneUsesRealWhenFirstSceneOnlyModeAndRealIsConfigured()
     {
         $fake = $this->createMock(VideoGenerationProviderInterface::class);
         $real = $this->createMock(VideoGenerationProviderInterface::class);
@@ -36,7 +36,7 @@ final class SceneAwareVideoGenerationProviderTest extends TestCase
         self::assertSame('/tmp/real.mp4', $result->path);
     }
 
-    public function testSceneOneStringNumberStillRoutesToRealInFirstSceneOnlyMode(): void
+    public function testSceneOneStringNumberStillRoutesToRealInFirstSceneOnlyMode()
     {
         $fake = $this->createMock(VideoGenerationProviderInterface::class);
         $real = $this->createMock(VideoGenerationProviderInterface::class);
@@ -51,7 +51,7 @@ final class SceneAwareVideoGenerationProviderTest extends TestCase
     }
 
     /** VIDEO_REAL_FOR_FIRST_SCENE_ONLY=1 → scenes 2+ fake */
-    public function testSceneTwoPlusUsesFakeWhenFirstSceneOnlyMode(): void
+    public function testSceneTwoPlusUsesFakeWhenFirstSceneOnlyMode()
     {
         $fake = $this->createMock(VideoGenerationProviderInterface::class);
         $real = $this->createMock(VideoGenerationProviderInterface::class);
@@ -69,7 +69,7 @@ final class SceneAwareVideoGenerationProviderTest extends TestCase
     }
 
     /** VIDEO_REAL_FOR_FIRST_SCENE_ONLY=0 → all scenes real */
-    public function testSceneTwoUsesRealWhenAllScenesRealFlag(): void
+    public function testSceneTwoUsesRealWhenAllScenesRealFlag()
     {
         $fake = $this->createMock(VideoGenerationProviderInterface::class);
         $real = $this->createMock(VideoGenerationProviderInterface::class);
@@ -86,7 +86,7 @@ final class SceneAwareVideoGenerationProviderTest extends TestCase
         $router->generateVideo('p', ['scene_number' => 2, 'target_path' => '/r2']);
     }
 
-    public function testWhenRealUnconfiguredSceneOneUsesFake(): void
+    public function testWhenRealUnconfiguredSceneOneUsesFake()
     {
         $fake = $this->createMock(VideoGenerationProviderInterface::class);
         $fake->expects(self::once())->method('generateVideo')->willReturn(
@@ -97,7 +97,7 @@ final class SceneAwareVideoGenerationProviderTest extends TestCase
         $router->generateVideo('p', ['scene_number' => 1]);
     }
 
-    public function testRealFailureFallsBackToFakeWithMetadataHint(): void
+    public function testRealFailureFallsBackToFakeWithMetadataHint()
     {
         $fake = $this->createMock(VideoGenerationProviderInterface::class);
         $real = $this->createMock(VideoGenerationProviderInterface::class);
@@ -114,7 +114,7 @@ final class SceneAwareVideoGenerationProviderTest extends TestCase
         $router->generateVideo('p', ['scene_number' => 1, 'target_path' => '/fallback.mp4']);
     }
 
-    public function testRealFailureOnSceneTwoFallsBackWhenAllScenesReal(): void
+    public function testRealFailureOnSceneTwoFallsBackWhenAllScenesReal()
     {
         $fake = $this->createMock(VideoGenerationProviderInterface::class);
         $real = $this->createMock(VideoGenerationProviderInterface::class);
@@ -132,7 +132,7 @@ final class SceneAwareVideoGenerationProviderTest extends TestCase
         $router->generateVideo('p', ['scene_number' => 2, 'target_path' => '/fb2.mp4']);
     }
 
-    public function testFallbackRecordsRealAttemptPredictionAndModel(): void
+    public function testFallbackRecordsRealAttemptPredictionAndModel()
     {
         $fake = new FakeVideoGenerationProvider();
         $real = $this->createMock(VideoGenerationProviderInterface::class);

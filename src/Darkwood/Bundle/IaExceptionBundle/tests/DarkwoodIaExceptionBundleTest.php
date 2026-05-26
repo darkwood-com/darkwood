@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class DarkwoodIaExceptionBundleTest extends TestCase
 {
-    public function testBundleIsSymfonyBundle(): void
+    public function testBundleIsSymfonyBundle()
     {
         self::assertInstanceOf(Bundle::class, new DarkwoodIaExceptionBundle());
     }
