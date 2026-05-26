@@ -105,7 +105,7 @@ class LambdaJob implements JobInterface
 
         $parseExpr = static function () use (&$position, &$tokens, &$parseExpr, $length) {
             if ($position >= $length) {
-                throw new RuntimeException('Unexpected end of input');
+                throw new RuntimeException('Unexpected end of input.');
             }
 
             // Handle lambda abstraction 'λx.expr'
@@ -114,12 +114,12 @@ class LambdaJob implements JobInterface
                 $position++; // Skip 'λ'
 
                 if ($position >= $length || $tokens[$position]['type'] !== 'var') {
-                    throw new RuntimeException('Expected variable after lambda');
+                    throw new RuntimeException('Expected variable after lambda.');
                 }
                 $param = $tokens[$position++]['value'];
 
                 if ($position >= $length || $tokens[$position]['type'] !== 'dot') {
-                    throw new RuntimeException('Expected dot after parameter');
+                    throw new RuntimeException('Expected dot after parameter.');
                 }
                 $position++; // Skip '.'
 
@@ -140,7 +140,7 @@ class LambdaJob implements JobInterface
                 $expr = $parseExpr();
 
                 if ($position >= $length || $tokens[$position]['type'] !== 'rparen') {
-                    throw new RuntimeException('Expected closing parenthesis');
+                    throw new RuntimeException('Expected closing parenthesis.');
                 }
                 $position++; // Skip ')'
             }
@@ -164,7 +164,7 @@ class LambdaJob implements JobInterface
         $ast = $parseExpr();
 
         if ($position < $length) {
-            throw new RuntimeException('Unexpected tokens after expression');
+            throw new RuntimeException('Unexpected tokens after expression.');
         }
 
         return $ast;
@@ -179,7 +179,7 @@ class LambdaJob implements JobInterface
         // Variable reference
         if (is_string($exp)) {
             if (!isset($env[$exp])) {
-                throw new RuntimeException("Unbound variable: {$exp}");
+                throw new RuntimeException("Unbound variable: {$exp}.");
             }
 
             return $env[$exp];
@@ -202,12 +202,12 @@ class LambdaJob implements JobInterface
             $arg = $this->evaluate($e2, $env);
 
             if (!is_callable($fn)) {
-                throw new RuntimeException('Cannot apply non-function value');
+                throw new RuntimeException('Cannot apply non-function value.');
             }
 
             return $fn($arg);
         }
 
-        throw new RuntimeException('Invalid expression type');
+        throw new RuntimeException('Invalid expression type.');
     }
 }

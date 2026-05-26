@@ -402,7 +402,7 @@ final class GenerateVideoCliCommand extends Command
 
         $contents = file_get_contents($path);
         if ($contents === false || $contents === '') {
-            throw new InvalidArgumentException(sprintf('Could not read --replicate-image-file: %s', $path));
+            throw new InvalidArgumentException(sprintf('Could not read --replicate-image-file: "%s".', $path));
         }
 
         $mime = 'application/octet-stream';

@@ -144,7 +144,7 @@ class FlowFactory
     {
         $flow = array_shift($flows);
         if (null === $flow) {
-            throw new LogicException('Flow is empty');
+            throw new LogicException('Flow is empty.');
         }
 
         foreach ($flows as $flowIt) {

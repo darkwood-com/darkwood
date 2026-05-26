@@ -65,13 +65,13 @@ final class FileVideoProjectRepository implements VideoProjectRepositoryInterfac
         $path = $this->projectFilePath($projectId);
         $fp = fopen($path, 'r+');
         if ($fp === false) {
-            throw new RuntimeException(sprintf('Cannot open project file for scene merge: %s', $path));
+            throw new RuntimeException(sprintf('Cannot open project file for scene merge: "%s".', $path));
         }
 
         if (!flock($fp, LOCK_EX)) {
             fclose($fp);
 
-            throw new RuntimeException(sprintf('Cannot lock project file for scene merge: %s', $path));
+            throw new RuntimeException(sprintf('Cannot lock project file for scene merge: "%s".', $path));
         }
 
         try {
@@ -80,12 +80,12 @@ final class FileVideoProjectRepository implements VideoProjectRepositoryInterfac
                 $raw = '';
             }
             if ($raw === '') {
-                throw new RuntimeException(sprintf('Project file is empty: %s', $path));
+                throw new RuntimeException(sprintf('Project file is empty: "%s".', $path));
             }
 
             $data = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
             if (!is_array($data)) {
-                throw new RuntimeException(sprintf('Project file is not a JSON object: %s', $path));
+                throw new RuntimeException(sprintf('Project file is not a JSON object: "%s".', $path));
             }
 
             $project = $this->mapper->fromArray($data);

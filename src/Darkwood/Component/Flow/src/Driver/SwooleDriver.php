@@ -37,7 +37,7 @@ class SwooleDriver implements DriverInterface
     public function __construct()
     {
         if (!extension_loaded('openswoole')) {
-            throw new NativeRuntimeException('Swoole extension is not loaded. Suggest install it with pecl install openswoole');
+            throw new NativeRuntimeException('Swoole extension is not loaded. Suggest install it with pecl install openswoole.');
         }
     }
 
