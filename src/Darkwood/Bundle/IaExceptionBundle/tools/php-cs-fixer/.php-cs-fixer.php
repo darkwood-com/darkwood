@@ -42,6 +42,35 @@ return (new Config())
         'increment_style' => ['style' => 'post'],
         'modernize_types_casting' => false, // https://cs.symfony.com/doc/rules/cast_notation/modernize_types_casting.html
     ])
+    ->setRuleCustomisationPolicy(new class implements PhpCsFixer\Config\RuleCustomisationPolicyInterface {
+        public function getPolicyVersionForCache(): string
+        {
+            return hash_file('xxh128', __FILE__);
+        }
+
+        public function getRuleCustomisers(): array
+        {
+            return [
+                'void_return' => static function (SplFileInfo $file) {
+                    if (!$file instanceof Symfony\Component\Finder\SplFileInfo) {
+                        return false;
+                    }
+
+                    $relativePathname = $file->getRelativePathname();
+
+                    if (
+                        str_contains($relativePathname, '/Tests/')
+                        || str_contains($relativePathname, '/tests/')
+                        || str_contains($relativePathname, '/Test/')
+                    ) {
+                        return false;
+                    }
+
+                    return true;
+                },
+            ];
+        }
+    })
     ->setFinder($finder)
     ->setCacheFile(__DIR__ . '/.php-cs-fixer.cache')
 ;
