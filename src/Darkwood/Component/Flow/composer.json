@@ -3,12 +3,6 @@
     "description": "Flow",
     "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Mathieu Ledru",
-            "email": "mathieu@darkwood.fr"
-        }
-    ],
     "keywords": [
         "amphp",
         "async",
