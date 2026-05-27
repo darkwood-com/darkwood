@@ -16,24 +16,26 @@ for the whole project.
 
 * v8.0.13 (2026-05-28)
 
- * feature Move monorepo packages under `src/Darkwood/`
+ * :arrow_up: to symfony v8.0.13
+ * :sparkles: Move monorepo packages under `src/Darkwood/`
+ * :fire: Cleanup
 
 * v8.0.12 (2026-05-24)
 
- * update to symfony v8.0.12
+ * :arrow_up: to symfony v8.0.12
 
 * v1.3.0 (2026-05-21)
 
- * feature Introduce unified global versioning for all Darkwood packages (monorepo + satellites)
- * feature Add root `composer.json` meta-package `darkwood/darkwood` with `replace` aliases
- * feature Add release tooling (`scripts/splitsh-run.sh`, `scripts/release.sh`) and `RELEASING.md`
- * feature Add monorepo CI matrix (Fabbot, PHP CS Fixer, PHPStan, PHPUnit per package)
- * feature Add `splitsh.json` and subtree split workflow to satellite repositories
- * feature [Navi] Migrate from MySQL to PostgreSQL
- * feature [Navi] Add Castor-based QA tools and Nix environment for PHP 8.5
- * feature [Navi] Update namespace from App to Navi
- * feature [MediaBundle] Add Seedance 2.0 fast preset and video pipeline updates
- * feature [MediaBundle] Enhance configuration with `when@dev` support
- * feature [IaExceptionBundle] Render AI exception analysis asynchronously
- * bug [IaExceptionBundle] Replace default Bootstrap danger icon with AI danger icon
- * bug Align inter-package Composer constraints to `^1.3` (unified line)
+ * :sparkles: Introduce unified global versioning for all Darkwood packages (monorepo + satellites)
+ * :sparkles: Add root `composer.json` meta-package `darkwood/darkwood` with `replace` aliases
+ * :sparkles: Add release tooling (`scripts/splitsh-run.sh`, `scripts/release.sh`) and `RELEASING.md`
+ * :sparkles: Add monorepo CI matrix (Fabbot, PHP CS Fixer, PHPStan, PHPUnit per package)
+ * :sparkles: Add `splitsh.json` and subtree split workflow to satellite repositories
+ * :sparkles: [Navi] Migrate from MySQL to PostgreSQL
+ * :sparkles: [Navi] Add Castor-based QA tools and Nix environment for PHP 8.5
+ * :sparkles: [Navi] Update namespace from App to Navi
+ * :sparkles: [MediaBundle] Add Seedance 2.0 fast preset and video pipeline updates
+ * :sparkles: [MediaBundle] Enhance configuration with `when@dev` support
+ * :sparkles: [IaExceptionBundle] Render AI exception analysis asynchronously
+ * :bug: [IaExceptionBundle] Replace default Bootstrap danger icon with AI danger icon
+ * :bug: Align inter-package Composer constraints to `^1.3` (unified line)
