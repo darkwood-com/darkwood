@@ -4,8 +4,6 @@
 /**
  * Links darkwood/* Composer packages in a project vendor/ directory to this monorepo.
  *
- * Inspired by symfony/symfony's link script.
- *
  * Usage:
  *   ./link /path/to/project
  *   ./link --copy /path/to/project

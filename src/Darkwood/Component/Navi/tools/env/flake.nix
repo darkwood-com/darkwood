@@ -82,10 +82,6 @@
             contents =
               let
                 caddyFile = pkgs.writeText "Caddyfile" ''
-                  {
-                      email mathieu@darkwood.fr
-                  }
-
                   :80 {
                       root * /app/public
                       log

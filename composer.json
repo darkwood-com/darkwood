@@ -2,7 +2,15 @@
     "name": "darkwood/darkwood",
     "type": "library",
     "description": "The Darkwood PHP framework",
+    "keywords": ["framework", "dev"],
+    "homepage": "https://darkwood.com",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Mathieu Ledru",
+            "email": "mathieu@darkwood.fr"
+        }
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
