@@ -8,15 +8,15 @@ All packages (`darkwood/navi`, `darkwood/flow`, `darkwood/media-bundle`,
 Tags use the format `vMAJOR.MINOR.PATCH` (for example `v1.3.0`).
 
 To get the diff between two versions:
-https://github.com/darkwood-com/darkwood/compare/v1.3.0...v1.3.1
+https://github.com/darkwood-com/darkwood/compare/v1.0.0...v1.3.0
 
 Note: the monorepo tag `v1.0.0` (2026-05-20) was created before unified
 versioning was in place. **`v1.3.0` is the first official unified release**
 for the whole project.
 
-* Unreleased
+* v8.0.13 (2026-05-28)
 
- * feature Move monorepo packages under `src/Darkwood/` (no impact on satellite repositories or Packagist consumers)
+ * feature Move monorepo packages under `src/Darkwood/`
 
 * v8.0.12 (2026-05-24)
 
