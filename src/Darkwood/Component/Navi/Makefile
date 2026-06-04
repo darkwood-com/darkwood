@@ -21,7 +21,8 @@ docker-up: ## Start Docker services from tools/env (Postgres)
 docker-down: ## Stop Docker services from tools/env
 	cd $(ENV_DIR) && $(DOCKER_COMPOSE) down
 
-docker: docker-up ## Alias for docker-up
+docker: ## Start Docker persistent service
+	cd $(ENV_DIR) && $(DOCKER_COMPOSE) up
 
 env: docker-up ## Start Docker services then enter Nix dev shell
 	$(NIX)
@@ -33,10 +34,7 @@ install: ## Install dependencies
 	$(NIX) --command composer install
 
 serve: ## Run Symfony development server
-	$(NIX) --command ./bin/console server:start --port=8000
-
-stop: ## Stop Symfony development server
-	$(NIX) --command ./bin/console server:stop
+	$(NIX) --command $(SYMFONY) server:start
 
 ##
 ##DevOps
@@ -56,5 +54,3 @@ phpunit: ## Launch PHPUnit test suite
 .PHONY: help nix docker docker-up docker-down env console install serve stop php-cs-fixer phpstan phpunit
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
-
-##
