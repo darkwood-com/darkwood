@@ -1,6 +1,4 @@
-version: '3.8'
 services:
-  mysql:
-    platform: linux/x86_64
+  postgres:
     ports:
-      - '3306:3306'
+      - '3333:5432'
