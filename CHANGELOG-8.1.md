@@ -1,7 +1,7 @@
-CHANGELOG for 8.0
+CHANGELOG for 8.1
 ===================
 
-This changelog references the relevant changes done in 8.0 releases of Darkwood.
+This changelog references the relevant changes done in 8.1 releases of Darkwood.
 
 All packages (`darkwood/navi`, `darkwood/flow`, `darkwood/media-bundle`,
 `darkwood/ia-exception-bundle`) share the **same version** as this monorepo.
@@ -13,6 +13,11 @@ https://github.com/darkwood-com/darkwood/compare/v1.0.0...v1.3.0
 Note: the monorepo tag `v1.0.0` (2026-05-20) was created before unified
 versioning was in place. **`v1.3.0` is the first official unified release**
 for the whole project.
+
+* v8.1.0 (2026-06-07)
+
+ * :arrow_up: to symfony v8.1.0
+ * :sparkles: add rector to tools
 
 * v8.0.13 (2026-05-28)
 
