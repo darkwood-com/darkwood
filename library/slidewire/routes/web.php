@@ -9,3 +9,4 @@ Route::slidewire('/slides/nolife-agency', 'nolife-agency');
 Route::slidewire('/slides/mario-ai-agents', 'mario-ai-agents');
 Route::slidewire('/slides/nolife-local-runtime-infrastructure', 'nolife-local-runtime-infrastructure');
 Route::slidewire('/slides/flowvox-update-2026-05-17', 'flowvox-update-2026-05-17');
+Route::slidewire('/slides/symfony-8-1', 'symfony-8-1');
