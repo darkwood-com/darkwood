@@ -2,6 +2,11 @@
 
 namespace App\Command;
 
+use Flow\Driver\FiberDriver;
+use Flow\ExceptionInterface;
+use Flow\FlowFactory;
+use Flow\Ip;
+use Flow\IpStrategy\MaxIpStrategy;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +23,8 @@ class FetchThisPersonDoesNotExistCommand extends Command
     private const string FETCH_URL = 'https://thispersondoesnotexist.com';
     private const string USER_AGENT = 'Flow POC 1.0';
     private const string OUTPUT_DIR = 'var/thispersondoesnotexist';
-    private const int DOWNLOAD_DELAY_SECONDS = 1;
+    private const int DELAY_MIN_SECONDS = 1;
+    private const int DELAY_MAX_SECONDS = 3;
 
     private SymfonyStyle $io;
 
@@ -60,33 +66,42 @@ class FetchThisPersonDoesNotExistCommand extends Command
         $this->io->title('Fetching fictional person images');
         $this->io->text(sprintf('Source: %s', self::FETCH_URL));
         $this->io->text(sprintf('Output directory: %s', $this->outputDir));
+        if ($count > 1) {
+            $this->io->text(sprintf(
+                'Rate limit: random %d–%ds delay per download (fibers run in parallel, max %d at once)',
+                self::DELAY_MIN_SECONDS,
+                self::DELAY_MAX_SECONDS,
+                $count,
+            ));
+        }
         $this->io->newLine();
 
+        $driver = new FiberDriver();
         $savedFiles = [];
 
+        $flow = (new FlowFactory())->create(function () use ($count, $file, &$savedFiles, $driver) {
+            yield [
+                fn (int $index) => $this->fetchImage($index, $driver),
+                fn (ExceptionInterface $exception) => throw new \RuntimeException($exception->getMessage()),
+            ];
+            yield function (string $image) use ($file, &$savedFiles): string {
+                $outputPath = $this->saveAndReport($image, $file);
+                $savedFiles[] = $outputPath;
+
+                return $outputPath;
+            };
+        }, ['driver' => $driver]);
+
         for ($index = 1; $index <= $count; ++$index) {
-            if ($count > 1) {
-                $this->io->section(sprintf('Download %d/%d', $index, $count));
-            }
+            $flow(new Ip($index));
+        }
 
-            try {
-                $image = $this->fetchImage();
-                $checksum = $this->computeChecksum($image);
-                $filename = $this->generateFilename($checksum, $file);
-                $outputPath = $this->saveFile($filename, $image);
-                $this->report($outputPath, $checksum, \strlen($image));
-            } catch (\RuntimeException $exception) {
-                $this->io->error($exception->getMessage());
+        try {
+            $flow->await();
+        } catch (\RuntimeException $exception) {
+            $this->io->error($exception->getMessage());
 
-                return Command::FAILURE;
-            }
-
-            $savedFiles[] = $outputPath;
-
-            if ($index < $count) {
-                $this->io->note(sprintf('Waiting %d second(s) before next download...', self::DOWNLOAD_DELAY_SECONDS));
-                sleep(self::DOWNLOAD_DELAY_SECONDS);
-            }
+            return Command::FAILURE;
         }
 
         $this->io->section('Summary');
@@ -105,14 +120,15 @@ class FetchThisPersonDoesNotExistCommand extends Command
      *
      * Preferred for Flow experimentation: the resource handle is the primitive
      * that can later be wired to stream_select(), non-blocking mode, or fibers.
-     *
-     * Alternative one-shot read (no explicit handle):
-     *
-     *     $image = $this->fetchImageViaFileGetContents();
      */
-    private function fetchImage(): string
+    private function fetchImage(int $index, FiberDriver $driver): string
     {
-        $this->io->text('Downloading image...');
+        $delay = random_int(self::DELAY_MIN_SECONDS, self::DELAY_MAX_SECONDS);
+        $this->io->note(sprintf('#%d: suspending fiber for %ds before download...', $index, $delay));
+        $driver->delay($delay);
+
+        $startedAt = microtime(true);
+        $this->io->text(sprintf('#%d: downloading (other fibers may run while this one waits)...', $index));
 
         $context = $this->createHttpContext();
         $stream = fopen(self::FETCH_URL, 'r', false, $context);
@@ -136,37 +152,26 @@ class FetchThisPersonDoesNotExistCommand extends Command
                 throw new \RuntimeException('Failed to read remote stream.');
             }
 
+            $this->io->text(sprintf(
+                '#%d: fetch complete in %.2fs',
+                $index,
+                microtime(true) - $startedAt,
+            ));
+
             return $content;
         } finally {
             fclose($stream);
         }
     }
 
-    /**
-     * One-shot fetch via file_get_contents() — simpler, but the stream never
-     * surfaces as a handle Flow can observe or multiplex.
-     */
-    private function fetchImageViaFileGetContents(): string
+    private function saveAndReport(string $image, ?string $fileOverride): string
     {
-        $this->io->text('Downloading image...');
+        $checksum = $this->computeChecksum($image);
+        $filename = $this->generateFilename($checksum, $fileOverride);
+        $outputPath = $this->saveFile($filename, $image);
+        $this->report($outputPath, $checksum, \strlen($image));
 
-        $context = $this->createHttpContext();
-        $content = @file_get_contents(self::FETCH_URL, false, $context);
-
-        if ($content === false) {
-            throw new \RuntimeException('Failed to download image.');
-        }
-
-        $responseHeaders = function_exists('http_get_last_response_headers')
-            ? (http_get_last_response_headers() ?: [])
-            : ($http_response_header ?? []);
-
-        $this->assertSuccessfulHttpResponse($responseHeaders);
-
-        $contentType = $this->extractContentType($responseHeaders);
-        $this->assertImageContentType($contentType);
-
-        return $content;
+        return $outputPath;
     }
 
     private function createHttpContext()
