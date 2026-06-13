@@ -1,10 +1,6 @@
 # Symfony AI in Action - SlideWire
 
-Support de présentation SlideWire pour une vidéo YouTube pédagogique en français :
-
-> Symfony AI in Action - Construire des fonctionnalités IA réalistes avec Symfony
-
-L'angle éditorial est volontairement différent d'une reprise de conférence : la deck explique Symfony AI comme une stack applicative, puis insiste sur le vrai levier produit, l'orchestration contrôlée entre modèles, tools, mémoire, RAG, MCP et workflows.
+Support de présentation SlideWire pour [darkwood.com](https://darkwood.com)
 
 ## Lancer la présentation
 
@@ -12,6 +8,8 @@ L'angle éditorial est volontairement différent d'une reprise de conférence : 
 cd /Users/math/Mathieu/Darkwood/presentations/ressources/2026-04-24-symfony-ai-live-berlin-2026/slidewire
 npm install
 npm run dev
+composer install
+composer setup
 php artisan serve
 ```
 
@@ -49,19 +47,7 @@ Alternative automatisable si Playwright est installé dans l'environnement :
 
 ## Sources utilisées
 
-- Présentation originale : `../symfony-ai-in-action-sflive-berlin-2026.pdf`
-- Thème Darkwood : `/Users/math/Mathieu/Darkwood/presentations/themes/darkwood/darkwood.pdf`
+- Thème Darkwood : `Darkwood/presentations/themes/darkwood/darkwood.pdf`
 - Assets Darkwood : logos, fond, polices Jost
 - Documentation SlideWire : https://slidewire.dev/docs
 - Brief éditorial fourni pour cette adaptation
-
-## Intention éditoriale
-
-La vidéo doit éviter le piège "appel API vers ChatGPT". Le fil narratif est :
-
-1. l'intégration IA produit est difficile parce qu'elle touche aux données, aux droits, au streaming, aux effets de bord et à l'UX
-2. Symfony AI apporte des briques : Platform, Agent, Store, AI Bundle, MCP Bundle, MCP SDK
-3. ces briques deviennent utiles quand elles servent une orchestration applicative claire
-4. MCP et les workflows ouvrent la voie à des agents contrôlés, observables et intégrés au système métier
-
-Le ton visé est sombre, premium, technique et sobre, avec peu de texte par slide et des schémas simples.
