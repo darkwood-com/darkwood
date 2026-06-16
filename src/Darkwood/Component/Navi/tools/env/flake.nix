@@ -37,7 +37,11 @@
             self'.packages.satis
           ];
 
-          shellHook = '''';
+          shellHook = ''
+            if [[ $- == *i* ]] && [ -z "$ZSH_VERSION" ]; then
+              exec zsh
+            fi
+          '';
         };
 
         checks = {
