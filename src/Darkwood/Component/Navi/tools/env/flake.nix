@@ -38,8 +38,8 @@
           ];
 
           shellHook = ''
-            if [[ $- == *i* ]] && [ -z "$ZSH_VERSION" ]; then
-              exec zsh
+            if [[ $- == *i* ]] && [ -z "$ZSH_VERSION" ] && [ -f "$HOME/.zshrc" ]; then
+                exec zsh
             fi
           '';
         };
