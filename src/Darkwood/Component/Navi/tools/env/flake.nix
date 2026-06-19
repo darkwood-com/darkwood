@@ -38,7 +38,9 @@
           ];
 
           shellHook = ''
-            if [[ $- == *i* ]] && [ -z "$ZSH_VERSION" ] && [ -f "$HOME/.zshrc" ]; then
+            export NIX_PHP_BIN="${php}/bin"
+            export PATH="''$NIX_PHP_BIN:''$PATH"
+            if [[ ''$- == *i* ]] && [ -z "''$ZSH_VERSION" ] && [ -f "''$HOME/.zshrc" ]; then
                 exec zsh
             fi
           '';
