@@ -39,7 +39,7 @@
     },
     "scripts": {
         "demo": "php bin/console navi:workflow:run",
-        "php-cs-fixer": "cd tools && castor app:tools:php-cs-fixer --dry-run",
+        "php-cs-fixer": "cd tools && castor app:tools:php-cs-fixer",
         "phpstan": "cd tools && castor app:tools:phpstan",
         "phpunit": "cd tools && castor app:tools:phpunit",
         "env": "cd tools && castor app:tools:env"
