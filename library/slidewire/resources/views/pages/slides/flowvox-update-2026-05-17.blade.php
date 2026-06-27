@@ -1,4 +1,4 @@
-{{-- Flowvox update 2026-05-17 — Voice-first realtime transcription on Symfony 8 --}}
+{{-- Flowvox update 2026-05-17 - Voice-first realtime transcription on Symfony 8 --}}
 {{-- Route: /slides/flowvox-update-2026-05-17 | Blog + YouTube + live demo --}}
 <x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
@@ -7,12 +7,12 @@
         $symfony = '<span class="dw-accent">Symfony</span>';
     @endphp
 
-    {{-- ═══ ACT 0 — OUVERTURE ═══ --}}
+    {{-- ═══ ACT 0 - OUVERTURE ═══ --}}
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Darkwood · Symfony 8 · Voice-first · 2026-05-17</p>
             <h1 class="dw-title">Flowvox update</h1>
-            <p class="dw-lead">De la console au worker vocal temps réel — web, Mercure, iOS.</p>
+            <p class="dw-lead">De la console au worker vocal temps réel - web, Mercure, iOS.</p>
             <div class="mt-12 dw-flow">
                 <div class="dw-node">Parler</div>
                 <div class="dw-arrow">→</div>
@@ -49,7 +49,7 @@
         <footer class="dw-footer"><span>02 / roadmap</span></footer>
     </x-slidewire::slide>
 
-    {{-- ═══ PHASE 1 — POC CONSOLE ═══ --}}
+    {{-- ═══ PHASE 1 - POC CONSOLE ═══ --}}
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Phase 1 · 2024</p>
@@ -88,7 +88,7 @@ flowchart LR
         <footer class="dw-footer"><span>05 / limite</span></footer>
     </x-slidewire::slide>
 
-    {{-- ═══ PHASE 2 — WORKERS ═══ --}}
+    {{-- ═══ PHASE 2 - WORKERS ═══ --}}
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Phase 2</p>
@@ -139,7 +139,7 @@ php bin/console voice:stop --session=demo</pre>
         <footer class="dw-footer"><span>09 / cli</span></footer>
     </x-slidewire::slide>
 
-    {{-- ═══ PHASE 3 — MERCURE ═══ --}}
+    {{-- ═══ PHASE 3 - MERCURE ═══ --}}
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Phase 3</p>
@@ -213,7 +213,7 @@ flowchart TB
         <footer class="dw-footer"><span>14 / registry</span></footer>
     </x-slidewire::slide>
 
-    {{-- ═══ PHASE 4 — OPENAI REALTIME ═══ --}}
+    {{-- ═══ PHASE 4 - OPENAI REALTIME ═══ --}}
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Phase 4</p>
@@ -265,7 +265,7 @@ sequenceDiagram
         <footer class="dw-footer"><span>18 / demo</span></footer>
     </x-slidewire::slide>
 
-    {{-- ═══ PHASE 5 — iOS ═══ --}}
+    {{-- ═══ PHASE 5 - iOS ═══ --}}
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Phase 5</p>
@@ -319,12 +319,12 @@ sequenceDiagram
         <section class="dw-wrap">
             <p class="dw-kicker">darkwood/navi</p>
             <h2 class="dw-heading">Trace structurée.<br>Workflows demain.</h2>
-            <p class="dw-lead">NDJSON · Actions · Context — base pour assistants programmables.</p>
+            <p class="dw-lead">NDJSON · Actions · Context - base pour assistants programmables.</p>
         </section>
         <footer class="dw-footer"><span>23 / navi</span></footer>
     </x-slidewire::slide>
 
-    {{-- ═══ PHASE 6 — FUTURE ═══ --}}
+    {{-- ═══ PHASE 6 - FUTURE ═══ --}}
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Phase 6 · Horizon</p>

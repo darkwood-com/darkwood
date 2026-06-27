@@ -1,4 +1,4 @@
-{{-- Flow Pipe — Token optimization is stream discipline | /slides/flow-pipe --}}
+{{-- Flow Pipe - Token optimization is stream discipline | /slides/flow-pipe --}}
 <x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
@@ -35,7 +35,7 @@
                 <x-slidewire::fragment :index="2"><div class="dw-card"><h3>RAG dumps</h3><p>Useful signal buried in noise.</p></div></x-slidewire::fragment>
             </div>
             <x-slidewire::fragment :index="3">
-                <p class="dw-question mt-8">Context floods the agent — before any reasoning starts.</p>
+                <p class="dw-question mt-8">Context floods the agent - before any reasoning starts.</p>
             </x-slidewire::fragment>
         </section>
         <footer class="dw-footer"><span>01 / problem</span></footer>
@@ -90,7 +90,7 @@ flowchart TB
                 </x-slidewire::diagram>
             </div>
             <x-slidewire::fragment :index="0">
-                <p class="dw-takeaway mt-4">Data enters as one giant string — not as a disciplined stream.</p>
+                <p class="dw-takeaway mt-4">Data enters as one giant string - not as a disciplined stream.</p>
             </x-slidewire::fragment>
         </section>
         <footer class="dw-footer"><span>03 / root-cause</span></footer>
@@ -105,7 +105,7 @@ flowchart TB
                 <h2 class="dw-heading mt-6" style="font-size:clamp(2rem,4.5vw,3.2rem);">Token optimization is <span class="dw-accent">stream discipline</span>.</h2>
             </x-slidewire::fragment>
             <x-slidewire::fragment :index="1">
-                <p class="dw-note mt-8">How data moves — not how words are spelled.</p>
+                <p class="dw-note mt-8">How data moves - not how words are spelled.</p>
             </x-slidewire::fragment>
         </section>
         <footer class="dw-footer"><span>04 / thesis</span></footer>
@@ -223,7 +223,7 @@ flowchart TB
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap dw-wrap--top">
             <p class="dw-kicker">Pipeline steps</p>
-            <h2 class="dw-heading-slide">Registered operations — not hardcoded branches.</h2>
+            <h2 class="dw-heading-slide">Registered operations - not hardcoded branches.</h2>
             <div class="mt-4 dw-flow dw-flow--vertical" style="max-width:720px;margin:0 auto;gap:6px;">
                 <x-slidewire::fragment :index="0"><div class="dw-pipeline-row is-active"><span class="dw-pipeline-label">source</span><span>Load fixture into stream</span></div></x-slidewire::fragment>
                 <x-slidewire::fragment :index="1"><div class="dw-pipeline-row"><span class="dw-pipeline-label">strip_ansi</span><span>Remove escape sequences</span></div></x-slidewire::fragment>
@@ -281,7 +281,7 @@ flowchart TB
                 </x-slidewire::fragment>
             </div>
             <x-slidewire::fragment :index="3">
-                <p class="dw-takeaway mt-6">Visual rhythm of the DSL — at Flow composition time.</p>
+                <p class="dw-takeaway mt-6">Visual rhythm of the DSL - at Flow composition time.</p>
             </x-slidewire::fragment>
         </section>
         <footer class="dw-footer"><span>11 / three-pipes</span></footer>
@@ -306,13 +306,13 @@ foreach ($remaining as $step) {
 $flow(new Ip($context));
 $flow->await();</pre>
             <x-slidewire::fragment :index="0">
-                <p class="dw-note mt-4"><code>TokenPipelineFlowRunner</code> — each step becomes a <code>ClosureJob</code> on <code>PipelineContext</code>.</p>
+                <p class="dw-note mt-4"><code>TokenPipelineFlowRunner</code> - each step becomes a <code>ClosureJob</code> on <code>PipelineContext</code>.</p>
             </x-slidewire::fragment>
         </section>
         <footer class="dw-footer"><span>12 / runtime</span></footer>
     </x-slidewire::slide>
 
-    {{-- 14 · RESULT — STAGES --}}
+    {{-- 14 · RESULT - STAGES --}}
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap dw-wrap--top">
             <p class="dw-kicker">The result</p>
@@ -335,7 +335,7 @@ flowchart LR
         <footer class="dw-footer"><span>13 / stages</span></footer>
     </x-slidewire::slide>
 
-    {{-- 15 · RESULT — NUMBERS --}}
+    {{-- 15 · RESULT - NUMBERS --}}
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Before / after</p>
@@ -383,7 +383,7 @@ flowchart LR
                 </x-slidewire::fragment>
             </div>
             <x-slidewire::fragment :index="2">
-                <p class="dw-takeaway mt-6">Semantic content carries signal — abbreviating words is not the strategy.</p>
+                <p class="dw-takeaway mt-6">Semantic content carries signal - abbreviating words is not the strategy.</p>
             </x-slidewire::fragment>
         </section>
         <footer class="dw-footer"><span>15 / contrast</span></footer>
@@ -405,7 +405,7 @@ flowchart LR
                 <x-slidewire::fragment :index="7"><div class="dw-chip">{!! $flow !!} orchestration layer</div></x-slidewire::fragment>
             </div>
             <x-slidewire::fragment :index="8">
-                <p class="dw-note mt-6">Read process stdout as it arrives — not after <code>wait()</code>.</p>
+                <p class="dw-note mt-6">Read process stdout as it arrives - not after <code>wait()</code>.</p>
             </x-slidewire::fragment>
         </section>
         <footer class="dw-footer"><span>16 / future</span></footer>
@@ -438,13 +438,13 @@ flowchart LR
             <p class="dw-kicker">Resources</p>
             <h2 class="dw-heading-slide">Go deeper.</h2>
             <ul class="dw-list mt-8">
-                <li><code>darkwood/content/flow-pipe</code> — Symfony demo repo</li>
-                <li><code>app:flow-token-demo</code> — run the pipeline locally</li>
-                <li><code>darkwood/flow</code> — orchestration package</li>
-                <li>PHP.Watch — PHP 8.5 pipe operator</li>
+                <li><code>darkwood/content/flow-pipe</code> - Symfony demo repo</li>
+                <li><code>app:flow-token-demo</code> - run the pipeline locally</li>
+                <li><code>darkwood/flow</code> - orchestration package</li>
+                <li>PHP.Watch - PHP 8.5 pipe operator</li>
             </ul>
             <x-slidewire::fragment :index="0">
-                <p class="dw-note mt-8">Inspired by a LinkedIn post on agentic context — cited at the end of the article.</p>
+                <p class="dw-note mt-8">Inspired by a LinkedIn post on agentic context - cited at the end of the article.</p>
             </x-slidewire::fragment>
             <div class="mt-10 dw-flow">
                 <div class="dw-node">Noisy logs</div>

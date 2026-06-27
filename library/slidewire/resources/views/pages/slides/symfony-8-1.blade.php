@@ -1,4 +1,4 @@
-{{-- Symfony 8.1 — conference deck (10–15 min) | /slides/symfony-8-1 --}}
+{{-- Symfony 8.1 - conference deck (10–15 min) | /slides/symfony-8-1 --}}
 <x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
@@ -10,7 +10,7 @@
         <section class="dw-wrap">
             <p class="dw-kicker">Darkwood · Symfony · 2026</p>
             <h1 class="dw-title">Symfony 8.1</h1>
-            <p class="dw-lead">Architecture, async, and developer experience — what actually changes for production apps.</p>
+            <p class="dw-lead">Architecture, async, and developer experience - what actually changes for production apps.</p>
             <div class="mt-12 dw-flow">
                 <div class="dw-node">HTTP-less kernel</div>
                 <div class="dw-arrow">→</div>
@@ -26,7 +26,7 @@
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Overview</p>
-            <h2 class="dw-heading">{!! $sf !!} — a minor release, major operational leverage.</h2>
+            <h2 class="dw-heading">{!! $sf !!} - a minor release, major operational leverage.</h2>
             <div class="mt-10 dw-grid dw-grid-3">
                 <div class="dw-chip">HTTP-less kernel</div>
                 <div class="dw-chip">DeepCloner</div>
@@ -46,7 +46,7 @@
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Why it matters</p>
-            <h2 class="dw-heading">Two platforms, one framework — clearer boundaries, less boilerplate.</h2>
+            <h2 class="dw-heading">Two platforms, one framework - clearer boundaries, less boilerplate.</h2>
             <div class="mt-12 dw-grid dw-grid-2">
                 <div class="dw-card">
                     <h3>Non-HTTP runtimes</h3>
@@ -66,7 +66,7 @@
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">HTTP-less applications</p>
-            <h2 class="dw-heading">Kernel moves to DI — boot a container without HTTP.</h2>
+            <h2 class="dw-heading">Kernel moves to DI - boot a container without HTTP.</h2>
             <p class="dw-lead"><code>AbstractKernel</code> + <code>KernelTrait</code> replace <code>MicroKernelTrait</code> for workers, consumers, and CLI-only apps.</p>
             <div class="mt-10 dw-grid dw-grid-2">
                 <div class="dw-chip">ServicesBundle</div>
@@ -79,7 +79,7 @@
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap dw-wrap--top">
             <p class="dw-kicker">HTTP-less · architecture</p>
-            <h2 class="dw-heading-slide">Entry points share DI — HTTP is optional.</h2>
+            <h2 class="dw-heading-slide">Entry points share DI - HTTP is optional.</h2>
             <div class="mt-6 dw-embed" style="height:min(400px,50vh)">
                 <x-slidewire::diagram>
 flowchart TB
@@ -107,7 +107,7 @@ flowchart TB
             <h2 class="dw-heading"><span class="dw-accent">DeepCloner</span> replaces serialize/unserialize graphs.</h2>
             <div class="mt-10 dw-grid dw-grid-3">
                 <div class="dw-card"><h3>4× faster</h3><p>Typical object graphs; up to 15× on heavy property sets.</p></div>
-                <div class="dw-card"><h3>Portable payloads</h3><p><code>toArray()</code> / <code>fromArray()</code> — ~30–40% smaller than serialize.</p></div>
+                <div class="dw-card"><h3>Portable payloads</h3><p><code>toArray()</code> / <code>fromArray()</code> - ~30–40% smaller than serialize.</p></div>
                 <div class="dw-card"><h3>Built-in usage</h3><p>Container compile, Form snapshots, ArrayAdapter cache.</p></div>
             </div>
             <pre class="mt-8 dw-code">$clone = (new DeepCloner($graph))->clone();
@@ -123,13 +123,13 @@ $payload = (new DeepCloner($graph))->toArray();</pre>
             <h2 class="dw-heading">DI built for long-running workers.</h2>
             <div class="mt-10 dw-grid dw-grid-3">
                 <x-slidewire::fragment :index="0">
-                    <div class="dw-card"><h3>Env as Closure</h3><p>Refresh DB URLs and secrets via <code>resetEnvCache()</code> — no rebuild.</p></div>
+                    <div class="dw-card"><h3>Env as Closure</h3><p>Refresh DB URLs and secrets via <code>resetEnvCache()</code> - no rebuild.</p></div>
                 </x-slidewire::fragment>
                 <x-slidewire::fragment :index="1">
-                    <div class="dw-card"><h3>Stack decorators</h3><p>Declarative <code>decorates</code> / <code>decorates_tag</code> — drop custom compiler passes.</p></div>
+                    <div class="dw-card"><h3>Stack decorators</h3><p>Declarative <code>decorates</code> / <code>decorates_tag</code> - drop custom compiler passes.</p></div>
                 </x-slidewire::fragment>
                 <x-slidewire::fragment :index="2">
-                    <div class="dw-card"><h3>Explicit #[Target]</h3><p>Parameter-name alias matching deprecated — Symfony 9.0.</p></div>
+                    <div class="dw-card"><h3>Explicit #[Target]</h3><p>Parameter-name alias matching deprecated - Symfony 9.0.</p></div>
                 </x-slidewire::fragment>
             </div>
         </section>
@@ -153,7 +153,7 @@ $payload = (new DeepCloner($graph))->toArray();</pre>
         <section class="dw-wrap">
             <p class="dw-kicker">Dynamic controller attributes</p>
             <h2 class="dw-heading">Controller attributes are mutable per request.</h2>
-            <p class="dw-lead"><code>_controller_attributes</code> stored after first resolve — listeners override <code>#[Cache]</code>, <code>#[IsGranted]</code>, custom attrs.</p>
+            <p class="dw-lead"><code>_controller_attributes</code> stored after first resolve - listeners override <code>#[Cache]</code>, <code>#[IsGranted]</code>, custom attrs.</p>
             <p class="dw-note">Dedicated events: <code>kernel.controller_arguments.{AttributeFQCN}</code></p>
         </section>
         <footer class="dw-footer"><span>08 / attributes</span></footer>
@@ -163,7 +163,7 @@ $payload = (new DeepCloner($graph))->toArray();</pre>
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">API layer</p>
-            <h2 class="dw-heading">Input and output — less manual wiring.</h2>
+            <h2 class="dw-heading">Input and output - less manual wiring.</h2>
             <div class="mt-10 dw-grid dw-grid-2">
                 <div class="dw-card">
                     <h3>#[MapRequestPayload]</h3>
@@ -171,7 +171,7 @@ $payload = (new DeepCloner($graph))->toArray();</pre>
                 </div>
                 <div class="dw-card">
                     <h3>#[Serialize]</h3>
-                    <p>Return objects — Symfony builds Response + Content-Type + context.</p>
+                    <p>Return objects - Symfony builds Response + Content-Type + context.</p>
                 </div>
             </div>
         </section>
@@ -186,8 +186,8 @@ $payload = (new DeepCloner($graph))->toArray();</pre>
             <pre class="mt-8 dw-code">php bin/console messenger:consume async \
   --fetch-size=8 --no-reset=100</pre>
             <div class="mt-8 dw-grid dw-grid-2">
-                <div class="dw-chip"><code>--fetch-size</code> — batch round-trips</div>
-                <div class="dw-chip"><code>--no-reset</code> — balance state vs speed</div>
+                <div class="dw-chip"><code>--fetch-size</code> - batch round-trips</div>
+                <div class="dw-chip"><code>--no-reset</code> - balance state vs speed</div>
             </div>
         </section>
         <footer class="dw-footer"><span>10 / messenger-throughput</span></footer>
@@ -206,7 +206,7 @@ flowchart LR
   M[serializedTypeName] -.->|header| Q
                 </x-slidewire::diagram>
             </div>
-            <p class="dw-note mt-6">Decode failures route through retry/failure transports — not silently dropped.</p>
+            <p class="dw-note mt-6">Decode failures route through retry/failure transports - not silently dropped.</p>
         </section>
         <footer class="dw-footer"><span>11 / messenger-reliability</span></footer>
     </x-slidewire::slide>
@@ -219,11 +219,11 @@ flowchart LR
             <div class="mt-10 dw-grid dw-grid-2">
                 <div class="dw-card">
                     <h3>JsonStreamer</h3>
-                    <p><code>ValueObjectTransformerInterface</code> — compact domain scalars · timezone-aware DateTime.</p>
+                    <p><code>ValueObjectTransformerInterface</code> - compact domain scalars · timezone-aware DateTime.</p>
                 </div>
                 <div class="dw-card">
                     <h3>JsonPath</h3>
-                    <p><code>#[AsJsonPathFunction]</code> — domain filters without preprocessing pipelines.</p>
+                    <p><code>#[AsJsonPathFunction]</code> - domain filters without preprocessing pipelines.</p>
                 </div>
             </div>
             <p class="dw-note">Relevant for APIs, log streams, RAG document stores.</p>
@@ -290,10 +290,10 @@ flowchart TB
             <p class="dw-kicker">Validator</p>
             <h2 class="dw-heading">Deterministic rules and safer nested validation.</h2>
             <ul class="mt-10 dw-list">
-                <li><code>#[Assert\Xml]</code> — XSD validation with line-numbered violations</li>
-                <li>Clock-aware date constraints — <code>MockClock</code> in tests</li>
-                <li><code>validateInContext()</code> — reentrant validators (nested DTOs)</li>
-                <li><code>enablePropertyMetadataExistenceCheck()</code> — catch property typos</li>
+                <li><code>#[Assert\Xml]</code> - XSD validation with line-numbered violations</li>
+                <li>Clock-aware date constraints - <code>MockClock</code> in tests</li>
+                <li><code>validateInContext()</code> - reentrant validators (nested DTOs)</li>
+                <li><code>enablePropertyMetadataExistenceCheck()</code> - catch property typos</li>
             </ul>
         </section>
         <footer class="dw-footer"><span>16 / validator</span></footer>
@@ -327,7 +327,7 @@ flowchart TB
                 <div class="dw-arrow">+</div>
                 <div class="dw-node">CLI = first-class</div>
             </div>
-            <p class="dw-lead">Upgrade path is incremental — adopt per entry point, not big-bang.</p>
+            <p class="dw-lead">Upgrade path is incremental - adopt per entry point, not big-bang.</p>
         </section>
         <footer class="dw-footer"><span>18 / practice</span></footer>
     </x-slidewire::slide>
@@ -336,7 +336,7 @@ flowchart TB
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Conclusion</p>
-            <h2 class="dw-heading">{!! $sf !!} sharpens boundaries — HTTP, CLI, and async each get the right kernel.</h2>
+            <h2 class="dw-heading">{!! $sf !!} sharpens boundaries - HTTP, CLI, and async each get the right kernel.</h2>
             <p class="dw-lead">Less boilerplate. Faster compiles. Production Messenger fixes. Same Symfony mental model.</p>
         </section>
         <footer class="dw-footer"><span>19 / conclusion</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
@@ -351,7 +351,7 @@ flowchart TB
                 <div class="dw-card">
                     <h3>Symfony</h3>
                     <ul class="dw-list-compact">
-                        <li>symfony.com/blog — 8.1 release</li>
+                        <li>symfony.com/blog - 8.1 release</li>
                         <li>github.com/symfony/symfony</li>
                         <li>symfony.com/doc/current/setup/upgrade_minor.html</li>
                     </ul>

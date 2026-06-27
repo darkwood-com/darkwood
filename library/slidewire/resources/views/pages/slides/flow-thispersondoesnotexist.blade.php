@@ -1,4 +1,4 @@
-{{-- Flow · ThisPersonDoesNotExist — YouTube deck (8–12 min) | /slides/flow-thispersondoesnotexist --}}
+{{-- Flow · ThisPersonDoesNotExist - YouTube deck (8–12 min) | /slides/flow-thispersondoesnotexist --}}
 <x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
@@ -143,7 +143,7 @@ flowchart LR
                 <x-slidewire::fragment :index="4"><div class="dw-node">Pipeline</div></x-slidewire::fragment>
             </div>
             <x-slidewire::fragment :index="5">
-                <p class="dw-note mt-6" style="text-align:center;">An {!! $ip !!} represents one work unit — a payload traveling through the pipeline.</p>
+                <p class="dw-note mt-6" style="text-align:center;">An {!! $ip !!} represents one work unit - a payload traveling through the pipeline.</p>
             </x-slidewire::fragment>
         </section>
         <footer class="dw-footer"><span>05 / flow</span></footer>
@@ -171,7 +171,7 @@ flowchart LR
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">The migration</p>
-            <h2 class="dw-heading-slide">Suspend the work unit — not the whole process.</h2>
+            <h2 class="dw-heading-slide">Suspend the work unit - not the whole process.</h2>
             <div class="dw-split">
                 <x-slidewire::fragment :index="0">
                     <div class="dw-split-panel is-warn">
@@ -204,7 +204,7 @@ flowchart LR
                 <x-slidewire::fragment :index="0">
                     <div class="dw-fiber-row">
                         <strong>Fiber A</strong>
-                        <span>delay — suspended</span>
+                        <span>delay - suspended</span>
                         <em>waiting</em>
                     </div>
                 </x-slidewire::fragment>
@@ -225,7 +225,7 @@ flowchart LR
                 <x-slidewire::fragment :index="3">
                     <div class="dw-fiber-row" style="border-color:rgba(184,255,106,.35);">
                         <strong>Fiber A</strong>
-                        <span>resumed — fetch starts</span>
+                        <span>resumed - fetch starts</span>
                         <em>resume</em>
                     </div>
                 </x-slidewire::fragment>
@@ -273,7 +273,7 @@ flowchart TB
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">Clarification</p>
-            <h2 class="dw-heading-slide">What {!! $flow !!} is — and is not.</h2>
+            <h2 class="dw-heading-slide">What {!! $flow !!} is - and is not.</h2>
             <div class="dw-vs-list">
                 <x-slidewire::fragment :index="0"><div class="dw-vs-item is-no"><span>✕</span> Event Loop</div></x-slidewire::fragment>
                 <x-slidewire::fragment :index="1"><div class="dw-vs-item is-no"><span>✕</span> Fiber implementation</div></x-slidewire::fragment>
@@ -392,9 +392,9 @@ flowchart TB
             <p class="dw-kicker">Resources</p>
             <h2 class="dw-heading-slide">Go deeper.</h2>
             <ul class="dw-list mt-8">
-                <li><code>flow-thispersondoesnotexist</code> — POC repo · commits <code>fae47e8</code> → <code>c61c929</code></li>
-                <li><code>darkwood/flow</code> — orchestration package · <code>examples/flow.php</code></li>
-                <li>Frédéric Bouchery — <em>The Evolution of Async PHP</em></li>
+                <li><code>flow-thispersondoesnotexist</code> - POC repo · commits <code>fae47e8</code> → <code>c61c929</code></li>
+                <li><code>darkwood/flow</code> - orchestration package · <code>examples/flow.php</code></li>
+                <li>Frédéric Bouchery - <em>The Evolution of Async PHP</em></li>
             </ul>
             <a class="dw-demo-url" href="https://f2r.github.io/fr/asynchrone.html" target="_blank" rel="noopener">f2r.github.io/fr/asynchrone.html</a>
             <div class="mt-12 dw-flow">
