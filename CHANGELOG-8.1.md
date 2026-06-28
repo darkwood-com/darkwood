@@ -14,6 +14,12 @@ Note: the monorepo tag `v1.0.0` (2026-05-20) was created before unified
 versioning was in place. **`v1.3.0` is the first official unified release**
 for the whole project.
 
+* v8.1.1 (2026-06-28)
+
+ * :arrow_up: to symfony v8.1.1
+ * :arrow_up: upgrade symfony/flex, symfony/ai, php-cs-fixer, rector, phpstan, and phpunit
+ * :sparkles: [Flow] Add TrueAsyncDriver
+
 * v8.1.0 (2026-06-07)
 
  * :arrow_up: to symfony v8.1.0

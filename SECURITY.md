@@ -4,7 +4,8 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 8.0.12  | :white_check_mark: |
+| 8.1.x   | :white_check_mark: |
+| 8.0.x   | :x:                |
 | < 8.0   | :x: (pre-unified satellite tags only) |
 
 ## Reporting a Vulnerability
@@ -19,5 +20,5 @@ Report security issues privately to **mathieu@darkwood.fr**. Include:
 - Any suggested fix or mitigation
 
 You should receive a response within a few business days. We will coordinate
-disclosure and release a patched version on the unified `8.0` line when
+disclosure and release a patched version on the unified `8.1` line when
 appropriate.
