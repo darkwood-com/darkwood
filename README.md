@@ -5,12 +5,12 @@
 Development repository for [Darkwood](https://github.com/darkwood-com) PHP libraries and Symfony bundles.
 
 All packages share a **single global version line** (Symfony-style): one tag
-(`v8.0.11`, `v8.0.12`, …) applies to the monorepo and to every satellite
+(`v8.1.0`, `v8.1.1`, …) applies to the monorepo and to every satellite
 repository published on Packagist.
 
-- Default branch: `8.0`  
-- Changelog: [CHANGELOG-8.0.md](CHANGELOG-8.0.md)
-- Upgrading from pre-unified tags: [UPGRADE-8.0.md](UPGRADE-8.0.md)
+- Default branch: `8.1`  
+- Changelog: [CHANGELOG-8.1.md](CHANGELOG-8.1.md)
+- Upgrading from pre-unified tags: [UPGRADE-8.1.md](UPGRADE-8.1.md)
 
 ## Packages
 
@@ -69,20 +69,20 @@ darkwood/
 │       └── Bundle/        # Symfony bundles
 ├── link               # Symlink darkwood/* packages from vendor to this monorepo
 ├── splitsh.json       # Monorepo path → satellite Git repository mapping
-├── CHANGELOG-8.0.md   # Unified release changelog
+├── CHANGELOG-8.1.md   # Unified release changelog
 ├── RELEASING.md       # Release process for maintainers
-├── UPGRADE-8.0.md     # Upgrade notes between unified versions
+├── UPGRADE-8.1.md     # Upgrade notes between unified versions
 ├── CONTRIBUTING.md
 ```
 
 ### Continuous integration
 
-GitHub Actions at `.github/workflows/ci.yml` runs on every pull request and push to `8.0`:
+GitHub Actions at `.github/workflows/ci.yml` runs on every pull request and push to `8.1`:
 
 - **Fabbot** — coding standards and license headers
 - **QA** — only for packages touched by the PR (PHP CS Fixer, PHPStan, PHPUnit per `packages.json`)
 
-On push to `8.0`, all packages are tested. Changing files under `.github/` triggers a full run.
+On push to `8.1`, all packages are tested. Changing files under `.github/` triggers a full run.
 
 Run the same checks locally for one package:
 
