@@ -1,0 +1,5 @@
+{"method":"GET","path":"/"}
+{"method":"GET","path":"/about"}
+{"method":"GET","path":"/posts/42"}
+{"method":"GET","path":"/api/status"}
+{"method":"POST","path":"/unknown"}
