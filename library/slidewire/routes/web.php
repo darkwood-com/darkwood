@@ -13,3 +13,4 @@ Route::slidewire('/slides/symfony-8-1', 'symfony-8-1');
 Route::slidewire('/slides/flow-thispersondoesnotexist', 'flow-thispersondoesnotexist');
 Route::slidewire('/slides/flow-pipe', 'flow-pipe');
 Route::slidewire('/slides/where-native-code-lives', 'where-native-code-lives');
+Route::slidewire('/slides/profiler-flow-blackfire', 'profiler-flow-blackfire');
