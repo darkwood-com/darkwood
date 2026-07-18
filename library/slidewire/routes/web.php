@@ -14,3 +14,5 @@ Route::slidewire('/slides/flow-thispersondoesnotexist', 'flow-thispersondoesnote
 Route::slidewire('/slides/flow-pipe', 'flow-pipe');
 Route::slidewire('/slides/where-native-code-lives', 'where-native-code-lives');
 Route::slidewire('/slides/profiler-flow-blackfire', 'profiler-flow-blackfire');
+Route::slidewire('/slides/laravel-pipeline-flow', 'laravel-pipeline-flow');
+Route::slidewire('/slides/the-fiber-illusion', 'the-fiber-illusion');
