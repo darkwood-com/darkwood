@@ -7,6 +7,8 @@ This project is a **consumer of `darkwood/flow`**, not a second workflow engine.
 Reusable execution lives in Flow (`StreamSelectDriver`, `MaxIpStrategy`, Jobs).  
 This repo keeps fixtures, Jobs for the image pipeline, CLI, and documentation.
 
+`StreamSelectDriver` is experimental: Generator jobs yield `waitReadable` / `waitWritable` tokens; the Driver multiplexes with `stream_select()` (no Fibers).
+
 ## Requirements
 
 - PHP >= 8.5
@@ -32,7 +34,7 @@ composer install
 
 ```text
 URLs
-→ FetchImageJob     (HTTP via StreamSelectDriver waitReadable/waitWritable)
+→ FetchImageJob     (Generator job; HTTP via yield waitReadable/waitWritable + stream_select)
 → HashBinaryJob
 → SaveFileJob
 → ResultCollector
@@ -83,7 +85,7 @@ darkwood/flow/                      # the one execution engine
 ```text
 Keep from RxJS: lazy compose vs execute, concurrency-limited map, teardown discipline
 Simplify in Flow: Job + Ip + MaxIpStrategy + Driver + await
-Implement in Flow: StreamSelectDriver (generic stream readiness)
+Implement in Flow: StreamSelectDriver (experimental: Generators + stream_select)
 Keep in demo: HTTP Job, fixtures, Trace, CLI
 Reject: NativeFlow as a competing engine; HTTP inside the Driver; Execution API for now
 ```

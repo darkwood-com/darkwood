@@ -9,12 +9,13 @@ use App\Demo\Model\FetchRequest;
 use App\Demo\Trace;
 use Flow\Driver\StreamSelectDriver;
 use Flow\JobInterface;
+use Generator;
 
 /**
- * Demo HTTP GET job using StreamSelectDriver waitReadable/waitWritable.
+ * Demo HTTP GET job using StreamSelectDriver wait tokens (Generator + stream_select).
  * Protocol knowledge stays in the job — the driver only multiplexes streams.
  *
- * @implements JobInterface<FetchRequest, FetchedContent>
+ * @implements JobInterface<FetchRequest, FetchedContent|Generator>
  */
 final class FetchImageJob implements JobInterface
 {
@@ -24,7 +25,7 @@ final class FetchImageJob implements JobInterface
     ) {
     }
 
-    public function __invoke($data): FetchedContent
+    public function __invoke($data): Generator
     {
         /** @var FetchRequest $data */
         $this->trace->emit('item.started', ['url' => $data->url]);
@@ -41,7 +42,7 @@ final class FetchImageJob implements JobInterface
             $stream = $opened['stream'];
             $deadline = microtime(true) + $data->timeoutSeconds;
 
-            if (!$this->waitUntil($stream, 'write', $deadline)) {
+            if (!(yield from $this->waitUntil($stream, 'write', $deadline))) {
                 $this->trace->emit('item.failed', ['url' => $data->url, 'error' => 'timeout']);
 
                 return new FetchedContent($data->url, null, 'timeout');
@@ -55,7 +56,7 @@ final class FetchImageJob implements JobInterface
 
             $buffer = '';
             while (true) {
-                if (!$this->waitUntil($stream, 'read', $deadline)) {
+                if (!(yield from $this->waitUntil($stream, 'read', $deadline))) {
                     $this->trace->emit('item.failed', ['url' => $data->url, 'error' => 'timeout']);
 
                     return new FetchedContent($data->url, null, 'timeout');
@@ -93,17 +94,21 @@ final class FetchImageJob implements JobInterface
     /**
      * @param resource $stream
      * @param 'read'|'write' $mode
+     *
+     * @return Generator<int, mixed, mixed, bool>
      */
-    private function waitUntil($stream, string $mode, float $deadline): bool
+    private function waitUntil($stream, string $mode, float $deadline): Generator
     {
         $remaining = $deadline - microtime(true);
         if ($remaining <= 0) {
             return false;
         }
 
-        return $mode === 'read'
+        $ready = (yield $mode === 'read'
             ? $this->driver->waitReadable($stream, $remaining)
-            : $this->driver->waitWritable($stream, $remaining);
+            : $this->driver->waitWritable($stream, $remaining));
+
+        return (bool) $ready;
     }
 
     /**

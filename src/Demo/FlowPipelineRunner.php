@@ -17,7 +17,8 @@ use Flow\Ip;
 use Flow\IpStrategy\MaxIpStrategy;
 
 /**
- * Runs the demo pipeline on darkwood/flow (StreamSelectDriver + MaxIpStrategy).
+ * Runs the demo pipeline on darkwood/flow (experimental StreamSelectDriver + MaxIpStrategy).
+ * FetchImageJob is a Generator that yields stream wait tokens.
  */
 final class FlowPipelineRunner
 {
