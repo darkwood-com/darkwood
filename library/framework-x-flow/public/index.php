@@ -1,9 +1,10 @@
 <?php
 
-use App\Kernel;
+declare(strict_types=1);
 
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-return static function (array $context) {
-    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
-};
+use App\AppFactory;
+
+$app = AppFactory::create(dirname(__DIR__));
+$app->run();
