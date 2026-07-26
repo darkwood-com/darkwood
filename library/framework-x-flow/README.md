@@ -114,14 +114,6 @@ var/log/                  # Local error log (not returned to clients)
 docs/                     # Source-based analysis + article notes
 ```
 
-## Documentation
-
-- [docs/framework-x-analysis.md](docs/framework-x-analysis.md)
-- [docs/flow-analysis.md](docs/flow-analysis.md)
-- [docs/integration-analysis.md](docs/integration-analysis.md)
-- [docs/async-experiment.md](docs/async-experiment.md)
-- [docs/article-notes.md](docs/article-notes.md)
-
 ## Known limitations
 
 - `EmbeddedReactDriver` is a **local adapter**, not upstream Flow API. Native `ReactDriver::await()` calls `Loop::stop()` and must not run inside Framework X’s HTTP server.
