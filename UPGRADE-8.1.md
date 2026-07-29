@@ -43,6 +43,42 @@ unified release line:
 From **v1.3.0** onward, install `^1.3` (or a specific unified tag such as
 `1.3.0`) for every Darkwood package you use.
 
+## Upgrading to 8.1.2
+
+Update every `darkwood/*` package you use to `^8.1` (or pin `8.1.2`), then run:
+
+```bash
+composer update darkwood/* symfony/*
+```
+
+### Symfony AI (`darkwood/ia-exception-bundle`)
+
+**8.1.2** requires Symfony AI **0.12**. If you depend on
+`darkwood/ia-exception-bundle`, align your Symfony AI packages before updating:
+
+```diff
+  "require": {
+-     "symfony/ai-bundle": "^0.10.0",
+-     "symfony/ai-agent": "^0.10.0",
+-     "symfony/ai-platform": "^0.10.0",
++     "symfony/ai-bundle": "^0.12.0",
++     "symfony/ai-agent": "^0.12.0",
++     "symfony/ai-platform": "^0.12.0",
+      "darkwood/ia-exception-bundle": "^8.1",
+  }
+```
+
+Then run:
+
+```bash
+composer update darkwood/ia-exception-bundle symfony/ai-bundle symfony/ai-agent symfony/ai-platform
+```
+
+If your application also uses other Symfony AI bridges or bundles (for example
+`symfony/ai-open-ai-platform` or `symfony/mcp-bundle`), bump them to `^0.12.0`
+in the same `composer update` so Composer resolves a single `symfony/ai-platform`
+version.
+
 ## Upgrading to 8.1.1
 
 Update every `darkwood/*` package you use to `^8.1` (or pin `8.1.1`), then run:
