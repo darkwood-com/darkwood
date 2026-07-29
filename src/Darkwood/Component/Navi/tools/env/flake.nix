@@ -38,11 +38,7 @@
           ];
 
           shellHook = ''
-            export NIX_PHP_BIN="${php}/bin"
-            export PATH="''$NIX_PHP_BIN:''$PATH"
-            if [[ ''$- == *i* ]] && [ -z "''$ZSH_VERSION" ] && [ -f "''$HOME/.zshrc" ]; then
-                exec zsh
-            fi
+            export COMPOSER_MEMORY_LIMIT=-1
           '';
         };
 
@@ -88,6 +84,10 @@
             contents =
               let
                 caddyFile = pkgs.writeText "Caddyfile" ''
+                  {
+                      email mathieu@darkwood.fr
+                  }
+
                   :80 {
                       root * /app/public
                       log
