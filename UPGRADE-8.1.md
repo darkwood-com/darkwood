@@ -43,6 +43,14 @@ unified release line:
 From **v1.3.0** onward, install `^1.3` (or a specific unified tag such as
 `1.3.0`) for every Darkwood package you use.
 
+## Upgrading to 8.1.3
+
+Update every `darkwood/*` package you use to `^8.1` (or pin `8.1.3`), then run:
+
+```bash
+composer update darkwood/* symfony/*
+```
+
 ## Upgrading to 8.1.2
 
 Update every `darkwood/*` package you use to `^8.1` (or pin `8.1.2`), then run:
