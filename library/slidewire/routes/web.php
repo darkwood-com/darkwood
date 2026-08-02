@@ -16,3 +16,4 @@ Route::slidewire('/slides/where-native-code-lives', 'where-native-code-lives');
 Route::slidewire('/slides/profiler-flow-blackfire', 'profiler-flow-blackfire');
 Route::slidewire('/slides/laravel-pipeline-flow', 'laravel-pipeline-flow');
 Route::slidewire('/slides/the-fiber-illusion', 'the-fiber-illusion');
+Route::slidewire('/slides/shared-workflows-laptop-bottleneck', 'shared-workflows-laptop-bottleneck');
