@@ -17,3 +17,4 @@ Route::slidewire('/slides/profiler-flow-blackfire', 'profiler-flow-blackfire');
 Route::slidewire('/slides/laravel-pipeline-flow', 'laravel-pipeline-flow');
 Route::slidewire('/slides/the-fiber-illusion', 'the-fiber-illusion');
 Route::slidewire('/slides/shared-workflows-laptop-bottleneck', 'shared-workflows-laptop-bottleneck');
+Route::slidewire('/slides/from-nolife-testing-to-behavioral-testing', 'from-nolife-testing-to-behavioral-testing');
