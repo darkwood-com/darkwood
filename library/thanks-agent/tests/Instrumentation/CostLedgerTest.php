@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Instrumentation;
 
+use App\Flow\Budget\SupervisionBudget;
+use App\Flow\Instrumentation\CostLedger as OutcomeCostLedger;
 use App\Instrumentation\CostLedger;
 use App\Model\AgentId;
 use App\Model\AgentResult;
-use Flow\Instrumentation\CostLedger as FlowCostLedger;
-use Flow\Budget\SupervisionBudget;
 use PHPUnit\Framework\TestCase;
 
 final class CostLedgerTest extends TestCase
@@ -33,9 +33,9 @@ final class CostLedgerTest extends TestCase
         self::assertGreaterThan(0.0, $snapshot['byAgent'][AgentId::Thanks->value]['cost']);
     }
 
-    public function testPromotedFlowLedgerIsAvailable(): void
+    public function testOutcomeLedgerIsAvailableInDemo(): void
     {
-        $ledger = new FlowCostLedger();
+        $ledger = new OutcomeCostLedger();
         $ledger->recordComplete('GithubAgent', 100);
         $ledger->recordError('CostAgent', 32);
         $snapshot = $ledger->snapshot();

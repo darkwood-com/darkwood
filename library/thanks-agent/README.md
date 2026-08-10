@@ -40,10 +40,10 @@ ThanksAgent still consumes scheduling, context, logging, observability, and WIP 
 - Scatter: one Flow `Ip` per agent, `MaxIpStrategy` concurrency
 - Drivers: `FiberDriver` (default) or `StreamSelectDriver`
 - Fan-in: `RunStore` + `SummaryAgent`
-- Instrumentation: `CostLedger` + `MetricsSubscriber` on Flow `PUSH/PULL/POP/ASYNC`
+- Instrumentation: `App\Instrumentation\*` + demo-local `App\Flow\*` (outcome ledger, budget, pollers, terminal events)
 - JSON reports: `var/reports/`
 
-Local `darkwood/flow` is path-linked so promotions (`CostLedger`, `SupervisionBudget`, `IO\Poller`, terminal events) are available immediately.
+Uses published `darkwood/flow` (`^8.1`). Demo instrumentation stays in this repo under `App\Flow\*`.
 
 ## Article outlines
 

@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f996cb52e039ca06428e5f8f34b9cd46",
+    "content-hash": "4dc0bfed0e7422f832dc44127d4e2081",
     "packages": [
         {
             "name": "darkwood/flow",
-            "version": "8.1.x-dev",
+            "version": "v8.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/darkwood-com/flow.git",
+                "reference": "67c8f5ad59c163cc49da4218f5eb612815bfd757"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../darkwood/src/Darkwood/Component/Flow",
-                "reference": "b6bfad4d1dfefdc94905405fd653e9f1d5a18995"
+                "type": "zip",
+                "url": "https://api.github.com/repos/darkwood-com/flow/zipball/67c8f5ad59c163cc49da4218f5eb612815bfd757",
+                "reference": "67c8f5ad59c163cc49da4218f5eb612815bfd757",
+                "shasum": ""
             },
             "require": {
                 "php": ">=8.5",
@@ -45,29 +51,7 @@
                     "Flow\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Flow\\Examples\\": "examples",
-                    "Flow\\Test\\": "tests"
-                }
-            },
-            "scripts": {
-                "env": [
-                    "cd tools && castor flow:tools:env"
-                ],
-                "docs-serve": [
-                    "cd tools && castor flow:tools:docs-serve"
-                ],
-                "php-cs-fixer": [
-                    "cd tools && castor flow:tools:php-cs-fixer"
-                ],
-                "phpstan": [
-                    "cd tools && castor flow:tools:phpstan"
-                ],
-                "phpunit": [
-                    "cd tools && castor flow:tools:phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -83,10 +67,11 @@
                 "swoole",
                 "symfony"
             ],
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/darkwood-com/flow/issues",
+                "source": "https://github.com/darkwood-com/flow/tree/v8.1.3"
+            },
+            "time": "2026-07-30T22:42:14+00:00"
         },
         {
             "name": "psr/cache",
@@ -4441,9 +4426,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "darkwood/flow": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -8,9 +8,9 @@ use App\Model\AgentId;
 use App\Model\AgentResult;
 
 /**
- * Demo ledger — candidate for promotion to Flow\Instrumentation\CostLedger.
+ * Demo ledger for agent scoreboards.
  *
- * Meters success and error terminals (Symfony AI #2363 lesson).
+ * Companion outcome ledger: {@see \App\Flow\Instrumentation\CostLedger}.
  */
 final class CostLedger
 {
