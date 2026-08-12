@@ -2,6 +2,12 @@
 
 PHP runtime that loads a **user-supplied** original Diablo 1 data file (`DIABDAT.MPQ`) and runs gameplay in PHP with SDL2 via FFI.
 
+## Videos
+
+[![Gameplay demo 1](https://img.youtube.com/vi/uzhWDD5zbi8/hqdefault.jpg)](https://www.youtube.com/watch?v=uzhWDD5zbi8)
+
+[![Gameplay demo 2](https://img.youtube.com/vi/D-32H0R7tP4/hqdefault.jpg)](https://www.youtube.com/watch?v=D-32H0R7tP4)
+
 ## Requirements
 
 - PHP 8.5+ with `ext-ffi`
