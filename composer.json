@@ -1,0 +1,15 @@
+{
+    "name": "darkwood/diablo-php",
+    "description": "Diablo 1 runtime in PHP + SDL2 FFI",
+    "type": "project",
+    "license": "LicenseRef-Sustainable-Use-1.0",
+    "require": {
+        "php": "^8.5",
+        "ext-ffi": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Diablo\\": "src/"
+        }
+    }
+}

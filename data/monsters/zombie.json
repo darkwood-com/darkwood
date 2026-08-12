@@ -1,0 +1,1 @@
+{"id":"zombie","name":"Zombie","hp":35,"armorClass":5,"minDamage":1,"maxDamage":5,"toHit":45,"xpReward":25,"ai":"melee","detectionRange":10}

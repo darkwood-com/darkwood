@@ -1,0 +1,1 @@
+{"id":"fallen","name":"Fallen","hp":25,"armorClass":4,"minDamage":1,"maxDamage":4,"toHit":40,"xpReward":20,"ai":"brute","detectionRange":9}

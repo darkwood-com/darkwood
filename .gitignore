@@ -1,0 +1,17 @@
+/vendor/
+/.phpunit.cache/
+/saves/*.json
+!/saves/.gitkeep
+/tmp/*
+!/tmp/.gitkeep
+*.log
+.DS_Store
+*.mpq
+*.MPQ
+/gamedata/
+/diablo-data/
+.env
+.env.local
+/captures/
+/debug/
+/composer.lock
