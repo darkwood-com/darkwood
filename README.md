@@ -8,6 +8,10 @@ PLATFORM: PHP 8.5+ · ext-ffi · ext-zip · SDL2 · OpenGL
 PRIMARY:  native window via `play` (not the browser viewer)
 ```
 
+## Videos
+
+[![Gameplay demo](https://img.youtube.com/vi/9BKSPLpgNcU/hqdefault.jpg)](https://www.youtube.com/watch?v=9BKSPLpgNcU)
+
 ## Requirements
 
 - PHP 8.5+ with `ext-zip` and `ext-ffi`
