@@ -19,3 +19,4 @@ Route::slidewire('/slides/the-fiber-illusion', 'the-fiber-illusion');
 Route::slidewire('/slides/shared-workflows-laptop-bottleneck', 'shared-workflows-laptop-bottleneck');
 Route::slidewire('/slides/from-nolife-testing-to-behavioral-testing', 'from-nolife-testing-to-behavioral-testing');
 Route::slidewire('/slides/thanks-agent', 'thanks-agent');
+Route::slidewire('/slides/nolife-tokens', 'nolife-tokens');
