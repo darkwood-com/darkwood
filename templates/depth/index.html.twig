@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nolife Local — Depth Anything 3{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+{% endblock %}
+
+{% block body %}
+<main class="page">
+    <header class="hero">
+        <p class="eyebrow">Nolife Local</p>
+        <h1>Depth Anything 3</h1>
+        <p class="lede">Upload a photo. Run monocular depth inference locally via PHP FFI → native ggml. No cloud API.</p>
+    </header>
+
+    {% for message in app.flashes('error') %}
+        <div class="flash error">{{ message }}</div>
+    {% endfor %}
+
+    <section class="panel">
+        <form action="{{ path('depth_infer') }}" method="post" enctype="multipart/form-data" data-turbo="false" id="infer-form">
+            <div
+                {{ stimulus_controller('symfony--ux-dropzone--dropzone', {
+                    placeholder: 'Drop an image here or click to browse',
+                    accept: 'image/jpeg,image/png,image/webp'
+                }) }}
+                class="dropzone"
+            >
+                <input type="file" name="image" accept="image/jpeg,image/png,image/webp" required
+                    {{ stimulus_target('symfony--ux-dropzone--dropzone', 'input') }}>
+                <p {{ stimulus_target('symfony--ux-dropzone--dropzone', 'placeholder') }} class="dropzone-label">
+                    Drop an image here
+                </p>
+            </div>
+
+            <label class="field">
+                <span>Model</span>
+                <select name="model" id="model-select">
+                    <option value="q4_k" selected>DA3-BASE q4_k (~99 MB, default)</option>
+                    <option value="f32">DA3-BASE f32 (~393 MB)</option>
+                </select>
+            </label>
+
+            <p class="cold-start-note">The first inference after the server starts may take longer while Metal shaders are initialized.</p>
+
+            <button type="submit" class="primary" id="infer-submit">Run local inference</button>
+            <p class="processing-hint" id="processing-hint" hidden>Processing locally… <span id="processing-elapsed">0.0</span> s</p>
+        </form>
+
+        <div class="samples">
+            <p class="samples-label">Try an example</p>
+            <div class="sample-buttons">
+                {% for sample in ['mountains', 'street', 'canyon'] %}
+                <form action="{{ path('depth_infer_sample', {sample: sample}) }}" method="post" data-turbo="false" class="sample-form">
+                    <input type="hidden" name="model" value="q4_k" class="sample-model-input">
+                    <button type="submit" class="secondary sample-btn">{{ sample|capitalize }}</button>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+(() => {
+    const form = document.getElementById('infer-form');
+    const modelSelect = document.getElementById('model-select');
+    const btn = document.getElementById('infer-submit');
+    const hint = document.getElementById('processing-hint');
+    const elapsed = document.getElementById('processing-elapsed');
+    let timer = null;
+
+    const syncSampleModels = () => {
+        document.querySelectorAll('.sample-model-input').forEach((input) => {
+            input.value = modelSelect?.value ?? 'q4_k';
+        });
+    };
+    modelSelect?.addEventListener('change', syncSampleModels);
+    syncSampleModels();
+
+    const startProcessing = (submitBtn) => {
+        if (submitBtn) { submitBtn.disabled = true; }
+        if (btn) { btn.textContent = 'Processing…'; }
+        if (hint) { hint.hidden = false; }
+        const t0 = performance.now();
+        if (timer) clearInterval(timer);
+        timer = setInterval(() => {
+            if (elapsed) elapsed.textContent = ((performance.now() - t0) / 1000).toFixed(1);
+        }, 100);
+    };
+
+    form?.addEventListener('submit', () => startProcessing(btn));
+    document.querySelectorAll('.sample-form').forEach((sf) => {
+        sf.addEventListener('submit', () => startProcessing(sf.querySelector('.sample-btn')));
+    });
+})();
+</script>
+{% endblock %}
