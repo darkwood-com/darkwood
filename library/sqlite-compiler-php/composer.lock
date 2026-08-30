@@ -4,8 +4,75 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f2d2bb175ffe409da49e7034d1f3a93",
+    "content-hash": "ba1ed5d00f930b2390411a26d49f61a6",
     "packages": [
+        {
+            "name": "darkwood/flow",
+            "version": "v8.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/darkwood-com/flow.git",
+                "reference": "75df5c86dcb883ee83c227f91fdc0ccd3556e3fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/darkwood-com/flow/zipball/75df5c86dcb883ee83c227f91fdc0ccd3556e3fa",
+                "reference": "75df5c86dcb883ee83c227f91fdc0ccd3556e3fa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.5",
+                "symfony/config": "^8.1",
+                "symfony/dependency-injection": "^8.1",
+                "symfony/event-dispatcher": "^8.1",
+                "symfony/http-kernel": "^8.1",
+                "symfony/string": "^8.1"
+            },
+            "require-dev": {
+                "amphp/amp": "^3.1",
+                "doctrine/dbal": "^4.3",
+                "openswoole/ide-helper": "^26.2.0",
+                "react/async": "^4.3",
+                "spatie/async": "^1.8",
+                "symfony/doctrine-messenger": "^8.1",
+                "symfony/http-client": "^8.1"
+            },
+            "suggest": {
+                "amphp/amp": "Provide asynchronous with AMP",
+                "ext-async": "Provides the experimental TrueAsync driver for Flow",
+                "ext-openswoole": "Provide asynchronous with OpenSwoole",
+                "react/async": "Provide asynchronous with ReactPHP",
+                "spatie/async": "Provide asynchronous with Spatie",
+                "symfony/messenger": "Provide Symfony Messenger support"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Flow\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Flow",
+            "keywords": [
+                "amphp",
+                "async",
+                "fiber",
+                "monad",
+                "php",
+                "reactphp",
+                "spatie",
+                "swoole",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/darkwood-com/flow/issues",
+                "source": "https://github.com/darkwood-com/flow/tree/v8.1.5"
+            },
+            "time": "2026-08-27T12:16:31+00:00"
+        },
         {
             "name": "psr/cache",
             "version": "3.0.0",
@@ -2595,14 +2662,14 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.9.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }

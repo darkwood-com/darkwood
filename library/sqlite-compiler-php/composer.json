@@ -4,9 +4,10 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "darkwood/flow": "^8.1.5",
         "symfony/console": "8.1.*",
         "symfony/dotenv": "8.1.*",
         "symfony/flex": "^2",
@@ -28,7 +29,13 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/"
-        }
+        },
+        "classmap": [
+            "src/Compiler/Common/Ast.php",
+            "src/Compiler/Common/CType.php",
+            "src/Compiler/Common/Diagnostic.php",
+            "src/Compiler/CodeGen/Arm64.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

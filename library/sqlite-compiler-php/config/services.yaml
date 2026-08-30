@@ -1,23 +1,84 @@
 # yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
 
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-# See also https://symfony.com/doc/current/service_container/import.html
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    compiler.work_dir: '%kernel.project_dir%/var/compiler'
+    compiler.include_dir: '%kernel.project_dir%/include'
+    compiler.project_dir: '%kernel.project_dir%'
 
 services:
-    # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true
+        autoconfigure: true
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+        exclude:
+            - '../src/Compiler/Common/'
+            - '../src/Compiler/Preproc/'
+            - '../src/Compiler/Parser/'
+            - '../src/Compiler/Sema/'
+            - '../src/Compiler/CodeGen/'
+            - '../src/Compiler/Driver/CompileOptions.php'
+            - '../src/Compiler/Driver/CompilationResult.php'
+            - '../src/Compiler/Platform/ProcessResult.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Compiler\Driver\Compiler: ~
+
+    App\Compiler\Platform\Toolchain:
+        arguments:
+            $workDir: '%compiler.work_dir%'
+
+    App\Command\CompilerCheckCommand:
+        arguments:
+            $compilerDir: '%compiler.work_dir%'
+
+    App\Command\CompilerProbeCommand:
+        arguments:
+            $projectDir: '%compiler.project_dir%'
+
+    App\Command\CompilerCompileCommand:
+        arguments:
+            $workDir: '%compiler.work_dir%'
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerBuildCommand:
+        arguments:
+            $workDir: '%compiler.work_dir%'
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerRunCommand:
+        arguments:
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerFixturesCommand:
+        arguments:
+            $projectDir: '%compiler.project_dir%'
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerTokensCommand:
+        arguments:
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerAstCommand:
+        arguments:
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerCompareClangCommand:
+        arguments:
+            $workDir: '%compiler.work_dir%'
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerSqliteCommand:
+        arguments:
+            $projectDir: '%compiler.project_dir%'
+            $workDir: '%compiler.work_dir%'
+
+    App\Flow\SqliteValidationFlow: ~
+
+    App\Flow\Step\CompileSqlite:
+        arguments:
+            $includeDir: '%compiler.include_dir%'
+
+    App\Flow\Step\CompileHarness:
+        arguments:
+            $includeDir: '%compiler.include_dir%'

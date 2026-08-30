@@ -1,0 +1,6 @@
+{
+    "exitCode": 84,
+    "stdout": "",
+    "assemblyContains": [".byte"],
+    "assemblyNotContains": [".quad 84"]
+}
