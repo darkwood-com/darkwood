@@ -21,3 +21,4 @@ Route::slidewire('/slides/from-nolife-testing-to-behavioral-testing', 'from-noli
 Route::slidewire('/slides/thanks-agent', 'thanks-agent');
 Route::slidewire('/slides/nolife-tokens', 'nolife-tokens');
 Route::slidewire('/slides/nolife-local', 'nolife-local');
+Route::slidewire('/slides/sqlite-compiler-php', 'sqlite-compiler-php');
