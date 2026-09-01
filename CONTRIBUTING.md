@@ -64,6 +64,7 @@ From the package directory:
 make php-cs-fixer   # PHP CS Fixer ^3.94
 make phpstan        # PHPStan ^2.0
 make phpunit        # PHPUnit ^13.0
+make symfony-lsp    # Symfony-aware diagnostics (requires Symfony CLI 5.20+)
 ```
 
 Replicate CI locally: `.github/ci-run-package.sh navi` (replace `navi` with the package id you changed).

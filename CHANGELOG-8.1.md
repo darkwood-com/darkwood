@@ -14,6 +14,11 @@ Note: the monorepo tag `v1.0.0` (2026-05-20) was created before unified
 versioning was in place. **`v1.3.0` is the first official unified release**
 for the whole project.
 
+* v8.1.6 (2026-09-01)
+
+ * :arrow_up: to symfony v8.1.6
+ * :sparkles: integrate `symfony lsp:check` into QA tooling and CI
+
 * v8.1.5 (2026-08-27)
 
  * :arrow_up: to symfony v8.1.5

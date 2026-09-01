@@ -88,7 +88,7 @@ jobs:
         with:
           php-version: ${{ matrix.package.php }}
           extensions: ${{ matrix.package.php_extensions }}
-          tools: composer
+          tools: composer, symfony-cli
           coverage: none
 
       - name: Run package QA

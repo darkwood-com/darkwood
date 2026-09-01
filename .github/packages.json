@@ -11,7 +11,8 @@
                 "php_cs_fixer": "tools/php-cs-fixer",
                 "phpstan": "tools/phpstan",
                 "phpunit": "tools/phpunit"
-            }
+            },
+            "symfony_lsp": true
         },
         {
             "id": "flow",
@@ -24,7 +25,8 @@
                 "php_cs_fixer": "tools/php-cs-fixer",
                 "phpstan": "tools/phpstan",
                 "phpunit": "tools/phpunit"
-            }
+            },
+            "symfony_lsp": true
         },
         {
             "id": "media-bundle",
@@ -37,7 +39,8 @@
                 "php_cs_fixer": "tools/php-cs-fixer",
                 "phpstan": "tools/phpstan",
                 "phpunit": "tools/phpunit"
-            }
+            },
+            "symfony_lsp": true
         },
         {
             "id": "ia-exception-bundle",
@@ -50,7 +53,8 @@
                 "php_cs_fixer": "tools/php-cs-fixer",
                 "phpstan": "tools/phpstan",
                 "phpunit": "tools/phpunit"
-            }
+            },
+            "symfony_lsp": true
         }
     ]
 }
