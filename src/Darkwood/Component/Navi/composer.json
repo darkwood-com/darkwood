@@ -43,6 +43,7 @@
         "phpstan": "cd tools && castor app:tools:phpstan",
         "phpunit": "cd tools && castor app:tools:phpunit",
         "env": "cd tools && castor app:tools:env",
+        "symfony-lsp": "symfony lsp:check",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"

@@ -51,7 +51,7 @@ jobs:
         with:
           php-version: "8.5"
           extensions: ctype, iconv, xsl, openswoole
-          tools: composer
+          tools: composer, symfony-cli
           coverage: none
 
       - name: Run package QA

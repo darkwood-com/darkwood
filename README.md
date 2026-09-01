@@ -46,6 +46,7 @@ Execute targets via `make`:
 make php-cs-fixer
 make phpstan
 make phpunit
+make symfony-lsp
 ```
 
 ### Link monorepo packages into another project
@@ -80,7 +81,7 @@ darkwood/
 GitHub Actions at `.github/workflows/ci.yml` runs on every pull request and push to `8.1`:
 
 - **Fabbot** — coding standards and license headers
-- **QA** — only for packages touched by the PR (PHP CS Fixer, PHPStan, PHPUnit per `packages.json`)
+- **QA** — only for packages touched by the PR (PHP CS Fixer, PHPStan, PHPUnit, and Symfony LSP check for bootable apps per `packages.json`)
 
 On push to `8.1`, all packages are tested. Changing files under `.github/` triggers a full run.
 

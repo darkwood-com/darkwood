@@ -59,4 +59,10 @@ fi
 (cd tools/phpunit && vendor/bin/phpunit --configuration "${PHPUNIT_CONFIG}")
 echo "::endgroup::"
 
+if [ "$(echo "$PACKAGE_JSON" | jq -r '.symfony_lsp // false')" = "true" ]; then
+    echo "::group::Symfony LSP check (${PACKAGE_DIR})"
+    symfony lsp:check --format=github
+    echo "::endgroup::"
+fi
+
 echo "All checks passed for ${PACKAGE_DIR}"

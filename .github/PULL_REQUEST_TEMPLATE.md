@@ -17,6 +17,7 @@ Checklist:
 - [ ] Changes are scoped to the correct package directory (or monorepo docs/CI)
 - [ ] Tests pass in the affected package (`make phpunit`, as in Navi)
 - [ ] PHP CS Fixer / PHPStan pass when applicable
+- [ ] `symfony lsp:check` passes when Symfony code changed
 - [ ] Package CHANGELOG.md updated (Darkwood version section, not independent semver)
 - [ ] CHANGELOG-8.1.md updated for user-visible changes
 - [ ] UPGRADE-8.1.md updated if BC break
