@@ -10,7 +10,8 @@
             "checks": {
                 "php_cs_fixer": "tools/php-cs-fixer",
                 "phpstan": "tools/phpstan",
-                "phpunit": "tools/phpunit"
+                "phpunit": "tools/phpunit",
+                "symfony_lsp": "tools/symfony-lsp"
             },
             "symfony_lsp": true
         },
@@ -26,7 +27,7 @@
                 "phpstan": "tools/phpstan",
                 "phpunit": "tools/phpunit"
             },
-            "symfony_lsp": true
+            "symfony_lsp": false
         },
         {
             "id": "media-bundle",
@@ -38,7 +39,8 @@
             "checks": {
                 "php_cs_fixer": "tools/php-cs-fixer",
                 "phpstan": "tools/phpstan",
-                "phpunit": "tools/phpunit"
+                "phpunit": "tools/phpunit",
+                "symfony_lsp": "tools/symfony-lsp"
             },
             "symfony_lsp": true
         },
@@ -54,7 +56,7 @@
                 "phpstan": "tools/phpstan",
                 "phpunit": "tools/phpunit"
             },
-            "symfony_lsp": true
+            "symfony_lsp": false
         }
     ]
 }

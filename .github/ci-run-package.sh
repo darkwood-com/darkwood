@@ -60,8 +60,13 @@ fi
 echo "::endgroup::"
 
 if [ "$(echo "$PACKAGE_JSON" | jq -r '.symfony_lsp // false')" = "true" ]; then
+    SYMFONY_LSP_CHECK="${ROOT_DIR}/${PACKAGE_DIR}/tools/symfony-lsp/check.sh"
+    if [ ! -f "${SYMFONY_LSP_CHECK}" ]; then
+        echo "Missing Symfony LSP check script: ${SYMFONY_LSP_CHECK}" >&2
+        exit 1
+    fi
     echo "::group::Symfony LSP check (${PACKAGE_DIR})"
-    symfony lsp:check --format=github
+    "${SYMFONY_LSP_CHECK}" github
     echo "::endgroup::"
 fi
 
