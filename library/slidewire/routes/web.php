@@ -20,5 +20,6 @@ Route::slidewire('/slides/shared-workflows-laptop-bottleneck', 'shared-workflows
 Route::slidewire('/slides/from-nolife-testing-to-behavioral-testing', 'from-nolife-testing-to-behavioral-testing');
 Route::slidewire('/slides/thanks-agent', 'thanks-agent');
 Route::slidewire('/slides/nolife-tokens', 'nolife-tokens');
+Route::slidewire('/slides/nolife-language', 'nolife-language');
 Route::slidewire('/slides/nolife-local', 'nolife-local');
 Route::slidewire('/slides/sqlite-compiler-php', 'sqlite-compiler-php');
