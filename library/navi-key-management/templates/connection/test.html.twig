@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block heading %}Test connection{% endblock %}
+{% block lede %}{{ connection.label }} — {{ connection.provider }} / {{ connection.model }}{% endblock %}
+
+{% block body %}
+    <section class="panel">
+        <p>
+            <span class="chip">{{ connection.provider }}</span>
+            <span class="chip">{{ connection.model }}</span>
+            <span class="chip">encrypted</span>
+            <span class="chip">{{ backend }}</span>
+        </p>
+
+        {% if ok %}
+            <h2>Reply</h2>
+            <pre class="reply">{{ reply }}</pre>
+
+            <h2>Token usage</h2>
+            <dl class="metrics">
+                <div><dt>Input</dt><dd>{{ tokens.input is null ? 'not reported' : tokens.input }}</dd></div>
+                <div><dt>Output</dt><dd>{{ tokens.output is null ? 'not reported' : tokens.output }}</dd></div>
+                <div><dt>Cache write</dt><dd>{{ tokens.cache_write is null ? 'not reported' : tokens.cache_write }}</dd></div>
+                <div><dt>Cache read</dt><dd>{{ tokens.cache_read is null ? 'not reported' : tokens.cache_read }}</dd></div>
+                <div><dt>Cached</dt><dd>{{ tokens.cached is null ? 'not reported' : tokens.cached }}</dd></div>
+            </dl>
+
+            <h2>Estimated cost</h2>
+            {% if cost and cost.priced %}
+                <p class="cost">${{ '%0.6f'|format(cost.usd) }}</p>
+                <p class="muted">Rates per 1M tokens: input ${{ cost.rates.input }}, output ${{ cost.rates.output }}{% if cost.rates.cache_read %} , cache read ${{ cost.rates.cache_read }}{% endif %}.</p>
+            {% else %}
+                <p class="muted">No price row for this model. Usage is shown; cost is not invented.</p>
+            {% endif %}
+        {% else %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <p><a class="button ghost" href="{{ path('connection_index') }}">Back to connections</a></p>
+    </section>
+{% endblock %}

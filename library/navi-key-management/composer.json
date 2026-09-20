@@ -1,20 +1,42 @@
 {
     "type": "project",
     "license": "proprietary",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../darkwood/src/Darkwood/Component/Navi",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "require": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "symfony/console": "8.1.*",
-        "symfony/dotenv": "8.1.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "8.1.*",
-        "symfony/runtime": "8.1.*",
-        "symfony/yaml": "8.1.*"
-    },
-    "require-dev": {
+        "darkwood/navi": "8.1.x-dev@dev",
+        "doctrine/doctrine-bundle": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^4.0",
+        "doctrine/orm": "^3.7",
+        "symfony/ai-anthropic-platform": "*",
+        "symfony/ai-open-ai-platform": "*",
+        "symfony/aws-key-management": "^8.2@dev",
+        "symfony/console": "8.2.*",
+        "symfony/dotenv": "8.2.*",
+        "symfony/flex": "^2.11",
+        "symfony/form": "8.2.*",
+        "symfony/framework-bundle": "8.2.*",
+        "symfony/http-client": "8.2.*",
+        "symfony/key-management": "^8.2@dev",
+        "symfony/runtime": "8.2.*",
+        "symfony/security-csrf": "8.2.*",
+        "symfony/twig-bundle": "8.2.*",
+        "symfony/validator": "8.2.*",
+        "symfony/yaml": "8.2.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
@@ -48,6 +70,7 @@
         "symfony/polyfill-php84": "*"
     },
     "scripts": {
+        "test": "php bin/phpunit",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -65,7 +88,12 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.1.*"
+            "require": "8.2.*"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.3",
+        "symfony/browser-kit": "8.2.*",
+        "symfony/css-selector": "8.2.*"
     }
 }

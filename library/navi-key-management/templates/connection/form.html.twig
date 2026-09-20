@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block heading %}{{ is_new ? 'Add connection' : 'Edit connection' }}{% endblock %}
+
+{% block body %}
+    <section class="panel">
+        {{ form_start(form) }}
+            {{ form_row(form.label) }}
+            {{ form_row(form.provider) }}
+            {{ form_row(form.model) }}
+            {{ form_row(form.endpoint) }}
+            {{ form_row(form.apiKey) }}
+            <div class="row">
+                <button type="submit">{{ is_new ? 'Store encrypted key' : 'Save' }}</button>
+                <a class="button ghost" href="{{ path('connection_index') }}">Cancel</a>
+            </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

@@ -1,0 +1,6 @@
+# Session CSRF so the form works without a Stimulus csrf-protection controller.
+framework:
+    csrf_protection: true
+    form:
+        csrf_protection:
+            enabled: true

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}BYOK AI connections{% endblock %}</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+    <div class="page">
+        <header class="hero compact">
+            <p class="eyebrow"><a href="{{ path('connection_index') }}">Darkwood experiment</a></p>
+            <h1>{% block heading %}Secret keys as application data{% endblock %}</h1>
+            <p class="lede">{% block lede %}User-provided AI credentials, encrypted with Symfony KeyManagement, used at execution time by Navi.{% endblock %}</p>
+            <p class="meta">
+                <span class="chip">{{ backend }}</span>
+                <span class="chip muted">credential encrypted</span>
+                <span class="chip muted">KeyManagement experimental</span>
+            </p>
+        </header>
+        {% block body %}{% endblock %}
+    </div>
+</body>
+</html>
