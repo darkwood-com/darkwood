@@ -1,0 +1,20 @@
+{
+    "name": "darkwood/ai",
+    "description": "Complementary AI component ecosystem for Symfony AI",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Mathieu Ledru",
+            "email": "matyo91@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}
