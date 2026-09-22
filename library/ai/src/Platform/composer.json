@@ -1,0 +1,32 @@
+{
+    "name": "darkwood/ai-platform",
+    "description": "Platform contracts for Darkwood AI",
+    "license": "MIT",
+    "version": "0.1.0",
+    "type": "library",
+    "keywords": [
+        "ai",
+        "darkwood",
+        "platform"
+    ],
+    "authors": [
+        {
+            "name": "Mathieu Ledru",
+            "email": "matyo91@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.5",
+        "symfony/http-client-contracts": "^3.5"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Darkwood\\AI\\Platform\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

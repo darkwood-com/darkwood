@@ -1,0 +1,47 @@
+{
+    "name": "darkwood/ai-jev-platform",
+    "description": "Jev (TypeSafe) platform bridge for Darkwood AI",
+    "license": "MIT",
+    "version": "0.1.0",
+    "type": "library",
+    "keywords": [
+        "ai",
+        "bridge",
+        "jev",
+        "platform",
+        "typesafe"
+    ],
+    "authors": [
+        {
+            "name": "Mathieu Ledru",
+            "email": "matyo91@gmail.com"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "https://symfony.com/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=8.5",
+        "darkwood/ai-platform": "^0.1",
+        "symfony/http-client": "^8.1"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Darkwood\\AI\\Platform\\Bridge\\Jev\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Darkwood\\AI\\Platform\\Bridge\\Jev\\Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

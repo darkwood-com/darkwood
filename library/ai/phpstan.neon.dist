@@ -1,0 +1,11 @@
+parameters:
+    level: 6
+    paths:
+        - src/Platform/src
+        - src/Platform/Bridge/Jev
+        - examples
+    excludePaths:
+        - src/Platform/Bridge/Jev/Tests
+        - src/Platform/Bridge/Jev/vendor (?)
+        - src/Platform/vendor (?)
+    treatPhpDocTypesAsCertain: false

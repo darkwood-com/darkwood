@@ -1,0 +1,44 @@
+{
+    "name": "darkwood/ai",
+    "description": "Darkwood AI monorepo",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Mathieu Ledru",
+            "email": "matyo91@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.5",
+        "darkwood/ai-jev-platform": "^0.1",
+        "darkwood/ai-platform": "^0.1"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.94",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.3",
+        "symfony/http-client": "^8.1"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Darkwood\\AI\\Platform\\Bridge\\Jev\\Tests\\": "src/Platform/Bridge/Jev/Tests/",
+            "Darkwood\\AI\\Platform\\Tests\\": "src/Platform/tests/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "src/Platform"
+        },
+        {
+            "type": "path",
+            "url": "src/Platform/Bridge/Jev"
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+/vendor/
+composer.lock
+.php-cs-fixer.cache
+.phpunit.cache
+.phpunit.result.cache
+.env
+.env.local
+/src/Platform/vendor/
+/src/Platform/composer.lock
+/src/Platform/Bridge/Jev/vendor/
+/src/Platform/Bridge/Jev/composer.lock
+/src/Platform/Bridge/Jev/.phpunit.result.cache

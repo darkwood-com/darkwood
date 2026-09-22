@@ -1,0 +1,24 @@
+Darkwood AI
+===========
+
+Copyright (c) 2026 Darkwood
+
+Darkwood AI is an independently versioned PHP component repository for the
+Darkwood ecosystem. It is not part of Symfony and does not depend on
+symfony/ai-platform.
+
+Inspiration
+-----------
+
+The Platform invocation shape (model catalog, model client, result converter,
+deferred conversion, token usage) and the Jev (TypeSafe) bridge were adapted
+from work originally prepared for Symfony AI:
+
+    https://github.com/symfony/ai
+
+Adapted files keep their original MIT license terms and Symfony copyright
+notices (Copyright (c) Fabien Potencier). See those file headers and the
+LICENSE file in src/Platform/Bridge/Jev/.
+
+Newly authored Darkwood AI contracts are copyright Darkwood and licensed
+under the repository MIT LICENSE.
