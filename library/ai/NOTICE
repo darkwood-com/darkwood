@@ -1,0 +1,7 @@
+Darkwood AI extends Symfony AI. It does not replace or fork that project.
+
+The TypeSafe Jev bridge in `src/platform/src/Bridge/Jev` was adapted from
+work originally written for Symfony AI. Adapted PHP files keep their Symfony
+copyright headers. See `src/platform/src/Bridge/Jev/NOTICE`.
+
+Newly authored Darkwood files are copyright Mathieu Ledru <matyo91@gmail.com>.

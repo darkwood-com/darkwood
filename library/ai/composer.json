@@ -10,11 +10,34 @@
         }
     ],
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.2",
+        "darkwood/ai-jev-platform": "^0.1"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.94",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5.53",
+        "symfony/http-client": "^7.3|^8.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "autoload-dev": {
+        "psr-4": {
+            "Darkwood\\AI\\Platform\\Bridge\\Jev\\Tests\\": "src/platform/src/Bridge/Jev/Tests/"
+        }
+    },
     "config": {
         "sort-packages": true
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "src/platform/src/Bridge/Jev",
+            "options": {
+                "versions": {
+                    "darkwood/ai-jev-platform": "0.1.0"
+                }
+            }
+        }
+    ]
 }

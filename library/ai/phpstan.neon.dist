@@ -1,0 +1,9 @@
+parameters:
+    level: 6
+    paths:
+        - src/platform/src/Bridge/Jev
+        - examples
+    excludePaths:
+        - src/platform/src/Bridge/Jev/Tests
+        - src/platform/src/Bridge/Jev/vendor (?)
+        - vendor (?)

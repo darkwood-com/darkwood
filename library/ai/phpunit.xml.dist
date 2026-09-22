@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="vendor/autoload.php"
+         failOnDeprecation="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         executionOrder="random"
+>
+    <php>
+        <ini name="error_reporting" value="-1" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Darkwood AI Test Suite">
+            <directory>src/platform/src/Bridge/Jev/Tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory>src/platform/src/Bridge/Jev</directory>
+        </include>
+        <exclude>
+            <directory>src/platform/src/Bridge/Jev/Tests</directory>
+            <directory>src/platform/src/Bridge/Jev/vendor</directory>
+        </exclude>
+    </source>
+</phpunit>
