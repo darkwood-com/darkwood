@@ -3,18 +3,37 @@
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../darkwood/src/Darkwood/Component/Flow",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../../../tests/ai/src/platform/src/Bridge/Jev",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "require": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "darkwood/flow": "8.1.x-dev@dev",
+        "symfony/ai-bundle": "^0.13.0",
+        "symfony/ai-jev-platform": "dev-main",
+        "symfony/ai-platform": "^0.13.0",
         "symfony/console": "8.1.*",
         "symfony/dotenv": "8.1.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "8.1.*",
+        "symfony/http-client": "8.1.*",
         "symfony/runtime": "8.1.*",
         "symfony/yaml": "8.1.*"
-    },
-    "require-dev": {
     },
     "config": {
         "allow-plugins": {
