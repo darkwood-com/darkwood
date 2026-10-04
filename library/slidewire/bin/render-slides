@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Capture one resting PNG per slide. The deck must already be served.
+# Usage: bin/render-slides darkwaar20 [base-url] [slide-count]
+set -euo pipefail
+
+slug="${1:-darkwaar20}"
+base="${2:-http://127.0.0.1:8000}"
+count="${3:-16}"
+chrome="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
+root="$(cd "$(dirname "$0")/.." && pwd)"
+out="${root}/storage/app/slide-renders/${slug}"
+
+if [[ ! -x "$chrome" ]]; then
+    echo "Chrome not found at ${chrome}" >&2
+    exit 1
+fi
+
+mkdir -p "$out"
+
+for ((i = 1; i <= count; i++)); do
+    file="$(printf '%s/slide-%02d.png' "$out" "$i")"
+    "$chrome" \
+        --headless=new \
+        --disable-gpu \
+        --hide-scrollbars \
+        --window-size=1440,900 \
+        --virtual-time-budget=2500 \
+        --screenshot="$file" \
+        "${base}/slides/${slug}#/slide/${i}"
+    echo "$file"
+done
