@@ -24,3 +24,4 @@ Route::slidewire('/slides/nolife-language', 'nolife-language');
 Route::slidewire('/slides/nolife-local', 'nolife-local');
 Route::slidewire('/slides/sqlite-compiler-php', 'sqlite-compiler-php');
 Route::slidewire('/slides/php-speed-tooling', 'php-speed-tooling');
+Route::slidewire('/slides/secret-keys-become-application-data', 'secret-keys-become-application-data');
