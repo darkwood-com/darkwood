@@ -1,5 +1,8 @@
 import gsap from 'gsap';
-import { motions } from '../darkwaar20/motions';
+import { motions as dw20 } from '../darkwaar20/motions';
+import { motions as dw27 } from '../darkwaar27/motions';
+
+const motions = { ...dw20, ...dw27 };
 
 let booted = false;
 
@@ -38,7 +41,15 @@ export function bindDeck() {
     const bareBoard = (index) => {
         const frame = root.querySelectorAll('.slidewire-frame')[index];
 
-        if (!frame?.querySelector('[data-board], [data-patch]')) {
+        if (!frame) {
+            return false;
+        }
+
+        if (frame.querySelector('[data-pg-board]')) {
+            return frame.querySelectorAll('.pg-cell').length === 0;
+        }
+
+        if (!frame.querySelector('[data-board], [data-patch]')) {
             return false;
         }
 

@@ -26,3 +26,4 @@ Route::slidewire('/slides/sqlite-compiler-php', 'sqlite-compiler-php');
 Route::slidewire('/slides/php-speed-tooling', 'php-speed-tooling');
 Route::slidewire('/slides/secret-keys-become-application-data', 'secret-keys-become-application-data');
 Route::slidewire('/slides/darkwaar20', 'darkwaar20');
+Route::slidewire('/slides/darkwaar27-pigment', 'darkwaar27-pigment');
