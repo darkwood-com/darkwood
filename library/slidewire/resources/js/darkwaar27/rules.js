@@ -131,7 +131,7 @@ function snapshot(state) {
     };
 }
 
-export function startLevel(index) {
+export function startLevel(levelIndex) {
     const levels = [
         {
             name: 'First Face',
@@ -176,7 +176,7 @@ export function startLevel(index) {
         },
     ];
 
-    const level = levels[index];
+    const level = levels[levelIndex];
     const stains = Array(WIDTH * HEIGHT).fill(EMPTY);
 
     for (const stain of level.stains) {
@@ -184,7 +184,7 @@ export function startLevel(index) {
     }
 
     return {
-        level: index,
+        level: levelIndex,
         stains,
         die: startDie(),
         pos: [...level.start],

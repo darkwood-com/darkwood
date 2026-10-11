@@ -11,6 +11,7 @@ import {
     paintBoard,
     paintMiniLevels,
 } from './widgets';
+import { bindPromoX } from './promo-x';
 import { GREEN_PATH, replay, startLevel } from './rules';
 
 function duration(seconds, animate) {
@@ -338,6 +339,19 @@ export const motions = {
                 }
             },
             destroy() {},
+        };
+    },
+
+    'pg-promo-x'(slide) {
+        const promo = bindPromoX(slide);
+
+        return {
+            show(_step, animate) {
+                promo.show(_step, animate);
+            },
+            destroy() {
+                promo.destroy();
+            },
         };
     },
 };
