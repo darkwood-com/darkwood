@@ -1,8 +1,9 @@
 import gsap from 'gsap';
 import { motions as dw20 } from '../darkwaar20/motions';
 import { motions as dw27 } from '../darkwaar27/motions';
+import { motions as dw33 } from '../darkwaar33/motions';
 
-const motions = { ...dw20, ...dw27 };
+const motions = { ...dw20, ...dw27, ...dw33 };
 
 let booted = false;
 
