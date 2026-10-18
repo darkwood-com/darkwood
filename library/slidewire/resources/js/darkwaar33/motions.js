@@ -203,7 +203,7 @@ export const motions = {
 
     'sw-timeline'(slide) {
         const reveal = revealOnce(slide);
-        const split = slide.querySelector('[data-sw-timeline-split]');
+        const split = slide.querySelectorAll('[data-sw-timeline-split]');
         gsap.set(split, { opacity: 0, scale: 0.7 });
         return {
             show(step, animate) {
