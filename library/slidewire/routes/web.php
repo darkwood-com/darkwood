@@ -29,3 +29,4 @@ Route::slidewire('/slides/darkwaar20', 'darkwaar20');
 Route::slidewire('/slides/darkwaar27-pigment', 'darkwaar27-pigment');
 Route::slidewire('/slides/darkwaar27-pigment-x', 'darkwaar27-pigment-x');
 Route::slidewire('/slides/darkwaar33-seedwake', 'darkwaar33-seedwake');
+Route::slidewire('/slides/holding-the-core-security-engineering-through-darkwaar40-breach', 'holding-the-core-security-engineering-through-darkwaar40-breach');
