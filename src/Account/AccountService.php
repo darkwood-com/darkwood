@@ -85,6 +85,105 @@ final class AccountService
         return $this->store->all($provider, $product, $enabled);
     }
 
+    public function get(string $id): Account
+    {
+        $account = $this->store->find($id);
+        if (null === $account) {
+            throw new AccountOperationException(sprintf('Account "%s" was not found.', $id), ExitCode::NotFound);
+        }
+
+        return $account;
+    }
+
+    public function edit(
+        string $id,
+        ?string $alias,
+        string $authenticationMethod,
+        ?string $authenticationReference,
+        bool $monitoringEnabled,
+    ): Account {
+        $current = $this->get($id);
+        $product = $this->catalog->product($current->providerKey, $current->productKey);
+        if (null === $product) {
+            throw new AccountOperationException('The account references a product that is no longer in the catalog.', ExitCode::Failure);
+        }
+        $method = AuthenticationMethod::tryFrom($authenticationMethod);
+        if (null === $method || !\in_array($method, $product->authenticationMethods, true)) {
+            throw new AccountOperationException(sprintf('Authentication method "%s" is not declared for %s/%s.', $authenticationMethod, $current->providerKey, $current->productKey), ExitCode::InvalidInput);
+        }
+        $alias = $this->optionalText($alias, 'Alias', 80);
+        $authenticationReference = $this->authenticationReference($method, $authenticationReference);
+        $authenticationChanged = $method !== $current->authenticationMethod
+            || $authenticationReference !== $current->authenticationReference;
+
+        $updated = new Account(
+            id: $current->id,
+            providerKey: $current->providerKey,
+            productKey: $current->productKey,
+            alias: $alias,
+            authenticationMethod: $method,
+            authenticationReference: $authenticationReference,
+            monitoringEnabled: $monitoringEnabled,
+            authenticationVerificationState: $authenticationChanged
+                ? (AuthenticationMethod::None === $method ? AuthenticationVerificationState::NotConfigured : AuthenticationVerificationState::NotChecked)
+                : $current->authenticationVerificationState,
+            authenticationVerifiedAt: $authenticationChanged ? null : $current->authenticationVerifiedAt,
+            authenticationStatusDetail: $authenticationChanged ? null : $current->authenticationStatusDetail,
+            createdAt: $current->createdAt,
+            updatedAt: new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
+        );
+        $this->store->update($updated);
+
+        return $updated;
+    }
+
+    public function setMonitoring(string $id, bool $enabled): Account
+    {
+        $current = $this->get($id);
+
+        return $this->edit(
+            $current->id,
+            $current->alias,
+            $current->authenticationMethod->value,
+            $current->authenticationReference,
+            $enabled,
+        );
+    }
+
+    public function remove(string $id): Account
+    {
+        $account = $this->get($id);
+        $this->store->delete($id);
+
+        return $account;
+    }
+
+    /**
+     * @return array{provider: bool, product: bool}
+     */
+    public function defaultsFor(Account $account): array
+    {
+        return $this->store->defaultsFor($account);
+    }
+
+    public function setDefault(string $id, string $scope, bool $clear = false): Account
+    {
+        $account = $this->get($id);
+        [$scopeType, $scopeKey] = match ($scope) {
+            'provider' => ['provider', $account->providerKey],
+            'product' => ['product', $account->providerKey.':'.$account->productKey],
+            default => throw new AccountOperationException('Default scope must be "provider" or "product".', ExitCode::InvalidInput),
+        };
+
+        if ($clear) {
+            $this->store->clearDefault($scopeType, $scopeKey);
+        } else {
+            $this->store->setDefault($scopeType, $scopeKey, $account->id);
+        }
+
+        return $account;
+    }
+
     private function optionalText(?string $value, string $label, int $maximumLength): ?string
     {
         if (null === $value || '' === trim($value)) {

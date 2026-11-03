@@ -35,6 +35,7 @@ final class AccountsAddCommand extends Command
             ->addOption('auth-method', null, InputOption::VALUE_REQUIRED, 'Authentication metadata method')
             ->addOption('auth-reference', null, InputOption::VALUE_REQUIRED, 'Non-secret profile, environment variable, or credential-store locator')
             ->addOption('monitor', null, InputOption::VALUE_NEGATABLE, 'Enable or disable monitoring')
+            ->addOption('default', null, InputOption::VALUE_REQUIRED, 'Set default scope: none, provider, or product', 'none')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'Output format: table or json', 'table')
             ->setHelp('Registers local metadata only. It never verifies authentication and never accepts passwords, tokens, or cookies.');
     }
@@ -50,8 +51,15 @@ final class AccountsAddCommand extends Command
         }
 
         try {
+            $default = (string) $input->getOption('default');
+            if (!\in_array($default, ['none', 'provider', 'product'], true)) {
+                throw new AccountOperationException('Default must be "none", "provider", or "product".', ExitCode::InvalidInput);
+            }
             $values = $this->values($input, $io);
             $account = $this->accounts->add(...$values);
+            if ('none' !== $default) {
+                $this->accounts->setDefault($account->id, $default);
+            }
         } catch (AccountOperationException $error) {
             $io->error($error->getMessage());
 

@@ -82,6 +82,85 @@ final class SqliteStore
         return false === $row ? null : $this->hydrate($row);
     }
 
+    public function update(Account $account): void
+    {
+        $statement = $this->pdo()->prepare(<<<'SQL'
+            UPDATE account SET
+                alias = :alias,
+                auth_method = :auth_method,
+                auth_reference = :auth_reference,
+                monitoring_enabled = :monitoring_enabled,
+                auth_verification_state = :auth_verification_state,
+                auth_verified_at = :auth_verified_at,
+                auth_status_detail = :auth_status_detail,
+                updated_at = :updated_at
+            WHERE id = :id
+            SQL);
+        $parameters = $this->parameters($account);
+        unset($parameters['provider_key'], $parameters['product_key'], $parameters['created_at']);
+        $statement->execute($parameters);
+    }
+
+    public function delete(string $id): void
+    {
+        $pdo = $this->pdo();
+        $pdo->beginTransaction();
+        try {
+            $statement = $pdo->prepare('DELETE FROM account WHERE id = :id');
+            $statement->execute(['id' => $id]);
+            $pdo->commit();
+        } catch (\Throwable $error) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+
+            throw $error;
+        }
+    }
+
+    public function setDefault(string $scopeType, string $scopeKey, string $accountId): void
+    {
+        $statement = $this->pdo()->prepare(<<<'SQL'
+            INSERT INTO account_default (scope_type, scope_key, account_id, updated_at)
+            VALUES (:scope_type, :scope_key, :account_id, :updated_at)
+            ON CONFLICT (scope_type, scope_key) DO UPDATE SET
+                account_id = excluded.account_id,
+                updated_at = excluded.updated_at
+            SQL);
+        $statement->execute([
+            'scope_type' => $scopeType,
+            'scope_key' => $scopeKey,
+            'account_id' => $accountId,
+            'updated_at' => gmdate('c'),
+        ]);
+    }
+
+    public function clearDefault(string $scopeType, string $scopeKey): void
+    {
+        $statement = $this->pdo()->prepare('DELETE FROM account_default WHERE scope_type = :scope_type AND scope_key = :scope_key');
+        $statement->execute(['scope_type' => $scopeType, 'scope_key' => $scopeKey]);
+    }
+
+    public function defaultAccountId(string $scopeType, string $scopeKey): ?string
+    {
+        $statement = $this->pdo()->prepare('SELECT account_id FROM account_default WHERE scope_type = :scope_type AND scope_key = :scope_key');
+        $statement->execute(['scope_type' => $scopeType, 'scope_key' => $scopeKey]);
+        $id = $statement->fetchColumn();
+
+        return false === $id ? null : (string) $id;
+    }
+
+    /**
+     * @return array{provider: bool, product: bool}
+     */
+    public function defaultsFor(Account $account): array
+    {
+        return [
+            'provider' => $account->id === $this->defaultAccountId('provider', $account->providerKey),
+            'product' => $account->id === $this->defaultAccountId('product', $account->providerKey.':'.$account->productKey),
+        ];
+    }
+
     public function databasePath(): string
     {
         return $this->dataDirectory->databasePath();

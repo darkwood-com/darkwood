@@ -68,10 +68,7 @@ final class ProviderCatalog
     {
         $capabilities = [];
         foreach (Capability::cases() as $capability) {
-            $capabilities[$capability->value] = match ($capability) {
-                Capability::AccountDiscovery, Capability::AuthenticationStatus => CapabilityState::NotImplemented,
-                default => CapabilityState::Unknown,
-            };
+            $capabilities[$capability->value] = CapabilityState::NotImplemented;
         }
 
         return new ProductDefinition($key, $name, $authenticationMethods, $capabilities);
