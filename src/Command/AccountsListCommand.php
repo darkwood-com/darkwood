@@ -74,7 +74,7 @@ final class AccountsListCommand extends Command
             return ExitCode::Success->value;
         }
         AccountTable::render($io, $accounts);
-        $io->note('Registered means local metadata exists. Authentication is not verified by v0.1.');
+        $io->note('Registered means local metadata exists. Authentication is not verified by v0.1.1.');
 
         return ExitCode::Success->value;
     }

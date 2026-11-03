@@ -26,7 +26,7 @@ final class AccountsRemoveCommand extends Command
         $this
             ->addArgument('id', InputArgument::REQUIRED, 'Local account identifier')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Remove without interactive confirmation')
-            ->setHelp('Only the Nolife Tracker record and its default assignments are removed. External authentication is untouched.');
+            ->setHelp('The local account, its subscriptions, entitlements, and default assignment are removed. External authentication is untouched.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -39,7 +39,7 @@ final class AccountsRemoveCommand extends Command
                 if (!$input->isInteractive()) {
                     throw new AccountOperationException('The --force option is required in non-interactive mode.', ExitCode::InvalidInput);
                 }
-                if (!$io->confirm(sprintf('Remove only the local record "%s" and its default assignments?', $id), false)) {
+                if (!$io->confirm(sprintf('Remove local account "%s", its subscriptions, entitlements, and default assignment?', $id), false)) {
                     $io->note('No account was removed.');
 
                     return ExitCode::Success->value;
@@ -53,7 +53,7 @@ final class AccountsRemoveCommand extends Command
         }
 
         $io->success(sprintf('Account "%s" was removed from Nolife Tracker.', $account->id));
-        $io->note('No provider credential, CLI profile, or external account was changed.');
+        $io->note('Its local subscriptions and entitlements were removed. No provider credential, CLI profile, or external account was changed.');
 
         return ExitCode::Success->value;
     }

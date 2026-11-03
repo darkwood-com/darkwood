@@ -4,8 +4,9 @@ namespace App\Command;
 
 use App\Account\AccountOperationException;
 use App\Account\AccountService;
-use App\Provider\Capability;
-use App\Provider\ProviderCatalog;
+use App\Subscription\Entitlement;
+use App\Subscription\Subscription;
+use App\Subscription\SubscriptionService;
 use App\Terminal\ExitCode;
 use App\Terminal\JsonOutput;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -21,7 +22,7 @@ final class AccountsShowCommand extends Command
 {
     public function __construct(
         private readonly AccountService $accounts,
-        private readonly ProviderCatalog $catalog,
+        private readonly SubscriptionService $subscriptions,
     ) {
         parent::__construct();
     }
@@ -50,12 +51,16 @@ final class AccountsShowCommand extends Command
 
             return $error->exitCode->value;
         }
-        $defaults = $this->accounts->defaultsFor($account);
-        $product = $this->catalog->product($account->providerKey, $account->productKey);
+        $isDefault = $this->accounts->isDefault($account);
+        $subscriptions = $this->subscriptions->all(accountId: $account->id);
+        $subscriptionData = array_map(fn (Subscription $subscription): array => $subscription->toArray() + [
+            'products' => array_map(static fn (Entitlement $entitlement): array => $entitlement->toArray(), $this->subscriptions->entitlements($subscription->id)),
+        ], $subscriptions);
+        $legacy = $this->accounts->unresolvedLegacyProduct($account->id);
         $data = $account->toSafeArray(true) + [
-            'providerDefault' => $defaults['provider'],
-            'productDefault' => $defaults['product'],
-            'quotaRetrieval' => $product?->capability(Capability::QuotaRetrieval)->value ?? 'unknown',
+            'providerDefault' => $isDefault,
+            'subscriptions' => $subscriptionData,
+            'unresolvedLegacyProduct' => $legacy,
         ];
 
         if ('json' === $format) {
@@ -66,19 +71,37 @@ final class AccountsShowCommand extends Command
 
         $io->title(sprintf('%s%s', $account->id, null === $account->alias ? '' : ' — '.$account->alias));
         $io->definitionList(
-            ['Provider / product' => $account->providerKey.' / '.$account->productKey],
+            ['Provider' => $account->providerKey],
             ['Local registration' => 'registered'],
             ['Monitoring' => $account->monitoringEnabled ? 'enabled' : 'disabled'],
             ['Authentication method' => $account->authenticationMethod->label()],
             ['Authentication configured' => $account->authenticationConfigured() ? 'yes' : 'no'],
             ['Authentication reference' => $account->redactedAuthenticationReference() ?? 'none'],
             ['Authentication verified' => $account->authenticationVerificationState->label()],
-            ['Quota retrieval' => $product?->capability(Capability::QuotaRetrieval)->label() ?? 'Unknown'],
-            ['Provider default' => $defaults['provider'] ? 'yes' : 'no'],
-            ['Product default' => $defaults['product'] ? 'yes' : 'no'],
+            ['Provider default' => $isDefault ? 'yes' : 'no'],
             ['Created' => $account->createdAt->format(DATE_ATOM)],
             ['Updated' => $account->updatedAt->format(DATE_ATOM)],
         );
+
+        $io->section('Subscriptions');
+        if ([] === $subscriptions) {
+            $io->text('None');
+        }
+        foreach ($subscriptions as $subscription) {
+            $entitlements = $this->subscriptions->entitlements($subscription->id);
+            $io->writeln(sprintf('<info>%s</info> — %s', $subscription->displayName ?? $subscription->id, $subscription->billingType->value));
+            $io->listing(array_map(
+                static fn (Entitlement $entitlement): string => sprintf('%s (%s)', $entitlement->productKey, $entitlement->accessStatus->value),
+                $entitlements,
+            ));
+        }
+        if (null !== $legacy) {
+            $io->warning(sprintf(
+                'Migrated v0.1 product link "%s" remains unresolved%s; create a subscription and entitlement explicitly.',
+                $legacy['product_key'],
+                $legacy['was_product_default'] ? ' (formerly the product default)' : '',
+            ));
+        }
 
         return ExitCode::Success->value;
     }

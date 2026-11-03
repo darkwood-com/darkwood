@@ -7,7 +7,6 @@ final readonly class Account
     public function __construct(
         public string $id,
         public string $providerKey,
-        public string $productKey,
         public ?string $alias,
         public AuthenticationMethod $authenticationMethod,
         public ?string $authenticationReference,
@@ -42,7 +41,6 @@ final readonly class Account
         $data = [
             'id' => $this->id,
             'provider' => $this->providerKey,
-            'product' => $this->productKey,
             'alias' => $this->alias,
             'registration' => 'registered',
             'authenticationMethod' => $this->authenticationMethod->value,

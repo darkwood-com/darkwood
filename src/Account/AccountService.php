@@ -17,7 +17,6 @@ final class AccountService
     public function add(
         string $id,
         string $providerKey,
-        string $productKey,
         ?string $alias,
         string $authenticationMethod,
         ?string $authenticationReference,
@@ -32,14 +31,9 @@ final class AccountService
         if (null === $provider) {
             throw new AccountOperationException(sprintf('Provider "%s" was not found.', $providerKey), ExitCode::NotFound);
         }
-        $product = $provider->product($productKey);
-        if (null === $product) {
-            throw new AccountOperationException(sprintf('Product "%s" was not found for provider "%s".', $productKey, $providerKey), ExitCode::NotFound);
-        }
-
         $method = AuthenticationMethod::tryFrom($authenticationMethod);
-        if (null === $method || !\in_array($method, $product->authenticationMethods, true)) {
-            throw new AccountOperationException(sprintf('Authentication method "%s" is not declared for %s/%s.', $authenticationMethod, $providerKey, $productKey), ExitCode::InvalidInput);
+        if (null === $method || !\in_array($method, $this->catalog->authenticationMethods($providerKey), true)) {
+            throw new AccountOperationException(sprintf('Authentication method "%s" is not declared for provider "%s".', $authenticationMethod, $providerKey), ExitCode::InvalidInput);
         }
 
         $alias = $this->optionalText($alias, 'Alias', 80);
@@ -48,7 +42,6 @@ final class AccountService
         $account = new Account(
             id: $id,
             providerKey: $providerKey,
-            productKey: $productKey,
             alias: $alias,
             authenticationMethod: $method,
             authenticationReference: $authenticationReference,
@@ -103,13 +96,9 @@ final class AccountService
         bool $monitoringEnabled,
     ): Account {
         $current = $this->get($id);
-        $product = $this->catalog->product($current->providerKey, $current->productKey);
-        if (null === $product) {
-            throw new AccountOperationException('The account references a product that is no longer in the catalog.', ExitCode::Failure);
-        }
         $method = AuthenticationMethod::tryFrom($authenticationMethod);
-        if (null === $method || !\in_array($method, $product->authenticationMethods, true)) {
-            throw new AccountOperationException(sprintf('Authentication method "%s" is not declared for %s/%s.', $authenticationMethod, $current->providerKey, $current->productKey), ExitCode::InvalidInput);
+        if (null === $method || !\in_array($method, $this->catalog->authenticationMethods($current->providerKey), true)) {
+            throw new AccountOperationException(sprintf('Authentication method "%s" is not declared for provider "%s".', $authenticationMethod, $current->providerKey), ExitCode::InvalidInput);
         }
         $alias = $this->optionalText($alias, 'Alias', 80);
         $authenticationReference = $this->authenticationReference($method, $authenticationReference);
@@ -119,7 +108,6 @@ final class AccountService
         $updated = new Account(
             id: $current->id,
             providerKey: $current->providerKey,
-            productKey: $current->productKey,
             alias: $alias,
             authenticationMethod: $method,
             authenticationReference: $authenticationReference,
@@ -158,30 +146,30 @@ final class AccountService
         return $account;
     }
 
-    /**
-     * @return array{provider: bool, product: bool}
-     */
-    public function defaultsFor(Account $account): array
+    public function isDefault(Account $account): bool
     {
-        return $this->store->defaultsFor($account);
+        return $this->store->isDefault($account);
     }
 
-    public function setDefault(string $id, string $scope, bool $clear = false): Account
+    public function setDefault(string $id, bool $clear = false): Account
     {
         $account = $this->get($id);
-        [$scopeType, $scopeKey] = match ($scope) {
-            'provider' => ['provider', $account->providerKey],
-            'product' => ['product', $account->providerKey.':'.$account->productKey],
-            default => throw new AccountOperationException('Default scope must be "provider" or "product".', ExitCode::InvalidInput),
-        };
 
         if ($clear) {
-            $this->store->clearDefault($scopeType, $scopeKey);
+            $this->store->clearDefault($account->providerKey);
         } else {
-            $this->store->setDefault($scopeType, $scopeKey, $account->id);
+            $this->store->setDefault($account->providerKey, $account->id);
         }
 
         return $account;
+    }
+
+    /** @return array<string, mixed>|null */
+    public function unresolvedLegacyProduct(string $id): ?array
+    {
+        $this->get($id);
+
+        return $this->store->unresolvedLegacyProduct($id);
     }
 
     private function optionalText(?string $value, string $label, int $maximumLength): ?string

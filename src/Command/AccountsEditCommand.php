@@ -37,7 +37,7 @@ final class AccountsEditCommand extends Command
             ->addOption('clear-auth-reference', null, InputOption::VALUE_NONE, 'Remove the authentication reference')
             ->addOption('monitor', null, InputOption::VALUE_NEGATABLE, 'Enable or disable monitoring')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'Output format: table or json', 'table')
-            ->setHelp('Provider, product, and local ID are immutable. Authentication changes reset verification to not checked.');
+            ->setHelp('Provider and local ID are immutable. Authentication changes reset verification to not checked.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -62,16 +62,11 @@ final class AccountsEditCommand extends Command
 
         try {
             $current = $this->accounts->get((string) $input->getArgument('id'));
-            $product = $this->catalog->product($current->providerKey, $current->productKey);
-            if (null === $product) {
-                throw new AccountOperationException('The account product is no longer in the catalog.', ExitCode::Failure);
-            }
-
             if ($input->isInteractive()) {
                 $alias = (string) $io->ask('Display alias (empty removes it)', $current->alias ?? '');
                 $method = (string) $io->choice(
                     'Authentication metadata',
-                    array_map(static fn (AuthenticationMethod $method): string => $method->value, $product->authenticationMethods),
+                    array_map(static fn (AuthenticationMethod $method): string => $method->value, $this->catalog->authenticationMethods($current->providerKey)),
                     $current->authenticationMethod->value,
                 );
                 $reference = $current->authenticationReference;
@@ -111,7 +106,7 @@ final class AccountsEditCommand extends Command
             JsonOutput::write($output, ['account' => $account->toSafeArray(true)]);
         } else {
             $io->success(sprintf('Account "%s" was updated.', $account->id));
-            $io->note('Changing authentication metadata never verifies it. Provider and product remain unchanged.');
+            $io->note('Changing authentication metadata never verifies it. The provider remains unchanged.');
         }
 
         return ExitCode::Success->value;

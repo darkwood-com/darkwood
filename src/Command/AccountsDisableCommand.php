@@ -30,14 +30,14 @@ final class AccountsDisableCommand extends Command
         $io = new SymfonyStyle($input, $output);
         try {
             $account = $this->accounts->setMonitoring((string) $input->getArgument('id'), false);
-            $defaults = $this->accounts->defaultsFor($account);
+            $isDefault = $this->accounts->isDefault($account);
         } catch (AccountOperationException $error) {
             $io->error($error->getMessage());
 
             return $error->exitCode->value;
         }
         $io->success(sprintf('Monitoring is disabled for "%s".', $account->id));
-        if ($defaults['provider'] || $defaults['product']) {
+        if ($isDefault) {
             $io->warning('This disabled account remains assigned as a default.');
         }
 

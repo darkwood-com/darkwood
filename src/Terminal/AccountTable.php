@@ -13,11 +13,10 @@ final class AccountTable
     public static function render(SymfonyStyle $io, array $accounts): void
     {
         $io->table(
-            ['ID', 'Provider', 'Product', 'Alias', 'Registered', 'Authentication', 'Monitoring'],
+            ['ID', 'Provider', 'Alias', 'Registered', 'Authentication', 'Monitoring'],
             array_map(static fn (Account $account): array => [
                 $account->id,
                 $account->providerKey,
-                $account->productKey,
                 $account->alias ?? '—',
                 'yes',
                 $account->authenticationVerificationState->label(),

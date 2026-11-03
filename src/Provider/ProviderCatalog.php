@@ -61,6 +61,23 @@ final class ProviderCatalog
         return $this->find($providerKey)?->product($productKey);
     }
 
+    /** @return list<AuthenticationMethod> */
+    public function authenticationMethods(string $providerKey): array
+    {
+        $provider = $this->find($providerKey);
+        if (null === $provider) {
+            return [];
+        }
+        $methods = [];
+        foreach ($provider->products as $product) {
+            foreach ($product->authenticationMethods as $method) {
+                $methods[$method->value] = $method;
+            }
+        }
+
+        return array_values($methods);
+    }
+
     /**
      * @param list<AuthenticationMethod> $authenticationMethods
      */

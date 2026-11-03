@@ -12,7 +12,7 @@ final class JsonOutput
     public static function write(OutputInterface $output, array $data): void
     {
         $output->writeln(json_encode(
-            ['schemaVersion' => 1, 'generatedAt' => gmdate('c')] + $data,
+            ['schemaVersion' => 2, 'generatedAt' => gmdate('c')] + $data,
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
         ));
     }

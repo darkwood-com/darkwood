@@ -30,12 +30,12 @@ final class AccountsAddCommand extends Command
         $this
             ->addOption('id', null, InputOption::VALUE_REQUIRED, 'Unique local account identifier')
             ->addOption('provider', null, InputOption::VALUE_REQUIRED, 'Provider identifier')
-            ->addOption('product', null, InputOption::VALUE_REQUIRED, 'Product identifier')
+            ->addOption('product', null, InputOption::VALUE_REQUIRED, 'Deprecated; products are managed through subscriptions')
             ->addOption('alias', null, InputOption::VALUE_REQUIRED, 'Display alias')
             ->addOption('auth-method', null, InputOption::VALUE_REQUIRED, 'Authentication metadata method')
             ->addOption('auth-reference', null, InputOption::VALUE_REQUIRED, 'Non-secret profile, environment variable, or credential-store locator')
             ->addOption('monitor', null, InputOption::VALUE_NEGATABLE, 'Enable or disable monitoring')
-            ->addOption('default', null, InputOption::VALUE_REQUIRED, 'Set default scope: none, provider, or product', 'none')
+            ->addOption('default', null, InputOption::VALUE_REQUIRED, 'Set as provider default: none or provider', 'none')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'Output format: table or json', 'table')
             ->setHelp('Registers local metadata only. It never verifies authentication and never accepts passwords, tokens, or cookies.');
     }
@@ -52,13 +52,16 @@ final class AccountsAddCommand extends Command
 
         try {
             $default = (string) $input->getOption('default');
-            if (!\in_array($default, ['none', 'provider', 'product'], true)) {
-                throw new AccountOperationException('Default must be "none", "provider", or "product".', ExitCode::InvalidInput);
+            if (null !== $input->getOption('product')) {
+                throw new AccountOperationException('The --product option was removed in v0.1.1; associate products through subscriptions:products:add.', ExitCode::InvalidInput);
+            }
+            if (!\in_array($default, ['none', 'provider'], true)) {
+                throw new AccountOperationException('Default must be "none" or "provider".', ExitCode::InvalidInput);
             }
             $values = $this->values($input, $io);
             $account = $this->accounts->add(...$values);
             if ('none' !== $default) {
-                $this->accounts->setDefault($account->id, $default);
+                $this->accounts->setDefault($account->id);
             }
         } catch (AccountOperationException $error) {
             $io->error($error->getMessage());
@@ -71,7 +74,7 @@ final class AccountsAddCommand extends Command
         } else {
             $io->success(sprintf('Account "%s" was registered locally.', $account->id));
             $io->definitionList(
-                ['Provider/Product' => $account->providerKey.'/'.$account->productKey],
+                ['Provider' => $account->providerKey],
                 ['Authentication' => $account->authenticationVerificationState->label()],
                 ['Monitoring' => $account->monitoringEnabled ? 'enabled' : 'disabled'],
             );
@@ -82,7 +85,7 @@ final class AccountsAddCommand extends Command
     }
 
     /**
-     * @return array{id: string, providerKey: string, productKey: string, alias: ?string, authenticationMethod: string, authenticationReference: ?string, monitoringEnabled: bool}
+     * @return array{id: string, providerKey: string, alias: ?string, authenticationMethod: string, authenticationReference: ?string, monitoringEnabled: bool}
      */
     private function values(InputInterface $input, SymfonyStyle $io): array
     {
@@ -95,19 +98,11 @@ final class AccountsAddCommand extends Command
             throw new AccountOperationException(sprintf('Provider "%s" was not found.', $providerKey), ExitCode::NotFound);
         }
 
-        $productKey = $this->required($input->getOption('product'), 'The --product option is required in non-interactive mode.', $interactive
-            ? fn (): string => (string) $io->choice('Product', array_map(static fn ($product): string => $product->key, $provider->products))
-            : null);
-        $product = $provider->product($productKey);
-        if (null === $product) {
-            throw new AccountOperationException(sprintf('Product "%s" was not found for provider "%s".', $productKey, $providerKey), ExitCode::NotFound);
-        }
-
         $id = $this->required($input->getOption('id'), 'The --id option is required in non-interactive mode.', $interactive
             ? fn (): string => (string) $io->ask('Unique local account ID')
             : null);
         $method = $this->required($input->getOption('auth-method'), 'The --auth-method option is required in non-interactive mode.', $interactive
-            ? fn (): string => (string) $io->choice('Authentication metadata', array_map(static fn (AuthenticationMethod $method): string => $method->value, $product->authenticationMethods), AuthenticationMethod::None->value)
+            ? fn (): string => (string) $io->choice('Authentication metadata', array_map(static fn (AuthenticationMethod $method): string => $method->value, $this->catalog->authenticationMethods($providerKey)), AuthenticationMethod::None->value)
             : null);
         $alias = $input->getOption('alias');
         if ($interactive && null === $alias) {
@@ -125,7 +120,6 @@ final class AccountsAddCommand extends Command
         return [
             'id' => $id,
             'providerKey' => $providerKey,
-            'productKey' => $productKey,
             'alias' => null === $alias ? null : (string) $alias,
             'authenticationMethod' => $method,
             'authenticationReference' => null === $reference ? null : (string) $reference,
