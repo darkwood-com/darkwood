@@ -222,7 +222,7 @@ final class SubscriptionService
             return null;
         }
         $amount = trim($amount);
-        if (1 !== preg_match('/^(?:0|[1-9][0-9]*)(?:\.[0-9]{1,2})?$/', $amount)) {
+        if (1 !== preg_match('/^(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,2})?$/', $amount)) {
             throw new SubscriptionOperationException('Billing amount must be a non-negative decimal with at most two fractional digits.', ExitCode::InvalidInput);
         }
         [$whole, $fraction] = array_pad(explode('.', $amount, 2), 2, '');
@@ -235,11 +235,20 @@ final class SubscriptionService
         if (null === $value || '' === trim($value)) {
             return null;
         }
-        try {
-            return new \DateTimeImmutable(trim($value));
-        } catch (\Exception) {
-            throw new SubscriptionOperationException(sprintf('%s must be a valid ISO 8601 date or timestamp.', $label), ExitCode::InvalidInput);
+        $value = trim($value);
+        if (1 === preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+            $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value, new \DateTimeZone('UTC'));
+            if (false !== $date && $date->format('Y-m-d') === $value) {
+                return $date;
+            }
+        } elseif (1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $value)) {
+            try {
+                return new \DateTimeImmutable($value);
+            } catch (\Exception) {
+            }
         }
+
+        throw new SubscriptionOperationException(sprintf('%s must be a valid ISO 8601 date or timestamp.', $label), ExitCode::InvalidInput);
     }
 
     private function optionalText(?string $value, string $label, int $maximumLength): ?string
@@ -250,6 +259,9 @@ final class SubscriptionService
         $value = trim($value);
         if (strlen($value) > $maximumLength || 1 === preg_match('/[\x00-\x1F\x7F]/u', $value)) {
             throw new SubscriptionOperationException(sprintf('%s is invalid or exceeds %d characters.', $label, $maximumLength), ExitCode::InvalidInput);
+        }
+        if (1 === preg_match('/(?:^sk-|bearer\s|cookie=|token=|password=)/i', $value)) {
+            throw new SubscriptionOperationException(sprintf('%s must not contain credential-like values.', $label), ExitCode::InvalidInput);
         }
 
         return $value;
