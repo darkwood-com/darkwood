@@ -12,10 +12,7 @@
             <x-darkwood.logo background="blue" />
         </div>
         <div class="dw-original-thanks-copy">
-            <h2>{{ $title }}</h2>
-            @if ($subtitle)
-                <p>{{ $subtitle }}</p>
-            @endif
+            <x-darkwood.heading :title="$title" :subtitle="$subtitle" variant="conclusion" />
             @if ($name)
                 <p>Hello!<br>I am <span class="dw-original-accent">{{ $name }}</span></p>
             @endif

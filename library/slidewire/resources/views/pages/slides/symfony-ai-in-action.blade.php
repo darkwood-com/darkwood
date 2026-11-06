@@ -6,15 +6,15 @@
     />
 
     <x-darkwood.content
-        title="L'IA produit beaucoup de buzzwords. Le produit, lui, demande du contrôle."
+        title="Le problème"
+        subtitle="L'IA produit beaucoup de buzzwords. Le produit, lui, demande du contrôle."
         lead="Le vrai défi n'est pas de faire répondre un modèle. C'est de le brancher sur une application qui a des règles, des données, des droits et des effets de bord."
-        overline="Le problème"
         label="01 / problème"
     />
 
     <x-darkwood.content
-        title="Symfony AI ne vend pas un chatbot. Il donne une stack pour activer des features IA."
-        overline="Vision"
+        title="Vision"
+        subtitle="Symfony AI ne vend pas un chatbot. Il donne une stack pour activer des features IA."
         label="02 / vision"
     >
         <x-darkwood.columns :count="3">
@@ -25,15 +25,16 @@
     </x-darkwood.content>
 
     <x-darkwood.section
-        title="Une stack, pas un helper HTTP."
-        subtitle="Platform · Agent · Store · AI Bundle · MCP Bundle · MCP SDK"
-        overline="Les briques"
+        title="Les briques"
+        subtitle="Une stack, pas un helper HTTP."
         label="03 / overview"
-    />
+    >
+        <p class="dw-original-lead">Platform · Agent · Store · AI Bundle · MCP Bundle · MCP SDK</p>
+    </x-darkwood.section>
 
     <x-darkwood.content
-        title="Une abstraction d'inférence pour parler à plusieurs providers."
-        overline="Platform"
+        title="Platform"
+        subtitle="Une abstraction d'inférence pour parler à plusieurs providers."
         label="04 / platform"
     >
         <div class="dw-original-process">
@@ -66,8 +67,8 @@
     </x-darkwood.content>
 
     <x-darkwood.content
-        title="Streamer, ce n'est pas juste afficher des mots plus vite."
-        overline="Streaming"
+        title="Streaming"
+        subtitle="Streamer, ce n'est pas juste afficher des mots plus vite."
         label="06 / streaming"
     >
         <x-darkwood.columns :count="3">
@@ -78,17 +79,17 @@
     </x-darkwood.content>
 
     <x-darkwood.section
-        title="L'entrée et la sortie ne sont plus seulement du texte."
-        subtitle="Audio · Image · PDF · Binaire"
-        overline="Multimodal"
+        title="Multimodal"
+        subtitle="L'entrée et la sortie ne sont plus seulement du texte."
         label="07 / multimodal"
     >
+        <p class="dw-original-lead">Audio · Image · PDF · Binaire</p>
         <p class="dw-original-lead">Le modèle devient une pièce d'un pipeline média, pas une zone de texte magique.</p>
     </x-darkwood.section>
 
     <x-darkwood.content
-        title="On veut des objets PHP fiables, pas du JSON fragile dans une string."
-        overline="Structured Output"
+        title="Structured Output"
+        subtitle="On veut des objets PHP fiables, pas du JSON fragile dans une string."
         label="08 / structure"
         :top="true"
     >
@@ -102,8 +103,8 @@
     </x-darkwood.content>
 
     <x-darkwood.content
-        title="Un agent, c'est une boucle contrôlée entre modèle et application."
-        overline="Agent"
+        title="Agent"
+        subtitle="Un agent, c'est une boucle contrôlée entre modèle et application."
         label="09 / agent"
     >
         <div class="dw-original-process">
@@ -118,8 +119,8 @@
     </x-darkwood.content>
 
     <x-darkwood.content
-        title="Exposer du code métier avec une frontière explicite."
-        overline="Tool Calling"
+        title="Tool Calling"
+        subtitle="Exposer du code métier avec une frontière explicite."
         label="10 / tools"
         :top="true"
     >
@@ -131,8 +132,8 @@ public function refundOrder(string $orderId): RefundResult
     </x-darkwood.content>
 
     <x-darkwood.content
-        title="Le modèle peut proposer. L'application décide quand agir."
-        overline="Human in the Loop"
+        title="Human in the Loop"
+        subtitle="Le modèle peut proposer. L'application décide quand agir."
         label="11 / hitl"
     >
         <div class="dw-original-process">
@@ -145,8 +146,8 @@ public function refundOrder(string $orderId): RefundResult
     </x-darkwood.content>
 
     <x-darkwood.content
-        title="La mémoire utile vient souvent de votre application."
-        overline="Memory"
+        title="Memory"
+        subtitle="La mémoire utile vient souvent de votre application."
         label="12 / memory"
     >
         <ul class="dw-original-list">
@@ -157,8 +158,8 @@ public function refundOrder(string $orderId): RefundResult
     </x-darkwood.content>
 
     <x-darkwood.content
-        title="Le RAG commence avant la recherche vectorielle."
-        overline="Store"
+        title="Store"
+        subtitle="Le RAG commence avant la recherche vectorielle."
         label="13 / store"
     >
         <div class="dw-original-process">
@@ -173,8 +174,8 @@ public function refundOrder(string $orderId): RefundResult
     </x-darkwood.content>
 
     <x-darkwood.content
-        title="Connecter l'agent aux données applicatives, avec du contexte vérifiable."
-        overline="RAG"
+        title="RAG"
+        subtitle="Connecter l'agent aux données applicatives, avec du contexte vérifiable."
         label="14 / rag"
     >
         <div class="dw-original-process">
@@ -189,8 +190,8 @@ public function refundOrder(string $orderId): RefundResult
     </x-darkwood.content>
 
     <x-darkwood.content
-        title="Plusieurs agents, oui. Mais seulement avec une orchestration lisible."
-        overline="Multi-agent"
+        title="Multi-agent"
+        subtitle="Plusieurs agents, oui. Mais seulement avec une orchestration lisible."
         label="15 / multi-agent"
     >
         <x-darkwood.columns :count="3">
@@ -201,8 +202,8 @@ public function refundOrder(string $orderId): RefundResult
     </x-darkwood.content>
 
     <x-darkwood.content
-        title="MCP ouvre la porte à des architectures agentiques interopérables."
-        overline="MCP"
+        title="MCP"
+        subtitle="MCP ouvre la porte à des architectures agentiques interopérables."
         label="16 / mcp"
     >
         <div class="dw-original-process">
@@ -222,8 +223,8 @@ public function refundOrder(string $orderId): RefundResult
     />
 
     <x-darkwood.content
-        title="Symfony AI + MCP + Flow + Navi + Uniflow."
-        overline="Stack cible"
+        title="Stack cible"
+        subtitle="Symfony AI + MCP + Flow + Navi + Uniflow."
         label="18 / stack"
     >
         <x-darkwood.columns :count="3">

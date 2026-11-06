@@ -8,13 +8,7 @@
 ])
 
 <x-darkwood.slide :variant="$background === 'black' ? 'cover-black' : 'cover'" {{ $attributes }}>
-    @if ($overline)
-        <p class="dw-original-overline">{{ $overline }}</p>
-    @endif
-    <h1 class="dw-original-title">{{ $title }}</h1>
-    @if ($subtitle)
-        <p class="dw-original-lead">{{ $subtitle }}</p>
-    @endif
+    <x-darkwood.heading :title="$title" :subtitle="$subtitle" :overline="$overline" variant="cover" />
     {{ $slot }}
     <x-darkwood.footer :date="$date" :author="$author" />
 </x-darkwood.slide>

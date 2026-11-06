@@ -15,4 +15,4 @@
     };
 @endphp
 
-<img src="{{ asset('darkwood/logos/'.$file) }}" alt="Darkwood" width="512" height="512" {{ $attributes->class(['dw-original-logo']) }}>
+<img src="{{ asset('darkwood/logos/'.$file) }}" alt="Darkwood" width="512" height="512" data-background="{{ $surface }}" {{ $attributes->class(['dw-original-logo']) }}>

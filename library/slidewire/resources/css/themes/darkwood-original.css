@@ -1,23 +1,28 @@
 :root {
     --darkwood-blue: #3579f6;
-    --darkwood-blue-dark: #245fc9;
     --darkwood-white: #ffffff;
-    --darkwood-paper: #fbfbfb;
-    --darkwood-ink: #111111;
-    --darkwood-muted: #555b64;
-    --darkwood-rule: #d9dde4;
-    --darkwood-code: #1d1f21;
-    --darkwood-code-bar: #292c2f;
+    --darkwood-ink: #000000;
     --darkwood-font: 'Jost', 'Verdana', ui-sans-serif, system-ui, sans-serif;
     --darkwood-font-reading: 'Verdana', 'Jost', ui-sans-serif, system-ui, sans-serif;
     --darkwood-font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
-    --darkwood-title: clamp(3.5rem, 6vw, 5.75rem);
-    --darkwood-heading: clamp(2.4rem, 3.4vw, 3.4rem);
-    --darkwood-section: clamp(2.7rem, 4.8vw, 4.5rem);
+    /* Keynote uses a 1920 × 1080 point canvas, not browser CSS points.
+       90 source points × viewport-width / 1920 = 67.5 px at 1440 px. */
+    --darkwood-heading: calc(100vw * 90 / 1920);
+    --darkwood-title: calc(100vw * 180 / 1920);
+    --darkwood-section: var(--darkwood-heading);
+    --darkwood-heading-tracking: calc(100vw * 2.99 / 1920);
+    --darkwood-cover-tracking: calc(100vw * 5.98 / 1920);
+    /* Native Subtitle style (not the Title/Hero style). */
+    --darkwood-subtitle: calc(100vw * 48 / 1920);
+    --darkwood-subtitle-tracking: calc(100vw * 1.59 / 1920);
+    /* Context uses the observed 34pt information style; Keynote has no overline role. */
+    --darkwood-context: calc(100vw * 34 / 1920);
+    --darkwood-header-gap: calc(100vw * 10 / 1920);
     --darkwood-body: clamp(1.25rem, 1.8vw, 1.75rem);
     --darkwood-small: 0.95rem;
     --darkwood-page-x: clamp(3.5rem, 6.5vw, 7rem);
-    --darkwood-page-top: clamp(3.5rem, 7vh, 5.75rem);
+    /* Title box y=40pt + Keynote text inset 121919 EMU / 12700. */
+    --darkwood-page-top: calc(100vw * 49.5999212598 / 1920);
     --darkwood-page-bottom: clamp(4.5rem, 9vh, 7rem);
     --darkwood-gap: clamp(1.5rem, 3vw, 3rem);
     --darkwood-radius: 0.45rem;
@@ -77,6 +82,39 @@
     justify-content: flex-start;
 }
 
+.dw-original-slide--content .dw-original-canvas {
+    height: 100dvh;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    justify-content: stretch;
+}
+
+.dw-original-body {
+    min-height: 0;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    padding-block: 1rem;
+    scrollbar-color: var(--darkwood-ink) var(--darkwood-white);
+}
+
+.dw-original-body-inner {
+    width: 100%;
+    flex-shrink: 0;
+    margin-block: auto;
+}
+
+.dw-original-body-inner > .dw-original-content,
+.dw-original-body-inner > .dw-original-lead {
+    margin-block: 0;
+}
+
+.dw-original-body-inner > .dw-original-lead + .dw-original-content {
+    margin-top: var(--darkwood-gap);
+}
+
 .dw-original-slide.dw-original-slide--section,
 .dw-original-slide.dw-original-slide--cover {
     background: var(--darkwood-blue);
@@ -99,12 +137,13 @@
 }
 
 .dw-original-overline {
-    margin: 0 0 1.1rem;
-    color: var(--darkwood-blue);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    margin: 0;
+    color: inherit;
+    font-family: var(--darkwood-font-reading);
+    font-size: var(--darkwood-context);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
 }
 
 .dw-original-slide--cover .dw-original-overline,
@@ -115,17 +154,24 @@
 
 .dw-original-title,
 .dw-original-heading,
-.dw-original-section-title {
+.dw-original-section-title,
+.dw-original-conclusion-title,
+.dw-original-subtitle {
     margin: 0;
-    font-family: var(--darkwood-font);
-    font-weight: 500;
-    letter-spacing: -0.018em;
+    font-family: var(--darkwood-font-reading);
+    font-weight: 400;
+    letter-spacing: var(--darkwood-heading-tracking);
+}
+
+.slidewire-theme-darkwood-original :is(.dw-original-title, .dw-original-heading, .dw-original-section-title, .dw-original-conclusion-title, .dw-original-subtitle) {
+    line-height: 1;
 }
 
 .dw-original-title {
-    max-width: 70rem;
+    max-width: 100%;
     font-size: var(--darkwood-title);
-    line-height: 1.03;
+    line-height: 1;
+    letter-spacing: var(--darkwood-cover-tracking);
 }
 
 .dw-original-heading {
@@ -134,16 +180,29 @@
     color: var(--darkwood-ink);
     text-align: center;
     font-size: var(--darkwood-heading);
-    line-height: 1.08;
+    line-height: 1;
 }
 
-.dw-original-content-header {
+.dw-original-header {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--darkwood-header-gap);
     text-align: center;
 }
 
-.dw-original-content-header .dw-original-overline {
-    color: var(--darkwood-muted);
+.dw-original-subtitle {
+    max-width: 74rem;
+    margin: 0;
+    color: inherit;
+    font-size: var(--darkwood-subtitle);
+    letter-spacing: var(--darkwood-subtitle-tracking);
+}
+
+.dw-original-header--conclusion {
+    align-items: flex-start;
+    text-align: left;
 }
 
 .dw-original-slide--content .dw-original-lead {
@@ -153,13 +212,13 @@
 .dw-original-section-title {
     max-width: 72rem;
     font-size: var(--darkwood-section);
-    line-height: 1.08;
+    line-height: 1;
 }
 
 .dw-original-lead {
     max-width: 58rem;
     margin: 1.5rem 0 0;
-    color: var(--darkwood-muted);
+    color: var(--darkwood-ink);
     font-family: var(--darkwood-font-reading);
     font-size: var(--darkwood-body);
     line-height: 1.42;
@@ -198,7 +257,7 @@
 .dw-original-column p,
 .dw-original-column li {
     margin: 0.45rem 0 0;
-    color: var(--darkwood-muted);
+    color: var(--darkwood-ink);
     font-family: var(--darkwood-font-reading);
     font-size: clamp(1.05rem, 1.55vw, 1.4rem);
     line-height: 1.42;
@@ -270,6 +329,8 @@
 }
 
 .dw-original-code-window {
+    --darkwood-code: #1d1f21;
+    --darkwood-code-bar: #292c2f;
     overflow: hidden;
     width: 100%;
     border: 1px solid #111;
@@ -305,6 +366,94 @@
 .dw-original-code-window pre {
     overflow: auto;
     padding: 1.5rem 1.8rem !important;
+}
+
+.slidewire-theme-darkwood-original a,
+.slidewire-theme-darkwood-original a:visited {
+    color: var(--darkwood-blue);
+    text-decoration: underline;
+}
+
+.slidewire-theme-darkwood-original a:hover,
+.slidewire-theme-darkwood-original a:active {
+    text-decoration-thickness: 0.15em;
+}
+
+.slidewire-theme-darkwood-original a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+.slidewire-theme-darkwood-original ::selection {
+    color: var(--darkwood-white);
+    background: var(--darkwood-blue);
+}
+
+/* Logos keep their historical source files; only their display palette changes. */
+.dw-original-logo {
+    filter: url('/darkwood/filters/tricolor.svg#darkwood-monochrome');
+}
+
+.dw-original-logo[data-background="blue"] {
+    filter: url('/darkwood/filters/tricolor.svg#darkwood-tricolor');
+}
+
+/* Vendor navigation lives beside the frames, outside the theme class. */
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) {
+    color: var(--darkwood-ink);
+    background: var(--darkwood-white);
+}
+
+html:has(.slidewire-frame.slidewire-theme-darkwood-original),
+body:has(.slidewire-frame.slidewire-theme-darkwood-original) {
+    background: var(--darkwood-white);
+    color: var(--darkwood-ink);
+}
+
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) .slidewire-frame::before {
+    background: none;
+}
+
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) .slidewire-controls {
+    color: var(--darkwood-navigation-ink, var(--darkwood-ink));
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) .slidewire-controls button {
+    color: inherit;
+    background: transparent;
+    border: 1px solid currentColor;
+    opacity: 1;
+    transition: none;
+}
+
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) .slidewire-controls button:hover:enabled {
+    border-width: 2px;
+    padding: calc(0.45rem - 1px) calc(0.65rem - 1px);
+}
+
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) .slidewire-controls button:active:enabled {
+    transform: scale(0.92);
+}
+
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) .slidewire-controls button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) .slidewire-controls button:disabled {
+    color: inherit;
+    background: transparent;
+    border-style: dashed;
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+.slidewire-shell:has(.slidewire-frame.is-active:is(.dw-original-slide--cover, .dw-original-slide--section, .dw-original-slide--cover-black)) {
+    --darkwood-navigation-ink: var(--darkwood-white);
 }
 
 .dw-original-accent {
@@ -347,15 +496,6 @@
     color: var(--darkwood-white);
 }
 
-.dw-original-pagination {
-    position: absolute;
-    left: 50%;
-    bottom: 3.6rem;
-    transform: translateX(-50%);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-}
-
 .dw-original-footer-brand {
     display: flex;
     align-items: center;
@@ -392,10 +532,13 @@
     object-fit: contain;
 }
 
-.dw-original-thanks-copy h2 {
+.dw-original-conclusion-title {
     margin: 0;
     font-size: var(--darkwood-heading);
-    font-weight: 500;
+    font-family: var(--darkwood-font-reading);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: var(--darkwood-heading-tracking);
 }
 
 .dw-original-thanks-copy p {

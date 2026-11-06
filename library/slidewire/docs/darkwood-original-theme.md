@@ -7,6 +7,13 @@ consultées en lecture seule. Seul le deck `symfony-ai-in-action` a été migré
 les 27 autres présentations et les workflows Navi restent inchangés. Cette
 spécification constitue le point d'arrêt avant une migration globale.
 
+Direction courante : **révision 5 du 2026-11-06**. Hiérarchie sémantique
+`p` de contexte facultatif → `h1` de titre → `h2` de sous-titre facultatif,
+navigation transparente et contenu centré sous l'en-tête. La palette
+`#3579F6` / `#FFFFFF` / `#000000` reste stricte hors des zones de code, où la
+coloration Slidewire d'origine est restaurée. Les comptes rendus précédents
+documentent les étapes antérieures ; la révision 5 fait autorité.
+
 ## Sources historiques inventoriées
 
 ### Thème canonique
@@ -509,7 +516,7 @@ distincts de ce compteur d'avancement.
 ### Titres et listes
 
 Le composant `content` place désormais son en-tête en haut par défaut. Le titre
-est centré, en encre noire (`#111111`), en Jost avec fallback Verdana ; son
+est centré, en encre noire, en Jost avec fallback Verdana ; son
 échelle est `clamp(2.4rem, 3.4vw, 3.4rem)`. Les marges appartiennent au canvas
 Darkwood : le padding supplémentaire des frames Slidewire est neutralisé pour
 ce thème. Les couvertures et sections conservent leurs compositions centrées
@@ -592,3 +599,485 @@ magick montage -label '%t' \
   -thumbnail 360x225 -tile 4x5 -geometry +6+8 -background '#e5e7eb' \
   storage/app/slide-renders/symfony-ai-in-action/revision-2/contact-sheet.png
 ```
+
+## Révision 3 — palette strictement tricolore et séparateurs simples
+
+### Palette courante
+
+Trois couleurs seulement : bleu `#3579F6`, blanc `#FFFFFF`, noir `#000000`.
+Les tokens de gris, papier cassé, bleu secondaire et code anthracite ont été
+supprimés de `darkwood-original.css`. La configuration du seul thème
+`darkwood-original` utilise désormais `text-black`. Les textes, sous-titres,
+listes, bordures, liens et sélections respectent ces trois couleurs.
+
+Les blocs de code ont un fond noir et du texte blanc. Phiki conserve la
+syntaxe et les scopes : mots-clés et noms en gras blanc, chaînes et constantes
+en bleu, commentaires en italique blanc. Le thème TextMate partagé est
+`resources/css/themes/darkwood-original-code.json` ; il fonctionne pour PHP,
+JavaScript et les autres grammaires prises en charge par Phiki. Le fallback
+sans coloration reste blanc sur noir. La barre de fenêtre utilise bleu,
+blanc et un cercle noir bordé de blanc.
+
+`App\Support\DarkwoodCodeHighlighter` est enregistré dans le provider de
+l'application et délègue intégralement au highlighter natif pour toute autre
+présentation. Il respecte le réglage de désactivation du highlighter. Le
+composant de deck `App\View\Components\Darkwood\Deck` établit le contexte
+avant le rendu des slots Blade, afin que les composants de code et Markdown
+reçoivent effectivement `darkwood-original`, puis nettoie ce contexte.
+Le test sur le HTML complet du pilote empêche le retour silencieux de
+Catppuccin. Aucun fichier `vendor` n'a été modifié.
+
+### Navigation, progression et états interactifs
+
+Les styles sont limités aux shells contenant des frames Darkwood Original.
+L'interface native Slidewire reste fonctionnelle, avec :
+
+- barre de progression bleue opaque de 6 px, piste blanche ;
+- panneau de navigation blanc avec bordure noire, sans flou ni ombre ;
+- bouton disponible noir, icône blanche ;
+- hover bleu, icône blanche ;
+- état pressé blanc, icône noire, bordure bleue ;
+- focus visible avec contour bleu ;
+- bouton désactivé blanc, icône noire et bordure noire discontinue, sans
+  diminution d'opacité, avec curseur d'indisponibilité.
+
+Les SVG héritent de `currentColor`. Les liens gardent un soulignement, renforcé
+au hover/active, et un contour de focus ; les sélections sont blanches sur bleu.
+Aucun dégradé ni transparence colorée n'est utilisé dans ces états.
+
+### Logos : mêmes sources, palette d'affichage normalisée
+
+Les trois PNG historiques restent inchangés et sélectionnés par surface dans
+`x-darkwood.logo`. Leur bleu raster d'origine n'est pas exactement `#3579F6`.
+Le composant indique donc sa surface via `data-background` et le CSS applique
+un filtre SVG partagé : `public/darkwood/filters/tricolor.svg`.
+
+Le logo sur bleu est ramené aux trois couleurs autorisées ; les variantes
+sur blanc/noir sont ramenées au noir et blanc. Le seuil alpha du filtre évite
+les pixels semi-transparents dans ces logos affichés. Les formes, proportions,
+positions et fichiers sources sont conservés. Ce filtre d'affichage remplace
+la règle « sans filtre » de la révision 2 ; aucune source historique ni copie
+PNG n'a été retouchée et aucun nouveau logo n'a été dessiné.
+
+### Séparateurs sans balise dédiée
+
+Le footer formate seulement les libellés éditoriaux commençant par un numéro :
+`12 / memory` devient `12 | memory`. L'expression est ancrée sur le début et
+réservée à cette structure, avec un espace de chaque côté du caractère.
+Les dates, chemins, URL, expressions PHP et textes tels que
+`Flow / Navi / Uniflow` sont conservés.
+
+Le compteur complet est porté par un seul élément sémantique `<output>` :
+`08 | 20`, alimenté par l'état natif `index` / `count`. Le séparateur est un
+simple caractère du texte, sans span ni composant dédié. La position et la
+pile typographique du footer sont conservées. Les 19 attributs `label` du
+pilote utilisent automatiquement ce format centralisé ; aucun remplacement
+global des `/` n'a été effectué.
+
+### Validation de la révision 3
+
+Rendus : `storage/app/slide-renders/symfony-ai-in-action/revision-3/`.
+
+- `slide-01.png` à `slide-20.png` : captures en 1440 × 900, DPR 1 ;
+- `contact-sheet.png` : planche contact actualisée, fond blanc et légendes noires ;
+- `check-blue.png`, `check-black.png`, `check-lists.png` : contrôles des logos
+  et listes HTML/Markdown ;
+- `navigation-hover.png`, `navigation-active.png`, `navigation-disabled.png` :
+  états interactifs de navigation ;
+- `validation.json` : mesures du rendu et audits de palette pour chaque slide.
+
+Le test navigateur `tests/Browser/darkwood-original.cjs` utilise
+`darkwood-palette.cjs` pour examiner les **styles calculés** de tous les éléments
+visibles, y compris SVG, `::before`, `::after`, `::marker` et `::selection`.
+Il contrôle texte, remplissages, traits, fonds, bordures peintes, contours,
+ombres, images de fond, filtres et opacités. Un fond entièrement transparent
+est traité comme une absence de peinture ; les couleurs partiellement
+transparentes et les opacités intermédiaires sont rejetées. Les styles inline
+du highlighter passent par ces mêmes contrôles.
+
+Le test injecte ensuite temporairement un SVG rouge et un pseudo-élément
+hors palette, vérifie que l'audit les détecte, puis les retire. Il exerce les
+états hover, pressé, focus et désactivé des contrôles, ainsi que ceux d'un lien
+et une sélection de texte. Les trois logos affichés sont aussi capturés
+séparément et leurs pixels RGBA vérifiés contre la palette exacte.
+
+L'audit CSS concerne les couleurs de peinture, et non les pixels intermédiaires
+que le navigateur produit normalement par anticrénelage des textes, traits et
+courbes. Cet anticrénelage ne correspond pas à l'ajout d'un token gris ou d'une
+couleur d'accent ; les pixels des logos filtrés sont, eux, contrôlés strictement.
+
+Les contrôles de la révision 2 restent actifs : 20 slides, progression réelle,
+compteur, libellés, titres centrés en haut, chargement des fontes/logos, navigation
+et absence de débordements/chevauchements du footer. Les tests Laravel couvrent
+également la palette du highlighter PHP et Markdown/JavaScript, les URL intactes
+et l'identité de sortie du highlighter natif sur un thème non concerné.
+
+Résultats du 2026-11-06 : build réussi, **7 tests Laravel / 27 assertions**
+réussis, 20 captures et trois fixtures validées, zéro violation de palette
+calculée, zéro erreur JavaScript/HTTP et aucun débordement détecté. La couverture
+de `flow-pipe`, capturée avant/après en 1440 × 900, conserve exactement le même
+HTML de frame et le même PNG ; aucun des 28 fichiers de présentation n'a été
+modifié par cette correction centralisée. La planche contact, les trois blocs
+PHP, les logos et les captures des états de navigation ont été examinés
+visuellement.
+
+Pour reproduire, reprendre les commandes Nix de la section précédente ; le test
+navigateur écrit désormais dans `revision-3`. Pour la planche contact, remplacer
+également `revision-2` par `revision-3` et utiliser `-background '#FFFFFF'`.
+Aucune des 27 autres présentations, aucune source historique, Navi ou VPS-4
+n'a été modifié. La validation visuelle humaine reste requise avant commit,
+push ou généralisation.
+
+## Révision 4 — métriques historiques, contenu centré et code natif
+
+### Mesures historiques effectives
+
+Les valeurs ci-dessous ont été lues dans une copie temporaire de
+`themes/darkwood/darkwood.key`, exportée avec Keynote vers un PPTX temporaire
+pour inspecter les styles résolus. Les PDF historiques ont été analysés avec
+`pdfplumber` en lecture seule, puis rendus pour les comparaisons visuelles.
+La copie, l'export et les mesures intermédiaires restent dans `/tmp` ; aucune
+source historique n'a été enregistrée ou modifiée.
+
+La page historique fait **1920 × 1080 points de présentation**. La police des
+titres réellement utilisés est **Verdana Regular**, graisse **400** ; le master
+générique contient aussi un placeholder 88 pt, mais les titres effectifs ont
+un style local à 90 pt. Les valeurs 88 pt du master ne doivent donc pas être
+utilisées pour reproduire ces titres.
+
+Mesures des compositions :
+
+- **Contenu** : 90 pt, interligne fixe 90 pt, espacement des lettres 2,99 pt,
+  paragraphes avant/après 0 pt, alignement centré. Dans l'export temporaire :
+  `ppt/slides/slide16.xml`, forme « Content In Two Columns »,
+  `a:lstStyle/a:lvl1pPr/a:defRPr sz="9000" spc="299"`,
+  `a:lnSpc/a:spcPts val="9000"` ; le gras hérité vaut `b="0"`.
+- **Section / titre simple** : 90 pt, interligne fixe 90 pt, lettres 2,99 pt.
+  Export, slide 2 « Presentation title » : `sz="9000"`, `spc="299"`,
+  `lnSpc=9000`. Son titre est centré verticalement dans sa composition propre.
+- **Couverture Hero** : 180 pt, interligne fixe 180 pt, lettres 5,98 pt.
+  Export, slide 1 « Hero » : `sz="18000"`, `spc="598"`, `lnSpc=18000`.
+  C'est la variante retenue pour le pilote, également utilisée par les
+  couvertures des présentations récentes examinées.
+- **Couverture standard alternative** : 90 pt, interligne 90 pt et lettres
+  2,99 pt. Elle existe dans le modèle historique ; elle ne remplace pas la
+  composition Hero choisie pour ce pilote.
+
+L'unité de `sz`, `spcPts` et `spc` dans cet export est le centième de point.
+La police se résout en Verdana dans `ppt/theme/theme1.xml` ; le master fournit
+la graisse normale. Les décalages observés entre glyphes dans le PDF confirment
+le tracking autour de 3 pt pour un titre 90 pt, avec les ajustements de kerning
+et l'arrondi propres au PDF.
+
+Pour un titre de contenu, le haut de la boîte est à **40 pt** ; son inset
+supérieur est **121919 EMU / 12700 = 9,5999212598 pt**. Le départ de la ligne
+est donc à **49,5999212598 pt**. Le modèle de colonnes possède une boîte de
+100 pt de haut ; d'autres boîtes de titre s'adaptent à leur contenu. Les marges
+de paragraphe avant/après sont nulles ; les contenus historiques utilisent des
+boîtes séparées, fréquemment centrées dans l'espace restant. Le bas de la zone
+de contenu n'est pas une marge fixe universelle du titre.
+
+Vérifications croisées dans les exports historiques :
+
+- `themes/darkwood/darkwood.pdf`, pages 1–3 : 180 pt pour Hero, 90 pt pour les
+  couvertures standard ; page 16 : titre de colonnes 90 pt ;
+- `slides/2024-08-21 chunk.pdf`, page 1 : couverture Verdana 180 pt ; page 2
+  « Why? » : titre de section 90 pt ;
+- `slides/2025-01-30 wave function collapse.pdf`, page 1 : couverture 180 pt
+  sur deux lignes ; pages 3–5 : titres de contenu 90 pt, boîte de glyphes à
+  `top=50,5 pt` dans le PDF.
+
+Les références sont consignées dans
+`tests/fixtures/darkwood-historical-metrics.json`, utilisées indépendamment
+par les assertions navigateur.
+
+### Correspondance CSS et échelle
+
+La conversion est **valeur source × largeur CSS / 1920**. Il ne faut pas
+écrire `font-size: 90pt` en CSS : le navigateur appliquerait alors la conversion
+physique 1 pt = 4/3 px, qui ne correspond pas à l'échelle de la présentation.
+
+À **1440 × 900** :
+
+- titre de contenu/section : **67,5 px**, interligne **67,5 px** ;
+- titre Hero : **135 px**, interligne **135 px** ;
+- espacement contenu/section : **2,2425 px** ; Hero : **4,485 px** ;
+- haut de la ligne de contenu : **37,1999409449 px** ;
+- graisse : **400**, `font-family: Verdana, Jost, …`.
+
+Les tokens CSS utilisent des `calc(100vw * valeur / 1920)`, sans clamp ni
+réduction arbitraire des titres longs. L'interligne est fixé à 1 pour ces
+styles avec une spécificité suffisante pour dépasser la règle native Slidewire
+à 1.2. Chrome a confirmé l'emploi réel de la fonte système Verdana via
+`CSS.getPlatformFontsForNode` ; le contrôle ne se limite pas au nom de la pile.
+
+L'échelle reste uniforme. La référence 16:9 produirait une hauteur de 810 px
+à 1440 px de large ; le viewport demandé de 900 px apporte 90 px supplémentaires
+à la mise en page verticale. Il n'y a ni étirement des lettres ni conversion
+par la hauteur. Les titres de contenu restent en haut, noirs et centrés ; les
+sections restent blanches sur bleu. Les couvertures conservent leur composition
+centrée avec sous-titre et footer. Le footer validé reste ancré au bas du
+viewport. Les libellés d'en-tête sont placés dans l'espace supérieur sans
+repousser la ligne du titre.
+
+### Zone de contenu réellement centrée
+
+`x-darkwood.content` sépare trois rôles : en-tête, zone `.dw-original-body`
+et footer absolu. Le canvas fait 100dvh et comporte deux lignes de grille :
+`auto minmax(0, 1fr)`. L'en-tête prend sa hauteur naturelle, y compris les
+retours à la ligne à la taille historique. La seconde ligne reçoit exactement
+la hauteur restante, au-dessus de la réserve du footer.
+
+Dans cette zone, `.dw-original-body-inner` possède des marges verticales auto.
+Les paragraphes, listes imbriquées, images, colonnes, schémas, code et
+compositions mixtes utilisent tous le même wrapper. Leur centre est celui de
+la zone disponible, et non celui de toute la slide. Le titre et le footer ne
+participent jamais à ce centrage. Les espacements internes nécessaires aux
+compositions mixtes sont conservés.
+
+Lorsque le contenu est trop haut, les marges auto retombent à zéro et seule
+la zone de contenu défile, avec le premier élément accessible dès le haut.
+Les tailles de police ne sont pas réduites ; le titre et le footer restent
+fixes. Le pilote tient entièrement sans défilement à 1440 × 900. Un test avec
+25 paragraphes supplémentaires vérifie le comportement dense et l'accès au bas
+du contenu. Les couvertures, sections et composition de conclusion conservent
+leurs layouts propres.
+
+### Navigation transparente et suppression du compteur
+
+Le conteneur natif `.slidewire-controls` utilise un vrai
+`background: transparent`, sans bordure, ombre ou backdrop-filter. Les boutons
+sont également transparents. Leurs contours individuels restent disponibles
+pour identifier les commandes, mais aucun panneau ne recouvre la slide.
+
+L'icône et le contour sont noirs sur contenu blanc, blancs sur couvertures ou
+sections bleues et sur couverture noire. Une variable de couleur est choisie
+par `:has(.slidewire-frame.is-active…)` ; aucun fond n'est simulé. Le hover
+renforce le contour, l'état pressé réduit légèrement la commande, le focus a
+un contour visible, et le désactivé garde son contour discontinu et son
+opacité 1. Les fonctions Alpine natives de navigation ne changent pas.
+
+Le compteur ajouté au-dessus des commandes a été retiré du markup : plus de
+`span` ni d'`output` de pagination, et suppression de `.dw-original-pagination`.
+Les informations historiques du footer restent présentes, notamment
+`12 | memory`, date, auteur et logo. La barre de progression supérieure native
+reste active et uniforme.
+
+### Coloration syntaxique originale et exception de palette
+
+Le commit **45713e1**, antérieur à la révision 3, constitue la référence Git.
+Il utilisait le moteur natif `CodeHighlighter`, configuré avec
+`Theme::CatppuccinMocha`. Les tokens et le fond `#1e1e2e` provenaient de Phiki ;
+la fenêtre utilisait `#1d1f21`, sa barre `#292c2f`, et ses trois pastilles
+`#ff5f57`, `#febc2e`, `#28c840`.
+
+Ces règles de code ont été restaurées de manière ciblée. Le highlighter
+spécifique à la révision 3, son JSON tricolore, sa liaison dans le provider et
+le composant de contexte devenu inutile ont été retirés. Le moteur, ses
+paramètres, le décodage des blocs Blade et le fallback sont à nouveau ceux de
+Slidewire. Aucun reset global ni modification de `vendor` n'a été effectué.
+
+L'audit conserve la palette stricte partout ailleurs. Seules les propriétés
+de **couleur** à l'intérieur de `.dw-original-code-window`, `pre.phiki` ou
+`pre.slidewire-code` sont exemptées, et leurs couleurs sont consignées à part
+sous `codeColors`. Les sélections, dégradés, ombres et opacités restent contrôlés.
+Un test injecte la même couleur interdite hors code puis dans un token : elle
+est rejetée dans le premier cas et acceptée uniquement dans le second.
+Les trois blocs PHP doivent porter `catppuccin-mocha`, avoir le fond natif et
+plus de trois couleurs de tokens. Les tests Laravel comparent aussi directement
+la sortie au highlighter natif.
+
+### Validation et livrables
+
+Répertoire hors Git :
+`storage/app/slide-renders/symfony-ai-in-action/revision-4/`.
+
+- `slide-01.png` à `slide-20.png` : 20 captures en 1440 × 900 ;
+- `contact-sheet.png` : planche contact de la révision 4 ;
+- `historical-comparison.png` : quatre comparaisons avec les PDF historiques,
+  à gauche les références et à droite les rendus du pilote ;
+- `navigation-blue.png`, `navigation-black.png`, `navigation-hover.png`,
+  `navigation-active.png`, `navigation-disabled.png` : contrôles sur les fonds
+  et états demandés ; le fond noir est une fixture temporaire en navigateur,
+  sans slide supplémentaire dans le pilote ;
+- `dense-content.png` : cas de test du défilement de contenu dense ;
+- `check-blue.png`, `check-black.png`, `check-lists.png` : variantes et listes ;
+- `validation.json` : mesures de typographie, centrage, code, navigation,
+  progression et palette.
+
+Build Vite réussi. Les **7 tests Laravel / 25 assertions** passent. Le test
+frontend Playwright vérifie les 20 slides, les tailles issues de la fixture
+historique, le centrage à moins de 1 px, la transparence calculée des commandes,
+l'absence de markup de pagination, les états interactifs, la navigation clavier,
+les trois blocs PHP, les libellés, listes, logos et l'absence de débordement.
+Le dépôt ne propose pas d'autre script de test frontend dans `package.json`.
+
+Aucune des 27 autres présentations n'a été modifiée. Le témoin `flow-pipe`
+conserve exactement le même HTML de frame et le même PNG qu'avant les
+modifications. La planche des 20 slides et les détails code/listes/navigation
+ont été examinés visuellement. Les comparaisons historiques gardent la même
+échelle horizontale ; leur hauteur peut différer (16:9 source, 1440 × 900 cible).
+
+Pour reproduire, utiliser les commandes Nix et Playwright décrites plus haut ;
+le test écrit maintenant dans **revision-4**. La planche contact utilise le
+même montage 4 × 5 sur fond blanc. Aucune migration globale, aucun commit ou
+push n'a été effectué. Les rendus restent soumis à validation visuelle humaine.
+
+## Révision 5 — rôles éditoriaux et hiérarchie sémantique
+
+### Ce que l'analyse des sources confirme, et ce qu'elle ne confirme pas
+
+L'analyse a été reprise à partir des **formes de texte réellement utilisées**,
+pas des classes HTML du pilote ni du placeholder générique de Keynote. Les
+sources historiques sont des documents Keynote/PDF : elles ne contiennent
+aucune balise `p`, `h1` ou `h2`. La correspondance HTML est donc une décision
+sémantique explicite, appuyée sur les rôles Title, Subtitle et Hero observés.
+
+La forme native **Subtitle**, inspectée dans l'export temporaire de
+`darkwood.key` sur les slides 1, 2 et 9, donne : `sz=4800`,
+`lnSpc/spcPts=4800`, `spc=159`, alignement centré et insets de 127000 EMU
+(10 pt). Sa police héritée est Verdana Regular. Les PDF du modèle, ainsi que
+le « In PHP » des couvertures de Chunk et Wave Function Collapse, confirment
+48 pt. C'est cette règle qui s'applique désormais aux véritables sous-titres,
+**pas 90 pt ou 180 pt**.
+
+Les formes Title de contenu/section restent à 90 pt et la forme Hero à 180 pt :
+ces correspondances ont été reconfirmées dans les formes nommées du thème et
+les exemples récents. Les anciennes longues phrases du pilote ne reçoivent
+plus le style Title lorsqu'elles expliquent simplement un sujet nommé.
+
+Aucune forme ou règle historique autonome de « surtitre » n'a été identifiée.
+Il serait donc incorrect de présenter sa taille comme une mesure d'un surtitre
+historique. Pour les trois véritables indications de contexte du pilote, la
+révision 5 **adapte explicitement** le style informatif observé à 34 pt :
+Verdana normal, interligne 100 %, tracking nul. Cette taille est attestée pour
+les informations de présentation ; son emploi au-dessus d'un titre est une
+adaptation éditoriale, pas un emplacement retrouvé dans Keynote.
+
+### Tableau des correspondances historiques / Blade
+
+Toutes les conversions utilisent `valeur source × 1440 / 1920` ; les unités
+sont des points du canvas historique, pas des points physiques CSS. Le rôle
+est choisi avant la taille.
+
+| Rôle observé dans les sources | Élément sémantique et composant | Taille source → CSS à 1440 px | Interligne source → CSS | Espacement des lettres source → CSS | Graisse, alignement et espacement |
+| --- | --- | --- | --- | --- | --- |
+| Style informatif 34 pt ; aucun rôle de surtitre nommé retrouvé | `p.dw-overline`, facultatif, dans `x-darkwood.heading` ; adaptation déclarée | 34 pt → 25,5 px | 34 pt → 25,5 px | 0 pt → 0 px | Verdana 400 ; centré ; marge propre 0 ; suit le flux normal, sans position absolue ni capitalisation imposée |
+| Title de contenu, « Content In Two Columns » ; titres de contenu de Wave Function Collapse | `h1.dw-original-heading`, via `x-darkwood.content` | 90 pt → 67,5 px | 90 pt → 67,5 px | 2,99 pt → 2,2425 px | Verdana 400 ; noir, centré ; paragraphes avant/après 0 ; boîte source à y=40 pt, inset supérieur 9,5999212598 pt |
+| Subtitle natif, présent sur le modèle Hero, la couverture standard et la slide image | `h2.dw-original-subtitle`, facultatif, partagé par tous les layouts | 48 pt → 36 px | 48 pt → 36 px | 1,59 pt → 1,1925 px | Verdana 400 ; centré, couleur héritée du fond ; paragraphes avant/après 0 ; insets natifs de 10 pt |
+| Title de section / « Presentation title », exemple « Why? » dans Chunk | `h1.dw-original-section-title`, via `x-darkwood.section` | 90 pt → 67,5 px | 90 pt → 67,5 px | 2,99 pt → 2,2425 px | Verdana 400 ; centré ; blanc sur bleu pour le pilote ; composition centrale de section conservée |
+| Hero, confirmé par les couvertures de Chunk et Wave Function Collapse | `h1.dw-original-title`, via `x-darkwood.cover` | 180 pt → 135 px | 180 pt → 135 px | 5,98 pt → 4,485 px | Verdana 400 ; centré ; sous-titre au style Subtitle 48 pt, pas au style Hero |
+| Composition de conclusion sur blanc, avec copie à côté du visuel | `h1.dw-original-conclusion-title` puis `h2.dw-original-subtitle` | Titre 90 pt → 67,5 px ; sous-titre 48 pt → 36 px | Respectivement 67,5 px / 36 px | Respectivement 2,2425 px / 1,1925 px | Verdana 400 ; alignement à gauche, exception de composition maintenue |
+
+Les formes historiques sont des boîtes séparées : le modèle place parfois
+Subtitle sous le titre de couverture, parfois sous une image. Il n'existe pas
+une marge universelle « h1 vers h2 » dans ces sources. Le header réutilisable
+adopte donc le **pas mesuré de 10 pt des insets de Subtitle**, soit 7,5 px à
+1440 px, entre ses éléments. Ce choix d'adaptation est distingué des tailles
+et interlignes effectivement mesurés. Les marges CSS propres des trois éléments
+sont nulles ; aucun ancien margin de `p` ne fausse cette grille.
+
+Les textes multilignes conservent leur taille et leurs avances de ligne fixes.
+Les mots reviennent naturellement à la ligne dans la largeur disponible ;
+aucun clamp de taille ni réduction à la volée n'est appliqué. Le long titre
+Hero de Wave Function Collapse confirme ce comportement sur deux lignes.
+Les mesures et leur provenance figurent dans
+`tests/fixtures/darkwood-historical-metrics.json`.
+
+### Réexamen éditorial des vingt slides
+
+Le détail attendu par slide est consigné dans
+`tests/fixtures/darkwood-pilot-headings.json`, utilisé par les tests HTML et
+navigateur. La réaffectation est la suivante :
+
+- 1 : « Symfony AI in Action » reste le titre Hero ; l'événement est un contexte
+  en `p`, la phrase descriptive devient un vrai `h2`.
+- 2 : « Le problème » nomme le sujet en `h1` ; la phrase sur buzzwords/contrôle
+  est le sous-titre ; l'explication longue reste dans le contenu.
+- 3 : « Vision » est le titre ; la phrase sur la stack est le sous-titre.
+- 4 : « Les briques » nomme la section ; « Une stack, pas un helper HTTP. »
+  est le sous-titre ; l'inventaire des composants reste du contenu.
+- 5 : « Platform » est le titre, sa fonction d'abstraction est le sous-titre.
+- 6 : « Le code applicatif reste stable. » reste le véritable titre. « Même
+  intention, modèle différent » décrit le contexte de comparaison et reste
+  un `p`. Cette slide n'a pas de sous-titre artificiel.
+- 7 : « Streaming » est le titre ; la phrase explicative est le sous-titre.
+- 8 : « Multimodal » nomme la section ; la phrase sur l'entrée/sortie est son
+  sous-titre. La liste des médias et l'explication du pipeline restent du contenu.
+- 9 : « Structured Output » est le titre ; le besoin d'objets fiables est le
+  sous-titre.
+- 10 : « Agent » est le titre ; la définition de sa boucle est le sous-titre.
+- 11 : « Tool Calling » est le titre ; la frontière métier est le sous-titre.
+- 12 : « Human in the Loop » est le titre ; la décision de l'application est
+  le sous-titre.
+- 13 : « Memory » est le titre ; sa provenance applicative est le sous-titre.
+- 14 : « Store » est le titre ; l'amont du RAG est le sous-titre.
+- 15 : « RAG » est le titre ; le contexte vérifiable est le sous-titre.
+- 16 : « Multi-agent » est le titre ; l'orchestration lisible est le sous-titre.
+- 17 : « MCP » est le titre ; l'interopérabilité est le sous-titre.
+- 18 : « Analyse Darkwood » désigne un point de vue et reste un contexte en
+  `p`. La phrase sur l'orchestration est le vrai titre ; les questions sont
+  son sous-titre.
+- 19 : « Stack cible » est le titre ; la liste Symfony AI/MCP/Flow/Navi/Uniflow
+  est le sous-titre.
+- 20 : la phrase de conclusion reste le titre, son explication devient un `h2` ;
+  la composition asymétrique est conservée.
+
+Les **45 textes d'origine** portés par les attributs title/subtitle/overline/lead
+ont été vérifiés comme présents après réaffectation, sans réécriture. Les
+puces, le PHP, les schémas et les libellés du footer ne changent pas.
+
+### Composants et composition verticale
+
+Le composant commun `x-darkwood.heading` produit un `<header>` avec, dans cet
+ordre, un `p` facultatif, un unique `h1`, puis un `h2` facultatif. Le titre doit
+être non vide ; les valeurs facultatives nulles, vides ou composées d'espaces
+ne produisent aucune balise. Aucun span/div ne simule un titre. Les colonnes
+conservent leurs `h3`, subordonnés au titre et au sous-titre de la slide.
+
+Les layouts content, cover, section et conclusion utilisent ce même composant.
+Le surtitre fait partie du flux normal en haut de l'en-tête : la position
+absolue de la révision 4 a été supprimée. Le titre est suivi de son sous-titre ;
+la hauteur complète de cet ensemble est réservée par la première ligne de
+la grille. Le contenu reste centré dans la seconde ligne, sous l'en-tête et
+au-dessus de la réserve du footer. Les cas denses gardent le comportement de
+défilement interne vérifié en révision 4. Couvertures et sections gardent leur
+composition centrale, la conclusion son alignement particulier.
+
+### Validation de la révision 5
+
+Rendus hors Git :
+`storage/app/slide-renders/symfony-ai-in-action/revision-5/`.
+
+- `slide-01.png` à `slide-20.png` : 20 captures en 1440 × 900, DPR 1 ;
+- `contact-sheet.png` : planche contact de la révision 5 ;
+- `historical-comparison.png` : quatre rapprochements avec les PDF historiques,
+  pour les tailles Title/Subtitle, Hero, les sections et le contenu ;
+- `check-blue.png`, `check-black.png`, `check-lists.png` : fixtures de layouts ;
+- les captures navigation et dense-content conservent les contrôles des
+  propriétés précédemment validées ;
+- `validation.json` : structure et ordre des balises, textes des titres,
+  métriques de `p`/`h1`/`h2`, centrage, code, palette et navigation.
+
+Les tests vérifient individuellement les vingt titres, leurs trois véritables
+contextes et leurs dix-neuf sous-titres, sans balise vide ni `h1` concurrent.
+Ils contrôlent les tailles, graisses, interlignes, familles, tracking, couleurs
+et ordre visuel, ainsi que la hauteur réelle disponible pour le contenu.
+Le cas sans sous-titre est vérifié sur la slide 6 et sur les fixtures.
+
+Les autres contrôles restent actifs : palette tricolore hors du code,
+Catppuccin Mocha sur les trois blocs PHP, navigation transparente sans compteur,
+barre bleue, logos adaptés au fond, listes pleines/creuses, séparateurs `|`,
+footer, absence de débordements et comportement dense.
+
+Résultats du 2026-11-06 : build Vite réussi, **9 tests Laravel / 150 assertions**
+réussis et les 20 captures validées par le test navigateur. Aucun débordement,
+erreur JavaScript/HTTP ou violation de palette hors code n'a été détecté.
+La planche contact et les détails des slides 3, 6, 8, 18 et 20 ont été revus.
+Le témoin non migré `flow-pipe` conserve le même HTML et le même PNG avant/après.
+
+Reproduction : mêmes commandes Nix, build Vite, tests Laravel et Playwright
+que précédemment. Le test navigateur écrit maintenant dans **revision-5**.
+Aucune source historique, aucun des 27 autres decks, Navi ou VPS-4 n'a été
+modifié. La généralisation reste conditionnée à la validation visuelle humaine ;
+aucun commit ni push n'a été effectué.

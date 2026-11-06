@@ -6,9 +6,7 @@
 ])
 
 <footer class="dw-original-footer">
-    <span>{{ $label ?? $date }}</span>
-    <span class="dw-original-pagination" aria-label="Progression"
-        x-text="`${String(index + 1).padStart(2, '0')} | ${String(count).padStart(2, '0')}`"></span>
+    <span class="dw-original-footer-label">{{ $label === null ? $date : preg_replace('/^(\d+)\s*\/\s*(.+)$/u', '$1 | $2', $label) }}</span>
     <span class="dw-original-footer-brand">
         <span>{{ $author }}</span>
         @if ($logo)

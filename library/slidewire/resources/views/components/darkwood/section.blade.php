@@ -6,13 +6,7 @@
 ])
 
 <x-darkwood.slide variant="section" {{ $attributes }}>
-    @if ($overline)
-        <p class="dw-original-overline">{{ $overline }}</p>
-    @endif
-    <h2 class="dw-original-section-title">{{ $title }}</h2>
-    @if ($subtitle)
-        <p class="dw-original-lead">{{ $subtitle }}</p>
-    @endif
+    <x-darkwood.heading :title="$title" :subtitle="$subtitle" :overline="$overline" variant="section" />
     {{ $slot }}
     <x-darkwood.footer :label="$label" />
 </x-darkwood.slide>

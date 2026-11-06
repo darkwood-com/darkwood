@@ -81,10 +81,10 @@ return [
             text: new ThemeFont(font: 'Inter', color: 'text-slate-600', size: 'text-lg'),
         ),
         'darkwood-original' => new ThemeConfig(
-            background: 'bg-white text-zinc-950',
+            background: 'bg-white text-black',
             highlightTheme: Theme::CatppuccinMocha,
-            title: new ThemeFont(font: 'Jost', color: 'text-zinc-950', size: 'text-4xl'),
-            text: new ThemeFont(font: 'Jost', color: 'text-zinc-900', size: 'text-lg'),
+            title: new ThemeFont(font: 'Jost', color: 'text-black', size: 'text-4xl'),
+            text: new ThemeFont(font: 'Jost', color: 'text-black', size: 'text-lg'),
         ),
     ],
 
