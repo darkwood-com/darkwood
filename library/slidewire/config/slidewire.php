@@ -18,7 +18,7 @@ return [
     ],
 
     'slides' => new SlidesConfig(
-        theme: 'darkwood-original',
+        theme: 'darkwood',
         showControls: true,
         showProgress: true,
         showFullscreenButton: true,
@@ -31,24 +31,23 @@ return [
         autoSlidePauseOnInteraction: true,
         highlight: new HighlightConfig(
             enabled: true,
-            theme: Theme::CatppuccinMocha,
-            font: 'JetBrainsMono',
+            theme: Theme::DarkPlus,
+            font: 'JetBrains Mono',
             fontSize: 'text-base',
         ),
     ),
 
     'themes' => [
-        'darkwood-original' => new ThemeConfig(
+        'darkwood' => new ThemeConfig(
             background: 'bg-white text-black',
-            highlightTheme: Theme::CatppuccinMocha,
+            highlightTheme: Theme::DarkPlus,
             title: new ThemeFont(font: 'Jost', color: 'text-black', size: 'text-4xl'),
             text: new ThemeFont(font: 'Jost', color: 'text-black', size: 'text-lg'),
         ),
     ],
 
     'fonts' => [
-        'Inter' => new FontConfig(source: FontSource::Google, weights: [400, 600, 700]),
-        'JetBrainsMono' => new FontConfig(source: FontSource::Google, weights: [400, 700]),
+        'JetBrains Mono' => new FontConfig(source: FontSource::System),
         'Jost' => new FontConfig(source: FontSource::System),
         'Verdana' => new FontConfig(source: FontSource::System),
     ],

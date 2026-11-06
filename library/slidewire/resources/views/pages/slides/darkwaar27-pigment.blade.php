@@ -1,28 +1,59 @@
-{{-- Darkwaar27: Pigment — Rotation, Color Algebra & Deterministic Puzzles --}}
-{{-- Route: /slides/darkwaar27-pigment --}}
-{{-- Source: tasks/#2ee84a_darkwaar27/article.md --}}
-<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade">
 
-{{-- 1 · TITLE --}}
-    <x-slidewire::slide class="dw-slide pg">
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-title',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-title',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle pg-sub',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Darkwaar27
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Pigment
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+Rotation, Color Algebra &amp; Deterministic Puzzles
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
 <style>
     .slidewire-frame.pg,
-    .slidewire-frame:has(.pg) { overflow: hidden; padding: 1rem 1.25rem 1.1rem; }
+    .slidewire-frame:has(.pg) { overflow: hidden; }
     .slidewire-frame.pg,
     article.pg,
     .pg.dw-slide {
-        --pg-bg: #14110e;
-        --pg-board: #2a241c;
-        --pg-red: #d24a3a;
-        --pg-yellow: #e2b134;
-        --pg-blue: #3c6fd6;
-        --pg-orange: #e07a2f;
-        --pg-purple: #8a4bb5;
-        --pg-green: #3e9a5a;
-        --pg-white: #f4efe4;
-        --pg-black: #1a1a1a;
-        --pg-muted: #a89a88;
-        --pg-line: rgba(244, 239, 228, .16);
+        --pg-bg: var(--dw-blue);
+        --pg-board: var(--dw-blue);
+        --pg-red: var(--dw-blue);
+        --pg-yellow: var(--dw-blue);
+        --pg-blue: var(--dw-blue);
+        --pg-orange: var(--dw-blue);
+        --pg-purple: var(--dw-blue);
+        --pg-green: var(--dw-blue);
+        --pg-white: var(--dw-blue);
+        --pg-black: var(--dw-blue);
+        --pg-muted: var(--dw-blue);
+        --pg-line: var(--dw-blue);
         min-height: 100%;
         height: 100%;
         max-height: 100%;
@@ -42,7 +73,6 @@
     }
     .pg .dw-wrap--top { justify-content: flex-start; padding-top: 18px; }
     .pg-kicker {
-        font-size: 13px;
         font-weight: 700;
         letter-spacing: .16em;
         text-transform: uppercase;
@@ -50,29 +80,24 @@
     }
     .pg-title {
         margin: 12px 0 0;
-        font-size: clamp(42px, 5.2vw, 78px);
         line-height: .94;
         font-weight: 700;
     }
     .pg-line {
         margin: 0;
-        font-size: clamp(28px, 3.2vw, 48px);
         line-height: 1.05;
         font-weight: 700;
     }
     .pg-sub {
         margin: 14px 0 0;
-        font-size: clamp(17px, 1.6vw, 24px);
         line-height: 1.3;
     }
     .pg-take {
         margin: 18px 0 0;
-        font-size: clamp(20px, 2vw, 28px);
         font-weight: 700;
     }
     .pg-link {
-        border-bottom: 1px solid rgba(226, 177, 52, .45);
-        font-size: clamp(16px, 1.4vw, 20px);
+        border-bottom: var(--dw-border-width) solid var(--dw-blue);
         text-decoration: none;
     }
     .pg-row {
@@ -89,7 +114,7 @@
         grid-template-rows: repeat(5, var(--pg-cell, 36px));
         gap: 3px;
         padding: 8px;
-        border: 1px solid var(--pg-line);
+        border: var(--dw-border-width) solid var(--pg-line);
         width: max-content;
     }
     .pg-cell {
@@ -97,7 +122,6 @@
         display: grid;
         place-items: center;
     }
-    .pg-cell.is-sealed { }
     .pg-cell.is-die { z-index: 2; }
     .pg-die-token {
         position: absolute;
@@ -106,15 +130,14 @@
         place-items: center;
         font-size: calc(var(--pg-cell, 36px) * .28);
         font-weight: 700;
-        border: 1px solid rgba(244, 239, 228, .35);
+        border: var(--dw-border-width) solid var(--dw-blue);
     }
     .pg-mark {
         position: absolute;
         inset: 10%;
-        border: 2px solid var(--pg-white);
+        border: var(--dw-border-width) solid var(--pg-white);
         display: grid;
         place-items: center;
-        font-size: calc(var(--pg-cell, 36px) * .26);
         font-weight: 700;
         pointer-events: none;
         z-index: 1;
@@ -136,11 +159,9 @@
         height: 42px;
         display: grid;
         place-items: center;
-        border: 1px solid var(--pg-line);
-        font-size: 14px;
+        border: var(--dw-border-width) solid var(--pg-line);
     }
     .pg-swatch span {
-        font-size: 11px;
         letter-spacing: .08em;
         text-transform: uppercase;
     }
@@ -152,20 +173,16 @@
     }
     .pg-btn {
         appearance: none;
-        border: 1px solid var(--pg-line);
+        border: var(--dw-border-width) solid var(--pg-line);
         font: inherit;
-        font-size: 14px;
         font-weight: 700;
         letter-spacing: .08em;
         text-transform: uppercase;
         padding: 10px 14px;
         cursor: pointer;
     }
-    .pg-btn:hover { }
-    .pg-btn.is-accent { }
     .pg-status {
         margin: 12px 0 0;
-        font-size: clamp(15px, 1.35vw, 20px);
         min-height: 1.4em;
     }
     .pg-faces {
@@ -176,13 +193,12 @@
         width: min(420px, 100%);
     }
     .pg-face-card {
-        border: 1px solid var(--pg-line);
+        border: var(--dw-border-width) solid var(--pg-line);
         padding: 10px;
         display: grid;
         gap: 8px;
     }
     .pg-face-card span {
-        font-size: 12px;
         letter-spacing: .12em;
         text-transform: uppercase;
     }
@@ -190,12 +206,11 @@
         display: grid;
         place-items: center;
         min-height: 48px;
-        font-size: 18px;
     }
     .pg-code {
         margin: 14px 0 0;
         padding: 16px 18px;
-        border: 1px solid var(--pg-line);
+        border: var(--dw-border-width) solid var(--pg-line);
         font-family: var(--font-mono);
         font-size: clamp(13px, 1.15vw, 16px);
         line-height: 1.45;
@@ -214,9 +229,8 @@
         border-radius: 50%;
         display: grid;
         place-items: center;
-        font-size: 42px;
         font-weight: 700;
-        border: 3px solid rgba(244, 239, 228, .35);
+        border: var(--dw-border-width) solid var(--dw-blue);
     }
     .pg-pipe {
         display: flex;
@@ -226,9 +240,8 @@
         margin-top: 22px;
     }
     .pg-pipe span {
-        border: 1px solid var(--pg-line);
+        border: var(--dw-border-width) solid var(--pg-line);
         padding: 12px 14px;
-        font-size: clamp(13px, 1.2vw, 17px);
         font-weight: 700;
         letter-spacing: .04em;
     }
@@ -245,7 +258,6 @@
     }
     .pg-pair h3 {
         margin: 0 0 10px;
-        font-size: 14px;
         letter-spacing: .12em;
         text-transform: uppercase;
     }
@@ -257,7 +269,7 @@
         width: 100%;
     }
     .pg-level {
-        border: 1px solid var(--pg-line);
+        border: var(--dw-border-width) solid var(--pg-line);
         padding: 12px 10px;
         display: grid;
         gap: 10px;
@@ -265,12 +277,8 @@
         text-align: center;
     }
     .pg-level b {
-        font-size: 13px;
         letter-spacing: .06em;
         text-transform: uppercase;
-    }
-    .pg-level span {
-        font-size: 13px;
     }
     .pg-arch {
         display: grid;
@@ -280,7 +288,7 @@
         width: 100%;
     }
     .pg-arch .pg-arch-card {
-        border: 1px solid var(--pg-line);
+        border: var(--dw-border-width) solid var(--pg-line);
         padding: 18px 16px;
         min-height: 160px;
     }
@@ -292,7 +300,6 @@
     }
     .pg-arch p {
         margin: 0;
-        font-size: 16px;
         line-height: 1.4;
     }
     .pg-lessons {
@@ -303,9 +310,8 @@
     }
     .pg-lessons li {
         list-style: none;
-        border-left: 3px solid var(--pg-yellow);
+        border-left: var(--dw-border-width) solid var(--pg-yellow);
         padding: 10px 0 10px 16px;
-        font-size: clamp(18px, 1.7vw, 24px);
         font-weight: 700;
     }
     .pg-hero {
@@ -317,7 +323,6 @@
         position: absolute;
         right: 4%;
         top: 14%;
-        opacity: .95;
     }
     .pg-footer {
         position: absolute;
@@ -328,15 +333,12 @@
         justify-content: space-between;
         align-items: center;
         padding: 0 8px;
-        font-size: 13px;
         letter-spacing: .08em;
         text-transform: uppercase;
         z-index: 2;
     }
-    .pg-footer img { width: 28px; height: 28px; opacity: .85; }
+    .pg-footer img { width: 28px; height: 28px; }
     .pg-eq {
-        font-family: var(--font-mono);
-        font-size: clamp(16px, 1.5vw, 22px);
         margin: 16px 0 0;
     }
     .pg-chip-row {
@@ -346,9 +348,8 @@
         margin-top: 14px;
     }
     .pg-chip {
-        border: 1px solid var(--pg-line);
+        border: var(--dw-border-width) solid var(--pg-line);
         padding: 8px 12px;
-        font-size: 14px;
         font-weight: 700;
     }
     .pg-chip b { display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -2px; }
@@ -372,27 +373,64 @@
         .pg-btn { transition: none; }
     }
 </style>
-        <section class="dw-wrap" data-dw-motion="pg-title">
+        <section class="dw-wrap">
             <div class="pg-hero-board" data-pg-board="title"></div>
             <div class="pg-hero" data-pg-copy>
-                <p class="pg-kicker">Darkwaar27</p>
-                <h1 class="pg-title">Pigment</h1>
-                <p class="pg-sub">Rotation, Color Algebra &amp; Deterministic Puzzles</p>
-                <p class="pg-take" style="margin-top:28px;">One die. Six faces. Twenty-five cells.</p>
-                <p style="margin-top:18px;"><a class="pg-link" href="https://darkwoodcom.itch.io/darkwaar27" target="_blank" rel="noopener">darkwoodcom.itch.io/darkwaar27</a></p>
+
+
+
+                <p class="pg-take" style="margin-top:28px">One die. Six faces. Twenty-five cells.</p>
+                <p style="margin-top:18px"><a class="pg-link" href="https://darkwoodcom.itch.io/darkwaar27" target="_blank" rel="noopener">darkwoodcom.itch.io/darkwaar27</a></p>
             </div>
         </section>
-        <footer class="pg-footer"><span>Darkwood</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
-    </x-slidewire::slide>
 
-    {{-- 2 · ONE DIE, ONE RULE --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-tip">
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="Darkwood" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-tip',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle pg-sub',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+One die, one rule
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Movement determines<br>the pigment.
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+Tip onto a neighbor. Rotate 90°. The down face stains the cell.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
             <div class="pg-row">
                 <div data-pg-fade>
-                    <p class="pg-kicker">One die, one rule</p>
-                    <h2 class="pg-line">Movement determines<br>the pigment.</h2>
-                    <p class="pg-sub">Tip onto a neighbor. Rotate 90°. The down face stains the cell.</p>
+
+
+
                     <div class="pg-controls">
                         <button type="button" class="pg-btn is-accent" data-pg-tip="E">East</button>
                         <button type="button" class="pg-btn" data-pg-tip="S">South</button>
@@ -407,17 +445,49 @@
                     <div class="pg-compass" data-pg-compass="tip"></div>
                 </div>
             </div>
-            <x-slidewire::fragment><span class="sr-only">east tip</span></x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">east tip</span>
+</div>
         </section>
-        <footer class="pg-footer"><span>02 / tip</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 3 · THE SIX FACES --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap dw-wrap--top" data-dw-motion="pg-die">
-            <p class="pg-kicker">The six faces</p>
-            <h2 class="pg-line">Orientation is the resource.</h2>
-            <div class="pg-row" style="margin-top:18px;align-items:flex-start;">
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="02 | tip" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-die',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+The six faces
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Orientation is the resource.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
+            <div class="pg-row" style="margin-top:18px;align-items:flex-start">
                 <div>
                     <div class="pg-faces" data-pg-faces></div>
                     <p class="pg-status" data-pg-status="die">Initial orientation. Tip any direction.</p>
@@ -431,40 +501,116 @@
                 </div>
                 <div>
                     <div class="pg-compass" data-pg-compass="die"></div>
-                    <div class="pg-chip-row" style="margin-top:22px;">
-                        <span class="pg-chip"><b style="background:#2a241c"></b>Null ↔ Black</span>
-                        <span class="pg-chip"><b style="background:#d24a3a"></b>Red ↔ Blue</span>
-                        <span class="pg-chip"><b style="background:#e2b134"></b>Yellow ↔ White</span>
+                    <div class="pg-chip-row" style="margin-top:22px">
+                        <span class="pg-chip"><b></b>Null ↔ Black</span>
+                        <span class="pg-chip"><b></b>Red ↔ Blue</span>
+                        <span class="pg-chip"><b></b>Yellow ↔ White</span>
                     </div>
-                    <p class="pg-sub" style="max-width:420px;">Opposites stay fixed. Every tip is a permutation of six slots.</p>
+                    <p class="pg-sub" style="max-width:420px">Opposites stay fixed. Every tip is a permutation of six slots.</p>
                 </div>
             </div>
-            <x-slidewire::fragment><span class="sr-only">roll east</span></x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">roll east</span>
+</div>
         </section>
-        <footer class="pg-footer"><span>03 / faces</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 4 · ROTATION IS A PERMUTATION --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-perm">
-            <p class="pg-kicker" data-pg-fade>Rotation is a permutation</p>
-            <h2 class="pg-line" data-pg-fade>No physics. Just a table.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="03 | faces" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-perm',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+  'data-pg-fade' => '',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+  'data-pg-fade' => '',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Rotation is a permutation
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+No physics. Just a table.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <p class="pg-eq" data-pg-fade>East → D ← E · U ← W · E ← U · W ← D</p>
             <p class="pg-sub" data-pg-fade>North and South unchanged.</p>
-            <pre class="pg-code" data-pg-fade>"E":
-    return {"D": e, "U": w, "N": n, "S": s, "E": u, "W": d}</pre>
+
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_3_0'
+"E":
+    return {"D": e, "U": w, "N": n, "S": s, "E": u, "W": d}
+SW_CODE_3_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-pg-fade' => '',
+));
+@endphp
+<x-darkwood.code language="text" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+
             <p class="pg-take" data-pg-fade>The next state is computed, then drawn.</p>
         </section>
-        <footer class="pg-footer"><span>04 / permutation</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 5 · COLOR ALGEBRA --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-mix">
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="04 | permutation" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-mix',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Color algebra
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+next_stain = mix(existing, face)
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
             <div class="pg-row">
                 <div>
-                    <p class="pg-kicker">Color algebra</p>
-                    <h2 class="pg-line">next_stain = mix(existing, face)</h2>
+
+
                     <div class="pg-controls">
                         <button type="button" class="pg-btn" data-pg-mix="0">R + Y</button>
                         <button type="button" class="pg-btn" data-pg-mix="1">R + B</button>
@@ -476,28 +622,68 @@
                     <p class="pg-status" data-pg-mix-label>Yellow + Blue → Green</p>
                 </div>
                 <div class="pg-mix-stage">
-                    <div class="pg-mix-pot" data-pg-mix-result style="background:#3e9a5a;">G</div>
+                    <div class="pg-mix-pot" data-pg-mix-result>G</div>
                     <div class="pg-chip-row">
-                        <span class="pg-chip"><b style="background:#e07a2f"></b>Orange</span>
-                        <span class="pg-chip"><b style="background:#8a4bb5"></b>Purple</span>
-                        <span class="pg-chip"><b style="background:#3e9a5a"></b>Green</span>
+                        <span class="pg-chip"><b></b>Orange</span>
+                        <span class="pg-chip"><b></b>Purple</span>
+                        <span class="pg-chip"><b></b>Green</span>
                     </div>
                 </div>
             </div>
-            <x-slidewire::fragment><span class="sr-only">rb</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">yb</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">white</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">black</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">null</span></x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">rb</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">yb</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">white</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">black</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">null</span>
+</div>
         </section>
-        <footer class="pg-footer"><span>05 / mix</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 6 · STATE TRANSITION --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-pipeline">
-            <p class="pg-kicker">The state transition</p>
-            <h2 class="pg-line">Accept, or spend nothing.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="05 | mix" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-pipeline',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+The state transition
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Accept, or spend nothing.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <div class="pg-pipe">
                 <span data-pg-pipe>Input</span><i>→</i>
                 <span data-pg-pipe>Validate</span><i>→</i>
@@ -506,25 +692,78 @@
                 <span data-pg-pipe>Update</span><i>→</i>
                 <span data-pg-pipe>Victory?</span>
             </div>
-            <pre class="pg-code">if not _floor(current, to):
-    return {state, events: {accepted: false}}
-# roll → mix → spent += 1 → phase</pre>
-            <p class="pg-take">Off-board tips are refused without consuming a turn.</p>
-            <x-slidewire::fragment><span class="sr-only">pipeline</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">validate</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">roll</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">mix</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">update</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">victory</span></x-slidewire::fragment>
-        </section>
-        <footer class="pg-footer"><span>06 / apply</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 7 · MORE THAN PATHFINDING --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-state">
-            <p class="pg-kicker">More than pathfinding</p>
-            <h2 class="pg-line">Same position ≠ same state.</h2>
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_5_0'
+if not _floor(current, to):
+    return {state, events: {accepted: false}}
+# roll → mix → spent += 1 → phase
+SW_CODE_5_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="text" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+
+            <p class="pg-take">Off-board tips are refused without consuming a turn.</p>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">pipeline</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">validate</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">roll</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">mix</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">update</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">victory</span>
+</div>
+        </section>
+
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="06 | apply" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-state',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+More than pathfinding
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Same position ≠ same state.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <p class="pg-eq">State = Position × Orientation × Pigments × Moves</p>
             <div class="pg-pair">
                 <div>
@@ -537,19 +776,58 @@
                 </div>
             </div>
             <p class="pg-take">Two greens. Different leftovers. Different die facing.</p>
-            <x-slidewire::fragment><span class="sr-only">end</span></x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">end</span>
+</div>
         </section>
-        <footer class="pg-footer"><span>07 / state</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 8 · SOLVING GREEN --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-green">
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="07 | state" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-green',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle pg-sub',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Level 2 · Return
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Solving Green
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+Start (0,0). Mark Green at (1,0). Limit 5.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
             <div class="pg-row">
                 <div>
-                    <p class="pg-kicker">Level 2 · Return</p>
-                    <h2 class="pg-line">Solving Green</h2>
-                    <p class="pg-sub">Start (0,0). Mark Green at (1,0). Limit 5.</p>
+
+
+
                     <p class="pg-eq">E → S → W → N → E</p>
                     <div class="pg-controls">
                         <button type="button" class="pg-btn" data-pg-prev="green">Prev</button>
@@ -564,20 +842,62 @@
                     <div class="pg-compass" data-pg-compass="green"></div>
                 </div>
             </div>
-            <x-slidewire::fragment><span class="sr-only">1</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">2</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">3</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">4</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">5</span></x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">1</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">2</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">3</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">4</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">5</span>
+</div>
         </section>
-        <footer class="pg-footer"><span>08 / green</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 9 · WHAT YOU LEAVE BEHIND --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-leave">
-            <p class="pg-kicker" data-pg-fade>Levels 2 → 3</p>
-            <h2 class="pg-line" data-pg-fade>A solution is the whole board.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="08 | green" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-leave',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+  'data-pg-fade' => '',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+  'data-pg-fade' => '',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Levels 2 → 3
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+A solution is the whole board.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <div class="pg-pair">
                 <div data-pg-fade>
                     <h3>E S W N E · wins L3</h3>
@@ -592,14 +912,44 @@
             </div>
             <p class="pg-take" data-pg-fade>Both green level 2. Only one preserves the start.</p>
         </section>
-        <footer class="pg-footer"><span>09 / leave</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 10 · FIVE LEVELS --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap dw-wrap--top" data-dw-motion="pg-levels">
-            <p class="pg-kicker">Five levels, five constraints</p>
-            <h2 class="pg-line">Same machine. Steeper asks.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="09 | leave" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-levels',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Five levels, five constraints
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Same machine. Steeper asks.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
             <div class="pg-levels">
                 <div class="pg-level" data-pg-level>
                     <b>1 · First Face</b>
@@ -627,16 +977,48 @@
                     <span>Clear</span>
                 </div>
             </div>
-            <p class="pg-sub" style="margin-top:20px;">Purple lives in the mix table — unused by these five boards.</p>
+            <p class="pg-sub" style="margin-top:20px">Purple lives in the mix table — unused by these five boards.</p>
         </section>
-        <footer class="pg-footer"><span>10 / levels</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 11 · SMALL GODOT ARCHITECTURE --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-arch">
-            <p class="pg-kicker" data-pg-fade>Small Godot architecture</p>
-            <h2 class="pg-line" data-pg-fade>Rules first. Scene second.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="10 | levels" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-arch',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+  'data-pg-fade' => '',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+  'data-pg-fade' => '',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Small Godot architecture
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Rules first. Scene second.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <div class="pg-arch">
                 <div class="pg-arch-card" data-pg-fade>
                     <code>rules.gd</code>
@@ -653,16 +1035,48 @@
             </div>
             <p class="pg-take" data-pg-fade>Small games benefit from small architectures.</p>
         </section>
-        <footer class="pg-footer"><span>11 / architecture</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 12 · RENDERING THE RULES --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-render">
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="11 | architecture" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-render',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+  'data-pg-fade' => '',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+  'data-pg-fade' => '',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Rendering the rules
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Feedback is comprehension.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
             <div class="pg-row">
                 <div>
-                    <p class="pg-kicker" data-pg-fade>Rendering the rules</p>
-                    <h2 class="pg-line" data-pg-fade>Feedback is comprehension.</h2>
+
+
                     <div class="pg-chip-row" data-pg-fade>
                         <span class="pg-chip">Pseudo-3D die</span>
                         <span class="pg-chip">Face glyphs</span>
@@ -671,24 +1085,61 @@
                         <span class="pg-chip">Roll arc</span>
                         <span class="pg-chip">Orientation compass</span>
                     </div>
-                    <p class="pg-sub" data-pg-fade style="max-width:520px;">If facing is unreadable, the mix feels arbitrary. Animation that names a rule is interface, not decoration.</p>
+                    <p class="pg-sub" data-pg-fade style="max-width:520px">If facing is unreadable, the mix feels arbitrary. Animation that names a rule is interface, not decoration.</p>
                 </div>
                 <div data-pg-fade>
                     <div data-pg-board="render"></div>
                 </div>
             </div>
         </section>
-        <footer class="pg-footer"><span>12 / view</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 13 · DETERMINISM AND UNDO --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-undo">
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="12 | view" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-undo',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle pg-sub',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Determinism &amp; undo
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+S₀ → S₁ → S₂<br>then S₂ → S₁
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+Snapshot before accept. Deterministic transition. Known-solution replay.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
             <div class="pg-row">
                 <div>
-                    <p class="pg-kicker">Determinism &amp; undo</p>
-                    <h2 class="pg-line">S₀ → S₁ → S₂<br>then S₂ → S₁</h2>
-                    <p class="pg-sub">Snapshot before accept. Deterministic transition. Known-solution replay.</p>
+
+
+
                     <div class="pg-controls">
                         <button type="button" class="pg-btn is-accent" data-pg-undo-tip>Tip East</button>
                         <button type="button" class="pg-btn" data-pg-undo-back>Undo</button>
@@ -699,17 +1150,51 @@
                 </div>
                 <div data-pg-board="undo"></div>
             </div>
-            <x-slidewire::fragment><span class="sr-only">tip</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">undo</span></x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">tip</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">undo</span>
+</div>
         </section>
-        <footer class="pg-footer"><span>13 / undo</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 14 · ENGINEERING LESSONS --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-lessons">
-            <p class="pg-kicker">Engineering lessons</p>
-            <h2 class="pg-line">What the model implies</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="13 | undo" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-lessons',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-line',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Engineering lessons
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+What the model implies
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <ul class="pg-lessons">
                 <li data-pg-lesson>Orientation is a resource.</li>
                 <li data-pg-lesson>Movement modifies future actions.</li>
@@ -718,32 +1203,83 @@
                 <li data-pg-lesson>Animation should expose rules.</li>
                 <li data-pg-lesson>Small games benefit from small architectures.</li>
             </ul>
-            <x-slidewire::fragment><span class="sr-only">1</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">2</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">3</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">4</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">5</span></x-slidewire::fragment>
-            <x-slidewire::fragment><span class="sr-only">6</span></x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">1</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">2</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">3</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">4</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">5</span>
+</div>
+            <div class="slidewire-fragment" data-fragment="data-fragment">
+    <span class="sr-only">6</span>
+</div>
         </section>
-        <footer class="pg-footer"><span>14 / lessons</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 15 · PLAY --}}
-    <x-slidewire::slide class="dw-slide pg">
-        <section class="dw-wrap" data-dw-motion="pg-close">
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="14 | lessons" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-close',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline pg-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pg-title',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle pg-sub',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Play Pigment
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+One die.<br>Six faces.<br>Twenty-five cells.
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+Tip carefully. Leave the board you meant.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
             <div class="pg-row">
                 <div data-pg-fade>
-                    <p class="pg-kicker">Play Pigment</p>
-                    <h2 class="pg-title">One die.<br>Six faces.<br>Twenty-five cells.</h2>
-                    <p class="pg-sub" style="margin-top:22px;">Tip carefully. Leave the board you meant.</p>
-                    <p style="margin-top:24px;"><a class="pg-link" href="https://darkwoodcom.itch.io/darkwaar27" target="_blank" rel="noopener">https://darkwoodcom.itch.io/darkwaar27</a></p>
+
+
+
+                    <p style="margin-top:24px"><a class="pg-link" href="https://darkwoodcom.itch.io/darkwaar27" target="_blank" rel="noopener">https://darkwoodcom.itch.io/darkwaar27</a></p>
                 </div>
                 <div data-pg-fade>
                     <div data-pg-board="close"></div>
                 </div>
             </div>
         </section>
-        <footer class="pg-footer"><span>Darkwood · Darkwaar27</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
-    </x-slidewire::slide>
 
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="Darkwood · Darkwaar27" />
+</x-darkwood.slide>
 </x-darkwood.deck>

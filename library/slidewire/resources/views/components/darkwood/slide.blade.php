@@ -2,19 +2,20 @@
     'variant' => 'content',
     'top' => false,
     'transition' => 'none',
+    'canvasAttributes' => null,
 ])
 
 <x-slidewire::slide
     :transition="$transition"
     {{ $attributes->class([
-        'dw-original-slide',
-        'dw-original-slide--'.$variant,
+        'sw-slide',
+        'sw-slide--'.$variant,
     ]) }}
 >
-    <section @class([
-        'dw-original-canvas',
-        'dw-original-canvas--top' => $top,
-    ])>
+    <section {{ ($canvasAttributes ?? new \Illuminate\View\ComponentAttributeBag())->class([
+        'sw-canvas',
+        'sw-canvas--top' => $top,
+    ]) }}>
         {{ $slot }}
     </section>
 </x-slidewire::slide>

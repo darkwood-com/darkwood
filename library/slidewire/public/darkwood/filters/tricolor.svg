@@ -7,9 +7,9 @@
       .2126 .7152 .0722 0 0
       0 0 0 1 0"/>
     <feComponentTransfer>
-      <feFuncR type="discrete" tableValues="0 .208 1"/>
-      <feFuncG type="discrete" tableValues="0 .475 1"/>
-      <feFuncB type="discrete" tableValues="0 .966 1"/>
+      <feFuncR type="discrete" tableValues="0 0 1"/>
+      <feFuncG type="discrete" tableValues="0 0.4823529411764706 1"/>
+      <feFuncB type="discrete" tableValues="0 1 1"/>
       <feFuncA type="discrete" tableValues="0 1"/>
     </feComponentTransfer>
   </filter>

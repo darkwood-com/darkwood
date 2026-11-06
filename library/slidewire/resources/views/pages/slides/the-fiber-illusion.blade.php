@@ -1,104 +1,273 @@
-{{-- The Fiber Illusion — RxJS × Darkwood Flow | /slides/the-fiber-illusion --}}
-<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade">
 
-    @php
-        $flow = '<span class="dw-accent">Flow</span>';
-        $rxjs = '<span class="dw-accent">RxJS</span>';
-        $ssd = '<span class="dw-accent">StreamSelectDriver</span>';
-    @endphp
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="cover" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--cover',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-title dw-title',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle dw-lead',
+));
+@endphp
+<x-darkwood.heading variant="cover" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Darkwood · PHP · <span class="dw-accent">Flow</span> · <span class="dw-accent">RxJS</span> · stream_select
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+The Fiber<br>Illusion
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+What <span class="dw-accent">RxJS</span> taught us about<br><span class="dw-accent">real async pipelines</span> in PHP
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
 
-    {{-- 1 · TITLE --}}
-    {{-- @notes Thesis upfront: Fibers ≠ overlapping I/O. Mention Darkwood Flow, RxJS study, stream_select. Fallback title if needed: “Fibers Aren’t Enough…”. ~45s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Darkwood · PHP · {!! $flow !!} · {!! $rxjs !!} · stream_select</p>
-            <h1 class="dw-title">The Fiber<br>Illusion</h1>
-            <p class="dw-lead">What {!! $rxjs !!} taught us about<br><span class="dw-accent">real async pipelines</span> in PHP</p>
+
+
             <div class="mt-10 dw-flow">
                 <div class="dw-node">Fibers</div>
                 <div class="dw-arrow">≠</div>
                 <div class="dw-node">Overlapping I/O</div>
             </div>
         </section>
-        <footer class="dw-footer"><span>@matyo91</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
-    </x-slidewire::slide>
 
-    {{-- 2 · INITIAL ASSUMPTION --}}
-    {{-- @notes Flow already looked async: Fibers, Drivers, MaxIpStrategy, await(). Ask: what exactly was “async”? Key line: multiple Fibers ≠ overlapping I/O. ~60s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">The initial assumption</p>
-            <h2 class="dw-heading-slide">{!! $flow !!} already looked asynchronous.</h2>
-            <div class="mt-8 dw-grid dw-grid-2" style="gap:12px;">
-                <x-slidewire::fragment :index="0"><div class="dw-chip">Fibers</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="1"><div class="dw-chip">Drivers</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="2"><div class="dw-chip">MaxIpStrategy</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="3"><div class="dw-chip">await()</div></x-slidewire::fragment>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+The initial assumption
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+<span class="dw-accent">Flow</span> already looked asynchronous.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+            <div class="mt-8 dw-grid dw-grid-2" style="gap:12px">
+                <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <div class="dw-chip">Fibers</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-chip">Drivers</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-chip">MaxIpStrategy</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="dw-chip">await()</div>
+</div>
             </div>
-            <x-slidewire::fragment :index="4">
-                <p class="dw-question mt-8">But what exactly was “async”?</p>
-            </x-slidewire::fragment>
-            <x-slidewire::fragment :index="5">
-                <p class="dw-takeaway mt-4">Multiple Fibers do not automatically mean overlapping I/O.</p>
-            </x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment-index="4" data-fragment="data-fragment">
+    <p class="dw-question mt-8">But what exactly was “async”?</p>
+</div>
+            <div class="slidewire-fragment" data-fragment-index="5" data-fragment="data-fragment">
+    <p class="dw-takeaway mt-4">Multiple Fibers do not automatically mean overlapping I/O.</p>
+</div>
         </section>
-        <footer class="dw-footer"><span>01 / assumption</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 3 · WHY STUDY RXJS --}}
-    {{-- @notes Not for pipe() syntax. Not to clone Observables. Lifecycle: compose → subscribe → track → complete → teardown. ~75s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">Why study {!! $rxjs !!}?</p>
-            <h2 class="dw-heading-slide">Not for <code>pipe()</code>. Not to clone Observables.</h2>
-            <p class="dw-lead" style="font-size:clamp(1.05rem,2vw,1.35rem);">Interesting because of the execution lifecycle.</p>
-            <div class="mt-4 dw-embed" style="height:min(320px,40vh)">
-                <x-slidewire::diagram>
-flowchart LR
-  A[subscribe] --> B[values]
-  B --> C[track work]
-  C --> D[completion]
-  D --> E[errors / cancel]
-  E --> F[teardown]
-                </x-slidewire::diagram>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="01 | assumption" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle dw-lead',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Why study <span class="dw-accent">RxJS</span>?
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Not for <code>pipe()</code>. Not to clone Observables.
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+Interesting because of the execution lifecycle.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
+
+            <div class="mt-4 dw-embed" >
+                <pre class="mermaid slidewire-diagram" data-slidewire-diagram>flowchart LR
+  A[subscribe] --&gt; B[values]
+  B --&gt; C[track work]
+  C --&gt; D[completion]
+  D --&gt; E[errors / cancel]
+  E --&gt; F[teardown]</pre>
             </div>
-            <x-slidewire::fragment :index="0">
-                <p class="dw-takeaway mt-2">Architectural mirror — not a port.</p>
-            </x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <p class="dw-takeaway mt-2">Architectural mirror — not a port.</p>
+</div>
         </section>
-        <footer class="dw-footer"><span>02 / why-rxjs</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 4 · WHAT RXJS TEACHES --}}
-    {{-- @notes Walk the representative pipeline. Emphasize: pipe composes, subscribe starts, mergeMap(4) bounds, completion waits, finalize cleans. Steal guarantees. ~90s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">What {!! $rxjs !!} really teaches</p>
-            <h2 class="dw-heading-slide">Lifecycle under the operators</h2>
-            <x-slidewire::fragment :index="0">
-                <pre class="mt-4 dw-code" style="font-size:15px;">from(urls).pipe(
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="02 | why-rxjs" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+What <span class="dw-accent">RxJS</span> really teaches
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Lifecycle under the operators
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
+            <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_3_0'
+from(urls).pipe(
   mergeMap(fetchImage, 4),
   map(hashBinary),
   retry(2),
   finalize(cleanup),
-);</pre>
-            </x-slidewire::fragment>
-            <div class="mt-4 dw-grid dw-grid-2" style="gap:10px;">
-                <x-slidewire::fragment :index="1"><div class="dw-card"><h3><code>pipe()</code></h3><p>Composes only</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="2"><div class="dw-card"><h3><code>subscribe()</code></h3><p>Starts execution</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="3"><div class="dw-card"><h3><code>mergeMap(..., 4)</code></h3><p>Bounds active work</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="4"><div class="dw-card"><h3><code>finalize()</code></h3><p>Cleanup on terminal paths</p></div></x-slidewire::fragment>
+);
+SW_CODE_3_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="text" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+
+</div>
+            <div class="mt-4 dw-grid dw-grid-2" style="gap:10px">
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-card"><h3><code>pipe()</code></h3><p>Composes only</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-card"><h3><code>subscribe()</code></h3><p>Starts execution</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="dw-card"><h3><code>mergeMap(..., 4)</code></h3><p>Bounds active work</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="4" data-fragment="data-fragment">
+    <div class="dw-card"><h3><code>finalize()</code></h3><p>Cleanup on terminal paths</p></div>
+</div>
             </div>
         </section>
-        <footer class="dw-footer"><span>03 / rxjs-pipeline</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 5 · FLOW EXISTING MODEL --}}
-    {{-- @notes Introduce Flow vocabulary quickly. Ip = packet. Strategy admits. Driver schedules. await() barriers. Collector is app-side (demo ResultCollector). ~75s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">{!! $flow !!} vocabulary</p>
-            <h2 class="dw-heading-slide">Packets through stages</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="03 | rxjs-pipeline" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+<span class="dw-accent">Flow</span> vocabulary
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Packets through stages
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
             <div class="mt-4 dw-flow">
                 <div class="dw-node">Fetch</div>
                 <div class="dw-arrow">→</div>
@@ -108,60 +277,138 @@ flowchart LR
                 <div class="dw-arrow">→</div>
                 <div class="dw-node">Collector</div>
             </div>
-            <div class="mt-6 dw-grid dw-grid-3" style="gap:10px;">
-                <x-slidewire::fragment :index="0"><div class="dw-card"><h3>Ip</h3><p>Instruction packet</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="1"><div class="dw-card"><h3>Job</h3><p>Stage work</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="2"><div class="dw-card"><h3>IpStrategy</h3><p>Admission control</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="3"><div class="dw-card"><h3>MaxIpStrategy</h3><p>Bounded concurrency</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="4"><div class="dw-card"><h3>Driver</h3><p>Schedule &amp; wait</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="5"><div class="dw-card"><h3>await()</h3><p>Completion barrier</p></div></x-slidewire::fragment>
+            <div class="mt-6 dw-grid dw-grid-3" style="gap:10px">
+                <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Ip</h3><p>Instruction packet</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Job</h3><p>Stage work</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-card"><h3>IpStrategy</h3><p>Admission control</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="dw-card"><h3>MaxIpStrategy</h3><p>Bounded concurrency</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="4" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Driver</h3><p>Schedule &amp; wait</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="5" data-fragment="data-fragment">
+    <div class="dw-card"><h3>await()</h3><p>Completion barrier</p></div>
+</div>
             </div>
         </section>
-        <footer class="dw-footer"><span>04 / flow-model</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 6 · FIBER ILLUSION — CENTRAL --}}
-    {{-- @notes CENTRAL SLIDE. Pause. file_get_contents inside Fiber still blocks the process. Contrast three labels. ~90s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">The Fiber illusion</p>
-            <h2 class="dw-heading-slide">A Fiber can suspend PHP.<br>It cannot unblock a socket.</h2>
-            <x-slidewire::fragment :index="0">
-                <pre class="mt-6 dw-code" style="font-size:18px;">file_get_contents($url); // still blocks the process</pre>
-            </x-slidewire::fragment>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="04 | flow-model" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+The Fiber illusion
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+A Fiber can suspend PHP.<br>It cannot unblock a socket.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+            <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_5_0'
+file_get_contents($url); // still blocks the process
+SW_CODE_5_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="php" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+
+</div>
             <div class="mt-6 dw-split">
-                <x-slidewire::fragment :index="1">
-                    <div class="dw-split-panel is-ok">
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-split-panel is-ok">
                         <h3>Concurrent PHP</h3>
-                        <p style="margin:0;">Many Fibers scheduled</p>
+                        <p style="margin:0">Many Fibers scheduled</p>
                     </div>
-                </x-slidewire::fragment>
-                <x-slidewire::fragment :index="2">
-                    <div class="dw-split-panel is-ok">
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-split-panel is-ok">
                         <h3>Overlapping I/O</h3>
-                        <p style="margin:0;">Non-blocking + <code>stream_select</code></p>
+                        <p style="margin:0">Non-blocking + <code>stream_select</code></p>
                     </div>
-                </x-slidewire::fragment>
+</div>
             </div>
-            <x-slidewire::fragment :index="3">
-                <div class="mt-4 dw-split-panel is-warn" style="max-width:720px;margin:0 auto;">
+            <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="mt-4 dw-split-panel is-warn" style="max-width:720px;margin:0 auto">
                     <h3>Fake async</h3>
-                    <p style="margin:0;">Blocking calls hidden inside Fibers</p>
+                    <p style="margin:0">Blocking calls hidden inside Fibers</p>
                 </div>
-            </x-slidewire::fragment>
+</div>
         </section>
-        <footer class="dw-footer"><span>05 / fiber-illusion</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 7 · MISSING STACK --}}
-    {{-- @notes Show the PHP-native async stack. Async is a runtime contract, not a naming convention. Why StreamSelectDriver exists. ~60s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">The missing stack</p>
-            <h2 class="dw-heading-slide">Async is a runtime contract</h2>
-            <div class="mt-4 dw-embed" style="height:min(380px,46vh)">
-                <x-slidewire::diagram>
-flowchart TB
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="05 | fiber-illusion" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+The missing stack
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Async is a runtime contract
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
+            <div class="mt-4 dw-embed" >
+                <pre class="mermaid slidewire-diagram" data-slidewire-diagram>flowchart TB
   S[PHP streams]
   NB[non-blocking mode]
   SEL[stream_select]
@@ -169,22 +416,49 @@ flowchart TB
   RES[readiness resume]
   DRV[Driver]
   FL[Flow]
-  S --> NB --> SEL --> FIB --> RES --> DRV --> FL
-                </x-slidewire::diagram>
+  S --&gt; NB --&gt; SEL --&gt; FIB --&gt; RES --&gt; DRV --&gt; FL</pre>
             </div>
-            <x-slidewire::fragment :index="0">
-                <p class="dw-takeaway mt-2">Not a naming convention. A yield-on-readiness story.</p>
-            </x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <p class="dw-takeaway mt-2">Not a naming convention. A yield-on-readiness story.</p>
+</div>
         </section>
-        <footer class="dw-footer"><span>06 / stack</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 8 · CONCRETE EXPERIMENT --}}
-    {{-- @notes Demo: content/rxjs-flow. Real sockets, local fixture server, one deliberate 404, soft DTO errors, traces. No invented speedup numbers. ~75s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">The concrete experiment</p>
-            <h2 class="dw-heading-slide">Real sockets. Real concurrency.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="06 | stack" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+The concrete experiment
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Real sockets. Real concurrency.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
             <div class="mt-4 dw-flow">
                 <div class="dw-node">URLs</div>
                 <div class="dw-arrow">→</div>
@@ -196,189 +470,502 @@ flowchart TB
                 <div class="dw-arrow">→</div>
                 <div class="dw-node">summary</div>
             </div>
-            <x-slidewire::fragment :index="0">
-                <pre class="mt-6 dw-code" style="font-size:16px;">php bin/console app:fetch-images --concurrency=4 --timeout=5</pre>
-            </x-slidewire::fragment>
-            <div class="mt-4 dw-grid dw-grid-2" style="gap:10px;">
-                <x-slidewire::fragment :index="1"><div class="dw-chip">Local fixture server</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="2"><div class="dw-chip">One deliberate 404</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="3"><div class="dw-chip">Per-item success / failure</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="4"><div class="dw-chip"><code>content/rxjs-flow</code></div></x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_7_0'
+php bin/console app:fetch-images --concurrency=4 --timeout=5
+SW_CODE_7_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="text" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+
+</div>
+            <div class="mt-4 dw-grid dw-grid-2" style="gap:10px">
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-chip">Local fixture server</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-chip">One deliberate 404</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="dw-chip">Per-item success / failure</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="4" data-fragment="data-fragment">
+    <div class="dw-chip"><code>content/rxjs-flow</code></div>
+</div>
             </div>
         </section>
-        <footer class="dw-footer"><span>07 / experiment</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 9 · STREAMSELECTDRIVER --}}
-    {{-- @notes Core APIs: waitReadable / waitWritable. Driver schedules; Job owns HTTP; IpStrategy admits; Collector aggregates (demo). Driver is NOT an HTTP client. ~90s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">What we shipped</p>
-            <h2 class="dw-heading-slide">{!! $ssd !!}</h2>
-            <x-slidewire::fragment :index="0">
-                <pre class="mt-4 dw-code" style="font-size:16px;">$driver->waitReadable($stream, $timeout);
-$driver->waitWritable($stream, $timeout);</pre>
-            </x-slidewire::fragment>
-            <div class="mt-4 dw-grid dw-grid-2" style="gap:10px;">
-                <x-slidewire::fragment :index="1"><div class="dw-card"><h3>Driver</h3><p>Schedule · wait · resume · deadlines</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="2"><div class="dw-card"><h3>Job</h3><p>HTTP / protocol / application</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="3"><div class="dw-card"><h3>IpStrategy</h3><p>Admission &amp; concurrency</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="4"><div class="dw-card"><h3>Collector</h3><p>Aggregate results</p></div></x-slidewire::fragment>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="07 | experiment" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+What we shipped
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+<span class="dw-accent">StreamSelectDriver</span>
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
+            <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_8_0'
+$driver->waitReadable($stream, $timeout);
+$driver->waitWritable($stream, $timeout);
+SW_CODE_8_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="php" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+
+</div>
+            <div class="mt-4 dw-grid dw-grid-2" style="gap:10px">
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Driver</h3><p>Schedule · wait · resume · deadlines</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Job</h3><p>HTTP / protocol / application</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="dw-card"><h3>IpStrategy</h3><p>Admission &amp; concurrency</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="4" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Collector</h3><p>Aggregate results</p></div>
+</div>
             </div>
-            <x-slidewire::fragment :index="5">
-                <p class="dw-question mt-6">The Driver is not an HTTP client.</p>
-            </x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment-index="5" data-fragment="data-fragment">
+    <p class="dw-question mt-6">The Driver is not an HTTP client.</p>
+</div>
         </section>
-        <footer class="dw-footer"><span>08 / stream-select-driver</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 10 · CONCURRENCY=4 --}}
-    {{-- @notes Key sentence: a concurrency limit is only meaningful if the runtime can say exactly what it limits. Walk layers → invariant. Flow’s mergeMap(4). ~90s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">What concurrency=4 means</p>
-            <h2 class="dw-heading" style="font-size:clamp(1.5rem,3.2vw,2.4rem);">A concurrency limit is only meaningful<br>if the runtime can say <span class="dw-accent">exactly what it limits</span>.</h2>
-            <div class="mt-6 dw-grid dw-grid-3" style="gap:8px;">
-                <x-slidewire::fragment :index="0"><div class="dw-chip">Queued packets</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="1"><div class="dw-chip">Admitted jobs</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="2"><div class="dw-chip">Active Fibers</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="3"><div class="dw-chip">Open sockets</div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="4"><div class="dw-chip">In-flight requests</div></x-slidewire::fragment>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="08 | stream-select-driver" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+What concurrency=4 means
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+A concurrency limit is only meaningful<br>if the runtime can say <span class="dw-accent">exactly what it limits</span>.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
+            <div class="mt-6 dw-grid dw-grid-3" style="gap:8px">
+                <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <div class="dw-chip">Queued packets</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-chip">Admitted jobs</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-chip">Active Fibers</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="dw-chip">Open sockets</div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="4" data-fragment="data-fragment">
+    <div class="dw-chip">In-flight requests</div>
+</div>
             </div>
-            <x-slidewire::fragment :index="5">
-                <pre class="mt-6 dw-code" style="font-size:14px;">MaxIpStrategy(4)
+            <div class="slidewire-fragment" data-fragment-index="5" data-fragment="data-fragment">
+
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_9_0'
+MaxIpStrategy(4)
 + non-blocking fetch job
 + StreamSelectDriver
 → ≤ 4 fetch packets admitted
 → ≤ 4 fetch Fibers active
-→ ≤ 4 sockets waiting on stream_select</pre>
-            </x-slidewire::fragment>
-        </section>
-        <footer class="dw-footer"><span>09 / concurrency</span></footer>
-    </x-slidewire::slide>
+→ ≤ 4 sockets waiting on stream_select
+SW_CODE_9_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="text" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
 
-    {{-- 11 · ERRORS / COMPLETION / CLEANUP --}}
-    {{-- @notes Soft per-item vs fail-fast. await() = no queued, no active, no pending waits. Cleanup on every terminal path = Flow’s finalize discipline. ~75s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Errors · completion · cleanup</p>
-            <h2 class="dw-heading-slide">Teardown is part of the run</h2>
+</div>
+        </section>
+
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="09 | concurrency" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Errors · completion · cleanup
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Teardown is part of the run
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <div class="mt-6 dw-split">
-                <x-slidewire::fragment :index="0">
-                    <div class="dw-split-panel is-ok">
+                <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <div class="dw-split-panel is-ok">
                         <h3>Batch</h3>
-                        <p style="margin:0;">Collect per-item errors<br><span class="dw-muted">(demo: soft DTO errors)</span></p>
+                        <p style="margin:0">Collect per-item errors<br><span class="dw-muted">(demo: soft DTO errors)</span></p>
                     </div>
-                </x-slidewire::fragment>
-                <x-slidewire::fragment :index="1">
-                    <div class="dw-split-panel is-warn">
+</div>
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-split-panel is-warn">
                         <h3>Critical</h3>
-                        <p style="margin:0;">Fail fast via <code>errorJob</code></p>
+                        <p style="margin:0">Fail fast via <code>errorJob</code></p>
                     </div>
-                </x-slidewire::fragment>
+</div>
             </div>
-            <x-slidewire::fragment :index="2">
-                <ul class="dw-list mt-6" style="font-size:18px;">
+            <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <ul class="dw-list mt-6">
                     <li><code>await()</code> → no queued packets, no active jobs, no pending waits</li>
                     <li>Cleanup on success, error, timeout, cancellation</li>
                 </ul>
-            </x-slidewire::fragment>
-            <x-slidewire::fragment :index="3">
-                <p class="dw-takeaway mt-4">{!! $flow !!}’s version of teardown / <code>finalize</code> discipline.</p>
-            </x-slidewire::fragment>
+</div>
+            <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <p class="dw-takeaway mt-4"><span class="dw-accent">Flow</span>’s version of teardown / <code>finalize</code> discipline.</p>
+</div>
         </section>
-        <footer class="dw-footer"><span>10 / teardown</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 12 · WHAT FLOW KEEPS --}}
-    {{-- @notes Steal the guarantees. Keep list short — lifecycle discipline, not the type system. ~60s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">What {!! $flow !!} keeps from {!! $rxjs !!}</p>
-            <h2 class="dw-heading-slide">Steal the guarantees</h2>
-            <div class="mt-6 dw-grid dw-grid-2" style="gap:10px;">
-                <x-slidewire::fragment :index="0"><div class="dw-card"><h3>Lifecycle discipline</h3><p>Start → track → complete → tear down</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="1"><div class="dw-card"><h3>Lazy compose / explicit run</h3><p><code>FlowFactory</code> then <code>await()</code></p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="2"><div class="dw-card"><h3>Bounded concurrency</h3><p><code>MaxIpStrategy</code> + yielding jobs</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="3"><div class="dw-card"><h3>Deterministic completion</h3><p>Wait for active work</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="4"><div class="dw-card"><h3>Cleanup</h3><p>Every terminal path</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="5"><div class="dw-card"><h3>Per-run isolation</h3><p>+ observability</p></div></x-slidewire::fragment>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="10 | teardown" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+What <span class="dw-accent">Flow</span> keeps from <span class="dw-accent">RxJS</span>
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Steal the guarantees
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+            <div class="mt-6 dw-grid dw-grid-2" style="gap:10px">
+                <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Lifecycle discipline</h3><p>Start → track → complete → tear down</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Lazy compose / explicit run</h3><p><code>FlowFactory</code> then <code>await()</code></p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Bounded concurrency</h3><p><code>MaxIpStrategy</code> + yielding jobs</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Deterministic completion</h3><p>Wait for active work</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="4" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Cleanup</h3><p>Every terminal path</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="5" data-fragment="data-fragment">
+    <div class="dw-card"><h3>Per-run isolation</h3><p>+ observability</p></div>
+</div>
             </div>
         </section>
-        <footer class="dw-footer"><span>11 / keep</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 13 · WHAT FLOW REJECTS --}}
-    {{-- @notes Steal guarantees, not the API. Explicit rejects — Observable zoo, Subjects, HTTP-in-Driver, dual engines. ~60s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">What {!! $flow !!} rejects</p>
-            <h2 class="dw-heading-slide">Steal the guarantees,<br>not the API</h2>
-            <div class="mt-6 dw-grid dw-grid-2" style="gap:10px;">
-                <x-slidewire::fragment :index="0"><div class="dw-split-panel is-warn" style="margin:0;"><h3>Observable / Observer / Subscriber</h3><p style="margin:0;">As public app types</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="1"><div class="dw-split-panel is-warn" style="margin:0;"><h3>Subjects · operator zoo</h3><p style="margin:0;">JS method names in PHP</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="2"><div class="dw-split-panel is-warn" style="margin:0;"><h3>Custom Promise type</h3><p style="margin:0;">Not required for pipelines</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="3"><div class="dw-split-panel is-warn" style="margin:0;"><h3>HTTP inside Drivers</h3><p style="margin:0;">Or a second demo engine</p></div></x-slidewire::fragment>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="11 | keep" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+What <span class="dw-accent">Flow</span> rejects
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Steal the guarantees,<br>not the API
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+            <div class="mt-6 dw-grid dw-grid-2" style="gap:10px">
+                <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <div class="dw-split-panel is-warn" style="margin:0"><h3>Observable / Observer / Subscriber</h3><p style="margin:0">As public app types</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-split-panel is-warn" style="margin:0"><h3>Subjects · operator zoo</h3><p style="margin:0">JS method names in PHP</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-split-panel is-warn" style="margin:0"><h3>Custom Promise type</h3><p style="margin:0">Not required for pipelines</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="dw-split-panel is-warn" style="margin:0"><h3>HTTP inside Drivers</h3><p style="margin:0">Or a second demo engine</p></div>
+</div>
             </div>
         </section>
-        <footer class="dw-footer"><span>12 / reject</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 14 · WHERE NEXT --}}
-    {{-- @notes Honest next steps only — no fake benchmarks. Multi-connection overlap test is next acceptance, not a claimed result. ~45s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Where {!! $flow !!} goes next</p>
-            <h2 class="dw-heading-slide">Prove the waits further</h2>
-            <div class="mt-6 dw-grid dw-grid-2" style="gap:10px;">
-                <x-slidewire::fragment :index="0"><div class="dw-card"><h3>01 · Multi-connection benchmark</h3><p>Next acceptance test — not measured yet</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="1"><div class="dw-card"><h3>02 · Cancellation tokens</h3><p>For StreamSelectDriver waits</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="2"><div class="dw-card"><h3>03 · Richer result API</h3><p>If collectors become painful</p></div></x-slidewire::fragment>
-                <x-slidewire::fragment :index="3"><div class="dw-card"><h3>04 · Production examples</h3><p>Beyond the teaching fetch Job</p></div></x-slidewire::fragment>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="12 | reject" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Where <span class="dw-accent">Flow</span> goes next
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Prove the waits further
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+            <div class="mt-6 dw-grid dw-grid-2" style="gap:10px">
+                <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <div class="dw-card"><h3>01 · Multi-connection benchmark</h3><p>Next acceptance test — not measured yet</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="dw-card"><h3>02 · Cancellation tokens</h3><p>For StreamSelectDriver waits</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <div class="dw-card"><h3>03 · Richer result API</h3><p>If collectors become painful</p></div>
+</div>
+                <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <div class="dw-card"><h3>04 · Production examples</h3><p>Beyond the teaching fetch Job</p></div>
+</div>
             </div>
         </section>
-        <footer class="dw-footer"><span>13 / next</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 15 · CLOSING --}}
-    {{-- @notes Close on the article’s final line. Leave silence after the question. CTA: run demo, read article. ~45s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Closing</p>
-            <h2 class="dw-heading" style="font-size:clamp(1.6rem,3.5vw,2.6rem);">When a job waits on I/O,<br>does the runtime actually wait with it—</h2>
-            <x-slidewire::fragment :index="0">
-                <h2 class="dw-heading mt-4" style="font-size:clamp(1.6rem,3.5vw,2.6rem);"><span class="dw-accent">or does it only pretend?</span></h2>
-            </x-slidewire::fragment>
-            <x-slidewire::fragment :index="1">
-                <div class="mt-10 dw-flow">
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="13 | next" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Closing
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+When a job waits on I/O,<br>does the runtime actually wait with it—
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+            <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <h3 class="dw-heading mt-4"><span class="dw-accent">or does it only pretend?</span></h3>
+</div>
+            <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <div class="mt-10 dw-flow">
                     <div class="dw-node">Jobs yield</div>
                     <div class="dw-arrow">→</div>
                     <div class="dw-node">Drivers wait</div>
                     <div class="dw-arrow">→</div>
                     <div class="dw-node">I/O overlaps</div>
                 </div>
-            </x-slidewire::fragment>
+</div>
         </section>
-        <footer class="dw-footer"><span>@matyo91</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
-    </x-slidewire::slide>
 
-    {{-- 16 · RESOURCES --}}
-    {{-- @notes Point to article, demo, Flow source, RxJS checkout used for study. ~30s. --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Resources</p>
-            <h2 class="dw-heading-slide">Go deeper</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Resources
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Go deeper
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <ul class="dw-list mt-8">
                 <li>Article — <em>The Fiber Illusion</em></li>
                 <li><code>content/rxjs-flow</code> — <code>app:fetch-images</code></li>
                 <li><code>darkwood/flow</code> — <code>StreamSelectDriver</code></li>
                 <li>RxJS 8.0.0-alpha.14 — lifecycle study source</li>
             </ul>
-            <x-slidewire::fragment :index="0">
-                <p class="dw-note mt-8">Steal the guarantees. Keep jobs, packets, Drivers.</p>
-            </x-slidewire::fragment>
+            <div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <p class="dw-note mt-8">Steal the guarantees. Keep jobs, packets, Drivers.</p>
+</div>
         </section>
-        <footer class="dw-footer"><span>14 / resources</span></footer>
-    </x-slidewire::slide>
 
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="14 | resources" />
+</x-darkwood.slide>
 </x-darkwood.deck>

@@ -4,12 +4,25 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "test": "node --test tests/Browser/darkwood-rules.mjs tests/Browser/darkwood-functional-css.cjs",
+        "test:design": "node tests/Browser/design-system.cjs",
+        "test:interactions": "node tests/Browser/darkwood-interactions.cjs",
+        "test:render-results": "node tests/Browser/design-results.cjs",
+        "test:bounds": "node tests/Browser/content-bounds.cjs",
+        "test:ui": "node tests/Browser/publication-design.cjs",
+        "test:pdf-layout": "node tests/Browser/pdf-readiness.cjs",
+        "render": "node bin/render-presentations.cjs",
+        "render:reading": "node tests/Browser/darkwood-dense.cjs",
+        "contact-sheets": "node bin/contact-sheets.cjs",
+        "test:catalogue": "node tests/Browser/catalogue.cjs"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.0.0",
+        "playwright": "1.62.1",
+        "postcss": "8.5.10",
         "tailwindcss": "^4.0.0",
         "vite": "^8.0.0"
     },

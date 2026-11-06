@@ -1,0 +1,20 @@
+// Read-only local dashboard UI test. Never submits a form or opens a provider.
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const {auditDarkwoodPalette}=require('../../bin/browser/palette.cjs');
+const fs=require('node:fs'),assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({executablePath:process.env.CHROME||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',args:['--force-device-scale-factor=2']});
+try{const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:2});
+await page.goto((process.env.SLIDEWIRE_URL||'http://127.0.0.1:8017')+'/publications');
+await page.locator('details').first().evaluate(node=>node.open=true);
+const form=page.locator('form').first();
+await form.locator('input:not([type=hidden])').first().focus();
+const focused=await form.locator('input:focus').evaluate(node=>{const css=getComputedStyle(node);return {color:css.outlineColor,width:css.outlineWidth}});
+assert.deepEqual(focused,{color:'rgb(0, 123, 255)',width:'2.5px'});
+const checkbox=form.locator('[type=checkbox]');await checkbox.check();
+assert.equal(await checkbox.evaluate(node=>getComputedStyle(node).accentColor),'rgb(0, 123, 255)');
+const button=form.locator('button');await button.evaluate(node=>node.disabled=true);
+assert.equal(await button.evaluate(node=>getComputedStyle(node).borderTopStyle),'dashed');
+const audit=await page.locator('body').evaluate(auditDarkwoodPalette);assert.deepEqual(audit.violations,[]);
+fs.writeFileSync('storage/app/design-system/publication-ui.json',JSON.stringify({focused,readOnly:true,audit},null,2));
+console.log('Local dashboard: palette, focus, accent and disabled UI passed; no form submitted');
+}finally{await browser.close()}})().catch(error=>{console.error(error);process.exitCode=1});

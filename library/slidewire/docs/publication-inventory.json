@@ -1,0 +1,170 @@
+[
+    {
+        "id": "05d57064-fcd6-478e-a8ae-6767615f8f5d",
+        "source_slug": "darkwaar20",
+        "title": "darkwaar20",
+        "slide_count": 16
+    },
+    {
+        "id": "b0d8f82e-522f-48cf-8082-6bfd282ca93e",
+        "source_slug": "darkwaar27-pigment-x",
+        "title": "darkwaar27 pigment x",
+        "slide_count": 1
+    },
+    {
+        "id": "b2a9a7bc-5a65-40d2-9c69-29859cd0f801",
+        "source_slug": "darkwaar27-pigment",
+        "title": "darkwaar27 pigment",
+        "slide_count": 15
+    },
+    {
+        "id": "92e37e56-a7c5-4a82-aeb9-6b1eaba329ac",
+        "source_slug": "darkwaar33-seedwake",
+        "title": "darkwaar33 seedwake",
+        "slide_count": 14
+    },
+    {
+        "id": "d35f1e4c-1059-40ad-ac96-5180440f8fe1",
+        "source_slug": "flow-pipe",
+        "title": "flow pipe",
+        "slide_count": 19
+    },
+    {
+        "id": "154b792d-19ac-4a34-ab56-7dbef3a26aec",
+        "source_slug": "flow-thispersondoesnotexist",
+        "title": "flow thispersondoesnotexist",
+        "slide_count": 14
+    },
+    {
+        "id": "10845f40-41dd-49e6-96b4-5ef1d0b083dd",
+        "source_slug": "flowvox-update-2026-05-17",
+        "title": "flowvox update 2026 05 17",
+        "slide_count": 30
+    },
+    {
+        "id": "176c71ea-d93a-4e20-8667-386705940709",
+        "source_slug": "from-nolife-testing-to-behavioral-testing",
+        "title": "from nolife testing to behavioral testing",
+        "slide_count": 26
+    },
+    {
+        "id": "4245e12c-43d5-4204-b1fb-a8ff64247470",
+        "source_slug": "holding-the-core-security-engineering-through-darkwaar40-breach",
+        "title": "holding the core security engineering through darkwaar40 breach",
+        "slide_count": 22
+    },
+    {
+        "id": "144410f9-653a-4f06-acc7-032f7c16d6de",
+        "source_slug": "laravel-pipeline-flow",
+        "title": "laravel pipeline flow",
+        "slide_count": 19
+    },
+    {
+        "id": "2883a530-78d3-4067-a2dd-e4e2af6e2089",
+        "source_slug": "llm-game-of-life",
+        "title": "llm game of life",
+        "slide_count": 13
+    },
+    {
+        "id": "32e0ac94-aca0-4c2d-a9c4-520149df813e",
+        "source_slug": "mario-ai-agents",
+        "title": "mario ai agents",
+        "slide_count": 15
+    },
+    {
+        "id": "2ae239c4-47cc-44a9-ae68-39933ab8c722",
+        "source_slug": "nolife-agency",
+        "title": "nolife agency",
+        "slide_count": 13
+    },
+    {
+        "id": "bc2771ad-58ad-47e0-bd2f-d6f68b70d28d",
+        "source_slug": "nolife-language",
+        "title": "nolife language",
+        "slide_count": 15
+    },
+    {
+        "id": "4aeaa678-2fe7-4e76-86eb-344f29e17934",
+        "source_slug": "nolife-local-runtime-infrastructure",
+        "title": "nolife local runtime infrastructure",
+        "slide_count": 25
+    },
+    {
+        "id": "89d1ecf3-d4cf-416a-86e8-012b405dc67f",
+        "source_slug": "nolife-local",
+        "title": "nolife local",
+        "slide_count": 27
+    },
+    {
+        "id": "a2bb89c4-9da0-4667-87d7-b6db71fc8483",
+        "source_slug": "nolife-tokens",
+        "title": "nolife tokens",
+        "slide_count": 12
+    },
+    {
+        "id": "4b7ab508-68f5-4ed1-be57-88d1d9267066",
+        "source_slug": "php-speed-tooling",
+        "title": "php speed tooling",
+        "slide_count": 16
+    },
+    {
+        "id": "b9d98b10-453f-4fbc-9ec8-823dbad25bb7",
+        "source_slug": "profiler-flow-blackfire",
+        "title": "profiler flow blackfire",
+        "slide_count": 10
+    },
+    {
+        "id": "77738729-6ab9-4710-ae0a-02ab90011ad4",
+        "source_slug": "secret-keys-become-application-data",
+        "title": "secret keys become application data",
+        "slide_count": 15
+    },
+    {
+        "id": "21f1717c-f698-47ab-915a-d063c68bb140",
+        "source_slug": "shared-workflows-laptop-bottleneck",
+        "title": "shared workflows laptop bottleneck",
+        "slide_count": 12
+    },
+    {
+        "id": "22ef3877-ced6-4d72-b136-26d889d36d88",
+        "source_slug": "sqlite-compiler-php",
+        "title": "sqlite compiler php",
+        "slide_count": 39
+    },
+    {
+        "id": "f1e202fc-b950-414e-94c3-711c53001d09",
+        "source_slug": "strata-relay",
+        "title": "strata relay",
+        "slide_count": 12
+    },
+    {
+        "id": "00031a3b-f803-4061-a07a-08a4634844b1",
+        "source_slug": "symfony-8-1",
+        "title": "symfony 8 1",
+        "slide_count": 21
+    },
+    {
+        "id": "ced2e361-eb17-4e83-a695-3213d156a876",
+        "source_slug": "symfony-ai-in-action",
+        "title": "Symfony AI in Action",
+        "slide_count": 20
+    },
+    {
+        "id": "e29b95a9-6373-4031-b0c4-791deabc1a81",
+        "source_slug": "thanks-agent",
+        "title": "thanks agent",
+        "slide_count": 16
+    },
+    {
+        "id": "988d14e3-2cc4-43a7-9475-2090c3215111",
+        "source_slug": "the-fiber-illusion",
+        "title": "the fiber illusion",
+        "slide_count": 16
+    },
+    {
+        "id": "a710ce05-b3f8-488a-aa25-3d23836b52e3",
+        "source_slug": "where-native-code-lives",
+        "title": "where native code lives",
+        "slide_count": 14
+    }
+]

@@ -37,18 +37,6 @@ export const GLYPHS = {
     [GREEN]: 'G',
 };
 
-export const COLORS = {
-    [EMPTY]: '#2a241c',
-    [RED]: '#d24a3a',
-    [YELLOW]: '#e2b134',
-    [BLUE]: '#3c6fd6',
-    [WHITE]: '#f4efe4',
-    [BLACK]: '#1a1a1a',
-    [ORANGE]: '#e07a2f',
-    [PURPLE]: '#8a4bb5',
-    [GREEN]: '#3e9a5a',
-};
-
 export const DIRS = {
     N: [0, -1],
     E: [1, 0],

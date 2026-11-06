@@ -15,7 +15,7 @@ class DarkwoodInlineContent
         $html = $value instanceof Htmlable ? $value->toHtml() : e((string) $value);
         $emoji = '/[\x{2600}-\x{27BF}\x{1F000}-\x{1FAFF}]/u';
         if (! preg_match($emoji, $html)) {
-            return new HtmlString($html);
+            return new HtmlString($this->literalText($html));
         }
 
         $dom = new DOMDocument;
@@ -40,7 +40,7 @@ class DarkwoodInlineContent
                     $text = '';
                 }
                 $span = $dom->createElement('span');
-                $span->setAttribute('class', 'dw-original-emoji');
+                $span->setAttribute('class', 'sw-emoji');
                 $span->appendChild($dom->createTextNode($cluster));
                 $fragment->appendChild($span);
             }
@@ -54,6 +54,26 @@ class DarkwoodInlineContent
             $result .= $dom->saveHTML($child);
         }
 
-        return new HtmlString($result);
+        return new HtmlString($this->literalText($result));
+    }
+
+    /** Keep rendered title text literal when a component is compiled again. */
+    private function literalText(string $html): string
+    {
+        $parts = preg_split('/(<(?:[^>\"\']|\"[^\"]*\"|\'[^\']*\')*>)/s', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $raw = null;
+        foreach ($parts as $index => $part) {
+            if ($index % 2 === 1) {
+                if (preg_match('~^<(script|style)\\b~i', $part, $match)) {
+                    $raw = strtolower($match[1]);
+                } elseif ($raw !== null && preg_match('~^</'.$raw.'\\s*>~i', $part)) {
+                    $raw = null;
+                }
+            } elseif ($raw === null) {
+                $parts[$index] = strtr($part, ['@' => '&#64;', '{' => '&#123;', '}' => '&#125;']);
+            }
+        }
+
+        return implode('', $parts);
     }
 }

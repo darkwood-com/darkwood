@@ -3,17 +3,6 @@ const ROWS = 9;
 const CHANNELS = 4;
 const LEVELS = [0, 85, 170, 255];
 
-const INK = [0.06, 0.07, 0.10];
-const TINTS = [
-    [0.62, 0.34, 0.30],
-    [0.93, 0.72, 0.42],
-    [0.55, 0.75, 0.80],
-    [0.86, 0.84, 0.78],
-];
-const VOID = [0.20, 0.21, 0.25];
-const GROUND = [0.58, 0.56, 0.50];
-const ENERGY = [0.95, 0.58, 0.16];
-
 const DIRS = [
     [1, 0],
     [-1, 0],
@@ -315,76 +304,6 @@ export function channels(cells, x, y) {
     return [0, 1, 2, 3].map((channel) => at(cells, x, y, channel));
 }
 
-function lerp(from, to, t) {
-    return from + (to - from) * t;
-}
-
-function mix(channels) {
-    const sum = channels.reduce((total, value) => total + value, 0);
-
-    if (sum === 0) {
-        return [0.12, 0.13, 0.16];
-    }
-
-    const color = [0, 0, 0];
-
-    channels.forEach((value, i) => {
-        color[0] += TINTS[i][0] * value;
-        color[1] += TINTS[i][1] * value;
-        color[2] += TINTS[i][2] * value;
-    });
-
-    return color.map((part) => part / sum);
-}
-
-export function quadrantColor(value, tint) {
-    return INK.map((part, i) => lerp(part, tint[i], value / 255));
-}
-
-export function terrainColor(kind) {
-    if (kind === 0) {
-        return VOID;
-    }
-
-    if (kind === 2) {
-        return ENERGY;
-    }
-
-    return GROUND;
-}
-
-export function css([r, g, b]) {
-    return `rgb(${Math.round(r * 255)} ${Math.round(g * 255)} ${Math.round(b * 255)})`;
-}
-
-export function appearance(cellChannels, mode = 'noise', mixAmount = 0) {
-    const quadrants = cellChannels.map((value, i) => css(quadrantColor(value, TINTS[i])));
-    const blended = mix(cellChannels);
-    const terrain = terrainColor(kindAtFromChannels(cellChannels));
-    const fill = blended.map((part, i) => lerp(part, terrain[i], mixAmount));
-
-    return {
-        quadrants,
-        fill: css(fill),
-        terrain: css(terrain),
-        quadrantOpacity: mode === 'noise' ? 1 : 1 - mixAmount,
-    };
-}
-
-function kindAtFromChannels(cellChannels) {
-    const sum = cellChannels.reduce((total, value) => total + value, 0);
-
-    if (sum <= 340) {
-        return 0;
-    }
-
-    if (sum >= 680) {
-        return 2;
-    }
-
-    return 1;
-}
-
 export function mountGrid(host, cols = COLS, rows = ROWS, cell = 36) {
     host.replaceChildren();
     host.style.setProperty('--cell', `${cell}px`);
@@ -419,17 +338,16 @@ export function mountBoard(host, options = {}) {
 export function paintNodes(nodes, lists, mode = 'noise', mixAmount = 1) {
     nodes.forEach((node, i) => {
         const values = lists[i];
-        const look = appearance(values, mode, mode === 'noise' ? 0 : mixAmount);
         const quadrants = node.querySelectorAll('i');
         const sum = values.reduce((total, value) => total + value, 0);
 
         quadrants.forEach((quadrant, q) => {
             quadrant.dataset.darkwoodLevel = String(levelIndex(values[q]));
-            quadrant.style.backgroundColor = look.quadrants[q];
-            quadrant.style.opacity = String(look.quadrantOpacity);
+            quadrant.style.removeProperty('background-color');
+            quadrant.style.opacity = '1';
         });
 
-        node.style.backgroundColor = mode === 'noise' ? 'rgb(23 24 31)' : look.fill;
+        node.style.removeProperty('background-color');
         node.classList.toggle('is-void', mode !== 'noise' && sum <= 340);
     });
 }

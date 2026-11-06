@@ -1,17 +1,44 @@
-{{-- Where Should Native Code Live? - Phalcon, Symfony, TrueAsync, Flow | /slides/where-native-code-lives --}}
-<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade">
 
-    @php
-        $flow = '<span class="dw-accent">Flow</span>';
-        $ta = '<span class="dw-accent">TrueAsync</span>';
-    @endphp
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="cover" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--cover',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-title dw-title',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle dw-lead',
+));
+@endphp
+<x-darkwood.heading variant="cover" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Darkwood · PHP architecture · 2026
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Where Should Native Code Live?
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+Phalcon, Symfony, <span class="dw-accent">TrueAsync</span> and <span class="dw-accent">Flow</span><br>at different layers of the stack
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
 
-    {{-- 1 · TITLE --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Darkwood · PHP architecture · 2026</p>
-            <h1 class="dw-title">Where Should Native Code Live?</h1>
-            <p class="dw-lead">Phalcon, Symfony, {!! $ta !!} and {!! $flow !!}<br>at different layers of the stack</p>
+
+
             <div class="mt-10 dw-flow">
                 <div class="dw-node">Framework</div>
                 <div class="dw-arrow">·</div>
@@ -22,35 +49,100 @@
                 <div class="dw-node">Orchestration</div>
             </div>
         </section>
-        <footer class="dw-footer"><span>@matyo91</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
-    </x-slidewire::slide>
 
-    {{-- 2 · CONTEXT --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">The context</p>
-            <h2 class="dw-heading-slide">A client architecture POC - a familiar dilemma.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+The context
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+A client architecture POC - a familiar dilemma.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <div class="mt-10 dw-split">
                 <div class="dw-split-panel is-warn">
                     <h3>The visible question</h3>
-                    <p style="margin:0;">Should we migrate from Phalcon to Symfony?</p>
+                    <p style="margin:0">Should we migrate from Phalcon to Symfony?</p>
                 </div>
                 <div class="dw-split-panel is-ok">
                     <h3>The deeper question</h3>
-                    <p style="margin:0;">Where should performance, boundaries, and workflows live?</p>
+                    <p style="margin:0">Where should performance, boundaries, and workflows live?</p>
                 </div>
             </div>
             <p class="dw-note mt-8">High-traffic PHP platform · proven performance · growing workflow complexity · maintenance pressure.</p>
         </section>
-        <footer class="dw-footer"><span>01 / context</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 3 · FALSE DEBATE --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">The false debate</p>
-            <h2 class="dw-heading">Phalcon vs Symfony vs {!! $ta !!}</h2>
-            <p class="dw-lead">They are not direct competitors.</p>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="01 | context" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle dw-lead',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+The false debate
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Phalcon vs Symfony vs <span class="dw-accent">TrueAsync</span>
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+They are not direct competitors.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+
             <div class="mt-10 dw-grid dw-grid-3">
                 <div class="dw-chip">Different layers</div>
                 <div class="dw-chip">Different constraints</div>
@@ -58,28 +150,86 @@
             </div>
             <p class="dw-question mt-10">Framework choice is only part of the architecture.</p>
         </section>
-        <footer class="dw-footer"><span>02 / false-debate</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 4 · THREE LAYERS --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Three native layers</p>
-            <h2 class="dw-heading-slide">Each technology optimizes a different concern.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="02 | false-debate" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Three native layers
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Each technology optimizes a different concern.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <div class="mt-10 dw-map">
                 <div><strong>Phalcon</strong><span>Native framework layer - MVC, router, ORM, cache</span></div>
                 <div><strong>Symfony</strong><span>Application structure - DI, security, ecosystem, boundaries</span></div>
                 <div><strong>TrueAsync</strong><span>Native runtime - coroutines, async I/O, execution</span></div>
             </div>
         </section>
-        <footer class="dw-footer"><span>03 / layers</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 5 · PHALCON --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Phalcon</p>
-            <h2 class="dw-heading">Phalcon was not a mistake.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="03 | layers" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Phalcon
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Phalcon was not a mistake.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <div class="mt-10 dw-grid dw-grid-2">
                 <div class="dw-card"><h3>C extension</h3><p>Zephir/C · low overhead on the MVC path.</p></div>
                 <div class="dw-card"><h3>Read-heavy fit</h3><p>Predictable latency · monolith APIs · cache-friendly.</p></div>
@@ -87,18 +237,47 @@
                 <div class="dw-card"><h3>Valid choice</h3><p>When MVC performance and team expertise still dominate.</p></div>
             </div>
         </section>
-        <footer class="dw-footer"><span>04 / phalcon</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 6 · OPTIMIZATION TARGET --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">The shift</p>
-            <h2 class="dw-heading-slide">The optimization target changed.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="04 | phalcon" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+The shift
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+The optimization target changed.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <div class="dw-split mt-8">
                 <div class="dw-split-panel">
                     <h3>Before</h3>
-                    <ul class="dw-list-compact" style="margin:0;">
+                    <ul class="dw-list-compact" style="margin:0">
                         <li>MVC bootstrap</li>
                         <li>Dispatch cost</li>
                         <li>Framework overhead</li>
@@ -106,7 +285,7 @@
                 </div>
                 <div class="dw-split-panel is-ok">
                     <h3>Now</h3>
-                    <ul class="dw-list-compact" style="margin:0;">
+                    <ul class="dw-list-compact" style="margin:0">
                         <li>I/O in workers</li>
                         <li>Multi-step workflows</li>
                         <li>Domain boundaries</li>
@@ -116,17 +295,45 @@
             </div>
             <p class="dw-note mt-8">Obsolete? Wrong question. <strong>What optimization matters now?</strong></p>
         </section>
-        <footer class="dw-footer"><span>05 / optimization</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 7 · WHERE NATIVE CODE LIVES --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">Architecture</p>
-            <h2 class="dw-heading-slide">Where should native code live?</h2>
-            <div class="mt-6 dw-embed" style="height:min(420px,52vh)">
-                <x-slidewire::diagram>
-flowchart TB
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="05 | optimization" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Architecture
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Where should native code live?
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
+            <div class="mt-6 dw-embed" >
+                <pre class="mermaid slidewire-diagram" data-slidewire-diagram>flowchart TB
   subgraph orch [Orchestration layer]
     W[Workflows and pipelines]
   end
@@ -140,23 +347,58 @@ flowchart TB
     T[TrueAsync ext-async\noptional execution]
   end
   Q[Where does complexity live?]
-  Q --> orch
-  Q --> app
-  Q --> fw
-  Q --> rt
-                </x-slidewire::diagram>
+  Q --&gt; orch
+  Q --&gt; app
+  Q --&gt; fw
+  Q --&gt; rt</pre>
             </div>
             <p class="dw-note mt-4">Four independent decisions - not one migration checkbox.</p>
         </section>
-        <footer class="dw-footer"><span>06 / where-native</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 8 · BOUNDARIES --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Boundaries</p>
-            <h2 class="dw-heading">Boundaries before frameworks.</h2>
-            <p class="dw-lead">Many migrations fail because the container changes - not the domain.</p>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="06 | where-native" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle dw-lead',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Boundaries
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Boundaries before frameworks.
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+Many migrations fail because the container changes - not the domain.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+
             <div class="mt-10 dw-grid dw-grid-2">
                 <div class="dw-chip">Bounded contexts</div>
                 <div class="dw-chip">Domain vs application services</div>
@@ -165,23 +407,50 @@ flowchart TB
             </div>
             <p class="dw-takeaway mt-8">Redraw boundaries first. Framework second.</p>
         </section>
-        <footer class="dw-footer"><span>07 / boundaries</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 9 · PEFT --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">Archetype · PEFT</p>
-            <h2 class="dw-heading-slide">Read-heavy editorial platform pattern.</h2>
-            <div class="mt-6 dw-embed" style="height:min(340px,42vh)">
-                <x-slidewire::diagram>
-flowchart LR
-  IN[Ingestion] --> PUB[Publication]
-  PUB --> STORE[(Canonical store)]
-  PUB --> INV[Invalidation]
-  INV --> RM[Read models]
-  RM --> API[Read APIs]
-                </x-slidewire::diagram>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="07 | boundaries" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Archetype · PEFT
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Read-heavy editorial platform pattern.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
+            <div class="mt-6 dw-embed" >
+                <pre class="mermaid slidewire-diagram" data-slidewire-diagram>flowchart LR
+  IN[Ingestion] --&gt; PUB[Publication]
+  PUB --&gt; STORE[(Canonical store)]
+  PUB --&gt; INV[Invalidation]
+  INV --&gt; RM[Read models]
+  RM --&gt; API[Read APIs]</pre>
             </div>
             <div class="mt-6 dw-grid dw-grid-3">
                 <div class="dw-chip">Event-driven</div>
@@ -189,15 +458,51 @@ flowchart LR
                 <div class="dw-chip">Cache-heavy read path</div>
             </div>
         </section>
-        <footer class="dw-footer"><span>08 / peft</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 10 · ORCHESTRATION --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Orchestration</p>
-            <h2 class="dw-heading">Frameworks excel at request → response.</h2>
-            <p class="dw-lead">Mature systems exceed that cycle.</p>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="08 | peft" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle dw-lead',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Orchestration
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Frameworks excel at request → response.
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+Mature systems exceed that cycle.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+
             <div class="mt-10 dw-flow">
                 <div class="dw-node">Validate</div>
                 <div class="dw-arrow">→</div>
@@ -211,15 +516,51 @@ flowchart LR
             </div>
             <p class="dw-note mt-8">Multi-step workflows need a first-class architectural place.</p>
         </section>
-        <footer class="dw-footer"><span>09 / orchestration</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 11 · FLOW --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap dw-wrap--top">
-            <p class="dw-kicker">{!! $flow !!}</p>
-            <h2 class="dw-heading-slide">Same workflow. Interchangeable execution.</h2>
-            <p class="dw-lead" style="font-size:clamp(1rem,1.8vw,1.35rem);"><code>DriverInterface</code> - business logic stable, execution model changes.</p>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="09 | orchestration" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle dw-lead',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+<span class="dw-accent">Flow</span>
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Same workflow. Interchangeable execution.
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+<code>DriverInterface</code> - business logic stable, execution model changes.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap dw-wrap--top">
+
+
+
             <div class="mt-6 dw-grid dw-grid-3">
                 <div class="dw-chip">Fiber <span class="dw-muted">default</span></div>
                 <div class="dw-chip">Amp</div>
@@ -227,19 +568,59 @@ flowchart LR
                 <div class="dw-chip">Swoole</div>
                 <div class="dw-chip">TrueAsync <span class="dw-muted">experimental</span></div>
             </div>
-            <pre class="mt-6 dw-code" style="font-size:clamp(0.75rem,1.2vw,0.95rem);">$flow = (new Flow(job: new Validate(), driver: $driver))
-    ->fn(new Persist())
-    ->fn(new RebuildReadModel());</pre>
-            <p class="dw-note mt-4">{!! $flow !!} explores orchestration as an architectural primitive - not a framework replacement.</p>
-        </section>
-        <footer class="dw-footer"><span>10 / flow</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 12 · FOUR PATHS --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Paths</p>
-            <h2 class="dw-heading-slide">Four credible outcomes - none is default.</h2>
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_10_0'
+$flow = (new Flow(job: new Validate(), driver: $driver))
+    ->fn(new Persist())
+    ->fn(new RebuildReadModel());
+SW_CODE_10_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="php" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+
+            <p class="dw-note mt-4"><span class="dw-accent">Flow</span> explores orchestration as an architectural primitive - not a framework replacement.</p>
+        </section>
+
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="10 | flow" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading-slide',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Paths
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Four credible outcomes - none is default.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <div class="mt-10 dw-map">
                 <div><strong>01</strong><span>Stay on Phalcon · modernize incrementally</span></div>
                 <div><strong>02</strong><span>Migrate to Symfony · ecosystem &amp; structure</span></div>
@@ -247,31 +628,96 @@ flowchart LR
                 <div><strong>04</strong><span>Runtime async · independent of web framework</span></div>
             </div>
         </section>
-        <footer class="dw-footer"><span>11 / paths</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 13 · WHAT NOT TO DO --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Anti-patterns</p>
-            <h2 class="dw-heading">What not to do.</h2>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="11 | paths" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Anti-patterns
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+What not to do.
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
             <ul class="mt-10 dw-list">
                 <li>Migrate by reflex - when SLOs and team fit are fine</li>
-                <li>Put async everywhere - {!! $ta !!} is experimental, opt-in only</li>
+                <li>Put async everywhere - <span class="dw-accent">TrueAsync</span> is experimental, opt-in only</li>
                 <li>Change framework without redrawing boundaries</li>
                 <li>Confuse framework migration with workflow design</li>
-                <li>Turn {!! $flow !!} into a framework for every feature</li>
+                <li>Turn <span class="dw-accent">Flow</span> into a framework for every feature</li>
             </ul>
         </section>
-        <footer class="dw-footer"><span>12 / anti-patterns</span></footer>
-    </x-slidewire::slide>
 
-    {{-- 14 · CONCLUSION --}}
-    <x-slidewire::slide class="dw-slide">
-        <section class="dw-wrap">
-            <p class="dw-kicker">Conclusion</p>
-            <h2 class="dw-heading">Framework choice still matters.</h2>
-            <p class="dw-lead mt-8">The deeper questions:</p>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="12 | anti-patterns" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline dw-kicker',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading dw-heading',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle dw-lead mt-8',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:overline>@verbatim
+Conclusion
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Framework choice still matters.
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+The deeper questions:
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<section class="dw-wrap">
+
+
+
             <div class="mt-8 dw-grid dw-grid-3">
                 <div class="dw-card"><h3>Workflows</h3><p>Where do multi-step pipelines live?</p></div>
                 <div class="dw-card"><h3>Boundaries</h3><p>Where does domain end and coordination begin?</p></div>
@@ -279,7 +725,9 @@ flowchart LR
             </div>
             <p class="dw-takeaway mt-10">Native code distributes across the stack.</p>
         </section>
-        <footer class="dw-footer"><span>13 / conclusion</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
-    </x-slidewire::slide>
 
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="13 | conclusion" />
+</x-darkwood.slide>
 </x-darkwood.deck>

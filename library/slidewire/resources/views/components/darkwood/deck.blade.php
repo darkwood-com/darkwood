@@ -7,7 +7,7 @@
 ])
 
 <x-slidewire::deck
-    theme="darkwood-original"
+    theme="darkwood"
     :transition="$transition"
     :transition-speed="$transitionSpeed"
     :show-progress="$showProgress"

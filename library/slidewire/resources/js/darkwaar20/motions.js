@@ -1,9 +1,8 @@
 import gsap from 'gsap';
 import seed from './seed-20020.json';
 import { reduced } from '../motion/reduced';
-import { staggerCells, stepTimeline, tweenColors } from '../motion/timeline';
+import { staggerCells, stepTimeline } from '../motion/timeline';
 import {
-    appearance,
     cellOrder,
     cellSum,
     channels,
@@ -44,24 +43,18 @@ function moveNodes(nodes, lists, mode, mix, animate) {
 
     nodes.forEach((node, i) => {
         const values = lists[i];
-        const look = appearance(values, mode, mode === 'noise' ? 0 : mix);
         const sum = values.reduce((total, value) => total + value, 0);
         node.classList.toggle('is-void', mode !== 'noise' && sum <= 340);
         node.querySelectorAll('i').forEach((quadrant, q) => {
             quadrant.dataset.darkwoodLevel = String(Math.max(0, Math.min(3, Math.round(values[q] / 85))));
             gsap.to(quadrant, {
-                backgroundColor: look.quadrants[q],
-                opacity: look.quadrantOpacity,
+                opacity: 1,
                 duration: time,
                 ease: 'power1.inOut',
                 overwrite: 'auto',
             });
         });
-        tweenColors(node, {
-            backgroundColor: mode === 'noise' ? '#17181f' : look.fill,
-            duration: time,
-            overwrite: 'auto',
-        });
+        node.style.removeProperty('background-color');
     });
 }
 

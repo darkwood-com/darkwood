@@ -1,26 +1,47 @@
-{{-- Darkwaar27 Pigment — X gameplay promo (silent, ~28s autoplay) --}}
-{{-- Route: /slides/darkwaar27-pigment-x --}}
-<x-darkwood.deck
-    transition="fade"
-    transition-speed="default"
-    :show-controls="false"
-    :show-progress="false"
-    :show-fullscreen-button="false"
->
-    <x-slidewire::slide class="dw-slide pg pgx">
+<x-darkwood.deck transition="fade">
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'data-dw-motion' => 'pg-promo-x',
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide dw-slide pg pgx" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header pgx-copy',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading pgx-title',
+  'data-pg-promo-title' => '',
+));
+$subtitleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-subtitle pgx-sub',
+  'data-pg-promo-sub' => '',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :title-attributes="$titleAttributes" :subtitle-attributes="$subtitleAttributes">
+<x-slot:title>@verbatim
+DARKWAAR27 — PIGMENT
+@endverbatim
+</x-slot:title>
+<x-slot:subtitle>@verbatim
+One die. Six faces. Twenty-five cells.
+@endverbatim
+</x-slot:subtitle>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
 <style>
     .slidewire-frame.pgx,
     .slidewire-frame:has(.pgx-stage) {
-        --pg-bg: #14110e;
-        --pg-board: #2a241c;
-        --pg-yellow: #e2b134;
-        --pg-green: #3e9a5a;
-        --pg-white: #f4efe4;
-        --pg-muted: #a89a88;
-        --pg-line: rgba(244, 239, 228, .16);
+        --pg-bg: var(--dw-blue);
+        --pg-board: var(--dw-blue);
+        --pg-yellow: var(--dw-blue);
+        --pg-green: var(--dw-blue);
+        --pg-white: var(--dw-blue);
+        --pg-muted: var(--dw-blue);
+        --pg-line: var(--dw-blue);
         overflow: hidden;
-        padding: 0 !important;
-        font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
     }
     .pgx-stage {
         position: relative;
@@ -43,14 +64,12 @@
     }
     .pgx-title {
         margin: 0;
-        font-size: clamp(28px, 4.2vw, 54px);
         letter-spacing: .14em;
         text-transform: uppercase;
         font-weight: 700;
     }
     .pgx-sub {
         margin: 14px 0 0;
-        font-size: clamp(16px, 2vw, 26px);
         letter-spacing: .04em;
     }
     .pgx-overlay {
@@ -59,7 +78,6 @@
         left: 0;
         right: 0;
         text-align: center;
-        font-size: clamp(18px, 2.4vw, 32px);
         letter-spacing: .12em;
         text-transform: uppercase;
         font-weight: 700;
@@ -77,12 +95,10 @@
         pointer-events: none;
     }
     .pgx-cta strong {
-        font-size: clamp(28px, 4vw, 52px);
         letter-spacing: .12em;
         text-transform: uppercase;
     }
     .pgx-cta span {
-        font-size: clamp(18px, 2.2vw, 28px);
         letter-spacing: .04em;
     }
     .pg-board {
@@ -91,7 +107,7 @@
         grid-template-rows: repeat(5, var(--pg-cell, 92px));
         gap: 6px;
         padding: 14px;
-        border: 1px solid var(--pg-line);
+        border: var(--dw-border-width) solid var(--pg-line);
         width: max-content;
         perspective: 900px;
     }
@@ -101,7 +117,6 @@
         place-items: center;
         transform-style: preserve-3d;
     }
-    .pg-cell.is-sealed { }
     .pg-cell.is-die { z-index: 2; }
     .pg-die-token {
         position: absolute;
@@ -110,25 +125,24 @@
         place-items: center;
         font-size: calc(var(--pg-cell, 92px) * .28);
         font-weight: 700;
-        border: 1px solid rgba(244, 239, 228, .35);
+        border: var(--dw-border-width) solid var(--dw-blue);
         transform-style: preserve-3d;
     }
     .pg-mark {
         position: absolute;
         inset: 10%;
-        border: 3px solid var(--pg-white);
+        border: var(--dw-border-width) solid var(--pg-white);
         display: grid;
         place-items: center;
-        font-size: calc(var(--pg-cell, 92px) * .24);
         font-weight: 700;
         pointer-events: none;
         z-index: 1;
     }
 </style>
-        <div class="pgx-stage" data-dw-motion="pg-promo-x">
+        <div class="pgx-stage">
             <div class="pgx-copy">
-                <h1 class="pgx-title" data-pg-promo-title>DARKWAAR27 — PIGMENT</h1>
-                <p class="pgx-sub" data-pg-promo-sub>One die. Six faces. Twenty-five cells.</p>
+
+
             </div>
             <div data-pg-board="promo" aria-label="Pigment board"></div>
             <div class="pgx-overlay" data-pg-promo-overlay></div>
@@ -137,5 +151,8 @@
                 <span>darkwoodcom.itch.io/darkwaar27</span>
             </div>
         </div>
-    </x-slidewire::slide>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
 </x-darkwood.deck>

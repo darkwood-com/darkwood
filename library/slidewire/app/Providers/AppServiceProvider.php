@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App\Support\DarkwoodPresentationCompiler;
 use Illuminate\Support\ServiceProvider;
-use WendellAdriel\SlideWire\Support\PresentationCompiler;
+use WendellAdriel\SlideWire\Commands\MakeSlideCommand;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +12,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(PresentationCompiler::class, DarkwoodPresentationCompiler::class);
+        // Slidewire compiles the native Blade components directly.
+        $this->app->bind(MakeSlideCommand::class, \App\Console\Commands\MakeSlideCommand::class);
     }
 
     /**

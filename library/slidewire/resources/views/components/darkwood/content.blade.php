@@ -9,13 +9,13 @@
 
 <x-darkwood.slide variant="content" :top="$top" {{ $attributes }}>
     <x-darkwood.heading :title="$title" :subtitle="$subtitle" :overline="$overline" />
-    <div class="dw-original-body">
-        <div class="dw-original-body-inner">
+    <div class="sw-body">
+        <div class="sw-body-inner">
             @if ($lead)
-                <p class="dw-original-lead">{{ $lead }}</p>
+                <p class="sw-lead">{{ $lead }}</p>
             @endif
             @if (trim((string) $slot) !== '')
-                <div class="dw-original-content">{{ $slot }}</div>
+                <div class="sw-content">{{ $slot }}</div>
             @endif
         </div>
     </div>

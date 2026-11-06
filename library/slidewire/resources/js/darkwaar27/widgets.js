@@ -1,7 +1,6 @@
 import {
     BLACK,
     BLUE,
-    COLORS,
     EMPTY,
     GLYPHS,
     GREEN,
@@ -61,7 +60,7 @@ export function paintBoard(nodes, state, { showDie = true } = {}) {
         const isDie = showDie && state.pos[0] === x && state.pos[1] === y;
 
         node.className = 'pg-cell';
-        node.style.background = stain === EMPTY ? '' : COLORS[stain];
+        node.style.removeProperty('background');
         node.classList.toggle('is-sealed', stain === BLACK);
         node.classList.toggle('is-die', isDie);
         node.classList.toggle('has-mark', mark !== undefined);
@@ -70,7 +69,6 @@ export function paintBoard(nodes, state, { showDie = true } = {}) {
         if (mark !== undefined) {
             const ring = document.createElement('span');
             ring.className = 'pg-mark';
-            ring.style.borderColor = COLORS[mark] || '#f4efe4';
             ring.textContent = GLYPHS[mark] ?? '·';
             node.appendChild(ring);
         }
@@ -79,9 +77,6 @@ export function paintBoard(nodes, state, { showDie = true } = {}) {
             const die = document.createElement('span');
             die.className = 'pg-die-token';
             const face = state.die.D;
-            die.style.background = COLORS[face] || '#f4efe4';
-            die.style.color =
-                face === YELLOW || face === WHITE || face === EMPTY ? '#1a140f' : '#f4efe4';
             die.textContent = GLYPHS[face] ?? '·';
             node.appendChild(die);
         }
@@ -105,7 +100,7 @@ export function paintCompass(host, die) {
         .map(
             ([key, face]) => `
         <div class="pg-swatch" data-face="${key}">
-            <b style="background:${COLORS[face]}">${GLYPHS[face]}</b>
+            <b>${GLYPHS[face]}</b>
             <span>${key === 'D' ? 'Down' : key}</span>
         </div>`,
         )
@@ -189,7 +184,7 @@ export function bindDieOrientation(slide) {
                     ([key, face]) => `
                 <div class="pg-face-card">
                     <span>${key}</span>
-                    <b style="background:${COLORS[face]};color:${face === YELLOW || face === WHITE || face === EMPTY ? '#1a140f' : '#f4efe4'}">${NAMES[face]}</b>
+                    <b>${NAMES[face]}</b>
                 </div>`,
                 )
                 .join('');
@@ -257,9 +252,7 @@ export function bindMixer(slide) {
         const next = mix(a, b);
 
         if (result) {
-            result.style.background = COLORS[next];
             result.textContent = GLYPHS[next];
-            result.style.color = next === YELLOW || next === WHITE || next === EMPTY ? '#1a140f' : '#f4efe4';
         }
 
         if (label) {

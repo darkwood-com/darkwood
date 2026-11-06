@@ -1,0 +1,3 @@
+<x-darkwood.content title="Contenu" label="01 | contenu">
+    <p>Développez votre idée.</p>
+</x-darkwood.content>

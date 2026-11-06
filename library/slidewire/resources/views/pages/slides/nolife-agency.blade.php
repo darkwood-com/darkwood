@@ -1,101 +1,254 @@
-<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
-    <x-slidewire::title-slide
-        title="NoLife Agency"
-        subtitle="Construire une architecture multi-agent gouvernee avec Symfony AI, Flow et Navi"
-        overline="Article technique Darkwood"
-        speaker="@matyo91"
-        event="Developer Conference Deck"
-        align="left"
-        variant="hero"
-    />
+<x-darkwood.deck transition="fade">
 
-    <x-slidewire::slide>
-        <x-slidewire::two-column-slide ratio="2:1" gap="xl" align="center">
-            <x-slot name="left">
-                <x-slidewire::panel title="Pourquoi maintenant ?" overline="Systemes multi-agent partout" variant="glass">
-                    <x-slidewire::fragment :index="0">
-                        <p>Infrastructure : Docker orchestre deja des services autonomes.</p>
-                    </x-slidewire::fragment>
-                    <x-slidewire::fragment :index="1">
-                        <p>Organisation : Paperclip + Hermes pilotent le travail agentique.</p>
-                    </x-slidewire::fragment>
-                    <x-slidewire::fragment :index="2">
-                        <p>Application : Symfony AI rend les agents actionnables dans le produit.</p>
-                    </x-slidewire::fragment>
-                </x-slidewire::panel>
-            </x-slot>
-            <x-slot name="right">
-                <x-slidewire::diagram>
-flowchart TD
-    A[Docker] --> B[Paperclip + Hermes]
-    B --> C[Symfony]
-    C --> D[Flow]
-    D --> E[Navi]
-                </x-slidewire::diagram>
-            </x-slot>
-        </x-slidewire::two-column-slide>
-    </x-slidewire::slide>
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Systemes multi-agent partout
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Pourquoi maintenant ?
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="mx-auto grid w-full max-w-6xl grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-center gap-9 sm:gap-8">
+    <div class="min-w-0"><div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
 
-    <x-slidewire::slide>
-        <x-slidewire::panel title="Le probleme" overline="Sans gouvernance" variant="elevated">
-            <x-slidewire::markdown>
-Les demos multi-agent deviennent vite des **chaines de prompts opaques** :
 
-- contrats flous entre agents
-- peu de controles pre/post execution
-- traces insuffisantes pour auditer
-- risques sur couts, securite et qualite
-            </x-slidewire::markdown>
-        </x-slidewire::panel>
-    </x-slidewire::slide>
 
-    <x-slidewire::slide>
-        <x-slidewire::two-column-slide ratio="1:1" align="center">
-            <x-slot name="left">
-                <x-slidewire::panel title="L'idee NoLife Agency" overline="MVP Symfony 8" variant="glass">
-                    <x-slidewire::markdown>
-Une agence digitale modelisee comme un systeme d'agents, avec un objectif :
+                    </header>
 
-**autonomie utile sous gouvernance explicite**.
-                    </x-slidewire::markdown>
-                </x-slidewire::panel>
-            </x-slot>
-            <x-slot name="right">
-                <x-slidewire::diagram>
-flowchart LR
-    C[Client] --> A[NoLife Agency]
-    A --> R[Roles agents]
-    A --> P[Politiques]
-    A --> T[Traces]
-                </x-slidewire::diagram>
-            </x-slot>
-        </x-slidewire::two-column-slide>
-    </x-slidewire::slide>
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <p>Infrastructure : Docker orchestre deja des services autonomes.</p>
+</div>
+                    <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <p>Organisation : Paperclip + Hermes pilotent le travail agentique.</p>
+</div>
+                    <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <p>Application : Symfony AI rend les agents actionnables dans le produit.</p>
+</div></div>
+    </div>
 
-    <x-slidewire::agenda-slide title="Roles de l'agence" subtitle="Organisation complete" style="cards">
-        <x-slidewire::agenda-item title="Direction" description="CEO, CTO, Governance Manager, Directeur de clientele, PO, Delivery Manager" />
-        <x-slidewire::agenda-item title="Production" description="Architecte, Developer, UX Designer, UI Designer, Graphiste, Motion Designer, QA" />
-        <x-slidewire::agenda-item title="Growth" description="SEO/GEO, Marketing, Sales, Web Analytics, Data Analyst" />
-        <x-slidewire::agenda-item title="Operations" description="DevOps, Security Officer, Experience Officer, Office Manager, Happiness Chief Officer, Nolife Resource" />
-    </x-slidewire::agenda-slide>
+    </div></div>
+    <div class="min-w-0"><pre class="mermaid slidewire-diagram" data-slidewire-diagram>flowchart TD
+    A[Docker] --&gt; B[Paperclip + Hermes]
+    B --&gt; C[Symfony]
+    C --&gt; D[Flow]
+    D --&gt; E[Navi]</pre></div>
+</div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
 
-    <x-slidewire::slide>
-        <x-slidewire::panel title="Vue architecture globale" overline="Ports / Adapters" variant="outlined">
-            <x-slidewire::diagram>
-flowchart LR
-    App[Symfony App] --> Runner[AgentRunner]
-    Runner --> AI[Symfony AI Port]
-    Runner --> FLOW[Flow Port]
-    Runner --> NAVI[Navi Port]
-    Runner --> MEDIA[Media Port]
-            </x-slidewire::diagram>
-        </x-slidewire::panel>
-    </x-slidewire::slide>
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Sans gouvernance
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Le probleme
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
 
-    <x-slidewire::slide>
-        <x-slidewire::two-column-slide ratio="2:1" align="start">
-            <x-slot name="left">
-                <x-slidewire::code language="php">
+
+
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-markdown"><p>Les demos multi-agent deviennent vite des <strong>chaines de prompts opaques</strong> :</p>
+<ul>
+<li>contrats flous entre agents</li>
+<li>peu de controles pre/post execution</li>
+<li>traces insuffisantes pour auditer</li>
+<li>risques sur couts, securite et qualite</li>
+</ul>
+</div></div>
+    </div>
+
+    </div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+MVP Symfony 8
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+L'idee NoLife Agency
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="mx-auto grid w-full max-w-6xl grid-cols-1 lg:grid-cols-2 items-center gap-7 sm:gap-6">
+    <div class="min-w-0"><div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+
+
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-markdown"><p>Une agence digitale modelisee comme un systeme d'agents, avec un objectif :</p>
+<p><strong>autonomie utile sous gouvernance explicite</strong>.</p>
+</div></div>
+    </div>
+
+    </div></div>
+    <div class="min-w-0"><pre class="mermaid slidewire-diagram" data-slidewire-diagram>flowchart LR
+    C[Client] --&gt; A[NoLife Agency]
+    A --&gt; R[Roles agents]
+    A --&gt; P[Politiques]
+    A --&gt; T[Traces]</pre></div>
+</div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Ports / Adapters
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Vue architecture globale
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="relative rounded-[2rem]">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+
+
+                    </header>
+
+    <div class="relative">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><pre class="mermaid slidewire-diagram" data-slidewire-diagram>flowchart LR
+    App[Symfony App] --&gt; Runner[AgentRunner]
+    Runner --&gt; AI[Symfony AI Port]
+    Runner --&gt; FLOW[Flow Port]
+    Runner --&gt; NAVI[Navi Port]
+    Runner --&gt; MEDIA[Media Port]</pre></div>
+    </div>
+
+    </div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Contrats stables
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Ports exposes
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="mx-auto grid min-h-full w-full max-w-6xl grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start gap-7 sm:gap-6">
+    <div class="min-w-0">
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_4_0'
 interface AiAgentClient {}
 interface FlowWorkflowClient {}
 interface NaviTraceClient {}
@@ -105,103 +258,326 @@ final class AgentRunner
 {
     // Frontiere unique de gouvernance
 }
-                </x-slidewire::code>
-            </x-slot>
-            <x-slot name="right">
-                <x-slidewire::panel title="Ports exposes" overline="Contrats stables" variant="glass">
-                    <x-slidewire::markdown>
-- `AiAgentClient`
-- `FlowWorkflowClient`
-- `NaviTraceClient`
-- `MediaGenerationClient`
-                    </x-slidewire::markdown>
-                </x-slidewire::panel>
-            </x-slot>
-        </x-slidewire::two-column-slide>
-    </x-slidewire::slide>
+SW_CODE_4_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="php" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+</div>
+    <div class="min-w-0"><div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
 
-    <x-slidewire::slide>
-        <x-slidewire::panel title="AgentRunner" overline="Single governance boundary" variant="elevated">
-            <x-slidewire::markdown>
-Point d'application unique pour :
 
-- politiques d'execution
-- audit des decisions
-- cycle de vie des traces
-- dispatch des workflows YAML applicatifs
-            </x-slidewire::markdown>
-        </x-slidewire::panel>
-    </x-slidewire::slide>
 
-    <x-slidewire::slide>
-        <x-slidewire::two-column-slide ratio="1:1" align="center">
-            <x-slot name="left">
-                <x-slidewire::panel title="Modele de gouvernance" overline="Control plane" variant="glass">
-                    <x-slidewire::fragment :index="0"><p>Pre-checks: contexte, droits, policies.</p></x-slidewire::fragment>
-                    <x-slidewire::fragment :index="1"><p>Approval gates: validation humaine obligatoire.</p></x-slidewire::fragment>
-                    <x-slidewire::fragment :index="2"><p>Post-checks: qualite, securite, coherence.</p></x-slidewire::fragment>
-                    <x-slidewire::fragment :index="3"><p>Artifact path safety: ecriture bornees et auditables.</p></x-slidewire::fragment>
-                </x-slidewire::panel>
-            </x-slot>
-            <x-slot name="right">
-                <x-slidewire::diagram>
-flowchart TD
-    A[Pre-checks] --> B[Execution]
-    B --> C[Approval gate]
-    C --> D[Post-checks]
-    D --> E[Audit + Trace]
-                </x-slidewire::diagram>
-            </x-slot>
-        </x-slidewire::two-column-slide>
-    </x-slidewire::slide>
+                    </header>
 
-    <x-slidewire::slide>
-        <x-slidewire::panel title="Workflow client website" overline="Etat metier" variant="outlined">
-            <x-slidewire::diagram>
-stateDiagram-v2
-    [*] --> lead_qualified
-    lead_qualified --> brief_created
-    brief_created --> architecture_defined
-    architecture_defined --> content_generated
-    content_generated --> seo_optimized
-    seo_optimized --> media_brief_created
-    media_brief_created --> delivery_reviewed
-    delivery_reviewed --> human_approval_required
-            </x-slidewire::diagram>
-        </x-slidewire::panel>
-    </x-slidewire::slide>
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-markdown"><ul>
+<li><code>AiAgentClient</code></li>
+<li><code>FlowWorkflowClient</code></li>
+<li><code>NaviTraceClient</code></li>
+<li><code>MediaGenerationClient</code></li>
+</ul>
+</div></div>
+    </div>
 
-    <x-slidewire::slide>
-        <x-slidewire::two-column-slide ratio="2:1" align="center">
-            <x-slot name="left">
-                <x-slidewire::panel title="Commande de demo" overline="CLI de reference" variant="elevated">
-                    <x-slidewire::code language="bash">
+    </div></div>
+</div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Single governance boundary
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+AgentRunner
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+
+
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-markdown"><p>Point d'application unique pour :</p>
+<ul>
+<li>politiques d'execution</li>
+<li>audit des decisions</li>
+<li>cycle de vie des traces</li>
+<li>dispatch des workflows YAML applicatifs</li>
+</ul>
+</div></div>
+    </div>
+
+    </div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Control plane
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Modele de gouvernance
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="mx-auto grid w-full max-w-6xl grid-cols-1 lg:grid-cols-2 items-center gap-7 sm:gap-6">
+    <div class="min-w-0"><div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+
+
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <p>Pre-checks: contexte, droits, policies.</p>
+</div>
+                    <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <p>Approval gates: validation humaine obligatoire.</p>
+</div>
+                    <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <p>Post-checks: qualite, securite, coherence.</p>
+</div>
+                    <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <p>Artifact path safety: ecriture bornees et auditables.</p>
+</div></div>
+    </div>
+
+    </div></div>
+    <div class="min-w-0"><pre class="mermaid slidewire-diagram" data-slidewire-diagram>flowchart TD
+    A[Pre-checks] --&gt; B[Execution]
+    B --&gt; C[Approval gate]
+    C --&gt; D[Post-checks]
+    D --&gt; E[Audit + Trace]</pre></div>
+</div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Etat metier
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Workflow client website
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="relative rounded-[2rem]">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+
+
+                    </header>
+
+    <div class="relative">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><pre class="mermaid slidewire-diagram" data-slidewire-diagram>stateDiagram-v2
+    [*] --&gt; lead_qualified
+    lead_qualified --&gt; brief_created
+    brief_created --&gt; architecture_defined
+    architecture_defined --&gt; content_generated
+    content_generated --&gt; seo_optimized
+    seo_optimized --&gt; media_brief_created
+    media_brief_created --&gt; delivery_reviewed
+    delivery_reviewed --&gt; human_approval_required</pre></div>
+    </div>
+
+    </div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+CLI de reference
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Commande de demo
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="mx-auto grid min-h-full w-full max-w-6xl grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-center gap-7 sm:gap-6">
+    <div class="min-w-0"><div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+
+
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none">
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_8_0'
 php bin/console nolife:demo:client-website acme-saas \
   --real-ai \
   --real-flow \
   --real-navi \
   --real-media \
   --dry-run
-                    </x-slidewire::code>
-                </x-slidewire::panel>
-            </x-slot>
-            <x-slot name="right">
-                <x-slidewire::panel title="Options" variant="glass">
-                    <x-slidewire::markdown>
-- `--real-ai`
-- `--real-flow`
-- `--real-navi`
-- `--real-media`
-- `--dry-run`
-                    </x-slidewire::markdown>
-                </x-slidewire::panel>
-            </x-slot>
-        </x-slidewire::two-column-slide>
-    </x-slidewire::slide>
+SW_CODE_8_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="shellscript" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+</div>
+    </div>
 
-    <x-slidewire::slide>
-        <x-slidewire::panel title="Sorties runtime" overline="Artifacts generes" variant="glass">
-            <x-slidewire::code language="text">
+    </div></div>
+    <div class="min-w-0"><div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+                            <h3 class="max-w-[24ch] text-balance font-semibold tracking-tight">Options</h3>
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-markdown"><ul>
+<li><code>--real-ai</code></li>
+<li><code>--real-flow</code></li>
+<li><code>--real-navi</code></li>
+<li><code>--real-media</code></li>
+<li><code>--dry-run</code></li>
+</ul>
+</div></div>
+    </div>
+
+    </div></div>
+</div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Artifacts generes
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Sorties runtime
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+
+
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none">
+@endverbatim
+@php
+$snippet = <<<'SW_CODE_9_0'
 brief.json
 article-draft.md
 seo-geo.md
@@ -209,59 +585,202 @@ media-brief.yaml
 delivery-report.md
 trace.json
 audit.jsonl
-            </x-slidewire::code>
-        </x-slidewire::panel>
-    </x-slidewire::slide>
+SW_CODE_9_0;
+$snippetAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.code language="text" :source="$snippet" :pre-attributes="$snippetAttributes" />
+@verbatim
+</div>
+    </div>
 
-    <x-slidewire::slide>
-        <x-slidewire::two-column-slide ratio="1:1" align="center">
-            <x-slot name="left">
-                <x-slidewire::panel title="Null adapters" overline="Mode local demo" variant="outlined">
-                    <x-slidewire::markdown>
-- deterministic
-- rapide
-- sans dependances externes
-- parfait pour onboarding et tests
-                    </x-slidewire::markdown>
-                </x-slidewire::panel>
-            </x-slot>
-            <x-slot name="right">
-                <x-slidewire::panel title="Real adapters" overline="Integrations swappables" variant="elevated">
-                    <x-slidewire::markdown>
-Activation par configuration :
+    </div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
 
-- IA reelle
-- workflow reel
-- trace reelle
-- generation media reelle
-                    </x-slidewire::markdown>
-                </x-slidewire::panel>
-            </x-slot>
-        </x-slidewire::two-column-slide>
-    </x-slidewire::slide>
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Mode local demo
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Null adapters
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="mx-auto grid min-h-full w-full max-w-6xl grid-cols-1 lg:grid-cols-2 items-center gap-7 sm:gap-6">
+    <div class="min-w-0"><div class="relative overflow-hidden rounded-[2rem] border border-dashed">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
 
-    <x-slidewire::slide>
-        <x-slidewire::panel title="Ce que NoLife Agency prouve" overline="Message cle" variant="glass">
-            <x-slidewire::markdown>
-L'autonomie ne suffit pas.
 
-Il faut :
 
-- de la gouvernance
-- des contrats de ports clairs
-- une orchestration explicite
-- des traces exploitables pour l'audit
-            </x-slidewire::markdown>
-        </x-slidewire::panel>
-    </x-slidewire::slide>
+                    </header>
 
-    <x-slidewire::slide>
-        <x-slidewire::panel title="Next steps" overline="Roadmap" variant="elevated">
-            <x-slidewire::fragment :index="0"><p>Symfony AI real adapter</p></x-slidewire::fragment>
-            <x-slidewire::fragment :index="1"><p>Flow real bridge</p></x-slidewire::fragment>
-            <x-slidewire::fragment :index="2"><p>Navi trace bridge</p></x-slidewire::fragment>
-            <x-slidewire::fragment :index="3"><p>Bonzai premium content</p></x-slidewire::fragment>
-            <x-slidewire::fragment :index="4"><p>Uniflow packaging</p></x-slidewire::fragment>
-        </x-slidewire::panel>
-    </x-slidewire::slide>
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-markdown"><ul>
+<li>deterministic</li>
+<li>rapide</li>
+<li>sans dependances externes</li>
+<li>parfait pour onboarding et tests</li>
+</ul>
+</div></div>
+    </div>
+
+    </div></div>
+    <div class="min-w-0"><div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+                            <p class="text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em]">Integrations swappables</p>
+
+                            <h3 class="max-w-[24ch] text-balance font-semibold tracking-tight">Real adapters</h3>
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-markdown"><p>Activation par configuration :</p>
+<ul>
+<li>IA reelle</li>
+<li>workflow reel</li>
+<li>trace reelle</li>
+<li>generation media reelle</li>
+</ul>
+</div></div>
+    </div>
+
+    </div></div>
+</div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Message cle
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Ce que NoLife Agency prouve
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+
+
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-markdown"><p>L'autonomie ne suffit pas.</p>
+<p>Il faut :</p>
+<ul>
+<li>de la gouvernance</li>
+<li>des contrats de ports clairs</li>
+<li>une orchestration explicite</li>
+<li>des traces exploitables pour l'audit</li>
+</ul>
+</div></div>
+    </div>
+
+    </div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
+
+@php
+$canvasAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+));
+@endphp
+<x-darkwood.slide variant="content" class="slidewire-slide slidewire-transition-slide" :canvas-attributes="$canvasAttributes" data-transition="slide">
+@php
+$headingAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-header sw-header--content sw-content-header',
+));
+$overlineAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'dw-overline sw-overline text-sm/6 sm:text-[0.8125rem]/6 font-medium tracking-[0.24em] text-cyan-200',
+));
+$titleAttributes = new \Illuminate\View\ComponentAttributeBag(array (
+  'class' => 'sw-heading max-w-[24ch] text-balance text-4xl font-semibold tracking-tight sm:text-3xl text-white text-3xl sm:text-2xl',
+));
+@endphp
+<x-darkwood.heading variant="content" :header-attributes="$headingAttributes" :overline-attributes="$overlineAttributes" :title-attributes="$titleAttributes">
+<x-slot:overline>@verbatim
+Roadmap
+@endverbatim
+</x-slot:overline>
+<x-slot:title>@verbatim
+Next steps
+@endverbatim
+</x-slot:title>
+</x-darkwood.heading>
+<x-darkwood.body>
+@verbatim
+<div class="relative overflow-hidden rounded-[2rem] border">
+            <header class="relative flex flex-col gap-3 border-b px-6 py-5 sm:px-7">
+
+
+
+                    </header>
+
+    <div class="relative px-6 py-5 sm:px-7 sm:py-6 px-6 py-5 sm:px-7 sm:py-6">
+        <div class="max-w-[48ch] text-pretty text-lg/7 sm:text-base/7 max-w-none"><div class="slidewire-fragment" data-fragment-index="0" data-fragment="data-fragment">
+    <p>Symfony AI real adapter</p>
+</div>
+            <div class="slidewire-fragment" data-fragment-index="1" data-fragment="data-fragment">
+    <p>Flow real bridge</p>
+</div>
+            <div class="slidewire-fragment" data-fragment-index="2" data-fragment="data-fragment">
+    <p>Navi trace bridge</p>
+</div>
+            <div class="slidewire-fragment" data-fragment-index="3" data-fragment="data-fragment">
+    <p>Bonzai premium content</p>
+</div>
+            <div class="slidewire-fragment" data-fragment-index="4" data-fragment="data-fragment">
+    <p>Uniflow packaging</p>
+</div></div>
+    </div>
+
+    </div>
+@endverbatim
+</x-darkwood.body>
+<x-darkwood.footer label="" />
+</x-darkwood.slide>
 </x-darkwood.deck>

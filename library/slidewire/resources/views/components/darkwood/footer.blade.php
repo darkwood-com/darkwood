@@ -5,9 +5,9 @@
     'logo' => true,
 ])
 
-<footer class="dw-original-footer">
-    <span class="dw-original-footer-label">{{ $label === null ? $date : preg_replace('/^(\d+)\s*\/\s*(.+)$/u', '$1 | $2', $label) }}</span>
-    <span class="dw-original-footer-brand">
+<footer class="sw-footer">
+    <span class="sw-footer-label">{{ $label ?? $date }}</span>
+    <span class="sw-footer-brand">
         <span>{{ $author }}</span>
         @if ($logo)
             <x-darkwood.logo />
