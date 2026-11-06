@@ -7,10 +7,12 @@
 
 <footer class="dw-original-footer">
     <span>{{ $label ?? $date }}</span>
+    <span class="dw-original-pagination" aria-label="Progression"
+        x-text="`${String(index + 1).padStart(2, '0')} | ${String(count).padStart(2, '0')}`"></span>
     <span class="dw-original-footer-brand">
         <span>{{ $author }}</span>
         @if ($logo)
-            <img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood">
+            <x-darkwood.logo />
         @endif
     </span>
 </footer>

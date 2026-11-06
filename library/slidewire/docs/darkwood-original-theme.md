@@ -66,10 +66,7 @@ Références précises :
 
 ### Palette
 
-- Bleu de marque dominant : `#3579F6`, échantillonné sur l'aperçu Keynote
-  `themes/darkwood/darkwood.key/preview.jpg`. Une légère variation est possible
-  à cause de la compression JPEG ; la valeur devra être confirmée dans Keynote
-  avant d'être figée comme token définitif.
+- Bleu de marque : `#3579F6`, confirmé pour cette phase d'ajustement du pilote.
 - Fond principal : blanc ou blanc très légèrement cassé.
 - Texte principal : noir presque pur.
 - Slides de respiration/section : aplat bleu avec texte blanc.
@@ -407,8 +404,9 @@ la coloration syntaxique Phiki. Il ne réimplémente pas le highlighter.
 - Jost 400/700 : fontes déjà suivies sous `public/darkwood/fonts/Jost`, sans
   nouvelle copie historique ; projet officiel sous SIL OFL 1.1.
 - Verdana : pile système uniquement, jamais redistribuée.
-- Logo : asset Darkwood déjà suivi
-  `public/darkwood/logos/dw512x512-light.png`.
+- Logos : copies exactes des trois PNG historiques `dw512x512-uni-blue.png`,
+  `dw512x512-uni-dark.png`, `dw512x512-uni-light.png`, sous
+  `public/darkwood/logos/`. Voir la sélection automatique ci-dessous.
 - Photographies et portraits historiques : non intégrés, car inutiles au
   pilote et non accompagnés ici d'une preuve de redistribution.
 
@@ -466,3 +464,131 @@ et trois comparaisons avant/après représentatives.
 
 Aucune généralisation ne doit commencer avant validation humaine de la planche
 du pilote. Les 27 autres présentations restent volontairement inchangées.
+
+## Ajustements graphiques — révision 2 du pilote
+
+### Logos historiques exacts
+
+Le composant unique `<x-darkwood.logo>` sélectionne la variante en fonction de
+la surface et hérite du layout via `@aware(['variant' => 'content'])` :
+
+- couverture et section bleues : `dw512x512-uni-blue.png` ;
+- contenu et footer sur blanc : `dw512x512-uni-dark.png` ;
+- couverture noire : `dw512x512-uni-light.png`.
+
+Une surface locale peut être déclarée avec `background="blue|white|black"`.
+La conclusion utilise ainsi le logo bleu dans sa pastille bleue, et le logo
+sombre dans son footer blanc. La variante noire est disponible avec
+`<x-darkwood.cover background="black" ... />` ; elle est vérifiée dans une
+fixture indépendante et n'ajoute pas de slide au pilote.
+
+Les sources viennent de
+`/Users/math/Mathieu/Darkwood/presentations/themes/darkwood/logos/`.
+Les trois fichiers sont des PNG sRGB de **512 × 512**, copiés sans retouche ;
+leurs SHA-256 ont été comparés aux sources et sont identiques. Aucun logo n'a
+été généré. Le footer les affiche à 32 × 32 px, sans padding, filtre, recadrage
+ou fond CSS ajouté. Les autres usages conservent le ratio carré avec
+`object-fit: contain`. Les sources historiques restent en lecture seule.
+
+### Progression et pagination
+
+La barre supérieure garde les 6 px et la position haute du composant Slidewire.
+Le remplissage est un aplat `#3579F6`, sans image de fond, dégradé ou opacité ;
+la piste restante est blanche et opaque. La surcharge CSS est limitée aux
+shells contenant des frames `slidewire-theme-darkwood-original` : le shell
+Slidewire lui-même ne porte pas cette classe de thème.
+
+La largeur conserve l'état natif `(index + 1) / count` : 5 % sur la première
+slide, 40 % sur la huitième et 100 % sur la vingtième. Le footer lit les mêmes
+variables Alpine `index` et `count`, avec deux chiffres et le séparateur `|`.
+Il n'existe aucun compteur codé en dur dans les slides. Le compteur est centré
+au-dessus des commandes afin de préserver date/libellé, auteur et logo.
+Les libellés éditoriaux historiques du pilote (`08 / structure`, etc.) restent
+distincts de ce compteur d'avancement.
+
+### Titres et listes
+
+Le composant `content` place désormais son en-tête en haut par défaut. Le titre
+est centré, en encre noire (`#111111`), en Jost avec fallback Verdana ; son
+échelle est `clamp(2.4rem, 3.4vw, 3.4rem)`. Les marges appartiennent au canvas
+Darkwood : le padding supplémentaire des frames Slidewire est neutralisé pour
+ce thème. Les couvertures et sections conservent leurs compositions centrées
+et leurs titres blancs. La conclusion conserve la composition asymétrique
+« Thanks! » observée dans le modèle historique.
+
+Les listes HTML, celles de `.dw-original-list` et les listes produites par
+`x-slidewire::markdown` partagent les mêmes règles : marqueur natif `disc`
+noir au premier niveau, `circle` noir évidé sur le blanc aux niveaux imbriqués.
+Le retrait de 1.35 em, les marqueurs extérieurs et l'interligne de 1.4
+conservent l'alignement des lignes repliées. Les niveaux profonds restent
+imbriqués, sans pseudo-icône décorative. Les listes ordonnées gardent leur
+numérotation native.
+
+La slide 13 « Memory » reprend exactement les trois catégories et leurs textes
+dans une liste à deux niveaux ; les 27 autres présentations sont inchangées.
+
+### Validation et rendus à approuver
+
+Rendus hors Git :
+`storage/app/slide-renders/symfony-ai-in-action/revision-2/`.
+
+- `slide-01.png` à `slide-20.png` : captures Chrome en 1440 × 900, DPR 1 ;
+- `contact-sheet.png` : nouvelle planche contact des 20 slides ;
+- `historical-comparison.png` : modèles Keynote à gauche, nouveaux rendus à
+  droite (couverture bleue, noire, contenu en colonnes, listes) ;
+- `check-blue.png`, `check-black.png`, `check-lists.png` : fixtures des variantes
+  et des listes HTML/Markdown à trois niveaux ;
+- `validation.json` : mesures et résultats des contrôles navigateur.
+
+Vérifications effectuées :
+
+- build Vite et tests Laravel : 5 tests, 14 assertions réussis ;
+- 20 frames conservées, navigation précédent/suivant fonctionnelle ;
+- progression exacte sur les 20 positions et séparateur vertical présent ;
+- couleurs calculées, épaisseur et absence de dégradé contrôlées ;
+- titres noirs centrés en haut sur toutes les slides de contenu ;
+- trois variantes de logo réellement chargées, dimensions carrées vérifiées ;
+- listes HTML et Markdown : puce pleine puis creuse, y compris au troisième
+  niveau, avec contrôle visuel du repli des lignes ;
+- sections bleues et trois blocs de code sombres conservés ;
+- aucun scroll de frame, débordement horizontal ou chevauchement du footer
+  détecté, aucune erreur JavaScript ou réponse HTTP en erreur ;
+- revue de la planche des 20 slides et des détails code/listes/logos.
+
+La comparaison utilise les aperçus `Data/st-*.jpg` extraits de `darkwood.key`
+dans un répertoire temporaire. Ces aperçus montrent les dispositions natives
+des titres, footer, puces et couvertures ; leur résolution et leur format
+diffèrent des captures navigateur. Le ratio demandé de 1440 × 900 est conservé
+pour les nouveaux rendus. La fidélité visuelle finale reste soumise à validation
+humaine ; aucun commit, push ou migration globale n'est autorisé par cette phase.
+
+### Reproduire les contrôles
+
+Depuis Slidewire, entrer dans l'environnement Nix existant :
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' develop ../darkwood-com
+npm run build
+php artisan test
+php artisan serve --host=127.0.0.1 --port=8017
+```
+
+Dans un second terminal du même environnement, avec Playwright accessible :
+
+```bash
+node tests/Browser/darkwood-original.cjs
+```
+
+Si Playwright est fourni par le runtime local, indiquer son chemin de module
+via `PLAYWRIGHT_MODULE`. `CHROME` permet de choisir l'exécutable Chrome et
+`SLIDEWIRE_URL` l'URL du serveur. Le test rend lui-même les fixtures Blade via
+PHP, sans créer de route applicative ni modifier le pilote pour les contrôles.
+Pour reconstruire la planche avec ImageMagick disponible dans Nix :
+
+```bash
+magick montage -label '%t' \
+  storage/app/slide-renders/symfony-ai-in-action/revision-2/slide-*.png \
+  -font public/darkwood/fonts/Jost/Jost-400-Book.otf -pointsize 17 \
+  -thumbnail 360x225 -tile 4x5 -geometry +6+8 -background '#e5e7eb' \
+  storage/app/slide-renders/symfony-ai-in-action/revision-2/contact-sheet.png
+```

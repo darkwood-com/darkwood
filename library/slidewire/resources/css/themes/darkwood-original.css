@@ -12,7 +12,7 @@
     --darkwood-font-reading: 'Verdana', 'Jost', ui-sans-serif, system-ui, sans-serif;
     --darkwood-font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
     --darkwood-title: clamp(3.5rem, 6vw, 5.75rem);
-    --darkwood-heading: clamp(2.4rem, 4.2vw, 4rem);
+    --darkwood-heading: clamp(2.4rem, 3.4vw, 3.4rem);
     --darkwood-section: clamp(2.7rem, 4.8vw, 4.5rem);
     --darkwood-body: clamp(1.25rem, 1.8vw, 1.75rem);
     --darkwood-small: 0.95rem;
@@ -29,6 +29,28 @@
     background: var(--darkwood-white);
     color: var(--darkwood-ink);
     font-family: var(--darkwood-font);
+}
+
+/* Full-bleed canvas: the theme owns the margins, not the vendor frame. */
+.slidewire-theme-darkwood-original.slidewire-frame {
+    padding: 0;
+}
+
+.slidewire-theme-darkwood-original .slidewire-content {
+    width: 100%;
+    margin: 0;
+}
+
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) .slidewire-progress {
+    height: 6px;
+    background: var(--darkwood-white);
+    opacity: 1;
+}
+
+.slidewire-shell:has(.slidewire-frame.slidewire-theme-darkwood-original) .slidewire-progress-bar {
+    background: var(--darkwood-blue);
+    background-image: none;
+    opacity: 1;
 }
 
 .dw-original-slide {
@@ -62,10 +84,17 @@
 }
 
 .dw-original-slide--section .dw-original-canvas,
-.dw-original-slide--cover .dw-original-canvas {
+.dw-original-slide--cover .dw-original-canvas,
+.dw-original-slide--cover-black .dw-original-canvas {
     align-items: center;
     text-align: center;
     background: var(--darkwood-blue);
+    color: var(--darkwood-white);
+}
+
+.dw-original-slide.dw-original-slide--cover-black,
+.dw-original-slide--cover-black .dw-original-canvas {
+    background: #000;
     color: var(--darkwood-white);
 }
 
@@ -79,6 +108,7 @@
 }
 
 .dw-original-slide--cover .dw-original-overline,
+.dw-original-slide--cover-black .dw-original-overline,
 .dw-original-slide--section .dw-original-overline {
     color: var(--darkwood-white);
 }
@@ -99,9 +129,25 @@
 }
 
 .dw-original-heading {
-    max-width: 68rem;
+    max-width: 74rem;
+    margin-inline: auto;
+    color: var(--darkwood-ink);
+    text-align: center;
     font-size: var(--darkwood-heading);
     line-height: 1.08;
+}
+
+.dw-original-content-header {
+    width: 100%;
+    text-align: center;
+}
+
+.dw-original-content-header .dw-original-overline {
+    color: var(--darkwood-muted);
+}
+
+.dw-original-slide--content .dw-original-lead {
+    margin-inline: auto;
 }
 
 .dw-original-section-title {
@@ -120,6 +166,7 @@
 }
 
 .dw-original-slide--cover .dw-original-lead,
+.dw-original-slide--cover-black .dw-original-lead,
 .dw-original-slide--section .dw-original-lead {
     color: var(--darkwood-white);
 }
@@ -157,32 +204,39 @@
     line-height: 1.42;
 }
 
-.dw-original-list {
+.dw-original-slide--content ul {
     max-width: 66rem;
     margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.dw-original-list li {
-    position: relative;
-    margin: 0.8rem 0;
-    padding-left: 1.7rem;
-    color: var(--darkwood-ink);
+    padding-left: 1.35em;
+    list-style: disc outside;
     font-family: var(--darkwood-font-reading);
     font-size: var(--darkwood-body);
+}
+
+.dw-original-slide--content ul li {
+    margin: 0.6em 0;
+    padding-left: 0.15em;
+    color: var(--darkwood-ink);
+    font-family: var(--darkwood-font-reading);
+    font-size: inherit;
     line-height: 1.4;
 }
 
-.dw-original-list li::before {
-    content: '';
-    position: absolute;
-    top: 0.64em;
-    left: 0;
-    width: 0.48rem;
-    height: 0.48rem;
-    border-radius: 50%;
-    background: var(--darkwood-ink);
+.dw-original-slide--content ul ul {
+    margin-top: 0.4em;
+    list-style-type: circle;
+}
+
+.dw-original-slide--content ul li::marker {
+    color: #000;
+}
+
+.dw-original-slide--content ul li::before {
+    content: none;
+}
+
+.dw-original-column ul {
+    font-size: clamp(1.05rem, 1.55vw, 1.4rem);
 }
 
 .dw-original-process {
@@ -288,8 +342,18 @@
 }
 
 .dw-original-slide--cover .dw-original-footer,
+.dw-original-slide--cover-black .dw-original-footer,
 .dw-original-slide--section .dw-original-footer {
     color: var(--darkwood-white);
+}
+
+.dw-original-pagination {
+    position: absolute;
+    left: 50%;
+    bottom: 3.6rem;
+    transform: translateX(-50%);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
 .dw-original-footer-brand {
@@ -302,15 +366,7 @@
     width: 2rem;
     height: 2rem;
     box-sizing: border-box;
-    padding: 0.18rem;
-    border-radius: 0.25rem;
-    background: var(--darkwood-blue);
     object-fit: contain;
-}
-
-.dw-original-slide--cover .dw-original-footer img,
-.dw-original-slide--section .dw-original-footer img {
-    background: transparent;
 }
 
 .dw-original-thanks {

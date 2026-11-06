@@ -3,14 +3,16 @@
     'lead' => null,
     'overline' => null,
     'label' => null,
-    'top' => false,
+    'top' => true,
 ])
 
 <x-darkwood.slide variant="content" :top="$top" {{ $attributes }}>
-    @if ($overline)
-        <p class="dw-original-overline">{{ $overline }}</p>
-    @endif
-    <h2 class="dw-original-heading">{{ $title }}</h2>
+    <header class="dw-original-content-header">
+        @if ($overline)
+            <p class="dw-original-overline">{{ $overline }}</p>
+        @endif
+        <h2 class="dw-original-heading">{{ $title }}</h2>
+    </header>
     @if ($lead)
         <p class="dw-original-lead">{{ $lead }}</p>
     @endif

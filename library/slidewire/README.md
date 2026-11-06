@@ -5,13 +5,23 @@ Support de présentation SlideWire pour [darkwood.com](https://darkwood.com)
 ## Lancer la présentation
 
 ```bash
-cd /Users/math/Mathieu/Darkwood/presentations/ressources/2026-04-24-symfony-ai-live-berlin-2026/slidewire
-npm install
-npm run dev
+cd /Users/math/Sites/darkwood/slidewire
+nix --extra-experimental-features 'nix-command flakes' develop ../darkwood-com
 composer install
-composer setup
+test -f .env || cp .env.example .env
+php artisan key:generate
+test -f database/database.sqlite || touch database/database.sqlite
+php artisan migrate
+npm ci --ignore-scripts
+npm run build
 php artisan serve
 ```
+
+L'initialisation est nécessaire au premier lancement : Laravel a besoin de la
+clé dans `.env`, des tables SQLite et du manifeste Vite pour servir les slides.
+Ne pas régénérer la clé d'une installation déjà configurée. Aux lancements
+suivants, entrer dans le même environnement Nix puis lancer `php artisan serve`.
+Pour développer les assets, lancer `npm run dev` dans un second terminal Nix.
 
 Ouvrir ensuite :
 

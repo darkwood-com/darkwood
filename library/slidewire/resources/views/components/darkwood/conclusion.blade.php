@@ -9,7 +9,7 @@
 <x-darkwood.slide variant="conclusion" {{ $attributes }}>
     <div class="dw-original-thanks">
         <div class="dw-original-thanks-mark">
-            <img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood">
+            <x-darkwood.logo background="blue" />
         </div>
         <div class="dw-original-thanks-copy">
             <h2>{{ $title }}</h2>

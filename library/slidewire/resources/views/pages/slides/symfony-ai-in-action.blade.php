@@ -149,11 +149,11 @@ public function refundOrder(string $orderId): RefundResult
         overline="Memory"
         label="12 / memory"
     >
-        <x-darkwood.columns :count="3">
-            <div class="dw-original-column"><h3>Profil</h3><p>Préférences, rôle, langue.</p></div>
-            <div class="dw-original-column"><h3>Historique</h3><p>Actions et conversations récentes.</p></div>
-            <div class="dw-original-column"><h3>Permissions</h3><p>Ce que l'agent peut voir ou faire.</p></div>
-        </x-darkwood.columns>
+        <ul class="dw-original-list">
+            <li>Profil<ul><li>Préférences, rôle, langue.</li></ul></li>
+            <li>Historique<ul><li>Actions et conversations récentes.</li></ul></li>
+            <li>Permissions<ul><li>Ce que l'agent peut voir ou faire.</li></ul></li>
+        </ul>
     </x-darkwood.content>
 
     <x-darkwood.content

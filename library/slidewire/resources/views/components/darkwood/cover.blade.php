@@ -4,9 +4,10 @@
     'overline' => null,
     'date' => '24-04-2026',
     'author' => '@matyo91',
+    'background' => 'blue',
 ])
 
-<x-darkwood.slide variant="cover" {{ $attributes }}>
+<x-darkwood.slide :variant="$background === 'black' ? 'cover-black' : 'cover'" {{ $attributes }}>
     @if ($overline)
         <p class="dw-original-overline">{{ $overline }}</p>
     @endif
