@@ -1,5 +1,5 @@
 {{-- I Built a C Compiler in PHP That Can Compile SQLite | /slides/sqlite-compiler-php --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
         $php = '<span class="dw-accent">PHP</span>';
@@ -861,4 +861,4 @@ flowchart TB
         <footer class="dw-footer"><span>@matyo91</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

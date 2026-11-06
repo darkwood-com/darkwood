@@ -1,7 +1,6 @@
 {{-- Darkwaar27 Pigment — X gameplay promo (silent, ~28s autoplay) --}}
 {{-- Route: /slides/darkwaar27-pigment-x --}}
-<x-slidewire::deck
-    theme="black"
+<x-darkwood.deck
     transition="fade"
     transition-speed="default"
     :show-controls="false"
@@ -21,10 +20,6 @@
         --pg-line: rgba(244, 239, 228, .16);
         overflow: hidden;
         padding: 0 !important;
-        background:
-            radial-gradient(ellipse at 50% 20%, rgba(226, 177, 52, .12), transparent 55%),
-            linear-gradient(160deg, #1a1510 0%, var(--pg-bg) 42%, #0f0d0b 100%) !important;
-        color: var(--pg-white);
         font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
     }
     .pgx-stage {
@@ -51,13 +46,11 @@
         font-size: clamp(28px, 4.2vw, 54px);
         letter-spacing: .14em;
         text-transform: uppercase;
-        color: var(--pg-yellow);
         font-weight: 700;
     }
     .pgx-sub {
         margin: 14px 0 0;
         font-size: clamp(16px, 2vw, 26px);
-        color: var(--pg-muted);
         letter-spacing: .04em;
     }
     .pgx-overlay {
@@ -69,11 +62,9 @@
         font-size: clamp(18px, 2.4vw, 32px);
         letter-spacing: .12em;
         text-transform: uppercase;
-        color: var(--pg-yellow);
         font-weight: 700;
         z-index: 3;
         pointer-events: none;
-        text-shadow: 0 2px 18px rgba(0, 0, 0, .55);
     }
     .pgx-cta {
         position: absolute;
@@ -82,7 +73,6 @@
         place-content: center;
         gap: 18px;
         text-align: center;
-        background: rgba(20, 17, 14, .55);
         z-index: 4;
         pointer-events: none;
     }
@@ -90,11 +80,9 @@
         font-size: clamp(28px, 4vw, 52px);
         letter-spacing: .12em;
         text-transform: uppercase;
-        color: var(--pg-yellow);
     }
     .pgx-cta span {
         font-size: clamp(18px, 2.2vw, 28px);
-        color: var(--pg-white);
         letter-spacing: .04em;
     }
     .pg-board {
@@ -103,20 +91,17 @@
         grid-template-rows: repeat(5, var(--pg-cell, 92px));
         gap: 6px;
         padding: 14px;
-        background: rgba(0, 0, 0, .32);
         border: 1px solid var(--pg-line);
         width: max-content;
         perspective: 900px;
     }
     .pg-cell {
         position: relative;
-        background: var(--pg-board);
-        box-shadow: inset 0 0 0 1px rgba(244, 239, 228, .08);
         display: grid;
         place-items: center;
         transform-style: preserve-3d;
     }
-    .pg-cell.is-sealed { box-shadow: inset 0 0 0 3px rgba(244, 239, 228, .35); }
+    .pg-cell.is-sealed { }
     .pg-cell.is-die { z-index: 2; }
     .pg-die-token {
         position: absolute;
@@ -125,8 +110,6 @@
         place-items: center;
         font-size: calc(var(--pg-cell, 92px) * .28);
         font-weight: 700;
-        color: #1a140f;
-        box-shadow: 0 8px 18px rgba(0, 0, 0, .4);
         border: 1px solid rgba(244, 239, 228, .35);
         transform-style: preserve-3d;
     }
@@ -138,7 +121,6 @@
         place-items: center;
         font-size: calc(var(--pg-cell, 92px) * .24);
         font-weight: 700;
-        color: var(--pg-white);
         pointer-events: none;
         z-index: 1;
     }
@@ -156,4 +138,4 @@
             </div>
         </div>
     </x-slidewire::slide>
-</x-slidewire::deck>
+</x-darkwood.deck>

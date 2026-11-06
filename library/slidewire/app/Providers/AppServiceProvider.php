@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Support\DarkwoodPresentationCompiler;
 use Illuminate\Support\ServiceProvider;
+use WendellAdriel\SlideWire\Support\PresentationCompiler;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PresentationCompiler::class, DarkwoodPresentationCompiler::class);
     }
 
     /**

@@ -1,15 +1,18 @@
 @props([
     'transition' => 'none',
     'transitionSpeed' => 'default',
+    'showControls' => true,
+    'showProgress' => true,
+    'showFullscreenButton' => true,
 ])
 
 <x-slidewire::deck
     theme="darkwood-original"
     :transition="$transition"
     :transition-speed="$transitionSpeed"
-    show-progress="true"
-    show-controls="true"
-    show-fullscreen-button="true"
+    :show-progress="$showProgress"
+    :show-controls="$showControls"
+    :show-fullscreen-button="$showFullscreenButton"
     {{ $attributes }}
 >
     {{ $slot }}

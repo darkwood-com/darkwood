@@ -1,4 +1,4 @@
-<x-slidewire::deck theme="black" transition="fade" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" show-progress="true" show-controls="true" show-fullscreen-button="true">
     <x-slidewire::slide class="dw-slide">
         <section class="dw-wrap">
             <p class="dw-kicker">LLM Game of Life</p>
@@ -185,4 +185,4 @@
         </section>
         <footer class="dw-footer"><span>13 / conclusion</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
-</x-slidewire::deck>
+</x-darkwood.deck>

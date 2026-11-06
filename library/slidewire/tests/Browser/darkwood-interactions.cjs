@@ -1,0 +1,15 @@
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+const assert=require('node:assert/strict'),fs=require('node:fs');
+(async()=>{const b=await chromium.launch({executablePath:process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});const p=await b.newPage({viewport:{width:1440,height:900}});const errors=[],report={};p.on('pageerror',e=>errors.push(e.message));try{
+await p.goto('http://127.0.0.1:8017/slides/darkwaar27-pigment');
+for(const type of ['tip','die','green','undo']){
+ const selector=type==='tip'?'[data-pg-tip="E"]':type==='die'?'[data-pg-roll="E"]':type==='green'?'[data-pg-next="green"]':'[data-pg-undo-tip]';
+ const index=await p.locator(selector).first().evaluate(e=>[...document.querySelectorAll('.slidewire-frame')].indexOf(e.closest('.slidewire-frame')));
+ await p.goto(`http://127.0.0.1:8017/slides/darkwaar27-pigment#/slide/${index+1}`);await p.waitForTimeout(1300);
+ const status=p.locator(`[data-pg-status="${type}"]`);const before=await status.textContent();await p.locator(selector).first().click();const after=await status.textContent();assert.notEqual(after,before,type+' action');if(type==='green')assert.match(await p.locator('[data-pg-step]').textContent(),/^1 \| 5$/);
+ await p.locator(`[data-pg-reset="${type}"]`).click();assert.equal(await status.textContent(),before,type+' reset');report[type]={before,after,reset:true};
+}
+await p.goto('http://127.0.0.1:8017/slides/darkwaar20#/slide/10');await p.waitForTimeout(1300);const count=await p.locator('.slidewire-frame.is-active .dw20-cell').count();assert.equal(count,63);const before=await p.locator('.slidewire-frame.is-active .dw20-cell.is-core').count();for(let step=1;step<=2;step++){await p.keyboard.press('ArrowRight');await p.waitForFunction(n=>document.querySelectorAll('.slidewire-frame.is-active .slidewire-fragment-visible').length>=n,step);}await p.waitForTimeout(900);const core=await p.locator('.slidewire-frame.is-active .dw20-cell.is-core').count();assert.equal(core,1);report.darkwaar20={cells:count,core,fragments:await p.locator('.slidewire-frame.is-active .slidewire-fragment-visible').count()};assert.ok(report.darkwaar20.fragments>0);
+await p.goto('http://127.0.0.1:8017/slides/darkwaar27-pigment-x');await p.waitForTimeout(1800);const initial=await p.locator('[data-pg-board] .pg-cell').count();assert.equal(initial,25);await p.waitForSelector('[data-pg-promo-done="1"]',{timeout:45000});await p.screenshot({path:'storage/app/darkwood-migration/autoplay-complete.png'});assert.equal(await p.locator('[data-pg-promo-cta]').evaluate(e=>getComputedStyle(e).opacity),'1');report.autoplay={cells:await p.locator('.pg-cell').count(),text:(await p.locator('.pgx-stage').textContent()).trim().slice(-300)};assert.equal(report.autoplay.cells,25);
+assert.deepEqual(errors,[]);fs.writeFileSync('storage/app/darkwood-migration/interactions.json',JSON.stringify({report,errors},null,2));console.log('Interactive controls, resets, fragments and 30s autoplay passed');
+}finally{await b.close()}})().catch(e=>{console.error(e);process.exit(1)});

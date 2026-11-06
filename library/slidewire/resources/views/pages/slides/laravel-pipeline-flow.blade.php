@@ -1,5 +1,5 @@
 {{-- Laravel Pipeline & Darkwood Flow — execution models | /slides/laravel-pipeline-flow --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
         $flow = '<span class="dw-accent">Flow</span>';
@@ -507,4 +507,4 @@ gantt
         <footer class="dw-footer"><span>17 / resources</span></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

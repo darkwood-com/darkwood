@@ -1,6 +1,6 @@
 {{-- Flowvox update 2026-05-17 - Voice-first realtime transcription on Symfony 8 --}}
 {{-- Route: /slides/flowvox-update-2026-05-17 | Blog + YouTube + live demo --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
         $accent = '<span class="dw-accent">Flowvox</span>';
@@ -408,4 +408,4 @@ flowchart TB
         <footer class="dw-footer"><span>29 / merci</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

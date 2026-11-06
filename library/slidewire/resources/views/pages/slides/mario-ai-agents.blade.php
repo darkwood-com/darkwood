@@ -1,4 +1,4 @@
-<x-slidewire::deck theme="black" transition="fade" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" show-progress="true" show-controls="true" show-fullscreen-button="true">
     <x-slidewire::slide class="dw-slide" style="background: radial-gradient(circle at top right, rgba(84, 197, 255, 0.2), transparent 45%), radial-gradient(circle at bottom left, rgba(128, 0, 255, 0.2), transparent 40%), #05070d;">
         <section class="dw-wrap">
             <p class="dw-kicker">Video Darkwood / IA x Game Dev</p>
@@ -237,4 +237,4 @@ $result = $flow->run($messages);</pre>
         </section>
         <footer class="dw-footer"><span>16 / bonus</span></footer>
     </x-slidewire::slide>--}}
-</x-slidewire::deck>
+</x-darkwood.deck>

@@ -1,26 +1,26 @@
 {{-- When AI Becomes a Library — The Nolife Local Experiment --}}
 {{-- Source: tasks/#d8eb3d_nolife-local/article/article.md --}}
 {{-- Route: /slides/nolife-local --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default"
+<x-darkwood.deck transition="fade" transition-speed="default"
     show-progress="true" show-controls="true" show-fullscreen-button="true">
 
 <style>
     .nl-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 18px; margin-top: 24px; }
     .nl-table th, .nl-table td { padding: 10px 14px; text-align: right; border-bottom: 1px solid var(--dw-line); }
     .nl-table th:first-child, .nl-table td:first-child { text-align: left; }
-    .nl-table th { color: var(--dw-cyan); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
-    .nl-table td { color: #eef7ff; }
-    .nl-table tr.is-hot td { color: var(--dw-lime); font-weight: 700; }
-    .nl-table tr.is-warn td { color: #ffb4a8; font-weight: 700; }
-    .nl-mini { font-family: var(--font-mono); font-size: 16px; line-height: 1.5; color: #d7ecff; white-space: pre-wrap; margin: 0; }
+    .nl-table th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+    .nl-table td { }
+    .nl-table tr.is-hot td { font-weight: 700; }
+    .nl-table tr.is-warn td { font-weight: 700; }
+    .nl-mini { font-family: var(--font-mono); font-size: 16px; line-height: 1.5; white-space: pre-wrap; margin: 0; }
     .nl-stat { text-align: center; padding: 22px 18px; }
-    .nl-stat strong { display: block; font-size: clamp(36px, 4vw, 52px); color: var(--dw-text); line-height: 1; }
-    .nl-stat span { display: block; margin-top: 8px; color: var(--dw-muted); font-size: 17px; }
-    .nl-shot { border: 1px solid var(--dw-line); border-radius: 8px; max-height: min(42vh, 380px); width: auto; max-width: 100%; object-fit: contain; box-shadow: 0 22px 64px rgba(0,0,0,.35); }
+    .nl-stat strong { display: block; font-size: clamp(36px, 4vw, 52px); line-height: 1; }
+    .nl-stat span { display: block; margin-top: 8px; font-size: 17px; }
+    .nl-shot { border: 1px solid var(--dw-line); border-radius: 8px; max-height: min(42vh, 380px); width: auto; max-width: 100%; object-fit: contain; }
     .nl-shot-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; align-items: start; }
-    .nl-note { margin-top: 14px; color: var(--dw-muted); font-size: 15px; font-family: var(--font-mono); }
+    .nl-note { margin-top: 14px; font-size: 15px; font-family: var(--font-mono); }
     .dw-heading-slide { max-width: 980px; font-size: clamp(38px, 4.2vw, 68px); line-height: 1.05; font-weight: 700; }
-    .dw-accent { color: var(--dw-cyan); }
+    .dw-accent { }
     .dw-wrap--top { justify-content: flex-start; padding-top: 56px; }
 </style>
 
@@ -631,4 +631,4 @@ well-defined issue</pre>
         <footer class="dw-footer"><span>@matyo91 · Darkwood</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

@@ -1,7 +1,7 @@
 {{-- From No-Life Testing to Behavioral Testing — Darkwood Flow × PHPUnit × AI agents --}}
 {{-- Source: tasks/#cebfae_nolife-tests/article.md · Companion: content/nolife-tests --}}
 {{-- Route: /slides/from-nolife-testing-to-behavioral-testing --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
         $flow = '<span class="dw-accent">Flow</span>';
@@ -763,4 +763,4 @@ php bin/excerpt.php amp</pre>
         <footer class="dw-footer"><span>24 / resources</span></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

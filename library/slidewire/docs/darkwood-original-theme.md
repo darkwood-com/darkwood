@@ -1199,3 +1199,18 @@ Playwright que précédemment ; le test écrit maintenant dans **revision-6**.
 Aucun des 28 fichiers de présentation n'est modifié par cette correction CSS.
 Les 27 présentations non migrées, Navi, VPS-4 et les sources historiques restent
 inchangés. Les rendus sont à valider avant tout commit, push ou généralisation.
+
+## Généralisation après validation officielle de la révision 6
+
+La révision 6 est désormais validée et sert de base aux 27 autres présentations.
+Le nouvel inventaire compte **28 présentations / 487 slides actives** ; la
+balise Mario commentée explique l'écart avec les 488 du premier audit.
+
+La migration, l'inventaire par famille, les composants partagés, les tests,
+les rendus et les exceptions à valider sont décrits dans
+[le rapport de migration](darkwood-migration.md).
+Les valeurs typographiques et les espacements R6 ci-dessus restent inchangés.
+Le pilote garde son fichier Blade et ses rendus approuvés ; l'adaptateur de
+compatibilité ne s'applique qu'aux 27 présentations nouvellement migrées.
+La configuration n'expose plus d'identités concurrentes : Darkwood Original
+est le thème par défaut et la palette commune.

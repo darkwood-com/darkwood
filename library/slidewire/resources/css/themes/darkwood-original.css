@@ -599,3 +599,13 @@ body:has(.slidewire-frame.slidewire-theme-darkwood-original) {
         transition-duration: 0.001ms !important;
     }
 }
+
+/* Color-font icons keep their Unicode content and use the existing logo
+   quantization, instead of introducing native emoji colors into headings. */
+.slidewire-theme-darkwood-original .dw-original-emoji {
+    display: inline-block;
+    height: 1em;
+    line-height: 1;
+    vertical-align: top;
+    filter: url('/darkwood/filters/tricolor.svg#darkwood-monochrome');
+}

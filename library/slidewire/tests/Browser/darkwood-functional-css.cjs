@@ -1,0 +1,4 @@
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),postcss=require('postcss');
+const reference=JSON.parse(fs.readFileSync('tests/fixtures/darkwood-functional-css.json'));
+function structural(css){const root=postcss.parse(css),rows=[],paint=new Set(reference.paint);root.walkDecls(d=>{if(paint.has(d.prop)&&!d.value.includes('url('))return;let p=d.parent,scope=[];while(p&&p.type!=='root'){scope.unshift(p.selector||'@'+p.name+' '+p.params);p=p.parent;}rows.push([scope,d.prop,d.value,d.important||false]);});return rows;}
+for(const [file,expected] of Object.entries(reference.styles))test(file+' retains functional CSS declarations, selectors and keyframes',()=>{const actual=[...fs.readFileSync(file,'utf8').matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map(m=>structural(m[1]));assert.deepEqual(actual,expected);});

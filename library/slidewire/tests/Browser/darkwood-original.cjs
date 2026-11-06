@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const { auditDarkwoodPalette } = require('./darkwood-palette.cjs');
 
 const base = process.env.SLIDEWIRE_URL || 'http://127.0.0.1:8017';
-const output = path.resolve('storage/app/slide-renders/symfony-ai-in-action/revision-6');
+const output = path.resolve(process.env.OUTPUT_DIR || 'storage/app/slide-renders/symfony-ai-in-action/revision-6');
 const historical = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-historical-metrics.json', 'utf8'));
 const roles = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-pilot-headings.json', 'utf8'));
 const spacing = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-heading-spacing.json', 'utf8'));

@@ -1,25 +1,25 @@
 {{-- Nolife Tokens — Shrinking LLM context without destroying recoverability --}}
 {{-- Source: tasks/#601bc9_darklabs-tools/nolife-tokens-reversible-context.md · Companion: content/nolife-tokens --}}
 {{-- Route: /slides/nolife-tokens --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
 <style>
     .nt-bar-row { display: flex; align-items: center; gap: 12px; margin: 8px 0; font-family: var(--font-mono); font-size: 16px; }
-    .nt-bar-label { width: 52px; color: var(--dw-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
-    .nt-bar-track { flex: 1; height: 18px; background: rgba(255,255,255,.06); border-radius: 4px; overflow: hidden; border: 1px solid var(--dw-line); }
-    .nt-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--dw-blue), var(--dw-cyan)); }
-    .nt-bar-fill.is-opt { background: var(--dw-lime); opacity: .85; }
-    .nt-bar-val { width: 64px; text-align: right; color: #eef7ff; font-weight: 700; }
+    .nt-bar-label { width: 52px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+    .nt-bar-track { flex: 1; height: 18px; border-radius: 4px; overflow: hidden; border: 1px solid var(--dw-line); }
+    .nt-bar-fill { height: 100%; border-radius: 3px; }
+    .nt-bar-fill.is-opt { opacity: .85; }
+    .nt-bar-val { width: 64px; text-align: right; font-weight: 700; }
     .nt-case { margin-bottom: 14px; }
     .nt-case h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
     .nt-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 17px; }
     .nt-table th, .nt-table td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--dw-line); }
     .nt-table th:first-child, .nt-table td:first-child { text-align: left; }
-    .nt-table th { color: var(--dw-cyan); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; }
-    .nt-table td { color: #eef7ff; }
-    .nt-note { margin-top: 14px; color: var(--dw-muted); font-size: 15px; font-family: var(--font-mono); }
-    .nt-mini { font-family: var(--font-mono); font-size: 15px; line-height: 1.45; color: #d7ecff; white-space: pre-wrap; }
-    .nt-col-title { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--dw-cyan); font-weight: 700; margin-bottom: 10px; }
+    .nt-table th { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; }
+    .nt-table td { }
+    .nt-note { margin-top: 14px; font-size: 15px; font-family: var(--font-mono); }
+    .nt-mini { font-family: var(--font-mono); font-size: 15px; line-height: 1.45; white-space: pre-wrap; }
+    .nt-col-title { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; margin-bottom: 10px; }
 </style>
 
     {{-- 1 · TITLE --}}
@@ -384,4 +384,4 @@ visible context</pre>
         <footer class="dw-footer"><span>11 / agents · @matyo91</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

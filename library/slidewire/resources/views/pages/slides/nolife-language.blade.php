@@ -1,27 +1,27 @@
 {{-- Nolife Language — Don't say cost. Say investment. --}}
 {{-- Source: tasks/#ff815c_nolife-language/article.md · Companion: content/nolife-language --}}
 {{-- Route: /slides/nolife-language --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
 <style>
-    .nl-red { color: #ff8a70; }
-    .nl-gold { color: #ffd36a; }
-    .nl-lime { color: var(--dw-lime); }
+    .nl-red { }
+    .nl-gold { }
+    .nl-lime { }
     .nl-mono { font-family: var(--font-mono); }
-    .nl-muted { color: var(--dw-muted); font-size: 16px; }
-    .nl-note { margin-top: 16px; color: var(--dw-muted); font-size: 16px; font-family: var(--font-mono); }
+    .nl-muted { font-size: 16px; }
+    .nl-note { margin-top: 16px; font-size: 16px; font-family: var(--font-mono); }
     .nl-kpi { font-size: clamp(72px, 10vw, 128px); line-height: .9; font-weight: 700; letter-spacing: -0.03em; }
-    .nl-kpi-sub { margin-top: 18px; color: var(--dw-muted); font-size: clamp(22px, 2.2vw, 30px); }
+    .nl-kpi-sub { margin-top: 18px; font-size: clamp(22px, 2.2vw, 30px); }
     .nl-word { font-size: clamp(48px, 6vw, 84px); font-weight: 700; line-height: .95; letter-spacing: -0.02em; }
     .nl-swap { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
     .nl-bar-row { display: flex; align-items: center; gap: 14px; margin: 12px 0; font-family: var(--font-mono); }
-    .nl-bar-label { width: 92px; color: var(--dw-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 16px; }
-    .nl-bar-track { flex: 1; height: 22px; background: rgba(255,255,255,.06); border-radius: 4px; overflow: hidden; border: 1px solid var(--dw-line); }
-    .nl-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--dw-blue), var(--dw-cyan)); }
-    .nl-bar-fill.is-alt { background: linear-gradient(90deg, #c9842a, #ffd36a); }
-    .nl-bar-fill.is-warn { background: linear-gradient(90deg, #c44b3a, #ff8a70); }
-    .nl-bar-val { width: 56px; text-align: right; color: #eef7ff; font-weight: 700; font-size: 22px; }
-    .nl-bar-delta { width: 110px; color: var(--dw-cyan); font-size: 16px; font-weight: 700; }
+    .nl-bar-label { width: 92px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 16px; }
+    .nl-bar-track { flex: 1; height: 22px; border-radius: 4px; overflow: hidden; border: 1px solid var(--dw-line); }
+    .nl-bar-fill { height: 100%; border-radius: 3px; }
+    .nl-bar-fill.is-alt { }
+    .nl-bar-fill.is-warn { }
+    .nl-bar-val { width: 56px; text-align: right; font-weight: 700; font-size: 22px; }
+    .nl-bar-delta { width: 110px; font-size: 16px; font-weight: 700; }
     .nl-pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: center; }
     .nl-pair .dw-card { text-align: center; padding: 22px 18px; }
     .nl-pair .nl-count { display: block; margin-top: 8px; font-family: var(--font-mono); font-size: 28px; font-weight: 700; }
@@ -29,25 +29,25 @@
     .nl-table th, .nl-table td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--dw-line); }
     .nl-table th:first-child, .nl-table td:first-child,
     .nl-table th:nth-child(2), .nl-table td:nth-child(2) { text-align: left; }
-    .nl-table th { color: var(--dw-cyan); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; }
-    .nl-table td { color: #eef7ff; }
-    .nl-table tr.is-warn td { color: #ffb4a8; }
+    .nl-table th { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; }
+    .nl-table td { }
+    .nl-table tr.is-warn td { }
     .nl-triangle { position: relative; height: 340px; margin: 12px auto 0; max-width: 760px; }
     .nl-vertex { position: absolute; min-width: 210px; padding: 18px 22px; text-align: center; font-size: 28px; font-weight: 700; }
     .nl-vertex--top { left: 50%; top: 0; transform: translateX(-50%); }
     .nl-vertex--left { left: 0; bottom: 0; }
     .nl-vertex--right { right: 0; bottom: 0; }
-    .nl-tri-line { position: absolute; background: var(--dw-cyan); opacity: .55; }
+    .nl-tri-line { position: absolute; opacity: .55; }
     .nl-tri-line--v { width: 2px; height: 118px; left: 50%; top: 78px; transform: translateX(-50%); }
     .nl-tri-line--h { height: 2px; width: calc(100% - 240px); left: 120px; bottom: 48px; }
     .nl-corner { padding: 18px 20px; min-height: 168px; }
-    .nl-corner h3 { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--dw-cyan); margin: 0 0 12px; }
-    .nl-corner p { margin: 0; font-size: 22px; font-weight: 700; color: #eef7ff; line-height: 1.25; }
+    .nl-corner h3 { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 12px; }
+    .nl-corner p { margin: 0; font-size: 22px; font-weight: 700; line-height: 1.25; }
     .nl-corner .nl-delta { display: block; margin-top: 10px; font-family: var(--font-mono); font-size: 20px; }
-    .nl-corner.is-warn { border-color: rgba(255, 120, 100, .4); }
-    .nl-corner.is-ok { border-color: rgba(184, 255, 106, .4); }
-    .nl-corner.is-gold { border-color: rgba(255, 211, 106, .4); }
-    .nl-neq { font-size: clamp(28px, 3vw, 40px); font-weight: 700; text-align: center; color: var(--dw-cyan); }
+    .nl-corner.is-warn { }
+    .nl-corner.is-ok { }
+    .nl-corner.is-gold { }
+    .nl-neq { font-size: clamp(28px, 3vw, 40px); font-weight: 700; text-align: center; }
     .nl-stack { display: grid; gap: 10px; }
     .nl-stack .dw-chip { font-size: 17px; }
 </style>
@@ -462,4 +462,4 @@
         <footer class="dw-footer"><span>@matyo91 · Darkwood</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

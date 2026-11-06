@@ -48,6 +48,7 @@ function moveNodes(nodes, lists, mode, mix, animate) {
         const sum = values.reduce((total, value) => total + value, 0);
         node.classList.toggle('is-void', mode !== 'noise' && sum <= 340);
         node.querySelectorAll('i').forEach((quadrant, q) => {
+            quadrant.dataset.darkwoodLevel = String(Math.max(0, Math.min(3, Math.round(values[q] / 85))));
             gsap.to(quadrant, {
                 backgroundColor: look.quadrants[q],
                 opacity: look.quadrantOpacity,

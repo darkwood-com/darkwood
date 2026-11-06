@@ -1,5 +1,5 @@
 {{-- Symfony 8.1 - conference deck (10–15 min) | /slides/symfony-8-1 --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
         $sf = '<span class="dw-accent">Symfony 8.1</span>';
@@ -369,4 +369,4 @@ flowchart TB
         <footer class="dw-footer"><span>20 / merci</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

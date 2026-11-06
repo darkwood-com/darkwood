@@ -1,7 +1,7 @@
 {{-- Darkwaar27: Pigment — Rotation, Color Algebra & Deterministic Puzzles --}}
 {{-- Route: /slides/darkwaar27-pigment --}}
 {{-- Source: tasks/#2ee84a_darkwaar27/article.md --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
 {{-- 1 · TITLE --}}
     <x-slidewire::slide class="dw-slide pg">
@@ -26,11 +26,6 @@
         min-height: 100%;
         height: 100%;
         max-height: 100%;
-        color: var(--pg-white);
-        background:
-            radial-gradient(circle at 82% 12%, rgba(226, 177, 52, .14), transparent 28rem),
-            radial-gradient(circle at 12% 78%, rgba(60, 111, 214, .12), transparent 24rem),
-            linear-gradient(160deg, #1a1510 0%, var(--pg-bg) 42%, #0f0d0b 100%) !important;
     }
     .slidewire-frame.pg::before,
     .slidewire-frame.pg::after,
@@ -47,7 +42,6 @@
     }
     .pg .dw-wrap--top { justify-content: flex-start; padding-top: 18px; }
     .pg-kicker {
-        color: var(--pg-yellow);
         font-size: 13px;
         font-weight: 700;
         letter-spacing: .16em;
@@ -68,7 +62,6 @@
     }
     .pg-sub {
         margin: 14px 0 0;
-        color: var(--pg-muted);
         font-size: clamp(17px, 1.6vw, 24px);
         line-height: 1.3;
     }
@@ -76,10 +69,8 @@
         margin: 18px 0 0;
         font-size: clamp(20px, 2vw, 28px);
         font-weight: 700;
-        color: var(--pg-yellow);
     }
     .pg-link {
-        color: var(--pg-yellow);
         border-bottom: 1px solid rgba(226, 177, 52, .45);
         font-size: clamp(16px, 1.4vw, 20px);
         text-decoration: none;
@@ -98,18 +89,15 @@
         grid-template-rows: repeat(5, var(--pg-cell, 36px));
         gap: 3px;
         padding: 8px;
-        background: rgba(0, 0, 0, .28);
         border: 1px solid var(--pg-line);
         width: max-content;
     }
     .pg-cell {
         position: relative;
-        background: var(--pg-board);
-        box-shadow: inset 0 0 0 1px rgba(244, 239, 228, .08);
         display: grid;
         place-items: center;
     }
-    .pg-cell.is-sealed { box-shadow: inset 0 0 0 2px rgba(244, 239, 228, .35); }
+    .pg-cell.is-sealed { }
     .pg-cell.is-die { z-index: 2; }
     .pg-die-token {
         position: absolute;
@@ -118,8 +106,6 @@
         place-items: center;
         font-size: calc(var(--pg-cell, 36px) * .28);
         font-weight: 700;
-        color: #1a140f;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
         border: 1px solid rgba(244, 239, 228, .35);
     }
     .pg-mark {
@@ -130,7 +116,6 @@
         place-items: center;
         font-size: calc(var(--pg-cell, 36px) * .26);
         font-weight: 700;
-        color: var(--pg-white);
         pointer-events: none;
         z-index: 1;
     }
@@ -153,13 +138,11 @@
         place-items: center;
         border: 1px solid var(--pg-line);
         font-size: 14px;
-        color: #1a140f;
     }
     .pg-swatch span {
         font-size: 11px;
         letter-spacing: .08em;
         text-transform: uppercase;
-        color: var(--pg-muted);
     }
     .pg-controls {
         display: flex;
@@ -170,8 +153,6 @@
     .pg-btn {
         appearance: none;
         border: 1px solid var(--pg-line);
-        background: rgba(42, 36, 28, .85);
-        color: var(--pg-white);
         font: inherit;
         font-size: 14px;
         font-weight: 700;
@@ -180,11 +161,10 @@
         padding: 10px 14px;
         cursor: pointer;
     }
-    .pg-btn:hover { border-color: var(--pg-yellow); color: var(--pg-yellow); }
-    .pg-btn.is-accent { background: var(--pg-yellow); color: #1a140f; border-color: var(--pg-yellow); }
+    .pg-btn:hover { }
+    .pg-btn.is-accent { }
     .pg-status {
         margin: 12px 0 0;
-        color: var(--pg-muted);
         font-size: clamp(15px, 1.35vw, 20px);
         min-height: 1.4em;
     }
@@ -197,7 +177,6 @@
     }
     .pg-face-card {
         border: 1px solid var(--pg-line);
-        background: rgba(0, 0, 0, .22);
         padding: 10px;
         display: grid;
         gap: 8px;
@@ -206,7 +185,6 @@
         font-size: 12px;
         letter-spacing: .12em;
         text-transform: uppercase;
-        color: var(--pg-muted);
     }
     .pg-face-card b {
         display: grid;
@@ -217,12 +195,10 @@
     .pg-code {
         margin: 14px 0 0;
         padding: 16px 18px;
-        background: rgba(0, 0, 0, .38);
         border: 1px solid var(--pg-line);
         font-family: var(--font-mono);
         font-size: clamp(13px, 1.15vw, 16px);
         line-height: 1.45;
-        color: #e8dfd0;
         overflow: auto;
         white-space: pre;
     }
@@ -241,7 +217,6 @@
         font-size: 42px;
         font-weight: 700;
         border: 3px solid rgba(244, 239, 228, .35);
-        box-shadow: 0 18px 40px rgba(0, 0, 0, .35);
     }
     .pg-pipe {
         display: flex;
@@ -252,14 +227,12 @@
     }
     .pg-pipe span {
         border: 1px solid var(--pg-line);
-        background: rgba(42, 36, 28, .7);
         padding: 12px 14px;
         font-size: clamp(13px, 1.2vw, 17px);
         font-weight: 700;
         letter-spacing: .04em;
     }
     .pg-pipe i {
-        color: var(--pg-yellow);
         font-style: normal;
         font-weight: 700;
     }
@@ -275,7 +248,6 @@
         font-size: 14px;
         letter-spacing: .12em;
         text-transform: uppercase;
-        color: var(--pg-muted);
     }
     .pg-levels {
         display: grid;
@@ -286,7 +258,6 @@
     }
     .pg-level {
         border: 1px solid var(--pg-line);
-        background: rgba(0, 0, 0, .22);
         padding: 12px 10px;
         display: grid;
         gap: 10px;
@@ -299,7 +270,6 @@
         text-transform: uppercase;
     }
     .pg-level span {
-        color: var(--pg-muted);
         font-size: 13px;
     }
     .pg-arch {
@@ -311,20 +281,17 @@
     }
     .pg-arch .pg-arch-card {
         border: 1px solid var(--pg-line);
-        background: rgba(0, 0, 0, .22);
         padding: 18px 16px;
         min-height: 160px;
     }
     .pg-arch code {
         display: block;
-        color: var(--pg-yellow);
         font-family: var(--font-mono);
         font-size: 15px;
         margin-bottom: 10px;
     }
     .pg-arch p {
         margin: 0;
-        color: var(--pg-muted);
         font-size: 16px;
         line-height: 1.4;
     }
@@ -361,7 +328,6 @@
         justify-content: space-between;
         align-items: center;
         padding: 0 8px;
-        color: var(--pg-muted);
         font-size: 13px;
         letter-spacing: .08em;
         text-transform: uppercase;
@@ -371,7 +337,6 @@
     .pg-eq {
         font-family: var(--font-mono);
         font-size: clamp(16px, 1.5vw, 22px);
-        color: #e8dfd0;
         margin: 16px 0 0;
     }
     .pg-chip-row {
@@ -591,7 +556,7 @@
                         <button type="button" class="pg-btn is-accent" data-pg-next="green">Next</button>
                         <button type="button" class="pg-btn" data-pg-reset="green">Replay</button>
                     </div>
-                    <p class="pg-status"><span data-pg-step>0 / 5</span> · <span data-pg-status="green">Start at (0,0).</span></p>
+                    <p class="pg-status"><span data-pg-step>0 | 5</span> · <span data-pg-status="green">Start at (0,0).</span></p>
                     <p class="pg-take">Yellow + Blue = Green</p>
                 </div>
                 <div>
@@ -781,4 +746,4 @@
         <footer class="pg-footer"><span>Darkwood · Darkwaar27</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

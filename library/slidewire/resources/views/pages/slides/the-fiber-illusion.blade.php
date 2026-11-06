@@ -1,5 +1,5 @@
 {{-- The Fiber Illusion — RxJS × Darkwood Flow | /slides/the-fiber-illusion --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
         $flow = '<span class="dw-accent">Flow</span>';
@@ -381,4 +381,4 @@ $driver->waitWritable($stream, $timeout);</pre>
         <footer class="dw-footer"><span>14 / resources</span></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

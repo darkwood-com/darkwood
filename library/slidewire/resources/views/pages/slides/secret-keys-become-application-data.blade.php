@@ -5,14 +5,13 @@
 {{-- Keywords: Symfony 8.2, KeyManagement, BYOK, AWS KMS, Sodium, Darkwood Navi, Symfony AI, API keys --}}
 {{-- Source: tasks/#68b803_secret-keys/article.md · Companion: content/navi-key-management --}}
 {{-- Route: /slides/secret-keys-become-application-data --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
 <style>
     .sk-chain {
         font-family: var(--font-mono);
         font-size: 20px;
         line-height: 1.35;
-        color: #d7ecff;
         white-space: pre;
         margin: 0;
     }
@@ -20,7 +19,6 @@
     .sk-label {
         letter-spacing: .1em;
         text-transform: uppercase;
-        color: var(--dw-cyan);
         font-size: 14px;
         font-weight: 700;
     }
@@ -36,13 +34,9 @@
         text-transform: uppercase;
     }
     .sk-status.is-tested {
-        color: var(--dw-lime);
-        border-color: rgba(184, 255, 106, .45);
     }
     .sk-status.is-configured,
     .sk-status.is-wired {
-        color: #ffb4a8;
-        border-color: rgba(255, 120, 100, .4);
     }
     .sk-path {
         display: grid;
@@ -53,7 +47,6 @@
     .sk-path span {
         border: 1px solid var(--dw-line);
         border-radius: 8px;
-        background: var(--dw-panel);
         padding: 14px 8px;
         text-align: center;
         font-size: 15px;
@@ -65,18 +58,15 @@
         margin-top: 6px;
         font-style: normal;
         font-size: 18px;
-        color: var(--dw-lime);
     }
     .sk-path span.is-stop {
-        border-color: rgba(255, 120, 100, .45);
         opacity: .78;
     }
-    .sk-path span.is-stop em { color: #ffb4a8; }
+    .sk-path span.is-stop em { }
     .sk-eq {
         font-family: var(--font-mono);
         font-size: 18px;
         line-height: 1.55;
-        color: #d7ecff;
         white-space: pre;
         margin: 0;
     }
@@ -466,4 +456,4 @@ rotation</pre>
         <footer class="dw-footer"><span>@matyo91</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

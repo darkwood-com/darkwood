@@ -1,5 +1,5 @@
 {{-- Where Should Native Code Live? - Phalcon, Symfony, TrueAsync, Flow | /slides/where-native-code-lives --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
         $flow = '<span class="dw-accent">Flow</span>';
@@ -282,4 +282,4 @@ flowchart LR
         <footer class="dw-footer"><span>13 / conclusion</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

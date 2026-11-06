@@ -1,6 +1,6 @@
 {{-- The Laptop Is the Last Bottleneck — Framework X × Darkwood Flow | /slides/shared-workflows-laptop-bottleneck --}}
 {{-- Source: tasks/#1357fb_shared-workflows/article.md --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
         $fx = '<span class="dw-accent">Framework X</span>';
@@ -281,4 +281,4 @@ flowchart TD
         <footer class="dw-footer"><span>@matyo91</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

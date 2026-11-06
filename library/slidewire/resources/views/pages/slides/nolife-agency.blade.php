@@ -1,4 +1,4 @@
-<x-slidewire::deck theme="aurora" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
     <x-slidewire::title-slide
         title="NoLife Agency"
         subtitle="Construire une architecture multi-agent gouvernee avec Symfony AI, Flow et Navi"
@@ -264,4 +264,4 @@ Il faut :
             <x-slidewire::fragment :index="4"><p>Uniflow packaging</p></x-slidewire::fragment>
         </x-slidewire::panel>
     </x-slidewire::slide>
-</x-slidewire::deck>
+</x-darkwood.deck>

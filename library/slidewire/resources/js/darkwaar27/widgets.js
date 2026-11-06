@@ -56,6 +56,7 @@ export function paintBoard(nodes, state, { showDie = true } = {}) {
         const x = i % WIDTH;
         const y = Math.floor(i / WIDTH);
         const stain = state.stains[i];
+        node.dataset.darkwoodStain = GLYPHS[stain] ?? '·';
         const mark = markMap.get(`${x},${y}`);
         const isDie = showDie && state.pos[0] === x && state.pos[1] === y;
 
@@ -305,7 +306,7 @@ export function bindGreenReplay(slide) {
         paintCompass(compass, frame.state.die);
 
         if (stepLabel) {
-            stepLabel.textContent = `${index} / ${GREEN_PATH.length}`;
+            stepLabel.textContent = `${index} | ${GREEN_PATH.length}`;
         }
 
         if (status) {

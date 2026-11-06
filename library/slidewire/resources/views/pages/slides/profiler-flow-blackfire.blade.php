@@ -1,5 +1,5 @@
 {{-- Profiler un flow Symfony avec Blackfire | /slides/profiler-flow-blackfire --}}
-<x-slidewire::deck theme="black" transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" transition-speed="default" show-progress="true" show-controls="true" show-fullscreen-button="true">
 
     @php
         $flow = '<span class="dw-accent">Flow</span>';
@@ -285,4 +285,4 @@ $flow->await();  // driver loop + jobs nommés</pre>
         <footer class="dw-footer"><span>@matyo91</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
 
-</x-slidewire::deck>
+</x-darkwood.deck>

@@ -424,6 +424,7 @@ export function paintNodes(nodes, lists, mode = 'noise', mixAmount = 1) {
         const sum = values.reduce((total, value) => total + value, 0);
 
         quadrants.forEach((quadrant, q) => {
+            quadrant.dataset.darkwoodLevel = String(levelIndex(values[q]));
             quadrant.style.backgroundColor = look.quadrants[q];
             quadrant.style.opacity = String(look.quadrantOpacity);
         });

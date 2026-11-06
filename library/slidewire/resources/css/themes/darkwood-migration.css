@@ -1,0 +1,470 @@
+/* Shared composition skin for compiled historical decks. The approved pilot
+   never receives dw-migrated, so its R6 measurements and pixels are unchanged. */
+
+.dw-original-slide.dw-migrated {
+    padding: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+    --dw-bg: #fff;
+    --dw-panel: #fff;
+    --dw-panel-strong: #fff;
+    --dw-blue: #3579f6;
+    --dw-cyan: #3579f6;
+    --dw-lime: #3579f6;
+    --dw-text: #000;
+    --dw-muted: #000;
+    --dw-line: #3579f6;
+}
+
+.dw-original-slide.dw-migrated::before,
+.dw-original-slide.dw-migrated::after {
+    content: none !important;
+}
+
+.dw-original-slide.dw-migrated.dw-original-slide--cover {
+    background: #3579f6 !important;
+    color: #fff !important;
+}
+
+.dw-migrated > .slidewire-content > .dw-original-canvas {
+    width: 100%;
+}
+
+.dw-migrated .dw-original-header {
+    position: relative !important;
+    z-index: 2;
+    max-width: 100% !important;
+}
+
+.dw-migrated .dw-original-header :is(span,code,strong,em,a) {
+    color: inherit !important;
+    background: transparent !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    font-family: inherit !important;
+    letter-spacing: inherit !important;
+}
+
+.dw-migrated .dw-original-header h1 {
+    position: static !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    font-family: var(--darkwood-font-reading) !important;
+    font-weight: 400 !important;
+    font-size: var(--darkwood-heading) !important;
+    line-height: 1 !important;
+    letter-spacing: var(--darkwood-heading-tracking) !important;
+    color: inherit !important;
+    text-transform: none !important;
+}
+
+.dw-migrated.dw-original-slide--cover .dw-original-header h1 {
+    font-size: var(--darkwood-title) !important;
+    letter-spacing: var(--darkwood-cover-tracking) !important;
+}
+
+.dw-migrated .dw-original-header .dw-overline {
+    position: static !important;
+    font-family: var(--darkwood-font-reading) !important;
+    font-size: var(--darkwood-context) !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+    color: inherit !important;
+    text-transform: none !important;
+}
+
+.dw-migrated .dw-original-header .dw-original-subtitle {
+    font-size: var(--darkwood-subtitle) !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+    letter-spacing: var(--darkwood-subtitle-tracking) !important;
+    color: inherit !important;
+    max-width: 100% !important;
+}
+
+.dw-migrated .dw-original-header > * {
+    margin-block: 0 !important;
+    padding-block: 0 !important;
+}
+
+.dw-migrated .dw-original-header > .dw-overline + h1 {
+    margin-top: var(--dw-heading-overline-gap) !important;
+}
+
+.dw-migrated .dw-original-header > h1 + .dw-original-subtitle {
+    margin-top: var(--dw-heading-subtitle-gap) !important;
+}
+
+.dw-migrated .dw-legacy-content {
+    min-width: 0;
+}
+
+.dw-migrated .dw-legacy-content :where(*):not(pre.phiki, pre.phiki *, pre.slidewire-code, pre.slidewire-code *, .dw-original-code-window, .dw-original-code-window *) {
+    color: inherit !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: #3579f6 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+.dw-migrated .dw-legacy-content :where(*)::before,
+.dw-migrated .dw-legacy-content :where(*)::after {
+    color: inherit !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border-color: #3579f6 !important;
+}
+
+.dw-migrated .dw-legacy-content :is(.dw-wrap,.dw-wrap--top,.pgx-stage) {
+    width: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+}
+
+.dw-migrated .dw-legacy-content :is(.dw-card,.dw-chip,.dw-lane,.dw-split-panel,.dw-panel) {
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+.dw-migrated .dw-legacy-content :is(.dw20-hero-board,.pg-hero-board) {
+    position: relative !important;
+    inset: auto !important;
+}
+
+.dw-migrated .dw-legacy-content :is(.pgx-copy) {
+    position: static !important;
+}
+
+.dw-migrated .dw-legacy-content :is(.dw-lead,.dw-note,.dw-question,.dw-muted) {
+    color: inherit !important;
+}
+
+.dw-migrated .dw-legacy-content :is(.dw-code,pre.slidewire-code) {
+    background: #1e1e2e !important;
+    color: #cdd6f4 !important;
+}
+
+.dw-migrated .dw-legacy-content pre.phiki {
+    background: #1e1e2e !important;
+}
+
+.dw-migrated .dw-legacy-content a {
+    color: #3579f6 !important;
+}
+
+.dw-migrated .dw-legacy-content ul {
+    list-style: disc outside !important;
+    padding-left: 1.35em !important;
+}
+
+.dw-migrated .dw-legacy-content ul ul {
+    list-style-type: circle !important;
+}
+
+.dw-migrated .dw-legacy-content li::marker {
+    color: inherit !important;
+}
+
+.dw-migrated .dw-legacy-content ul li::before {
+    content: none !important;
+}
+
+.dw-migrated .dw-legacy-content svg * {
+    fill: #fff !important;
+    stroke: #3579f6 !important;
+}
+
+.dw-migrated .dw-legacy-content svg :is(path,line,polyline) {
+    fill: none !important;
+}
+
+.dw-migrated .dw-legacy-content svg :is(text,text *,foreignObject *) {
+    fill: #000 !important;
+    stroke: none !important;
+    color: #000 !important;
+}
+
+.dw-migrated .dw-original-body {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.dw-migrated.dw-original-slide--cover .dw-original-body {
+    flex: 0 1 auto;
+    width: 100%;
+    color: #fff;
+}
+
+.dw-migrated.dw-original-slide--cover .dw-legacy-content {
+    color: #fff;
+}
+
+.dw-migrated.dw-original-slide--cover .dw-legacy-content svg :is(text,text *) {
+    fill: #000 !important;
+}
+
+/* Functional game surfaces: symbols carry state; paint stays tricolor. */
+
+.slidewire-frame.dw-migrated .dw-legacy-content .pg-cell {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+.dw-migrated .dw-legacy-content .pg-cell::before {
+    content: attr(data-darkwood-stain);
+    position: absolute;
+    top: 1px;
+    left: 3px;
+    font: 10px/1 Verdana,sans-serif;
+    color: #000 !important;
+}
+
+.dw-migrated .dw-legacy-content .pg-cell.is-sealed {
+    border: 3px double #000 !important;
+}
+
+.slidewire-frame.dw-migrated .dw-legacy-content .pg-die-token {
+    background: #3579f6 !important;
+    color: #fff !important;
+    border: 1px solid #000 !important;
+}
+
+.slidewire-frame.dw-migrated .dw-legacy-content .pg-mark {
+    border: 2px solid #3579f6 !important;
+    background: #fff !important;
+    color: #000 !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell {
+    border: 1px solid #000 !important;
+    background: #fff !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell i {
+    background: #fff !important;
+    opacity: 1 !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell i[data-darkwood-level="1"] {
+    background: #3579f6 !important;
+    color: #fff !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell i[data-darkwood-level="2"] {
+    background: #000 !important;
+    color: #fff !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell i[data-darkwood-level="3"] {
+    border: 2px solid #000 !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell.is-core {
+    border: 3px solid #3579f6 !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell.is-void {
+    border-style: dashed !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell.is-reach {
+    outline: 1px solid #3579f6 !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell.is-exit::before {
+    background: #3579f6 !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-cell.is-player::after {
+    background: #000 !important;
+}
+
+/* Stronger frame scope wins over legacy rules emitted in deck style blocks. */
+
+.slidewire-frame.dw-original-slide.dw-migrated {
+    background: #fff !important;
+    background-image: none !important;
+}
+
+.slidewire-frame.dw-original-slide.dw-migrated.dw-original-slide--cover {
+    background: #3579f6 !important;
+}
+
+.dw-migrated .dw-legacy-content :where(:not(img.dw-original-logo)) {
+    outline-color: #3579f6 !important;
+    filter: none !important;
+}
+
+.dw-migrated .dw-legacy-content :where(*)::before,
+.dw-migrated .dw-legacy-content :where(*)::after {
+    filter: none !important;
+}
+
+.dw-migrated .dw-legacy-content svg {
+    fill: #fff !important;
+    stroke: #3579f6 !important;
+}
+
+.dw-migrated .dw-legacy-content :is(.hc-wrap,.hc-top) {
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.dw-migrated .dw-legacy-content .hc-portal-field {
+    width: 100% !important;
+    max-width: 560px;
+}
+
+.dw-migrated .dw-legacy-content .hc-cover {
+    position: relative !important;
+    inset: auto !important;
+    float: right;
+    width: 28% !important;
+    height: 360px !important;
+    opacity: 1 !important;
+    mask-image: none !important;
+}
+
+.dw-migrated .dw-legacy-content .hc-cover img {
+    object-fit: contain !important;
+}
+
+.dw-migrated .dw-legacy-content .dw20-scale {
+    margin-inline: 28px !important;
+}
+
+.dw-migrated .dw-legacy-content :not(pre,pre *,code,code *,svg,svg *) {
+    font-family: var(--darkwood-font) !important;
+}
+
+.dw-migrated .dw-legacy-content .hc-state-box {
+    opacity: 1 !important;
+}
+
+/* Media-only slides have one body row, without a phantom header track. */
+
+.dw-migrated.dw-original-slide--content .dw-original-canvas--untitled {
+    grid-template-rows: minmax(0,1fr);
+}
+
+.dw-migrated .dw-legacy-content button {
+    border: 1px solid #000 !important;
+    background: #fff !important;
+    color: #000 !important;
+    opacity: 1 !important;
+}
+
+.dw-migrated .dw-legacy-content button:is(:hover,:focus-visible,:active,[aria-pressed="true"]) {
+    background: #3579f6 !important;
+    color: #fff !important;
+}
+
+.dw-migrated .dw-legacy-content button:disabled {
+    background: #fff !important;
+    color: #000 !important;
+    border-style: dashed !important;
+}
+
+.slidewire-frame.dw-original-slide.dw-migrated.dw-original-slide--section {
+    background: #3579f6 !important;
+    color: #fff !important;
+}
+
+.dw-migrated.dw-original-slide--section .dw-original-body {
+    flex: 0 1 auto;
+    width: 100%;
+    color: #fff;
+}
+
+.dw-migrated:is(.dw-original-slide--cover,.dw-original-slide--section) .dw-legacy-content a {
+    color: #fff !important;
+    text-decoration: underline;
+}
+
+.dw-migrated .dw-legacy-content :where(*)::before,
+.dw-migrated .dw-legacy-content :where(*)::after {
+    opacity: 1 !important;
+}
+
+.dw-migrated .dw-legacy-content [class*="rounded-"] {
+    border-radius: 0 !important;
+}
+
+/* Mapping labels may wrap long identifiers without widening the shared grid. */
+
+.dw-migrated .dw-legacy-content .dw-map > div > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.dw-migrated .dw-legacy-content .sr-grid-2 {
+    grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr);
+}
+
+.dw-migrated .dw-legacy-content .sr-grid-2 > * {
+    min-width: 0;
+}
+
+.dw-migrated .dw-legacy-content .sr-mosaic {
+    width: max-content;
+    justify-self: center;
+}
+
+/* Covers retain their historical composition; dense embedded media scrolls
+   within the remaining body instead of increasing the full viewport canvas. */
+
+.dw-migrated:is(.dw-original-slide--cover,.dw-original-slide--section) .dw-original-canvas {
+    height: 100dvh;
+    min-height: 0;
+}
+
+.dw-migrated:is(.dw-original-slide--cover,.dw-original-slide--section) .dw-original-header {
+    flex-shrink: 0;
+}
+
+.dw-migrated .dw-legacy-content .sr-cycle {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
+    gap: 12px;
+}
+
+.dw-migrated .dw-legacy-content .sr-level {
+    min-width: 0;
+}
+
+.dw-migrated .dw-legacy-content :is(.sr-cell.hit,.sr-block.resonant) {
+    background: #3579f6 !important;
+    color: #fff !important;
+}
+
+.dw-migrated .dw-legacy-content .sr-cell.center {
+    background: #000 !important;
+}
+
+.dw-migrated .dw-legacy-content .hc-state-box.is-target {
+    border: 3px solid #3579f6 !important;
+}
+
+/* Autoplay messages occupy their own reading row. The final call to action is
+   an opaque functional overlay, so board glyphs never obscure its text. */
+.dw-migrated .dw-legacy-content .pgx-overlay {
+    position: static !important;
+    min-height: 1.4em;
+    margin-top: 1rem;
+}
+.slidewire-frame.dw-migrated .dw-legacy-content .pgx-cta {
+    background: #fff !important;
+    color: #000 !important;
+}

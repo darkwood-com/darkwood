@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './themes/darkwood-original.css';
+@import './themes/darkwood-migration.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/wendelladriel/slidewire/resources/views/**/*.blade.php';

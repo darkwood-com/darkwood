@@ -1,4 +1,4 @@
-<x-slidewire::deck theme="black" transition="fade" show-progress="true" show-controls="true" show-fullscreen-button="true">
+<x-darkwood.deck transition="fade" show-progress="true" show-controls="true" show-fullscreen-button="true">
     @php
         $NL = 'http://127.0.0.1:8002';
         $MODLES = 'http://127.0.0.1:8001';
@@ -364,4 +364,4 @@ flowchart LR
         </section>
         <footer class="dw-footer"><span>24 / outro</span><img src="/darkwood/logos/dw512x512-light.png" alt="Darkwood"></footer>
     </x-slidewire::slide>
-</x-slidewire::deck>
+</x-darkwood.deck>
