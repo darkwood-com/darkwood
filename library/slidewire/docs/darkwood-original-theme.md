@@ -7,12 +7,13 @@ consultées en lecture seule. Seul le deck `symfony-ai-in-action` a été migré
 les 27 autres présentations et les workflows Navi restent inchangés. Cette
 spécification constitue le point d'arrêt avant une migration globale.
 
-Direction courante : **révision 5 du 2026-11-06**. Hiérarchie sémantique
+Direction courante : **révision 6 du 2026-11-06**. Espacements centralisés,
+tailles historiques conservées et hiérarchie sémantique
 `p` de contexte facultatif → `h1` de titre → `h2` de sous-titre facultatif,
 navigation transparente et contenu centré sous l'en-tête. La palette
 `#3579F6` / `#FFFFFF` / `#000000` reste stricte hors des zones de code, où la
 coloration Slidewire d'origine est restaurée. Les comptes rendus précédents
-documentent les étapes antérieures ; la révision 5 fait autorité.
+documentent les étapes antérieures ; la révision 6 fait autorité.
 
 ## Sources historiques inventoriées
 
@@ -1081,3 +1082,120 @@ que précédemment. Le test navigateur écrit maintenant dans **revision-5**.
 Aucune source historique, aucun des 27 autres decks, Navi ou VPS-4 n'a été
 modifié. La généralisation reste conditionnée à la validation visuelle humaine ;
 aucun commit ni push n'a été effectué.
+
+## Révision 6 — rythme vertical des en-têtes
+
+### Valeurs retenues et références
+
+Les tailles, graisses, interlignes, tracking et textes de la révision 5 sont
+conservés. Seuls les espacements entre les éléments de l'en-tête changent.
+
+Les tokens par défaut, définis dans `darkwood-original.css`, sont :
+
+```css
+--dw-heading-overline-gap: 20px;
+--dw-heading-subtitle-gap: 28px;
+```
+
+Ils s'appliquent aux en-têtes de contenu et de conclusion. Les 20 px et 28 px
+reprennent la proposition de cette mission, retenue après revue des rendus à
+1440 × 900 et toujours soumise à validation visuelle humaine.
+Ils ne sont pas présentés comme une marge universelle retrouvée dans Keynote :
+les sources utilisent des boîtes de texte indépendantes, et n'ont pas de rôle
+historique autonome de surtitre. Le pas de 10 pt / 7,5 px utilisé en révision 5
+était une adaptation des insets, trop serrée pour cette hiérarchie ; il a été
+retiré des tokens et des attentes de test actives.
+
+Deux variantes partagées préservent la séparation des compositions historiques
+Title/Subtitle. Une nouvelle lecture de `themes/darkwood/darkwood.pdf`, canvas
+1920 × 1080 pt, donne les bornes suivantes :
+
+- **Hero, page 1** : bas du titre 180 pt à 630,9035 pt ; haut du sous-titre
+  48 pt à 672,0437 pt. L'écart vaut **41,1402 pt**, soit **30,85515 px** à
+  1440 px de large.
+- **Titre standard, page 2** : bas du titre 90 pt à 585,5 pt ; haut du sous-titre
+  48 pt à 672,0437 pt. L'écart vaut **86,5437 pt**, soit **64,907775 px**.
+  Cette composition Title 90 / Subtitle 48 sert de référence à la variante
+  de section bleue du pilote.
+
+Ces valeurs viennent des bornes typographiques extraites du PDF, et non d'une
+propriété de marge de paragraphe. Leur transposition en distance entre les
+boîtes CSS est le choix de reconstruction documenté. Elles sont appliquées
+respectivement par `.dw-original-header--cover` et
+`.dw-original-header--section`, qui surchargent le **même token**
+`--dw-heading-subtitle-gap` avec `calc(100vw * valeurSource / 1920)`.
+Aucune slide ne possède de réglage individuel. Le surtitre garde ses 20 px dans
+chaque variante, faute de référence historique propre à ce rôle.
+
+Les valeurs attendues et la provenance des mesures sont consignées dans
+`tests/fixtures/darkwood-heading-spacing.json`, séparément des métriques de
+polices. Les mesures de polices historiques restent inchangées.
+
+### Une seule méthode d'espacement
+
+Le markup partagé de `x-darkwood.heading` ne change pas : `p` facultatif,
+`h1`, puis `h2` facultatif. La structure HTML et la réaffectation éditoriale
+des vingt slides restent strictement celles de la révision 5.
+
+Le wrapper flex utilise **gap: 0**. Ses enfants ont des marges verticales et
+paddings verticaux réinitialisés. Seules deux relations de frères ajoutent une
+marge supérieure :
+
+- `.dw-overline + h1` reçoit `--dw-heading-overline-gap` ;
+- `h1 + .dw-original-subtitle` reçoit `--dw-heading-subtitle-gap`.
+
+Il n'y a donc ni cumul margin/padding/gap, ni espace réservé lorsqu'un élément
+est absent. Le titre seul occupe exactement sa hauteur de ligne ; le titre
+multiligne garde ses dimensions historiques et reçoit le même espacement
+après sa **dernière** ligne.
+
+Le header reste dans la ligne de grille `auto`. Sa nouvelle hauteur réduit
+naturellement la seconde ligne `minmax(0, 1fr)` : le corps demeure centré dans
+l'espace réellement disponible sous l'en-tête, avec le footer en bas. Aucun
+positionnement ou décalage du contenu n'a été ajouté pour compenser les marges.
+Les sections et couvertures conservent leur composition centrale.
+
+### Contrôles et rendus
+
+Répertoire hors Git :
+`storage/app/slide-renders/symfony-ai-in-action/revision-6/`.
+
+- `slide-01.png` à `slide-20.png` : captures en 1440 × 900, DPR 1 ;
+- `contact-sheet.png` : planche contact des vingt slides ;
+- `heading-cases.png` : cinq en-têtes issus du vrai composant Blade partagé,
+  couvrant les trois éléments, surtitre/titre, titre/sous-titre, titre seul
+  et titre sur deux lignes ; le cadre et les légendes de cette fixture sont
+  extérieurs aux en-têtes et ne font pas partie du thème de présentation ;
+- `historical-comparison.png` : comparaisons des couvertures, sections,
+  titres de contenu et listes avec les références historiques. La référence
+  de section utilise cette fois la page 2 du modèle, où Title et Subtitle
+  sont tous deux présents ;
+- `validation.json` : mesures de chaque en-tête et de la matrice de cas,
+  centrage, typographie, palette, code et navigation ;
+- les vues de détail de navigation, logos, listes et contenu dense restent
+  générées par le même test navigateur.
+
+Le test mesure les distances effectives entre les rectangles des éléments à
+moins de 0,1 px, sur les vingt slides, y compris les variantes Hero/section.
+Il contrôle aussi que la hauteur de chaque en-tête est exactement la somme
+hauteurs des éléments + espacements attendus, sans espace vide initial/final,
+sans padding et sans gap supplémentaire. Le cas multiligne doit bien occuper
+deux lignes à sa taille historique.
+
+Résultats : build Vite réussi, **9 tests Laravel / 150 assertions** réussis,
+20 captures et cinq cas d'en-tête vérifiés par Playwright, sans débordement
+ni chevauchement détecté. La planche contact, les cinq cas, la couverture Hero,
+la section d'analyse et les comparaisons historiques ont été revus visuellement.
+Le témoin `flow-pipe` conserve exactement le même HTML et le même PNG avant/après.
+
+Les contrôles de la révision 5 restent actifs : hiérarchie p/h1/h2 et textes
+inchangés, tailles de police, centrage du corps à moins de 1 px, absence de
+scroll sur les slides pilotes, absence de chevauchement du footer et de
+clipping horizontal, navigation transparente sans compteur, palette stricte
+hors code et Catppuccin Mocha dans les trois blocs PHP.
+
+La reproduction utilise les mêmes commandes Nix, build Vite, tests Laravel et
+Playwright que précédemment ; le test écrit maintenant dans **revision-6**.
+Aucun des 28 fichiers de présentation n'est modifié par cette correction CSS.
+Les 27 présentations non migrées, Navi, VPS-4 et les sources historiques restent
+inchangés. Les rendus sont à valider avant tout commit, push ou généralisation.
