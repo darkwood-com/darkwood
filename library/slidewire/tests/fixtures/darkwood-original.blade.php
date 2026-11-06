@@ -21,4 +21,21 @@
             </div>
         </x-darkwood.columns>
     </x-darkwood.content>
+    <div id="dw-spacing-cases">
+        <section data-spacing-case="all">
+            <x-darkwood.heading overline="Surtitre" title="Titre principal" subtitle="Sous-titre" />
+        </section>
+        <section data-spacing-case="overline-title">
+            <x-darkwood.heading overline="Surtitre" title="Titre principal" />
+        </section>
+        <section data-spacing-case="title-subtitle">
+            <x-darkwood.heading title="Titre principal" subtitle="Sous-titre" />
+        </section>
+        <section data-spacing-case="title-only">
+            <x-darkwood.heading title="Titre principal" />
+        </section>
+        <section data-spacing-case="two-lines">
+            <x-darkwood.heading overline="Surtitre" title="Un titre principal sur deux lignes pour vérifier les espacements" subtitle="Sous-titre" />
+        </section>
+    </div>
 </div>

@@ -1,0 +1,7 @@
+{
+    "overlineGapPx": 20,
+    "subtitleGapPx": 28,
+    "coverSubtitleGapPt": 41.1402,
+    "sectionSubtitleGapPt": 86.5437,
+    "source": "darkwood.pdf (1920x1080pt), page1 Hero 180pt bottom=630.9035 / Subtitle 48pt top=672.0437; page2 standard Title 90pt bottom=585.5 / Subtitle 48pt top=672.0437. Differences are source PDF text-box extents; applying them to CSS line boxes is the documented layout mapping, not a universal paragraph margin."
+}

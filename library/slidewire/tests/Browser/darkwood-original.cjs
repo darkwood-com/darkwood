@@ -7,9 +7,10 @@ const assert = require('node:assert/strict');
 const { auditDarkwoodPalette } = require('./darkwood-palette.cjs');
 
 const base = process.env.SLIDEWIRE_URL || 'http://127.0.0.1:8017';
-const output = path.resolve('storage/app/slide-renders/symfony-ai-in-action/revision-5');
+const output = path.resolve('storage/app/slide-renders/symfony-ai-in-action/revision-6');
 const historical = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-historical-metrics.json', 'utf8'));
 const roles = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-pilot-headings.json', 'utf8'));
+const spacing = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-heading-spacing.json', 'utf8'));
 
 (async () => {
     fs.mkdirSync(output, { recursive: true });
@@ -62,7 +63,7 @@ const roles = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-pilot-headings
                     label: frame.querySelector('.dw-original-footer-label').textContent,
                     progress: { width: bar.getBoundingClientRect().width, color: style(bar).backgroundColor, image: style(bar).backgroundImage, opacity: style(bar).opacity, height: track.getBoundingClientRect().height, track: style(track).backgroundColor },
                     logo: [...frame.querySelectorAll('img')].map(img => ({ src: new URL(img.src).pathname, loaded: img.complete && img.naturalWidth === 512 && img.naturalHeight === 512, width: img.width, height: img.height })),
-                    heading: heading ? { content: heading.classList.contains('dw-original-heading'), cover: heading.classList.contains('dw-original-title'), conclusion: heading.classList.contains('dw-original-conclusion-title'), color: style(heading).color, align: style(heading).textAlign, top: heading.getBoundingClientRect().top, center: heading.getBoundingClientRect().x + heading.getBoundingClientRect().width / 2, size: parseFloat(style(heading).fontSize), lineHeight: parseFloat(style(heading).lineHeight), weight: style(heading).fontWeight, tracking: parseFloat(style(heading).letterSpacing), family: style(heading).fontFamily, text: heading.textContent.trim(), count: frame.querySelectorAll('h1').length } : null,
+                    heading: heading ? { content: heading.classList.contains('dw-original-heading'), cover: heading.classList.contains('dw-original-title'), conclusion: heading.classList.contains('dw-original-conclusion-title'), color: style(heading).color, align: style(heading).textAlign, top: heading.getBoundingClientRect().top, bottom: heading.getBoundingClientRect().bottom, center: heading.getBoundingClientRect().x + heading.getBoundingClientRect().width / 2, size: parseFloat(style(heading).fontSize), lineHeight: parseFloat(style(heading).lineHeight), weight: style(heading).fontWeight, tracking: parseFloat(style(heading).letterSpacing), family: style(heading).fontFamily, text: heading.textContent.trim(), count: frame.querySelectorAll('h1').length } : null,
                     subtitle: typography(subtitle),
                     overline: typography(overline),
                     headerOrder: [...frame.querySelector('.dw-original-header').children].map(node => node.tagName),
@@ -98,8 +99,8 @@ const roles = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-pilot-headings
                 assert.equal(metrics.heading.color, metrics.heading.content || metrics.heading.conclusion ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)');
                 assert.equal(metrics.heading.align, metrics.heading.conclusion ? 'left' : 'center');
                 if (metrics.heading.content) {
-                    const contextHeight = roles[i].overline ? historical.overline.lineHeightPt + historical.headerGapPt : 0;
-                    assert.ok(Math.abs(metrics.heading.top - (source.boxTopPt + source.textInsetPt + contextHeight) * scale) < 0.1);
+                    const contextHeight = roles[i].overline ? historical.overline.lineHeightPt * scale + spacing.overlineGapPx : 0;
+                    assert.ok(Math.abs(metrics.heading.top - (source.boxTopPt + source.textInsetPt) * scale - contextHeight) < 0.1);
                 }
                 if (!metrics.heading.conclusion) assert.ok(Math.abs(metrics.heading.center - 720) < 1, `Slide ${i + 1}: ${JSON.stringify(metrics.heading)}`);
                 for (const role of ['subtitle', 'overline']) if (metrics[role]) {
@@ -111,7 +112,11 @@ const roles = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-pilot-headings
                     assert.equal(metrics[role].weight, '400');
                     assert.ok(metrics[role].family.startsWith(historical.fontFamily));
                 }
-                if (metrics.subtitle) assert.ok(metrics.subtitle.top >= metrics.heading.top + metrics.heading.lineHeight + historical.headerGapPt * scale - 1);
+                if (metrics.overline) assert.ok(Math.abs(metrics.heading.top - metrics.overline.bottom - spacing.overlineGapPx) < 0.1);
+                if (metrics.subtitle) {
+                    const gap = metrics.heading.cover ? spacing.coverSubtitleGapPt * scale : metrics.heading.content || metrics.heading.conclusion ? spacing.subtitleGapPx : spacing.sectionSubtitleGapPt * scale;
+                    assert.ok(Math.abs(metrics.subtitle.top - metrics.heading.bottom - gap) < 0.1, `Slide ${i + 1}: subtitle gap`);
+                }
             }
             if (metrics.body) {
                 assert.equal(metrics.body.scrolls, false, `Pilot slide ${i + 1} needs scrolling`);
@@ -247,6 +252,46 @@ const roles = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-pilot-headings
         }
         const lists = await page.locator('.dw-original-slide--content ul').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).listStyleType));
         assert.deepEqual(lists, ['disc', 'circle', 'circle', 'disc', 'circle', 'circle']);
+        // Actual shared Blade headers: every combination, including absent
+        // elements and a wrapped title. Panel padding is outside the header.
+        await page.addStyleTag({ content: '#dw-spacing-cases {padding:24px;background:#fff;color:#000;display:grid;gap:24px} #dw-spacing-cases > section {padding:24px;border:1px solid #3579F6} #dw-spacing-cases > section::before {content:attr(data-spacing-case);display:block;margin-bottom:16px;font-size:16px;line-height:1}' });
+        const spacingCases = await page.locator('[data-spacing-case]').evaluateAll(nodes => nodes.map(panel => {
+            const header = panel.querySelector('.dw-original-header');
+            const children = [...header.children];
+            const rect = header.getBoundingClientRect();
+            return {
+                name: panel.dataset.spacingCase,
+                height: rect.height,
+                gap: getComputedStyle(header).rowGap,
+                padding: [getComputedStyle(header).paddingTop, getComputedStyle(header).paddingBottom],
+                children: children.map(node => { const r = node.getBoundingClientRect(); const s = getComputedStyle(node); return { tag: node.tagName, top: r.top - rect.top, bottom: r.bottom - rect.top, height: r.height, lineHeight: parseFloat(s.lineHeight), marginBottom: s.marginBottom }; }),
+            };
+        }));
+        assert.equal(spacingCases.length, 5);
+        for (const item of spacingCases) {
+            assert.equal(item.gap, '0px');
+            assert.deepEqual(item.padding, ['0px', '0px']);
+            assert.ok(Math.abs(item.children[0].top) < 0.1, `${item.name}: empty leading space`);
+            assert.ok(Math.abs(item.children.at(-1).bottom - item.height) < 0.1, `${item.name}: empty trailing space`);
+            let total = 0;
+            for (let i = 0; i < item.children.length; i++) {
+                const child = item.children[i];
+                assert.equal(child.marginBottom, '0px');
+                total += child.height;
+                if (i > 0) {
+                    const gap = child.tag === 'H1' ? spacing.overlineGapPx : spacing.subtitleGapPx;
+                    assert.ok(Math.abs(child.top - item.children[i - 1].bottom - gap) < 0.1, `${item.name}: ${child.tag} gap`);
+                    total += gap;
+                }
+            }
+            assert.ok(Math.abs(item.height - total) < 0.1, `${item.name}: cumulative spacing`);
+            if (item.name === 'two-lines') {
+                const title = item.children.find(node => node.tag === 'H1');
+                assert.ok(Math.abs(title.height - 2 * title.lineHeight) < 0.1);
+            }
+        }
+        assert.deepEqual((await page.locator('#dw-spacing-cases').evaluate(auditDarkwoodPalette)).violations, []);
+        await page.locator('#dw-spacing-cases').screenshot({ path: path.join(output, 'heading-cases.png') });
         // Exercise a real link and its pseudo states without changing the deck.
         const fixtureContent = variants.nth(2);
         await fixtureContent.evaluate(node => {
@@ -266,7 +311,7 @@ const roles = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-pilot-headings
         });
         assert.deepEqual((await fixtureContent.evaluate(auditDarkwoodPalette)).violations, []);
         assert.deepEqual(errors, []);
-        fs.writeFileSync(path.join(output, 'validation.json'), JSON.stringify({ viewport: [1440, 900], historical, dense, errors, lists, palette: audits, slides: report }, null, 2));
+        fs.writeFileSync(path.join(output, 'validation.json'), JSON.stringify({ viewport: [1440, 900], historical, spacing, spacingCases, dense, errors, lists, palette: audits, slides: report }, null, 2));
         console.log(`Validated and captured ${report.length} slides + 3 theme checks: ${output}`);
     } finally {
         await browser.close();
