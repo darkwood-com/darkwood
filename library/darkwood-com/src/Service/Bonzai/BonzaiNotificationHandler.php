@@ -9,6 +9,9 @@ use App\Entity\User;
 use App\Enum\PaymentProvider;
 use App\Service\CanonicalEntitlementService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
+use Throwable;
 
 final readonly class BonzaiNotificationHandler
 {
@@ -16,6 +19,7 @@ final readonly class BonzaiNotificationHandler
         private EntityManagerInterface $entityManager,
         private BonzaiOrderVerifier $verifier,
         private CanonicalEntitlementService $entitlements,
+        private LoggerInterface $logger,
     ) {}
 
     /** @return array{status: string, reason?: string} */
@@ -33,7 +37,12 @@ final readonly class BonzaiNotificationHandler
 
         try {
             $verified = $this->verifier->verify($orderId);
-        } catch (\Throwable) {
+        } catch (Throwable $exception) {
+            $this->logger->warning('bonzai.order_verification_failed', [
+                'order_hash' => hash('sha256', $orderId),
+                'exception' => $exception::class,
+            ]);
+
             return ['status' => 'pending', 'reason' => 'provider_verification_failed'];
         }
 
@@ -58,7 +67,7 @@ final readonly class BonzaiNotificationHandler
             'providerPurchaseId' => $orderId,
         ]);
         if (!$purchase instanceof ExternalPurchase || !$purchase->isVerified()) {
-            throw new \RuntimeException('Bonzai order could not be verified; association refused.');
+            throw new RuntimeException('Bonzai order could not be verified; association refused.');
         }
 
         $purchase->associate($user);
