@@ -12,6 +12,10 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
+        oidc_subject_provider:
+            entity:
+                class: App\Entity\User
+                property: uuid
 
     firewalls:
         dev:
@@ -21,6 +25,11 @@ security:
         oauth2_token:
             pattern: ^/token$
             security: false
+        oidc_userinfo:
+            pattern: ^/userinfo$
+            stateless: true
+            provider: oidc_subject_provider
+            oauth2: true
         # Darkwood API: stateful so DarkwoodGameService can use session (flash, combat state)
         darkwood_api:
             pattern: ^/api/darkwood
@@ -77,7 +86,9 @@ security:
         - { path: ^/\.well-known/openid-configuration, roles: PUBLIC_ACCESS }
         - { path: ^/jwks, roles: PUBLIC_ACCESS }
         - { path: ^/token$, roles: PUBLIC_ACCESS }
+        - { path: ^/userinfo$, roles: ROLE_OAUTH2_OPENID }
         - { path: ^/authorize, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/webhooks/bonzai/, roles: PUBLIC_ACCESS }
         - { path: ^/$, host: '%admin_host%', roles: PUBLIC_ACCESS }
         - { path: ^/login$, role: PUBLIC_ACCESS }
         - { path: ^/fr/login$, role: PUBLIC_ACCESS }

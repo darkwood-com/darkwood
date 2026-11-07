@@ -14,7 +14,7 @@ league_oauth2_server:
     resource_server:
         public_key: '%env(resolve:OAUTH_PUBLIC_KEY)%'
     scopes:
-        available: ['openid', 'profile', 'email', 'roles']
+        available: ['openid', 'profile', 'email', 'roles', 'entitlements']
         default: ['openid', 'profile', 'email']
     persistence:
         doctrine: null
