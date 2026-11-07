@@ -1,3 +1,4 @@
+{% import 'icons.html.twig' as icons %}
 {% set is_static = static_mode|default(false) %}
 {% set prefix = base_path|default('') %}
 {% set current = slug|default('') %}
@@ -18,20 +19,23 @@
 <script>try{var t=localStorage.getItem('theme');if(['light','dark','sepia'].includes(t))document.body.className='theme-'+t;}catch(e){}</script>
 <a class="skip-link" href="#main">Aller aux démonstrations</a>
 <header class="navbar-top">
-  <div><button id="menu-toggle" class="secondary mobile-only" aria-expanded="false" aria-controls="sidebar">☰ <span>Menu</span></button><a href="{{ home_href }}" class="top-title">L’atelier Mémoire</a></div>
-  <div class="top-actions"><span class="mode-label">{{ is_static ? 'EXPLORATION INTERACTIVE' : 'ATELIER PHP' }}</span><button id="theme-switcher" class="secondary" aria-label="Changer de thème">◐ <span>Thème</span></button><a href="https://github.com/matyo91/darkwood-memory" class="source-link">Le code ↗</a></div>
+  <a class="header-brand" href="{{ home_href }}" aria-label="Darkwood Memory — accueil"><span class="logo-surface"><img src="{{ prefix }}/logo-darkwood.png" alt="Darkwood" width="36" height="36"></span><span>Atelier Mémoire</span></a>
+  <div class="top-actions">
+    <a href="https://github.com/matyo91/darkwood-memory" class="icon-control" aria-label="GitHub — code de Darkwood Memory" title="Voir le projet sur GitHub" target="_blank" rel="noopener noreferrer">{{ icons.icon('github') }}</a>
+    <button id="theme-switcher" class="icon-control" aria-label="Thème Clair : passer au thème Sombre" title="Thème Clair : passer au thème Sombre"><span id="theme-icon" aria-hidden="true">{{ icons.icon('light') }}</span></button>
+    <button id="menu-toggle" class="icon-control mobile-only" aria-expanded="false" aria-controls="sidebar" aria-label="Ouvrir le menu" title="Ouvrir le menu">{{ icons.icon('menu') }}</button>
+  </div>
+  <span id="theme-status" class="visually-hidden" role="status"></span>
 </header>
-<button id="menu-backdrop" class="menu-backdrop" aria-label="Fermer le menu"></button>
+<template id="theme-icons">{% for theme in ['light', 'dark', 'sepia'] %}<span data-theme-icon="{{ theme }}">{{ icons.icon(theme) }}</span>{% endfor %}</template>
 <div class="app-layout">
   <aside class="sidebar" id="sidebar" aria-label="Navigation principale">
-    <a class="brand" href="{{ home_href }}"><span class="logo-surface"><img src="{{ prefix }}/logo-darkwood.png" alt="Darkwood" width="64" height="64"></span><span>DARKWOOD<small>Atelier / Mémoire</small></span></a>
+    <div class="mobile-menu-heading mobile-only"><span>Explorer la mémoire</span><button id="menu-close" class="icon-control" aria-label="Fermer le menu" title="Fermer le menu">{{ icons.icon('close') }}</button></div>
     <nav class="sidebar-nav" aria-label="Les six démonstrations">
       <a href="{{ home_href }}" {% if current == '' %}aria-current="page"{% endif %}>Vue d’ensemble</a>
-      <p class="nav-caption">EXPLORER LA MÉMOIRE</p>
+      <p class="nav-caption">Démonstrations</p>
       {% for key, item in demos %}<a href="{{ is_static ? prefix ~ '/demo/' ~ key ~ '/' : path('demo', {slug: key}) }}" {% if key == current %}aria-current="page"{% endif %}><span>{{ item[0] }}</span><small>{{ item[3] }}</small></a>{% endfor %}
     </nav>
-    <div class="sidebar-settings"><p>Votre ambiance</p><div class="theme-choices" aria-label="Choisir un thème"><button data-theme="light" aria-pressed="true">Clair</button><button data-theme="dark" aria-pressed="false">Sombre</button><button data-theme="sepia" aria-pressed="false">Sépia</button></div><p id="theme-status" class="hint" role="status">Votre choix reste dans ce navigateur.</p></div>
-    <p class="sidebar-note">Garder ce qui compte.<br>Inventer la suite.</p>
   </aside>
   <div class="page-column"><main id="main" tabindex="-1">{% block body %}{% endblock %}</main><footer><span>Six expériences. Un fil commun.</span><span>Sans compte, sans API payante.</span></footer></div>
 </div>

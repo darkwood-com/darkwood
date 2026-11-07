@@ -54,7 +54,9 @@ Le site statique garde l’état uniquement dans le navigateur. Effacer les donn
 
 Le layout reprend les conventions Darkwaar : barre supérieure de 61 px, sidebar de 180/240/300 px selon les breakpoints, menu mobile, polices Jost et variables CSS `--text-color`, `--bg-color`, `--input-color`, `--border-color` et `--primary-color`.
 
-Les classes `theme-light`, `theme-dark` et `theme-sepia`, la clé locale `theme` et le cycle clair/sombre/sépia suivent la même convention. La préférence est appliquée avant l’affichage puis conservée entre les pages, sans session PHP. Le logo noir Darkwood original est utilisé sur une surface claire dans les trois thèmes.
+Le logo est placé dans le header ; GitHub et le bouton de thème unique utilisent des SVG locaux selon les conventions Uniflow. La sidebar conserve uniquement la navigation ; sur mobile, elle occupe toute la largeur avec fermeture explicite et verrouillage du scroll. Les indicateurs utilisent une pastille bleue de 8 px, sans modifier les bordures de focus ou de séparation. Le corps Jost est de 18 px avec une hauteur de ligne de 1,5.
+
+Les classes `theme-light`, `theme-dark` et `theme-sepia`, la clé locale `theme` et le cycle clair/sombre/sépia suivent la même convention. La préférence est appliquée avant l’affichage puis conservée entre les pages, sans session PHP. Le logo noir Darkwood original est utilisé sur une surface claire dans les trois thèmes. Les icônes sont attribuées dans `LICENSE-icons.txt`.
 
 ## Vérifier
 

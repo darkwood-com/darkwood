@@ -27,8 +27,13 @@ final class StaticExportTest extends KernelTestCase
                 $html = file_get_contents(self::$kernel->getProjectDir().'/dist/'.$file);
                 $crawler = new Crawler($html);
                 self::assertCount(1, $crawler->filter('body.theme-light[data-mode="static"]'));
-                self::assertCount(1, $crawler->filter('#sidebar img[alt="Darkwood"]'));
-                self::assertCount(3, $crawler->filter('[data-theme]'));
+                self::assertCount(1, $crawler->filter('header img[alt="Darkwood"]'));
+                self::assertCount(0, $crawler->filter('#sidebar img, [data-theme], .sidebar-settings'));
+                self::assertCount(1, $crawler->filter('#theme-switcher'));
+                self::assertCount(1, $crawler->filter('#menu-close[aria-label="Fermer le menu"]'));
+                self::assertCount(1, $crawler->filter('header a[aria-label="GitHub — code de Darkwood Memory"] svg'));
+                self::assertStringNotContainsString('Votre ambiance', $html);
+                self::assertStringNotContainsString('http://', str_replace('http://www.w3.org/2000/svg', '', $html));
                 self::assertStringContainsString('href="'.$prefix.'/style.css"', $html);
                 self::assertStringContainsString('href="'.$prefix.'/demo/djmatyo/"', $html);
                 self::assertStringNotContainsString('name="form[_token]"', $html);
