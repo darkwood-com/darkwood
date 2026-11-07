@@ -8,13 +8,13 @@ use WendellAdriel\SlideWire\Support\CodeHighlighter;
 
 class DesignSystemTest extends TestCase
 {
-    public function test_each_pilot_slide_has_one_semantic_title_and_only_real_optional_context_and_subtitle(): void
+    public function test_each_symfony_ai_slide_has_one_semantic_title_and_only_real_optional_context_and_subtitle(): void
     {
         $document = new \DOMDocument;
         $document->loadHTML('<?xml encoding="utf-8" ?>'.$this->get('/slides/symfony-ai-in-action')->getContent(), LIBXML_NOERROR | LIBXML_NOWARNING);
         $xpath = new \DOMXPath($document);
         $frames = $xpath->query('//section[contains(concat(" ", normalize-space(@class), " "), " slidewire-frame ")]');
-        $roles = json_decode(file_get_contents(base_path('tests/fixtures/darkwood-pilot-headings.json')), true, flags: JSON_THROW_ON_ERROR);
+        $roles = json_decode(file_get_contents(base_path('tests/fixtures/symfony-ai-headings.json')), true, flags: JSON_THROW_ON_ERROR);
         $this->assertCount(count($roles), $frames);
         foreach ($frames as $i => $frame) {
             $titles = $xpath->query('.//h1', $frame);
@@ -63,7 +63,7 @@ class DesignSystemTest extends TestCase
         $this->assertStringContainsString('dark-plus', $highlighter->replaceCodeBlocks("```js\nconst answer = 42;\n```", presentationTheme: 'darkwood'));
     }
 
-    public function test_pilot_keeps_twenty_slides_and_selects_logos_by_surface(): void
+    public function test_symfony_ai_has_twenty_slides_and_selects_logos_by_surface(): void
     {
         $response = $this->get('/slides/symfony-ai-in-action');
         $response->assertOk();

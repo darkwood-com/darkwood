@@ -26,7 +26,17 @@ class AssistedPublication
             throw new InvalidArgumentException('Stale source revision; generate a fresh canonical export.');
         }
         $hash = hash_file('sha256', $file);
-        if (($validation['sha256'] ?? '') !== $hash || ($validation['pages'] ?? 0) !== $deck->slide_count) {
+        $validPageCount = ($validation['pages'] ?? 0) === $deck->slide_count;
+        if ($manifest['static_projection'] ?? false) {
+            $mapFile = dirname($file).'/page-map.json';
+            $map = is_file($mapFile) ? json_decode(file_get_contents($mapFile), true, flags: JSON_THROW_ON_ERROR) : [];
+            $slideNumbers = array_values(array_unique(array_column($map, 'slide')));
+            $validPageCount = ($validation['canonical_slides'] ?? 0) === $deck->slide_count
+                && count($map) === ($validation['pages'] ?? 0)
+                && $slideNumbers === range(1, $deck->slide_count)
+                && ($validation['page_map_sha256'] ?? '') === hash_file('sha256', $mapFile);
+        }
+        if (($validation['sha256'] ?? '') !== $hash || ! $validPageCount) {
             throw new InvalidArgumentException('Artifact validation mismatch.');
         }
 

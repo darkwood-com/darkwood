@@ -1,87 +1,141 @@
-# Publications externes depuis Slidewire
+# PDF et publications externes
 
-## Identité et persistance
+Slidewire est la source canonique. Speaker Deck et SlideShare sont des canaux de diffusion ; les exports, builds et consultations du lecteur ne déclenchent aucun upload.
 
-`resources/presentations.json` attribue une fois pour toutes un UUID à chacune des 28 présentations. **Ne jamais régénérer ce registre.** Pour renommer une présentation, conserver son `id`, modifier `source_slug` et renommer sa source/route. Les titres peuvent changer sans changer l'UUID. Hors pilote, les titres de métadonnées initiaux issus des noms de fichiers sont à relire avant publication ; aucune description éditoriale n'est inventée.
+## Mapping et persistance
 
-`presentations` persiste le registre et le nombre de frames compilées. `external_publications.slide_id` référence cet UUID de présentation, pas l'ID d'une frame. Contraintes : une association par `(slide_id, provider)` et une seule présentation canonique par `(provider, remote_id)`. Les suppressions en cascade sont interdites.
+La base Laravel est le journal opérationnel :
 
-`publication_attempts` réserve l'action assistée avant l'upload. La contrainte unique `(external_publication_id, active_slot)` avec `active_slot = 1` interdit plusieurs tentatives actives. Les tentatives terminées ont une valeur nulle. Une interruption ne libère jamais automatiquement la réservation.
+- `presentations` : UUID, slug, titre et nombre de slides ;
+- `external_publications` : `slide_id`, `provider`, `remote_id`, `remote_url`, `source_hash`, dates et état de synchronisation ;
+- `publication_attempts` : fichier exact, opération, réservation active et état de reprise.
 
-Une association d'un ancien deck garde `source_hash`, `published_at` et `last_synced_at` inconnus : confirmer la correspondance éditoriale ne prouve pas la date de publication ni l'identité du PDF distant.
+L'association est fondée sur **UUID Slidewire + provider → ID distant**. Les contraintes SQL garantissent l'unicité du couple `(slide_id, provider)` et de `(provider, remote_id)`. Une tentative active empêche une seconde réservation de la même destination.
 
-## Utilisation locale
-
-Utiliser l'environnement Nix existant, sans installation système :
+[resources/data/publications.json](../resources/data/publications.json) est la projection publique de la base : identifiants, URLs canoniques, SHA-256 et dates publiques. Les champs supplémentaires, doublons, UUID inconnus et URLs contenant des credentials ou paramètres sont refusés. Les titres et slugs ne sont jamais des clés primaires.
 
 ```sh
-nix --extra-experimental-features 'nix-command flakes' develop ../darkwood-com
+php artisan publications:diagnose --json
+php artisan publications:manifest
+php artisan publications:manifest --export --dry-run
+php artisan publications:manifest --export
+```
+
+Le diagnostic affiche les associations, les correspondances manquantes, les orphelines, les réservations et la dérive du manifeste sans erreurs brutes ni chemins privés. L'export public est explicite pour éviter des modifications automatiques de fichiers suivis par Git.
+
+## Sauvegarde et restauration
+
+Le journal complet est sauvegardé atomiquement après commit Eloquent dans `storage/app/private/publications/registry.json` : fichier `0600`, répertoire `0700`. Les écritures SQL directes exigent une sauvegarde explicite.
+
+```sh
+php artisan publications:registry
+php artisan publications:registry --dry-run
+```
+
+La sortie de ces commandes reste limitée aux données publiques. Conserver la base, le journal complet et les artefacts PDF dans une sauvegarde privée. Une sauvegarde du journal ne remplace pas celle de PostgreSQL ou SQLite.
+
+Pour une restauration complète, utiliser une base de récupération dont les trois tables de suivi sont vides. Effectuer les migrations de schéma, puis restaurer **avant** de lancer `publications:catalog` :
+
+```sh
 php artisan migrate
+php artisan publications:registry --restore=storage/app/private/publications/registry.json --dry-run
+php artisan publications:registry --restore=storage/app/private/publications/registry.json
+```
+
+Après un changement de machine, restaurer également les artefacts et vérifier leurs chemins avant de réconcilier les tentatives. Un fichier manquant ne justifie jamais une nouvelle création distante.
+
+### Nouvelle installation depuis les fichiers publics
+
+La base de publication et la sauvegarde privée ne sont pas nécessaires pour reconstruire les associations publiques. Le dépôt fournit les UUID stables dans `resources/presentations.json`, les sources des présentations et le manifeste `resources/data/publications.json`.
+
+Après configuration d'une base neuve :
+
+```sh
+php artisan migrate
+php artisan publications:manifest --import=resources/data/publications.json --dry-run
+php artisan publications:manifest --import=resources/data/publications.json
+php artisan publications:diagnose --json
+```
+
+L'import crée aussi le catalogue en base ; `publications:catalog` n'est pas requis auparavant. Il restaure les IDs distants, URLs, hashes et dates présents dans le manifeste. Il est transactionnel et peut être relancé sans créer de doublons. Les lignes restaurées portent l'état `imported_public_manifest` : l'import ne vérifie pas les services distants et n'atteste pas que le PDF courant correspond au hash publié.
+
+Le manifeste ne contient ni PDFs, ni tentatives en cours, ni erreurs privées. Leur récupération complète exige une sauvegarde privée. Les associations absentes du manifeste restent manquantes ; elles ne sont jamais déduites d'un titre ou d'un slug. Aucun import n'est déclenché automatiquement par une consultation ou un build.
+
+Pour une base existante, suivre les règles de conflit de l'[import de déploiement](deployment.md). La base reste la source de vérité opérationnelle ; le manifeste est son export public portable et approuvé, suffisant pour reconstruire les associations, pas un second journal de jobs.
+
+## Générer un PDF
+
+Démarrer le serveur local, synchroniser le catalogue puis exporter un UUID :
+
+```sh
 php artisan publications:catalog
-php artisan serve --host=127.0.0.1 --port=8017
+php artisan publications:export UUID --static --interactive-base=https://slides.darkwood.com
 ```
 
-Tableau de bord : `http://127.0.0.1:8017/publications`. Accès limité à l'environnement local et aux requêtes loopback ; formulaires CSRF et données échappées. Ajouter une authentification administrateur avant toute exposition en production. Le lecteur reste inchangé.
+Sans `--static`, un contenu qui exige une pagination ou une représentation statique est refusé. `--interactive-pending` permet d'indiquer qu'une version interactive n'est pas encore accessible ; ne l'utiliser que si cette mention correspond à la destination réelle.
 
-## Export canonique
+Le rendu Chromium utilise 1440 × 810 CSS px ; l'assemblage agrandit uniformément les pages à **1920 × 1080 points**, ratio 16:9. Les polices sont incorporées et le SHA-256 porte sur le fichier final. `PUBLICATION_PYTHON`, `CHROME` et `PLAYWRIGHT_MODULE` permettent de sélectionner les runtimes locaux.
 
-L'impression du lecteur documentée précédemment ne garantissait pas la capture des frames cachées. La nouvelle commande exporte chaque frame active dans l'ordre du compilateur, avec les fragments dans leur état final :
+Chaque export est isolé sous `storage/app/publications/UUID/EXPORT/` avec son manifeste de révision, son PDF, `pdf-validation.json` et `page-map.json`. Le mapping de pages relie chaque page à la slide canonique et à son numéro de partie. Une modification de source, d'asset, de compilateur ou de renderer invalide la préparation d'un ancien export.
+
+La projection statique répartit les contenus denses sans réduire le corps éditorial et capture les plateaux, tableaux et médias dont la disposition porte une information. Les images conservent leur ratio. Les captures de composants sont réutilisées par révision pour limiter les variations d'animation.
+
+La copie d'export retire les hooks de reconstruction Mermaid afin de préserver les SVG figés. Si le diagramme est refusé par le lecteur, sa notation source reste lisible avec une mention explicite. Une démonstration externe indisponible reçoit un avertissement et un lien ; compléter sa capture réelle avant validation éditoriale.
+
+Vérifier le document final, pas seulement les captures du navigateur :
 
 ```sh
-php artisan publications:export UUID
+python3 bin/publication-preview.py CHEMIN_DU_PDF
 ```
 
-Prérequis : Node, Playwright, Chrome, Python et pypdf ; pypdfium2 pour les aperçus. `PLAYWRIGHT_MODULE`, `CHROME` et `PUBLICATION_PYTHON` peuvent désigner des runtimes existants. L'exporteur ne lit aucun cookie ni navigateur connecté et visite exclusivement `http://127.0.0.1:PORT`.
+Contrôler ordre, nombre de pages, images, polices, dimensions et absence de contenu vide ou coupé. Le nombre de pages PDF peut différer du nombre de slides ; le mapping doit rester complet et ordonné.
 
-Rendu d'export **1440 × 810 CSS px**, pages Chromium **1080 × 607,5 points** (96 px = 72 points), agrandies uniformément en vecteurs à **1920 × 1080 points**, ratio **16:9**. Le lecteur s'adapte également à un écran 1440 × 900. L'échelle native du navigateur est fixée à 2 pour calculer exactement les bordures de 2,5 px ; les captures sont sauvegardées à l'échelle CSS. Navigation exclue, design/progression/footer conservés. Contrôles : compte compilé/navigateur/PDF, images et polices, erreurs réseau/JS, palette calculée, débordements, défilement, médias interactifs, texte sélectionnable, polices incorporées (dont glyphes Type3), dimensions et SHA-256 final.
+## Publier et enregistrer
 
-Une iframe, vidéo, canvas ou zone défilante provoque un refus : demander une décision sur sa représentation statique sans supprimer de contenu, réduire arbitrairement les polices ou ajouter des pages. Un PDF ne reproduit pas les interactions de Slidewire.
-
-Les exports sont isolés sous `storage/app/publications/UUID/EXPORT_UUID/` : manifeste, captures fraîches, pages intermédiaires, PDF et validations JSON. Métadonnées temporelles et IDs aléatoires du PDF final sont normalisés. Comparer deux exports frais pour vérifier leur reproductibilité dans le même environnement. Une empreinte conservatrice des sources, compilateur, configuration, assets, renderer et locks interdit de préparer un export obsolète. Une modification sans effet visuel peut imposer une régénération ; seul le hash du PDF final détermine son identité publiée.
-
-Contrôle du PDF réel (pas seulement des captures avant export) :
+Avant tout upload, examiner le compte cible et les correspondances existantes. Une ressemblance de titre ou de slug ne prouve pas une association.
 
 ```sh
-python bin/publication-preview.py CHEMIN/presentation.pdf
+php artisan publications:prepare UUID PROVIDER CHEMIN_DU_PDF --dry-run
+php artisan publications:prepare UUID PROVIDER CHEMIN_DU_PDF
 ```
 
-## Publication assistée
-
-Consulter [l'audit des providers](publication-providers.md) puis les comptes pour exclure les doublons. Aucune API d'écriture ni cookie extrait n'est utilisé.
+La préparation vérifie l'UUID, la révision, le hash et la pagination puis réserve une tentative, sans transmettre le fichier. Téléverser le PDF exact dans l'interface officielle, vérifier titre, description, compte, visibilité publique, pagination et fichier servi, puis :
 
 ```sh
-php artisan publications:prepare UUID speakerdeck CHEMIN/presentation.pdf
+php artisan publications:complete TENTATIVE_UUID REMOTE_ID URL --confirmed-exact-artifact --confirmed-public-access
+php artisan publications:manifest --export
 ```
 
-Cette commande réserve une tentative, **sans transmettre le fichier**. Téléverser le fichier exact dans l'interface officielle, relire les métadonnées, publier, vérifier les pages et l'accès public. Relever l'ID réel (Speaker Deck : ID hexadécimal du player ; SlideShare : ID numérique de l'URL canonique).
-
-```sh
-php artisan publications:complete TENTATIVE_UUID REMOTE_ID URL \
-  --confirmed-exact-artifact --confirmed-public-access
-```
-
-La validation enregistre l'association, le hash du fichier téléversé et les dates puis clôt la tentative. Il s'agit d'une **attestation explicite de l'opérateur**, pas d'une comparaison avec le hash d'un PDF distant. L'oEmbed Speaker Deck vérifie compte et ID publics via `SpeakerDeckProvider::getPublication`, pas les octets du document. SlideShare exige une vérification web.
-
-## Association et mises à jour
-
-Formulaire local ou :
+Pour associer une publication existante après vérification indépendante du contenu :
 
 ```sh
 php artisan publications:associate UUID PROVIDER REMOTE_ID URL --confirmed-correspondence
 ```
 
-Ne jamais déduire une correspondance d'un titre ou slug. L'association existante ne peut pas être remplacée par cette commande. Un PDF identique à l'empreinte attestée ne crée aucune tentative ; un PDF modifié retourne `update_available`, sans doublon. Sur Speaker Deck, `publications:prepare ... --confirmed-replacement` réserve un remplacement après confirmation de l'opération publique. Utiliser Reupload et conserver l'ID existant. Aucun remplacement non confirmé SlideShare ni suppression distante n'est implémenté.
+Cette confirmation éditoriale ne prouve pas le hash du PDF distant. Les valeurs inconnues restent nulles.
 
-## Erreurs et reprises
+### Providers
+
+**Speaker Deck** : utiliser le compte prévu et le parcours officiel d'upload PDF. L'oEmbed public permet de vérifier compte, titre et ID hexadécimal du player, mais ne fournit pas le hash du PDF. Le parcours Reupload permet un remplacement sur la même identité ; les limites et options du compte doivent être vérifiées avant chaque lot. Relire les métadonnées et la visibilité après traitement du fichier.
+
+**SlideShare** : utiliser le parcours web officiel et conserver l'ID numérique de l'URL canonique. L'adaptateur déclare ses capacités dans `SlideShareProvider` ; une capacité indisponible ou un remplacement non confirmé impose une action manuelle. Ne pas utiliser d'anciens tokens ou endpoints privés.
+
+Les capacités applicatives sont déclarées dans `PublicationProviders` et les services de provider. Aucune API d'écriture ni extraction de cookies n'est implémentée. Consulter les aides officielles de [Speaker Deck](https://help.speakerdeck.com/) et [SlideShare](https://support.scribd.com/hc/en-us/categories/360001743332-Slideshare) pour les contraintes du service.
+
+## Mise à jour et reprise
+
+Si le hash change, préparer un remplacement avec `--confirmed-replacement` lorsque le provider le permet. Conserver l'ID et l'URL existants. Sans remplacement disponible, signaler une action manuelle ; ne pas créer automatiquement de doublon. Une incertitude liée au cache doit être vérifiée sans nouvel upload.
 
 ```sh
-php artisan publications:reconcile TENTATIVE_UUID --error=upload_failed
+php artisan publications:reconcile TENTATIVE_UUID --error=interrupted
+php artisan publications:diagnose --json
 ```
 
-Erreurs admises : `interrupted`, `authentication_failed`, `upload_failed`. La tentative reste active et bloque une nouvelle création. Vérifier le compte : si la publication existe, reprendre `complete` avec son ID, sans recréer. Si la création n'a réellement produit aucune publication, l'opérateur peut clôturer avec `--confirmed-no-remote-publication` après contrôle. Ce drapeau est interdit pour un remplacement. Un timeout ne prouve jamais l'absence de publication.
+Une tentative interrompue reste bloquante. Si la publication existe, terminer son mapping sans la recréer. Une création réellement absente peut être clôturée avec `--confirmed-no-remote-publication` après vérification du compte ; ce drapeau ne s'applique pas aux remplacements.
 
-## Inventaire et validation
+Les rapports générés restent privés et hors de Git :
 
-[Inventaire compilé](publication-inventory.json) : 28 UUID, 487 frames actives. Le suivi de publication ne réécrit pas les sources ; les évolutions du design conservent les associations. Aucun test ne publie réellement : réponses HTTP simulées, contrôles d'unicité, stabilité, erreurs, interruptions et prévention des doublons.
-
-La référence de composition `symfony-ai-in-action` compte 20 pages. Les nouveaux exports doivent appliquer le [design system natif](design-system.md) et être validés avant toute publication. [L'état des publications](publications-status.md) conserve les identifiants et empreintes des fichiers effectivement publiés. Une intervention graphique locale ne modifie pas les comptes externes.
+```sh
+php artisan publications:report --output=storage/app/private/publications/report.json
+php artisan publications:report --html --output=storage/app/private/publications/report.html
+```

@@ -11,7 +11,7 @@ use WendellAdriel\SlideWire\Support\PresentationCompiler;
 
 class PublicationExportCommand extends Command
 {
-    protected $signature = 'publications:export {id : Canonical presentation UUID} {--base=http://127.0.0.1:8017}';
+    protected $signature = 'publications:export {id : Canonical presentation UUID} {--base=http://127.0.0.1:8017} {--static : Paginate dense content and freeze interactive media} {--interactive-base= : Public canonical reader base URL} {--interactive-pending : Label the canonical reader as not yet deployed}';
 
     protected $description = 'Render every canonical frame into a validated fresh PDF (local server required)';
 
@@ -27,7 +27,14 @@ class PublicationExportCommand extends Command
         $directory = storage_path('app/publications/'.$deck->id.'/'.Str::uuid());
         mkdir($directory, 0700, true);
         $revision = app(CanonicalRevision::class)->hash();
+        $interactiveBase = $this->option('interactive-base');
+        if ($interactiveBase && (! filter_var($interactiveBase, FILTER_VALIDATE_URL) || parse_url($interactiveBase, PHP_URL_SCHEME) !== 'https')) {
+            $this->error('Use an HTTPS public canonical reader URL.');
+
+            return self::FAILURE;
+        }
         $manifest = ['id' => $deck->id, 'slug' => $deck->source_slug, 'title' => $deck->title, 'revision' => $revision,
+            'static_projection' => (bool) $this->option('static'), 'interactive_base' => $interactiveBase ? rtrim($interactiveBase, '/') : null, 'interactive_pending' => (bool) $this->option('interactive-pending'),
             'slides' => array_map(fn ($slide) => ['id' => $slide->id, 'fragments' => $slide->fragments], $slides)];
         file_put_contents($directory.'/manifest.json', json_encode($manifest, JSON_THROW_ON_ERROR));
         $commands = [

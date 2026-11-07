@@ -8,7 +8,14 @@ from pypdf.generic import ByteStringObject, ArrayObject, RectangleObject, FloatO
 
 directory, output, count = Path(sys.argv[1]), Path(sys.argv[2]), int(sys.argv[3])
 pages = sorted(directory.glob('page-*.pdf'))
-if len(pages) != count:
+page_map_file = directory/'page-map.json'
+page_map = json.loads(page_map_file.read_text()) if page_map_file.exists() else None
+if page_map is not None:
+    if len(page_map) != len(pages) or sorted(set(row['slide'] for row in page_map)) != list(range(1, count+1)):
+        raise ValueError('Missing canonical slides in page map')
+    if [row['slide'] for row in page_map] != sorted(row['slide'] for row in page_map):
+        raise ValueError('Canonical slide order changed')
+elif len(pages) != count:
     raise ValueError('Missing pages')
 writer = PdfWriter()
 for file in pages:
@@ -33,7 +40,7 @@ for file in pages:
             descriptor = item.get_object().get('/FontDescriptor')
             if not descriptor or not any(key in descriptor.get_object() for key in ['/FontFile', '/FontFile2', '/FontFile3']):
                 raise ValueError('Unembedded font')
-    # Historical 1920×1080 point canvas: uniform scale, never stretch a 16:10 frame.
+    # Scale uniformly to the canonical 1920×1080 point canvas.
     page.scale_by(1920 / float(page.mediabox.width))
     # Chromium rounds paper dimensions to printer units. Remove only the
     # sub-point blank paper excess, keeping uniform scale and exact font sizes.
@@ -57,8 +64,8 @@ writer._ID = ArrayObject([ByteStringObject(b'SlidewirePDFv001'), ByteStringObjec
 with output.open('wb') as stream:
     writer.write(stream)
 check = PdfReader(output)
-if len(check.pages) != count:
+if len(check.pages) != len(pages):
     raise ValueError('Merged page count mismatch')
-result = {'pages': count, 'width_pt':1920, 'height_pt':1080, 'sha256':hashlib.sha256(output.read_bytes()).hexdigest(), 'bytes':output.stat().st_size}
+result = {'pages': len(pages), 'canonical_slides': count, 'page_map_sha256':hashlib.sha256(page_map_file.read_bytes()).hexdigest() if page_map is not None else None, 'width_pt':1920, 'height_pt':1080, 'sha256':hashlib.sha256(output.read_bytes()).hexdigest(), 'bytes':output.stat().st_size}
 (directory/'pdf-validation.json').write_text(json.dumps(result, indent=2)+'\n')
 print(json.dumps(result))

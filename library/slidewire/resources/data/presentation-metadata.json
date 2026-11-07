@@ -1,0 +1,254 @@
+{
+  "05d57064-fcd6-478e-a8ae-6767615f8f5d": {
+    "cover_title": null,
+    "subtitle": "Deterministic generation as gameplay",
+    "overline": "Darkwaar20",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "b0d8f82e-522f-48cf-8082-6bfd282ca93e": {
+    "cover_title": null,
+    "subtitle": "One die. Six faces. Twenty-five cells.",
+    "overline": null,
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "b2a9a7bc-5a65-40d2-9c69-29859cd0f801": {
+    "cover_title": null,
+    "subtitle": "Rotation, Color Algebra & Deterministic Puzzles",
+    "overline": "Darkwaar27",
+    "author": "@matyo91",
+    "footer_label": "Darkwood",
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "92e37e56-a7c5-4a82-aeb9-6b1eaba329ac": {
+    "cover_title": "Seedwake",
+    "subtitle": "Asynchronous MultiplayerWithout a Server",
+    "overline": "Darkwaar 33",
+    "author": "@matyo91",
+    "footer_label": "01 | 14",
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "d35f1e4c-1059-40ad-ac96-5180440f8fe1": {
+    "cover_title": "Flow Tokens",
+    "subtitle": "Token optimization isstream discipline",
+    "overline": "Darkwood · PHP 8.5 · Flow · Symfony",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "154b792d-19ac-4a34-ab56-7dbef3a26aec": {
+    "cover_title": "😶‍🌫️ This Person Does Not Exist",
+    "subtitle": "From Synchronous PHPto Asynchronous Orchestration with Flow",
+    "overline": "Darkwood · PHP · Orchestration",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "10845f40-41dd-49e6-96b4-5ef1d0b083dd": {
+    "cover_title": "Flowvox update",
+    "subtitle": "De la console au worker vocal temps réel - web, Mercure, iOS.",
+    "overline": "Darkwood · Symfony 8 · Voice-first · 2026-05-17",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "176c71ea-d93a-4e20-8667-386705940709": {
+    "cover_title": null,
+    "subtitle": "AI made writing tests cheap.Choosing what deserves an oracle is now the hard part.",
+    "overline": "Darkwood · PHP · PHPUnit · agents · Flow",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "4245e12c-43d5-4204-b1fb-a8ff64247470": {
+    "cover_title": null,
+    "subtitle": "Security Engineering Through Darkwaar40 — Breach",
+    "overline": "Darkwood · Security Engineering · Darkwaar40",
+    "author": "@matyo91",
+    "footer_label": "01 · Holding the Core · 20–25 min",
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "144410f9-653a-4f06-acc7-032f7c16d6de": {
+    "cover_title": "Laravel Pipeline& Darkwood Flow",
+    "subtitle": "Two execution models forcomposing PHP steps",
+    "overline": "Darkwood · PHP 8.5 · Laravel · Flow",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "2883a530-78d3-4067-a2dd-e4e2af6e2089": {
+    "cover_title": "Construire un LLM",
+    "subtitle": "Inspiré des concepts réels des LLM, ce projet propose une version visuelle et simplifiée basée sur un Game of Life.",
+    "overline": "LLM Game of Life",
+    "author": "@matyo91",
+    "footer_label": "01 | introduction",
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "32e0ac94-aca0-4c2d-a9c4-520149df813e": {
+    "cover_title": null,
+    "subtitle": "Mais au lieu de juste comparer les modeles, j'ai voulu comprendre comment orchestrer des agents IA pour produire un jeu.",
+    "overline": "Video Darkwood / IA x Game Dev",
+    "author": "@matyo91",
+    "footer_label": "01 | hook",
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "2ae239c4-47cc-44a9-ae68-39933ab8c722": {
+    "cover_title": null,
+    "subtitle": null,
+    "overline": "Systemes multi-agent partout",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "bc2771ad-58ad-47e0-bd2f-d6f68b70d28d": {
+    "cover_title": "Nolife Language",
+    "subtitle": "Don't say cost. Say investment.",
+    "overline": "Darkwood · Symfony · Flow · language",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "4aeaa678-2fe7-4e76-86eb-344f29e17934": {
+    "cover_title": "NoLife Models",
+    "subtitle": "Exploring Local AI Runtime Infrastructure",
+    "overline": "Darkwood / local inference infrastructure",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "89d1ecf3-d4cf-416a-86e8-012b405dc67f": {
+    "cover_title": "When AI Becomes a Library",
+    "subtitle": "The Nolife Local ExperimentDepth Anything 3 + Symfony + PHP FFI + Darkwood Flow",
+    "overline": "Darkwood · Symfony · PHP FFI · Flow",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "a2bb89c4-9da0-4667-87d7-b6db71fc8483": {
+    "cover_title": "Nolife Tokens",
+    "subtitle": "Shrinking LLM contextwithout destroying recoverability",
+    "overline": "Darkwood · Symfony · Flow · context",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "4b7ab508-68f5-4ed1-be57-88d1d9267066": {
+    "cover_title": "PHP Speed Tooling",
+    "subtitle": "Partial Function Application,Tokens and Flow",
+    "overline": "Darkwood · PHP 8.6 · Flow",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "b9d98b10-453f-4fbc-9ec8-823dbad25bb7": {
+    "cover_title": null,
+    "subtitle": "Rendre les workers observables —pas seulement mesurables.",
+    "overline": "Darkwood · Symfony 8 · Flow · Blackfire",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "77738729-6ab9-4710-ae0a-02ab90011ad4": {
+    "cover_title": null,
+    "subtitle": "BYOK × Symfony 8.2 × Navi",
+    "overline": "Darkwood · BYOK · Symfony 8.2 · Navi",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "21f1717c-f698-47ab-915a-d063c68bb140": {
+    "cover_title": "The Laptop Isthe Last Bottleneck",
+    "subtitle": "From coding agents toshared, observable workflows",
+    "overline": "Darkwood · PHP · agents · workflows",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "22ef3877-ced6-4d72-b136-26d889d36d88": {
+    "cover_title": null,
+    "subtitle": "PHP → C frontend → ARM64 → SQLite",
+    "overline": "Darkwood · PHP · C · ARM64 · SQLite",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "f1e202fc-b950-414e-94c3-711c53001d09": {
+    "cover_title": null,
+    "subtitle": null,
+    "overline": "Darkwood engineering",
+    "author": "@matyo91",
+    "footer_label": "01 | 12",
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "00031a3b-f803-4061-a07a-08a4634844b1": {
+    "cover_title": "Symfony 8.1",
+    "subtitle": "Architecture, async, and developer experience - what actually changes for production apps.",
+    "overline": "Darkwood · Symfony · 2026",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "ced2e361-eb17-4e83-a695-3213d156a876": {
+    "cover_title": "Symfony AI in Action",
+    "subtitle": "Construire des fonctionnalités IA réalistes avec Symfony",
+    "overline": "Darkwood selection / SymfonyLive Berlin 2026",
+    "author": "@matyo91",
+    "footer_label": "24-04-2026",
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "e29b95a9-6373-4031-b0c4-791deabc1a81": {
+    "cover_title": "The ThanksAgent",
+    "subtitle": "When orchestration guaranteesexecution, not value",
+    "overline": "Darkwood · PHP · agents · Flow",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "988d14e3-2cc4-43a7-9475-2090c3215111": {
+    "cover_title": "The FiberIllusion",
+    "subtitle": "What RxJS taught us aboutreal async pipelines in PHP",
+    "overline": "Darkwood · PHP · Flow · RxJS · stream_select",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "a710ce05-b3f8-488a-aa25-3d23836b52e3": {
+    "cover_title": "Where Should Native Code Live?",
+    "subtitle": "Phalcon, Symfony, TrueAsync and Flowat different layers of the stack",
+    "overline": "Darkwood · PHP architecture · 2026",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": null,
+    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  }
+}

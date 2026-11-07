@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
@@ -16,8 +17,15 @@ class SpeakerDeckProvider
     public function getPublication(string $url, string $expectedId): array
     {
         app(PublicationProviders::class)->validateIdentity('speakerdeck', $expectedId, $url);
-        $response = Http::timeout(20)->withoutRedirecting()->get('https://speakerdeck.com/oembed.json', ['url' => $url]);
-        $response->throw();
+        try {
+            $response = Http::timeout(20)->withoutRedirecting()->get('https://speakerdeck.com/oembed.json', ['url' => $url]);
+        } catch (ConnectionException) {
+            throw new RuntimeException('Speaker Deck metadata request unavailable.');
+        }
+        if (! $response->successful()) {
+            // Never carry the provider response body into exception messages or logs.
+            throw new RuntimeException('Speaker Deck metadata request failed (HTTP '.$response->status().').');
+        }
         $payload = $response->json();
         if (! is_array($payload) || ($payload['author_url'] ?? '') !== 'https://speakerdeck.com/matyo91' || ($payload['provider_name'] ?? '') !== 'Speaker Deck' || ! preg_match('~https://speakerdeck\.com/player/([a-f0-9]{32})(?:["?])~', $payload['html'] ?? '', $matches) || $matches[1] !== $expectedId || empty($payload['title'])) {
             throw new RuntimeException('Incomplete oEmbed response or remote identity/account mismatch.');

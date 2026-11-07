@@ -32,9 +32,11 @@ class CatalogueTest extends TestCase
         $this->assertCount(0, $xp->query('//*[contains(@class,"slidewire-frame")]'));
     }
 
-    public function test_portrait_is_an_exact_copy_and_unknown_authors_keep_an_explicit_fallback(): void
+    public function test_portrait_keeps_dimensions_without_private_metadata_and_unknown_authors_keep_a_fallback(): void
     {
         $this->assertSame([640, 640], array_slice(getimagesize(public_path('images/authors/matyo91.jpg')), 0, 2));
+        $this->assertStringNotContainsString("Exif\0\0", file_get_contents(public_path('images/authors/matyo91.jpg')));
+        $this->assertStringNotContainsString('Photoshop 3.0', file_get_contents(public_path('images/authors/matyo91.jpg')));
         $html = Blade::render('<x-darkwood.conclusion title="Fin" contact="@other-author" />');
         $this->assertStringContainsString('data-author-fallback="logo"', $html);
         $this->assertStringNotContainsString('/images/authors/matyo91.jpg', $html);

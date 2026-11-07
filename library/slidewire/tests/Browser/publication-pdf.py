@@ -1,4 +1,4 @@
-"""Inspect the actual pilot export: exact format and both historical footers."""
+"""Validate the Symfony AI PDF dimensions and left/right footer typography."""
 import logging
 import sys
 import pdfplumber

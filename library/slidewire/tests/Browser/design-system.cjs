@@ -8,8 +8,8 @@ const { auditDarkwoodPalette } = require('../../bin/browser/palette.cjs');
 
 const base = process.env.SLIDEWIRE_URL || 'http://127.0.0.1:8017';
 const output = path.resolve(process.env.OUTPUT_DIR || 'storage/app/design-system/examples');
-const historical = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-historical-metrics.json', 'utf8'));
-const roles = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-pilot-headings.json', 'utf8'));
+const specification = JSON.parse(fs.readFileSync('tests/fixtures/design-system-metrics.json', 'utf8'));
+const roles = JSON.parse(fs.readFileSync('tests/fixtures/symfony-ai-headings.json', 'utf8'));
 const spacing = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-heading-spacing.json', 'utf8'));
 
 (async () => {
@@ -85,8 +85,8 @@ const spacing = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-heading-spac
             assert.equal(metrics.progress.track, 'rgb(255, 255, 255)');
             assert.ok(metrics.logo.every(logo => logo.loaded && logo.width === logo.height));
             if (metrics.heading) {
-                const source = historical[metrics.heading.cover ? 'cover' : metrics.heading.content ? 'content' : 'section'];
-                const scale = 1440 / historical.canvas.widthPt;
+                const source = specification[metrics.heading.cover ? 'cover' : metrics.heading.content ? 'content' : 'section'];
+                const scale = 1440 / specification.canvas.widthPt;
                 assert.equal(metrics.heading.count, 1);
                 assert.equal(metrics.heading.text, roles[i].title);
                 assert.equal(!!metrics.subtitle, roles[i].subtitle);
@@ -95,23 +95,23 @@ const spacing = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-heading-spac
                 assert.ok(Math.abs(metrics.heading.size - source.fontSizePt * scale) < 0.01);
                 assert.ok(Math.abs(metrics.heading.lineHeight - source.lineHeightPt * scale) < 0.01);
                 assert.ok(Math.abs(metrics.heading.tracking - source.letterSpacingPt * scale) < 0.01);
-                assert.equal(metrics.heading.weight, String(historical.fontWeight));
-                assert.ok(metrics.heading.family.startsWith(historical.fontFamily));
+                assert.equal(metrics.heading.weight, String(specification.fontWeight));
+                assert.ok(metrics.heading.family.startsWith(specification.fontFamily));
                 assert.equal(metrics.heading.color, metrics.heading.content || metrics.heading.conclusion ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)');
                 assert.equal(metrics.heading.align, metrics.heading.conclusion ? 'left' : 'center');
                 if (metrics.heading.content) {
-                    const contextHeight = roles[i].overline ? historical.overline.lineHeightPt * scale + spacing.overlineGapPx : 0;
+                    const contextHeight = roles[i].overline ? specification.overline.lineHeightPt * scale + spacing.overlineGapPx : 0;
                     assert.ok(Math.abs(metrics.heading.top - (source.boxTopPt + source.textInsetPt) * scale - contextHeight) < 0.1);
                 }
                 if (!metrics.heading.conclusion) assert.ok(Math.abs(metrics.heading.center - 720) < 1, `Slide ${i + 1}: ${JSON.stringify(metrics.heading)}`);
                 for (const role of ['subtitle', 'overline']) if (metrics[role]) {
                     for (const [actual, expected] of [['size', 'fontSizePt'], ['lineHeight', 'lineHeightPt'], ['tracking', 'letterSpacingPt']]) {
-                        assert.ok(Math.abs(metrics[role][actual] - historical[role][expected] * scale) < 0.01, `Slide ${i + 1}: ${role} ${actual}`);
+                        assert.ok(Math.abs(metrics[role][actual] - specification[role][expected] * scale) < 0.01, `Slide ${i + 1}: ${role} ${actual}`);
                     }
                     assert.equal(metrics[role].color, metrics.heading.color);
                     assert.equal(metrics[role].tag, role === 'subtitle' ? 'H2' : 'P');
                     assert.equal(metrics[role].weight, '400');
-                    assert.ok(metrics[role].family.startsWith(historical.fontFamily));
+                    assert.ok(metrics[role].family.startsWith(specification.fontFamily));
                 }
                 if (metrics.overline) assert.ok(Math.abs(metrics.heading.top - metrics.overline.bottom - spacing.overlineGapPx) < 0.1);
                 if (metrics.subtitle) {
@@ -120,7 +120,7 @@ const spacing = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-heading-spac
                 }
             }
             if (metrics.body) {
-                assert.equal(metrics.body.scrolls, false, `Pilot slide ${i + 1} needs scrolling`);
+                assert.equal(metrics.body.scrolls, false, `Slide ${i + 1} needs scrolling`);
                 assert.ok(Math.abs(metrics.body.center - metrics.body.innerCenter) < 1, `Slide ${i + 1}: body not centered`);
             }
             assert.equal(metrics.nav.background, 'rgba(0, 0, 0, 0)');
@@ -217,8 +217,7 @@ const spacing = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-heading-spac
         assert.deepEqual((await page.locator('.slidewire-shell').evaluate(auditDarkwoodPalette)).violations, []);
         await page.locator('#palette-probe').evaluate(node => node.remove());
 
-        // Render actual Blade components independently of the pilot: black is an
-        // available historical layout, not an extra slide in the presentation.
+        // Exercise all Blade layout variants, including the black cover.
         const fixture = execFileSync('php', ['tests/fixtures/render-design-system.php'], { encoding: 'utf8', env: { ...process.env, SLIDEWIRE_URL: base } });
         await page.route(`${base}/__theme-check`, route => route.fulfill({ contentType: 'text/html; charset=utf-8', body: `<meta charset="utf-8">${fixture}` }));
         await page.goto(`${base}/__theme-check`);
@@ -340,7 +339,7 @@ const spacing = JSON.parse(fs.readFileSync('tests/fixtures/darkwood-heading-spac
         assert.ok(lines.svg.every(line => line.width === '2.5px' && line.effect === 'non-scaling-stroke'));
         await page.locator('#native-line-cases').screenshot({path:path.join(output, 'graphic-lines.png'),scale:'css'});
         assert.deepEqual(errors, []);
-        fs.writeFileSync(path.join(output, 'validation.json'), JSON.stringify({ viewport: [1440, 900], historical, spacing, spacingCases, dense, errors, lists, lines, codeCases, palette: audits, slides: report }, null, 2));
+        fs.writeFileSync(path.join(output, 'validation.json'), JSON.stringify({ viewport: [1440, 900], specification, spacing, spacingCases, dense, errors, lists, lines, codeCases, palette: audits, slides: report }, null, 2));
         console.log(`Validated and captured ${report.length} slides + 3 theme checks: ${output}`);
     } finally {
         await browser.close();

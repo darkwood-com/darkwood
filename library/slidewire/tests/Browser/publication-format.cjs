@@ -1,4 +1,4 @@
-// Historical footer and 16:9 composition regression checks; local app only.
+// Footer typography and 16:9 composition checks against the local reader.
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
@@ -20,5 +20,5 @@ await page.goto('http://127.0.0.1:8017/slides/flowvox-update-2026-05-17',{waitUn
 await page.waitForSelector('.mermaidTooltip',{state:'attached'});
 assert.ok(await page.locator('.mermaidTooltip').evaluate(node=>node.textContent===''&&getComputedStyle(node).display==='none'));
 assert.equal(await page.evaluate(()=>document.documentElement.scrollHeight),810,'empty diagram tooltip adds no print page');
-fs.mkdirSync('storage/app/publications',{recursive:true});fs.writeFileSync('storage/app/publications/historical-format-validation.json',JSON.stringify(rows,null,2));console.log('20 slides: Verdana footer, bordered logo, no overflow at 1440×810; empty Mermaid tooltip adds no page');
+fs.mkdirSync('storage/app/publications',{recursive:true});fs.writeFileSync('storage/app/publications/format-validation.json',JSON.stringify(rows,null,2));console.log('20 slides: Verdana footer, bordered logo, no overflow at 1440×810; empty Mermaid tooltip adds no page');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

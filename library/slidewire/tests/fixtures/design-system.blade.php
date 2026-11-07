@@ -1,7 +1,7 @@
 <div class="slidewire-theme-darkwood">
     <x-darkwood.cover title="Darkwood — fond bleu" />
     <x-darkwood.cover background="black" title="Darkwood — fond noir" />
-    <x-darkwood.content title="Puces historiques" overline="Fond blanc · HTML et Markdown">
+    <x-darkwood.content title="Puces et listes" overline="Fond blanc · HTML et Markdown">
         <x-darkwood.columns>
             <div>
                 <ul>

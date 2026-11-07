@@ -1,5 +1,6 @@
 <?php
 
+use App\Logging\RedactSensitiveData;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -53,12 +54,14 @@ return [
     'channels' => [
 
         'stack' => [
+            'tap' => [RedactSensitiveData::class],
             'driver' => 'stack',
             'channels' => explode(',', (string) env('LOG_STACK', 'single')),
             'ignore_exceptions' => false,
         ],
 
         'single' => [
+            'tap' => [RedactSensitiveData::class],
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
@@ -66,6 +69,7 @@ return [
         ],
 
         'daily' => [
+            'tap' => [RedactSensitiveData::class],
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
@@ -74,6 +78,7 @@ return [
         ],
 
         'slack' => [
+            'tap' => [RedactSensitiveData::class],
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => env('LOG_SLACK_USERNAME', env('APP_NAME', 'Laravel')),
@@ -83,6 +88,7 @@ return [
         ],
 
         'papertrail' => [
+            'tap' => [RedactSensitiveData::class],
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
             'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
@@ -95,6 +101,7 @@ return [
         ],
 
         'stderr' => [
+            'tap' => [RedactSensitiveData::class],
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
             'handler' => StreamHandler::class,
@@ -106,6 +113,7 @@ return [
         ],
 
         'syslog' => [
+            'tap' => [RedactSensitiveData::class],
             'driver' => 'syslog',
             'level' => env('LOG_LEVEL', 'debug'),
             'facility' => env('LOG_SYSLOG_FACILITY', LOG_USER),
@@ -113,12 +121,14 @@ return [
         ],
 
         'errorlog' => [
+            'tap' => [RedactSensitiveData::class],
             'driver' => 'errorlog',
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
         ],
 
         'null' => [
+            'tap' => [RedactSensitiveData::class],
             'driver' => 'monolog',
             'handler' => NullHandler::class,
         ],

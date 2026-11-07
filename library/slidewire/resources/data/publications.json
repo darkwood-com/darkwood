@@ -1,0 +1,95 @@
+{
+    "schema_version": 1,
+    "publications": [
+        {
+            "slide_id": "00031a3b-f803-4061-a07a-08a4634844b1",
+            "provider": "speakerdeck",
+            "remote_id": "c09cc191d3c043d39886f4ca168c59f7",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-5619f0e3-861a-40b6-92d6-a0b95ef13aba",
+            "source_hash": "732ee77d384cb89f5fd812364d0b82bbe8e3f033c1f4dee2b4309436ffde643e",
+            "published_at": "2026-11-06T22:10:17.000000Z",
+            "last_synced_at": "2026-11-06T23:44:17.000000Z"
+        },
+        {
+            "slide_id": "05d57064-fcd6-478e-a8ae-6767615f8f5d",
+            "provider": "speakerdeck",
+            "remote_id": "ef289e12d9a14008bd327a8fa1cfabb2",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-c123a18c-8e93-4615-a67d-58b52a37529c",
+            "source_hash": "c9272aaf4275555c617785327a87ddf1314990ebcd5248c153489e2249cf624c",
+            "published_at": "2026-11-06T22:46:56.000000Z",
+            "last_synced_at": "2026-11-06T22:46:56.000000Z"
+        },
+        {
+            "slide_id": "10845f40-41dd-49e6-96b4-5ef1d0b083dd",
+            "provider": "speakerdeck",
+            "remote_id": "7516d21b25d54bf196939791ff61617e",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-e7c38035-e691-4059-a9f2-354ff4458611",
+            "source_hash": "a106e98946bef820d0ca46ff450fe7113bf0fb16a18ef2b2662ec2cf8ed93ff7",
+            "published_at": "2026-11-06T22:11:17.000000Z",
+            "last_synced_at": "2026-11-06T23:42:48.000000Z"
+        },
+        {
+            "slide_id": "154b792d-19ac-4a34-ab56-7dbef3a26aec",
+            "provider": "speakerdeck",
+            "remote_id": "bd90389d6dd749a08f773279471bff3c",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-3d0045fa-5dd9-4985-96fb-5a53f2d13b0a",
+            "source_hash": "475d10883fd7f40668ab1fcd23164c6b4dae3487c8d154def09f77ca16381a81",
+            "published_at": "2026-11-06T23:16:43.000000Z",
+            "last_synced_at": "2026-11-06T23:42:14.000000Z"
+        },
+        {
+            "slide_id": "92e37e56-a7c5-4a82-aeb9-6b1eaba329ac",
+            "provider": "speakerdeck",
+            "remote_id": "314340c24c9e4b298b6c0f2fde63d095",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-a1c9a67f-d03b-4a75-8b7f-f61745281de3",
+            "source_hash": "8532fcd9768a6fe0a217ec63248aca1446f650eb4fd7ddee636e2ea3be4d66a7",
+            "published_at": "2026-11-06T23:15:15.000000Z",
+            "last_synced_at": "2026-11-06T23:15:15.000000Z"
+        },
+        {
+            "slide_id": "b0d8f82e-522f-48cf-8082-6bfd282ca93e",
+            "provider": "speakerdeck",
+            "remote_id": "c052b24d926c41f09063432afef227d2",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-9980f053-d8df-4e72-9d98-ef4b2d5957d8",
+            "source_hash": "6860af10cf5a5b2a8a1433de1960937fbdaee9ecadc086a05b792f27b04f9743",
+            "published_at": "2026-11-06T22:41:50.000000Z",
+            "last_synced_at": "2026-11-06T23:40:58.000000Z"
+        },
+        {
+            "slide_id": "b2a9a7bc-5a65-40d2-9c69-29859cd0f801",
+            "provider": "speakerdeck",
+            "remote_id": "79ae252b5835467c9979e9bd4084ea7b",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-7da7fcbf-ad39-495d-855a-d8458784953e",
+            "source_hash": "cc50d0cfa9038d2b323dd4c2f59cfc8767b6cecc29eae63ea8619df76f26c0b8",
+            "published_at": "2026-11-06T23:13:59.000000Z",
+            "last_synced_at": "2026-11-06T23:13:59.000000Z"
+        },
+        {
+            "slide_id": "ced2e361-eb17-4e83-a695-3213d156a876",
+            "provider": "speakerdeck",
+            "remote_id": "6e9bf8526c8e4d8ea5b7d7afef4f7b30",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation",
+            "source_hash": "52bd214b5a45f1fafa442f513ae815bf69f5943b8aefe81b886b3d3183c4fcc2",
+            "published_at": "2026-11-06T11:49:45.000000Z",
+            "last_synced_at": "2026-11-06T23:45:02.000000Z"
+        },
+        {
+            "slide_id": "d35f1e4c-1059-40ad-ac96-5180440f8fe1",
+            "provider": "speakerdeck",
+            "remote_id": "332577912fe542a4be3290183ce4daf4",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-add189eb-525d-4c80-a184-69e929677efe",
+            "source_hash": "52a521bd21cd117edf38d76cd37e660c7eacc9b2aa68e41898b90ec50b793590",
+            "published_at": "2026-11-06T23:22:20.000000Z",
+            "last_synced_at": "2026-11-06T23:38:22.000000Z"
+        },
+        {
+            "slide_id": "e29b95a9-6373-4031-b0c4-791deabc1a81",
+            "provider": "speakerdeck",
+            "remote_id": "a118ef5e957844b9b763920339cede63",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-4a79d183-8bed-4e2b-bde2-96e4cb940d0e",
+            "source_hash": "780e6ad6ed863d94e1e124354d32e598161a6236c0eb16ff0e708a5ead02c587",
+            "published_at": "2026-11-06T22:09:36.000000Z",
+            "last_synced_at": "2026-11-06T23:45:57.000000Z"
+        }
+    ]
+}

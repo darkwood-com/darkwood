@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Presentation;
 use App\Models\PublicationAttempt;
+use App\Models\User;
 use App\Support\AssistedPublication;
 use App\Support\CanonicalRevision;
 use App\Support\PublicationAssociations;
@@ -11,7 +12,6 @@ use App\Support\PublicationProviders;
 use App\Support\SpeakerDeckProvider;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -91,6 +91,39 @@ class PublicationTrackingTest extends TestCase
         return $file;
     }
 
+    public function test_prepare_dry_run_does_not_reserve_an_upload_or_change_the_registry(): void
+    {
+        $deck = $this->presentation();
+        $this->artisan('publications:prepare', ['id' => $deck->id, 'provider' => 'speakerdeck', 'artifact' => $this->artifact($deck), '--dry-run' => true])->assertSuccessful();
+        $this->assertDatabaseCount('external_publications', 0);
+        $this->assertDatabaseCount('publication_attempts', 0);
+    }
+
+    public function test_static_export_accepts_extra_pages_only_with_a_complete_verified_page_map(): void
+    {
+        $deck = $this->presentation();
+        $file = $this->artifact($deck);
+        $manifestFile = dirname($file).'/manifest.json';
+        $manifest = json_decode(file_get_contents($manifestFile), true);
+        $manifest['static_projection'] = true;
+        file_put_contents($manifestFile, json_encode($manifest));
+        $map = [];
+        foreach (range(1, 20) as $slide) {
+            $map[] = ['page' => count($map) + 1, 'slide' => $slide];
+            if ($slide === 7) {
+                $map[] = ['page' => count($map) + 1, 'slide' => $slide];
+            }
+        }
+        $mapFile = dirname($file).'/page-map.json';
+        file_put_contents($mapFile, json_encode($map));
+        file_put_contents(dirname($file).'/pdf-validation.json', json_encode(['sha256' => hash_file('sha256', $file), 'pages' => 21, 'canonical_slides' => 20, 'page_map_sha256' => hash_file('sha256', $mapFile)]));
+        $attempt = app(AssistedPublication::class)->prepare($deck, 'speakerdeck', $file);
+        $this->assertInstanceOf(PublicationAttempt::class, $attempt);
+        file_put_contents($mapFile, '[]');
+        $this->expectException(InvalidArgumentException::class);
+        app(AssistedPublication::class)->prepare($deck, 'slideshare', $file);
+    }
+
     public function test_interrupted_attempt_blocks_a_second_upload(): void
     {
         $deck = $this->presentation();
@@ -166,12 +199,19 @@ class PublicationTrackingTest extends TestCase
     {
         Http::preventStrayRequests();
         Http::fake(['speakerdeck.com/oembed.json*' => Http::response([], 401)]);
-        $this->expectException(RequestException::class);
+        $this->expectException(\RuntimeException::class);
         app(SpeakerDeckProvider::class)->getPublication('https://speakerdeck.com/matyo91/example', str_repeat('a', 32));
     }
 
     public function test_operator_screen_is_local_only_and_does_not_change_the_reader(): void
     {
+        $this->get('/publications')->assertNotFound();
+        config(['publications.local_operator_ui' => true]);
+        $this->get('/publications')->assertNotFound();
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $this->get('/publications')->assertNotFound();
+        config(['publications.operator_ids' => [(string) $user->id]]);
         $this->get('/publications')->assertOk()->assertSee('Publications Slidewire');
         $this->withServerVariables(['REMOTE_ADDR' => '203.0.113.10'])->get('/publications')->assertNotFound();
     }

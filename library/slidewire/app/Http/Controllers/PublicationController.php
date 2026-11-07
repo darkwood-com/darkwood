@@ -11,8 +11,12 @@ class PublicationController extends Controller
 {
     private function guard(Request $request): void
     {
-        // Operator tooling is local-only until a real authenticated admin exists.
-        abort_unless(app()->environment(['local', 'testing']) && in_array($request->ip(), ['127.0.0.1', '::1'], true), 404);
+        abort_unless(config('publications.local_operator_ui')
+            && app()->environment(['local', 'testing'])
+            && in_array($request->ip(), ['127.0.0.1', '::1'], true)
+            && in_array($request->getHost(), ['localhost', '127.0.0.1', '[::1]', '::1'], true)
+            && $request->user()
+            && in_array((string) $request->user()->getAuthIdentifier(), config('publications.operator_ids', []), true), 404);
     }
 
     public function index(Request $request)
