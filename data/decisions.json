@@ -1,0 +1,36 @@
+{
+  "MEM-001": {
+    "title": "Garder les motifs musicaux modifiables",
+    "date": "2026-01-12",
+    "source": "Brief fictif de l’atelier",
+    "status": "Adoptée",
+    "history": [
+      {
+        "revision": 1,
+        "date": "2026-01-10",
+        "text": "Conserver uniquement un rendu audio.",
+        "source": "Essai initial fictif"
+      },
+      {
+        "revision": 2,
+        "date": "2026-01-12",
+        "text": "Conserver aussi les notes, le tempo et les paramètres pour pouvoir créer une variante.",
+        "source": "Retour d’écoute fictif"
+      }
+    ]
+  },
+  "MEM-002": {
+    "title": "Séparer les choix narratifs des médias",
+    "date": "2026-01-15",
+    "source": "Storyboard fictif",
+    "status": "Adoptée",
+    "history": [
+      {
+        "revision": 1,
+        "date": "2026-01-15",
+        "text": "Garder le personnage, sa palette et son accessoire dans une fiche indépendante.",
+        "source": "Atelier fictif"
+      }
+    ]
+  }
+}

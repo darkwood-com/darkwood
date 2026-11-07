@@ -1,0 +1,15 @@
+{
+  "id": "atelier-bilan",
+  "version": 1,
+  "title": "Préparer un bilan",
+  "input": [
+    12,
+    8,
+    5
+  ],
+  "steps": [
+    "Collecter les valeurs",
+    "Additionner les valeurs",
+    "Produire le bilan"
+  ]
+}

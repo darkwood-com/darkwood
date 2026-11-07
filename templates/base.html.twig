@@ -1,0 +1,39 @@
+{% set is_static = static_mode|default(false) %}
+{% set prefix = base_path|default('') %}
+{% set current = slug|default('') %}
+{% set home_href = is_static ? prefix ~ '/' : path('home') %}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Six expériences interactives autour de la mémoire : connaissances, code, processus, jeu, musique et récit.">
+  <title>{% block title %}Mémoire · Darkwood{% endblock %}</title>
+  <link rel="icon" href="{{ prefix }}/logo-darkwood.png">
+  <link rel="stylesheet" href="{{ prefix }}/style.css">
+  <script src="{{ prefix }}/themes.js" defer></script>
+  <script src="{{ prefix }}/app.js" defer></script>
+  {% if is_static %}<script src="{{ prefix }}/static.js" type="module"></script>{% endif %}
+</head>
+<body class="theme-light" data-mode="{{ is_static ? 'static' : 'php' }}">
+<script>try{var t=localStorage.getItem('theme');if(['light','dark','sepia'].includes(t))document.body.className='theme-'+t;}catch(e){}</script>
+<a class="skip-link" href="#main">Aller aux démonstrations</a>
+<header class="navbar-top">
+  <div><button id="menu-toggle" class="secondary mobile-only" aria-expanded="false" aria-controls="sidebar">☰ <span>Menu</span></button><a href="{{ home_href }}" class="top-title">L’atelier Mémoire</a></div>
+  <div class="top-actions"><span class="mode-label">{{ is_static ? 'EXPLORATION INTERACTIVE' : 'ATELIER PHP' }}</span><button id="theme-switcher" class="secondary" aria-label="Changer de thème">◐ <span>Thème</span></button><a href="https://github.com/matyo91/darkwood-memory" class="source-link">Le code ↗</a></div>
+</header>
+<button id="menu-backdrop" class="menu-backdrop" aria-label="Fermer le menu"></button>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar" aria-label="Navigation principale">
+    <a class="brand" href="{{ home_href }}"><span class="logo-surface"><img src="{{ prefix }}/logo-darkwood.png" alt="Darkwood" width="64" height="64"></span><span>DARKWOOD<small>Atelier / Mémoire</small></span></a>
+    <nav class="sidebar-nav" aria-label="Les six démonstrations">
+      <a href="{{ home_href }}" {% if current == '' %}aria-current="page"{% endif %}>Vue d’ensemble</a>
+      <p class="nav-caption">EXPLORER LA MÉMOIRE</p>
+      {% for key, item in demos %}<a href="{{ is_static ? prefix ~ '/demo/' ~ key ~ '/' : path('demo', {slug: key}) }}" {% if key == current %}aria-current="page"{% endif %}><span>{{ item[0] }}</span><small>{{ item[3] }}</small></a>{% endfor %}
+    </nav>
+    <div class="sidebar-settings"><p>Votre ambiance</p><div class="theme-choices" aria-label="Choisir un thème"><button data-theme="light" aria-pressed="true">Clair</button><button data-theme="dark" aria-pressed="false">Sombre</button><button data-theme="sepia" aria-pressed="false">Sépia</button></div><p id="theme-status" class="hint" role="status">Votre choix reste dans ce navigateur.</p></div>
+    <p class="sidebar-note">Garder ce qui compte.<br>Inventer la suite.</p>
+  </aside>
+  <div class="page-column"><main id="main" tabindex="-1">{% block body %}{% endblock %}</main><footer><span>Six expériences. Un fil commun.</span><span>Sans compte, sans API payante.</span></footer></div>
+</div>
+</body>
+</html>
