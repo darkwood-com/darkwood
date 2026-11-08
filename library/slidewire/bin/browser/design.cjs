@@ -2,7 +2,8 @@ function auditDesignSystem(frame) {
     const size = node => parseFloat(getComputedStyle(node).fontSize);
     const editable = node => !node.closest('pre,[data-code-surface],svg');
     const content = [...frame.querySelectorAll('.sw-body p,.sw-body li,.sw-body blockquote,.sw-body figcaption,.sw-body td,.sw-body th,.sw-content p,.sw-content li')].filter(editable);
-    const typography = content.filter(node => Math.abs(size(node)-36)>0.01).map(node=>({tag:node.tagName,class:node.className,size:size(node),text:node.textContent.trim().slice(0,100)}));
+    const expectedContentSize = frame.classList.contains('memory-slide') ? 36 * Math.min(innerWidth / 1440, innerHeight / 810) : 36;
+    const typography = content.filter(node => Math.abs(size(node)-expectedContentSize)>0.01).map(node=>({tag:node.tagName,class:node.className,size:size(node),text:node.textContent.trim().slice(0,100)}));
     const borders = [];
     for (const node of frame.querySelectorAll('*')) {
         if (!node.checkVisibility({opacityProperty:true,visibilityProperty:true}) || node.closest('svg')) continue;

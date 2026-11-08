@@ -1,0 +1,40 @@
+/* Memory uses the native Darkwood components in a fitted 16:9 canvas. */
+.memory-slide { --memory-u:min(1vw,1.77777778dvh); --dw-content-font-size:calc(2.5 * var(--memory-u)); --darkwood-body:var(--dw-content-font-size); --darkwood-heading:calc(4.6875 * var(--memory-u)); --darkwood-title:calc(7 * var(--memory-u)); --darkwood-subtitle:calc(2.5 * var(--memory-u)); --darkwood-context:calc(1.77 * var(--memory-u)); --dw-heading-overline-gap:calc(1.39 * var(--memory-u)); --dw-heading-subtitle-gap:calc(1.94 * var(--memory-u)); height:100dvh; min-height:0; display:flex; align-items:center; justify-content:center; }
+.memory-slide .sw-canvas { position:relative; width:calc(100 * var(--memory-u)); height:calc(56.25 * var(--memory-u)); min-height:0; padding:calc(3 * var(--memory-u)) calc(5 * var(--memory-u)) calc(6.7 * var(--memory-u)); margin:auto; }
+.memory-slide .sw-body { padding:calc(.55 * var(--memory-u)) 0; }
+.memory-slide .sw-footer { font-size:calc(1.55 * var(--memory-u)); bottom:calc(1.5 * var(--memory-u)); left:calc(3 * var(--memory-u)); right:calc(3 * var(--memory-u)); }
+.memory-slide .sw-footer .sw-logo { width:calc(4 * var(--memory-u)); height:calc(4 * var(--memory-u)); }
+.memory-slide .sw-content { line-height:1.35; }
+.memory-slide .sw-content p { margin:calc(1.2 * var(--memory-u)) 0; }
+.memory-slide .sw-content h2 { font:inherit; color:var(--dw-blue); margin:0 0 calc(1 * var(--memory-u)); }
+.memory-slide .memory-columns { display:grid; grid-template-columns:repeat(auto-fit,minmax(0,1fr)); grid-auto-flow:column; gap:calc(3 * var(--memory-u)); }
+.memory-slide .memory-chain { display:flex; align-items:center; justify-content:space-between; gap:calc(1.2 * var(--memory-u)); margin:calc(2 * var(--memory-u)) 0; }
+.memory-slide .memory-chain > :not([aria-hidden]) { flex:1; }
+.memory-slide .memory-chain > [aria-hidden] { color:var(--dw-blue); }
+.memory-slide .sw-content .memory-note { font-size:inherit; }
+.memory-slide .memory-result { color:var(--dw-blue); }
+.memory-slide .memory-question { max-width:100%; font-size:calc(3.3 * var(--memory-u)); line-height:1.35; }
+.memory-slide .memory-timeline { display:grid; gap:calc(1.3 * var(--memory-u)); }
+.memory-slide .memory-game { display:grid; grid-template-columns:calc(19 * var(--memory-u)) 1fr; gap:calc(4 * var(--memory-u)); align-items:center; }
+.memory-slide .memory-game img { display:block; width:100%; height:calc(30 * var(--memory-u)); object-fit:contain; }
+.memory-slide .memory-score { display:grid; grid-template-columns:repeat(8,1fr); gap:calc(.65 * var(--memory-u)); text-align:center; }
+.memory-slide .memory-score .memory-note-on { background:var(--dw-blue); color:white; padding:calc(1.8 * var(--memory-u)) 0; }
+.memory-slide .memory-score .memory-silent { padding:calc(1.8 * var(--memory-u)) 0; }
+.memory-slide .memory-sequence { display:grid; grid-template-columns:auto 1fr; gap:calc(2 * var(--memory-u)); }
+.memory-slide .memory-summary { display:grid; grid-template-columns:1fr 1fr; gap:calc(1.5 * var(--memory-u)) calc(4 * var(--memory-u)); }
+.memory-slide .memory-summary span { display:block; color:var(--dw-blue); }
+.memory-slide pre.phiki { font-size:calc(1.53 * var(--memory-u)); line-height:1.5; }
+.memory-slide .sw-code-surface { margin:0; }
+
+.slidewire-shell:has(.memory-slide.is-active.sw-slide--cover-black) .slidewire-controls { background:var(--darkwood-ink); }
+.slidewire-shell:has(.memory-slide) .slidewire-controls { bottom:calc((100dvh - min(100dvh,56.25vw)) / 2 + .75 * min(1vw,1.77777778dvh)); }
+/* Shared content reset has higher specificity; keep accents local to this deck. */
+.memory-slide.sw-slide .sw-content h2,
+.memory-slide.sw-slide .sw-content .memory-result,
+.memory-slide.sw-slide .sw-content .memory-summary span,
+.memory-slide.sw-slide .sw-content .memory-chain > [aria-hidden] { color:var(--dw-blue); }
+.memory-slide.sw-slide .sw-content .memory-score .memory-note-on { background-color:var(--dw-blue); color:var(--darkwood-white); }
+
+.memory-slide .sw-code-window pre,.memory-slide .sw-code-window code { font-size:calc(1.52777778 * var(--memory-u)); }
+.memory-slide .sw-code-window pre { padding:calc(1.6 * var(--memory-u)) calc(2 * var(--memory-u)) !important; margin:0 !important; }
+.memory-slide .sw-code-toolbar { font-size:calc(1.25 * var(--memory-u)); padding:calc(1.2 * var(--memory-u)) calc(2 * var(--memory-u)); }

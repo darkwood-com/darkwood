@@ -138,5 +138,10 @@
         "id": "a710ce05-b3f8-488a-aa25-3d23836b52e3",
         "source_slug": "where-native-code-lives",
         "title": "where native code lives"
+    },
+    {
+        "id": "c86fc5e5-c122-4b2c-859e-79770acfaad1",
+        "source_slug": "memory",
+        "title": "Mémoire : ce qui rend la suite possible"
     }
 ]

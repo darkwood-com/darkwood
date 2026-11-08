@@ -23,7 +23,7 @@ class PublicationRegistryTest extends TestCase
             'source_hash' => str_repeat('b', 64), 'status' => 'published']);
         PublicationAttempt::create(['external_publication_id' => $publication->id, 'source_hash' => str_repeat('c', 64), 'artifact_path' => '/tmp/test.pdf', 'operation' => 'replace', 'active_slot' => 1]);
         $snapshot = app(PublicationRegistry::class)->snapshot();
-        $this->assertCount(28, $snapshot['presentations']);
+        $this->assertCount(29, $snapshot['presentations']);
         $this->assertSame($publication->remote_id, $snapshot['publications'][0]['remote_id']);
         $this->assertSame($publication->source_hash, $snapshot['publications'][0]['source_hash']);
         $this->assertSame(1, $snapshot['attempts'][0]['active_slot']);

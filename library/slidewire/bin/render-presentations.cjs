@@ -8,7 +8,7 @@ const reference=JSON.parse(fs.readFileSync('tests/fixtures/presentation-content.
 const reportFile=path.join(root,process.env.REPORT_NAME || 'validation.json');
 const requested=process.env.DECKS?.split(',') || Object.keys(reference);
 (async()=>{const b=await chromium.launch({executablePath:process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',args:['--force-device-scale-factor=2']});const report=fs.existsSync(reportFile)?JSON.parse(fs.readFileSync(reportFile)):{};
-try {for(const slug of requested){const p=await b.newPage({viewport:{width:1440,height:900},deviceScaleFactor:2});const errors=[],assets=[];p.on('pageerror',e=>errors.push(e.message));p.on('response',r=>{if(r.status()>=400) assets.push({status:r.status(),url:r.url()})});
+try {for(const slug of requested){const p=await b.newPage({viewport:{width:Number(process.env.VIEWPORT_WIDTH || 1440),height:Number(process.env.VIEWPORT_HEIGHT || 900)},deviceScaleFactor:2});const errors=[],assets=[];p.on('pageerror',e=>errors.push(e.message));p.on('response',r=>{if(r.status()>=400) assets.push({status:r.status(),url:r.url()})});
 const out=path.join(root,'renders',slug);fs.mkdirSync(out,{recursive:true});await p.goto(`${base}/slides/${slug}`,{waitUntil:'domcontentloaded'});await p.waitForFunction(()=>document.querySelector('.slidewire-frame.is-active'));const frames=p.locator('.slidewire-frame');const rows=process.env.SLIDE_NUMBERS?(report[slug]?.slides||[]):[];
 if(await frames.count()!==reference[slug].count)throw Error(slug+' count changed');
 const indices=process.env.SLIDE_NUMBERS?process.env.SLIDE_NUMBERS.split(',').map(n=>Number(n)-1):Array.from({length:reference[slug].count},(_,i)=>i);

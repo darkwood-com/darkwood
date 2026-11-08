@@ -250,5 +250,11 @@
     "footer_label": null,
     "date": null,
     "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+  },
+  "c86fc5e5-c122-4b2c-859e-79770acfaad1": {
+    "cover_title": "Mémoire : ce qui rend la suite possible",
+    "subtitle": "Du logiciel à l’IA, des jeux vidéo à la musique et à l’image : ce que nous conservons pour continuer à créer.",
+    "author": "@matyo91",
+    "date": "2026-11-08"
   }
 }

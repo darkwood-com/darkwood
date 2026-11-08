@@ -216,11 +216,11 @@ class PublicationTrackingTest extends TestCase
         $this->withServerVariables(['REMOTE_ADDR' => '203.0.113.10'])->get('/publications')->assertNotFound();
     }
 
-    public function test_versioned_catalog_has_28_distinct_stable_uuid_identities(): void
+    public function test_versioned_catalog_has_29_distinct_stable_uuid_identities(): void
     {
         $rows = json_decode(file_get_contents(resource_path('presentations.json')), true);
-        $this->assertCount(28, $rows);
-        $this->assertCount(28, array_unique(array_column($rows, 'id')));
+        $this->assertCount(29, $rows);
+        $this->assertCount(29, array_unique(array_column($rows, 'id')));
         foreach ($rows as $row) {
             $this->assertTrue(Str::isUuid($row['id']));
         }
