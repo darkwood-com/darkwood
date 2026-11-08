@@ -8,7 +8,7 @@ use App\Model\Page;
 use App\Service\ChangelogService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/', name: 'app_shop_')]
 class ChangelogController extends AbstractController

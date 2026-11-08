@@ -7,7 +7,7 @@ namespace App\Controller\Shop;
 use App\Model\Page;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/', name: 'app_shop_')]
 class HomeController extends AbstractController

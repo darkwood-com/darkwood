@@ -15,7 +15,7 @@ class ShopUserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function findOneByUidOrUsername(string $uidOrUsername): User
+    public function findOneByUidOrUsername(string $uidOrUsername): ?User
     {
         $qb = $this->createQueryBuilder('u')
             ->select('u')

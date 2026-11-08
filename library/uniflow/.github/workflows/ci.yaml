@@ -62,10 +62,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ '8.3' ]
+        php: [ '8.5' ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -163,10 +163,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ '8.3' ]
+        php: [ '8.5' ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -182,7 +182,7 @@ jobs:
           composer install -d tools/phpstan
 
       - name: Execute PHPStan analysis
-        run: (cd tools && phpstan/vendor/bin/phpstan --configuration=phpstan/phpstan.neon.dist)
+        run: tools/phpstan/vendor/bin/phpstan --configuration=tools/phpstan/phpstan.neon.dist
 
   phpunit:
     name: Launch PHPUnit test suite
@@ -197,10 +197,10 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       matrix:
-        php: [ '8.3' ]
+        php: [ '8.5' ]
     steps:
       - name: Init repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

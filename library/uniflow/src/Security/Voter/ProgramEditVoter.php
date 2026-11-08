@@ -6,13 +6,14 @@ namespace App\Security\Voter;
 
 use App\Entity\Program;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ProgramEditVoter extends Voter
 {
     public const EDIT = 'edit';
 
-    protected function supports(string $attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
         return $attribute === self::EDIT && $subject instanceof Program;
     }
@@ -20,7 +21,7 @@ class ProgramEditVoter extends Voter
     /**
      * @var Program
      */
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         return $token->getUser() === $subject->getUser();
     }

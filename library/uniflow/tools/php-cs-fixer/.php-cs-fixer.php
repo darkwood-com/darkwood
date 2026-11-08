@@ -21,6 +21,7 @@ $finder = Finder::create()
 ;
 
 return (new Config())
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR12' => true,
