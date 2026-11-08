@@ -87,7 +87,10 @@ security:
         - { path: ^/jwks, roles: PUBLIC_ACCESS }
         - { path: ^/token$, roles: PUBLIC_ACCESS }
         - { path: ^/userinfo$, roles: ROLE_OAUTH2_OPENID }
-        - { path: ^/authorize, roles: IS_AUTHENTICATED_FULLY }
+        # Remember-me is an authenticated Darkwood session and must be accepted
+        # by SSO. Requiring a fresh login here loops between /authorize and
+        # /login because the login controller already sees the remembered user.
+        - { path: ^/authorize, roles: IS_AUTHENTICATED_REMEMBERED }
         - { path: ^/webhooks/bonzai/, roles: PUBLIC_ACCESS }
         - { path: ^/$, host: '%admin_host%', roles: PUBLIC_ACCESS }
         - { path: ^/login$, role: PUBLIC_ACCESS }
