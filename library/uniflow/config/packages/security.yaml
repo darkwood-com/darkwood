@@ -8,6 +8,8 @@ security:
             id: sylius.shop_user_provider.email_or_name_based
         sylius_api_shop_user_provider:
             id: sylius.shop_user_provider.email_or_name_based
+        oidc_shop_user_provider:
+            id: App\Security\OidcShopUserProvider
         uid_provider:
             id: App\Provider\UidProvider
 

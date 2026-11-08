@@ -28,9 +28,11 @@ Only the Sylius `shop` firewall should delegate browser authentication by defaul
 
 Unknown or unlinked subjects are denied by default. There is no automatic provisioning or automatic e-mail linking. Local logout invalidates only the Uniflow session unless global logout is explicitly configured and tested.
 
+`OidcShopUserProvider` implements Symfony's attributes-based user-provider contract. It resolves the validated identifier exclusively through the configured `OIDC_PROVIDER` and Sylius `UserOAuth`, then returns the existing `ShopUser`. It never creates an account or updates identity data from OIDC claims. The existing Sylius Shop user checker remains responsible for rejecting disabled users.
+
 ## Activation status
 
-Uniflow currently runs Sylius 2.3.2, Symfony 8.1 and PHP 8.5. The identity mapping and explicit association command are ready. Browser OIDC authentication remains disabled until the project adopts a stable Symfony version providing the native `oidc_login` authenticator with verified Sylius compatibility.
+Uniflow currently runs Sylius 2.3.2, Symfony 8.1 and PHP 8.5. The identity mapping, explicit association command and provider-neutral Shop user provider are ready. Browser OIDC authentication remains disabled until the project adopts a stable Symfony version providing the native `oidc_login` authenticator with verified Sylius compatibility.
 
 No temporary OIDC bundle, provider URL or client secret is committed. Each installation supplies its discovery URL, client configuration and redirect URIs through deployment configuration.
 

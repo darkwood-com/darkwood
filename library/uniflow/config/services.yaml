@@ -47,6 +47,10 @@ services:
             $passwordHasher: '@security.user_password_hasher'
             $eventDispatcher: '@event_dispatcher'
 
+    App\Security\OidcShopUserProvider:
+        arguments:
+            $oidcProvider: '%env(OIDC_PROVIDER)%'
+
     #App\Service\AuthService:
     #    arguments:
     #        $em: '@doctrine.orm.entity_manager'
