@@ -4,6 +4,8 @@
     'lead' => null,
     'overline' => null,
     'label' => null,
+    'page' => null,
+    'pages' => null,
     'top' => true,
 ])
 
@@ -19,5 +21,5 @@
             @endif
         </div>
     </div>
-    <x-darkwood.footer :label="$label" />
+    <x-darkwood.footer :label="$label" :page="$page" :pages="$pages" />
 </x-darkwood.slide>

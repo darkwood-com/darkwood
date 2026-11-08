@@ -7,6 +7,20 @@ use WendellAdriel\SlideWire\Support\PresentationCompiler;
 
 class MemoryPresentationTest extends TestCase
 {
+    public function test_memory_pagination_uses_native_footer_without_changing_the_cover(): void
+    {
+        $compiler = app(PresentationCompiler::class);
+        $slides = $compiler->flattenSlides($compiler->compile('memory')['slides']);
+        foreach ($slides as $index => $slide) {
+            $dom = new \DOMDocument;
+            $dom->loadHTML('<?xml encoding="utf-8" ?>'.$slide->html, LIBXML_NOERROR | LIBXML_NOWARNING);
+            $label = (new \DOMXPath($dom))->query('//span[contains(@class,"sw-footer-label")]')->item(0)->textContent;
+            $this->assertSame($index === 0 ? '08-11-2026' : sprintf('%02d | 22 · Darkwood', $index + 1), trim($label));
+        }
+        $html = \Illuminate\Support\Facades\Blade::render('<x-darkwood.footer label="Existing / label" />');
+        $this->assertStringContainsString('Existing / label', $html);
+    }
+
     public function test_memory_deck_keeps_editorial_boundaries_and_real_game_assets(): void
     {
         $this->get('/slides/memory')->assertOk();
