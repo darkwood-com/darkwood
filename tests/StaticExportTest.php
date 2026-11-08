@@ -39,6 +39,21 @@ final class StaticExportTest extends KernelTestCase
                 self::assertStringNotContainsString('name="form[_token]"', $html);
                 self::assertStringNotContainsString('method="post"', strtolower($html));
                 self::assertStringNotContainsString('app_secret', strtolower($html));
+                foreach ($crawler->filter('[href], [src], [poster], [action]') as $element) {
+                    foreach (['href', 'src', 'poster', 'action'] as $attribute) {
+                        $url = $element->getAttribute($attribute);
+                        if (!str_starts_with($url, 'https://') && !str_starts_with($url, 'http://') && !str_starts_with($url, '//')) continue;
+                        $host = parse_url($url, PHP_URL_HOST);
+                        $officialRepository = in_array($url, [
+                            'https://github.com/matyo91/darkwood-memory',
+                            'https://github.com/darkwood-com/flow',
+                        ], true);
+                        self::assertTrue(
+                            str_starts_with($url, 'https://') && ($officialRepository || in_array($host, ['darkwaar.com', 'flow.darkwood.com'], true)),
+                            'Unexpected external destination in '.$file.': '.$url,
+                        );
+                    }
+                }
             }
             $flowHtml = file_get_contents(self::$kernel->getProjectDir().'/dist/demo/flow/index.html');
             self::assertStringContainsString('FlowFactory', $flowHtml);
@@ -47,7 +62,7 @@ final class StaticExportTest extends KernelTestCase
             $gameHtml = file_get_contents(self::$kernel->getProjectDir().'/dist/demo/darkwaar/index.html');
             $game = new Crawler($gameHtml);
             self::assertCount(1, $game->filter('iframe[title="Jouer à Aftertrace — Darkwaar"]'));
-            self::assertStringContainsString('https://darkwoodcom.itch.io/aftertrace', $gameHtml);
+            self::assertStringContainsString('https://darkwaar.com/games/aftertrace', $gameHtml);
             self::assertStringContainsString('src="'.$prefix.'/aftertrace/teaser.mp4"', $gameHtml);
             self::assertFileExists(self::$kernel->getProjectDir().'/dist/aftertrace/teaser.mp4');
         }

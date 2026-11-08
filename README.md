@@ -91,4 +91,6 @@ nix develop -c php examples/flow-memory.php
 
 Le thème sombre reprend les tokens Uniflow (`#091a28`, `#0e2233`, `#0f2b3d`, bleu `#0066cc`). Le header gris foncé est un mélange du fond et du secondaire Uniflow `#576068` ; les petits textes bleus utilisent une teinte dérivée plus claire pour leur contraste, tandis que pastilles, bordures et actions partagent le bleu principal. Les thèmes clair et sépia restent inchangés.
 
-Aftertrace est intégré par iframe vers une release immuable vérifiée sur Darkwaar ; les mises à jour du jeu demandent d’actualiser cette URL. Seuls une capture et le teaser sont copiés dans ce dépôt. Le jeu est aussi disponible sur [itch.io](https://darkwoodcom.itch.io/aftertrace).
+Aftertrace est intégré par iframe vers une release immuable vérifiée sur Darkwaar ; les mises à jour du jeu demandent d’actualiser cette URL. Seuls une capture et le teaser sont copiés dans ce dépôt. La page renvoie exclusivement vers [la page officielle du jeu sur Darkwaar](https://darkwaar.com/games/aftertrace).
+
+Les liens éditoriaux et médias de Memory privilégient les domaines officiels Darkwood. Les seules exceptions de navigation vers une plateforme tierce sont les dépôts sources officiels Memory et Flow sur GitHub. Les plateformes de distribution externes ne sont pas liées depuis cette vitrine.
