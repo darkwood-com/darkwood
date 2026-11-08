@@ -10,7 +10,6 @@ use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use FOS\RestBundle\FOSRestBundle;
 use FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle;
-use Knp\Bundle\GaufretteBundle\KnpGaufretteBundle;
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use League\FlysystemBundle\FlysystemBundle;
 use Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle;
@@ -96,7 +95,6 @@ return [
     SyliusCoreBundle::class => ['all' => true],
     SyliusResourceBundle::class => ['all' => true],
     SyliusGridBundle::class => ['all' => true],
-    KnpGaufretteBundle::class => ['all' => true],
     KnpMenuBundle::class => ['all' => true],
     LiipImagineBundle::class => ['all' => true],
     PayumBundle::class => ['all' => true],
