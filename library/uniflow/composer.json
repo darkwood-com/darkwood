@@ -25,7 +25,6 @@
     ],
     "require": {
         "php": "^8.5",
-        "doctrine/cache": "^2.2",
         "friendsofsymfony/rest-bundle": "^3.0",
         "league/commonmark": "^2.7",
         "sylius/mollie-plugin": "^3.5",
