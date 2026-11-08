@@ -5,3 +5,4 @@ parameters:
     oidc_login_themes:
         darkwaar: darkwaar
         heroclip: heroclip
+        uniflow: uniflow
