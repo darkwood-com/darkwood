@@ -15,6 +15,7 @@
         in {
           default = pkgs.mkShellNoCC {
             packages = [
+              php
               php.packages.composer
               pkgs.nodejs_22
             ];
