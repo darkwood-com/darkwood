@@ -45,7 +45,7 @@
   "scripts": {
     "vscode:prepublish": "npm run build",
     "build": "tsc -p ./",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint . --ext .ts,.tsx",
     "dev": "tsc -watch -p ./"
   },
   "devDependencies": {

@@ -2,11 +2,11 @@
 
 namespace App\Bridge;
 
-use NeuronAI\Agent;
+use NeuronAI\Agent\Agent;
+use NeuronAI\Agent\SystemPrompt;
 use NeuronAI\MCP\McpConnector;
 use NeuronAI\Providers\AIProviderInterface;
 use NeuronAI\Providers\OpenAI\OpenAI;
-use NeuronAI\SystemPrompt;
 
 class AgentBridge extends Agent {
     public function __construct(private string $apiKey) {
@@ -44,7 +44,7 @@ class AgentBridge extends Agent {
         );*/
 	}
 
-    public function getTools(): array
+    protected function tools(): array
     {
         return [
             ...McpConnector::make([

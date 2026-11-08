@@ -12,7 +12,7 @@ use function Castor\run;
 function psalm(): int
 {
     return run(
-        [__DIR__ . '/vendor/bin/psalm', ' --no-cache', '--config', __DIR__ . '/psalm.xml'],
+        [__DIR__ . '/vendor/bin/psalm', '--no-cache', '--config', __DIR__ . '/psalm.xml'],
         allowFailure: true,
     )->getExitCode();
 }

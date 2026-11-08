@@ -7,17 +7,18 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "inspector-apm/neuron-ai": "*",
-        "react/promise": "^3.2",
-        "symfony/console": "7.2.*",
-        "symfony/dotenv": "7.2.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "7.2.*",
+        "neuron-core/neuron-ai": "^4.1.22",
+        "react/promise": "^3.3",
+        "symfony/console": "7.4.*",
+        "symfony/dotenv": "7.4.*",
+        "symfony/flex": "^2.12",
+        "symfony/framework-bundle": "7.4.*",
         "symfony/runtime": "7.4.*",
-        "symfony/yaml": "7.2.*"
+        "symfony/validator": "7.4.*",
+        "symfony/yaml": "7.4.*"
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.63"
+        "symfony/maker-bundle": "^1.68"
     },
     "config": {
         "allow-plugins": {
@@ -66,7 +67,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.2.*"
+            "require": "7.4.*"
         }
     }
 }

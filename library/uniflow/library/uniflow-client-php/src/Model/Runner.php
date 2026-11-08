@@ -38,7 +38,7 @@ class Runner {
         //$message = new UserMessage("recherche l'entreprise LaPoste à Paris");
         /** @var Agent */
         $agent = $context['agent'];
-        echo $agent->chat($message)->getContent()."\n";
+        echo $agent->chat($message)->getMessage()?->getContent()."\n";
         die(); // @todo remove this line
 
         $promise = new \React\Promise\Promise(function($resolve) {
