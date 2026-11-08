@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $selected['title'] }} — Slidewire</title>
+    <title>{{ $selected['title'] }} — Slides</title>
     @vite(['resources/css/app.css', 'resources/js/catalogue.js'])
 </head>
 <body class="sw-library theme-light">
 <a class="library-skip" href="#presentation">Aller à la présentation</a>
 <header class="library-header">
-    <a class="library-brand" href="{{ route('home') }}" aria-label="Slidewire — accueil"><span class="library-logo"><img src="/darkwood/logos/dw512x512-uni-dark.png" width="32" height="32" alt="Darkwood"></span><span>Slidewire</span></a>
+    <a class="library-brand" href="{{ route('home') }}" aria-label="Slides — accueil"><span class="library-logo"><img src="/darkwood/logos/dw512x512-uni-dark.png" width="32" height="32" alt="Darkwood"></span><span>Slides</span></a>
     <span class="library-section-label">Présentations</span>
     <div class="library-actions">
         <button id="theme-switcher" type="button" aria-label="Changer de thème" title="Changer de thème"><span id="theme-icon" aria-hidden="true"></span></button>
@@ -29,7 +29,7 @@
     </aside>
     <main id="presentation" class="library-main" tabindex="-1">
         <div class="library-heading"><div><p>Bibliothèque Darkwood</p><h1 id="deck-title">{{ $selected['title'] }}</h1></div><a id="deck-direct" href="{{ route('slidewire.'.$selected['source_slug']) }}" target="_blank" rel="noopener">Ouvrir la présentation <span aria-hidden="true">↗</span></a></div>
-        <div class="library-player"><iframe id="deck-player" src="{{ route('slidewire.'.$selected['source_slug']) }}" title="{{ $selected['title'] }} — présentation Slidewire" allow="fullscreen" allowfullscreen></iframe></div>
+        <div class="library-player"><iframe id="deck-player" src="{{ route('slidewire.'.$selected['source_slug']) }}" title="{{ $selected['title'] }} — présentation Slides" allow="fullscreen" allowfullscreen></iframe></div>
         <p class="library-hint">Utilisez les commandes de la présentation ou cliquez dans le lecteur pour naviguer au clavier.</p>
         <p id="library-announcement" class="library-sr" aria-live="polite"></p>
     </main>

@@ -26,10 +26,10 @@ document.addEventListener('keydown', e => {
 function select(link, push = false) {
     for (const a of links) { a.toggleAttribute('aria-current', a === link); if (a === link) a.setAttribute('aria-current','page'); }
     frame.src = link.dataset.deckUrl;
-    frame.title = link.dataset.title + ' — présentation Slidewire';
+    frame.title = link.dataset.title + ' — présentation Slides';
     document.getElementById('deck-title').textContent = link.dataset.title;
     document.getElementById('deck-direct').href = link.dataset.deckUrl;
-    document.title = link.dataset.title + ' — Slidewire';
+    document.title = link.dataset.title + ' — Slides';
     document.getElementById('library-announcement').textContent = 'Présentation sélectionnée : ' + link.dataset.title;
     if (push) history.pushState(null, '', link.href);
     setMenu(false);
