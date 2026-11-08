@@ -1,6 +1,6 @@
 /* OIDC contextual login / TOTP themes (presentation only). */
 
-.login-shell.login-theme-darkwaar {
+.login-shell.login-theme-oidc {
 	--login-bg: #091a28;
 	--login-surface: #0e2233;
 	--login-border: #0f2b3d;
@@ -20,7 +20,7 @@
 	box-sizing: border-box;
 }
 
-.login-shell.login-theme-darkwaar .login-brand {
+.login-shell.login-theme-oidc .login-brand {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -29,38 +29,40 @@
 	text-align: center;
 }
 
-.login-shell.login-theme-darkwaar .login-brand img {
+.login-shell.login-theme-oidc .login-brand img {
 	width: 56px;
 	height: 56px;
 	display: block;
+	object-fit: cover;
+	border-radius: 0.35rem;
 }
 
-.login-shell.login-theme-darkwaar .login-brand h1 {
+.login-shell.login-theme-oidc .login-brand h1 {
 	margin: 0;
 	font-size: 1.5rem;
 	font-weight: 600;
 	color: var(--login-text);
 }
 
-.login-shell.login-theme-darkwaar .login-brand .login-subcopy {
+.login-shell.login-theme-oidc .login-brand .login-subcopy {
 	margin: 0;
 	color: var(--login-muted);
 	font-size: 0.95rem;
 }
 
-.login-shell.login-theme-darkwaar .login-footer {
+.login-shell.login-theme-oidc .login-footer {
 	margin: 1.5rem 0 0;
 	text-align: center;
 	font-size: 0.8rem;
 	color: var(--login-muted);
 }
 
-.login-shell.login-theme-darkwaar label {
+.login-shell.login-theme-oidc label {
 	color: var(--login-muted);
 }
 
-.login-shell.login-theme-darkwaar input[type="text"],
-.login-shell.login-theme-darkwaar input[type="password"] {
+.login-shell.login-theme-oidc input[type="text"],
+.login-shell.login-theme-oidc input[type="password"] {
 	width: 100%;
 	box-sizing: border-box;
 	margin: 0.35rem 0 0.85rem;
@@ -72,8 +74,8 @@
 	line-height: 1.25;
 }
 
-.login-shell.login-theme-darkwaar input[type="submit"],
-.login-shell.login-theme-darkwaar button[type="submit"] {
+.login-shell.login-theme-oidc input[type="submit"],
+.login-shell.login-theme-oidc button[type="submit"] {
 	display: inline-block;
 	width: 100%;
 	margin-top: 0.5rem;
@@ -86,13 +88,13 @@
 	cursor: pointer;
 }
 
-.login-shell.login-theme-darkwaar input[type="submit"]:hover,
-.login-shell.login-theme-darkwaar button[type="submit"]:hover {
+.login-shell.login-theme-oidc input[type="submit"]:hover,
+.login-shell.login-theme-oidc button[type="submit"]:hover {
 	background: var(--login-primary-hover);
 }
 
-.login-shell.login-theme-darkwaar .alert_error,
-.login-shell.login-theme-darkwaar .error {
+.login-shell.login-theme-oidc .alert_error,
+.login-shell.login-theme-oidc .error {
 	background: var(--login-error-bg);
 	color: var(--login-error-text);
 	border: 1px solid #5c2a26;
@@ -100,15 +102,15 @@
 	margin-bottom: 1rem;
 }
 
-.login-shell.login-theme-darkwaar .actions {
+.login-shell.login-theme-oidc .actions {
 	margin-top: 1rem;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5rem;
 }
 
-.login-shell.login-theme-darkwaar .actions .btn-outline-secondary,
-.login-shell.login-theme-darkwaar .actions a.btn {
+.login-shell.login-theme-oidc .actions .btn-outline-secondary,
+.login-shell.login-theme-oidc .actions a.btn {
 	display: inline-block;
 	padding: 0.65rem 1rem;
 	border: 1px solid var(--login-border);
@@ -117,24 +119,24 @@
 	background: transparent;
 }
 
-.login-shell.login-theme-darkwaar .login-links {
+.login-shell.login-theme-oidc .login-links {
 	margin-top: 1.25rem;
 	font-size: 0.9rem;
 	color: var(--login-muted);
 }
 
-.login-shell.login-theme-darkwaar .login-links a {
+.login-shell.login-theme-oidc .login-links a {
 	color: var(--login-primary);
 }
 
 /* Soften surrounding page chrome when Darkwaar OIDC login is active */
-.theme-darkwood:has(.login-theme-darkwaar) .theme-content-top,
-.theme-body:has(.login-theme-darkwaar) {
+.theme-darkwood:has(.login-theme-oidc) .theme-content-top,
+.theme-body:has(.login-theme-oidc) {
 	background: #091a28;
 }
 
 @media (max-width: 575.98px) {
-	.login-shell.login-theme-darkwaar {
+	.login-shell.login-theme-oidc {
 		margin: 1rem 0.75rem 2rem;
 		padding: 1.5rem 1.15rem;
 	}

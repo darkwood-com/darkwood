@@ -4,13 +4,9 @@
 
 {% block content %}
 
-{% if login_theme == 'darkwaar' %}
-<div class="login-shell login-theme-darkwaar">
-    <div class="login-brand">
-        <img src="{{ asset('/common/images/oidc/darkwaar-logo.svg') }}" width="56" height="56" alt="Darkwaar">
-        <h1>Sign in to Darkwaar</h1>
-        <p class="login-subcopy">Use your Darkwood account to continue.</p>
-    </div>
+{% if login_theme != 'default' %}
+<div class="login-shell login-theme-oidc login-theme-{{ login_theme }}">
+    {% include 'common/pages/oidc_login/' ~ login_theme ~ '_brand.html.twig' with {two_factor: false} only %}
 
     <form id="login_form" method="post" action="{{ path('security_login') }}" novalidate="novalidate">
         {% if error %}

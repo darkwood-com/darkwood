@@ -4,3 +4,4 @@ parameters:
     # Never derive themes from a ?theme= query parameter.
     oidc_login_themes:
         darkwaar: darkwaar
+        heroclip: heroclip

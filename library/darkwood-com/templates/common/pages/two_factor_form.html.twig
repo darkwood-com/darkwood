@@ -3,7 +3,7 @@
 {% set login_theme = login_theme|default('default') %}
 
 {% block content %}
-{% if login_theme != 'darkwaar' %}
+{% if login_theme == 'default' %}
 <style>
     .two-factor-shell { max-width: 32rem; margin: 2rem auto; background: #fff; border: 1px solid #ddd; padding: 2rem; }
     .two-factor-shell h1 { margin-top: 0; }
@@ -16,13 +16,9 @@
 </style>
 {% endif %}
 
-<div class="login-shell login-theme-{{ login_theme }}{% if login_theme != 'darkwaar' %} two-factor-shell{% endif %}">
-    {% if login_theme == 'darkwaar' %}
-        <div class="login-brand">
-            <img src="{{ asset('/common/images/oidc/darkwaar-logo.svg') }}" width="56" height="56" alt="Darkwaar">
-            <h1>Sign in to Darkwaar</h1>
-            <p class="login-subcopy">Enter the 6-digit code from your authenticator app.</p>
-        </div>
+<div class="login-shell login-theme-{{ login_theme }}{% if login_theme != 'default' %} login-theme-oidc{% else %} two-factor-shell{% endif %}">
+    {% if login_theme != 'default' %}
+        {% include 'common/pages/oidc_login/' ~ login_theme ~ '_brand.html.twig' with {two_factor: true} only %}
     {% else %}
         <h1>Two-factor authentication</h1>
         <p>Enter the 6-digit code from your authenticator app to complete sign-in.</p>
@@ -55,7 +51,7 @@
         </div>
     </form>
 
-    {% if login_theme == 'darkwaar' %}
+    {% if login_theme != 'default' %}
         <p class="login-footer">Authentication secured by Darkwood Identity.</p>
     {% endif %}
 </div>
