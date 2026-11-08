@@ -21,19 +21,13 @@ class RegisterType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Please enter your email.',
-                    ]),
-                    new Assert\Email([
-                        'message' => 'Please enter a valid email address.',
-                    ]),
+                    new Assert\NotBlank(message: 'Please enter your email.'),
+                    new Assert\Email(message: 'Please enter a valid email address.'),
                 ],
             ])
             ->add('password', PasswordType::class, [
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Please enter your password.',
-                    ]),
+                    new Assert\NotBlank(message: 'Please enter your password.'),
                 ],
             ])
         ;

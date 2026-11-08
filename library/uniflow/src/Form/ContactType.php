@@ -21,13 +21,13 @@ class ContactType extends AbstractType
     {
         $builder->add('email', EmailType::class, [
             'constraints' => [
-                new Assert\NotBlank(['message' => 'Email is required']),
-                new Assert\Email(['message' => 'Please enter a valid email address']),
+                new Assert\NotBlank(message: 'Email is required'),
+                new Assert\Email(message: 'Please enter a valid email address'),
             ],
         ]);
         $builder->add('message', TextareaType::class, [
             'constraints' => [
-                new Assert\NotBlank(['message' => 'Message is required']),
+                new Assert\NotBlank(message: 'Message is required'),
             ],
         ]);
     }

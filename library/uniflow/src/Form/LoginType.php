@@ -18,16 +18,12 @@ class LoginType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Please enter your email or username.',
-                    ]),
+                    new Assert\NotBlank(message: 'Please enter your email or username.'),
                 ],
             ])
             ->add('password', PasswordType::class, [
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Please enter your password.',
-                    ]),
+                    new Assert\NotBlank(message: 'Please enter your password.'),
                 ],
             ])
         ;
