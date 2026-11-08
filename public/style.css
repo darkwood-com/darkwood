@@ -1,13 +1,13 @@
 @font-face { font-family:Jost; font-weight:400; font-style:normal; font-display:swap; src:url('fonts/Jost-400-Book.otf') format('opentype'); }
-@font-face { font-family:Jost; font-weight:600 900; font-style:normal; font-display:swap; src:url('fonts/Jost-600-Semi.otf') format('opentype'); }
 /* Theme names, palette tokens and sidebar breakpoints follow Darkwaar. */
 :root { --display: Jost,system-ui,-apple-system,'Segoe UI',sans-serif; --mono: ui-monospace,SFMono-Regular,Consolas,monospace; }
-body.theme-light { --text-color:#000000; --bg-color:#ffffff; --input-color:#ffffff; --border-color:#eff2f7; --primary-color:#0066cc; --primary-hover-color:#004080; --muted:#576068; --accent:#0066cc; --soft:#eff2f7; --nav-color:#ffffff; color-scheme:light; }
-body.theme-sepia { --text-color:#433422; --bg-color:#f1e7d0; --input-color:#eadec2; --border-color:#ded0bf; --primary-color:#0066cc; --primary-hover-color:#004080; --muted:#695236; --accent:#0066cc; --soft:#eadec2; --nav-color:#f1e7d0; color-scheme:light; }
-body.theme-dark { --text-color:#ebf4f1; --bg-color:#091a28; --input-color:#0e2233; --border-color:#0f2b3d; --primary-color:#0066cc; --primary-hover-color:#004080; --muted:#adb5bd; --accent:#8ed6fb; --soft:#0e2233; --nav-color:#080808; color-scheme:dark; }
+body.theme-light { --secondary-color:#6c757d; --text-color:#000000; --bg-color:#ffffff; --input-color:#ffffff; --border-color:#eff2f7; --primary-color:#0066cc; --primary-hover-color:#004080; --muted:#576068; --accent:#0066cc; --soft:#eff2f7; --nav-color:#ffffff; color-scheme:light; }
+body.theme-sepia { --secondary-color:#876944; --text-color:#433422; --bg-color:#f1e7d0; --input-color:#eadec2; --border-color:#ded0bf; --primary-color:#0066cc; --primary-hover-color:#004080; --muted:#695236; --accent:#0066cc; --soft:#eadec2; --nav-color:#f1e7d0; color-scheme:light; }
+body.theme-dark { --secondary-color:#bdbdbd; --text-color:#ebf4f1; --bg-color:#091a28; --input-color:#0e2233; --border-color:#0f2b3d; --primary-color:#0066cc; --primary-hover-color:#004080; --muted:#adb5bd; --accent:#8ed6fb; --soft:#0e2233; --nav-color:#080808; color-scheme:dark; }
 body { --paper:var(--bg-color); --white:var(--input-color); --ink:var(--text-color); --line:var(--border-color); }
 * {
   box-sizing:border-box;
+  font-weight:400;
 }
 body {
   margin:0;
@@ -42,7 +42,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
 }
 .brand {
   text-decoration:none;
-  font-weight:800;
+  font-weight:400;
   letter-spacing:.08em;
 }
 .brand-dot {
@@ -64,16 +64,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
 }
 .eyebrow {
   color:var(--accent);
-  font-weight:600;
+  font-weight:400;
 }
 .hero h1 {
-  font:500 clamp(38px,6vw,80px)/1.08 system-ui,sans-serif;
+  font:400 clamp(38px,6vw,80px)/1.08 system-ui,sans-serif;
   letter-spacing:-.055em;
   margin:26px 0 20px;
 }
 .serif-line {
   display:block;
-  font:600 clamp(52px,8vw,112px)/1.02 var(--display);
+  font:400 clamp(52px,8vw,112px)/1.02 var(--display);
   letter-spacing:-.045em;
   margin-top:18px;
 }
@@ -88,7 +88,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
   font-size:18px;
 }
 .big-six {
-  font:600 112px/1 var(--display);
+  font:400 112px/1 var(--display);
   color:var(--accent);
 }
 .experiences {
@@ -102,7 +102,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
   margin-bottom:25px;
 }
 .section-heading h2 {
-  font:600 28px/1.3 var(--display);
+  font:400 28px/1.3 var(--display);
   margin:0;
 }
 .section-heading>span {
@@ -143,7 +143,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
   color:var(--accent);
 }
 .demo-card h3 {
-  font:600 27px/1.15 var(--display);
+  font:400 27px/1.15 var(--display);
   margin:10px 0;
 }
 .demo-card p {
@@ -195,7 +195,7 @@ footer {
   padding:45px 0 32px;
 }
 .demo-heading h1 {
-  font:600 clamp(36px,5vw,64px)/1.12 var(--display);
+  font:400 clamp(36px,5vw,64px)/1.12 var(--display);
   letter-spacing:-.035em;
   margin:12px 0;
 }
@@ -209,10 +209,10 @@ footer {
   padding:32px;
 }
 h2 {
-  font:600 28px/1.25 var(--display);
+  font:400 28px/1.25 var(--display);
 }
 h3 {
-  font:600 22px/1.3 var(--display);
+  font:400 22px/1.3 var(--display);
 }
 .hint {
   font-size:13px;
@@ -607,7 +607,7 @@ input[type=range] {
 :root { --header-height:61px; --indicator-size:8px; --indicator-gap:12px; }
 body { font-family:var(--display); font-size:1.125rem; line-height:1.5; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 .navbar-top { height:var(--header-height); position:sticky; top:0; z-index:30; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:0 16px; background:var(--nav-color); border-bottom:1px solid var(--line); }
-.header-brand { display:inline-flex; align-items:center; gap:12px; min-width:0; text-decoration:none; font-weight:600; font-size:18px; }
+.header-brand { display:inline-flex; align-items:center; gap:12px; min-width:0; text-decoration:none; font-weight:400; font-size:18px; }
 .logo-surface { display:block; background:#ffffff; border-radius:6px; padding:2px; flex:none; }
 .logo-surface img { display:block; width:36px; height:36px; object-fit:contain; }
 .top-actions { display:flex; align-items:center; gap:4px; }
@@ -620,15 +620,15 @@ body { font-family:var(--display); font-size:1.125rem; line-height:1.5; -webkit-
 .sidebar-nav a { position:relative; display:flex; flex-direction:column; justify-content:center; min-height:48px; padding:8px 8px 8px calc(var(--indicator-size) + var(--indicator-gap)); margin:4px 0; text-decoration:none; font-size:18px; border-radius:6px; }
 .sidebar-nav a small { font-size:14px; color:var(--muted); }
 .sidebar-nav a:hover { background:var(--soft); color:var(--accent); }
-.sidebar-nav a[aria-current] { color:var(--accent); font-weight:600; }
+.sidebar-nav a[aria-current] { color:var(--accent); font-weight:400; }
 .sidebar-nav a::before,.mode-note::before,.scope::before,.knowledge::before { content:''; position:absolute; width:var(--indicator-size); height:var(--indicator-size); border-radius:50%; background:var(--accent); }
 .sidebar-nav a::before { left:0; top:calc(8px + .75em - var(--indicator-size)/2); opacity:0; }
 .sidebar-nav a[aria-current]::before,.sidebar-nav a:hover::before { opacity:1; }
-.nav-caption { font-size:16px; font-weight:600; color:var(--ink); margin:24px 0 12px; }
+.nav-caption { font-size:16px; font-weight:400; color:var(--ink); margin:24px 0 12px; }
 .mode-note,.scope,.knowledge { position:relative; border-left:0; padding-left:calc(var(--indicator-size) + var(--indicator-gap)); }
 .mode-note::before,.scope::before,.knowledge::before { left:0; top:calc(.75em - var(--indicator-size)/2); }
-.mode-note { padding-top:12px; padding-bottom:12px; padding-right:16px; background:var(--soft); font-size:14px; }
-.mode-note::before { top:calc(12px + .75em - var(--indicator-size)/2); }
+.mode-note { padding-left:calc(16px + var(--indicator-size) + var(--indicator-gap)); padding-top:12px; padding-bottom:12px; padding-right:16px; background:var(--soft); font-size:14px; }
+.mode-note::before { left:16px; top:calc(12px + .75em - var(--indicator-size)/2); }
 .scope { padding-top:0; padding-bottom:0; font-size:14px; }
 .knowledge { padding-top:0; }
 .knowledge > h2 { margin-top:0; }
@@ -636,8 +636,8 @@ body { font-family:var(--display); font-size:1.125rem; line-height:1.5; -webkit-
 .page-column { min-width:0; flex:1; }
 main,footer { max-width:1280px; margin:0 auto; padding-left:24px; padding-right:24px; }
 .hero { padding-top:32px; }
-.hero h1,.demo-heading h1 { font:600 clamp(32px,4vw,45px)/1.2 var(--display); letter-spacing:normal; }
-.serif-line { font:600 clamp(36px,4vw,54px)/1.15 var(--display); letter-spacing:normal; }
+.hero h1,.demo-heading h1 { font:400 clamp(32px,4vw,45px)/1.2 var(--display); letter-spacing:normal; }
+.serif-line { font:400 clamp(36px,4vw,54px)/1.15 var(--display); letter-spacing:normal; }
 .big-six { font-size:80px; }
 h2,.section-heading h2 { font-size:32px; line-height:1.2; }
 h3 { font-size:26px; line-height:1.2; }
@@ -648,7 +648,7 @@ h3 { font-size:26px; line-height:1.2; }
 .demo-card { background:var(--white); }
 .demo-card:hover { background:var(--soft); }
 button,input:not([type=checkbox]):not([type=range]),select { border-radius:6px; }
-button { min-height:44px; font-weight:600; background:var(--primary-color); border-color:var(--primary-color); color:#ffffff; }
+button { min-height:44px; font-weight:400; background:var(--primary-color); border-color:var(--primary-color); color:#ffffff; }
 button:hover { filter:none; background:var(--primary-hover-color); }
 button:disabled { opacity:.55; }
 button[hidden] { display:none; }
@@ -685,7 +685,7 @@ footer { padding-top:24px; padding-bottom:24px; }
   .sidebar { position:fixed; z-index:25; inset:var(--header-height) 0 0; width:100%; height:calc(100dvh - var(--header-height)); border:0; padding:16px; visibility:hidden; transform:translateX(-100%); transition:transform .18s,visibility .18s; -webkit-overflow-scrolling:touch; }
   .menu-open { overflow:hidden; }
   .menu-open .sidebar { transform:translateX(0); visibility:visible; }
-  .mobile-menu-heading { width:100%; justify-content:space-between; font-weight:600; margin-bottom:12px; }
+  .mobile-menu-heading { width:100%; justify-content:space-between; font-weight:400; margin-bottom:12px; }
   .sidebar-nav a { min-height:56px; }
   main,footer { padding-left:16px; padding-right:16px; margin-left:0; margin-right:0; }
   .hero { padding:28px 0; }
@@ -700,3 +700,11 @@ footer { padding-top:24px; padding-bottom:24px; }
 }
 @media(max-width:359px) { .header-brand span:last-child { display:none; } }
 @media(prefers-reduced-motion:reduce) { * { transition:none!important; } }
+
+/* Uniflow secondary header tones; its dark light token keeps normal text legible. */
+.navbar-top { color:var(--secondary-color); }
+.navbar-top .icon-control { color:inherit; }
+.header-brand:hover,.header-brand:focus-visible,.navbar-top .icon-control:hover,.navbar-top .icon-control:focus-visible { color:var(--accent); }
+
+/* Uniflow sepia secondary, shaded with its text token for normal-size contrast. */
+.theme-sepia .navbar-top { color:color-mix(in srgb,var(--secondary-color) 80%,var(--text-color)); }
