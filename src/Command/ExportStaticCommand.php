@@ -16,7 +16,7 @@ use Twig\Environment;
 #[AsCommand(name: 'app:export-static', description: 'Export the seven public pages and a whitelist of static assets.')]
 final class ExportStaticCommand extends Command
 {
-    public function __construct(private readonly Environment $twig, #[Autowire('%kernel.project_dir%')] private readonly string $projectDir)
+    public function __construct(private readonly Environment $twig, private readonly MemoryExamples $examples, #[Autowire('%kernel.project_dir%')] private readonly string $projectDir)
     {
         parent::__construct();
     }
@@ -37,7 +37,7 @@ final class ExportStaticCommand extends Command
         if (is_link($directory)) {
             throw new \RuntimeException('dist/ must not be a symlink.');
         }
-        $assets = ['style.css', 'app.js', 'themes.js', 'static.js', 'memory-model.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt'];
+        $assets = ['style.css', 'app.js', 'themes.js', 'static.js', 'memory-model.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'aftertrace/teaser.mp4', 'aftertrace/remembered-route.png'];
         $allowed = array_merge(['index.html', '.nojekyll'], $assets);
         foreach (array_keys(MemoryExamples::DEMOS) as $slug) {
             $allowed[] = 'demo/'.$slug.'/index.html';
@@ -50,6 +50,7 @@ final class ExportStaticCommand extends Command
             }
         }
         $context = [
+            'flow_library' => $this->examples->flowLibrary(),
             'static_mode' => true, 'base_path' => $prefix, 'demos' => MemoryExamples::DEMOS,
             'decisions' => json_decode(file_get_contents($this->projectDir.'/data/decisions.json'), true, flags: JSON_THROW_ON_ERROR),
             'workflow' => json_decode(file_get_contents($this->projectDir.'/data/workflow.json'), true, flags: JSON_THROW_ON_ERROR),

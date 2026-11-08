@@ -8,7 +8,7 @@ Six démonstrations autonomes, un atelier interactif et trois ambiances visuelle
 
 ## Lancer le projet Symfony
 
-Prérequis : Nix avec `nix-command` et `flakes`. Le flake épinglé fournit PHP, Composer et Node pour les tests et la prévisualisation, sans Docker ni installation système supplémentaire.
+Prérequis : Nix avec `nix-command` et `flakes`. Le flake épinglé fournit PHP 8.5, Composer et Node pour les tests et la prévisualisation, sans Docker ni installation système supplémentaire.
 
 ```sh
 git clone git@github.com:matyo91/darkwood-memory.git
@@ -42,9 +42,9 @@ Le domaine personnalisé utilise l’export sans préfixe. Chaque démonstration
 ## Les six expériences
 
 - **Darkwood** : retrouver MEM-001 ou MEM-002, une décision fictive datée, sa provenance et ses révisions. Les mêmes données JSON versionnées alimentent les deux versions.
-- **Flow** : distinguer variable temporaire, calcul mémoïsé et résultat conservé. Symfony exécute du PHP et utilise une session fichier. Le site statique exécute du JavaScript et utilise localStorage : il ne crée aucune session PHP. L’approche reste « primitive d’abord », sans bibliothèque Flow.
+- **Flow** : distinguer variable temporaire, calcul mémoïsé et résultat conservé. Symfony exécute du PHP et utilise une session fichier. Le site statique exécute du JavaScript et utilise localStorage : il ne crée aucune session PHP. Un second exemple exécute réellement `darkwood/flow` v8.1.6 : trois transformations partagent un total calculé une seule fois. Son code et son résultat PHP sont affichés dans les deux versions ; GitHub Pages reçoit ce résultat pendant le build. Flow ne fournit ici aucune mémoire persistante.
 - **Uniflow** : distinguer définition et exécutions. La pause conserve un identifiant et un curseur ; la reprise termine la même exécution sans rejouer les étapes. Douze exécutions maximum, sans moteur distant ni effets externes.
-- **Darkwaar** : lire une inscription, revenir au début et avancer grâce au carnet conservé. « Tout oublier » efface monde et carnet. Le mécanisme est local, sans liaison au jeu de production.
+- **Darkwaar** : lire une inscription, revenir au début et avancer grâce au carnet conservé. « Tout oublier » efface monde et carnet. Le mécanisme du carnet reste local. Aftertrace enrichit cette section avec un jeu original publié sur Darkwaar et itch.io, un teaser de gameplay réel et une iframe vers une release Web vérifiée. Sa carte survit aux retours dans une même partie, sans sauvegarde après rechargement.
 - **DJMatyo** : composer huit pas, écouter une synthèse originale, créer une variation, conserver le motif et exporter ses notes et son tempo en JSON. Aucun morceau ni sample tiers.
 - **Heroclip** : assembler six plans avec ou sans rappel du personnage, de la palette et de l’accessoire. Les illustrations et règles sont déterministes ; aucune vidéo ni génération IA n’est produite.
 
@@ -80,3 +80,15 @@ Le domaine se configure dans les paramètres GitHub Pages. Son CNAME pointe vers
 Le code et les séquences musicales originales sont sous licence MIT. Les polices Jost reprises des assets Darkwaar sont distribuées sous SIL Open Font License, conservée dans `public/fonts/OFL.txt` (source : dépôt officiel Google Fonts, `ofl/jost/OFL.txt`).
 
 Le logo officiel noir est repris sans modification de l’asset Darkwood `public/hello/logo-uni-light.png`. Les identités et logos Darkwood conservent leurs droits respectifs ; la licence du code n’accorde aucun droit supplémentaire sur les marques. Aucun asset n’est chargé depuis une URL temporaire.
+
+## Exécuter Flow en PHP
+
+```sh
+nix develop -c php examples/flow-memory.php
+```
+
+`FlowFactory`, `Ip` et `await()` transmettent un état entre trois closures. Entrée `[4,7,9]`, total `20`, moyenne `20/3`, reste `80`, un seul calcul du total. Chaque invocation recrée son état. PHP 8.5 minimum est requis par le package.
+
+Le thème sombre reprend les tokens Uniflow (`#091a28`, `#0e2233`, `#0f2b3d`, bleu `#0066cc`). Le header gris foncé est un mélange du fond et du secondaire Uniflow `#576068` ; les petits textes bleus utilisent une teinte dérivée plus claire pour leur contraste, tandis que pastilles, bordures et actions partagent le bleu principal. Les thèmes clair et sépia restent inchangés.
+
+Aftertrace est intégré par iframe vers une release immuable vérifiée sur Darkwaar ; les mises à jour du jeu demandent d’actualiser cette URL. Seuls une capture et le teaser sont copiés dans ce dépôt. Le jeu est aussi disponible sur [itch.io](https://darkwoodcom.itch.io/aftertrace).

@@ -40,6 +40,16 @@ final class StaticExportTest extends KernelTestCase
                 self::assertStringNotContainsString('method="post"', strtolower($html));
                 self::assertStringNotContainsString('app_secret', strtolower($html));
             }
+            $flowHtml = file_get_contents(self::$kernel->getProjectDir().'/dist/demo/flow/index.html');
+            self::assertStringContainsString('FlowFactory', $flowHtml);
+            self::assertStringContainsString(\Composer\InstalledVersions::getPrettyVersion('darkwood/flow'), $flowHtml);
+            self::assertStringContainsString('20', $flowHtml);
+            $gameHtml = file_get_contents(self::$kernel->getProjectDir().'/dist/demo/darkwaar/index.html');
+            $game = new Crawler($gameHtml);
+            self::assertCount(1, $game->filter('iframe[title="Jouer à Aftertrace — Darkwaar"]'));
+            self::assertStringContainsString('https://darkwoodcom.itch.io/aftertrace', $gameHtml);
+            self::assertStringContainsString('src="'.$prefix.'/aftertrace/teaser.mp4"', $gameHtml);
+            self::assertFileExists(self::$kernel->getProjectDir().'/dist/aftertrace/teaser.mp4');
         }
         self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/index.php');
         self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/.env');

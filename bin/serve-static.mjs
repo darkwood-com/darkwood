@@ -6,7 +6,7 @@ const root = await realpath(new URL('../dist', import.meta.url));
 const prefix = (process.argv[2] || '').replace(/\/$/, '');
 if (prefix && !/^\/[\w-]+(?:\/[\w-]+)*$/.test(prefix)) throw new Error('Invalid URL prefix');
 const port = Number(process.argv[3] || 8098);
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.otf': 'font/otf', '.txt': 'text/plain' };
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.mp4': 'video/mp4', '.otf': 'font/otf', '.txt': 'text/plain' };
 createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://127.0.0.1');

@@ -58,6 +58,7 @@ final class DemoController extends AbstractController
             'form' => $form, 'decisionId' => $id, 'decision' => 'darkwood' === $slug ? $examples->decision($id) : null,
             'calculation' => 'flow' === $slug ? $examples->calculation(max(1, min(100000, (int) ($form->get('n')->getData() ?? 1000)))) : null,
             'stored' => $request->getSession()->get('flow_result'),
+            'flow_library' => 'flow' === $slug ? $examples->flowLibrary() : null,
             'workflow' => 'uniflow' === $slug ? $examples->workflow() : null,
             'runs' => $request->getSession()->get('runs', []),
             'game' => $request->getSession()->get('game', ['knowledge' => false, 'phase' => 'room', 'loops' => 0]),

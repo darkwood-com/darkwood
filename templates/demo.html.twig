@@ -30,5 +30,7 @@
 {% endif %}
 {% endif %}
 </section>
+{% if slug == 'flow' %}{% include 'flow-library.html.twig' %}{% endif %}
+{% if slug == 'darkwaar' %}{% include 'aftertrace.html.twig' %}{% endif %}
 <aside class="scope">Expérimentation créée pour l’article « Mémoire : ce qui rend la suite possible ». Les données sont fictives. Aucune connexion aux applications de production.</aside>
 {% endblock %}

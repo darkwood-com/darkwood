@@ -20,6 +20,12 @@ final readonly class MemoryExamples
 
     public function __construct(#[Autowire('%kernel.project_dir%')] private string $projectDir) {}
 
+    public function flowLibrary(): array
+    {
+        $file = $this->projectDir.'/examples/flow-memory.php';
+        return ['result' => require $file, 'source' => file_get_contents($file)];
+    }
+
     public function decision(string $id): ?array
     {
         $decisions = json_decode(file_get_contents($this->projectDir.'/data/decisions.json'), true, flags: JSON_THROW_ON_ERROR);
