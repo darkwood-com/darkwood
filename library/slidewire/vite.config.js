@@ -7,7 +7,7 @@ export default defineConfig({
     plugins: [
         { name: 'slidewire-design-tokens', buildStart() { designTokens.buildDesignTokens(); } },
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/catalogue.js'],
             refresh: true,
         }),
         tailwindcss(),

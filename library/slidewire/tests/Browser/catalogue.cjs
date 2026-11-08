@@ -5,15 +5,28 @@ const registry=JSON.parse(fs.readFileSync('resources/presentations.json')),refer
 (async()=>{fs.mkdirSync(path.join(out,'endings'),{recursive:true});const browser=await chromium.launch({executablePath:process.env.CHROME||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',args:['--force-device-scale-factor=2']});const errors=[],report={presentations:[],navigation:[],homepage:[]};
 try{const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:2});page.on('pageerror',e=>errors.push(e.message));
 for(const viewport of [{width:1440,height:900},{width:390,height:844}]){
- await page.setViewportSize(viewport);const response=await page.goto(base);assert.equal(response.status(),200);await page.evaluate(()=>document.fonts.ready);
- const links=await page.locator('li[data-presentation-id] a').evaluateAll(nodes=>nodes.map(n=>({id:n.parentElement.dataset.presentationId,url:new URL(n.href).pathname,title:n.textContent.trim(),arrow:getComputedStyle(n.querySelector('.sw-direction path')).stroke,border:getComputedStyle(n.parentElement).borderTopWidth})));
+ await page.setViewportSize(viewport);const response=await page.goto(base+'/?presentation=memory');assert.equal(response.status(),200);await page.evaluate(()=>document.fonts.ready);
+ const links=await page.locator('li[data-presentation-id] a').evaluateAll(nodes=>nodes.map(n=>({id:n.parentElement.dataset.presentationId,url:new URL(n.href).searchParams.get('presentation'),title:n.querySelector('span').textContent.trim()})));
  assert.equal(links.length,registry.length);assert.equal(new Set(links.map(l=>l.id)).size,registry.length);
- for(const row of registry){const link=links.find(l=>l.id===row.id);assert.equal(link.url,'/slides/'+row.source_slug);assert.equal(link.title,row.title);assert.equal(link.arrow,'rgb(0, 123, 255)');assert.equal(link.border,'2.5px');}
- assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.deepEqual((await page.locator('body').evaluate(auditDarkwoodPalette)).violations,[]);
- const link=page.locator('li a').first();await link.hover();assert.equal(await link.locator('path').evaluate(n=>getComputedStyle(n).stroke),'rgb(0, 123, 255)');await link.focus();assert.equal(await link.evaluate(n=>getComputedStyle(n).outlineWidth),'2.5px');
- await link.evaluate(node=>node.blur());await page.mouse.move(0,0);
- await page.screenshot({path:path.join(out,viewport.width===1440?'homepage-desktop.png':'homepage-mobile.png'),scale:'css'});if(viewport.width===1440)await page.screenshot({path:path.join(out,'homepage-full.png'),fullPage:true,scale:'css'});
- report.homepage.push({viewport,links:links.length});
+ for(const row of registry){const link=links.find(l=>l.id===row.id);assert.equal(link.url,row.source_slug);assert.equal(link.title,row.title);}
+ assert.equal(await page.locator('#deck-player').count(),1);
+ assert.match(await page.locator('#deck-player').getAttribute('src'),/\/slides\/memory$/);
+ const rect=await page.locator('#deck-player').boundingBox();assert.ok(Math.abs(rect.width/rect.height-16/9)<.01);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ const deck=page.frameLocator('#deck-player');await deck.locator('.slidewire-frame.is-active').waitFor();
+ assert.equal(await deck.locator('.slidewire-frame').count(),22);
+ await deck.locator('[aria-label="Next slide"]').click();await deck.locator('.slidewire-frame').nth(1).waitFor({state:'visible'});
+ await page.locator('#deck-player').focus();await page.keyboard.press('ArrowRight');
+ await page.waitForFunction(()=>document.querySelector('#deck-player').contentDocument.querySelectorAll('.slidewire-frame')[2].classList.contains('is-active'));
+ for(const theme of ['theme-dark','theme-sepia','theme-light']){await page.locator('#theme-switcher').click();assert.ok(await page.locator('body').evaluate((n,c)=>n.classList.contains(c),theme));if(viewport.width===1440){await page.waitForTimeout(500);await page.screenshot({path:path.join(out,'homepage-'+theme+'.png'),scale:'css'});}}
+ if(viewport.width<576){await page.locator('#library-menu').click();assert.equal(await page.locator('#library-menu').getAttribute('aria-expanded'),'true');const menu=await page.locator('#library-sidebar').boundingBox();assert.equal(menu.width,viewport.width);await page.keyboard.press('Escape');assert.equal(await page.locator('#library-menu').getAttribute('aria-expanded'),'false');await page.locator('#library-menu').click();}
+ const first=page.locator('li[data-presentation-id] a').first();await first.click();assert.ok(new URL(page.url()).searchParams.has('presentation'));assert.equal(await page.locator('#library-menu').getAttribute('aria-expanded'),'false');
+ await page.reload();assert.equal(await page.locator('a[aria-current="page"]').getAttribute('data-title'),registry[0].title);
+ await page.goBack();await page.waitForFunction(()=>document.querySelector('#deck-player').src.endsWith('/slides/memory'));
+ if(viewport.width<576){await page.locator('#library-menu').click();await page.screenshot({path:path.join(out,'homepage-mobile-menu.png'),scale:'css'});await page.setViewportSize({width:1000,height:800});assert.equal(await page.locator('#library-menu').getAttribute('aria-expanded'),'false');await page.setViewportSize(viewport);}
+ await page.frameLocator('#deck-player').locator('.slidewire-frame.is-active').waitFor();await page.waitForTimeout(1200);
+ await page.screenshot({path:path.join(out,viewport.width===1440?'homepage-desktop.png':'homepage-mobile.png'),scale:'css'});
+ report.homepage.push({viewport,links:links.length,iframe:'16:9',themes:3,history:true});
 }
 await page.setViewportSize({width:1440,height:900});
 for(const row of registry){const ref=reference[row.source_slug],last=ref.count,fragment=ref.slides[last-1].fragments-1;
@@ -40,5 +53,5 @@ for(const row of report.presentations.filter(r=>r.replaced)){
  await page.goto(`${base}${'/slides/'+row.source_slug}#/slide/${row.count}`);await page.waitForFunction(n=>document.querySelectorAll('.slidewire-frame')[n-1]?.classList.contains('is-active'),row.count);await page.evaluate(()=>document.fonts.ready);await page.locator('.slidewire-frame.is-active').evaluate(async f=>Promise.all([...f.querySelectorAll('img')].map(i=>i.decode())));await page.waitForTimeout(500);await page.addStyleTag({content:'.slidewire-controls,.mermaidTooltip{display:none!important}'});
  await page.pdf({path:path.join(out,'ending-'+row.source_slug+'.pdf'),width:'1440px',height:'810px',printBackground:true,margin:{top:0,right:0,bottom:0,left:0}});
 }
-assert.deepEqual(errors,[]);report.errors=errors;fs.writeFileSync(path.join(out,'validation.json'),JSON.stringify(report,null,2));console.log('Catalogue desktop/mobile, 28 endings, two portraits, navigation states and two PDF excerpts passed');
+assert.deepEqual(errors,[]);report.errors=errors;fs.writeFileSync(path.join(out,'validation.json'),JSON.stringify(report,null,2));console.log('Catalogue desktop/mobile, 29 endings, two portraits, navigation states and two PDF excerpts passed');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

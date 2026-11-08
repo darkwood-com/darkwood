@@ -20,16 +20,27 @@ class CatalogueTest extends TestCase
         $this->assertCount(count($registry), $links);
         $actual = [];
         foreach ($links as $link) {
-            $actual[$link->parentNode->getAttribute('data-presentation-id')] = ['url' => $link->getAttribute('href'), 'title' => trim($link->textContent)];
+            $actual[$link->parentNode->getAttribute('data-presentation-id')] = ['url' => $link->getAttribute('href'), 'title' => trim($link->getElementsByTagName('span')->item(0)->textContent)];
         }
         $this->assertCount(count($registry), $actual);
         foreach ($registry as $row) {
-            $url = route('slidewire.'.$row['source_slug']);
-            $this->assertSame(url('/slides/'.$row['source_slug']), $url);
+            $url = route('home', ['presentation' => $row['source_slug']]);
+            $this->assertSame(url('/slides/'.$row['source_slug']), route('slidewire.'.$row['source_slug']));
             $this->assertSame(['url' => $url, 'title' => $row['title']], $actual[$row['id']]);
             $this->get('/slides/'.$row['source_slug'].'?catalogue=1')->assertOk();
         }
         $this->assertCount(0, $xp->query('//*[contains(@class,"slidewire-frame")]'));
+    }
+
+    public function test_library_selection_is_validated_and_embeds_only_a_known_deck(): void
+    {
+        $this->get('/?presentation=memory')->assertOk()
+            ->assertSee('id="deck-player"', false)
+            ->assertSee('src="'.route('slidewire.memory').'"', false)
+            ->assertSee('aria-current="page"', false);
+        $this->get('/?presentation=unknown')->assertNotFound();
+        $this->get('/?presentation[]=memory')->assertNotFound();
+        $this->get('/?presentation=https://example.com')->assertNotFound();
     }
 
     public function test_portrait_keeps_dimensions_without_private_metadata_and_unknown_authors_keep_a_fallback(): void
