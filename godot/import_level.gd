@@ -21,7 +21,7 @@ func _load_level_json(path: String) -> Dictionary:
     if file == null:
         return {}
 
-    var parsed := JSON.parse_string(file.get_as_text())
+    var parsed: Variant = JSON.parse_string(file.get_as_text())
     if parsed == null:
         return {}
 
@@ -40,7 +40,7 @@ func _paint_terrain(terrain: Array) -> void:
         push_warning("Terrain TileMapLayer has no TileSet configured.")
         return
 
-    var source_ids := tile_set.get_source_ids()
+    var source_ids: Array[int] = tile_set.get_source_ids()
     if source_ids.is_empty():
         push_warning("Terrain TileSet has no sources configured.")
         return
