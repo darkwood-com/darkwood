@@ -1,0 +1,13 @@
+{
+  "enabled": false,
+  "source": "darkwood-com/darkwood",
+  "publications": {
+    "darkwood-php": { "prefix": "library/darkwood-php", "remote": "git@github.com:darkwood-com/darkwood-php.git", "branch": "8.1" },
+    "flow": { "prefix": "library/darkwood-php/src/Darkwood/Component/Flow", "remote": "git@github.com:darkwood-com/flow.git", "branch": "8.1" },
+    "navi": { "prefix": "library/darkwood-php/src/Darkwood/Component/Navi", "remote": "git@github.com:darkwood-com/navi.git", "branch": "8.1" },
+    "ia-exception-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle", "remote": "git@github.com:darkwood-com/ia-exception-bundle.git", "branch": "8.1" },
+    "media-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/MediaBundle", "remote": "git@github.com:darkwood-com/media-bundle.git", "branch": "8.1" },
+    "darkwood-publish-article-mcp-apps": { "prefix": "library/darkwood-publish-article-mcp-apps", "remote": "git@github.com:darkwood-com/darkwood-publish-article-mcp-apps.git", "branch": "main" },
+    "lgs": { "prefix": "library/lgs", "remote": "git@github.com:darkwood-com/lgs.git", "branch": "master" }
+  }
+}

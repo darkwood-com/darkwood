@@ -1,0 +1,25 @@
+{
+  "$schema": "./tags.schema.json",
+  "schemaVersion": 1,
+  "repository": "https://github.com/darkwood-com/darkwood",
+  "projects": [
+    {
+      "id": "darkwood-php",
+      "path": "library/darkwood-php",
+      "description": "PHP libraries and Symfony bundles maintained by Darkwood.",
+      "topics": ["framework", "php", "symfony"]
+    },
+    {
+      "id": "darkwood-publish-article-mcp-apps",
+      "path": "library/darkwood-publish-article-mcp-apps",
+      "description": "MCP application for article generation and publication workflows.",
+      "topics": ["ai", "mcp", "php"]
+    },
+    {
+      "id": "lgs",
+      "path": "library/lgs",
+      "description": "The LGS game and its Godot implementation.",
+      "topics": ["game", "godot"]
+    }
+  ]
+}

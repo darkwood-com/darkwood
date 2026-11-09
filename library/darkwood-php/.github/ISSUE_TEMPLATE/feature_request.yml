@@ -1,0 +1,33 @@
+name: Feature request
+description: Suggest a new feature for Darkwood
+title: "[Feature]: "
+labels:
+  - feature
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - navi
+        - flow
+        - media-bundle
+        - ia-exception-bundle
+        - monorepo
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

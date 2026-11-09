@@ -1,0 +1,62 @@
+{
+    "packages": [
+        {
+            "id": "navi",
+            "directory": "src/Darkwood/Component/Navi",
+            "composer_name": "darkwood/navi",
+            "php": "8.5",
+            "php_extensions": "xsl, openswoole",
+            "mysql": true,
+            "checks": {
+                "php_cs_fixer": "tools/php-cs-fixer",
+                "phpstan": "tools/phpstan",
+                "phpunit": "tools/phpunit",
+                "symfony_lsp": "tools/symfony-lsp"
+            },
+            "symfony_lsp": true
+        },
+        {
+            "id": "flow",
+            "directory": "src/Darkwood/Component/Flow",
+            "composer_name": "darkwood/flow",
+            "php": "8.5",
+            "php_extensions": "xsl, openswoole",
+            "mysql": false,
+            "checks": {
+                "php_cs_fixer": "tools/php-cs-fixer",
+                "phpstan": "tools/phpstan",
+                "phpunit": "tools/phpunit"
+            },
+            "symfony_lsp": false
+        },
+        {
+            "id": "media-bundle",
+            "directory": "src/Darkwood/Bundle/MediaBundle",
+            "composer_name": "darkwood/media-bundle",
+            "php": "8.5",
+            "php_extensions": "ctype, iconv",
+            "mysql": false,
+            "checks": {
+                "php_cs_fixer": "tools/php-cs-fixer",
+                "phpstan": "tools/phpstan",
+                "phpunit": "tools/phpunit",
+                "symfony_lsp": "tools/symfony-lsp"
+            },
+            "symfony_lsp": true
+        },
+        {
+            "id": "ia-exception-bundle",
+            "directory": "src/Darkwood/Bundle/IaExceptionBundle",
+            "composer_name": "darkwood/ia-exception-bundle",
+            "php": "8.5",
+            "php_extensions": "ctype, iconv",
+            "mysql": false,
+            "checks": {
+                "php_cs_fixer": "tools/php-cs-fixer",
+                "phpstan": "tools/phpstan",
+                "phpunit": "tools/phpunit"
+            },
+            "symfony_lsp": false
+        }
+    ]
+}

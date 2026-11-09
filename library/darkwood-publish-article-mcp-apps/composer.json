@@ -1,0 +1,19 @@
+{
+  "name": "darkwood/php-mcp-apps-mvp",
+  "description": "Minimal PHP MCP Server with MCP Apps (2026-01-26) for basic-host",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.1",
+    "react/http": "^1.11",
+    "react/socket": "^1.17",
+    "darkwood/flow": "^1.2",
+    "react/event-loop": "^1.6",
+    "react/async": "^4.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}

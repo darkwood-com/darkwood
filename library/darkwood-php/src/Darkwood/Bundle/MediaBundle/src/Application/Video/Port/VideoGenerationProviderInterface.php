@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Application\Video\Port;
+
+use App\Application\Video\DTO\GeneratedAssetResult;
+use App\Infrastructure\Video\Provider\Replicate\ReplicateVideoModelPresets;
+
+interface VideoGenerationProviderInterface
+{
+    /**
+     * Generate a video from a text prompt.
+     * Returns the path to the generated file (local or storage key).
+     *
+     * Common options: target_path, scene_id, scene_number, duration, seed.
+     * scene_number is used by SceneAwareVideoGenerationProvider (see VIDEO_REAL_FOR_FIRST_SCENE_ONLY).
+     *
+     * Replicate (real provider) also accepts:
+     *  - replicate_preset: preset key (see {@see ReplicateVideoModelPresets} / `presetKeys()`)
+     *  - replicate_model: model slug or version id (overrides preset / default config)
+     *  - replicate_input: array merged into the API input object after preset defaults
+     *  - video_artifact_key: optional slug for local filename (video--{slug}.mp4); takes precedence over preset/model naming
+     *
+     * @param array<string, mixed> $options Optional provider-specific options (e.g. resolution, duration)
+     */
+    public function generateVideo(string $prompt, array $options = []): GeneratedAssetResult;
+}
