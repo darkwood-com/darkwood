@@ -85,6 +85,13 @@
       "topics": ["game", "godot"]
     },
     {
+      "id": "llm-game-of-life",
+      "path": "library/llm-game-of-life",
+      "domain": "matyo91",
+      "description": "Pedagogical PHP prototype exploring LLM concepts through Conway's Game of Life.",
+      "topics": ["ai", "demo", "game", "php", "symfony"]
+    },
+    {
       "id": "matyo91",
       "path": "library/matyo91",
       "domain": "matyo91",
