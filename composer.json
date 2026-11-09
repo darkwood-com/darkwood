@@ -7,11 +7,11 @@
         "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "darkwood/flow": "^8.1.1",
+        "darkwood/flow": "^8.1.6",
         "php-etl/pipeline": "^0.6.1",
         "symfony/console": "8.1.*",
         "symfony/dotenv": "8.1.*",
-        "symfony/flex": "^2.11",
+        "symfony/flex": "^2.12",
         "symfony/framework-bundle": "8.1.*",
         "symfony/runtime": "8.1.*",
         "symfony/yaml": "8.1.*"
