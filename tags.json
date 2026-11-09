@@ -6,20 +6,30 @@
     {
       "id": "darkwood-php",
       "path": "library/darkwood-php",
+      "domain": "darkwood",
       "description": "PHP libraries and Symfony bundles maintained by Darkwood.",
       "topics": ["framework", "php", "symfony"]
     },
     {
       "id": "darkwood-publish-article-mcp-apps",
       "path": "library/darkwood-publish-article-mcp-apps",
+      "domain": "darkwood",
       "description": "MCP application for article generation and publication workflows.",
       "topics": ["ai", "mcp", "php"]
     },
     {
       "id": "lgs",
       "path": "library/lgs",
+      "domain": "darkwood",
       "description": "The LGS game and its Godot implementation.",
       "topics": ["game", "godot"]
+    },
+    {
+      "id": "matyo91",
+      "path": "library/matyo91",
+      "domain": "matyo91",
+      "description": "Assets and automation for the matyo91 GitHub profile.",
+      "topics": ["github-profile", "personal"]
     }
   ]
 }

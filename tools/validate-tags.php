@@ -35,8 +35,8 @@ function validateTags(string $repositoryRoot): void
     $ids = [];
     $paths = [];
     foreach ($catalogue['projects'] as $project) {
-        if (!is_array($project) || array_keys($project) !== ['id', 'path', 'description', 'topics']) {
-            fail('each project must contain only id, path, description and topics');
+        if (!is_array($project) || array_keys($project) !== ['id', 'path', 'domain', 'description', 'topics']) {
+            fail('each project must contain only id, path, domain, description and topics');
         }
         $id = $project['id'];
         $path = $project['path'];
@@ -49,6 +49,9 @@ function validateTags(string $repositoryRoot): void
         }
         if (!is_string($project['description']) || '' === trim($project['description'])) {
             fail($id.' must have a description');
+        }
+        if (!in_array($project['domain'], ['darkwood', 'matyo91'], true)) {
+            fail($id.' must have a public logical domain');
         }
         if (!is_array($topics) || !array_is_list($topics) || [] === $topics) {
             fail($id.' must have topics');
