@@ -10,8 +10,8 @@ Public monorepo for Darkwood open-source projects.
 - [matyo91](library/matyo91) — GitHub profile assets and automation.
 
 Projects live under [`library/`](library/). Public discovery metadata is available
-in [`tags.json`](tags.json). Contributions should target this monorepo rather
-than generated package repositories.
+in [`tags.json`](tags.json). See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the
+public issue and code contribution policy.
 
 ## License
 
