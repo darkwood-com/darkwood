@@ -50,6 +50,27 @@
       "topics": ["demo", "php", "showreel", "symfony", "web"]
     },
     {
+      "id": "flow-pipe",
+      "path": "library/flow-pipe",
+      "domain": "matyo91",
+      "description": "Symfony Console demonstration of streaming token pipelines with Darkwood Flow.",
+      "topics": ["demo", "flow", "php", "symfony"]
+    },
+    {
+      "id": "flow-thispersondoesnotexist",
+      "path": "library/flow-thispersondoesnotexist",
+      "domain": "matyo91",
+      "description": "Parallel fictional-person image fetcher demonstrating Darkwood Flow.",
+      "topics": ["demo", "flow", "php", "symfony"]
+    },
+    {
+      "id": "kibono-flow",
+      "path": "library/kibono-flow",
+      "domain": "matyo91",
+      "description": "Observable product-sync consumer combining Darkwood Flow with a Kiboko ETL pipeline.",
+      "topics": ["demo", "etl", "flow", "php", "symfony"]
+    },
+    {
       "id": "lgs",
       "path": "library/lgs",
       "domain": "darkwood",
