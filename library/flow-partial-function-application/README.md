@@ -6,28 +6,28 @@ Three experiments, one rule: use the PHP primitive first. PFA instead of an adap
 
 This is not a Flow redesign. Flow `src/` was not modified.
 
-PHP 8.6 is **pre-release**. The isolated image is official `php:8.6-rc-cli` (**8.6.0beta2** at study time). Do not run these examples as production code. The host CLI is PHP 8.5 and **cannot parse** `foo(?)`.
+PHP 8.6 is **pre-release**. Do not run these examples as production code, and
+do not use an older PHP CLI: it cannot parse `foo(?)`.
 
 ## Requirements
 
-- Docker Desktop
-- Local Darkwood Flow tree at `../../darkwood/src/Darkwood/Component/Flow`
+- PHP 8.6
+- Composer
+
+Darkwood Flow is resolved through Composer; no adjacent source checkout is
+required.
 
 ## Run
 
-```bash
-chmod +x bin/study
-./bin/study up
-./bin/study composer
-./bin/study run
-```
-
-Or:
+With Nix available, install and run the study without system-wide packages:
 
 ```bash
-docker compose run --rm php86 composer install --no-interaction
-docker compose run --rm php86 php examples/run-all.php
+nix shell nixpkgs#php86 nixpkgs#php86Packages.composer --command composer install --no-interaction
+nix shell nixpkgs#php86 --command php examples/run-all.php
 ```
+
+The repository also retains its isolated Docker study runner for environments
+where Docker is already part of the toolchain.
 
 ## Scripts
 
