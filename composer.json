@@ -7,20 +7,20 @@
         "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "darkwood/flow": "^1.2",
-        "darkwood/navi": "^1.0",
-        "symfony/asset-mapper": "8.0.*",
-        "symfony/console": "8.0.*",
-        "symfony/dotenv": "8.0.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "8.0.*",
-        "symfony/runtime": "8.0.*",
-        "symfony/stimulus-bundle": "^3.0",
-        "symfony/twig-bundle": "8.0.*",
-        "symfony/yaml": "8.0.*"
+        "darkwood/flow": "^8.1.6",
+        "darkwood/navi": "^8.1.6",
+        "symfony/asset-mapper": "8.1.*",
+        "symfony/console": "8.1.*",
+        "symfony/dotenv": "8.1.*",
+        "symfony/flex": "^2.12",
+        "symfony/framework-bundle": "8.1.*",
+        "symfony/runtime": "8.1.*",
+        "symfony/stimulus-bundle": "^3.7",
+        "symfony/twig-bundle": "8.1.*",
+        "symfony/yaml": "8.1.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^13.1"
+        "phpunit/phpunit": "^13.4.6"
     },
     "config": {
         "allow-plugins": {
@@ -72,7 +72,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.0.*"
+            "require": "8.1.*"
         }
     }
 }
