@@ -17,4 +17,6 @@ may technically allow a pull request from a public fork; such a pull request is
 not an accepted contribution channel and will be redirected to an issue.
 
 Generated satellite repositories are publication destinations. Code changes
-must be made in this canonical monorepo.
+must be made in this canonical monorepo. Satellite automation is limited to
+distribution checks and deployments whose configuration is maintained here;
+satellites must not create independent source commits.
