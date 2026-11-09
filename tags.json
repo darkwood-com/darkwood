@@ -57,6 +57,13 @@
       "topics": ["demo", "flow", "php", "symfony"]
     },
     {
+      "id": "flow-partial-function-application",
+      "path": "library/flow-partial-function-application",
+      "domain": "matyo91",
+      "description": "PHP 8.6 study of partial function application, token scanning and Darkwood Flow.",
+      "topics": ["demo", "flow", "php", "symfony"]
+    },
+    {
       "id": "flow-thispersondoesnotexist",
       "path": "library/flow-thispersondoesnotexist",
       "domain": "matyo91",
