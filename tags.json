@@ -92,6 +92,13 @@
       "topics": ["ai", "demo", "game", "php", "symfony"]
     },
     {
+      "id": "mario-orquestration",
+      "path": "library/mario-orquestration",
+      "domain": "matyo91",
+      "description": "Symfony AI multi-agent demonstration generating platformer levels for Godot.",
+      "topics": ["ai", "demo", "game", "godot", "php", "symfony"]
+    },
+    {
       "id": "matyo91",
       "path": "library/matyo91",
       "domain": "matyo91",
