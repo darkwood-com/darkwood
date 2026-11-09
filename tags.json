@@ -16,6 +16,19 @@
       ]
     },
     {
+      "id": "connect-flow",
+      "path": "library/connect-flow",
+      "domain": "matyo91",
+      "description": "Symfony prototype connecting natural-language capabilities to the Darkwood Flow runtime.",
+      "topics": [
+        "ai",
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
+    },
+    {
       "id": "darkwood-php",
       "path": "library/darkwood-php",
       "domain": "darkwood",
