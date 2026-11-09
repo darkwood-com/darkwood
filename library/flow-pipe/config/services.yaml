@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+
+    App\TokenFlow\Step\:
+        resource: '../src/TokenFlow/Step/'
+        tags: ['app.pipeline_step']
+
+    App\TokenFlow\PipelineStepRegistry:
+        arguments:
+            $steps: !tagged_iterator app.pipeline_step
+
+    App\Infrastructure\Flow\PipelineRunnerInterface: '@App\Infrastructure\Flow\TokenPipelineFlowRunner'
+
+    Flow\DriverInterface: '@Flow\Driver\FiberDriver'
+
+    Flow\Driver\FiberDriver:
+        shared: false
+
+    App\Infrastructure\Flow\TokenPipelineFlowRunner: ~
+    App\Infrastructure\Flow\ChunkCompressFlowRunner: ~
