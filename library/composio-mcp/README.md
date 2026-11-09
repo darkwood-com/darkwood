@@ -49,8 +49,7 @@ flows :
 
 - object :
 
-env.OPENAI_API_KEY=
-REDACTED
+env.OPENAI_API_KEY=<set via environment>
 
 - text :
 variable : prompt
