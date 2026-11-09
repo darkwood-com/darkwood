@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+
+    Navi\Application\Workflow\WorkflowRunner: ~
+
+    App\Domain\Port\LocalAiClientInterface: '@App\Infrastructure\AI\OllamaLocalAiClient'
+    App\Domain\Port\LanguageToLambdaPromptBuilderInterface: '@App\Infrastructure\AI\LanguageToLambdaPromptBuilder'
+    App\Domain\Primitive\PrimitiveInvokerInterface: '@App\Infrastructure\Composio\ComposioPrimitiveInvoker'
+
+    App\Infrastructure\Composio\ComposioClient:
+        arguments:
+            $apiKey: '%env(COMPOSIO_API_KEY)%'
+            $baseUrl: '%env(COMPOSIO_BASE_URL)%'
+
+    App\Infrastructure\Composio\ComposioPrimitiveInvoker:
+        arguments:
+            $primitiveToToolSlug: '%env(json:COMPOSIO_PRIMITIVE_MAP)%'
+
+    App\Application\Lambda\LambdaEvaluationService:
+        arguments:
+            $registeredPrimitives: '%env(csv:COMPOSIO_PRIMITIVES)%'
+
+    App\Infrastructure\AI\OllamaLocalAiClient:
+        arguments:
+            $platform: '@ai.platform.ollama'
+            $model: '%env(OLLAMA_MODEL)%'
+
+    App\Command\LambdaRunCommand:
+        arguments:
+            $defaultComposioUserId: '%env(COMPOSIO_USER_ID)%'
