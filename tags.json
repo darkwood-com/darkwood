@@ -43,6 +43,13 @@
       "topics": ["ai", "mcp", "php"]
     },
     {
+      "id": "darkwood-showreel",
+      "path": "library/darkwood-showreel",
+      "domain": "matyo91",
+      "description": "Web and terminal showreel built with Symfony and Symfony TUI.",
+      "topics": ["demo", "php", "showreel", "symfony", "web"]
+    },
+    {
       "id": "lgs",
       "path": "library/lgs",
       "domain": "darkwood",
