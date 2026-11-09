@@ -2,7 +2,7 @@
   "mcpServers": {
     "composio-mcp": {
       "name": "Composio MCP",
-      "command": "php /Users/math/Sites/darkwood/composio-mcp/bin/console mcp:server"
+      "command": "php library/composio-mcp/bin/console mcp:server"
     }
   }
 }
