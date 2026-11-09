@@ -4,6 +4,18 @@
   "repository": "https://github.com/darkwood-com/darkwood",
   "projects": [
     {
+      "id": "composio-mcp",
+      "path": "library/composio-mcp",
+      "domain": "matyo91",
+      "description": "Symfony MCP server integrating Composio actions and workflows.",
+      "topics": [
+        "ai",
+        "mcp",
+        "php",
+        "symfony"
+      ]
+    },
+    {
       "id": "darkwood-php",
       "path": "library/darkwood-php",
       "domain": "darkwood",
