@@ -12,6 +12,7 @@ Public monorepo for Darkwood open-source projects.
 - [Darkwood Publish Article MCP Apps](library/darkwood-publish-article-mcp-apps) — MCP application for article generation and publication workflows.
 - [Darkwood Showreel](library/darkwood-showreel) — web and terminal showreel built with Symfony TUI.
 - [Darkwood Memory](library/darkwood-memory) — interactive demonstrations about preserving creative memory.
+- [Darkwood.com](library/darkwood-com) — public website and application source.
 - [Diablo PHP](library/diablo-php) — archived PHP and FFI game-engine implementation.
 - [Flow Partial Function Application](library/flow-partial-function-application) — PHP 8.6 and Darkwood Flow study.
 - [Flow Pipe](library/flow-pipe) — streaming token-pipeline demonstration.
@@ -38,8 +39,10 @@ Public monorepo for Darkwood open-source projects.
 - [Recherche Entreprise MCP](library/recherche-entreprise-mcp) — PHP MCP and company-research experiment.
 - [RxJS Flow](library/rxjs-flow) — RxJS streaming concepts mapped onto Darkwood Flow.
 - [SketchUp Shape](library/sketchup-shape) — archived shape-generation experiment.
+- [Slidewire](library/slidewire) — presentation authoring and controlled publication platform.
 - [Thumbnail MCP](library/thumbnail-mcp) — Replicate-backed thumbnail generation tool.
 - [URL Scraping API](library/url-scrapping-api) — Symfony API for structured web extraction.
+- [Uniflow](library/uniflow) — workflow and commerce platform.
 - [VibePHP Flow](library/vibephp-flow) — VibePHP profiling demonstration using Darkwood Flow.
 - [WYSIWYL](library/wysiwyl) — What You See Is What You Learn experiment.
 
