@@ -356,6 +356,13 @@
       "domain": "matyo91",
       "description": "Experimental credential management interface for Navi AI connections.",
       "topics": ["credentials", "navi", "php", "security"]
+    },
+    {
+      "id": "chinesepuzzle",
+      "path": "library/chinesepuzzle",
+      "domain": "darkwood",
+      "description": "Solitaire-style card puzzle for Godot with canonical editable design sources.",
+      "topics": ["game", "godot", "gdscript"]
     }
   ]
 }
