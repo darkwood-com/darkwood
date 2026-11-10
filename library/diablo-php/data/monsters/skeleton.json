@@ -1,0 +1,1 @@
+{"id":"skeleton","name":"Skeleton","hp":40,"armorClass":8,"minDamage":2,"maxDamage":6,"toHit":50,"xpReward":35,"ai":"melee","detectionRange":11}
