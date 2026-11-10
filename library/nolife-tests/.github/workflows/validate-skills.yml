@@ -1,0 +1,25 @@
+name: validate-skills
+
+on:
+  push:
+    paths:
+      - 'skills/**'
+      - '.github/workflows/validate-skills.yml'
+  pull_request:
+    paths:
+      - 'skills/**'
+      - '.github/workflows/validate-skills.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Discover skills
+        run: npx --yes skills@1.5.19 add . --list

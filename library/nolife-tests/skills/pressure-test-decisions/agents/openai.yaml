@@ -1,0 +1,7 @@
+interface:
+  display_name: "Pressure-test decisions"
+  short_description: "Get grilled until your next action is clear"
+  default_prompt: "Use $pressure-test-decisions to pressure-test this situation and drive me to a concrete decision or next action."
+
+policy:
+  allow_implicit_invocation: true

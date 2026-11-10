@@ -1,0 +1,7 @@
+interface:
+  display_name: "Pressure-test testing decisions"
+  short_description: "Grill keep/rewrite/delete until the oracle is honest"
+  default_prompt: "Use $pressure-test-testing-decisions to pressure-test this testing decision and drive me to keep, rewrite, delete, or experiment."
+
+policy:
+  allow_implicit_invocation: true
