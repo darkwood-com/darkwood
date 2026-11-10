@@ -22,6 +22,9 @@ Public monorepo for Darkwood open-source projects.
 - [Nolife Models](library/nolife-models) — local AI model catalog and runtime explorer.
 - [Nolife Tokens](library/nolife-tokens) — token-analysis and Flow pipeline experiments.
 - [Nolife Tracker](library/nolife-tracker) — terminal registry for AI accounts and subscriptions.
+- [PHP Flow](library/php-flow) — PHP profiling demonstration using Darkwood Flow.
+- [RxJS Flow](library/rxjs-flow) — RxJS streaming concepts mapped onto Darkwood Flow.
+- [VibePHP Flow](library/vibephp-flow) — VibePHP profiling demonstration using Darkwood Flow.
 
 Projects live under [`library/`](library/). Public discovery metadata is available
 in [`tags.json`](tags.json). See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the
