@@ -1,0 +1,103 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "*   h = GetResource('HEL1', 0x7f) -> A5-0x13ac; if nil:",
+      "function_or_context": "initialize_application",
+      "line": 3291,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 298,
+    "elements": [
+      {
+        "kind": "embedded_pascal_string",
+        "length": 16,
+        "offset": 42,
+        "text": "Pacific Conflict"
+      }
+    ],
+    "format": "Hellcats Saved Settings Record",
+    "properties": {
+      "field_layout_status": "partially_verified_from_CODE",
+      "record_size_bytes": 298
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/HEL1/127.md",
+    "binary_matches_resource_fork_payload": false,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/HEL1/127.bin",
+    "binary_size": 298,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Hellcats Saved Settings",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/HEL1/127.bin",
+        "sha256": "4b2a8187e593929d6c145cac3a34873765a434528c1d04dfed115b6f574f4cec",
+        "size": 298
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/HEL1/127.md",
+        "sha256": "1c3367b6ba60d731efebe0233469414d9e54c1adc6c30eebbe43bc559f3e96a0",
+        "size": 657
+      }
+    ],
+    "resource_attributes": "0x00",
+    "resource_fork_payload_offset": 301391,
+    "resource_fork_payload_sha256": "0bb1c8af725ced72f5c5c3e57436788fc11e507085a10ec97cb1193889fce8c8",
+    "resource_fork_payload_size": 298,
+    "sha256": "4b2a8187e593929d6c145cac3a34873765a434528c1d04dfed115b6f574f4cec",
+    "source_exports": [
+      "sources/resedit-1-0-3/HEL1/127.bin",
+      "sources/resedit-1-0-3/HEL1/127.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Hellcats Saved Settings Record; 298 curated payload bytes.",
+    "descriptive_name": "Hellcats Saved Settings Record",
+    "id": 127,
+    "key": "HEL1:127",
+    "original_fourcc": "HEL1",
+    "original_macintosh_name": "Hellcats Saved Settings",
+    "original_name_bytes_hex": "48656c6c636174732053617665642053657474696e6773",
+    "original_name_source": "sources/resedit-1-0-3/HEL1/127.md",
+    "purpose": "Hellcats Saved Settings Record",
+    "type": "HEL1"
+  },
+  "review": {
+    "claims": {
+      "external_scenery_filename": "PROVEN"
+    },
+    "notes": [
+      "Record offset 0x2a contains the Pascal string 'Pacific Conflict'. CODE:8 bootstrap_window_and_load_overlay (ID08 0x039c) copies this field and load_overlay_from_resource (ID08 0x0006) opens that external Macintosh data fork. This record names the required companion file; it is not itself mission or scenery data."
+    ]
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": [
+    "Curated ResEdit payload differs from the independently recovered 1.0.4 resource-fork payload; both hashes and sizes are recorded and neither original source was overwritten."
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 256,
+    "elements": [],
+    "format": "Classic Macintosh Icon Bitmap",
+    "properties": {
+      "depth_bits": 1,
+      "has_embedded_mask": true,
+      "height": 32,
+      "mask_data_bytes": 128,
+      "palette_reference": null,
+      "pixel_data_bytes": 128,
+      "png_pixel_comparison": {
+        "compared_pixels": 1024,
+        "comparison": "decoded 1-bit icon pixels (and mask for alpha exports) versus PNG pixels",
+        "differing_pixels": 0,
+        "png_dimensions": [
+          32,
+          32
+        ],
+        "png_path": "sources/resedit-1-0-3/ICN#/129.png",
+        "status": "pixel_exact"
+      },
+      "width": 32
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/ICN#/129.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/ICN#/129.bin",
+    "binary_size": 256,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/ICN#/129.bin",
+        "sha256": "2722b1cabda0910ecc11c6d029c2f559358ad5d70bbf17bc7704d5ed3b9e84bc",
+        "size": 256
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/ICN#/129.md",
+        "sha256": "327c85709d2df9c0c1cd7e5ba02f3797aaf54a380afad436ff5be759334e6398",
+        "size": 541
+      },
+      {
+        "kind": "PNG render",
+        "path": "sources/resedit-1-0-3/ICN#/129.png",
+        "sha256": "5abde23496077ddc697c5abd29d7b2a89295eac74acc5d38afbbe8b166a1285d",
+        "size": 319
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 69934,
+    "resource_fork_payload_sha256": "2722b1cabda0910ecc11c6d029c2f559358ad5d70bbf17bc7704d5ed3b9e84bc",
+    "resource_fork_payload_size": 256,
+    "sha256": "2722b1cabda0910ecc11c6d029c2f559358ad5d70bbf17bc7704d5ed3b9e84bc",
+    "source_exports": [
+      "sources/resedit-1-0-3/ICN#/129.bin",
+      "sources/resedit-1-0-3/ICN#/129.md",
+      "sources/resedit-1-0-3/ICN#/129.png"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "BNDL mapping entry in original bytes",
+        "kind": "bundle_local_id_1",
+        "source": "BNDL:132",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Icon Bitmap; 256 curated payload bytes.",
+    "descriptive_name": "Hellcats Document 32×32 Monochrome Icon and Mask",
+    "id": 129,
+    "key": "ICN#:129",
+    "original_fourcc": "ICN#",
+    "original_macintosh_name": null,
+    "original_name_bytes_hex": null,
+    "original_name_source": "comparison resource map",
+    "purpose": "Hellcats Document 32×32 Monochrome Icon and Mask",
+    "type": "ICN#"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

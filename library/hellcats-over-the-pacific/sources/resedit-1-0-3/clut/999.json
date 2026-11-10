@@ -1,0 +1,325 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 136,
+    "elements": [
+      {
+        "entry": 0,
+        "hex_rgb8": "#FFFFFF",
+        "rgb16": [
+          65535,
+          65535,
+          65535
+        ],
+        "rgb8": [
+          255,
+          255,
+          255
+        ],
+        "value": 0
+      },
+      {
+        "entry": 1,
+        "hex_rgb8": "#00FFFF",
+        "rgb16": [
+          0,
+          65535,
+          65535
+        ],
+        "rgb8": [
+          0,
+          255,
+          255
+        ],
+        "value": 1
+      },
+      {
+        "entry": 2,
+        "hex_rgb8": "#FF00FF",
+        "rgb16": [
+          65535,
+          0,
+          65535
+        ],
+        "rgb8": [
+          255,
+          0,
+          255
+        ],
+        "value": 2
+      },
+      {
+        "entry": 3,
+        "hex_rgb8": "#0000FF",
+        "rgb16": [
+          0,
+          0,
+          65535
+        ],
+        "rgb8": [
+          0,
+          0,
+          255
+        ],
+        "value": 3
+      },
+      {
+        "entry": 4,
+        "hex_rgb8": "#E7E7E7",
+        "rgb16": [
+          59367,
+          59367,
+          59367
+        ],
+        "rgb8": [
+          231,
+          231,
+          231
+        ],
+        "value": 4
+      },
+      {
+        "entry": 5,
+        "hex_rgb8": "#B5B5B5",
+        "rgb16": [
+          46517,
+          46517,
+          46517
+        ],
+        "rgb8": [
+          181,
+          181,
+          181
+        ],
+        "value": 5
+      },
+      {
+        "entry": 6,
+        "hex_rgb8": "#949494",
+        "rgb16": [
+          38036,
+          38036,
+          38036
+        ],
+        "rgb8": [
+          148,
+          148,
+          148
+        ],
+        "value": 6
+      },
+      {
+        "entry": 7,
+        "hex_rgb8": "#737373",
+        "rgb16": [
+          29555,
+          29555,
+          29555
+        ],
+        "rgb8": [
+          115,
+          115,
+          115
+        ],
+        "value": 7
+      },
+      {
+        "entry": 8,
+        "hex_rgb8": "#525252",
+        "rgb16": [
+          21074,
+          21074,
+          21074
+        ],
+        "rgb8": [
+          82,
+          82,
+          82
+        ],
+        "value": 8
+      },
+      {
+        "entry": 9,
+        "hex_rgb8": "#424242",
+        "rgb16": [
+          16962,
+          16962,
+          16962
+        ],
+        "rgb8": [
+          66,
+          66,
+          66
+        ],
+        "value": 9
+      },
+      {
+        "entry": 10,
+        "hex_rgb8": "#217B31",
+        "rgb16": [
+          8481,
+          31611,
+          12593
+        ],
+        "rgb8": [
+          33,
+          123,
+          49
+        ],
+        "value": 10
+      },
+      {
+        "entry": 11,
+        "hex_rgb8": "#101010",
+        "rgb16": [
+          4112,
+          4112,
+          4112
+        ],
+        "rgb8": [
+          16,
+          16,
+          16
+        ],
+        "value": 11
+      },
+      {
+        "entry": 12,
+        "hex_rgb8": "#FFFF00",
+        "rgb16": [
+          65535,
+          65535,
+          0
+        ],
+        "rgb8": [
+          255,
+          255,
+          0
+        ],
+        "value": 12
+      },
+      {
+        "entry": 13,
+        "hex_rgb8": "#00FF00",
+        "rgb16": [
+          0,
+          65535,
+          0
+        ],
+        "rgb8": [
+          0,
+          255,
+          0
+        ],
+        "value": 13
+      },
+      {
+        "entry": 14,
+        "hex_rgb8": "#FF0000",
+        "rgb16": [
+          65535,
+          0,
+          0
+        ],
+        "rgb8": [
+          255,
+          0,
+          0
+        ],
+        "value": 14
+      },
+      {
+        "entry": 15,
+        "hex_rgb8": "#000000",
+        "rgb16": [
+          0,
+          0,
+          0
+        ],
+        "rgb8": [
+          0,
+          0,
+          0
+        ],
+        "value": 15
+      }
+    ],
+    "format": "Macintosh ColorTable",
+    "properties": {
+      "color_count": 16,
+      "encoded_size_minus_one": 15,
+      "flags": "0x0000",
+      "seed": 14721
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/clut/999.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/clut/999.bin",
+    "binary_size": 136,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/clut/999.bin",
+        "sha256": "67ed7b8bf51b271f54f8a0ebe4d0b2bc509ad88e5e9970d9854cde50f47abd46",
+        "size": 136
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/clut/999.md",
+        "sha256": "6105f4a8c7d5ebce1e5bdef7d6bf651ca65705327f6300077c0b9fa36b9aa3b5",
+        "size": 11639
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 301224,
+    "resource_fork_payload_sha256": "67ed7b8bf51b271f54f8a0ebe4d0b2bc509ad88e5e9970d9854cde50f47abd46",
+    "resource_fork_payload_size": 136,
+    "sha256": "67ed7b8bf51b271f54f8a0ebe4d0b2bc509ad88e5e9970d9854cde50f47abd46",
+    "source_exports": [
+      "sources/resedit-1-0-3/clut/999.bin",
+      "sources/resedit-1-0-3/clut/999.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Macintosh ColorTable; 136 curated payload bytes.",
+    "descriptive_name": "16-Color Indexed Palette",
+    "id": 999,
+    "key": "clut:999",
+    "original_fourcc": "clut",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/clut/999.md",
+    "purpose": "16-Color Indexed Palette",
+    "type": "clut"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

@@ -1,0 +1,84 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "PROVEN"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 46,
+    "elements": [],
+    "format": "MacRoman Finder Get Info String",
+    "properties": {
+      "encoding": "mac_roman",
+      "line_count": 1,
+      "line_ending": "none_or_mixed",
+      "text": "-Hellcats, Copyright (C) 1990 by Parsoft, Inc."
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/HELL/0.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/HELL/0.bin",
+    "binary_size": 46,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Finder Get Info",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/HELL/0.bin",
+        "sha256": "3b868199dd6359d979f2782ad5d2fe209698c06e9059dde136fcd2ff8c600433",
+        "size": 46
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/HELL/0.md",
+        "sha256": "f4598f7dc016a3fe552620a1b20736793fd46ae6ac74d454ceb6fc52a4cb1372",
+        "size": 143
+      }
+    ],
+    "resource_attributes": "0x00",
+    "resource_fork_payload_offset": 66796,
+    "resource_fork_payload_sha256": "3b868199dd6359d979f2782ad5d2fe209698c06e9059dde136fcd2ff8c600433",
+    "resource_fork_payload_size": 46,
+    "sha256": "3b868199dd6359d979f2782ad5d2fe209698c06e9059dde136fcd2ff8c600433",
+    "source_exports": [
+      "sources/resedit-1-0-3/HELL/0.bin",
+      "sources/resedit-1-0-3/HELL/0.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "MacRoman Finder Get Info String; 46 curated payload bytes.",
+    "descriptive_name": "Finder Get Info Copyright String",
+    "id": 0,
+    "key": "HELL:0",
+    "original_fourcc": "HELL",
+    "original_macintosh_name": "Finder Get Info",
+    "original_name_bytes_hex": "46696e6465722047657420496e666f",
+    "original_name_source": "sources/resedit-1-0-3/HELL/0.md",
+    "purpose": "Finder Get Info Copyright String",
+    "type": "HELL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

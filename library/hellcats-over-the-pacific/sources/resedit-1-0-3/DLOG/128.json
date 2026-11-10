@@ -1,0 +1,117 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "* GetNewDialog(0x80 = DLOG 128 \"Creating Instrument Panel\", NULL, (WindowPtr)-1); FUN_0000435e(dialog); ShowWindow; DrawDialog; returns the dialog (the caller disposes it once the panel is built). Ghidra could not decode the body (rebuilt as C below).",
+      "function_or_context": "show_creating_panel_dialog",
+      "line": 2580,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "dlg = GetNewDialog(0x80,0,-1);                /* $A97C: DLOG 128 */",
+      "function_or_context": "show_creating_panel_dialog",
+      "line": 2589,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 31,
+    "elements": [],
+    "format": "Classic Macintosh DialogTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 254,
+        "height": 104,
+        "left": 158,
+        "right": 470,
+        "top": 150,
+        "width": 312
+      },
+      "ditl_id": 128,
+      "go_away_box": true,
+      "refcon": 0,
+      "title": "New Dialog",
+      "title_bytes_hex": "4e6577204469616c6f67",
+      "visible": false,
+      "window_procedure_id": 1
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DLOG/128.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DLOG/128.bin",
+    "binary_size": 31,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Creating Instrument Panel",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DLOG/128.bin",
+        "sha256": "f0a645da90cf17f6e9fc75c3ab771bd9885d4b4ef1e74895ee84cdaef68aa705",
+        "size": 31
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DLOG/128.md",
+        "sha256": "2c5f11e507f5374ab18df413d74b020d0c5344084de690fa90b67bd85e309562",
+        "size": 4680
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 287075,
+    "resource_fork_payload_sha256": "f0a645da90cf17f6e9fc75c3ab771bd9885d4b4ef1e74895ee84cdaef68aa705",
+    "resource_fork_payload_size": 31,
+    "sha256": "f0a645da90cf17f6e9fc75c3ab771bd9885d4b4ef1e74895ee84cdaef68aa705",
+    "source_exports": [
+      "sources/resedit-1-0-3/DLOG/128.bin",
+      "sources/resedit-1-0-3/DLOG/128.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "status": "PROVEN",
+        "target": "DITL:128"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh DialogTemplate; 31 curated payload bytes.",
+    "descriptive_name": "Creating instrument Panel Dialog",
+    "id": 128,
+    "key": "DLOG:128",
+    "original_fourcc": "DLOG",
+    "original_macintosh_name": "Creating instrument Panel",
+    "original_name_bytes_hex": "4372656174696e6720696e737472756d656e742050616e656c",
+    "original_name_source": "sources/resedit-1-0-3/DLOG/128.md",
+    "purpose": "Creating instrument Panel Dialog",
+    "type": "DLOG"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

@@ -1,0 +1,124 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "* LINK -$4a; itemHit = 1; saves A5-0x13a4 / -0x225e; early exit to 0x3116; GetNewDialog(0x85), JT $472, five BSR 0xec,",
+      "function_or_context": "set_score_item_text",
+      "line": 1768,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "* (no summary); else GetNewDialog(133,...) $A97C,",
+      "function_or_context": "show_mission_summary_dialog",
+      "line": 1778,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "dlg = GetNewDialog(0x85,0,-1);                /* $A97C: DLOG 133 \"Mission Summary\" */",
+      "function_or_context": "show_mission_summary_dialog",
+      "line": 1806,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 21,
+    "elements": [],
+    "format": "Classic Macintosh DialogTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 333,
+        "height": 303,
+        "left": 6,
+        "right": 503,
+        "top": 30,
+        "width": 497
+      },
+      "ditl_id": 133,
+      "go_away_box": false,
+      "refcon": 0,
+      "title": "",
+      "title_bytes_hex": "",
+      "visible": false,
+      "window_procedure_id": 1
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DLOG/133.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DLOG/133.bin",
+    "binary_size": 21,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Mission Summary",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DLOG/133.bin",
+        "sha256": "1fa39947262d0426428585ee077c5fc7b27b2f13bc89537499938dfcbb40a5b2",
+        "size": 21
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DLOG/133.md",
+        "sha256": "65bfdda5923fecfb9267206b6b87546d173ee8f53c5db6786cbc42a72cb844d0",
+        "size": 4315
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 287135,
+    "resource_fork_payload_sha256": "1fa39947262d0426428585ee077c5fc7b27b2f13bc89537499938dfcbb40a5b2",
+    "resource_fork_payload_size": 21,
+    "sha256": "1fa39947262d0426428585ee077c5fc7b27b2f13bc89537499938dfcbb40a5b2",
+    "source_exports": [
+      "sources/resedit-1-0-3/DLOG/133.bin",
+      "sources/resedit-1-0-3/DLOG/133.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "status": "PROVEN",
+        "target": "DITL:133"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh DialogTemplate; 21 curated payload bytes.",
+    "descriptive_name": "Mission Summary Dialog",
+    "id": 133,
+    "key": "DLOG:133",
+    "original_fourcc": "DLOG",
+    "original_macintosh_name": "Mission Summary",
+    "original_name_bytes_hex": "4d697373696f6e2053756d6d617279",
+    "original_name_source": "sources/resedit-1-0-3/DLOG/133.md",
+    "purpose": "Mission Summary Dialog",
+    "type": "DLOG"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

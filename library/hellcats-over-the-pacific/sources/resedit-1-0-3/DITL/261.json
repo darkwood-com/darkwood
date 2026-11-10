@@ -1,0 +1,141 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 148,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 96,
+          "height": 21,
+          "left": 146,
+          "right": 217,
+          "top": 75,
+          "width": 71
+        },
+        "data_hex": "51756974",
+        "data_length": 4,
+        "descriptive_identity": "Quit",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Quit",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 69,
+          "height": 52,
+          "left": 70,
+          "right": 347,
+          "top": 17,
+          "width": 277
+        },
+        "data_hex": "2748656c6c636174732720646f6573206e6f742072756e2066726f6d20796f7572206f726967696e616c20666c6f7070792e2020506c6561736520636f7079202748656c6c636174732720616e6420275061636966696320436f6e666c6963742720746f20612068617264206469736b2e",
+        "data_length": 113,
+        "descriptive_identity": "'Hellcats' does not run from your original floppy.  Please copy 'Hellcats' and 'Pacific Conflict' to a hard disk.",
+        "enabled": true,
+        "index": 2,
+        "item_type": "static_text",
+        "offset": 20,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "'Hellcats' does not run from your original floppy.  Please copy 'Hellcats' and 'Pacific Conflict' to a hard disk.",
+        "type_byte": "0x08",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 2,
+      "encoded_count_minus_one": 1,
+      "item_count": 2,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/261.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/261.bin",
+    "binary_size": 148,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/261.bin",
+        "sha256": "d1ccb5377f37fea3f6dca2a22ba747989afe9971ffb8add5095ba39b89428d20",
+        "size": 148
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/261.md",
+        "sha256": "bf3720c6812b9fc7a78ee343b37ab514ecd637686e009183a00ca6b1baf9fa5d",
+        "size": 9815
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 286822,
+    "resource_fork_payload_sha256": "d1ccb5377f37fea3f6dca2a22ba747989afe9971ffb8add5095ba39b89428d20",
+    "resource_fork_payload_size": 148,
+    "sha256": "d1ccb5377f37fea3f6dca2a22ba747989afe9971ffb8add5095ba39b89428d20",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/261.bin",
+      "sources/resedit-1-0-3/DITL/261.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "ALRT:261",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 148 curated payload bytes.",
+    "descriptive_name": "Hard Disk Installation Warning Controls",
+    "id": 261,
+    "key": "DITL:261",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/261.md",
+    "purpose": "Hard Disk Installation Warning Controls",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

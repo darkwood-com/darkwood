@@ -1,0 +1,654 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 450,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 246,
+          "height": 21,
+          "left": 329,
+          "right": 400,
+          "top": 225,
+          "width": 71
+        },
+        "data_hex": "4f4b",
+        "data_length": 2,
+        "descriptive_identity": "OK",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "OK",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 221,
+          "height": 24,
+          "left": 320,
+          "right": 404,
+          "top": 197,
+          "width": 84
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 2,
+        "item_type": "user_item",
+        "offset": 18,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 246,
+          "height": 21,
+          "left": 240,
+          "right": 311,
+          "top": 225,
+          "width": 71
+        },
+        "data_hex": "43616e63656c",
+        "data_length": 6,
+        "descriptive_identity": "Cancel",
+        "enabled": true,
+        "index": 3,
+        "item_type": "button",
+        "offset": 32,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Cancel",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 48,
+          "height": 38,
+          "left": 82,
+          "right": 338,
+          "top": 10,
+          "width": 256
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 4,
+        "item_type": "user_item",
+        "offset": 52,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 218,
+          "height": 18,
+          "left": 111,
+          "right": 265,
+          "top": 200,
+          "width": 154
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 5,
+        "item_type": "user_item",
+        "offset": 66,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 246,
+          "height": 18,
+          "left": 111,
+          "right": 143,
+          "top": 228,
+          "width": 32
+        },
+        "data_hex": "30",
+        "data_length": 1,
+        "descriptive_identity": "0",
+        "enabled": true,
+        "index": 6,
+        "item_type": "radio_button",
+        "offset": 80,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "0",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 246,
+          "height": 18,
+          "left": 156,
+          "right": 188,
+          "top": 228,
+          "width": 32
+        },
+        "data_hex": "31",
+        "data_length": 1,
+        "descriptive_identity": "1",
+        "enabled": true,
+        "index": 7,
+        "item_type": "radio_button",
+        "offset": 96,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "1",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 246,
+          "height": 18,
+          "left": 201,
+          "right": 233,
+          "top": 228,
+          "width": 32
+        },
+        "data_hex": "32",
+        "data_length": 1,
+        "descriptive_identity": "2",
+        "enabled": true,
+        "index": 8,
+        "item_type": "radio_button",
+        "offset": 112,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "2",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 97,
+          "height": 24,
+          "left": 58,
+          "right": 184,
+          "top": 73,
+          "width": 126
+        },
+        "data_hex": "466c69676874205363686f6f6c",
+        "data_length": 13,
+        "descriptive_identity": "Flight School",
+        "enabled": true,
+        "index": 9,
+        "item_type": "radio_button",
+        "offset": 128,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Flight School",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 121,
+          "height": 24,
+          "left": 58,
+          "right": 242,
+          "top": 97,
+          "width": 184
+        },
+        "data_hex": "426f6d622042617365",
+        "data_length": 9,
+        "descriptive_identity": "Bomb Base",
+        "enabled": true,
+        "index": 10,
+        "item_type": "radio_button",
+        "offset": 156,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Bomb Base",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 145,
+          "height": 24,
+          "left": 58,
+          "right": 242,
+          "top": 121,
+          "width": 184
+        },
+        "data_hex": "436170747572652049736c616e64",
+        "data_length": 14,
+        "descriptive_identity": "Capture Island",
+        "enabled": true,
+        "index": 11,
+        "item_type": "radio_button",
+        "offset": 180,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Capture Island",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 169,
+          "height": 24,
+          "left": 58,
+          "right": 242,
+          "top": 145,
+          "width": 184
+        },
+        "data_hex": "466c79696e6720466f727472657373",
+        "data_length": 15,
+        "descriptive_identity": "Flying Fortress",
+        "enabled": true,
+        "index": 12,
+        "item_type": "radio_button",
+        "offset": 208,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Flying Fortress",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 97,
+          "height": 24,
+          "left": 257,
+          "right": 444,
+          "top": 73,
+          "width": 187
+        },
+        "data_hex": "536372616d626c6521",
+        "data_length": 9,
+        "descriptive_identity": "Scramble!",
+        "enabled": true,
+        "index": 13,
+        "item_type": "radio_button",
+        "offset": 238,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Scramble!",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 121,
+          "height": 24,
+          "left": 257,
+          "right": 383,
+          "top": 97,
+          "width": 126
+        },
+        "data_hex": "446976696e652057696e64",
+        "data_length": 11,
+        "descriptive_identity": "Divine Wind",
+        "enabled": true,
+        "index": 14,
+        "item_type": "radio_button",
+        "offset": 262,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Divine Wind",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 145,
+          "height": 24,
+          "left": 257,
+          "right": 441,
+          "top": 121,
+          "width": 184
+        },
+        "data_hex": "466c6174746f70",
+        "data_length": 7,
+        "descriptive_identity": "Flattop",
+        "enabled": true,
+        "index": 15,
+        "item_type": "radio_button",
+        "offset": 288,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Flattop",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 167,
+          "height": 24,
+          "left": 257,
+          "right": 441,
+          "top": 143,
+          "width": 184
+        },
+        "data_hex": "546865204475656c",
+        "data_length": 8,
+        "descriptive_identity": "The Duel",
+        "enabled": true,
+        "index": 16,
+        "item_type": "radio_button",
+        "offset": 310,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "The Duel",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 46,
+          "height": 32,
+          "left": 376,
+          "right": 408,
+          "top": 14,
+          "width": 32
+        },
+        "data_hex": "0080",
+        "data_length": 2,
+        "descriptive_identity": "icon item",
+        "enabled": false,
+        "index": 17,
+        "item_type": "icon",
+        "offset": 332,
+        "padding_bytes": 0,
+        "referenced_resource_id": 128,
+        "referenced_resource_type": "ICON",
+        "reserved_handle": 0,
+        "type_byte": "0xA0",
+        "type_code": 32
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 48,
+          "height": 32,
+          "left": 8,
+          "right": 40,
+          "top": 16,
+          "width": 32
+        },
+        "data_hex": "0080",
+        "data_length": 2,
+        "descriptive_identity": "icon item",
+        "enabled": false,
+        "index": 18,
+        "item_type": "icon",
+        "offset": 348,
+        "padding_bytes": 0,
+        "referenced_resource_id": 128,
+        "referenced_resource_type": "ICON",
+        "reserved_handle": 0,
+        "type_byte": "0xA0",
+        "type_code": 32
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 61,
+          "height": 1,
+          "left": 33,
+          "right": 388,
+          "top": 60,
+          "width": 355
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 19,
+        "item_type": "user_item",
+        "offset": 364,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 216,
+          "height": 16,
+          "left": 20,
+          "right": 59,
+          "top": 200,
+          "width": 39
+        },
+        "data_hex": "4675656c3a",
+        "data_length": 5,
+        "descriptive_identity": "Fuel:",
+        "enabled": false,
+        "index": 20,
+        "item_type": "static_text",
+        "offset": 378,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Fuel:",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 217,
+          "height": 17,
+          "left": 95,
+          "right": 108,
+          "top": 200,
+          "width": 13
+        },
+        "data_hex": "45",
+        "data_length": 1,
+        "descriptive_identity": "E",
+        "enabled": false,
+        "index": 21,
+        "item_type": "static_text",
+        "offset": 398,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "E",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 217,
+          "height": 17,
+          "left": 270,
+          "right": 302,
+          "top": 200,
+          "width": 32
+        },
+        "data_hex": "46",
+        "data_length": 1,
+        "descriptive_identity": "F",
+        "enabled": false,
+        "index": 22,
+        "item_type": "static_text",
+        "offset": 414,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "F",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 244,
+          "height": 16,
+          "left": 20,
+          "right": 84,
+          "top": 228,
+          "width": 64
+        },
+        "data_hex": "426f6d62733a",
+        "data_length": 6,
+        "descriptive_identity": "Bombs:",
+        "enabled": false,
+        "index": 23,
+        "item_type": "static_text",
+        "offset": 430,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Bombs:",
+        "type_byte": "0x88",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 23,
+      "encoded_count_minus_one": 22,
+      "item_count": 23,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/129.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/129.bin",
+    "binary_size": 450,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/129.bin",
+        "sha256": "bf774e08456c5a3fd74bf832aa4773ba023898ad9732922323680fb1a3548b9c",
+        "size": 450
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/129.md",
+        "sha256": "3f4e8522c9cb62d2aaa4abd60c7907d4cf96e0e624e79e931e7b3df3a75f3012",
+        "size": 12411
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 282610,
+    "resource_fork_payload_sha256": "bf774e08456c5a3fd74bf832aa4773ba023898ad9732922323680fb1a3548b9c",
+    "resource_fork_payload_size": 450,
+    "sha256": "bf774e08456c5a3fd74bf832aa4773ba023898ad9732922323680fb1a3548b9c",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/129.bin",
+      "sources/resedit-1-0-3/DITL/129.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "DLOG:129",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": [
+      {
+        "evidence": "resource ID encoded in original DITL item data",
+        "kind": "dialog_item_17",
+        "status": "PROVEN",
+        "target": "ICON:128"
+      },
+      {
+        "evidence": "resource ID encoded in original DITL item data",
+        "kind": "dialog_item_18",
+        "status": "PROVEN",
+        "target": "ICON:128"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 450 curated payload bytes.",
+    "descriptive_name": "Scenario Selection Dialog Items",
+    "id": 129,
+    "key": "DITL:129",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/129.md",
+    "purpose": "Scenario Selection Dialog Items",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {
+      "mission_name_mapping": "PROVEN"
+    },
+    "notes": [
+      "Items 9 through 16 are the eight mission-selection labels. CODE:4 run_scenario_selection_dialog (ID04 0x0c02) maps them to mission numbers 2 through 9. These strings establish UI names only; scene/object definitions are selected from the external Pacific Conflict payload by the overlay."
+    ]
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

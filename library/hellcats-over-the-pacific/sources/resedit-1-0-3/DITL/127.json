@@ -1,0 +1,168 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 46,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 302,
+          "height": 302,
+          "left": 0,
+          "right": 480,
+          "top": 0,
+          "width": 480
+        },
+        "data_hex": "0080",
+        "data_length": 2,
+        "descriptive_identity": "picture item",
+        "enabled": false,
+        "index": 1,
+        "item_type": "picture",
+        "offset": 2,
+        "padding_bytes": 0,
+        "referenced_resource_id": 128,
+        "referenced_resource_type": "PICT",
+        "reserved_handle": 0,
+        "type_byte": "0xC0",
+        "type_code": 64
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 277,
+          "height": 251,
+          "left": 26,
+          "right": 160,
+          "top": 26,
+          "width": 134
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 2,
+        "item_type": "user_item",
+        "offset": 18,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 301,
+          "height": 16,
+          "left": 458,
+          "right": 533,
+          "top": 285,
+          "width": 75
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 3,
+        "item_type": "user_item",
+        "offset": 32,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 3,
+      "encoded_count_minus_one": 2,
+      "item_count": 3,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/127.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/127.bin",
+    "binary_size": 46,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/127.bin",
+        "sha256": "446cac7d096349eb704494145822fda0c4a387814d19335edd22c8b5f1f75953",
+        "size": 46
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/127.md",
+        "sha256": "26bc9cd1b26cd44303600038a15d94945c9b4af82f11e9e7fec9dae947498366",
+        "size": 6094
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 285436,
+    "resource_fork_payload_sha256": "446cac7d096349eb704494145822fda0c4a387814d19335edd22c8b5f1f75953",
+    "resource_fork_payload_size": 46,
+    "sha256": "446cac7d096349eb704494145822fda0c4a387814d19335edd22c8b5f1f75953",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/127.bin",
+      "sources/resedit-1-0-3/DITL/127.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "DLOG:127",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": [
+      {
+        "evidence": "resource ID encoded in original DITL item data",
+        "kind": "dialog_item_1",
+        "status": "PROVEN",
+        "target": "PICT:128"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 46 curated payload bytes.",
+    "descriptive_name": "About Hellcats Dialog Items",
+    "id": 127,
+    "key": "DITL:127",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/127.md",
+    "purpose": "About Hellcats Dialog Items",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

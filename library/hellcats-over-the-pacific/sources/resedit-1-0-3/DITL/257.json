@@ -1,0 +1,189 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 120,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 96,
+          "height": 21,
+          "left": 235,
+          "right": 306,
+          "top": 75,
+          "width": 71
+        },
+        "data_hex": "53617665",
+        "data_length": 4,
+        "descriptive_identity": "Save",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Save",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 96,
+          "height": 21,
+          "left": 145,
+          "right": 216,
+          "top": 75,
+          "width": 71
+        },
+        "data_hex": "43616e63656c",
+        "data_length": 6,
+        "descriptive_identity": "Cancel",
+        "enabled": true,
+        "index": 2,
+        "item_type": "button",
+        "offset": 20,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Cancel",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 96,
+          "height": 21,
+          "left": 15,
+          "right": 91,
+          "top": 75,
+          "width": 76
+        },
+        "data_hex": "446f6e27742053617665",
+        "data_length": 10,
+        "descriptive_identity": "Don't Save",
+        "enabled": true,
+        "index": 3,
+        "item_type": "button",
+        "offset": 40,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Don't Save",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 54,
+          "height": 39,
+          "left": 70,
+          "right": 316,
+          "top": 15,
+          "width": 246
+        },
+        "data_hex": "53617665206368616e67657320746f2053657474696e6773206265666f7265207175697474696e673f",
+        "data_length": 41,
+        "descriptive_identity": "Save changes to Settings before quitting?",
+        "enabled": true,
+        "index": 4,
+        "item_type": "static_text",
+        "offset": 64,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Save changes to Settings before quitting?",
+        "type_byte": "0x08",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 4,
+      "encoded_count_minus_one": 3,
+      "item_count": 4,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/257.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/257.bin",
+    "binary_size": 120,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/257.bin",
+        "sha256": "757f8057e139c31d83e9c4ddac75f5a97d23ceb730ec4e89be7d6b3b45aa70ed",
+        "size": 120
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/257.md",
+        "sha256": "91277700a2c9594ab55827b7bc496c9b89cd2c9af382436e023e685dec09bbb2",
+        "size": 9128
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 282366,
+    "resource_fork_payload_sha256": "757f8057e139c31d83e9c4ddac75f5a97d23ceb730ec4e89be7d6b3b45aa70ed",
+    "resource_fork_payload_size": 120,
+    "sha256": "757f8057e139c31d83e9c4ddac75f5a97d23ceb730ec4e89be7d6b3b45aa70ed",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/257.bin",
+      "sources/resedit-1-0-3/DITL/257.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "ALRT:257",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 120 curated payload bytes.",
+    "descriptive_name": "Save Settings Changes Confirmation Controls",
+    "id": 257,
+    "key": "DITL:257",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/257.md",
+    "purpose": "Save Settings Changes Confirmation Controls",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

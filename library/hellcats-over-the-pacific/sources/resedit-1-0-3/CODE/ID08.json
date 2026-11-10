@@ -1,0 +1,132 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Only a deterministic structural identity is available"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "UNKNOWN",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 1096,
+    "elements": [
+      {
+        "annotation_line": 23,
+        "kind": "known_function",
+        "original_symbol": "FUN_00000006",
+        "source_path": "sources/resedit-1-0-3/CODE/ID08.decomp.c"
+      },
+      {
+        "annotation_line": 160,
+        "kind": "known_function",
+        "original_symbol": "FUN_00000338",
+        "source_path": "sources/resedit-1-0-3/CODE/ID08.decomp.c"
+      },
+      {
+        "annotation_line": 186,
+        "kind": "known_function",
+        "original_symbol": "FUN_00000348",
+        "source_path": "sources/resedit-1-0-3/CODE/ID08.decomp.c"
+      },
+      {
+        "annotation_line": 225,
+        "kind": "known_function",
+        "original_symbol": "FUN_0000039c",
+        "source_path": "sources/resedit-1-0-3/CODE/ID08.decomp.c"
+      }
+    ],
+    "format": "Motorola 68000 CODE Segment",
+    "properties": {
+      "architecture": "Motorola 68000",
+      "decompilation_status": "see sibling .c and .decomp.c files",
+      "first_u16_be": 440,
+      "ghidra_export_path": "sources/resedit-1-0-3/CODE/ID08.c",
+      "known_function_count": 4,
+      "second_u16_be": 3,
+      "segment_size_bytes": 1096,
+      "semantic_decompilation_path": "sources/resedit-1-0-3/CODE/ID08.decomp.c"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/CODE/ID08",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/CODE/ID08.bin",
+    "binary_size": 1096,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "hexadecimal CODE export",
+        "path": "sources/resedit-1-0-3/CODE/ID08",
+        "sha256": "7e1fd3bf2f048b0098da59a5822e3cfa550c9a4c60878b8a0242b829520ff710",
+        "size": 2192
+      },
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/CODE/ID08.bin",
+        "sha256": "4c7b0c75e5055e46cc6ec5d0ef6a622f138f7f029e5e52b439e4c037d710b947",
+        "size": 1096
+      },
+      {
+        "kind": "C/decompilation export",
+        "path": "sources/resedit-1-0-3/CODE/ID08.c",
+        "sha256": "4ff99dac9ade862dd48656dd5d261b993df0e448a3839fad63621c64860cad61",
+        "size": 9391
+      },
+      {
+        "kind": "C/decompilation export",
+        "path": "sources/resedit-1-0-3/CODE/ID08.decomp.c",
+        "sha256": "1d0711d67ddee469de3fb2626ddb2d5a2569cca17358d6667e06bb07733df828",
+        "size": 15547
+      }
+    ],
+    "resource_attributes": "0x38",
+    "resource_fork_payload_offset": 52464,
+    "resource_fork_payload_sha256": "4c7b0c75e5055e46cc6ec5d0ef6a622f138f7f029e5e52b439e4c037d710b947",
+    "resource_fork_payload_size": 1096,
+    "sha256": "4c7b0c75e5055e46cc6ec5d0ef6a622f138f7f029e5e52b439e4c037d710b947",
+    "source_exports": [
+      "sources/resedit-1-0-3/CODE/ID08",
+      "sources/resedit-1-0-3/CODE/ID08.bin",
+      "sources/resedit-1-0-3/CODE/ID08.c",
+      "sources/resedit-1-0-3/CODE/ID08.decomp.c"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Motorola 68000 CODE Segment; 1096 curated payload bytes.",
+    "descriptive_name": "Motorola 68000 Code Segment 8",
+    "id": 8,
+    "key": "CODE:8",
+    "original_fourcc": "CODE",
+    "original_macintosh_name": null,
+    "original_name_bytes_hex": null,
+    "original_name_source": "comparison resource map",
+    "purpose": null,
+    "type": "CODE"
+  },
+  "review": {
+    "claims": {
+      "external_overlay_loader": "PROVEN",
+      "world_payload_boundary": "VERIFIED"
+    },
+    "notes": [
+      "load_overlay_from_resource (0x0006) reads the 0x20-byte Pacific Conflict header, image lengths 0x1a75c and 0x0dc8, and relocation streams 0x7078 and 0x03d8. alloc_and_read_resource_payload (0x0348) then reads file offset 0x22994 through EOF 0x3e580 (0x1bbec bytes) into A5-0x12fc, the world base exposed to the overlay as host+0x8c. bootstrap_window_and_load_overlay (0x039c) obtains the filename from HEL1:127+0x2a."
+    ]
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

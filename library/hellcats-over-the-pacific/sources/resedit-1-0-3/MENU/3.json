@@ -1,0 +1,181 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Only a deterministic structural identity is available"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [
+    {
+      "evidence": "*(int *)(unaff_A5 + -0xc46) = GetMenu(3);        /* $A9BF */",
+      "function_or_context": "install_menus",
+      "line": 3763,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 72,
+    "elements": [
+      {
+        "command_handler": "SystemEdit(0); SysBeep(5) if unhandled",
+        "command_handler_status": "VERIFIED",
+        "enabled": false,
+        "icon_number": 0,
+        "index": 1,
+        "keyboard_byte": 90,
+        "keyboard_equivalent": "Z",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Undo",
+        "text_bytes_hex": "556e646f"
+      },
+      {
+        "command_handler": "no action (separator)",
+        "command_handler_status": "VERIFIED",
+        "enabled": false,
+        "icon_number": 0,
+        "index": 2,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": true,
+        "style": 0,
+        "text": "-",
+        "text_bytes_hex": "2d"
+      },
+      {
+        "command_handler": "SystemEdit(2); SysBeep(5) if unhandled",
+        "command_handler_status": "VERIFIED",
+        "enabled": false,
+        "icon_number": 0,
+        "index": 3,
+        "keyboard_byte": 88,
+        "keyboard_equivalent": "X",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Cut",
+        "text_bytes_hex": "437574"
+      },
+      {
+        "command_handler": "SystemEdit(3); SysBeep(5) if unhandled",
+        "command_handler_status": "VERIFIED",
+        "enabled": false,
+        "icon_number": 0,
+        "index": 4,
+        "keyboard_byte": 67,
+        "keyboard_equivalent": "C",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Copy",
+        "text_bytes_hex": "436f7079"
+      },
+      {
+        "command_handler": "SystemEdit(4); SysBeep(5) if unhandled",
+        "command_handler_status": "VERIFIED",
+        "enabled": false,
+        "icon_number": 0,
+        "index": 5,
+        "keyboard_byte": 86,
+        "keyboard_equivalent": "V",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Paste",
+        "text_bytes_hex": "5061737465"
+      },
+      {
+        "command_handler": "SystemEdit(5); SysBeep(5) if unhandled",
+        "command_handler_status": "VERIFIED",
+        "enabled": false,
+        "icon_number": 0,
+        "index": 6,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Clear",
+        "text_bytes_hex": "436c656172"
+      }
+    ],
+    "format": "Classic Macintosh Menu Resource",
+    "properties": {
+      "enable_flags": "0x00000000",
+      "height": 0,
+      "item_count": 6,
+      "menu_definition_proc": 0,
+      "menu_id": 3,
+      "title": "Edit",
+      "title_bytes_hex": "45646974",
+      "width": 0
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/MENU/3.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/MENU/3.bin",
+    "binary_size": 72,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/MENU/3.bin",
+        "sha256": "b7c37cfd05c6c5dda23f4b0d20829512f53750326650b068168c4b18ab7d4ffe",
+        "size": 72
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/MENU/3.md",
+        "sha256": "0924da9084b5a6887f79fca2538593031a625011c135e7004b18c70b6b6437e2",
+        "size": 5761
+      }
+    ],
+    "resource_attributes": "0x00",
+    "resource_fork_payload_offset": 71320,
+    "resource_fork_payload_sha256": "b7c37cfd05c6c5dda23f4b0d20829512f53750326650b068168c4b18ab7d4ffe",
+    "resource_fork_payload_size": 72,
+    "sha256": "b7c37cfd05c6c5dda23f4b0d20829512f53750326650b068168c4b18ab7d4ffe",
+    "source_exports": [
+      "sources/resedit-1-0-3/MENU/3.bin",
+      "sources/resedit-1-0-3/MENU/3.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Menu Resource; 72 curated payload bytes.",
+    "descriptive_name": "Edit Menu",
+    "id": 3,
+    "key": "MENU:3",
+    "original_fourcc": "MENU",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/MENU/3.md",
+    "purpose": null,
+    "type": "MENU"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

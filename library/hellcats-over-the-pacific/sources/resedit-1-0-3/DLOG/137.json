@@ -1,0 +1,110 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "* The following bytes 0x3976..0x3a54 (not exported by Ghidra) are run_map_dialog [STRONG INFERENCE name], JT $10a (-> ID04 0x3976) [PROVEN, bytes]: does nothing in mission 2 (Flight School, A5-0x12f8 == 2); GetNewDialog(0x89 = DLOG 137 \"Map\"); JT $472; item 8 user item JT $b2 (map view); 0x1b8(dialog, 2, 1) default ring; ShowWindow; loop ModalDialog(JT $d2): item 3 \"Zoom In\" -> settings +0x26 /= 2 while > 1, redraw the map; item 4 \"Zoom Out\" -> settings +0x26 *= 2 while < 256, redraw; until item",
+      "function_or_context": "map_dialog_filter_proc",
+      "line": 2194,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 21,
+    "elements": [],
+    "format": "Classic Macintosh DialogTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 324,
+        "height": 286,
+        "left": 42,
+        "right": 474,
+        "top": 38,
+        "width": 432
+      },
+      "ditl_id": 137,
+      "go_away_box": false,
+      "refcon": 0,
+      "title": "",
+      "title_bytes_hex": "",
+      "visible": false,
+      "window_procedure_id": 1
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DLOG/137.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DLOG/137.bin",
+    "binary_size": 21,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Map",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DLOG/137.bin",
+        "sha256": "bf415d2f46b469966a9c1aa58203153c6a9aa184d8910b11e8b05dbd8063de7f",
+        "size": 21
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DLOG/137.md",
+        "sha256": "4740173e957cb730ea3b230b98a745c051d34b6f40aabd21ab054b79c9bf3255",
+        "size": 4087
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 287185,
+    "resource_fork_payload_sha256": "bf415d2f46b469966a9c1aa58203153c6a9aa184d8910b11e8b05dbd8063de7f",
+    "resource_fork_payload_size": 21,
+    "sha256": "bf415d2f46b469966a9c1aa58203153c6a9aa184d8910b11e8b05dbd8063de7f",
+    "source_exports": [
+      "sources/resedit-1-0-3/DLOG/137.bin",
+      "sources/resedit-1-0-3/DLOG/137.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "status": "PROVEN",
+        "target": "DITL:137"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh DialogTemplate; 21 curated payload bytes.",
+    "descriptive_name": "Map Dialog",
+    "id": 137,
+    "key": "DLOG:137",
+    "original_fourcc": "DLOG",
+    "original_macintosh_name": "Map",
+    "original_name_bytes_hex": "4d6170",
+    "original_name_source": "sources/resedit-1-0-3/DLOG/137.md",
+    "purpose": "Map Dialog",
+    "type": "DLOG"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

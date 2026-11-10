@@ -1,0 +1,439 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 312,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 251,
+          "height": 21,
+          "left": 400,
+          "right": 487,
+          "top": 230,
+          "width": 87
+        },
+        "data_hex": "456e64204d697373696f6e",
+        "data_length": 11,
+        "descriptive_identity": "End Mission",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "End Mission",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 219,
+          "height": 24,
+          "left": 400,
+          "right": 484,
+          "top": 195,
+          "width": 84
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 2,
+        "item_type": "user_item",
+        "offset": 28,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 291,
+          "height": 21,
+          "left": 400,
+          "right": 487,
+          "top": 270,
+          "width": 87
+        },
+        "data_hex": "4f4b",
+        "data_length": 2,
+        "descriptive_identity": "OK",
+        "enabled": true,
+        "index": 3,
+        "item_type": "button",
+        "offset": 42,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "OK",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 151,
+          "height": 21,
+          "left": 400,
+          "right": 487,
+          "top": 130,
+          "width": 87
+        },
+        "data_hex": "536b69702054657874",
+        "data_length": 9,
+        "descriptive_identity": "Skip Text",
+        "enabled": true,
+        "index": 4,
+        "item_type": "button",
+        "offset": 58,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Skip Text",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 200,
+          "height": 70,
+          "left": 10,
+          "right": 201,
+          "top": 130,
+          "width": 191
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 5,
+        "item_type": "user_item",
+        "offset": 82,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 291,
+          "height": 161,
+          "left": 215,
+          "right": 389,
+          "top": 130,
+          "width": 174
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 6,
+        "item_type": "user_item",
+        "offset": 96,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 290,
+          "height": 70,
+          "left": 10,
+          "right": 201,
+          "top": 220,
+          "width": 191
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 7,
+        "item_type": "user_item",
+        "offset": 110,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 108,
+          "height": 66,
+          "left": 10,
+          "right": 486,
+          "top": 42,
+          "width": 476
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 8,
+        "item_type": "user_item",
+        "offset": 124,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 21,
+          "height": 16,
+          "left": 110,
+          "right": 391,
+          "top": 5,
+          "width": 281
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 9,
+        "item_type": "user_item",
+        "offset": 138,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 127,
+          "height": 16,
+          "left": 10,
+          "right": 129,
+          "top": 111,
+          "width": 119
+        },
+        "data_hex": "4d697373696f6e20417761726473",
+        "data_length": 14,
+        "descriptive_identity": "Mission Awards",
+        "enabled": false,
+        "index": 10,
+        "item_type": "static_text",
+        "offset": 152,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Mission Awards",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 127,
+          "height": 16,
+          "left": 215,
+          "right": 346,
+          "top": 111,
+          "width": 131
+        },
+        "data_hex": "546172676574732044657374726f796564",
+        "data_length": 17,
+        "descriptive_identity": "Targets Destroyed",
+        "enabled": false,
+        "index": 11,
+        "item_type": "static_text",
+        "offset": 180,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Targets Destroyed",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 218,
+          "height": 16,
+          "left": 9,
+          "right": 198,
+          "top": 202,
+          "width": 189
+        },
+        "data_hex": "546f74616c2041697263726166742044657374726f796564",
+        "data_length": 24,
+        "descriptive_identity": "Total Aircraft Destroyed",
+        "enabled": false,
+        "index": 12,
+        "item_type": "static_text",
+        "offset": 212,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Total Aircraft Destroyed",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 127,
+          "height": 16,
+          "left": 355,
+          "right": 396,
+          "top": 111,
+          "width": 41
+        },
+        "data_hex": "53636f7265",
+        "data_length": 5,
+        "descriptive_identity": "Score",
+        "enabled": false,
+        "index": 13,
+        "item_type": "static_text",
+        "offset": 250,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Score",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 31,
+          "height": 16,
+          "left": 10,
+          "right": 109,
+          "top": 15,
+          "width": 99
+        },
+        "data_hex": "53636f72653a20313233343536",
+        "data_length": 13,
+        "descriptive_identity": "Score: 123456",
+        "enabled": false,
+        "index": 14,
+        "item_type": "static_text",
+        "offset": 270,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Score: 123456",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 36,
+          "height": 32,
+          "left": 454,
+          "right": 486,
+          "top": 4,
+          "width": 32
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 15,
+        "item_type": "user_item",
+        "offset": 298,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 15,
+      "encoded_count_minus_one": 14,
+      "item_count": 15,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/133.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/133.bin",
+    "binary_size": 312,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/133.bin",
+        "sha256": "5890492aef3a4b0b46742108bd0a5ab1ec47dc835a953f7044a4cb3ca9c2985e",
+        "size": 312
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/133.md",
+        "sha256": "c1824705eb165b8ee96c08e0e3080dcdd90f363547caef45f039420489b238d7",
+        "size": 11515
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 284196,
+    "resource_fork_payload_sha256": "5890492aef3a4b0b46742108bd0a5ab1ec47dc835a953f7044a4cb3ca9c2985e",
+    "resource_fork_payload_size": 312,
+    "sha256": "5890492aef3a4b0b46742108bd0a5ab1ec47dc835a953f7044a4cb3ca9c2985e",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/133.bin",
+      "sources/resedit-1-0-3/DITL/133.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "DLOG:133",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 312 curated payload bytes.",
+    "descriptive_name": "Mission Summary Dialog Items",
+    "id": 133,
+    "key": "DITL:133",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/133.md",
+    "purpose": "Mission Summary Dialog Items",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

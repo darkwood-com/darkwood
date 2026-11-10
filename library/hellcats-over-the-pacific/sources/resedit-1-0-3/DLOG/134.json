@@ -1,0 +1,110 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "* The following bytes 0x137a..0x149e (not exported by Ghidra) are run_high_scores_dialog [STRONG INFERENCE name], JT $102 (-> ID04 0x137a) [PROVEN, bytes]: GetNewDialog(0x86 = DLOG 134); JT $472; 0x1b8(dialog, 2, 1) default ring; grey user item 8 (JT $142); item 10 = this table (JT $e2); ShowWindow; loop ModalDialog(NULL): item 3 \"Erase Nonactive...\" -> if confirm_erase_high_scores == 2: reset_pilot_record for every record whose status +0x20 != 0 (roster locked meanwhile); if any was cleared, Ch",
+      "function_or_context": "draw_high_scores_table",
+      "line": 900,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 21,
+    "elements": [],
+    "format": "Classic Macintosh DialogTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 318,
+        "height": 280,
+        "left": 34,
+        "right": 475,
+        "top": 38,
+        "width": 441
+      },
+      "ditl_id": 134,
+      "go_away_box": false,
+      "refcon": 0,
+      "title": "",
+      "title_bytes_hex": "",
+      "visible": false,
+      "window_procedure_id": 1
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DLOG/134.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DLOG/134.bin",
+    "binary_size": 21,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "High Scores",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DLOG/134.bin",
+        "sha256": "9bec10c86e72594f71a4f567f418a0dafce48fde71d550d03b394955518599b7",
+        "size": 21
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DLOG/134.md",
+        "sha256": "49e36c7480b632792d1dac97e8a5080379a4699bcbbbca66828f1ba3c0ee8157",
+        "size": 4213
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 287160,
+    "resource_fork_payload_sha256": "9bec10c86e72594f71a4f567f418a0dafce48fde71d550d03b394955518599b7",
+    "resource_fork_payload_size": 21,
+    "sha256": "9bec10c86e72594f71a4f567f418a0dafce48fde71d550d03b394955518599b7",
+    "source_exports": [
+      "sources/resedit-1-0-3/DLOG/134.bin",
+      "sources/resedit-1-0-3/DLOG/134.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "status": "PROVEN",
+        "target": "DITL:134"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh DialogTemplate; 21 curated payload bytes.",
+    "descriptive_name": "High Scores Dialog",
+    "id": 134,
+    "key": "DLOG:134",
+    "original_fourcc": "DLOG",
+    "original_macintosh_name": "High Scores",
+    "original_name_bytes_hex": "486967682053636f726573",
+    "original_name_source": "sources/resedit-1-0-3/DLOG/134.md",
+    "purpose": "High Scores Dialog",
+    "type": "DLOG"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

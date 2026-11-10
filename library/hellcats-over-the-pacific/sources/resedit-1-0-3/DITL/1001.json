@@ -1,0 +1,143 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 80,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 100,
+          "height": 20,
+          "left": 200,
+          "right": 279,
+          "top": 80,
+          "width": 79
+        },
+        "data_hex": "4f4b",
+        "data_length": 2,
+        "descriptive_identity": "OK",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "OK",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 71,
+          "height": 61,
+          "left": 10,
+          "right": 291,
+          "top": 10,
+          "width": 281
+        },
+        "data_hex": "54686520776f726420225e3022206973206e6f7420636f72726563742e2020506c656173652074727920616761696e2e",
+        "data_length": 48,
+        "descriptive_identity": "The word \"^0\" is not correct.  Please try again.",
+        "enabled": false,
+        "index": 2,
+        "item_type": "static_text",
+        "offset": 18,
+        "padding_bytes": 0,
+        "placeholders": [
+          "^0"
+        ],
+        "reserved_handle": 0,
+        "text": "The word \"^0\" is not correct.  Please try again.",
+        "type_byte": "0x88",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 2,
+      "encoded_count_minus_one": 1,
+      "item_count": 2,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/1001.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/1001.bin",
+    "binary_size": 80,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/1001.bin",
+        "sha256": "66f5359139a02d80dd404556d95c39457b3d8cc382af61802c082beac155fa7c",
+        "size": 80
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/1001.md",
+        "sha256": "c1a2fe54a5794088a3dee11f4ec8208355a076460830fde21153829cd1c59e8b",
+        "size": 9152
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 286274,
+    "resource_fork_payload_sha256": "66f5359139a02d80dd404556d95c39457b3d8cc382af61802c082beac155fa7c",
+    "resource_fork_payload_size": 80,
+    "sha256": "66f5359139a02d80dd404556d95c39457b3d8cc382af61802c082beac155fa7c",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/1001.bin",
+      "sources/resedit-1-0-3/DITL/1001.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "ALRT:1001",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 80 curated payload bytes.",
+    "descriptive_name": "Copy Protection Answer Error Alert Controls",
+    "id": 1001,
+    "key": "DITL:1001",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/1001.md",
+    "purpose": "Copy Protection Answer Error Alert Controls",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

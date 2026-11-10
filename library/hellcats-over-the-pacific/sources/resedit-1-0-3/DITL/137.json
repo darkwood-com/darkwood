@@ -1,0 +1,478 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 372,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 275,
+          "height": 20,
+          "left": 355,
+          "right": 424,
+          "top": 255,
+          "width": 69
+        },
+        "data_hex": "4f4b",
+        "data_length": 2,
+        "descriptive_identity": "OK",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "OK",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 279,
+          "height": 24,
+          "left": 265,
+          "right": 349,
+          "top": 255,
+          "width": 84
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "live heading/range custom display region",
+        "enabled": false,
+        "index": 2,
+        "item_type": "user_item",
+        "offset": 18,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 225,
+          "height": 20,
+          "left": 275,
+          "right": 344,
+          "top": 205,
+          "width": 69
+        },
+        "data_hex": "5a6f6f6d20496e",
+        "data_length": 7,
+        "descriptive_identity": "Zoom In",
+        "enabled": true,
+        "index": 3,
+        "item_type": "button",
+        "offset": 32,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Zoom In",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 225,
+          "height": 20,
+          "left": 355,
+          "right": 424,
+          "top": 205,
+          "width": 69
+        },
+        "data_hex": "5a6f6f6d204f7574",
+        "data_length": 8,
+        "descriptive_identity": "Zoom Out",
+        "enabled": true,
+        "index": 4,
+        "item_type": "button",
+        "offset": 54,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Zoom Out",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 156,
+          "height": 16,
+          "left": 347,
+          "right": 423,
+          "top": 140,
+          "width": 76
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "live heading value field",
+        "enabled": false,
+        "index": 5,
+        "item_type": "static_text",
+        "offset": 76,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 171,
+          "height": 16,
+          "left": 347,
+          "right": 423,
+          "top": 155,
+          "width": 76
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "live range value field",
+        "enabled": false,
+        "index": 6,
+        "item_type": "static_text",
+        "offset": 90,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 201,
+          "height": 16,
+          "left": 340,
+          "right": 428,
+          "top": 185,
+          "width": 88
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "live scale value field",
+        "enabled": false,
+        "index": 7,
+        "item_type": "static_text",
+        "offset": 104,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 278,
+          "height": 253,
+          "left": 10,
+          "right": 263,
+          "top": 25,
+          "width": 253
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "mission map custom drawing region",
+        "enabled": false,
+        "index": 8,
+        "item_type": "user_item",
+        "offset": 118,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 23,
+          "height": 18,
+          "left": 170,
+          "right": 273,
+          "top": 5,
+          "width": 103
+        },
+        "data_hex": "4d697373696f6e204d6170",
+        "data_length": 11,
+        "descriptive_identity": "Mission Map",
+        "enabled": false,
+        "index": 9,
+        "item_type": "static_text",
+        "offset": 132,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Mission Map",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 201,
+          "height": 16,
+          "left": 293,
+          "right": 339,
+          "top": 185,
+          "width": 46
+        },
+        "data_hex": "5363616c653a",
+        "data_length": 6,
+        "descriptive_identity": "Scale:",
+        "enabled": false,
+        "index": 10,
+        "item_type": "static_text",
+        "offset": 158,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Scale:",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 41,
+          "height": 16,
+          "left": 275,
+          "right": 350,
+          "top": 25,
+          "width": 75
+        },
+        "data_hex": "4c6567656e643a",
+        "data_length": 7,
+        "descriptive_identity": "Legend:",
+        "enabled": false,
+        "index": 11,
+        "item_type": "static_text",
+        "offset": 178,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Legend:",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 127,
+          "height": 82,
+          "left": 275,
+          "right": 432,
+          "top": 45,
+          "width": 157
+        },
+        "data_hex": "2b202d2048656c6c6361740d54202d205072696d617279205461726765740d43202d20467269656e646c7920436172726965720d42202d20467269656e646c7920426173650d41202d204169726669656c640d",
+        "data_length": 83,
+        "descriptive_identity": "+ - Hellcat\rT - Primary Target\rC - Friendly Carrier\rB - Friendly Base\rA - Airfield\r",
+        "enabled": false,
+        "index": 12,
+        "item_type": "static_text",
+        "offset": 200,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "+ - Hellcat\rT - Primary Target\rC - Friendly Carrier\rB - Friendly Base\rA - Airfield\r",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 156,
+          "height": 16,
+          "left": 275,
+          "right": 335,
+          "top": 140,
+          "width": 60
+        },
+        "data_hex": "48656164696e673a",
+        "data_length": 8,
+        "descriptive_identity": "Heading:",
+        "enabled": false,
+        "index": 13,
+        "item_type": "static_text",
+        "offset": 298,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Heading:",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 171,
+          "height": 16,
+          "left": 287,
+          "right": 337,
+          "top": 155,
+          "width": 50
+        },
+        "data_hex": "52616e67653a",
+        "data_length": 6,
+        "descriptive_identity": "Range:",
+        "enabled": false,
+        "index": 14,
+        "item_type": "static_text",
+        "offset": 320,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Range:",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 241,
+          "height": 16,
+          "left": 305,
+          "right": 334,
+          "top": 225,
+          "width": 29
+        },
+        "data_hex": "2b",
+        "data_length": 1,
+        "descriptive_identity": "zoom-in plus-symbol label",
+        "enabled": false,
+        "index": 15,
+        "item_type": "static_text",
+        "offset": 340,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "+",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 241,
+          "height": 16,
+          "left": 385,
+          "right": 406,
+          "top": 225,
+          "width": 21
+        },
+        "data_hex": "2d",
+        "data_length": 1,
+        "descriptive_identity": "zoom-out minus-symbol label",
+        "enabled": false,
+        "index": 16,
+        "item_type": "static_text",
+        "offset": 356,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "-",
+        "type_byte": "0x88",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 16,
+      "encoded_count_minus_one": 15,
+      "item_count": 16,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/137.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/137.bin",
+    "binary_size": 372,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/137.bin",
+        "sha256": "eefdc52e90dd620997bb566c26128623a6df2039f9e910203847ba847b10c4e4",
+        "size": 372
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/137.md",
+        "sha256": "e2b28e10e47ecd0a8cab47ac04e07dcb9537cf0738975e97b1bbcec917f257f3",
+        "size": 11837
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 285060,
+    "resource_fork_payload_sha256": "eefdc52e90dd620997bb566c26128623a6df2039f9e910203847ba847b10c4e4",
+    "resource_fork_payload_size": 372,
+    "sha256": "eefdc52e90dd620997bb566c26128623a6df2039f9e910203847ba847b10c4e4",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/137.bin",
+      "sources/resedit-1-0-3/DITL/137.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "DLOG:137",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 372 curated payload bytes.",
+    "descriptive_name": "Mission Navigation Map Interface Items",
+    "id": 137,
+    "key": "DITL:137",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/137.md",
+    "purpose": "Mission Navigation Map Interface Items",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {
+      "map_region_role": "PROVEN",
+      "world_geometry_absent": "VERIFIED"
+    },
+    "notes": [
+      "Item 8 is the 253 by 253 QuickDraw user-item rectangle used by CODE:4 draw_map_view_item (ID04 0x33d6). The host calls overlay hook A5-0x1052, installed as Pacific Conflict plot_mission_map_symbols (0x0954), which traverses the active external scene graph. DITL:137 defines interface geometry and labels, not world geometry."
+    ]
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

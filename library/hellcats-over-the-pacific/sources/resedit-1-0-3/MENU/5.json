@@ -1,0 +1,251 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Only a deterministic structural identity is available"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [
+    {
+      "evidence": "*(int *)(unaff_A5 + -0xc3e) = GetMenu(5);        /* $A9BF */",
+      "function_or_context": "install_menus",
+      "line": 3767,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 188,
+    "elements": [
+      {
+        "command_handler": "set HEL1:127 detail word +$10 to 1",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 1,
+        "keyboard_byte": 49,
+        "keyboard_equivalent": "1",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Lowest Detail",
+        "text_bytes_hex": "4c6f776573742044657461696c"
+      },
+      {
+        "command_handler": "set HEL1:127 detail word +$10 to 2",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 2,
+        "keyboard_byte": 50,
+        "keyboard_equivalent": "2",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Low Detail",
+        "text_bytes_hex": "4c6f772044657461696c"
+      },
+      {
+        "command_handler": "set HEL1:127 detail word +$10 to 3",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 3,
+        "keyboard_byte": 51,
+        "keyboard_equivalent": "3",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Medium Detail",
+        "text_bytes_hex": "4d656469756d2044657461696c"
+      },
+      {
+        "command_handler": "set HEL1:127 detail word +$10 to 4",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 4,
+        "keyboard_byte": 52,
+        "keyboard_equivalent": "4",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "High Detail",
+        "text_bytes_hex": "486967682044657461696c"
+      },
+      {
+        "command_handler": "set HEL1:127 detail word +$10 to 5",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 5,
+        "keyboard_byte": 53,
+        "keyboard_equivalent": "5",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Highest Detail",
+        "text_bytes_hex": "486967686573742044657461696c"
+      },
+      {
+        "command_handler": "no action (separator)",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 6,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": true,
+        "style": 0,
+        "text": "-",
+        "text_bytes_hex": "2d"
+      },
+      {
+        "command_handler": "toggle bit 0 of HEL1:127 byte +$13 (Haze)",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 7,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Haze",
+        "text_bytes_hex": "48617a65"
+      },
+      {
+        "command_handler": "toggle bit 0 of HEL1:127 byte +$17 (Clouds)",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 8,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Clouds",
+        "text_bytes_hex": "436c6f756473"
+      },
+      {
+        "command_handler": "toggle bit 0 of HEL1:127 byte +$15 (Ground Clutter)",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 9,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Ground Clutter",
+        "text_bytes_hex": "47726f756e6420436c7574746572"
+      },
+      {
+        "command_handler": "toggle bit 0 of HEL1:127 byte +$19 (Shadows)",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 10,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Shadows",
+        "text_bytes_hex": "536861646f7773"
+      },
+      {
+        "command_handler": "toggle bit 0 of HEL1:127 byte +$1B (Real Time Shading)",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 11,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Real Time Shading",
+        "text_bytes_hex": "5265616c2054696d652053686164696e67"
+      }
+    ],
+    "format": "Classic Macintosh Menu Resource",
+    "properties": {
+      "enable_flags": "0xFFFFFFFF",
+      "height": 0,
+      "item_count": 11,
+      "menu_definition_proc": 0,
+      "menu_id": 5,
+      "title": "Scenery",
+      "title_bytes_hex": "5363656e657279",
+      "width": 0
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/MENU/5.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/MENU/5.bin",
+    "binary_size": 188,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/MENU/5.bin",
+        "sha256": "6ff162f2948b20801724a1c6aa27553066e364e5b61fe04c06be50d876cdd034",
+        "size": 188
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/MENU/5.md",
+        "sha256": "d94fdb8f9ffdcbc4f96294632525613c78acd43bbb0ea8b0f8e1ba6ee044c93c",
+        "size": 7957
+      }
+    ],
+    "resource_attributes": "0x00",
+    "resource_fork_payload_offset": 71816,
+    "resource_fork_payload_sha256": "6ff162f2948b20801724a1c6aa27553066e364e5b61fe04c06be50d876cdd034",
+    "resource_fork_payload_size": 188,
+    "sha256": "6ff162f2948b20801724a1c6aa27553066e364e5b61fe04c06be50d876cdd034",
+    "source_exports": [
+      "sources/resedit-1-0-3/MENU/5.bin",
+      "sources/resedit-1-0-3/MENU/5.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Menu Resource; 188 curated payload bytes.",
+    "descriptive_name": "Scenery Menu",
+    "id": 5,
+    "key": "MENU:5",
+    "original_fourcc": "MENU",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/MENU/5.md",
+    "purpose": null,
+    "type": "MENU"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

@@ -1,0 +1,148 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "UNKNOWN",
+    "identity": "PROVEN"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 23392,
+    "elements": [
+      {
+        "command": "0x8051",
+        "command_code": 81,
+        "data_offset_flag": true,
+        "index": 1,
+        "param1": 0,
+        "param2": 20
+      }
+    ],
+    "format": "Classic Macintosh snd Format 1 Sampled Sound",
+    "properties": {
+      "base_frequency_midi": 60,
+      "channels": 1,
+      "command_count": 1,
+      "compression": "none",
+      "encoding": 0,
+      "format_number": 1,
+      "loop_end": 16896,
+      "loop_start": 7232,
+      "modifier_count": 1,
+      "modifier_init_options": "0x000000A0",
+      "modifier_synth_id": 5,
+      "sample_data_offset": 42,
+      "sample_length": 23350,
+      "sample_pointer": 0,
+      "sample_rate_fixed_16_16": "0x56EE8BA3",
+      "sample_rate_hz": 22254.545455932617,
+      "sample_sha256": "82c1d1f5a8bd9f26543977d2d4452dde39b1eb14d3f6279e8c80e2ccfc16c569",
+      "sample_width_bits": 8,
+      "sound_header_offset": 20
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": null,
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "recovered resource-fork payload",
+    "binary_path": "sources/resedit-1-0-3/snds/16059.bin",
+    "binary_size": 23392,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Gear",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/snds/16059.bin",
+        "sha256": "ce7dfa1dcdf9130cc8bbc9079732a0f0dd8f74db8f2f84fdd5292bb495cda1ff",
+        "size": 23392
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/snds/16059.md",
+        "sha256": "003133b59415e3f0f60c8d8964b6713daaa6deb050ef02a1308acf6b05970467",
+        "size": 23
+      },
+      {
+        "kind": "supporting file",
+        "path": "sources/resedit-1-0-3/snds/16059.mp3",
+        "sha256": "cbc8462ae5da94c958c3571ddae0edf3900c7a4dd6ae001108c9fd949d433f36",
+        "size": 16566
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 349246,
+    "resource_fork_payload_sha256": "ce7dfa1dcdf9130cc8bbc9079732a0f0dd8f74db8f2f84fdd5292bb495cda1ff",
+    "resource_fork_payload_size": 23392,
+    "sha256": "ce7dfa1dcdf9130cc8bbc9079732a0f0dd8f74db8f2f84fdd5292bb495cda1ff",
+    "source_exports": [
+      "sources/resedit-1-0-3/snds/16059.bin",
+      "sources/resedit-1-0-3/snds/16059.md",
+      "sources/resedit-1-0-3/snds/16059.mp3"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh snd Format 1 Sampled Sound; 23392 curated payload bytes.",
+    "descriptive_name": "Gear Sampled Sound",
+    "id": 16059,
+    "key": "snds:16059",
+    "original_fourcc": "snd ",
+    "original_macintosh_name": "Gear",
+    "original_name_bytes_hex": "47656172",
+    "original_name_source": "sources/resedit-1-0-3/snds/16059.md",
+    "purpose": "Gear Sampled Sound",
+    "type": "snds"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [
+    {
+      "evidence": "* GetNamedResource('snd ', 8(A6)) $A9A1 to -4, NIL -> MOVEQ #1; JT $28a, JT $27a; FreeMem CMPI.L #$3000 / BGE,",
+      "function_or_context": "release_sound_slots",
+      "line": 2629,
+      "scope": "resource_type_by_name_not_individual_id",
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "* C args: +8 Pascal name, +0xc short slot. h = GetNamedResource('snd ', name) ($A9A1); none -> return 1. HNoPurge (JT $28a, $A04A); HUnlock (JT $27a); if FreeMem < 0x3000 and MaxMem(&grow) < 0x3000: HUnlock, HPurge, ReleaseResource ($A9A3), return 1 (out of memory). Makes sure the resource is marked purgeable (GetResAttrs $A9A6; if bit 0x20 is clear, SetResAttrs | 0x20 $A9A7 and ChangedResource); A5-0xd62[slot] = h; returns 0. Callers: FUN_00001f8e (0x1fc8.., thirteen call sites). Ghidra could n",
+      "function_or_context": "load_named_sound_into_slot",
+      "line": 2635,
+      "scope": "resource_type_by_name_not_individual_id",
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "* No LINK; CLR.L both globals; GetNamedResource('snd ', A5-0x2128); BEQ out; JT $272; SndNewChannel(&chan, 0, $80, nil);",
+      "function_or_context": "show_mission_summary_dialog",
+      "line": 1889,
+      "scope": "resource_type_by_name_not_individual_id",
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "*   h = GetNamedResource('snd ' (0x736e6420), name = Pascal string at",
+      "function_or_context": "play_named_sound_async",
+      "line": 1896,
+      "scope": "resource_type_by_name_not_individual_id",
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "unresolved": []
+}

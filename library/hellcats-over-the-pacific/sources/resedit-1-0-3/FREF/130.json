@@ -1,0 +1,91 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 7,
+    "elements": [],
+    "format": "Classic Macintosh File Reference",
+    "properties": {
+      "file_type": "APPL",
+      "filename": "",
+      "filename_bytes_hex": "",
+      "local_icon_id": 0
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/FREF/130.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/FREF/130.bin",
+    "binary_size": 7,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/FREF/130.bin",
+        "sha256": "6ae70fda6b5f837884e8d6de071429e82370e929a86f133fd3c2b8775a9d594b",
+        "size": 7
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/FREF/130.md",
+        "sha256": "ff955fffdb9f132b5d624cd460eb30cc942285941643e342d19fafd93be7ef19",
+        "size": 2052
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 65490,
+    "resource_fork_payload_sha256": "6ae70fda6b5f837884e8d6de071429e82370e929a86f133fd3c2b8775a9d594b",
+    "resource_fork_payload_size": 7,
+    "sha256": "6ae70fda6b5f837884e8d6de071429e82370e929a86f133fd3c2b8775a9d594b",
+    "source_exports": [
+      "sources/resedit-1-0-3/FREF/130.bin",
+      "sources/resedit-1-0-3/FREF/130.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "BNDL mapping entry in original bytes",
+        "kind": "bundle_local_id_0",
+        "source": "BNDL:132",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh File Reference; 7 curated payload bytes.",
+    "descriptive_name": "APPL File Reference with Local Icon 0",
+    "id": 130,
+    "key": "FREF:130",
+    "original_fourcc": "FREF",
+    "original_macintosh_name": null,
+    "original_name_bytes_hex": null,
+    "original_name_source": "comparison resource map",
+    "purpose": "APPL File Reference with Local Icon 0",
+    "type": "FREF"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

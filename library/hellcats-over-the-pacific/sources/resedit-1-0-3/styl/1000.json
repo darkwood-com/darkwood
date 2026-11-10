@@ -1,0 +1,97 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 22,
+    "elements": [
+      {
+        "face_bits": "0x00",
+        "faces": [],
+        "font_ascent": 10,
+        "font_id": 3,
+        "font_size": 10,
+        "index": 1,
+        "line_height": 13,
+        "rgb16": [
+          0,
+          0,
+          0
+        ],
+        "start_character": 0
+      }
+    ],
+    "format": "Classic Macintosh TextStyle Resource",
+    "properties": {
+      "style_run_count": 1
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/styl/1000.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/styl/1000.bin",
+    "binary_size": 22,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/styl/1000.bin",
+        "sha256": "37c942bd07b6676c4f0fd7b2c2f6097ba25df00bfdcbe9a83470d15de586e1f6",
+        "size": 22
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/styl/1000.md",
+        "sha256": "8a366db1c9f607867a4a095b4914fd335cef18badd8f329dc1080e27ee5caaf7",
+        "size": 4133
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 282340,
+    "resource_fork_payload_sha256": "37c942bd07b6676c4f0fd7b2c2f6097ba25df00bfdcbe9a83470d15de586e1f6",
+    "resource_fork_payload_size": 22,
+    "sha256": "37c942bd07b6676c4f0fd7b2c2f6097ba25df00bfdcbe9a83470d15de586e1f6",
+    "source_exports": [
+      "sources/resedit-1-0-3/styl/1000.bin",
+      "sources/resedit-1-0-3/styl/1000.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh TextStyle Resource; 22 curated payload bytes.",
+    "descriptive_name": "Copy Protection Text Style Run",
+    "id": 1000,
+    "key": "styl:1000",
+    "original_fourcc": "styl",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/styl/1000.md",
+    "purpose": "Copy Protection Text Style Run",
+    "type": "styl"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

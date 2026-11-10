@@ -1,0 +1,84 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 601,
+    "elements": [],
+    "format": "MacRoman Text Resource",
+    "properties": {
+      "encoding": "mac_roman",
+      "line_count": 7,
+      "line_ending": "CR",
+      "text": "  1. Run Hellcats  from your original unlocked floppy.  Any installation copies made\r      from your original floppy after this time  will contain your unique serial number.\r  2. Record your serial number on the registration card provided with the package.\r  3. Complete the card and mail it.  We will return to you (by mail only) an UNLOCK\r      CODE.  Any copy of Hellcats  with your serial number can be unlocked by entering\r      this UNLOCK CODE in the box below.  Note: when entering the UNLOCK CODE, you must\r      also enter an appropriate word from your manual—but this will be the last time!"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/TEXT/1000.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/TEXT/1000.bin",
+    "binary_size": 601,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/TEXT/1000.bin",
+        "sha256": "919b7c162f0e658569e262ac1e890ac595f292710ea84acb033a219cf3d6e417",
+        "size": 601
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/TEXT/1000.md",
+        "sha256": "3c67b4d3fde36c066c634b71987a96f02dccded1d8c34480e7abb0cc0d647126",
+        "size": 3453
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 64101,
+    "resource_fork_payload_sha256": "919b7c162f0e658569e262ac1e890ac595f292710ea84acb033a219cf3d6e417",
+    "resource_fork_payload_size": 601,
+    "sha256": "919b7c162f0e658569e262ac1e890ac595f292710ea84acb033a219cf3d6e417",
+    "source_exports": [
+      "sources/resedit-1-0-3/TEXT/1000.bin",
+      "sources/resedit-1-0-3/TEXT/1000.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "MacRoman Text Resource; 601 curated payload bytes.",
+    "descriptive_name": "Copy Protection Instructions Text",
+    "id": 1000,
+    "key": "TEXT:1000",
+    "original_fourcc": "TEXT",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/TEXT/1000.md",
+    "purpose": "Copy Protection Instructions Text",
+    "type": "TEXT"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}
