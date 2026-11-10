@@ -8,7 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "darkwood/flow": "^1.2",
-        "darkwood/ia-exception-bundle": "*",
+        "darkwood/ia-exception-bundle": "^1.0",
         "darkwood/media-bundle": "^1.0",
         "darkwood/navi": "^1.0",
         "symfony/ai-agent": "^0.8.0",
