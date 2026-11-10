@@ -1,0 +1,41 @@
+{% extends 'embed_base.html.twig' %}
+{% block title %}{{ 'page.benchmark_result'|trans }} — {{ parent() }}{% endblock %}
+{% block body %}
+    <div class="panel">
+        <h1>{{ 'page.benchmark_result'|trans }}</h1>
+        <p class="mono">{{ 'results.id'|trans }}: {{ report.id }}</p>
+        <p>{{ report.startedAt|date('c') }} → {{ report.finishedAt|date('c') }}</p>
+    </div>
+    <div class="panel">
+        <table class="data">
+            <thead>
+            <tr>
+                <th>{{ 'table.case'|trans }}</th>
+                <th>{{ 'table.model'|trans }}</th>
+                <th>{{ 'metrics.wall'|trans }}</th>
+                <th>{{ 'metrics.eval_count'|trans }}</th>
+                <th>{{ 'metrics.tokens_per_s'|trans }}</th>
+                <th>{{ 'table.error'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for cell in report.cells %}
+                <tr>
+                    <td class="mono">{{ cell.caseId }}</td>
+                    <td class="mono">{{ cell.modelName }}</td>
+                    <td>{{ cell.metrics.wallClockSeconds|number_format(3) }}</td>
+                    <td>{{ cell.metrics.evalCount ?? '—' }}</td>
+                    <td>{{ cell.metrics.tokensPerSecond is not null ? cell.metrics.tokensPerSecond|number_format(1) : '—' }}</td>
+                    <td>{{ cell.error ?? '—' }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="panel actions">
+        <a class="btn secondary" href="{{ path('no_life_models_export_benchmark', {id: report.id, _locale: app.request.locale, format: 'json'}) }}">{{ 'export.json'|trans }}</a>
+        <a class="btn secondary" href="{{ path('no_life_models_export_benchmark', {id: report.id, _locale: app.request.locale, format: 'csv'}) }}">{{ 'export.csv'|trans }}</a>
+        <a class="btn secondary" href="{{ path('no_life_models_export_benchmark', {id: report.id, _locale: app.request.locale, format: 'md'}) }}">{{ 'export.md'|trans }}</a>
+        <a class="btn" href="{{ path('no_life_models_embed_benchmark', {_locale: app.request.locale}) }}">{{ 'benchmark.run_suite'|trans }}</a>
+    </div>
+{% endblock %}

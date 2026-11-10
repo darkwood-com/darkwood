@@ -1,0 +1,43 @@
+{% extends 'embed_base.html.twig' %}
+{% block title %}{{ 'page.results'|trans }} — {{ parent() }}{% endblock %}
+{% block body %}
+    <div class="panel">
+        <h1>{{ 'page.results'|trans }}</h1>
+        <p class="mono">{{ 'results.id'|trans }}: {{ comparison.id }}</p>
+        <p>{{ 'results.compared_at'|trans }}: {{ comparison.comparedAt|date('c') }}</p>
+    </div>
+    <div class="panel">
+        <h2>{{ 'results.prompt'|trans }}</h2>
+        <pre class="mono">{{ comparison.prompt }}</pre>
+        {% if comparison.system %}
+            <h2>{{ 'results.system'|trans }}</h2>
+            <pre class="mono">{{ comparison.system }}</pre>
+        {% endif %}
+    </div>
+    <div class="grid-2">
+        {% for r in comparison.results %}
+            <section class="compare-col">
+                <h3 class="mono">{{ r.modelName }}</h3>
+                {% if r.error %}
+                    <p class="flash flash--error">{{ r.error }}</p>
+                {% endif %}
+                <dl class="metrics">
+                    <dt>{{ 'metrics.wall'|trans }}</dt><dd>{{ r.metrics.wallClockSeconds|number_format(3) }} s</dd>
+                    <dt>{{ 'metrics.total_duration'|trans }}</dt><dd>{{ r.metrics.totalDurationSeconds is not null ? (r.metrics.totalDurationSeconds|number_format(3) ~ ' s') : '—' }}</dd>
+                    <dt>{{ 'metrics.load_duration'|trans }}</dt><dd>{{ r.metrics.loadDurationSeconds is not null ? (r.metrics.loadDurationSeconds|number_format(3) ~ ' s') : '—' }}</dd>
+                    <dt>{{ 'metrics.prompt_eval_count'|trans }}</dt><dd>{{ r.metrics.promptEvalCount ?? '—' }}</dd>
+                    <dt>{{ 'metrics.eval_count'|trans }}</dt><dd>{{ r.metrics.evalCount ?? '—' }}</dd>
+                    <dt>{{ 'metrics.tokens_per_s'|trans }}</dt><dd>{{ r.metrics.tokensPerSecond is not null ? (r.metrics.tokensPerSecond|number_format(1)) : '—' }}</dd>
+                    <dt>{{ 'metrics.done_reason'|trans }}</dt><dd>{{ r.metrics.doneReason ?? '—' }}</dd>
+                </dl>
+                <div class="response">{{ r.responseText|nl2br }}</div>
+            </section>
+        {% endfor %}
+    </div>
+    <div class="panel actions">
+        <a class="btn secondary" href="{{ path('no_life_models_export_comparison', {id: comparison.id, _locale: app.request.locale, format: 'json'}) }}">{{ 'export.json'|trans }}</a>
+        <a class="btn secondary" href="{{ path('no_life_models_export_comparison', {id: comparison.id, _locale: app.request.locale, format: 'csv'}) }}">{{ 'export.csv'|trans }}</a>
+        <a class="btn secondary" href="{{ path('no_life_models_export_comparison', {id: comparison.id, _locale: app.request.locale, format: 'md'}) }}">{{ 'export.md'|trans }}</a>
+        <a class="btn" href="{{ path('no_life_models_embed_compare', {_locale: app.request.locale}) }}">{{ 'results.new_compare'|trans }}</a>
+    </div>
+{% endblock %}

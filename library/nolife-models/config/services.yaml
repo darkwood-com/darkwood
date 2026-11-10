@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+parameters:
+    app.catalog_json: '%kernel.project_dir%/data/catalog.json'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+
+    App\NoLifeModels\Domain\Catalog\ModelCatalogRepositoryInterface:
+        '@App\NoLifeModels\Infrastructure\Catalog\MergedModelCatalogRepository'
+
+    App\NoLifeModels\Domain\Runtime\LocalModelRuntimeInterface:
+        '@App\NoLifeModels\Infrastructure\Ollama\OllamaLocalModelRuntime'
+
+    App\NoLifeModels\Domain\Benchmark\BenchmarkRepositoryInterface:
+        '@App\NoLifeModels\Infrastructure\Benchmark\InMemoryBenchmarkRepository'
+
+    App\NoLifeModels\Domain\Export\ResultExporterInterface:
+        '@App\NoLifeModels\Infrastructure\Export\MultiFormatResultExporter'
+
+    App\NoLifeModels\Infrastructure\Catalog\JsonModelCatalogRepository:
+        arguments:
+            $jsonPath: '%app.catalog_json%'
+
+    models_dev.http_client:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - { timeout: 120 }
+
+    App\NoLifeModels\Infrastructure\Catalog\ModelsDevApiCatalogRepository:
+        arguments:
+            $httpClient: '@models_dev.http_client'
+            $cache: '@cache.app'
+            $apiUrl: '%env(MODELS_DEV_API_URL)%'
+            $enabled: '%env(bool:MODELS_DEV_ENABLED)%'
+            $cacheTtlSeconds: '%env(int:MODELS_DEV_CACHE_TTL)%'
+
+    ollama.http_client:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'createForBaseUri']
+        arguments:
+            - '%env(OLLAMA_BASE_URL)%'
+            - {
+                timeout: '%env(float:OLLAMA_TIMEOUT)%',
+                verify_peer: '%env(bool:OLLAMA_VERIFY_PEER)%',
+            }
+
+    App\NoLifeModels\Infrastructure\Ollama\OllamaLocalModelRuntime:
+        arguments:
+            $ollamaClient: '@ollama.http_client'

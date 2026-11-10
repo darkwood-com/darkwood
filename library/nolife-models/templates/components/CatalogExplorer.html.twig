@@ -1,0 +1,98 @@
+{% macro money(v) %}{% if v is not null %}{{ v|number_format(4) }}{% else %}—{% endif %}{% endmacro %}
+{% macro yn3(v) %}{% if v is null %}—{% elseif v %}{{ 'catalog.yn_yes'|trans }}{% else %}{{ 'catalog.yn_no'|trans }}{% endif %}{% endmacro %}
+
+<div{{ attributes.defaults({class: 'catalog-explorer panel'}) }}>
+    <h2>{{ 'catalog.filters'|trans }}</h2>
+    <div class="filters">
+        <div class="form-row">
+            <label for="catalog-q">{{ 'catalog.query'|trans }}</label>
+            <input id="catalog-q" type="search" data-model="query">
+        </div>
+        <div class="form-row">
+            <label for="catalog-provider">{{ 'catalog.provider'|trans }}</label>
+            <input id="catalog-provider" type="text" data-model="providerId">
+        </div>
+        <div class="form-row">
+            <label for="catalog-modality">{{ 'catalog.modality'|trans }}</label>
+            <select id="catalog-modality" data-model="modality">
+                <option value="">{{ 'catalog.any'|trans }}</option>
+                <option value="text">text</option>
+                <option value="image">image</option>
+                <option value="audio">audio</option>
+                <option value="video">video</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="catalog-minctx">{{ 'catalog.min_context'|trans }}</label>
+            <input id="catalog-minctx" type="number" min="0" step="1024" data-model="minContext">
+        </div>
+    </div>
+
+    {% set ncol = 18 + (this.showOver200kCostColumns ? 2 : 0) %}
+
+    <div class="catalog-scroll">
+    <table class="data catalog-table">
+        <thead>
+        <tr>
+            <th>{{ 'table.provider'|trans }}</th>
+            <th>{{ 'table.id'|trans }}</th>
+            <th>{{ 'table.name'|trans }}</th>
+            <th>{{ 'table.col_family'|trans }}</th>
+            <th class="num">{{ 'table.col_cost_input'|trans }}</th>
+            <th class="num">{{ 'table.col_cost_output'|trans }}</th>
+            <th class="num">{{ 'table.col_cost_reasoning'|trans }}</th>
+            {% if this.showOver200kCostColumns %}
+                <th class="num">{{ 'table.col_cost_over200k_input'|trans }}</th>
+                <th class="num">{{ 'table.col_cost_over200k_output'|trans }}</th>
+            {% endif %}
+            <th class="num">{{ 'table.context'|trans }}</th>
+            <th class="num">{{ 'table.col_max_input'|trans }}</th>
+            <th class="num">{{ 'table.col_max_output'|trans }}</th>
+            <th>{{ 'table.col_reasoning'|trans }}</th>
+            <th>{{ 'table.col_tools'|trans }}</th>
+            <th>{{ 'table.col_structured'|trans }}</th>
+            <th>{{ 'table.col_open_weights'|trans }}</th>
+            <th>{{ 'table.col_input_modalities'|trans }}</th>
+            <th>{{ 'table.col_knowledge'|trans }}</th>
+            <th>{{ 'table.col_released'|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in this.rows %}
+            <tr>
+                <td class="mono">{{ row.providerId.value }}</td>
+                <td class="mono">{{ row.id.value }}</td>
+                <td>{{ row.name }}</td>
+                <td class="mono">{{ row.family ?? '—' }}</td>
+                <td class="num mono">{{ _self.money(row.costPerMillionInput) }}</td>
+                <td class="num mono">{{ _self.money(row.costPerMillionOutput) }}</td>
+                <td class="num mono">{{ _self.money(row.costPerMillionReasoning) }}</td>
+                {% if this.showOver200kCostColumns %}
+                    <td class="num mono">{{ _self.money(row.costPerMillionOver200kInput) }}</td>
+                    <td class="num mono">{{ _self.money(row.costPerMillionOver200kOutput) }}</td>
+                {% endif %}
+                <td class="num mono">{{ row.contextLength ?? '—' }}</td>
+                <td class="num mono">{{ row.limitMaxInput ?? '—' }}</td>
+                <td class="num mono">{{ row.limitMaxOutput ?? '—' }}</td>
+                <td>{% if row.reasoningEnabled %}{{ 'catalog.yn_yes'|trans }}{% else %}{{ 'catalog.yn_no'|trans }}{% endif %}</td>
+                <td>{% if row.toolCallEnabled %}{{ 'catalog.yn_yes'|trans }}{% else %}{{ 'catalog.yn_no'|trans }}{% endif %}</td>
+                <td>{{ _self.yn3(row.structuredOutput) }}</td>
+                <td>{% if row.openWeights %}{{ 'catalog.open_weights_open'|trans }}{% else %}{{ 'catalog.open_weights_closed'|trans }}{% endif %}</td>
+                <td class="mono">{{ row.inputModalities|join(', ') }}</td>
+                <td class="mono">{{ row.knowledge ?? '—' }}</td>
+                <td class="mono">{{ row.releaseDate ?? '—' }}</td>
+                <td>
+                    <button type="button" class="btn secondary" title="{{ 'catalog.copy_id'|trans }}"
+                            onclick="navigator.clipboard.writeText('{{ row.id.value|e('js') }}')">{{ 'catalog.copy_id'|trans }}</button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="{{ ncol }}">{{ 'catalog.no_results'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>

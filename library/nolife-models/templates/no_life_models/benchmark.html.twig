@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'page.benchmark'|trans }} — {{ parent() }}{% endblock %}
+{% block body %}
+    <div class="panel">
+        <h1>{{ 'page.benchmark'|trans }}</h1>
+        <p>{{ 'page.benchmark_intro'|trans }}</p>
+        <h2>{{ 'benchmark.cases'|trans }}</h2>
+        <ul>
+            {% for c in cases %}
+                <li><strong>{{ c.title }}</strong> ({{ c.locale }}) — <span class="mono">{{ c.id }}</span></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="panel">
+        {{ form_start(form, {attr: {'data-turbo': 'false'}}) }}
+        {{ form_row(form.modelA) }}
+        {{ form_row(form.modelB) }}
+        {{ form_row(form.submit) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
