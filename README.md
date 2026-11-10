@@ -14,6 +14,7 @@ Public monorepo for Darkwood open-source projects.
 - [Flow Pipe](library/flow-pipe) — streaming token-pipeline demonstration.
 - [Flow This Person Does Not Exist](library/flow-thispersondoesnotexist) — parallel fictional-person image fetcher.
 - [Flow JEV](library/flow-jev) — archived experimental Flow and JEV platform integration.
+- [Hearthbreaker](library/hearthbreaker) — archived Hearthstone helper preserved as a sanitized source snapshot.
 - [Kibono Flow](library/kibono-flow) — observable product-sync and ETL demonstration.
 - [LGS](library/lgs) — the LGS game and its Godot implementation.
 - [LLM Game of Life](library/llm-game-of-life) — pedagogical exploration of LLM concepts in PHP.

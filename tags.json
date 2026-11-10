@@ -85,6 +85,13 @@
       "topics": ["archive", "demo", "flow", "php", "symfony"]
     },
     {
+      "id": "hearthbreaker",
+      "path": "library/hearthbreaker",
+      "domain": "darkwood",
+      "description": "Archived Hearthstone collection helper preserved as a sanitized source snapshot.",
+      "topics": ["archive", "game", "php", "symfony"]
+    },
+    {
       "id": "kibono-flow",
       "path": "library/kibono-flow",
       "domain": "matyo91",
