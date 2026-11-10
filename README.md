@@ -4,16 +4,20 @@ Public monorepo for Darkwood open-source projects.
 
 ## Projects
 
+- [Darkwood GitHub Profile](library/.github) — organization profile and public community templates.
 - [Composio MCP](library/composio-mcp) — Symfony MCP server integrating Composio actions and workflows.
 - [Connect Flow](library/connect-flow) — Symfony prototype connecting natural-language capabilities to the Flow runtime.
+- [Crypto Trade](library/crypto-trade) — experimental cryptocurrency market-analysis application.
 - [Darkwood PHP](library/darkwood-php) — PHP libraries and Symfony bundles.
 - [Darkwood Publish Article MCP Apps](library/darkwood-publish-article-mcp-apps) — MCP application for article generation and publication workflows.
 - [Darkwood Showreel](library/darkwood-showreel) — web and terminal showreel built with Symfony TUI.
+- [Darkwood Memory](library/darkwood-memory) — interactive demonstrations about preserving creative memory.
 - [Diablo PHP](library/diablo-php) — archived PHP and FFI game-engine implementation.
 - [Flow Partial Function Application](library/flow-partial-function-application) — PHP 8.6 and Darkwood Flow study.
 - [Flow Pipe](library/flow-pipe) — streaming token-pipeline demonstration.
 - [Flow This Person Does Not Exist](library/flow-thispersondoesnotexist) — parallel fictional-person image fetcher.
 - [Flow JEV](library/flow-jev) — archived experimental Flow and JEV platform integration.
+- [Flow Live](library/flow-live) — live Darkwood Flow demonstration application.
 - [Hearthbreaker](library/hearthbreaker) — archived Hearthstone helper preserved as a sanitized source snapshot.
 - [Hellcats Over the Pacific](library/hellcats-over-the-pacific) — evidence-backed Godot port of the classic Macintosh flight simulator.
 - [Kibono Flow](library/kibono-flow) — observable product-sync and ETL demonstration.
@@ -29,10 +33,15 @@ Public monorepo for Darkwood open-source projects.
 - [Nolife Tracker](library/nolife-tracker) — terminal registry for AI accounts and subscriptions.
 - [Omer Quotes](library/omer-quotes) — archived quotation extraction and exploration project.
 - [PHP Flow](library/php-flow) — PHP profiling demonstration using Darkwood Flow.
+- [Prime AI Answer](library/prime-ai-answer) — MCP experiment for concise AI-assisted answers.
 - [Quake III Arena PHP](library/quake-3-arena-php) — archived PHP FFI engine study.
+- [Recherche Entreprise MCP](library/recherche-entreprise-mcp) — PHP MCP and company-research experiment.
 - [RxJS Flow](library/rxjs-flow) — RxJS streaming concepts mapped onto Darkwood Flow.
 - [SketchUp Shape](library/sketchup-shape) — archived shape-generation experiment.
+- [Thumbnail MCP](library/thumbnail-mcp) — Replicate-backed thumbnail generation tool.
+- [URL Scraping API](library/url-scrapping-api) — Symfony API for structured web extraction.
 - [VibePHP Flow](library/vibephp-flow) — VibePHP profiling demonstration using Darkwood Flow.
+- [WYSIWYL](library/wysiwyl) — What You See Is What You Learn experiment.
 
 Projects live under [`library/`](library/). Public discovery metadata is available
 in [`tags.json`](tags.json). See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the

@@ -216,6 +216,69 @@
       "domain": "matyo91",
       "description": "VibePHP profiling demonstration built on Darkwood Flow.",
       "topics": ["demo", "flow", "php", "symfony"]
+    },
+    {
+      "id": "github",
+      "path": "library/.github",
+      "domain": "darkwood",
+      "description": "Public GitHub organization profile, community files and issue templates.",
+      "topics": ["github", "organization-profile"]
+    },
+    {
+      "id": "crypto-trade",
+      "path": "library/crypto-trade",
+      "domain": "darkwood",
+      "description": "Experimental cryptocurrency trading and market-analysis application.",
+      "topics": ["finance", "php", "web"]
+    },
+    {
+      "id": "darkwood-memory",
+      "path": "library/darkwood-memory",
+      "domain": "matyo91",
+      "description": "Interactive demonstrations accompanying the Darkwood memory article.",
+      "topics": ["creative-coding", "memory", "web"]
+    },
+    {
+      "id": "flow-live",
+      "path": "library/flow-live",
+      "domain": "matyo91",
+      "description": "Live demonstration application built around Darkwood Flow.",
+      "topics": ["demo", "flow", "php", "symfony"]
+    },
+    {
+      "id": "prime-ai-answer",
+      "path": "library/prime-ai-answer",
+      "domain": "matyo91",
+      "description": "MCP experiment for producing concise AI-assisted answers.",
+      "topics": ["ai", "mcp"]
+    },
+    {
+      "id": "recherche-entreprise-mcp",
+      "path": "library/recherche-entreprise-mcp",
+      "domain": "matyo91",
+      "description": "PHP MCP and company-research experimentation project.",
+      "topics": ["mcp", "php", "symfony"]
+    },
+    {
+      "id": "thumbnail-mcp",
+      "path": "library/thumbnail-mcp",
+      "domain": "matyo91",
+      "description": "Replicate-backed MCP tool for generating thumbnail images.",
+      "topics": ["ai", "image-generation", "mcp"]
+    },
+    {
+      "id": "url-scrapping-api",
+      "path": "library/url-scrapping-api",
+      "domain": "matyo91",
+      "description": "Symfony API for extracting structured content from web pages.",
+      "topics": ["api", "automation", "php", "symfony"]
+    },
+    {
+      "id": "wysiwyl",
+      "path": "library/wysiwyl",
+      "domain": "darkwood",
+      "description": "What You See Is What You Learn public experiment.",
+      "topics": ["experiment", "web"]
     }
   ]
 }
