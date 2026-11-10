@@ -1,0 +1,41 @@
+{% extends 'embed_base.html.twig' %}
+{% block title %}{{ 'page.catalog'|trans }} — {{ parent() }}{% endblock %}
+{% block body %}
+    <div class="panel">
+        <h1>{{ 'page.catalog'|trans }}</h1>
+        <p>{{ 'page.catalog_intro'|trans }}</p>
+        {# if truncated %}
+            <p class="flash flash--success">{{ 'embed.catalog_truncated'|trans({'%count%': rowLimit}) }}</p>
+        {% endif #}
+    </div>
+    <div class="panel catalog-scroll">
+        <table class="data">
+            <thead>
+            <tr>
+                <th>{{ 'table.provider'|trans }}</th>
+                <th>{{ 'table.id'|trans }}</th>
+                <th>{{ 'table.name'|trans }}</th>
+                <th>{{ 'table.col_family'|trans }}</th>
+                <th>{{ 'table.context'|trans }}</th>
+                <th>{{ 'table.col_cost_input'|trans }}</th>
+                <th>{{ 'table.col_cost_output'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+                <tr>
+                    <td class="mono">{{ row.providerId.value }}</td>
+                    <td class="mono">{{ row.id.value }}</td>
+                    <td>{{ row.name }}</td>
+                    <td class="mono">{{ row.family ?? '—' }}</td>
+                    <td>{{ row.contextLength ?? '—' }}</td>
+                    <td class="mono">{% if row.costPerMillionInput is not null %}{{ row.costPerMillionInput|number_format(4) }}{% else %}—{% endif %}</td>
+                    <td class="mono">{% if row.costPerMillionOutput is not null %}{{ row.costPerMillionOutput|number_format(4) }}{% else %}—{% endif %}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="7">{{ 'catalog.no_results'|trans }}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

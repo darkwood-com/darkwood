@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'page.exports'|trans }} — {{ parent() }}{% endblock %}
+{% block body %}
+    <div class="panel">
+        <h1>{{ 'page.exports'|trans }}</h1>
+        <p>{{ 'page.exports_intro'|trans }}</p>
+    </div>
+    <div class="panel">
+        <h2>{{ 'exports.comparisons'|trans }}</h2>
+        {% if comparisonIds is empty %}
+            <p>{{ 'exports.none_comparisons'|trans }}</p>
+        {% else %}
+            <ul>
+                {% for cid in comparisonIds %}
+                    <li class="mono">
+                        {{ cid }}
+                        <a href="{{ path('no_life_models_results', {id: cid, _locale: app.request.locale}) }}">{{ 'exports.view'|trans }}</a>
+                        —
+                        <a href="{{ path('no_life_models_export_comparison', {id: cid, _locale: app.request.locale, format: 'json'}) }}">JSON</a>
+                        <a href="{{ path('no_life_models_export_comparison', {id: cid, _locale: app.request.locale, format: 'csv'}) }}">CSV</a>
+                        <a href="{{ path('no_life_models_export_comparison', {id: cid, _locale: app.request.locale, format: 'md'}) }}">MD</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="panel">
+        <h2>{{ 'exports.benchmarks'|trans }}</h2>
+        {% if benchmarkIds is empty %}
+            <p>{{ 'exports.none_benchmarks'|trans }}</p>
+        {% else %}
+            <ul>
+                {% for bid in benchmarkIds %}
+                    <li class="mono">
+                        {{ bid }}
+                        <a href="{{ path('no_life_models_benchmark_result', {id: bid, _locale: app.request.locale}) }}">{{ 'exports.view'|trans }}</a>
+                        —
+                        <a href="{{ path('no_life_models_export_benchmark', {id: bid, _locale: app.request.locale, format: 'json'}) }}">JSON</a>
+                        <a href="{{ path('no_life_models_export_benchmark', {id: bid, _locale: app.request.locale, format: 'csv'}) }}">CSV</a>
+                        <a href="{{ path('no_life_models_export_benchmark', {id: bid, _locale: app.request.locale, format: 'md'}) }}">MD</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}

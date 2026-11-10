@@ -1,0 +1,6 @@
+{
+    "signals": [
+        "authentication check removed",
+        "src/Security/AuthGuard.php"
+    ]
+}

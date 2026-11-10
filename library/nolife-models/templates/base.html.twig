@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ 'app.name'|trans }}{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a1a2e'/><text x='16' y='21' text-anchor='middle' fill='%23eee' font-size='14' font-family='system-ui'>NL</text></svg>">
+    {% block stylesheets %}{% endblock %}
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+</head>
+<body class="layout">
+<header class="header">
+    <div class="header__brand">
+        <a href="{{ path('no_life_models_dashboard', {_locale: app.request.locale}) }}" class="header__title">{{ 'app.name'|trans }}</a>
+        <span class="header__tag">{{ 'app.tagline'|trans }}</span>
+    </div>
+    <nav class="nav" aria-label="{{ 'nav.main'|trans }}">
+        <a href="{{ path('no_life_models_dashboard', {_locale: app.request.locale}) }}">{{ 'nav.dashboard'|trans }}</a>
+        <a href="{{ path('no_life_models_catalog', {_locale: app.request.locale}) }}">{{ 'nav.catalog'|trans }}</a>
+        <a href="{{ path('no_life_models_ollama', {_locale: app.request.locale}) }}">{{ 'nav.ollama'|trans }}</a>
+        <a href="{{ path('no_life_models_compare', {_locale: app.request.locale}) }}">{{ 'nav.compare'|trans }}</a>
+        <a href="{{ path('no_life_models_benchmark', {_locale: app.request.locale}) }}">{{ 'nav.benchmark'|trans }}</a>
+        <a href="{{ path('no_life_models_exports', {_locale: app.request.locale}) }}">{{ 'nav.exports'|trans }}</a>
+    </nav>
+    <div class="locale">
+        {% set rp = app.request.attributes.get('_route_params') ?? {} %}
+        {% set route = app.request.attributes.get('_route') %}
+        {% if route %}
+            <a href="{{ path(route, rp|merge({_locale: 'en'})) }}" class="{{ app.request.locale == 'en' ? 'is-active' : '' }}">EN</a>
+            <span aria-hidden="true">|</span>
+            <a href="{{ path(route, rp|merge({_locale: 'fr'})) }}" class="{{ app.request.locale == 'fr' ? 'is-active' : '' }}">FR</a>
+        {% endif %}
+    </div>
+</header>
+<main class="main">
+    {% for message in app.flashes('success') %}
+        <p class="flash flash--success" role="status">{{ message }}</p>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <p class="flash flash--error" role="alert">{{ message }}</p>
+    {% endfor %}
+    {% block body %}{% endblock %}
+</main>
+<footer class="footer">
+    <small>{{ 'app.footer'|trans }}</small>
+</footer>
+</body>
+</html>

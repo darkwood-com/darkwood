@@ -1,0 +1,15 @@
+{
+    "schema": "no_life_models.catalog_file",
+    "version": 1,
+    "models": [
+        {
+            "id": "meta/llama-3.3-70b",
+            "providerId": "meta",
+            "name": "Llama 3.3 70B",
+            "contextLength": 131072,
+            "inputModalities": ["text"],
+            "outputModalities": ["text"],
+            "capabilities": ["tool_call"]
+        }
+    ]
+}

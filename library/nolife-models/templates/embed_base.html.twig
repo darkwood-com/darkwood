@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}" data-turbo="false">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ 'app.name'|trans }}{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a1a2e'/><text x='16' y='21' text-anchor='middle' fill='%23eee' font-size='14' font-family='system-ui'>NL</text></svg>">
+    {% block importmap %}{{ importmap('embed') }}{% endblock %}
+</head>
+<body class="layout embed-layout">
+<main class="main">
+    {#<p class="embed-banner">{{ 'embed.banner'|trans }}</p>#}
+    {% block body %}{% endblock %}
+</main>
+</body>
+</html>

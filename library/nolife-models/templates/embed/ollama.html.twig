@@ -1,0 +1,35 @@
+{% extends 'embed_base.html.twig' %}
+{% block title %}{{ 'page.ollama'|trans }} — {{ parent() }}{% endblock %}
+{% block body %}
+    <div class="panel">
+        <h1>{{ 'page.ollama'|trans }}</h1>
+        <p>{{ 'page.ollama_intro'|trans }}</p>
+        {% if ollamaError %}
+            <p class="flash flash--error">{{ 'page.ollama_error'|trans({'%message%': ollamaError}) }}</p>
+        {% endif %}
+    </div>
+    <div class="panel">
+        {% if models is empty and not ollamaError %}
+            <p>{{ 'page.ollama_empty'|trans }}</p>
+        {% else %}
+            <table class="data">
+                <thead>
+                <tr>
+                    <th>{{ 'table.model'|trans }}</th>
+                    <th>{{ 'table.size'|trans }}</th>
+                    <th>{{ 'table.modified'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for m in models %}
+                    <tr>
+                        <td class="mono">{{ m.name }}</td>
+                        <td>{% if m.sizeBytes %}{{ (m.sizeBytes / (1024**3))|number_format(2) }} GB{% else %}—{% endif %}</td>
+                        <td>{{ m.modifiedAt ?? '—' }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

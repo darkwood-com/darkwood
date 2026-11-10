@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'page.dashboard'|trans }} — {{ parent() }}{% endblock %}
+{% block body %}
+    <div class="panel">
+        <h1>{{ 'page.dashboard'|trans }}</h1>
+        <p>{{ 'page.dashboard_intro'|trans }}</p>
+        <ul>
+            <li><a href="{{ path('no_life_models_catalog', {_locale: app.request.locale}) }}">{{ 'nav.catalog'|trans }}</a> — {{ 'page.dashboard_catalog'|trans }}</li>
+            <li><a href="{{ path('no_life_models_ollama', {_locale: app.request.locale}) }}">{{ 'nav.ollama'|trans }}</a> — {{ 'page.dashboard_ollama'|trans }}</li>
+            <li><a href="{{ path('no_life_models_compare', {_locale: app.request.locale}) }}">{{ 'nav.compare'|trans }}</a> — {{ 'page.dashboard_compare'|trans }}</li>
+            <li><a href="{{ path('no_life_models_benchmark', {_locale: app.request.locale}) }}">{{ 'nav.benchmark'|trans }}</a> — {{ 'page.dashboard_benchmark'|trans }}</li>
+            <li><a href="{{ path('no_life_models_exports', {_locale: app.request.locale}) }}">{{ 'nav.exports'|trans }}</a> — {{ 'page.dashboard_exports'|trans }}</li>
+        </ul>
+    </div>
+{% endblock %}

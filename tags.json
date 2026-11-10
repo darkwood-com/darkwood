@@ -104,6 +104,41 @@
       "domain": "matyo91",
       "description": "Assets and automation for the matyo91 GitHub profile.",
       "topics": ["github-profile", "personal"]
+    },
+    {
+      "id": "matyo91-live",
+      "path": "library/matyo91-live",
+      "domain": "matyo91",
+      "description": "Streaming scenes, overlays and editable media sources for matyo91 live sessions.",
+      "topics": ["media", "personal", "streaming"]
+    },
+    {
+      "id": "nolife-language",
+      "path": "library/nolife-language",
+      "domain": "matyo91",
+      "description": "Symfony CLI experiment measuring language and wording effects on LLM token cost.",
+      "topics": ["ai", "demo", "php", "symfony"]
+    },
+    {
+      "id": "nolife-models",
+      "path": "library/nolife-models",
+      "domain": "matyo91",
+      "description": "Local explorer and comparator for public AI model catalogs and Ollama runtimes.",
+      "topics": ["ai", "ollama", "php", "symfony"]
+    },
+    {
+      "id": "nolife-tokens",
+      "path": "library/nolife-tokens",
+      "domain": "matyo91",
+      "description": "Symfony CLI experiments for token analysis and Darkwood Flow pipelines.",
+      "topics": ["ai", "demo", "flow", "php", "symfony"]
+    },
+    {
+      "id": "nolife-tracker",
+      "path": "library/nolife-tracker",
+      "domain": "matyo91",
+      "description": "Terminal-first registry for AI provider accounts, subscriptions and entitlements.",
+      "topics": ["ai", "cli", "php", "symfony"]
     }
   ]
 }
