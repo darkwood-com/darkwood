@@ -12,9 +12,9 @@ public issue.
 ## Code changes
 
 Code pull requests are reserved for authorized Darkwood organization members.
-External contributors should open an issue instead of a pull request. GitHub
-may technically allow a pull request from a public fork; such a pull request is
-not an accepted contribution channel and will be redirected to an issue.
+GitHub restricts pull request creation to repository collaborators. External
+contributors should use a public issue for bug reports, suggestions, and
+feature requests.
 
 Generated satellite repositories are publication destinations. Code changes
 must be made in this canonical monorepo. Satellite automation is limited to
