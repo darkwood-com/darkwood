@@ -1,0 +1,5 @@
+framework:
+    notifier:
+        message_bus: false
+        chatter_transports:
+            telegram: '%env(default:notifier.null_dsn:TELEGRAM_DSN)%'

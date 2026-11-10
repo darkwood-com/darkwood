@@ -1,0 +1,45 @@
+{
+  "name": "@uniflow-io/uniflow-client-node",
+  "version": "1.1.15",
+  "description": "Uniflow node client",
+  "author": {
+    "name": "Mathieu Ledru",
+    "email": "matyo91@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/uniflow-io/uniflow/issues"
+  },
+  "homepage": "https://github.com/uniflow-io/uniflow/tree/1.x/library/uniflow-client-node#readme",
+  "keywords": [
+    "uniflow",
+    "uniflow-client"
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uniflow-io/uniflow.git",
+    "directory": "library/uniflow-client-node"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.0",
+    "merge": "^2.1.1",
+    "vm": "^0.1.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.6",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1"
+  }
+}

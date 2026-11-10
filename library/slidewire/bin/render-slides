@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Run from the project's Nix environment; pass a comma-separated deck list.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+if [[ $# -gt 0 ]]; then
+    export DECKS="$1"
+    shift
+fi
+exec node bin/render-presentations.cjs "$@"

@@ -1,0 +1,92 @@
+<nav class="theme-nav row g-0 align-items-center" aria-label="Blog navigation">
+    <div class="theme-nav__primary col-md">
+        <a class="theme-nav__brand" href="{{ path('blog_home') }}">
+            <img src="{{ asset('logo.svg') }}" alt="Darkwood Blog" class="theme-nav__brand-mark">
+            <span class="theme-nav__brand-text">Blog</span>
+        </a>
+
+        <ul class="theme-nav__links">
+            <li>
+                <a href="{{ path('blog_home') }}" class="{% if activeRoute == 'blog_home' %}active{% endif %}">
+                    {{ 'blog.menu.articles'|trans }}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('blog_watch') }}" class="{% if activeRoute == 'blog_watch' %}active{% endif %}">
+                    {{ 'blog.menu.watch'|trans }}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('blog_release') }}" class="{% if activeRoute == 'blog_release' %}active{% endif %}">
+                    {{ 'blog.menu.release'|trans }}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('blog_creator') }}" class="{% if activeRoute == 'blog_creator' %}active{% endif %}">
+                    {{ 'blog.menu.creator'|trans }}
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="theme-nav__actions col-md-auto">
+        <div class="theme-nav__locales dropdown" aria-label="Locales">
+            <a href="{{ path('blog_home') }}" class="dropdown-toggle theme-nav__locale-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{{ asset('/common/images/site/flags/' ~ app.request.locale ~ '.png') }}" alt="{{ app.request.locale }}" class="theme-nav__flag">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                {% for locale, pageLink in pageLinks %}
+                    <li>
+                        <a href="{{ pageLink }}" class="dropdown-item{% if app.request.locale == locale %} active{% endif %}">
+                            <img src="{{ asset('/common/images/site/flags/' ~ locale ~ '.png') }}" alt="{{ locale }}" class="theme-nav__flag">
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {% if app.user %}
+            <a class="theme-nav__profile" href="{{ path('common_profile') }}">
+                <img src="{{ asset(vich_uploader_asset(app.user, 'image')|default('/common/images/profile/default.jpg'))|imagine_filter('user') }}" alt="{{ app.user.username }}">
+                <span>{{ app.user.username }}</span>
+            </a>
+            <form action="{{ path('security_logout') }}" method="get">
+                <button type="submit" class="theme-nav__button theme-nav__button--logout">
+                    {{ 'common.menu.logout_btn'|trans }}
+                </button>
+            </form>
+        {% else %}
+            <a class="theme-nav__button theme-nav__button--login" href="{{ path('security_login') }}">
+                {{ 'common.menu.login_btn'|trans }}
+            </a>
+        {% endif %}
+    </div>
+</nav>
+
+<ul class="theme-mobile-nav">
+    <li class="theme-mobile-nav__home">
+        <a href="{{ path('blog_home') }}" class="{% if currentRoute == 'blog_home' %}active{% endif %}">
+            Blog
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('blog_home') }}" class="{% if activeRoute == 'blog_home' %}active{% endif %}">
+            {{ 'blog.menu.articles'|trans }}
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('blog_watch') }}" class="{% if activeRoute == 'blog_watch' %}active{% endif %}">
+            {{ 'blog.menu.watch'|trans }}
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('blog_release') }}" class="{% if activeRoute == 'blog_release' %}active{% endif %}">
+            {{ 'blog.menu.release'|trans }}
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('blog_creator') }}" class="{% if activeRoute == 'blog_creator' %}active{% endif %}">
+            {{ 'blog.menu.creator'|trans }}
+        </a>
+    </li>
+</ul>

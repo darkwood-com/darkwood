@@ -1,0 +1,9 @@
+{% if canonical %}
+<link rel="canonical" href="{{ canonical.url }}" hreflang="{{ canonical.locale }}">
+{% endif %}
+
+{% for locale, url in pageLinks %}
+{% if not canonical or canonical.locale != locale %}
+<link rel="alternate" href="{{ url }}" hreflang="{{ locale }}">
+{% endif %}
+{% endfor %}

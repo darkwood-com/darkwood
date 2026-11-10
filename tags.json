@@ -370,6 +370,27 @@
       "domain": "matyo91",
       "description": "Archived Mateafox TypeScript API and Gatsby web application.",
       "topics": ["archive", "gatsby", "typescript", "web"]
+    },
+    {
+      "id": "slidewire",
+      "path": "library/slidewire",
+      "domain": "darkwood",
+      "description": "Presentation authoring and controlled publication platform.",
+      "topics": ["laravel", "presentation", "publication", "web"]
+    },
+    {
+      "id": "uniflow",
+      "path": "library/uniflow",
+      "domain": "darkwood",
+      "description": "Open-source workflow and commerce platform with project-scoped release history.",
+      "topics": ["php", "platform", "sylius", "workflow"]
+    },
+    {
+      "id": "darkwood-com",
+      "path": "library/darkwood-com",
+      "domain": "darkwood",
+      "description": "Public Darkwood website and application source.",
+      "topics": ["php", "symfony", "web"]
     }
   ]
 }

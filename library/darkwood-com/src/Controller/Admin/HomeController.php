@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\Admin;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route(requirements: ['_locale' => 'en|fr|de'], host: '%admin_host%', priority : 10)]
+class HomeController extends AbstractController
+{
+    public function __construct(private readonly KernelInterface $kernel) {}
+
+    #[Route('/{_locale}/', name: 'admin_home')]
+    public function index(): Response
+    {
+        return $this->render('admin/home/index.html.twig');
+    }
+
+    #[Route('/{_locale}/upload', name: 'admin_upload')]
+    public function upload(Request $request): Response
+    {
+        $file = $request->files->get('upload');
+        $name = random_int(0, 9999) . time() . '.' . $file->guessExtension();
+        $file->move($this->kernel->getProjectDir() . '/../web/uploads/ckeditor', $name);
+        $html = "<br/><br/><p style='font: normal normal normal 12px Arial,Helvetica,Tahoma,Verdana,Sans-Serif;'>";
+        $html .= 'Copy & Paste this link in tab picture informations.</p>';
+        $html .= "<p style='font: normal normal normal 12px Arial,Helvetica,Tahoma; color: #69b10b;'>";
+        $html .= '/uploads/ckeditor/' . $name . '</p>';
+
+        return new Response($html);
+    }
+
+    #[Route('/{_locale}/browser', name: 'admin_browser')]
+    public function browser(): Response
+    {
+        $dirname = $this->kernel->getProjectDir() . '/../web/uploads/ckeditor';
+        $dir = opendir($dirname);
+        $style = "style='font: normal normal normal 12px Arial,Helvetica,Tahoma,Verdana,Sans-Serif;'";
+        $results = '<div ' . $style . '><p>Copy & Paste for use it</p><ul>';
+        while ($file = readdir($dir)) {
+            if ($file !== '.' && $file !== '..' && !is_dir($dirname . $file)) {
+                $results .= '<li style="display:inline-block; padding: 10px; margin-right: 10px; margin-bottom: 10px;';
+                $results .= 'min-width: 200px; height: 150px; background: #bfbfbf;">';
+                $results .= '<p style="text-align: center;"><img style="width: 150px; max-height: 100px;" ';
+                $results .= 'src="/uploads/ckeditor/' . $file . '"/></p>';
+                $results .= '<p style="color: black;">/uploads/ckeditor/' . $file . '</p></li>';
+            }
+        }
+
+        closedir($dir);
+        $results .= '</ul></div>';
+
+        return new Response($results);
+    }
+
+    #[Route('/{_locale}/imagine/flush', name: 'admin_imagine_flush')]
+    public function imagineFlush() {}
+
+    #[Route('/{_locale}/imagine/generate', name: 'admin_imagine_generate')]
+    public function imagineGenerate() {}
+}

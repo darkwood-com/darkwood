@@ -1,0 +1,78 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use App\Security\OidcLoginThemeResolver;
+use App\Security\WebAuthenticationHostResolver;
+use LogicException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
+use function is_string;
+
+#[Route]
+class SecurityController extends AbstractController
+{
+    public function __construct(
+        private readonly CommonController $commonController,
+        private readonly AuthenticationUtils $authenticationUtils,
+        private readonly ParameterBagInterface $parameterBag,
+        private readonly WebAuthenticationHostResolver $authenticationHostResolver,
+        private readonly OidcLoginThemeResolver $loginThemeResolver,
+    ) {}
+
+    #[Route(path: ['fr' => '/fr/login', 'en' => '/login', 'de' => '/de/login'], name: 'security_login', defaults: ['ref' => 'login'], priority: 10)]
+    public function login(Request $request, $ref): Response
+    {
+        if ($this->getUser()) {
+            $session = $request->getSession();
+            $targetPath = $session->get('_security.main.target_path');
+            if (is_string($targetPath) && '' !== $targetPath) {
+                $session->remove('_security.main.target_path');
+
+                return new RedirectResponse($this->authenticationHostResolver->mirrorAuthenticationUri($targetPath));
+            }
+        }
+
+        if ($request->getHost() === $this->parameterBag->get('admin_host')) {
+            // get the login error if there is one
+            $error = $this->authenticationUtils->getLastAuthenticationError();
+            // last username entered by the user
+            $lastUsername = $this->authenticationUtils->getLastUsername();
+
+            return $this->render('admin/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        }
+
+        $page = $this->commonController->getPage($request, $ref);
+        $siteRef = $page->getPage()->getSite()->getRef();
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('target_path');
+        // }
+        // get the login error if there is one
+        $error = $this->authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $this->authenticationUtils->getLastUsername();
+
+        return $this->render('common/pages/login.html.twig', [
+            'page' => $page,
+            'site_ref' => $siteRef,
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'showLinks' => true,
+            'login_theme' => $this->loginThemeResolver->resolve($request),
+        ]);
+    }
+
+    #[Route(path: ['fr' => '/fr/logout', 'en' => '/logout', 'de' => '/de/logout'], name: 'security_logout', priority: 10)]
+    public function logout(): never
+    {
+        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+}

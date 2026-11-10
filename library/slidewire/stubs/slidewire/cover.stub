@@ -1,0 +1,5 @@
+<x-darkwood.cover date="__DATE__">
+    <x-slot:title>@verbatim
+__TITLE__
+@endverbatim</x-slot:title>
+</x-darkwood.cover>

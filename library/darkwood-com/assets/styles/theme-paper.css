@@ -1,0 +1,665 @@
+.theme-paper
+{
+    color: #692D00;
+    background: #9b5638 url('../../public/common/images/components/theme-paper/site/paper_pattern.jpg') center repeat;
+}
+
+@media(max-width:767px) {
+    .theme-paper
+    {
+        background-size: 1px 415px;
+    }
+}
+
+.theme-paper .theme-header
+{
+    height: 250px;
+}
+
+@media(max-width:767px) {
+    .theme-paper .theme-header
+    {
+        height: 125px;
+    }
+}
+
+	.theme-paper .theme-header-logo
+	{
+        height: 450px;
+        width: 100%;
+        background: transparent url('../../public/common/images/components/theme-paper/site/header/paper.jpg') no-repeat center top;
+		background-size: auto 100%;
+	}
+
+	@media(max-width:767px) {
+		.theme-paper .theme-header-logo
+        {
+            height: 320px;
+            background-position-y: -45px;
+		}
+	}
+
+
+.theme-paper .theme-body
+{
+    background: transparent url('../../public/common/images/components/theme-paper/site/body/page_pattern.jpg') repeat-y center top;
+	padding-top: 60px;
+}
+
+@media(max-width:767px) {
+    .theme-paper .theme-body
+    {
+        background-size: 1138px auto; /* = 1600 * 320 / 450 */
+        background-position-y: -3px;
+    }
+}
+
+.theme-paper .theme-body > * {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*@media(max-width:767px) {
+    .theme-paper .theme-body
+    {
+        background-size: 500px auto;
+    }
+}*/
+    .theme-paper .theme-body-top
+    {
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px 20px 20px 20px;
+        /*background: transparent url('../../public/common/images/components/theme-paper/site/body/page_top.png') no-repeat top;*/
+    }
+
+    @media(max-width:767px) {
+        .theme-paper .theme-body-top
+        {
+            padding: 20px 0px 0px 0px;
+            /*max-width: 500px;
+            background-size: 500px auto;*/
+        }
+    }
+
+.theme-paper h1
+{
+    margin: 20px 0px 20px 0px;
+    font-size: 32px;
+    text-align: center;
+    color: #692D00;
+}
+
+.theme-paper h2
+{
+    margin: 18px 0px 18px 0px;
+    font-size: 24px;
+    text-align: left;
+    color: #692D00;
+}
+
+.theme-paper h3
+{
+    margin: 16px 0px 10px 0px;
+    font-size: 20px;
+    text-align: center;
+    color: #692D00;
+}
+
+.theme-paper h4
+{
+    margin: 5px 0px 5px 0px;
+    font-size: 16px;
+    color: #692D00;
+}
+
+.theme-paper a
+{
+    color: #692D00;
+    text-decoration: none;
+
+    /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.theme-paper a:hover
+{
+    color: #a95e00;
+    cursor: pointer;
+}
+
+.theme-paper a:active
+{
+    cursor: pointer;
+}
+
+.theme-paper p
+{
+    margin: 10px 0px 10px 0px;
+}
+
+
+.theme-paper p img
+{
+    max-width: 100%;
+    height: auto;
+}
+
+/* -> article content: mermaid diagrams */
+.theme-paper .theme-content pre.mermaid {
+    background: transparent;
+    border: none;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    padding: 0;
+    text-align: center;
+}
+
+.theme-paper .theme-content pre.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* -> article content: markdown tables (same palette as ul.itemlist) */
+.theme-paper .theme-content table
+{
+    width: 100%;
+    max-width: 100%;
+    margin: 15px 0px 15px 0px;
+    border-collapse: collapse;
+    border: 2px solid #f3c790;
+    background: #ffeac4 none;
+    color: #692D00;
+    font-size: 0.95em;
+    box-sizing: border-box;
+}
+
+.theme-paper .theme-content thead th
+{
+    padding: 2px 10px;
+    text-align: left;
+    font-weight: bold;
+    color: #692D00;
+    background: #f3c790 none;
+    vertical-align: bottom;
+}
+
+.theme-paper .theme-content tbody td
+{
+    padding: 10px;
+    background: #ffeac4 none;
+    border: 1px solid #f3c790;
+    vertical-align: top;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.theme-paper .theme-content table a
+{
+    word-break: break-word;
+}
+
+@media (max-width: 767px) {
+    .theme-paper .theme-content table
+    {
+        font-size: 0.88em;
+    }
+
+    .theme-paper .theme-content thead th,
+    .theme-paper .theme-content tbody td
+    {
+        padding: 0.35rem 0.5rem;
+    }
+}
+
+/* -> user-box */
+.theme-paper div.user-box
+{
+    margin: 15px;
+    width: 60px;
+    height: 70px;
+    text-align: center;
+    float: left;
+}
+
+/* -> links */
+.theme-paper ul.links li
+{
+    padding: 5px 0px 5px 0px;
+    clear: both;
+    overflow: auto;
+}
+
+.theme-paper ul.links a
+{
+    float: left;
+}
+
+.theme-paper ul.links p
+{
+    margin: 0px 0px 0px 250px;
+}
+
+/* -> pagination */
+.theme-paper ul.pagination a
+{
+    background-color: #ffeac4;
+    border: 1px solid #f3c790;
+    text-decoration: none !important;
+    color: #692d00;
+}
+
+.theme-paper ul.pagination a.current,
+.theme-paper ul.pagination a:active,
+.theme-paper ul.pagination a:hover
+{
+    border-color: #f3c790;
+    font-weight: bold;
+    background: #f3c790 none;
+    color: #692d00;
+}
+
+.theme-paper ul.pagination .disabled
+{
+    border: 1px solid #929292;
+    color: #929292;
+}
+
+/* -> comments */
+.theme-paper ul.comments
+{
+    list-style-type: none;
+    padding: 0;
+}
+
+.theme-paper ul.comments li
+{
+    margin: 10px 0px 10px 0px;
+    overflow: auto;
+    clear: both;
+}
+
+.theme-paper ul.comments a.author
+{
+    float: left;
+    text-align: center;
+}
+
+.theme-paper ul.comments div.content
+{
+    margin: 0px 0px 0px 100px;
+    padding: 10px;
+    background: #ffeac4;
+    border: 1px solid #975231;
+}
+
+.theme-paper ul.comments div.content div.arrow
+{
+    background: transparent url('../../public/common/images/components/theme-paper/comment/arrow.png') no-repeat;
+    width: 21px;
+    height: 18px;
+    position: relative;
+    left: -32px;
+}
+
+.theme-paper ul.comments div.content div.date
+{
+    margin: 20px 0px 0px 0px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* -> forms */
+.theme-paper form
+{
+    margin: 0px auto 0px auto;
+}
+
+.theme-paper form fieldset
+{
+    margin: 10px;
+    padding: 10px;
+    border: #975231 1px solid;
+}
+
+.theme-paper form fieldset legend
+{
+	float: none;
+    margin: 0px 10px 0px 10px;
+    padding: 0px 10px 0px 10px;
+    width: auto;
+    border-top: none;
+    border-bottom: none;
+    border-left: #975231 1px solid;
+    border-right: #975231 1px solid;
+    color: #975231;
+}
+
+.theme-paper form fieldset li
+{
+    list-style-type: none;
+}
+
+.theme-paper form ul, .theme-paper form li
+{
+    padding: 0px;
+    list-style-type: none;
+    clear: both;
+}
+
+.theme-paper form li.centered
+{
+    text-align: center;
+}
+
+.theme-paper form label
+{
+    margin: 2px 0px 2px 0px;
+    width: 45%;
+    float: left;
+}
+
+.theme-paper form label.centered
+{
+    display: block;
+    width: 100%;
+    float: none;
+}
+
+.theme-paper form input, .theme-paper form textarea
+{
+    margin: 2px 0px 2px 0px;
+    border: 0px solid #FFFFFF;
+    color: #FFFFFF;
+    background-color: #975231;
+    width: 50%;
+    float: right;
+    clear: right;
+}
+
+.theme-paper form .g-recaptcha {
+    margin: 2px 0px 2px 0px;
+    border: 0px solid #FFFFFF;
+    color: #FFFFFF;
+    width: 50%;
+    float: right;
+    clear: right;
+}
+
+.theme-paper form .g-recaptcha.centered {
+    margin: auto;
+    border: 0px solid #FFFFFF;
+    width: 50%;
+    float: none;
+    clear: both;
+}
+
+.theme-paper form input.centered, .theme-paper form textarea.centered, .theme-paper form img.centered
+{
+    float: none;
+}
+
+.theme-paper form img
+{
+    float: right;
+    clear: right;
+}
+
+.theme-paper form input:focus, .theme-paper form textarea:focus
+{
+    background-color: #713e25;
+}
+
+.theme-paper form input[type=submit]
+{
+    font-weight:bold;
+    width: auto;
+}
+
+.theme-paper form input[type=submit]:hover
+{
+    background-color: #713e25;
+    cursor:pointer;
+}
+
+.theme-paper form input[type=submit]:active
+{
+    background-color:#633800;
+}
+
+/* -> list */
+.theme-paper ul.itemlist
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.theme-paper ul.itemlist > li
+{
+    margin: 15px 0px 15px 0px;
+    padding: 0;
+    background:  #ffeac4 none;
+    border: 2px solid #f3c790;
+}
+
+.theme-paper ul.itemlist li h3
+{
+    margin: 0;
+    padding: 2px;
+    background: #f3c790 none;
+}
+
+.theme-paper ul.itemlist li p
+{
+    padding: 10px;
+}
+
+/* -> article reactions */
+.theme-paper .article-reactions
+{
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    background: #fff4df;
+    border: 2px solid #f3c790;
+}
+
+.theme-paper .article-reactions--compact
+{
+    margin: 0.5rem 0 0;
+    padding: 0.5rem 0.75rem;
+}
+
+.theme-paper ul.itemlist li .article-reactions--compact
+{
+    margin: 0 10px 10px;
+}
+
+.theme-paper .article-reactions__login
+{
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+}
+
+.theme-paper .article-reactions__login a
+{
+    font-weight: bold;
+}
+
+.theme-paper .article-reactions__picker
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.theme-paper .article-reactions__panel-list
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 0.75rem;
+    padding: 0;
+    list-style: none;
+}
+
+.theme-paper .article-reactions__panel-list li
+{
+    margin: 0;
+    padding: 0;
+}
+
+.theme-paper .article-reactions__button
+{
+    border: 2px solid #f3c790;
+    background: #ffeac4;
+    border-radius: 999px;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    padding: 0;
+}
+
+.theme-paper .article-reactions__icon
+{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-paper .article-reactions__button:hover,
+.theme-paper .article-reactions__button.is-active
+{
+    background: #f3c790;
+    border-color: #975231;
+    transform: scale(1.05);
+}
+
+.theme-paper .article-reactions__counts
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 1rem;
+}
+
+.theme-paper .article-reactions__count
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: #ffeac4;
+    border: 1px solid #f3c790;
+}
+
+.theme-paper .article-reactions__count.is-active
+{
+    border-color: #975231;
+    background: #f3c790;
+}
+
+/* -> trees */
+.theme-paper fieldset.tree
+{
+	float: left;
+	border-top: 2px solid #975231;
+	border-left: 2px solid #975231;
+}
+
+.theme-paper .tree legend
+{
+	float: none;
+	margin: 10px;
+	padding: 0px 10px 0px 10px;
+	width: auto;
+	border-top: none;
+	border-bottom: none;
+	border-left: #975231 2px solid;
+	border-right: #975231 2px solid;
+	color: #975231;
+}
+
+.theme-paper .tree ul.root
+{
+	margin:  0px;
+	padding: 0px;
+	border: 0px none;
+}
+
+.theme-paper .tree ul
+{
+	margin:  0px 0px 0px 24px;
+	padding: 0px;
+	border-left: 2px solid #975231;
+}
+
+.theme-paper .tree li
+{
+	margin:  0px;
+	padding: 15px 0px 0px 0px;
+	list-style:none;
+}
+
+.theme-paper .tree li .folder
+{
+	background-color: #975231;
+}
+
+.theme-paper .tree li span
+{
+	margin:  0px 5px 0px 0px;
+	padding: 0px 8px 0px 8px;
+	border-top: 2px solid #975231;
+}
+
+.theme-paper .tree li a
+{
+	position: relative;
+	top: -8px;
+	padding: 2px;
+	border: 2px solid #975231;
+	color: #351700;
+	background-color: #f3c790;
+}
+
+.theme-paper .tree li a:hover
+{
+	color: #000000;
+	border: 2px solid #663721;
+}
+
+/*** css specific to the site ***/
+
+/* -> links */
+.theme-paper .theme-content a.no_link
+{
+    color: #692D00;
+    cursor: default;
+}
+
+.theme-paper .theme-content.show_links a
+{
+    text-decoration: underline;
+}

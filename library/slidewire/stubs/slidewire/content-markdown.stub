@@ -1,0 +1,6 @@
+<x-darkwood.content title="Contenu" label="01 | contenu">
+    <x-slidewire::markdown>
+- Premier point.
+- Deuxième point.
+    </x-slidewire::markdown>
+</x-darkwood.content>

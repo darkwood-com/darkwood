@@ -1,0 +1,62 @@
+{
+  "name": "@uniflow-io/uniflow-client-vscode",
+  "version": "1.1.15",
+  "description": "Uniflow rust client",
+  "author": {
+    "name": "Mathieu Ledru",
+    "email": "matyo91@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/uniflow-io/uniflow/issues"
+  },
+  "homepage": "https://github.com/uniflow-io/uniflow/tree/1.x/library/uniflow-client-vscode#readme",
+  "keywords": [
+    "uniflow",
+    "uniflow-client"
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "main": "./dist/extension",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uniflow-io/uniflow.git",
+    "directory": "library/uniflow-client-vscode"
+  },
+  "publisher": "matyo91",
+  "engines": {
+    "vscode": "^1.32.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.reverseWord"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.reverseWord",
+        "title": "Reverse Word"
+      }
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "tsc -p ./",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint . --ext .ts,.tsx",
+    "dev": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.11",
+    "@types/vscode": "^1.98.0",
+    "@typescript-eslint/eslint-plugin": "^8.27.0",
+    "@typescript-eslint/parser": "^8.27.0",
+    "eslint": "^9.23.0",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@wasmer/wasi": "^1.2.2"
+  }
+}

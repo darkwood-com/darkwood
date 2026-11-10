@@ -1,0 +1,96 @@
+{% extends "blog/base.html.twig" %}
+
+{% block content %}
+
+<h1>{{ page.title }}</h1>
+{# page.content|markdown_to_html #}
+
+{% if lastWatchArticle %}
+<h2>{{ 'blog.home.watch_heading'|trans }}</h2>
+<ul class="itemlist">
+    {% set watchTranslation = lastWatchArticle.getOneTranslation(app.request.locale) %}
+    <li>
+        <h3>{{ watchTranslation.title }} <em>{{ 'blog.home.article_on'|trans }} {{ watchTranslation.created|format_date('long') }}</em></h3>
+        <p>{{ watchTranslation.content|article_excerpt(260) }}</p>
+        <p>
+            {#<a href="{{ path('blog_article', {'slug': watchTranslation.slug}) }}">{{ 'blog.home.watch_read'|trans }}</a>
+            ·
+            <a href="{{ path('blog_watch') }}">{{ 'blog.home.show_more'|trans }}</a>#}
+            <a href="{{ path('blog_article', {'slug': watchTranslation.slug}) }}">{{ 'blog.home.show_more'|trans }}</a>
+        </p>
+        {{ include('blog/partials/article-reactions.html.twig', {
+            article: lastWatchArticle,
+            slug: watchTranslation.slug,
+            summary: reactionSummaries[lastWatchArticle.id]|default({counts: {}, userReactions: []}),
+            reactionEmojis: reactionEmojis,
+            compact: true,
+        }) }}
+    </li>
+</ul>
+{% endif %}
+
+{% if lastReleaseArticle %}
+<h2>{{ 'blog.home.release_heading'|trans }}</h2>
+<ul class="itemlist">
+    {% set releaseTranslation = lastReleaseArticle.getOneTranslation(app.request.locale) %}
+    <li>
+        <h3>{{ releaseTranslation.title }} <em>{{ 'blog.home.article_on'|trans }} {{ releaseTranslation.created|format_date('long') }}</em></h3>
+        <p>{{ releaseTranslation.content|article_excerpt(260) }}</p>
+        <p>
+            <a href="{{ path('blog_article', {'slug': releaseTranslation.slug}) }}">{{ 'blog.home.show_more'|trans }}</a>
+        </p>
+        {{ include('blog/partials/article-reactions.html.twig', {
+            article: lastReleaseArticle,
+            slug: releaseTranslation.slug,
+            summary: reactionSummaries[lastReleaseArticle.id]|default({counts: {}, userReactions: []}),
+            reactionEmojis: reactionEmojis,
+            compact: true,
+        }) }}
+    </li>
+</ul>
+{% endif %}
+
+{% if lastCreatorArticle %}
+<h2>{{ 'blog.home.creator_heading'|trans }}</h2>
+<ul class="itemlist">
+    {% set creatorTranslation = lastCreatorArticle.getOneTranslation(app.request.locale) %}
+    <li>
+        <h3>{{ creatorTranslation.title }} <em>{{ 'blog.home.article_on'|trans }} {{ creatorTranslation.created|format_date('long') }}</em></h3>
+        <p>{{ creatorTranslation.content|article_excerpt(260) }}</p>
+        <p>
+            <a href="{{ path('blog_article', {'slug': creatorTranslation.slug}) }}">{{ 'blog.home.show_more'|trans }}</a>
+        </p>
+        {{ include('blog/partials/article-reactions.html.twig', {
+            article: lastCreatorArticle,
+            slug: creatorTranslation.slug,
+            summary: reactionSummaries[lastCreatorArticle.id]|default({counts: {}, userReactions: []}),
+            reactionEmojis: reactionEmojis,
+            compact: true,
+        }) }}
+    </li>
+</ul>
+{% endif %}
+
+<h2>{{ 'blog.home.news_heading'|trans }}</h2>
+
+<ul class="itemlist">
+    {% for article in articles %}
+        {% set articleTranslation = article.getOneTranslation(app.request.locale) %}
+        <li>
+            <h3>{{ articleTranslation.title }} <em>{{ 'blog.home.article_on'|trans }} {{ articleTranslation.created|format_date('long') }}</em></h3>
+            <p>{{ articleTranslation.content|article_excerpt(260) }}</p>
+            <p><a href="{{ path('blog_article', {'slug': articleTranslation.slug}) }}">{{ 'blog.home.show_more'|trans }}</a></p>
+            {{ include('blog/partials/article-reactions.html.twig', {
+                article: article,
+                slug: articleTranslation.slug,
+                summary: reactionSummaries[article.id]|default({counts: {}, userReactions: []}),
+                reactionEmojis: reactionEmojis,
+                compact: true,
+            }) }}
+        </li>
+    {% endfor %}
+</ul>
+
+{{ knp_pagination_render(articles, 'common/partials/sliding.html.twig') }}
+
+{% endblock %}

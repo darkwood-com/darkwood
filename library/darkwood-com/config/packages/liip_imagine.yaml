@@ -1,0 +1,46 @@
+# Documentation on how to configure the bundle can be found at: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+    # Use lazy Twig mode (avoids deprecated FilterExtension / FilterTrait)
+    twig:
+        mode: lazy
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
+    resolvers:
+        default:
+            web_path:
+                web_root:     '%kernel.project_dir%/public'
+                cache_prefix: media/cache
+        loaders:
+            web_path:
+                web_root: '%kernel.project_dir%/public'
+
+    filter_sets:
+        cache: ~
+
+        admin_vichy:
+            filters:
+                thumbnail: { size: [250, 250], mode: outbound }
+
+        admin_list:
+            filters:
+                thumbnail: { size: [50, 50], mode: outbound }
+
+        user:
+            filters:
+                thumbnail: { size: [50, 50], mode: outbound }
+
+        user_profile:
+            filters:
+                thumbnail: { size: [256, 256], mode: outbound }
+
+        rss_cover:
+            filters:
+                thumbnail: { size: [ 800, 200 ], mode: inset }
+
+        app_cover:
+            filters:
+                thumbnail: { size: [ 768, 115 ], mode: outbound }
+        
+        hello_blog:
+            filters:
+                thumbnail: { size: [ 350, 350 ], mode: outbound }
