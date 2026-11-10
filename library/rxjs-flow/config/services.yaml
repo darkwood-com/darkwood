@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+parameters:
+    app.images_output_dir: '%kernel.project_dir%/var/images'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/Demo/Flow/'
+
+    App\Command\FetchImagesCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $outputDir: '%app.images_output_dir%'
+
+    App\Demo\FlowPipelineRunner:
+        arguments:
+            $outputDir: '%app.images_output_dir%'
