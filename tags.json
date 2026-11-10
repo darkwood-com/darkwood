@@ -50,6 +50,13 @@
       "topics": ["demo", "php", "showreel", "symfony", "web"]
     },
     {
+      "id": "diablo-php",
+      "path": "library/diablo-php",
+      "domain": "matyo91",
+      "description": "Archived PHP and FFI implementation inspired by the original Diablo engine.",
+      "topics": ["archive", "game", "php"]
+    },
+    {
       "id": "flow-pipe",
       "path": "library/flow-pipe",
       "domain": "matyo91",
@@ -118,6 +125,13 @@
       "domain": "matyo91",
       "description": "Symfony CLI experiment measuring language and wording effects on LLM token cost.",
       "topics": ["ai", "demo", "php", "symfony"]
+    },
+    {
+      "id": "nolife-local",
+      "path": "library/nolife-local",
+      "domain": "matyo91",
+      "description": "Archived local AI and 3D experimentation application using Symfony and PHP FFI.",
+      "topics": ["ai", "archive", "php", "symfony"]
     },
     {
       "id": "nolife-models",
