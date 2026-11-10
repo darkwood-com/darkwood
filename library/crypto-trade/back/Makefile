@@ -1,0 +1,2 @@
+dev:
+	symfony serve
