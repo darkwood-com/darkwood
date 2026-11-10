@@ -139,6 +139,27 @@
       "domain": "matyo91",
       "description": "Terminal-first registry for AI provider accounts, subscriptions and entitlements.",
       "topics": ["ai", "cli", "php", "symfony"]
+    },
+    {
+      "id": "php-flow",
+      "path": "library/php-flow",
+      "domain": "matyo91",
+      "description": "PHP profiling demonstration built on Darkwood Flow.",
+      "topics": ["demo", "flow", "php", "symfony"]
+    },
+    {
+      "id": "rxjs-flow",
+      "path": "library/rxjs-flow",
+      "domain": "matyo91",
+      "description": "Study mapping RxJS streaming concepts onto Darkwood Flow.",
+      "topics": ["demo", "flow", "php", "rxjs", "symfony"]
+    },
+    {
+      "id": "vibephp-flow",
+      "path": "library/vibephp-flow",
+      "domain": "matyo91",
+      "description": "VibePHP profiling demonstration built on Darkwood Flow.",
+      "topics": ["demo", "flow", "php", "symfony"]
     }
   ]
 }
