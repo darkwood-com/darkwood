@@ -92,6 +92,13 @@
       "topics": ["archive", "game", "php", "symfony"]
     },
     {
+      "id": "hellcats-over-the-pacific",
+      "path": "library/hellcats-over-the-pacific",
+      "domain": "matyo91",
+      "description": "Evidence-backed Godot port of the classic Hellcats Over the Pacific game.",
+      "topics": ["game", "godot", "reverse-engineering"]
+    },
+    {
       "id": "kibono-flow",
       "path": "library/kibono-flow",
       "domain": "matyo91",
