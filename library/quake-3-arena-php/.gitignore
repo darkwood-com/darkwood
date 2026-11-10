@@ -1,0 +1,10 @@
+/vendor/
+/.phpunit.cache/
+/tmp/*
+!/tmp/fixtures/
+!/tmp/fixtures/**
+/runtime-data/
+/local-data/
+*.pk3
+!tmp/fixtures/**/*.pk3
+.DS_Store
