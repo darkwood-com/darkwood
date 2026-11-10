@@ -1,0 +1,653 @@
+.sw-slide {
+    padding: 0;
+    background: var(--darkwood-white);
+    color: var(--darkwood-ink);
+    --dw-bg: var(--darkwood-white);
+    --dw-panel: var(--darkwood-white);
+    --dw-panel-strong: var(--darkwood-white);
+    --dw-cyan: var(--dw-blue);
+    --dw-lime: var(--dw-blue);
+    --dw-text: var(--darkwood-ink);
+    --dw-muted: var(--darkwood-ink);
+    --dw-line: var(--dw-blue);
+}
+
+.sw-slide::before,
+.sw-slide::after {
+    content: none;
+}
+
+.sw-slide.sw-slide--cover {
+    background: var(--dw-blue);
+    color: var(--darkwood-white);
+}
+
+.sw-slide > .slidewire-content > .sw-canvas {
+    width: 100%;
+}
+
+.sw-slide .sw-header {
+    position: relative;
+    z-index: 2;
+    max-width: 100%;
+}
+
+.sw-slide .sw-header :is(span,code,strong,em,a) {
+    color: inherit;
+    background: transparent;
+    font-size: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    letter-spacing: inherit;
+}
+
+.sw-slide .sw-header h1 {
+    position: static;
+    padding: 0;
+    max-width: 100%;
+    font-family: var(--darkwood-font-reading);
+    font-weight: 400;
+    font-size: var(--darkwood-heading);
+    line-height: 1;
+    letter-spacing: var(--darkwood-heading-tracking);
+    color: inherit;
+    text-transform: none;
+}
+
+.sw-slide--cover .sw-header h1 {
+    font-size: var(--darkwood-title);
+    letter-spacing: var(--darkwood-cover-tracking);
+}
+
+.sw-slide .sw-header .dw-overline {
+    position: static;
+    font-family: var(--darkwood-font-reading);
+    font-size: var(--darkwood-context);
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: inherit;
+    text-transform: none;
+}
+
+.sw-slide .sw-header .sw-subtitle {
+    font-size: var(--darkwood-subtitle);
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: var(--darkwood-subtitle-tracking);
+    color: inherit;
+    max-width: 100%;
+}
+
+.sw-slide .sw-header > * {
+    margin-block: 0;
+    padding-block: 0;
+}
+
+.sw-slide .sw-header > .dw-overline + h1 {
+    margin-top: var(--dw-heading-overline-gap);
+}
+
+.sw-slide .sw-header > h1 + .sw-subtitle {
+    margin-top: var(--dw-heading-subtitle-gap);
+}
+
+.sw-slide .sw-content {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.sw-slide .sw-content :where(*):not(pre.phiki, pre.phiki *, pre.slidewire-code, pre.slidewire-code *, .sw-code-window, .sw-code-window *) {
+    color: inherit;
+    background-color: transparent;
+    background-image: none;
+    border-color: var(--dw-blue);
+}
+
+.sw-slide .sw-content :where(*)::before,
+.sw-slide .sw-content :where(*)::after {
+    color: inherit;
+    background-color: transparent;
+    background-image: none;
+    border-color: var(--dw-blue);
+}
+
+.sw-slide .sw-content :is(.dw-wrap,.dw-wrap--top,.pgx-stage) {
+    width: 100%;
+    min-height: 0;
+    max-height: none;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+
+.sw-slide .sw-content :is(.dw20-hero-board,.pg-hero-board) {
+    position: relative;
+    inset: auto;
+}
+
+.sw-slide .sw-content :is(.pgx-copy) {
+    position: static;
+}
+
+.sw-slide .sw-content :is(.dw-lead,.dw-note,.dw-question,.dw-muted) {
+    color: inherit;
+}
+
+.sw-slide .sw-content :is(.dw-code,pre.slidewire-code) {
+    background: var(--sw-code-background);
+    color: var(--sw-code-foreground);
+}
+
+.sw-slide .sw-content pre.phiki {
+    background: var(--sw-code-background);
+}
+
+.sw-slide .sw-content a {
+    color: var(--dw-blue);
+}
+
+.sw-slide .sw-content ul {
+    list-style: disc outside;
+    padding-left: 1.35em;
+}
+
+.sw-slide .sw-content ul ul {
+    list-style-type: circle;
+}
+
+.sw-slide .sw-content li::marker {
+    color: inherit;
+}
+
+.sw-slide .sw-content ul li::before {
+    content: none;
+}
+
+.sw-slide .sw-content ul > li:not(svg *) {
+    margin: 0.6em 0;
+    padding: 0 0 0 0.15em;
+    border: 0;
+}
+
+.sw-slide .sw-content svg * {
+    fill: #fff;
+    stroke: var(--dw-blue);
+}
+
+.sw-slide .sw-content svg :is(path,line,polyline) {
+    fill: none;
+}
+
+.sw-slide .sw-content svg :is(text,text *,foreignObject *) {
+    fill: #000;
+    stroke: none;
+    color: var(--darkwood-ink);
+}
+
+.sw-slide .sw-body {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.sw-slide--cover .sw-body {
+    flex: 0 1 auto;
+    width: 100%;
+    color: var(--darkwood-white);
+}
+
+.sw-slide--cover .sw-content {
+    color: var(--darkwood-white);
+}
+
+.sw-slide--cover .sw-content svg :is(text,text *) {
+    fill: #000;
+}
+
+/* Functional game surfaces: symbols carry state; paint stays tricolor. */
+
+.slidewire-frame.sw-slide .sw-content .pg-cell {
+    background: var(--darkwood-white);
+    color: var(--darkwood-ink);
+    border: var(--dw-border-width) solid var(--darkwood-ink);
+}
+
+.sw-slide .sw-content .pg-cell::before {
+    content: attr(data-darkwood-stain);
+    position: absolute;
+    top: 1px;
+    left: 3px;
+    font: 10px/1 Verdana,sans-serif;
+    color: var(--darkwood-ink);
+}
+
+.sw-slide .sw-content .pg-cell.is-sealed {
+    border: var(--dw-border-width) double var(--darkwood-ink);
+}
+
+.slidewire-frame.sw-slide .sw-content .pg-die-token {
+    background: var(--dw-blue);
+    color: var(--darkwood-white);
+    border: var(--dw-border-width) solid var(--darkwood-ink);
+}
+
+.slidewire-frame.sw-slide .sw-content .pg-mark {
+    border: var(--dw-border-width) solid var(--dw-blue);
+    background: var(--darkwood-white);
+    color: var(--darkwood-ink);
+}
+
+.sw-slide .sw-content .dw20-cell {
+    border: var(--dw-border-width) solid var(--darkwood-ink);
+    background: var(--darkwood-white);
+}
+
+.sw-slide .sw-content .dw20-cell i {
+    background: var(--darkwood-white);
+}
+
+.sw-slide .sw-content .dw20-cell i[data-darkwood-level="1"] {
+    background: var(--dw-blue);
+    color: var(--darkwood-white);
+}
+
+.sw-slide .sw-content .dw20-cell i[data-darkwood-level="2"] {
+    background: var(--darkwood-ink);
+    color: var(--darkwood-white);
+}
+
+.sw-slide .sw-content .dw20-cell i[data-darkwood-level="3"] {
+    border: var(--dw-border-width) solid var(--darkwood-ink);
+}
+
+.sw-slide .sw-content .dw20-cell.is-core {
+    border: var(--dw-border-width) solid var(--dw-blue);
+}
+
+.sw-slide .sw-content .dw20-cell.is-void {
+    border-style: dashed;
+}
+
+.sw-slide .sw-content .dw20-cell.is-reach {
+    outline: var(--dw-border-width) solid var(--dw-blue);
+}
+
+.sw-slide .sw-content .dw20-cell.is-exit::before {
+    background: var(--dw-blue);
+}
+
+.sw-slide .sw-content .dw20-cell.is-player::after {
+    background: var(--darkwood-ink);
+}
+
+.slidewire-frame.sw-slide {
+    background: var(--darkwood-white);
+    background-image: none;
+}
+
+.slidewire-frame.sw-slide.sw-slide--cover {
+    background: var(--dw-blue);
+}
+
+.sw-slide .sw-content :where(:not(img.sw-logo)) {
+    outline-color: var(--dw-blue);
+    filter: none;
+}
+
+.sw-slide .sw-content :where(*)::before,
+.sw-slide .sw-content :where(*)::after {
+    filter: none;
+}
+
+.sw-slide .sw-content svg {
+    fill: #fff;
+    stroke: var(--dw-blue);
+}
+
+.sw-slide .sw-content :is(.hc-wrap,.hc-top) {
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.sw-slide .sw-content .hc-portal-field {
+    width: 100%;
+    max-width: 560px;
+}
+
+.sw-slide .sw-content .hc-cover {
+    position: relative;
+    inset: auto;
+    float: right;
+    width: 28%;
+    height: 360px;
+    mask-image: none;
+}
+
+.sw-slide .sw-content .hc-cover img {
+    object-fit: contain;
+}
+
+.sw-slide .sw-content .dw20-scale {
+    margin-inline: calc(var(--dw-content-font-size) * 1.5);
+}
+
+/* Reserve space for stacked animated captions, including their hidden states. */
+.sw-slide .dw20-row > :not([data-board],[data-patch]) {
+    flex: 1 1 400px;
+    min-width: 0;
+}
+
+.sw-slide .dw20-row > :is([data-board],[data-patch]) {
+    flex: 0 0 auto;
+}
+
+.sw-slide .dw20-caption {
+    display: grid;
+}
+
+.sw-slide .dw20-caption .slidewire-fragment {
+    position: static;
+    grid-area: 1 / 1;
+}
+
+.sw-slide .sw-content :not(pre,pre *,code,code *,svg,svg *) {
+    font-family: var(--darkwood-font);
+}
+
+/* Media-only slides have one body row, without a phantom header track. */
+
+.sw-slide--content .sw-canvas--untitled {
+    grid-template-rows: minmax(0,1fr);
+}
+
+.sw-slide .sw-content button {
+    border: var(--dw-border-width) solid var(--darkwood-ink);
+    background: var(--darkwood-white);
+    color: var(--darkwood-ink);
+}
+
+.sw-slide .sw-content button:is(:hover,:focus-visible,:active,[aria-pressed="true"]) {
+    background: var(--dw-blue);
+    color: var(--darkwood-white);
+}
+
+.sw-slide .sw-content button:disabled {
+    background: var(--darkwood-white);
+    color: var(--darkwood-ink);
+    border-style: dashed;
+}
+
+/* Utility borders use the same native stroke as named components. */
+.sw-content .border { border-width: var(--dw-border-width); }
+.sw-content .border-t { border-top-width: var(--dw-border-width); }
+.sw-content .border-r { border-right-width: var(--dw-border-width); }
+.sw-content .border-b { border-bottom-width: var(--dw-border-width); }
+.sw-content .border-l { border-left-width: var(--dw-border-width); }
+
+.slidewire-frame.sw-slide.sw-slide--section {
+    background: var(--dw-blue);
+    color: var(--darkwood-white);
+}
+
+.sw-slide--section .sw-body {
+    flex: 0 1 auto;
+    width: 100%;
+    color: var(--darkwood-white);
+}
+
+.sw-slide:is(.sw-slide--cover,.sw-slide--section) .sw-content a {
+    color: var(--darkwood-white);
+    text-decoration: underline;
+}
+
+.sw-slide .sw-content [class*="rounded-"] {
+    border-radius: 0;
+}
+
+/* Mapping labels may wrap long identifiers without widening the shared grid. */
+
+.sw-slide .sw-content .dw-map > div > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.sw-slide .sw-content .sr-grid-2 {
+    grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr);
+}
+
+.sw-slide .sw-content .sr-grid-2 > * {
+    min-width: 0;
+}
+
+.sw-slide .sw-content .sr-mosaic {
+    width: max-content;
+    justify-self: center;
+}
+
+/* Covers retain their historical composition; dense embedded media scrolls
+   within the remaining body instead of increasing the full viewport canvas. */
+
+.sw-slide:is(.sw-slide--cover,.sw-slide--section) .sw-canvas {
+    height: 100dvh;
+    min-height: 0;
+}
+
+.sw-slide:is(.sw-slide--cover,.sw-slide--section) .sw-header {
+    flex-shrink: 0;
+}
+
+.sw-slide .sw-content .sr-cycle {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
+    gap: 12px;
+}
+
+.sw-slide .sw-content .sr-level {
+    min-width: 0;
+}
+
+.sw-slide .sw-content :is(.sr-cell.hit,.sr-block.resonant) {
+    background: var(--dw-blue);
+    color: var(--darkwood-white);
+}
+
+.sw-slide .sw-content .sr-cell.center {
+    background: var(--darkwood-ink);
+}
+
+.sw-slide .sw-content .hc-state-box.is-target {
+    border: var(--dw-border-width) solid var(--dw-blue);
+}
+
+/* Autoplay messages occupy their own reading row. The final call to action is
+   an opaque functional overlay, so board glyphs never obscure its text. */
+.sw-slide .sw-content .pgx-overlay {
+    position: static;
+    min-height: 1.4em;
+    margin-top: 1rem;
+}
+.slidewire-frame.sw-slide .sw-content .pgx-cta {
+    background: var(--darkwood-white);
+    color: var(--darkwood-ink);
+}
+
+/* Native editorial typography. Diagram glyphs and game controls retain their
+   own intrinsic sizing; paragraphs and all list levels share the subtitle size. */
+.sw-body-inner,
+.sw-content,
+.sw-lead {
+    font-size: var(--dw-content-font-size);
+}
+
+.sw-body > .sw-body-inner.sw-content {
+    margin-block: auto;
+}
+
+.sw-body-inner > .dw-wrap > :first-child {
+    margin-top: 0;
+}
+
+.sw-content :is(.dw-flow, .dw20-row, .dw20-pair) {
+    flex-wrap: wrap;
+}
+
+.sw-content :is(.dw-node, .sw-process-step, td, th) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.sw-content .dw20-split3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sw-statement {
+    font-size: var(--dw-content-font-size);
+}
+
+.sw-slide .sw-body :is(p, li, h3, blockquote, figcaption, td, th, dt, dd):not(svg *),
+.sw-slide .sw-content :is(p, li, h3, blockquote, figcaption, td, th, dt, dd):not(svg *),
+.sw-slide .sw-process-step {
+    font-size: var(--dw-content-font-size);
+    line-height: 1.3;
+}
+
+.sw-slide .sw-body :is(ul, ol) {
+    font-size: var(--dw-content-font-size);
+}
+
+.sw-code-window,
+.sw-code-toolbar,
+.sw-code-window pre,
+.sw-terminal,
+.sw-content .dw-code {
+    background: var(--sw-code-background);
+    color: var(--sw-code-foreground);
+}
+
+.sw-code-window pre,
+.sw-code-window code {
+    font-family: var(--darkwood-font-mono);
+    font-size: 22px;
+    line-height: 1.5;
+    text-align: left;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.sw-content .pg-mark {
+    font-size: calc(var(--cell, 28px) * 0.38);
+    line-height: 1;
+}
+
+.sw-slide .pg-row {
+    flex-wrap: wrap;
+}
+
+.sw-slide .pg-row > :first-child:not([data-pg-board]) {
+    flex: 1 1 500px;
+}
+
+.sw-slide .pg-row > :is([data-pg-board], :has(> [data-pg-board])) {
+    flex: 0 0 auto;
+}
+
+.sw-code-toolbar {
+    font: 18px/1.5 var(--darkwood-font-mono);
+    padding: 16px 28px 0;
+}
+
+.sw-content svg [stroke]:not([stroke="none"]) {
+    stroke-width: var(--dw-border-width);
+    vector-effect: non-scaling-stroke;
+}
+
+.sw-rule,
+.sw-content .dw20-scale-bar {
+    height: var(--dw-border-width);
+}
+
+/* Mermaid emits document-ID selectors and inline paint. This is the native
+   diagram surface contract, including generated labels and arrowheads. */
+/* Also applies to Mermaid's temporary measuring SVG, before insertion. */
+svg .nodeLabel p {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.sw-content .dw-embed:has(.slidewire-diagram) {
+    display: grid;
+    place-items: center;
+}
+
+.sw-slide .sw-content :has(.slidewire-diagram) {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: auto;
+    overflow: visible;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+}
+
+.sw-slide--content .sw-body:has(.slidewire-diagram) {
+    container-type: size;
+}
+
+.sw-slide--content .slidewire-diagram svg {
+    max-height: calc(100cqh - 2 * var(--dw-body-inset));
+}
+
+.sw-content .slidewire-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+    white-space: normal;
+}
+
+.slidewire-diagram svg,
+.slidewire-diagram svg * {
+    color: var(--darkwood-ink) !important;
+    background: transparent !important;
+    fill: var(--darkwood-white) !important;
+    stroke: var(--dw-blue) !important;
+}
+
+.slidewire-diagram svg :is(path, line, polyline) {
+    fill: none !important;
+}
+
+.slidewire-diagram svg :is(path, line, rect, circle, polygon, polyline, ellipse) {
+    stroke-width: var(--dw-border-width) !important;
+    vector-effect: non-scaling-stroke;
+}
+
+.slidewire-diagram svg :is(text, text *, foreignObject, foreignObject *) {
+    fill: var(--darkwood-ink) !important;
+    stroke: none !important;
+}
+
+.slidewire-diagram svg foreignObject {
+    overflow: visible;
+}
+
+.slidewire-diagram svg marker path {
+    fill: var(--dw-blue) !important;
+    stroke: none !important;
+}
+
+/* Mermaid appends an empty tooltip to body; it must not create a print page. */
+.mermaidTooltip:empty {
+    display: none;
+}
+
+/* Directional components override the neutral text reset, never code tokens. */
+.sw-slide .sw-content :is(.dw-arrow, .sw-process-arrow, .sr-arrow, .sw-arrow, .hc-auth-arrow, .hc-big-arrow, .hc-loop-arrow, .hc-map-arrow, .hc-state-arrow, .pg-pipe > i) { color: var(--dw-arrow-color); }
+.sw-slide .sw-content .hc-thesis-node::after, .sw-slide .sw-content .sw-check::after { color: var(--dw-arrow-color); }

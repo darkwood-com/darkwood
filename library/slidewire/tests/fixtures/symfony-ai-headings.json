@@ -1,0 +1,22 @@
+[
+  {"title":"Symfony AI in Action","overline":"Darkwood selection / SymfonyLive Berlin 2026","subtitle":true},
+  {"title":"Le problème","subtitle":true},
+  {"title":"Vision","subtitle":true},
+  {"title":"Les briques","subtitle":true},
+  {"title":"Platform","subtitle":true},
+  {"title":"Le code applicatif reste stable.","overline":"Même intention, modèle différent","subtitle":false},
+  {"title":"Streaming","subtitle":true},
+  {"title":"Multimodal","subtitle":true},
+  {"title":"Structured Output","subtitle":true},
+  {"title":"Agent","subtitle":true},
+  {"title":"Tool Calling","subtitle":true},
+  {"title":"Human in the Loop","subtitle":true},
+  {"title":"Memory","subtitle":true},
+  {"title":"Store","subtitle":true},
+  {"title":"RAG","subtitle":true},
+  {"title":"Multi-agent","subtitle":true},
+  {"title":"MCP","subtitle":true},
+  {"title":"Le vrai sujet n'est pas le chatbot. C'est l'orchestration.","overline":"Analyse Darkwood","subtitle":true},
+  {"title":"Stack cible","subtitle":true},
+  {"title":"Construire des features IA, pas seulement des prompts.","subtitle":true}
+]

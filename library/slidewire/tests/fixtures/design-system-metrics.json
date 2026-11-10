@@ -1,0 +1,44 @@
+{
+  "canvas": {
+    "widthPt": 1920,
+    "heightPt": 1080
+  },
+  "fontFamily": "Verdana",
+  "fontWeight": 400,
+  "content": {
+    "fontSizePt": 90,
+    "lineHeightPt": 90,
+    "letterSpacingPt": 2.99,
+    "boxTopPt": 40,
+    "textInsetPt": 9.5999212598,
+    "paragraphBeforePt": 0,
+    "paragraphAfterPt": 0
+  },
+  "section": {
+    "fontSizePt": 90,
+    "lineHeightPt": 90,
+    "letterSpacingPt": 2.99
+  },
+  "cover": {
+    "fontSizePt": 180,
+    "lineHeightPt": 180,
+    "letterSpacingPt": 5.98
+  },
+  "standardCover": {
+    "fontSizePt": 90,
+    "lineHeightPt": 90,
+    "letterSpacingPt": 2.99
+  },
+  "subtitle": {
+    "fontSizePt": 48,
+    "lineHeightPt": 48,
+    "letterSpacingPt": 1.59,
+    "paragraphBeforePt": 0,
+    "paragraphAfterPt": 0
+  },
+  "overline": {
+    "fontSizePt": 34,
+    "lineHeightPt": 34,
+    "letterSpacingPt": 0
+  }
+}

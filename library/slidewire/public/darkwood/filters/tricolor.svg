@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- Display-only quantization: black, Darkwood blue, white. Source PNGs stay intact. -->
+  <filter id="darkwood-tricolor" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="
+      .2126 .7152 .0722 0 0
+      .2126 .7152 .0722 0 0
+      .2126 .7152 .0722 0 0
+      0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="discrete" tableValues="0 0 1"/>
+      <feFuncG type="discrete" tableValues="0 0.4823529411764706 1"/>
+      <feFuncB type="discrete" tableValues="0 1 1"/>
+      <feFuncA type="discrete" tableValues="0 1"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="darkwood-monochrome" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="discrete" tableValues="0 1"/>
+      <feFuncG type="discrete" tableValues="0 1"/>
+      <feFuncB type="discrete" tableValues="0 1"/>
+      <feFuncA type="discrete" tableValues="0 1"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
