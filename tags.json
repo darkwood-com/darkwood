@@ -78,6 +78,13 @@
       "topics": ["demo", "flow", "php", "symfony"]
     },
     {
+      "id": "flow-jev",
+      "path": "library/flow-jev",
+      "domain": "matyo91",
+      "description": "Archived experimental Symfony Flow and JEV platform integration.",
+      "topics": ["archive", "demo", "flow", "php", "symfony"]
+    },
+    {
       "id": "kibono-flow",
       "path": "library/kibono-flow",
       "domain": "matyo91",
@@ -155,6 +162,13 @@
       "topics": ["ai", "cli", "php", "symfony"]
     },
     {
+      "id": "omer-quotes",
+      "path": "library/omer-quotes",
+      "domain": "matyo91",
+      "description": "Archived Symfony project for extracting and exploring quotations from source repositories.",
+      "topics": ["archive", "php", "symfony"]
+    },
+    {
       "id": "php-flow",
       "path": "library/php-flow",
       "domain": "matyo91",
@@ -162,11 +176,25 @@
       "topics": ["demo", "flow", "php", "symfony"]
     },
     {
+      "id": "quake-3-arena-php",
+      "path": "library/quake-3-arena-php",
+      "domain": "matyo91",
+      "description": "Archived PHP FFI study of the Quake III Arena engine.",
+      "topics": ["archive", "game", "php"]
+    },
+    {
       "id": "rxjs-flow",
       "path": "library/rxjs-flow",
       "domain": "matyo91",
       "description": "Study mapping RxJS streaming concepts onto Darkwood Flow.",
       "topics": ["demo", "flow", "php", "rxjs", "symfony"]
+    },
+    {
+      "id": "sketchup-shape",
+      "path": "library/sketchup-shape",
+      "domain": "matyo91",
+      "description": "Archived Symfony experiment for generating and validating SketchUp shape specifications.",
+      "topics": ["archive", "php", "symfony"]
     },
     {
       "id": "vibephp-flow",
