@@ -1,10 +1,10 @@
 # NoLife Models
 
-Local explorer and comparator for AI models: merged **catalog** from the live **[models.dev `api.json`](https://models.dev/api.json)** (cached), optional local overrides in [`data/catalog.json`](data/catalog.json), **Ollama** inventory and `/api/generate` runs, lightweight **benchmarks**, and **JSON / CSV / Markdown** exports. Built for **Symfony 8**, **PHP 8.4+**, **DDD / hexagonal** layering under `src/NoLifeModels/`.
+Local explorer and comparator for AI models: merged **catalog** from the live **[models.dev `api.json`](https://models.dev/api.json)** (cached), optional local overrides in [`data/catalog.json`](data/catalog.json), **Ollama** inventory and `/api/generate` runs, lightweight **benchmarks**, and **JSON / CSV / Markdown** exports. Built for **Symfony 8.1**, **PHP 8.5+**, **DDD / hexagonal** layering under `src/NoLifeModels/`.
 
 ## Requirements
 
-- PHP 8.4 or newer (project `composer.json` allows `>=8.4`)
+- PHP 8.5 or newer
 - [Composer](https://getcomposer.org/)
 - [Ollama](https://ollama.com/) running locally when you use inventory or comparisons
 
@@ -20,7 +20,9 @@ Copy environment defaults and adjust secrets:
 cp .env .env.local   # optional
 ```
 
-Set `APP_SECRET` to a non-empty random string in `.env` or `.env.local` for non-dev environments.
+Set `APP_SECRET` to a non-empty random string in `.env.local` or through the
+runtime environment for non-development environments. Keep `.env` limited to
+public defaults.
 
 ### Ollama
 
