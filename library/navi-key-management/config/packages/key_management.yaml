@@ -1,0 +1,12 @@
+# Experimental: Symfony 8.2 KeyManagement. The API may change in minor versions.
+# The client DSN cannot be a bare %env()% (cannotBeEmpty at compile time).
+# Dev/test keep a literal sodium:// prefix; prod keeps a literal aws-kms:// prefix.
+key_management:
+    clients:
+        app: 'sodium://?keys[app-key]=%env(DEV_KMS_KEY)%'
+    default_client: app
+
+when@prod:
+    key_management:
+        clients:
+            app: 'aws-kms://default?region=%env(AWS_KMS_REGION)%'

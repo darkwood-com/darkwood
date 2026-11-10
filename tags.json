@@ -349,6 +349,13 @@
       "domain": "darkwood",
       "description": "Complementary AI component ecosystem for Symfony AI.",
       "topics": ["ai", "components", "php", "symfony"]
+    },
+    {
+      "id": "navi-key-management",
+      "path": "library/navi-key-management",
+      "domain": "matyo91",
+      "description": "Experimental credential management interface for Navi AI connections.",
+      "topics": ["credentials", "navi", "php", "security"]
     }
   ]
 }
