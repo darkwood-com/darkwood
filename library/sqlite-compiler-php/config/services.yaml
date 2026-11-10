@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+parameters:
+    compiler.work_dir: '%kernel.project_dir%/var/compiler'
+    compiler.include_dir: '%kernel.project_dir%/include'
+    compiler.project_dir: '%kernel.project_dir%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Compiler/Common/'
+            - '../src/Compiler/Preproc/'
+            - '../src/Compiler/Parser/'
+            - '../src/Compiler/Sema/'
+            - '../src/Compiler/CodeGen/'
+            - '../src/Compiler/Driver/CompileOptions.php'
+            - '../src/Compiler/Driver/CompilationResult.php'
+            - '../src/Compiler/Platform/ProcessResult.php'
+
+    App\Compiler\Driver\Compiler: ~
+
+    App\Compiler\Platform\Toolchain:
+        arguments:
+            $workDir: '%compiler.work_dir%'
+
+    App\Command\CompilerCheckCommand:
+        arguments:
+            $compilerDir: '%compiler.work_dir%'
+
+    App\Command\CompilerProbeCommand:
+        arguments:
+            $projectDir: '%compiler.project_dir%'
+
+    App\Command\CompilerCompileCommand:
+        arguments:
+            $workDir: '%compiler.work_dir%'
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerBuildCommand:
+        arguments:
+            $workDir: '%compiler.work_dir%'
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerRunCommand:
+        arguments:
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerFixturesCommand:
+        arguments:
+            $projectDir: '%compiler.project_dir%'
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerTokensCommand:
+        arguments:
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerAstCommand:
+        arguments:
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerCompareClangCommand:
+        arguments:
+            $workDir: '%compiler.work_dir%'
+            $includeDir: '%compiler.include_dir%'
+
+    App\Command\CompilerSqliteCommand:
+        arguments:
+            $projectDir: '%compiler.project_dir%'
+            $workDir: '%compiler.work_dir%'
+
+    App\Flow\SqliteValidationFlow: ~
+
+    App\Flow\Step\CompileSqlite:
+        arguments:
+            $includeDir: '%compiler.include_dir%'
+
+    App\Flow\Step\CompileHarness:
+        arguments:
+            $includeDir: '%compiler.include_dir%'
