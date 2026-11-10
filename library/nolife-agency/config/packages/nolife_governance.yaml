@@ -1,0 +1,6 @@
+parameters:
+  nolife.audit_dir: '%kernel.project_dir%/var/audit'
+  nolife.agent_runs_dir: '%kernel.project_dir%/var/agent-runs'
+  nolife.deliveries_dir: '%kernel.project_dir%/var/deliveries'
+  nolife.run_root_dir: '%kernel.project_dir%/var/nolife-agency/runs'
+  nolife.workflow_root: '%kernel.project_dir%/config/agency-workflows'

@@ -1,0 +1,8 @@
+parameters:
+  nolife.adapter.ai: '%env(NOLIFE_AI_ADAPTER)%'
+  nolife.adapter.flow: '%env(NOLIFE_FLOW_ADAPTER)%'
+  nolife.adapter.navi: '%env(NOLIFE_NAVI_ADAPTER)%'
+  nolife.adapter.media: '%env(NOLIFE_MEDIA_ADAPTER)%'
+  nolife.root.flow: '%env(default::NOLIFE_FLOW_ROOT)%'
+  nolife.root.navi: '%env(default::NOLIFE_NAVI_ROOT)%'
+  nolife.root.media_bundle: '%env(default::NOLIFE_MEDIA_BUNDLE_ROOT)%'
