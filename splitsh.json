@@ -9,6 +9,8 @@
     "media-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/MediaBundle", "remote": "git@github.com:darkwood-com/media-bundle.git", "branch": "8.1" },
     "darkwood-publish-article-mcp-apps": { "prefix": "library/darkwood-publish-article-mcp-apps", "remote": "git@github.com:darkwood-com/darkwood-publish-article-mcp-apps.git", "branch": "main" },
     "lgs": { "prefix": "library/lgs", "remote": "git@github.com:darkwood-com/lgs.git", "branch": "master" },
-    "matyo91": { "prefix": "library/matyo91", "remote": "git@github.com:matyo91/matyo91.git", "branch": "main" }
+    "matyo91": { "prefix": "library/matyo91", "remote": "git@github.com:matyo91/matyo91.git", "branch": "main" },
+    "flowvox": { "prefix": "library/flowvox", "remote": "git@github.com:darkwood-com/flowvox.git", "branch": "1.x" },
+    "flowvox-ios": { "prefix": "library/flowvox-ios", "remote": "git@github.com:matyo91/flowvox-ios.git", "branch": "main" }
   }
 }

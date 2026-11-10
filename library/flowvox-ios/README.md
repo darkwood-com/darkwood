@@ -4,10 +4,10 @@ Hotwire Native shell for [Flowvox](../flowvox).
 
 ## 1. Start the Symfony backend
 
-From the Flowvox project:
+From the monorepo root:
 
 ```bash
-cd /Users/math/Sites/darkwood/flowvox
+cd library/flowvox
 symfony server:start --no-tls --allow-all-ip
 # → http://127.0.0.1:8000 (simulator)
 # → http://<your-mac-ip>:8000 (physical iPhone)
@@ -32,7 +32,7 @@ Find your Mac IP: System Settings → Network, or:
 ipconfig getifaddr en1   # Wi‑Fi on most Macs (not en0)
 ```
 
-**Dashboard vide mais worker actif ?** Le dashboard n’affiche que les sessions avec heartbeat &lt; 30 s. Ouvre directement la session : `http://192.168.1.11:8000/sessions/demo` (remplace l’IP et l’id de session).
+**Dashboard vide mais worker actif ?** Le dashboard n’affiche que les sessions avec heartbeat &lt; 30 s. Ouvre directement la session : `http://<your-mac-ip>:8000/sessions/demo` (remplace l’IP et l’id de session).
 
 ## 3. Run in Xcode
 

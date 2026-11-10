@@ -279,6 +279,20 @@
       "domain": "darkwood",
       "description": "What You See Is What You Learn public experiment.",
       "topics": ["experiment", "web"]
+    },
+    {
+      "id": "flowvox",
+      "path": "library/flowvox",
+      "domain": "darkwood",
+      "description": "Symfony voice workflow with local and hosted transcription providers.",
+      "topics": ["audio", "php", "symfony", "transcription"]
+    },
+    {
+      "id": "flowvox-ios",
+      "path": "library/flowvox-ios",
+      "domain": "darkwood",
+      "description": "Hotwire Native iOS shell for the Flowvox voice workflow.",
+      "topics": ["audio", "ios", "mobile", "swift"]
     }
   ]
 }
