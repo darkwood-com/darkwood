@@ -28,7 +28,7 @@ final class ClientWebsiteWorkflowTest extends TestCase
             new MediaMotionAgent(), new QaAgent(),
         ]);
         $workflow = new ClientWebsiteWorkflow(
-            new WorkflowDefinitionLoader('/path/to/nolife-agency/config/agency-workflows'),
+            new WorkflowDefinitionLoader(dirname(__DIR__, 2).'/config/agency-workflows'),
             new WorkflowDefinitionValidator($registry),
         );
         self::assertSame('client_website', $workflow->definition()->key);

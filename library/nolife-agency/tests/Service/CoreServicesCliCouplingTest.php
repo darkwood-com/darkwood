@@ -10,7 +10,7 @@ final class CoreServicesCliCouplingTest extends TestCase
 {
     public function testCoreCodeDoesNotUseForbiddenCliCoupling(): void
     {
-        $root = '/path/to/nolife-agency/src';
+        $root = dirname(__DIR__, 2).'/src';
         $targets = ['Service', 'Integration', 'Governance', 'Agent', 'Workflow'];
         $forbidden = ['shell_exec(', 'system(', 'passthru(', 'proc_open(', 'bin/console', 'Symfony\\Component\\Process\\Process'];
 

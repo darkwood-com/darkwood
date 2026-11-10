@@ -293,6 +293,55 @@
       "domain": "darkwood",
       "description": "Hotwire Native iOS shell for the Flowvox voice workflow.",
       "topics": ["audio", "ios", "mobile", "swift"]
+    },
+    {
+      "id": "dj-stream",
+      "path": "library/dj-stream",
+      "domain": "darkwood",
+      "description": "Archived OBS scenes, overlays and media sources for a DJ stream setup.",
+      "topics": ["archive", "media", "obs", "streaming"]
+    },
+    {
+      "id": "framework-x-flow",
+      "path": "library/framework-x-flow",
+      "domain": "matyo91",
+      "description": "Framework X HTTP runtime experiment orchestrated with Darkwood Flow.",
+      "topics": ["demo", "flow", "http", "php"]
+    },
+    {
+      "id": "laravel-pipeline",
+      "path": "library/laravel-pipeline",
+      "domain": "matyo91",
+      "description": "Comparison of a Laravel-inspired pipeline with Darkwood Flow.",
+      "topics": ["demo", "flow", "php", "symfony"]
+    },
+    {
+      "id": "nolife-agency",
+      "path": "library/nolife-agency",
+      "domain": "matyo91",
+      "description": "Experimental agent workflow for generating and reviewing a client website.",
+      "topics": ["agents", "demo", "flow", "php"]
+    },
+    {
+      "id": "nolife-tests",
+      "path": "library/nolife-tests",
+      "domain": "matyo91",
+      "description": "Behavior-focused testing demonstration built around Darkwood Flow jobs.",
+      "topics": ["demo", "flow", "php", "testing"]
+    },
+    {
+      "id": "sqlite-compiler-php",
+      "path": "library/sqlite-compiler-php",
+      "domain": "matyo91",
+      "description": "Experimental ARM64 C compiler in PHP targeting the SQLite amalgamation.",
+      "topics": ["compiler", "php", "sqlite"]
+    },
+    {
+      "id": "thanks-agent",
+      "path": "library/thanks-agent",
+      "domain": "matyo91",
+      "description": "Multi-agent experiment measuring useful output against consumed resources.",
+      "topics": ["agents", "demo", "flow", "php"]
     }
   ]
 }

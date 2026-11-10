@@ -33,7 +33,7 @@ final class WorkflowDefinitionValidatorTest extends TestCase
             new MediaMotionAgent(),
             new QaAgent(),
         ]);
-        $loader = new WorkflowDefinitionLoader('/path/to/nolife-agency/config/agency-workflows');
+        $loader = new WorkflowDefinitionLoader(dirname(__DIR__, 2).'/config/agency-workflows');
         $validator = new WorkflowDefinitionValidator($registry);
         $validator->validate($loader->load('client-website'));
         self::assertTrue(true);

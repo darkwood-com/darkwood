@@ -51,7 +51,7 @@ final class DemoClientWebsiteCommandTest extends TestCase
             new NullFlowWorkflowClient(),
             new NullMediaGenerationClient(),
             new ClientWebsiteWorkflow(
-                new WorkflowDefinitionLoader('/path/to/nolife-agency/config/agency-workflows'),
+                new WorkflowDefinitionLoader(dirname(__DIR__, 2).'/config/agency-workflows'),
                 new WorkflowDefinitionValidator($registry),
             ),
             $runRoot,
@@ -109,7 +109,7 @@ final class DemoClientWebsiteCommandTest extends TestCase
             new NullFlowWorkflowClient(),
             new NullMediaGenerationClient(),
             new ClientWebsiteWorkflow(
-                new WorkflowDefinitionLoader('/path/to/nolife-agency/config/agency-workflows'),
+                new WorkflowDefinitionLoader(dirname(__DIR__, 2).'/config/agency-workflows'),
                 new WorkflowDefinitionValidator($registry),
             ),
             $runRoot,
@@ -147,7 +147,7 @@ final class DemoClientWebsiteCommandTest extends TestCase
             new NullFlowWorkflowClient(),
             new NullMediaGenerationClient(),
             new ClientWebsiteWorkflow(
-                new WorkflowDefinitionLoader('/path/to/nolife-agency/config/agency-workflows'),
+                new WorkflowDefinitionLoader(dirname(__DIR__, 2).'/config/agency-workflows'),
                 new WorkflowDefinitionValidator($registry),
             ),
             $runRoot,
