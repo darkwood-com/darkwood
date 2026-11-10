@@ -1,0 +1,8 @@
+/vendor/
+/var/log/*
+/var/runs/*
+/var/cache/
+!/var/log/.gitkeep
+!/var/runs/.gitkeep
+/.phpunit.cache/
+/.phpunit.result.cache
