@@ -12,7 +12,7 @@ This repo keeps fixtures, Jobs for the image pipeline, CLI, and documentation.
 ## Requirements
 
 - PHP >= 8.5
-- Local Flow package (Composer path repository)
+- Composer
 
 ## Installation
 
@@ -20,15 +20,7 @@ This repo keeps fixtures, Jobs for the image pipeline, CLI, and documentation.
 composer install
 ```
 
-`composer.json` points at the local Flow component:
-
-```json
-"repositories": [{
-  "type": "path",
-  "url": "../../darkwood/src/Darkwood/Component/Flow",
-  "options": { "symlink": true }
-}]
-```
+Darkwood Flow is resolved through Composer; no adjacent checkout is required.
 
 ## Pipeline
 

@@ -3,23 +3,14 @@
     "license": "proprietary",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../darkwood/src/Darkwood/Component/Flow",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
     "require": {
         "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "darkwood/flow": "@dev",
+        "darkwood/flow": "^8.1.6",
         "symfony/console": "8.1.*",
         "symfony/dotenv": "8.1.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.12",
         "symfony/framework-bundle": "8.1.*",
         "symfony/runtime": "8.1.*",
         "symfony/yaml": "8.1.*"
