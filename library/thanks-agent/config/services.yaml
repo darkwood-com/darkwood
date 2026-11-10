@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+
+    Flow\FlowFactory:
+        autowire: true
+
+    App\Instrumentation\CostLedger:
+        shared: true
+
+    App\Instrumentation\RunStore:
+        shared: true
+
+    App\Instrumentation\ValueRegistry:
+        shared: true
+
+    App\Orchestration\AgentPipelineFactory:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    App\Io\FlowIoRunner:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    App\Command\CompareCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    App\Command\RunCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    App\Command\BenchIoCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'

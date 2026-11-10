@@ -1,0 +1,10 @@
+pressure-test-decisions
+Copyright (c) Guillaume Moigneu
+Source: https://github.com/gmoigneu/skills
+
+Licensed under the Apache License, Version 2.0.
+See https://www.apache.org/licenses/LICENSE-2.0
+
+This skill is vendored into darkwood/nolife-tests without modification
+to the decision protocol. Project-level documentation and the companion
+skill pressure-test-testing-decisions are MIT-licensed Darkwood additions.

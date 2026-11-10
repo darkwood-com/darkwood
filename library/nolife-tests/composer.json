@@ -1,0 +1,32 @@
+{
+    "name": "darkwood/nolife-tests",
+    "description": "Companion demo for From No-Life Testing to Behavioral Testing — Darkwood Flow jobs vs runtime",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.5",
+        "darkwood/flow": "^8.1"
+    },
+    "require-dev": {
+        "amphp/amp": "^3.1",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:good": "phpunit --testsuite Good",
+        "test:bad": "phpunit --testsuite Bad"
+    }
+}

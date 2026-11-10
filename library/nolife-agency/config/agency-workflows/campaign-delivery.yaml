@@ -1,0 +1,25 @@
+name: nolife_agency_campaign_delivery
+inputs:
+  - client_brief
+  - project_slug
+  - locale
+  - delivery_deadline
+steps:
+  architect:
+    agent: architect
+  seo:
+    agent: seo
+    depends_on: [architect]
+  content:
+    agent: content
+    depends_on: [seo]
+  developer:
+    agent: developer
+    depends_on: [architect, content]
+  delivery_review:
+    agent: delivery_manager
+    depends_on: [developer, content, seo]
+gates:
+  - name: governance_approval
+    after: delivery_review
+    service: app.governance.approval_gate
