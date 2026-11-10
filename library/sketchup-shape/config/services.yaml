@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+# See also https://symfony.com/doc/current/service_container/import.html
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    env(OLLAMA_MODEL): 'ministral-3b:8b'
+    # Default when OLLAMA_HTTP_TIMEOUT is unset (seconds; Symfony HttpClient idle default is ~60)
+    env(OLLAMA_HTTP_TIMEOUT): '600'
+
+services:
+    # Long timeouts for local LLM: default http_client caps idle read at ~60s, which breaks slow generations.
+    http_client.ollama:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            -
+                timeout: '%env(float:OLLAMA_HTTP_TIMEOUT)%'
+                max_duration: '%env(float:OLLAMA_HTTP_TIMEOUT)%'
+
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+
+    # WorkflowRunner lives in vendor (darkwood/navi) — register explicitly
+    App\Application\Workflow\WorkflowRunner: ~
+
+    # DESIGN AGENT — interprets intention → JSON design spec
+    App\Domain\Port\DesignPromptBuilderInterface: '@App\Infrastructure\AI\DesignPromptBuilder'
+
+    # CODE AGENT — converts JSON design spec → Ruby script
+    App\Domain\Port\PromptBuilderInterface: '@App\Infrastructure\AI\SketchUpPromptBuilder'
+
+    # Wire LocalAiService to the local Ollama platform (RGPD: no external calls)
+    App\Service\LocalAiService:
+        arguments:
+            $platform: '@ai.platform.ollama'
+            $model: '%env(OLLAMA_MODEL)%'
