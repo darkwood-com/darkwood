@@ -1,0 +1,266 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "INFERRED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 922,
+    "elements": [
+      {
+        "entry": 0,
+        "hex_rgb8": "#FFFFFF",
+        "kind": "palette_entry",
+        "rgb16": [
+          65535,
+          65535,
+          65535
+        ],
+        "rgb8": [
+          255,
+          255,
+          255
+        ],
+        "value": 0
+      },
+      {
+        "entry": 1,
+        "hex_rgb8": "#330099",
+        "kind": "palette_entry",
+        "rgb16": [
+          13107,
+          0,
+          39321
+        ],
+        "rgb8": [
+          51,
+          0,
+          153
+        ],
+        "value": 1
+      },
+      {
+        "entry": 2,
+        "hex_rgb8": "#FFFFCC",
+        "kind": "palette_entry",
+        "rgb16": [
+          65535,
+          65535,
+          52428
+        ],
+        "rgb8": [
+          255,
+          255,
+          204
+        ],
+        "value": 2
+      },
+      {
+        "entry": 3,
+        "hex_rgb8": "#777777",
+        "kind": "palette_entry",
+        "rgb16": [
+          30583,
+          30583,
+          30583
+        ],
+        "rgb8": [
+          119,
+          119,
+          119
+        ],
+        "value": 3
+      },
+      {
+        "entry": 4,
+        "hex_rgb8": "#FFFF00",
+        "kind": "palette_entry",
+        "rgb16": [
+          65535,
+          65535,
+          0
+        ],
+        "rgb8": [
+          255,
+          255,
+          0
+        ],
+        "value": 4
+      },
+      {
+        "entry": 5,
+        "hex_rgb8": "#BBBBBB",
+        "kind": "palette_entry",
+        "rgb16": [
+          48059,
+          48059,
+          48059
+        ],
+        "rgb8": [
+          187,
+          187,
+          187
+        ],
+        "value": 5
+      },
+      {
+        "entry": 6,
+        "hex_rgb8": "#DDDDDD",
+        "kind": "palette_entry",
+        "rgb16": [
+          56797,
+          56797,
+          56797
+        ],
+        "rgb8": [
+          221,
+          221,
+          221
+        ],
+        "value": 6
+      },
+      {
+        "entry": 7,
+        "hex_rgb8": "#AAAAAA",
+        "kind": "palette_entry",
+        "rgb16": [
+          43690,
+          43690,
+          43690
+        ],
+        "rgb8": [
+          170,
+          170,
+          170
+        ],
+        "value": 7
+      }
+    ],
+    "format": "Classic Macintosh Color Icon",
+    "properties": {
+      "bitmap_bounds": {
+        "bottom": 32,
+        "height": 32,
+        "left": 0,
+        "right": 32,
+        "top": 0,
+        "width": 32
+      },
+      "bitmap_row_bytes": 4,
+      "bounds": {
+        "bottom": 32,
+        "height": 32,
+        "left": 0,
+        "right": 32,
+        "top": 0,
+        "width": 32
+      },
+      "color_count": 8,
+      "color_table_flags": "0x0000",
+      "color_table_offset": 338,
+      "color_table_seed": 0,
+      "component_count": 1,
+      "component_size_bits": 4,
+      "depth_bits": 4,
+      "height": 32,
+      "horizontal_resolution_fixed": "0x00480000",
+      "indexed_pixel_data_bytes": 512,
+      "indexed_pixel_data_offset": 410,
+      "mask_bounds": {
+        "bottom": 32,
+        "height": 32,
+        "left": 0,
+        "right": 32,
+        "top": 0,
+        "width": 32
+      },
+      "mask_data_bytes": 128,
+      "mask_data_offset": 82,
+      "mask_row_bytes": 4,
+      "monochrome_bitmap_bytes": 128,
+      "monochrome_bitmap_offset": 210,
+      "pack_size": 0,
+      "pack_type": 0,
+      "pixel_row_bytes": 16,
+      "png_pixel_comparison": {
+        "compared_pixels": 1024,
+        "comparison": "decoded indexed pixels mapped through embedded cicn ColorTable versus PNG RGB pixels",
+        "differing_pixels": 0,
+        "png_dimensions": [
+          32,
+          32
+        ],
+        "png_path": "sources/resedit-1-0-3/cicn/259.png",
+        "status": "pixel_exact"
+      },
+      "vertical_resolution_fixed": "0x00480000",
+      "width": 32
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": null,
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "recovered resource-fork payload",
+    "binary_path": "sources/resedit-1-0-3/cicn/259.bin",
+    "binary_size": 922,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/cicn/259.bin",
+        "sha256": "b48942fbff245574608134226553616d0794bbb19ff6954fa45ef5fb804d2afd",
+        "size": 922
+      },
+      {
+        "kind": "PNG render",
+        "path": "sources/resedit-1-0-3/cicn/259.png",
+        "sha256": "d2ac6ae3e4b2196983f6eabe9542ac943c492ad064d5785b140f0bf3587e0518",
+        "size": 567
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 289670,
+    "resource_fork_payload_sha256": "b48942fbff245574608134226553616d0794bbb19ff6954fa45ef5fb804d2afd",
+    "resource_fork_payload_size": 922,
+    "sha256": "b48942fbff245574608134226553616d0794bbb19ff6954fa45ef5fb804d2afd",
+    "source_exports": [
+      "sources/resedit-1-0-3/cicn/259.bin",
+      "sources/resedit-1-0-3/cicn/259.png"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Color Icon; 922 curated payload bytes.",
+    "descriptive_name": "Gold Starburst Rank Insignia Color Icon",
+    "id": 259,
+    "key": "cicn:259",
+    "original_fourcc": "cicn",
+    "original_macintosh_name": null,
+    "original_name_bytes_hex": null,
+    "original_name_source": "comparison resource map",
+    "purpose": "Gold Starburst Rank Insignia Color Icon",
+    "type": "cicn"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

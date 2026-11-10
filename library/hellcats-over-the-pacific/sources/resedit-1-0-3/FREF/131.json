@@ -1,0 +1,91 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 7,
+    "elements": [],
+    "format": "Classic Macintosh File Reference",
+    "properties": {
+      "file_type": "HELL",
+      "filename": "",
+      "filename_bytes_hex": "",
+      "local_icon_id": 1
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/FREF/131.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/FREF/131.bin",
+    "binary_size": 7,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/FREF/131.bin",
+        "sha256": "64118f850e77c49811b1cf18bb3d722f19513f040a7896e3578b60483bb2a36f",
+        "size": 7
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/FREF/131.md",
+        "sha256": "da9a3042059f477de1611ee7823d0be8710a5ef4818e423620580545000af366",
+        "size": 2423
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 65501,
+    "resource_fork_payload_sha256": "64118f850e77c49811b1cf18bb3d722f19513f040a7896e3578b60483bb2a36f",
+    "resource_fork_payload_size": 7,
+    "sha256": "64118f850e77c49811b1cf18bb3d722f19513f040a7896e3578b60483bb2a36f",
+    "source_exports": [
+      "sources/resedit-1-0-3/FREF/131.bin",
+      "sources/resedit-1-0-3/FREF/131.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "BNDL mapping entry in original bytes",
+        "kind": "bundle_local_id_1",
+        "source": "BNDL:132",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh File Reference; 7 curated payload bytes.",
+    "descriptive_name": "HELL Document File Reference with Local Icon 1",
+    "id": 131,
+    "key": "FREF:131",
+    "original_fourcc": "FREF",
+    "original_macintosh_name": null,
+    "original_name_bytes_hex": null,
+    "original_name_source": "comparison resource map",
+    "purpose": "HELL Document File Reference with Local Icon 1",
+    "type": "FREF"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

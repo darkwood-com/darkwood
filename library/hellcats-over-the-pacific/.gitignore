@@ -1,0 +1,8 @@
+# Godot 4 ignored files
+.godot/
+
+# Godot editor-specific metadata
+*.uid
+
+# python
+__pycache__/

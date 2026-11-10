@@ -1,0 +1,97 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 23,
+    "elements": [],
+    "format": "Classic Macintosh ControlTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 70,
+        "height": 70,
+        "left": 0,
+        "right": 16,
+        "top": 0,
+        "width": 16
+      },
+      "fill_byte": 0,
+      "initial_value": 0,
+      "maximum": 0,
+      "minimum": 0,
+      "procedure_id": 16,
+      "refcon": 0,
+      "title": "",
+      "title_bytes_hex": "",
+      "visible": true
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/CNTL/128.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/CNTL/128.bin",
+    "binary_size": 23,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/CNTL/128.bin",
+        "sha256": "4ac7791b17115e52a68f54f81f202bb486874cf41347827d19f434fe29930e45",
+        "size": 23
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/CNTL/128.md",
+        "sha256": "95d0ce25f81c803a9ad85df5c0898fc4de5f715311a1a720655a85335d32fa16",
+        "size": 9076
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 301364,
+    "resource_fork_payload_sha256": "4ac7791b17115e52a68f54f81f202bb486874cf41347827d19f434fe29930e45",
+    "resource_fork_payload_size": 23,
+    "sha256": "4ac7791b17115e52a68f54f81f202bb486874cf41347827d19f434fe29930e45",
+    "source_exports": [
+      "sources/resedit-1-0-3/CNTL/128.bin",
+      "sources/resedit-1-0-3/CNTL/128.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh ControlTemplate; 23 curated payload bytes.",
+    "descriptive_name": "Visible 16×70 Pixel Procedure-16 Control Template",
+    "id": 128,
+    "key": "CNTL:128",
+    "original_fourcc": "CNTL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/CNTL/128.md",
+    "purpose": "Visible 16×70 Pixel Procedure-16 Control Template",
+    "type": "CNTL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

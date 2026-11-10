@@ -1,0 +1,384 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 214,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 261,
+          "height": 21,
+          "left": 360,
+          "right": 431,
+          "top": 240,
+          "width": 71
+        },
+        "data_hex": "4f4b",
+        "data_length": 2,
+        "descriptive_identity": "OK",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "OK",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 284,
+          "height": 24,
+          "left": -50,
+          "right": 34,
+          "top": 260,
+          "width": 84
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 2,
+        "item_type": "user_item",
+        "offset": 18,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 258,
+          "height": 18,
+          "left": 110,
+          "right": 283,
+          "top": 240,
+          "width": 173
+        },
+        "data_hex": "",
+        "data_length": 0,
+        "descriptive_identity": "custom drawing region",
+        "enabled": false,
+        "index": 3,
+        "item_type": "user_item",
+        "offset": 32,
+        "padding_bytes": 0,
+        "reserved_handle": 0,
+        "type_byte": "0x80",
+        "type_code": 0
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 108,
+          "height": 18,
+          "left": 381,
+          "right": 413,
+          "top": 90,
+          "width": 32
+        },
+        "data_hex": "30",
+        "data_length": 1,
+        "descriptive_identity": "0",
+        "enabled": true,
+        "index": 4,
+        "item_type": "radio_button",
+        "offset": 46,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "0",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 133,
+          "height": 18,
+          "left": 381,
+          "right": 413,
+          "top": 115,
+          "width": 32
+        },
+        "data_hex": "31",
+        "data_length": 1,
+        "descriptive_identity": "1",
+        "enabled": true,
+        "index": 5,
+        "item_type": "radio_button",
+        "offset": 62,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "1",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 158,
+          "height": 18,
+          "left": 381,
+          "right": 413,
+          "top": 140,
+          "width": 32
+        },
+        "data_hex": "32",
+        "data_length": 1,
+        "descriptive_identity": "2",
+        "enabled": true,
+        "index": 6,
+        "item_type": "radio_button",
+        "offset": 78,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "2",
+        "type_byte": "0x06",
+        "type_code": 6
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 232,
+          "height": 222,
+          "left": 10,
+          "right": 346,
+          "top": 10,
+          "width": 336
+        },
+        "data_hex": "0082",
+        "data_length": 2,
+        "descriptive_identity": "picture item",
+        "enabled": false,
+        "index": 7,
+        "item_type": "picture",
+        "offset": 94,
+        "padding_bytes": 0,
+        "referenced_resource_id": 130,
+        "referenced_resource_type": "PICT",
+        "reserved_handle": 0,
+        "type_byte": "0xC0",
+        "type_code": 64
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 256,
+          "height": 16,
+          "left": 40,
+          "right": 79,
+          "top": 240,
+          "width": 39
+        },
+        "data_hex": "4675656c3a",
+        "data_length": 5,
+        "descriptive_identity": "Fuel:",
+        "enabled": false,
+        "index": 8,
+        "item_type": "static_text",
+        "offset": 110,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Fuel:",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 257,
+          "height": 17,
+          "left": 90,
+          "right": 103,
+          "top": 240,
+          "width": 13
+        },
+        "data_hex": "45",
+        "data_length": 1,
+        "descriptive_identity": "E",
+        "enabled": false,
+        "index": 9,
+        "item_type": "static_text",
+        "offset": 130,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "E",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 257,
+          "height": 17,
+          "left": 290,
+          "right": 322,
+          "top": 240,
+          "width": 32
+        },
+        "data_hex": "46",
+        "data_length": 1,
+        "descriptive_identity": "F",
+        "enabled": false,
+        "index": 10,
+        "item_type": "static_text",
+        "offset": 146,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "F",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 81,
+          "height": 16,
+          "left": 365,
+          "right": 429,
+          "top": 65,
+          "width": 64
+        },
+        "data_hex": "426f6d62733a",
+        "data_length": 6,
+        "descriptive_identity": "Bombs:",
+        "enabled": false,
+        "index": 11,
+        "item_type": "static_text",
+        "offset": 162,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Bombs:",
+        "type_byte": "0x88",
+        "type_code": 8
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 22,
+          "height": 17,
+          "left": 155,
+          "right": 288,
+          "top": 5,
+          "width": 133
+        },
+        "data_hex": "52656675656c20616e642052656c6f6164",
+        "data_length": 17,
+        "descriptive_identity": "Refuel and Reload",
+        "enabled": false,
+        "index": 12,
+        "item_type": "static_text",
+        "offset": 182,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Refuel and Reload",
+        "type_byte": "0x88",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 12,
+      "encoded_count_minus_one": 11,
+      "item_count": 12,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/132.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/132.bin",
+    "binary_size": 214,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/132.bin",
+        "sha256": "2e4bb733f91ee03ab26be077cecf366ea98fcd0f4996ae7c6f7c244043922266",
+        "size": 214
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/132.md",
+        "sha256": "2cdb84dc4a164d10b99fde97a289d8459fa4cf6771e2d16c96c7495005b65e08",
+        "size": 11403
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 283978,
+    "resource_fork_payload_sha256": "2e4bb733f91ee03ab26be077cecf366ea98fcd0f4996ae7c6f7c244043922266",
+    "resource_fork_payload_size": 214,
+    "sha256": "2e4bb733f91ee03ab26be077cecf366ea98fcd0f4996ae7c6f7c244043922266",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/132.bin",
+      "sources/resedit-1-0-3/DITL/132.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "DLOG:132",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": [
+      {
+        "evidence": "resource ID encoded in original DITL item data",
+        "kind": "dialog_item_7",
+        "status": "PROVEN",
+        "target": "PICT:130"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 214 curated payload bytes.",
+    "descriptive_name": "Refuel and Reload Dialog Items",
+    "id": 132,
+    "key": "DITL:132",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/132.md",
+    "purpose": "Refuel and Reload Dialog Items",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

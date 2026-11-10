@@ -1,0 +1,143 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 74,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 96,
+          "height": 21,
+          "left": 130,
+          "right": 201,
+          "top": 75,
+          "width": 71
+        },
+        "data_hex": "4f4b",
+        "data_length": 2,
+        "descriptive_identity": "OK",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "OK",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 55,
+          "height": 39,
+          "left": 70,
+          "right": 316,
+          "top": 16,
+          "width": 246
+        },
+        "data_hex": "556e61626c6520746f206f70656e2048656c6c63617473207363656e6572790d66696c6520275e30272e",
+        "data_length": 42,
+        "descriptive_identity": "Unable to open Hellcats scenery\rfile '^0'.",
+        "enabled": true,
+        "index": 2,
+        "item_type": "static_text",
+        "offset": 18,
+        "padding_bytes": 0,
+        "placeholders": [
+          "^0"
+        ],
+        "reserved_handle": 0,
+        "text": "Unable to open Hellcats scenery\rfile '^0'.",
+        "type_byte": "0x08",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 2,
+      "encoded_count_minus_one": 1,
+      "item_count": 2,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/256.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/256.bin",
+    "binary_size": 74,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/256.bin",
+        "sha256": "faec433aaaf6b092b086db6f323a4d00cb06c4512ab7b44ee66a2a6456cc36b2",
+        "size": 74
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/256.md",
+        "sha256": "449f3f96704db4a85dfec306d132f7ae57be7da6cd4da7f5451dfe7fe8ed259e",
+        "size": 6910
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 284858,
+    "resource_fork_payload_sha256": "faec433aaaf6b092b086db6f323a4d00cb06c4512ab7b44ee66a2a6456cc36b2",
+    "resource_fork_payload_size": 74,
+    "sha256": "faec433aaaf6b092b086db6f323a4d00cb06c4512ab7b44ee66a2a6456cc36b2",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/256.bin",
+      "sources/resedit-1-0-3/DITL/256.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "ALRT:256",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 74 curated payload bytes.",
+    "descriptive_name": "Unable to Open Scenery Alert Controls",
+    "id": 256,
+    "key": "DITL:256",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/256.md",
+    "purpose": "Unable to Open Scenery Alert Controls",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

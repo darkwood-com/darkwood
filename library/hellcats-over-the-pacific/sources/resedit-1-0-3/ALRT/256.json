@@ -1,0 +1,118 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "* C arg +8: Pascal string (file name). ParamText(name, NULL, NULL, NULL) ($A98B); JT $47a(0x100) (ID02 0x442e, also called before ALRT 259 by confirm_end_mission); returns StopAlert(256, NULL) ($A986). ALRT 256 is \"Unable to Open Scenery\": DITL 256 text \"Unable to open Hellcats scenery file '^0'.\" with an OK button. Reached through JT $fa (CODE 0 entry -> ID04 0x44e). Body rebuilt as C below.",
+      "function_or_context": "show_scenery_open_error_alert",
+      "line": 392,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "return StopAlert(0x100,0);                    /* $A986 */",
+      "function_or_context": "show_scenery_open_error_alert",
+      "line": 401,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 12,
+    "elements": [],
+    "format": "Classic Macintosh AlertTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 202,
+        "height": 108,
+        "left": 150,
+        "right": 472,
+        "top": 94,
+        "width": 322
+      },
+      "ditl_id": 256,
+      "stage_word": "0x5555",
+      "stages": [
+        5,
+        5,
+        5,
+        5
+      ]
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/ALRT/256.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/ALRT/256.bin",
+    "binary_size": 12,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Unable to Open Scenery",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/ALRT/256.bin",
+        "sha256": "faa7e1ba523f855ee7eae4865be8922c4f4705325538e8355cbf72c86e5a1ea8",
+        "size": 12
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/ALRT/256.md",
+        "sha256": "26f200afcc01f8aac631bd4f893e1c7bdeb3c2e3fea0a4c2c7552f66da0382c3",
+        "size": 5402
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 287388,
+    "resource_fork_payload_sha256": "faa7e1ba523f855ee7eae4865be8922c4f4705325538e8355cbf72c86e5a1ea8",
+    "resource_fork_payload_size": 12,
+    "sha256": "faa7e1ba523f855ee7eae4865be8922c4f4705325538e8355cbf72c86e5a1ea8",
+    "source_exports": [
+      "sources/resedit-1-0-3/ALRT/256.bin",
+      "sources/resedit-1-0-3/ALRT/256.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "status": "PROVEN",
+        "target": "DITL:256"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh AlertTemplate; 12 curated payload bytes.",
+    "descriptive_name": "Unable to Open Scenery Alert",
+    "id": 256,
+    "key": "ALRT:256",
+    "original_fourcc": "ALRT",
+    "original_macintosh_name": "Unable to Open Scenery",
+    "original_name_bytes_hex": "556e61626c6520746f204f70656e205363656e657279",
+    "original_name_source": "sources/resedit-1-0-3/ALRT/256.md",
+    "purpose": "Unable to Open Scenery Alert",
+    "type": "ALRT"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

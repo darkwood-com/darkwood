@@ -1,0 +1,300 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Only a deterministic structural identity is available"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [
+    {
+      "evidence": "* MOVE.W #$8000 to +4, copy to A5-0x1316; GetResource('MENU', 2) NIL -> SysBeep(20), BSR 0x2e36, BSR 0x2eaa;",
+      "function_or_context": "apply_settings_to_live_options",
+      "line": 3258,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "*   GetResource('MENU', 2) == nil -> SysBeep(20); BSR 0x2e36; BSR 0x2eaa",
+      "function_or_context": "initialize_application",
+      "line": 3290,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "* Called by initialize_application when GetResource('MENU', 2) fails, after",
+      "function_or_context": "show_resource_file_error_box",
+      "line": 3464,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "*(int *)(unaff_A5 + -0xc4a) = GetMenu(2);        /* $A9BF */",
+      "function_or_context": "install_menus",
+      "line": 3761,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 192,
+    "elements": [
+      {
+        "command_handler": "call segment-8 entry A5+$1DA, then unload CODE 8 and CODE 5",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 1,
+        "keyboard_byte": 79,
+        "keyboard_equivalent": "O",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Open…",
+        "text_bytes_hex": "4f70656ec9"
+      },
+      {
+        "command_handler": "write dirty HEL1:127 settings resource",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 2,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Save Settings",
+        "text_bytes_hex": "536176652053657474696e6773"
+      },
+      {
+        "command_handler": "no action (separator)",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 3,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": true,
+        "style": 0,
+        "text": "-",
+        "text_bytes_hex": "2d"
+      },
+      {
+        "command_handler": "start new mission selection/session helper at CODE 2 offset $35E4",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 4,
+        "keyboard_byte": 78,
+        "keyboard_equivalent": "N",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "New Mission…",
+        "text_bytes_hex": "4e6577204d697373696f6ec9"
+      },
+      {
+        "command_handler": "show mission status/summary through CODE 0 entry A5+$DA",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 5,
+        "keyboard_byte": 88,
+        "keyboard_equivalent": "X",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Mission Status…",
+        "text_bytes_hex": "4d697373696f6e20537461747573c9"
+      },
+      {
+        "command_handler": "show mission map through CODE 0 entry A5+$10A",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 6,
+        "keyboard_byte": 77,
+        "keyboard_equivalent": "M",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Mission Map…",
+        "text_bytes_hex": "4d697373696f6e204d6170c9"
+      },
+      {
+        "command_handler": "resume flight session at CODE 2 offset $04FC",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 7,
+        "keyboard_byte": 82,
+        "keyboard_equivalent": "R",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Resume",
+        "text_bytes_hex": "526573756d65"
+      },
+      {
+        "command_handler": "set instant-replay flag A5-$12F0 and run flight session",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 8,
+        "keyboard_byte": 73,
+        "keyboard_equivalent": "I",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Instant Replay",
+        "text_bytes_hex": "496e7374616e74205265706c6179"
+      },
+      {
+        "command_handler": "confirm end mission, reset mission selector, and hide main window",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 9,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "End Mission",
+        "text_bytes_hex": "456e64204d697373696f6e"
+      },
+      {
+        "command_handler": "no action (separator)",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 10,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": true,
+        "style": 0,
+        "text": "-",
+        "text_bytes_hex": "2d"
+      },
+      {
+        "command_handler": "show high scores through CODE 0 entry A5+$102",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 11,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "High Scores…",
+        "text_bytes_hex": "486967682053636f726573c9"
+      },
+      {
+        "command_handler": "no action (separator)",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 12,
+        "keyboard_byte": 0,
+        "keyboard_equivalent": null,
+        "mark_or_submenu": 0,
+        "separator": true,
+        "style": 0,
+        "text": "-",
+        "text_bytes_hex": "2d"
+      },
+      {
+        "command_handler": "quit application through CODE 2 offset $2EAA",
+        "command_handler_status": "VERIFIED",
+        "enabled": true,
+        "icon_number": 0,
+        "index": 13,
+        "keyboard_byte": 81,
+        "keyboard_equivalent": "Q",
+        "mark_or_submenu": 0,
+        "separator": false,
+        "style": 0,
+        "text": "Quit",
+        "text_bytes_hex": "51756974"
+      }
+    ],
+    "format": "Classic Macintosh Menu Resource",
+    "properties": {
+      "enable_flags": "0xFFFFFFFF",
+      "height": 0,
+      "item_count": 13,
+      "menu_definition_proc": 0,
+      "menu_id": 2,
+      "title": "File",
+      "title_bytes_hex": "46696c65",
+      "width": 0
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/MENU/2.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/MENU/2.bin",
+    "binary_size": 192,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/MENU/2.bin",
+        "sha256": "94009e2f0ff20f9b4fa22238bc4e51a4ae8b93f86684fceafe0baf675410f2fa",
+        "size": 192
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/MENU/2.md",
+        "sha256": "36629a4d2411d178c34cf2d1a3bae2d7b1ec99450522ebfdbc542418f0a1fd41",
+        "size": 7525
+      }
+    ],
+    "resource_attributes": "0x00",
+    "resource_fork_payload_offset": 71396,
+    "resource_fork_payload_sha256": "94009e2f0ff20f9b4fa22238bc4e51a4ae8b93f86684fceafe0baf675410f2fa",
+    "resource_fork_payload_size": 192,
+    "sha256": "94009e2f0ff20f9b4fa22238bc4e51a4ae8b93f86684fceafe0baf675410f2fa",
+    "source_exports": [
+      "sources/resedit-1-0-3/MENU/2.bin",
+      "sources/resedit-1-0-3/MENU/2.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Menu Resource; 192 curated payload bytes.",
+    "descriptive_name": "File Menu",
+    "id": 2,
+    "key": "MENU:2",
+    "original_fourcc": "MENU",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/MENU/2.md",
+    "purpose": null,
+    "type": "MENU"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

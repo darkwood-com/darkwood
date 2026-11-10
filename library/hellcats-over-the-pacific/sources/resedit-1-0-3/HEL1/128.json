@@ -1,0 +1,277 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "*   h = GetResource('HEL1', 0x80) -> A5-0x13a8; if nil: NewHandleClear(0x500),",
+      "function_or_context": "initialize_application",
+      "line": 3296,
+      "source_path": "sources/resedit-1-0-3/CODE/ID02.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 1280,
+    "elements": [
+      {
+        "index": 1,
+        "nonzero_byte_count": 0,
+        "offset": 0,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 2,
+        "nonzero_byte_count": 0,
+        "offset": 64,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 3,
+        "nonzero_byte_count": 0,
+        "offset": 128,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 4,
+        "nonzero_byte_count": 0,
+        "offset": 192,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 5,
+        "nonzero_byte_count": 0,
+        "offset": 256,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 6,
+        "nonzero_byte_count": 0,
+        "offset": 320,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 7,
+        "nonzero_byte_count": 0,
+        "offset": 384,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 8,
+        "nonzero_byte_count": 0,
+        "offset": 448,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 9,
+        "nonzero_byte_count": 0,
+        "offset": 512,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 10,
+        "nonzero_byte_count": 0,
+        "offset": 576,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 11,
+        "nonzero_byte_count": 30,
+        "offset": 640,
+        "pilot_name": "",
+        "record_sha256": "3cfc0491fcc2b68b22f997038b1e14feb1d4dbb5f392f5d41856ad4b745cc2e4",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 12,
+        "nonzero_byte_count": 0,
+        "offset": 704,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 13,
+        "nonzero_byte_count": 0,
+        "offset": 768,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 14,
+        "nonzero_byte_count": 0,
+        "offset": 832,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 15,
+        "nonzero_byte_count": 0,
+        "offset": 896,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 16,
+        "nonzero_byte_count": 0,
+        "offset": 960,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 17,
+        "nonzero_byte_count": 0,
+        "offset": 1024,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 18,
+        "nonzero_byte_count": 0,
+        "offset": 1088,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 19,
+        "nonzero_byte_count": 0,
+        "offset": 1152,
+        "pilot_name": "",
+        "record_sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      },
+      {
+        "index": 20,
+        "nonzero_byte_count": 4,
+        "offset": 1216,
+        "pilot_name": "",
+        "record_sha256": "eda984e608321e442a510280ba70ba3da3f3ac0e560dcaae32583ababa3818bc",
+        "status_word_at_0x20": 0,
+        "tally_long_at_0x28": 0
+      }
+    ],
+    "format": "Hellcats Player and Score Data Record Array",
+    "properties": {
+      "name_field_offset": 0,
+      "name_field_size_bytes": 30,
+      "record_count": 20,
+      "record_size_bytes": 64,
+      "status_field_offset": 32,
+      "tally_field_offset": 40
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/HEL1/128.md",
+    "binary_matches_resource_fork_payload": false,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/HEL1/128.bin",
+    "binary_size": 1280,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Player and Score Data",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/HEL1/128.bin",
+        "sha256": "0a6869b91a99abb4534e1febd1eb286da6a9784ce5c0708d82bb2893dfad3201",
+        "size": 1280
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/HEL1/128.md",
+        "sha256": "0fab07b7e59a5019422a64150ab28448f9b4be673b0f8e1b811d1d87eb39c58d",
+        "size": 2619
+      }
+    ],
+    "resource_attributes": "0x00",
+    "resource_fork_payload_offset": 65512,
+    "resource_fork_payload_sha256": "d8e76accd1d09a6d2403bb4cd0618c4eb6d6e80d3b366cd73e943feacedb4cf6",
+    "resource_fork_payload_size": 1280,
+    "sha256": "0a6869b91a99abb4534e1febd1eb286da6a9784ce5c0708d82bb2893dfad3201",
+    "source_exports": [
+      "sources/resedit-1-0-3/HEL1/128.bin",
+      "sources/resedit-1-0-3/HEL1/128.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Hellcats Player and Score Data Record Array; 1280 curated payload bytes.",
+    "descriptive_name": "Player and Score Data Records",
+    "id": 128,
+    "key": "HEL1:128",
+    "original_fourcc": "HEL1",
+    "original_macintosh_name": "Player and Score Data",
+    "original_name_bytes_hex": "506c6179657220616e642053636f72652044617461",
+    "original_name_source": "sources/resedit-1-0-3/HEL1/128.md",
+    "purpose": "Player and Score Data Records",
+    "type": "HEL1"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": [
+    "Curated ResEdit payload differs from the independently recovered 1.0.4 resource-fork payload; both hashes and sizes are recorded and neither original source was overwritten."
+  ]
+}

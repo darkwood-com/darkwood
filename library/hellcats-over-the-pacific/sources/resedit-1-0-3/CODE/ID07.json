@@ -1,0 +1,115 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Only a deterministic structural identity is available"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "UNKNOWN",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 618,
+    "elements": [
+      {
+        "annotation_line": 22,
+        "kind": "known_function",
+        "original_symbol": "FUN_00000006",
+        "source_path": "sources/resedit-1-0-3/CODE/ID07.decomp.c"
+      },
+      {
+        "annotation_line": 130,
+        "kind": "known_function",
+        "original_symbol": "FUN_00000190",
+        "source_path": "sources/resedit-1-0-3/CODE/ID07.decomp.c"
+      }
+    ],
+    "format": "Motorola 68000 CODE Segment",
+    "properties": {
+      "architecture": "Motorola 68000",
+      "decompilation_status": "see sibling .c and .decomp.c files",
+      "first_u16_be": 1384,
+      "ghidra_export_path": "sources/resedit-1-0-3/CODE/ID07.c",
+      "known_function_count": 2,
+      "second_u16_be": 2,
+      "segment_size_bytes": 618,
+      "semantic_decompilation_path": "sources/resedit-1-0-3/CODE/ID07.decomp.c"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/CODE/ID07",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/CODE/ID07.bin",
+    "binary_size": 618,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "hexadecimal CODE export",
+        "path": "sources/resedit-1-0-3/CODE/ID07",
+        "sha256": "fe49697dc66048c81aad3c9fbe8158b751ae6f6cd8b30aa1809f3672ed48a75a",
+        "size": 1236
+      },
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/CODE/ID07.bin",
+        "sha256": "6170e5287dac2f9ad64029045aa9141f786d82c327437829010b2919007da74e",
+        "size": 618
+      },
+      {
+        "kind": "C/decompilation export",
+        "path": "sources/resedit-1-0-3/CODE/ID07.c",
+        "sha256": "4270a89c523b7a1349326fa0888adbd8bf9c26e944bddf813ed6268e85d0426b",
+        "size": 1201
+      },
+      {
+        "kind": "C/decompilation export",
+        "path": "sources/resedit-1-0-3/CODE/ID07.decomp.c",
+        "sha256": "ac6daae14f3d0193917f8b9f207fa6559f01aaeb32c7c8f22396bd02b19375f4",
+        "size": 9083
+      }
+    ],
+    "resource_attributes": "0x38",
+    "resource_fork_payload_offset": 57736,
+    "resource_fork_payload_sha256": "6170e5287dac2f9ad64029045aa9141f786d82c327437829010b2919007da74e",
+    "resource_fork_payload_size": 618,
+    "sha256": "6170e5287dac2f9ad64029045aa9141f786d82c327437829010b2919007da74e",
+    "source_exports": [
+      "sources/resedit-1-0-3/CODE/ID07",
+      "sources/resedit-1-0-3/CODE/ID07.bin",
+      "sources/resedit-1-0-3/CODE/ID07.c",
+      "sources/resedit-1-0-3/CODE/ID07.decomp.c"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Motorola 68000 CODE Segment; 618 curated payload bytes.",
+    "descriptive_name": "Motorola 68000 Code Segment 7",
+    "id": 7,
+    "key": "CODE:7",
+    "original_fourcc": "CODE",
+    "original_macintosh_name": null,
+    "original_name_bytes_hex": null,
+    "original_name_source": "comparison resource map",
+    "purpose": null,
+    "type": "CODE"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

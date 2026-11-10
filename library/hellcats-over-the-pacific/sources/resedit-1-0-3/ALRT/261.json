@@ -1,0 +1,118 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "* A5-0x1a24, GetVol, strcmp == 0 -> position_alert_template(0x105), StopAlert(0x105, nil) $A986,",
+      "function_or_context": "decompilation annotation",
+      "line": 21,
+      "source_path": "sources/resedit-1-0-3/CODE/ID08.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "StopAlert(0x105,0);                         /* $A986, result discarded */",
+      "function_or_context": "load_overlay_from_resource",
+      "line": 151,
+      "source_path": "sources/resedit-1-0-3/CODE/ID08.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 12,
+    "elements": [],
+    "format": "Classic Macintosh AlertTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 148,
+        "height": 108,
+        "left": 40,
+        "right": 401,
+        "top": 40,
+        "width": 361
+      },
+      "ditl_id": 261,
+      "stage_word": "0x5555",
+      "stages": [
+        5,
+        5,
+        5,
+        5
+      ]
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/ALRT/261.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/ALRT/261.bin",
+    "binary_size": 12,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Not on floppy",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/ALRT/261.bin",
+        "sha256": "0fa1054cc4bf89c921f7d7cbcb792010313a83b6f7fb2c9217792e907138f649",
+        "size": 12
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/ALRT/261.md",
+        "sha256": "4b93aabb26b35e956d4102b1c3418de1c1539c65e447e87a3e5f61574791a7a1",
+        "size": 7490
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 287436,
+    "resource_fork_payload_sha256": "0fa1054cc4bf89c921f7d7cbcb792010313a83b6f7fb2c9217792e907138f649",
+    "resource_fork_payload_size": 12,
+    "sha256": "0fa1054cc4bf89c921f7d7cbcb792010313a83b6f7fb2c9217792e907138f649",
+    "source_exports": [
+      "sources/resedit-1-0-3/ALRT/261.bin",
+      "sources/resedit-1-0-3/ALRT/261.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "status": "PROVEN",
+        "target": "DITL:261"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh AlertTemplate; 12 curated payload bytes.",
+    "descriptive_name": "Original Floppy Launch Warning",
+    "id": 261,
+    "key": "ALRT:261",
+    "original_fourcc": "ALRT",
+    "original_macintosh_name": "Not on floppy",
+    "original_name_bytes_hex": "4e6f74206f6e20666c6f707079",
+    "original_name_source": "sources/resedit-1-0-3/ALRT/261.md",
+    "purpose": "Original Floppy Launch Warning",
+    "type": "ALRT"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

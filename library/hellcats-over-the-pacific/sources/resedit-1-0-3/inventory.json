@@ -1,0 +1,868 @@
+{
+  "confirmed_outgoing_reference_count": 32,
+  "decoded_resource_count": 117,
+  "enriched_resource_count": 119,
+  "internal_element_count": 1441,
+  "representation_count": 294,
+  "resource_count": 119,
+  "resource_type_count": 30,
+  "resource_types": [
+    "ALRT",
+    "BNDL",
+    "CNTL",
+    "CODE",
+    "DATA",
+    "DITL",
+    "DLOG",
+    "DREL",
+    "FREF",
+    "HEL1",
+    "HELL",
+    "ICN#",
+    "ICON",
+    "MDPL",
+    "MENU",
+    "PICT",
+    "SIZE",
+    "STR#",
+    "TEXT",
+    "ZERO",
+    "cicn",
+    "clut",
+    "icI4",
+    "icI8",
+    "ics#",
+    "ics4",
+    "ics8",
+    "snds",
+    "styl",
+    "vers"
+  ],
+  "resources": [
+    {
+      "binary_path": "sources/resedit-1-0-3/ALRT/256.bin",
+      "key": "ALRT:256",
+      "metadata_path": "sources/resedit-1-0-3/ALRT/256.json",
+      "sha256": "faa7e1ba523f855ee7eae4865be8922c4f4705325538e8355cbf72c86e5a1ea8"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ALRT/257.bin",
+      "key": "ALRT:257",
+      "metadata_path": "sources/resedit-1-0-3/ALRT/257.json",
+      "sha256": "3b2322e6f7a336b895be0eb31e876d858980150272433837cded4db971ac587c"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ALRT/258.bin",
+      "key": "ALRT:258",
+      "metadata_path": "sources/resedit-1-0-3/ALRT/258.json",
+      "sha256": "f01fb35c3f45fc906bdde6dc121a50f8958895b67056cda1a3eb8037781d7ad9"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ALRT/259.bin",
+      "key": "ALRT:259",
+      "metadata_path": "sources/resedit-1-0-3/ALRT/259.json",
+      "sha256": "73f6bbb22255124f0e15708b5170d694771cd2d0b6a5b0752f005180b4872865"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ALRT/260.bin",
+      "key": "ALRT:260",
+      "metadata_path": "sources/resedit-1-0-3/ALRT/260.json",
+      "sha256": "97222e86925a3f8f67facae6336de3791c0396b373e191e0a98e118b17fb1bdf"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ALRT/261.bin",
+      "key": "ALRT:261",
+      "metadata_path": "sources/resedit-1-0-3/ALRT/261.json",
+      "sha256": "0fa1054cc4bf89c921f7d7cbcb792010313a83b6f7fb2c9217792e907138f649"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ALRT/1001.bin",
+      "key": "ALRT:1001",
+      "metadata_path": "sources/resedit-1-0-3/ALRT/1001.json",
+      "sha256": "5b546eaafbefa2434198337711da6cac810339ed181451c4cccee94be2cc125f"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/BNDL/132.bin",
+      "key": "BNDL:132",
+      "metadata_path": "sources/resedit-1-0-3/BNDL/132.json",
+      "sha256": "aace99900579f07a25b4e787cf547108a340eb3d09518f77e5925e507ad99c34"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CNTL/128.bin",
+      "key": "CNTL:128",
+      "metadata_path": "sources/resedit-1-0-3/CNTL/128.json",
+      "sha256": "4ac7791b17115e52a68f54f81f202bb486874cf41347827d19f434fe29930e45"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID00.bin",
+      "key": "CODE:0",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID00.json",
+      "sha256": "ea86246f42ddffb74f8270d3e87109b2dd42c45a7c0756402b79e27739cb9430"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID01.bin",
+      "key": "CODE:1",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID01.json",
+      "sha256": "dbfcf2603a78669598c78c395481f3cdd8a4c22952ba7df6ca22c2eacd37c207"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID02.bin",
+      "key": "CODE:2",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID02.json",
+      "sha256": "6877b2f1b5227fd46e35fbfea700804bcb1cc428e76c76bfb13416078de7b57d"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID03.bin",
+      "key": "CODE:3",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID03.json",
+      "sha256": "05bb5a8062c4b3707ee2c7b60cf1656eee2864c7ea1923a6562b438c78e4244c"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID04.bin",
+      "key": "CODE:4",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID04.json",
+      "sha256": "6937daa12fbf7b22e7e181a743ec1f2fc16a8df7778e1e39f6e4f337ddbf38a4"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID05.bin",
+      "key": "CODE:5",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID05.json",
+      "sha256": "1c7a3a39153e01b156a17f1e312aa948d0ed906022aa6a1ebd834b9317e2d5f0"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID06.bin",
+      "key": "CODE:6",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID06.json",
+      "sha256": "f3a69f6b81a0bc283e2a8693dbca22505d85ba9e229a39798647522c44a88162"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID07.bin",
+      "key": "CODE:7",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID07.json",
+      "sha256": "6170e5287dac2f9ad64029045aa9141f786d82c327437829010b2919007da74e"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID08.bin",
+      "key": "CODE:8",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID08.json",
+      "sha256": "4c7b0c75e5055e46cc6ec5d0ef6a622f138f7f029e5e52b439e4c037d710b947"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/CODE/ID09.bin",
+      "key": "CODE:9",
+      "metadata_path": "sources/resedit-1-0-3/CODE/ID09.json",
+      "sha256": "a225fd7bcd95734fa8b25d86bb6a8d8dc11d73226cb397fb4b8ccd9dd2cd1871"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DATA/0.bin",
+      "key": "DATA:0",
+      "metadata_path": "sources/resedit-1-0-3/DATA/0.json",
+      "sha256": "e349cca624d4a06ec196ef2b18e1d5c4041e4070420816fb0741b3240b713073"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DATA/128.bin",
+      "key": "DATA:128",
+      "metadata_path": "sources/resedit-1-0-3/DATA/128.json",
+      "sha256": "312a2d52ae2d8b40bf3a4d0f858dbb4fbac88e6488841dc74c8806894d95151d"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/127.bin",
+      "key": "DITL:127",
+      "metadata_path": "sources/resedit-1-0-3/DITL/127.json",
+      "sha256": "446cac7d096349eb704494145822fda0c4a387814d19335edd22c8b5f1f75953"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/128.bin",
+      "key": "DITL:128",
+      "metadata_path": "sources/resedit-1-0-3/DITL/128.json",
+      "sha256": "7d10615ab0be097b156e58e3a9bdc03b9b38d288352ebdb4d2b8224d005c341f"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/129.bin",
+      "key": "DITL:129",
+      "metadata_path": "sources/resedit-1-0-3/DITL/129.json",
+      "sha256": "bf774e08456c5a3fd74bf832aa4773ba023898ad9732922323680fb1a3548b9c"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/130.bin",
+      "key": "DITL:130",
+      "metadata_path": "sources/resedit-1-0-3/DITL/130.json",
+      "sha256": "a006b2a90ba621ffd622423500fd8263b8d0f925d80e3c1c8d391b4779e45ebb"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/131.bin",
+      "key": "DITL:131",
+      "metadata_path": "sources/resedit-1-0-3/DITL/131.json",
+      "sha256": "0348e507991320a0d86518af46edd77e6a3c05e5c02d847a967de2544ad4eff4"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/132.bin",
+      "key": "DITL:132",
+      "metadata_path": "sources/resedit-1-0-3/DITL/132.json",
+      "sha256": "2e4bb733f91ee03ab26be077cecf366ea98fcd0f4996ae7c6f7c244043922266"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/133.bin",
+      "key": "DITL:133",
+      "metadata_path": "sources/resedit-1-0-3/DITL/133.json",
+      "sha256": "5890492aef3a4b0b46742108bd0a5ab1ec47dc835a953f7044a4cb3ca9c2985e"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/134.bin",
+      "key": "DITL:134",
+      "metadata_path": "sources/resedit-1-0-3/DITL/134.json",
+      "sha256": "aaa60f79ff2b66d799b18cb4961f2e12762bb69f1cdced6eb1901f798bcc6e50"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/135.bin",
+      "key": "DITL:135",
+      "metadata_path": "sources/resedit-1-0-3/DITL/135.json",
+      "sha256": "839e12c46681eac1a1ff34899e448ebbe1f0bf4d7c9e298b10c7e3663c40b99f"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/136.bin",
+      "key": "DITL:136",
+      "metadata_path": "sources/resedit-1-0-3/DITL/136.json",
+      "sha256": "7295ce86ead1fcdc1d3fddaae46a330ea3b57c05cd0b7e625a4053579f22d1a0"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/137.bin",
+      "key": "DITL:137",
+      "metadata_path": "sources/resedit-1-0-3/DITL/137.json",
+      "sha256": "eefdc52e90dd620997bb566c26128623a6df2039f9e910203847ba847b10c4e4"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/138.bin",
+      "key": "DITL:138",
+      "metadata_path": "sources/resedit-1-0-3/DITL/138.json",
+      "sha256": "df629f590857deba13e493c7b4dcf95ae4fb8f695cebe852dac1811e93694d05"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/139.bin",
+      "key": "DITL:139",
+      "metadata_path": "sources/resedit-1-0-3/DITL/139.json",
+      "sha256": "bbfba7355ac2ce0f07905fb3d33990d61bcf588c7c2c32be2e403b8354c145ae"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/256.bin",
+      "key": "DITL:256",
+      "metadata_path": "sources/resedit-1-0-3/DITL/256.json",
+      "sha256": "faec433aaaf6b092b086db6f323a4d00cb06c4512ab7b44ee66a2a6456cc36b2"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/257.bin",
+      "key": "DITL:257",
+      "metadata_path": "sources/resedit-1-0-3/DITL/257.json",
+      "sha256": "757f8057e139c31d83e9c4ddac75f5a97d23ceb730ec4e89be7d6b3b45aa70ed"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/258.bin",
+      "key": "DITL:258",
+      "metadata_path": "sources/resedit-1-0-3/DITL/258.json",
+      "sha256": "b0af31c9b611ff22450b45c368b738395882fe9047215811e61c47d8ec652cb0"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/259.bin",
+      "key": "DITL:259",
+      "metadata_path": "sources/resedit-1-0-3/DITL/259.json",
+      "sha256": "262ee744f3f4f2a2677323c21b0c2f0bb0372ee9a355d1af97451a5809d6a08c"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/260.bin",
+      "key": "DITL:260",
+      "metadata_path": "sources/resedit-1-0-3/DITL/260.json",
+      "sha256": "3eaad90b4ce27e38b726e29b04bfe3c398aff6c75b602b6cfa6603560300c36e"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/261.bin",
+      "key": "DITL:261",
+      "metadata_path": "sources/resedit-1-0-3/DITL/261.json",
+      "sha256": "d1ccb5377f37fea3f6dca2a22ba747989afe9971ffb8add5095ba39b89428d20"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/1000.bin",
+      "key": "DITL:1000",
+      "metadata_path": "sources/resedit-1-0-3/DITL/1000.json",
+      "sha256": "a2433bcf8c4a1bc76d8ee356fb1e7086517af65d161fd8d490b89f8cce1b2f2a"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DITL/1001.bin",
+      "key": "DITL:1001",
+      "metadata_path": "sources/resedit-1-0-3/DITL/1001.json",
+      "sha256": "66f5359139a02d80dd404556d95c39457b3d8cc382af61802c082beac155fa7c"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/127.bin",
+      "key": "DLOG:127",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/127.json",
+      "sha256": "bbb83325153e6c349493df5663fc3df3e941bb9f2b6747fbb0db65254124a045"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/128.bin",
+      "key": "DLOG:128",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/128.json",
+      "sha256": "f0a645da90cf17f6e9fc75c3ab771bd9885d4b4ef1e74895ee84cdaef68aa705"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/129.bin",
+      "key": "DLOG:129",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/129.json",
+      "sha256": "da050892f38071f889cc318af4af75075d80cf8a771b5eed0f6dcc937c57e662"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/130.bin",
+      "key": "DLOG:130",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/130.json",
+      "sha256": "2ac0dbdea0752c8f1d5911f37401a0e44b7e5645f6d2320af9daa67fc4581e6d"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/131.bin",
+      "key": "DLOG:131",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/131.json",
+      "sha256": "56f123570e59fad86438f4e2b8ff5a790c99e559e8085892a612531530193e1e"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/132.bin",
+      "key": "DLOG:132",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/132.json",
+      "sha256": "9808c1c67434eb2260a10e9613c551e3a2ff159ac15a92328ff60557e0431daa"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/133.bin",
+      "key": "DLOG:133",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/133.json",
+      "sha256": "1fa39947262d0426428585ee077c5fc7b27b2f13bc89537499938dfcbb40a5b2"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/134.bin",
+      "key": "DLOG:134",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/134.json",
+      "sha256": "9bec10c86e72594f71a4f567f418a0dafce48fde71d550d03b394955518599b7"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/137.bin",
+      "key": "DLOG:137",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/137.json",
+      "sha256": "bf415d2f46b469966a9c1aa58203153c6a9aa184d8910b11e8b05dbd8063de7f"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/138.bin",
+      "key": "DLOG:138",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/138.json",
+      "sha256": "2d7f6b2fd961faaae8c9fd0f9c7789bca2b126d08f036988e55d072559579925"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/139.bin",
+      "key": "DLOG:139",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/139.json",
+      "sha256": "cb5553724130c954977acd112c0e4a423c16b1f9878c579dc326381c1ecb172f"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DLOG/1000.bin",
+      "key": "DLOG:1000",
+      "metadata_path": "sources/resedit-1-0-3/DLOG/1000.json",
+      "sha256": "128fdcf906fd6751f3079a45ac231cdd34739c48a742f372d03458880d3fe975"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/DREL/0.bin",
+      "key": "DREL:0",
+      "metadata_path": "sources/resedit-1-0-3/DREL/0.json",
+      "sha256": "3d59055692498a5e5848be740189913637de592cfe0e37a73fb7fe44f6d45caf"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/FREF/130.bin",
+      "key": "FREF:130",
+      "metadata_path": "sources/resedit-1-0-3/FREF/130.json",
+      "sha256": "6ae70fda6b5f837884e8d6de071429e82370e929a86f133fd3c2b8775a9d594b"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/FREF/131.bin",
+      "key": "FREF:131",
+      "metadata_path": "sources/resedit-1-0-3/FREF/131.json",
+      "sha256": "64118f850e77c49811b1cf18bb3d722f19513f040a7896e3578b60483bb2a36f"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/HEL1/127.bin",
+      "key": "HEL1:127",
+      "metadata_path": "sources/resedit-1-0-3/HEL1/127.json",
+      "sha256": "4b2a8187e593929d6c145cac3a34873765a434528c1d04dfed115b6f574f4cec"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/HEL1/128.bin",
+      "key": "HEL1:128",
+      "metadata_path": "sources/resedit-1-0-3/HEL1/128.json",
+      "sha256": "0a6869b91a99abb4534e1febd1eb286da6a9784ce5c0708d82bb2893dfad3201"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/HELL/0.bin",
+      "key": "HELL:0",
+      "metadata_path": "sources/resedit-1-0-3/HELL/0.json",
+      "sha256": "3b868199dd6359d979f2782ad5d2fe209698c06e9059dde136fcd2ff8c600433"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ICN#/128.bin",
+      "key": "ICN#:128",
+      "metadata_path": "sources/resedit-1-0-3/ICN#/128.json",
+      "sha256": "9c803c1d30e71993596276dd47a470c0c227cde3667379a2b6154652104b6ee8"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ICN#/129.bin",
+      "key": "ICN#:129",
+      "metadata_path": "sources/resedit-1-0-3/ICN#/129.json",
+      "sha256": "2722b1cabda0910ecc11c6d029c2f559358ad5d70bbf17bc7704d5ed3b9e84bc"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ICON/128.bin",
+      "key": "ICON:128",
+      "metadata_path": "sources/resedit-1-0-3/ICON/128.json",
+      "sha256": "b9dc2e989567ef4ec460f0d72f2e39fed230c14c46cf49d0c769f16c8236c28c"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/MDPL/128.bin",
+      "key": "MDPL:128",
+      "metadata_path": "sources/resedit-1-0-3/MDPL/128.json",
+      "sha256": "d3837bd42eb43128291042b0ccdc04f486aee6f49e4a048c3c1704ad73a615ab"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/MENU/1.bin",
+      "key": "MENU:1",
+      "metadata_path": "sources/resedit-1-0-3/MENU/1.json",
+      "sha256": "dd7814b6d1763f6e165f054886bf356d0ba41bd2d9ef499a3bd0227a327d5abb"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/MENU/2.bin",
+      "key": "MENU:2",
+      "metadata_path": "sources/resedit-1-0-3/MENU/2.json",
+      "sha256": "94009e2f0ff20f9b4fa22238bc4e51a4ae8b93f86684fceafe0baf675410f2fa"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/MENU/3.bin",
+      "key": "MENU:3",
+      "metadata_path": "sources/resedit-1-0-3/MENU/3.json",
+      "sha256": "b7c37cfd05c6c5dda23f4b0d20829512f53750326650b068168c4b18ab7d4ffe"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/MENU/4.bin",
+      "key": "MENU:4",
+      "metadata_path": "sources/resedit-1-0-3/MENU/4.json",
+      "sha256": "e9f6b5a11f9aea00800d571c5f6736bbb80702b26f73047d62e10bc5ad7051aa"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/MENU/5.bin",
+      "key": "MENU:5",
+      "metadata_path": "sources/resedit-1-0-3/MENU/5.json",
+      "sha256": "6ff162f2948b20801724a1c6aa27553066e364e5b61fe04c06be50d876cdd034"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/PICT/128.bin",
+      "key": "PICT:128",
+      "metadata_path": "sources/resedit-1-0-3/PICT/128.json",
+      "sha256": "7501ac1783490a6fb1380e42542d8f4b1cdc88cefc02368bb6750fca66a98898"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/PICT/129.bin",
+      "key": "PICT:129",
+      "metadata_path": "sources/resedit-1-0-3/PICT/129.json",
+      "sha256": "806378df61d18913425258241e4bea9f2c398075875d93d3f6dc083e2ef7cfb1"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/PICT/130.bin",
+      "key": "PICT:130",
+      "metadata_path": "sources/resedit-1-0-3/PICT/130.json",
+      "sha256": "a59e0538231c02293ebf07ce321f94fa2a99ef5fb5b48d2a1e4a46e1565c9a1a"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/PICT/131.bin",
+      "key": "PICT:131",
+      "metadata_path": "sources/resedit-1-0-3/PICT/131.json",
+      "sha256": "b46dfb31745c10cf1902e86c550c9de1f4527d791dc32edb4bd67c3e1395663d"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/PICT/1000.bin",
+      "key": "PICT:1000",
+      "metadata_path": "sources/resedit-1-0-3/PICT/1000.json",
+      "sha256": "aa1b8e60d163cc5b0218e8769c3d9a71be759e55a056b585b311ad21c92d2ae0"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/SIZE/-1.bin",
+      "key": "SIZE:-1",
+      "metadata_path": "sources/resedit-1-0-3/SIZE/-1.json",
+      "sha256": "8e1c0d6ca99e491cab13f7d5d9410ebf7b150d4c54222526f9094b64a0a0a74c"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/STR#/129.bin",
+      "key": "STR#:129",
+      "metadata_path": "sources/resedit-1-0-3/STR#/129.json",
+      "sha256": "5dcef38d03a5ea3793fb8611b8a92fefb9ac535c4253b1a0930f986ef480f563"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/TEXT/128.bin",
+      "key": "TEXT:128",
+      "metadata_path": "sources/resedit-1-0-3/TEXT/128.json",
+      "sha256": "ac8331548074c4c4f45191b16d7aba8267e1c3c7c0df349e23ae6df4f2c087bc"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/TEXT/1000.bin",
+      "key": "TEXT:1000",
+      "metadata_path": "sources/resedit-1-0-3/TEXT/1000.json",
+      "sha256": "919b7c162f0e658569e262ac1e890ac595f292710ea84acb033a219cf3d6e417"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ZERO/0.bin",
+      "key": "ZERO:0",
+      "metadata_path": "sources/resedit-1-0-3/ZERO/0.json",
+      "sha256": "f8765d796b57f88b6d836eb39559a6dd9190e25bf118212706958f6f53751cd4"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/256.bin",
+      "key": "cicn:256",
+      "metadata_path": "sources/resedit-1-0-3/cicn/256.json",
+      "sha256": "fbbbdf644863299e9cf37b3bac7f8bd18af9ee97395afab4ca58b88217b15ec1"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/257.bin",
+      "key": "cicn:257",
+      "metadata_path": "sources/resedit-1-0-3/cicn/257.json",
+      "sha256": "aff20ca1e6516454134926991cfe3a081006a27a36ad814dd8ee1b63e6539c31"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/258.bin",
+      "key": "cicn:258",
+      "metadata_path": "sources/resedit-1-0-3/cicn/258.json",
+      "sha256": "b8548f7610c83a47ea132e1c6812cf5fc7475ad64dc6f00200a5a895c60f945a"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/259.bin",
+      "key": "cicn:259",
+      "metadata_path": "sources/resedit-1-0-3/cicn/259.json",
+      "sha256": "b48942fbff245574608134226553616d0794bbb19ff6954fa45ef5fb804d2afd"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/260.bin",
+      "key": "cicn:260",
+      "metadata_path": "sources/resedit-1-0-3/cicn/260.json",
+      "sha256": "273d0bf8ab384a65753bce7a0a66397f3419a84c7fd2dd78fa6d1f550e1f1f59"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/261.bin",
+      "key": "cicn:261",
+      "metadata_path": "sources/resedit-1-0-3/cicn/261.json",
+      "sha256": "6cecd7970840a7f1a126c349330fd4c9563372398cf92c921f2f3ac4ed6379c7"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/512.bin",
+      "key": "cicn:512",
+      "metadata_path": "sources/resedit-1-0-3/cicn/512.json",
+      "sha256": "017105aaa5449a765d2979eb9a6e6545eea62db23f5c7ddf2e7ac8f0f24aab20"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/513.bin",
+      "key": "cicn:513",
+      "metadata_path": "sources/resedit-1-0-3/cicn/513.json",
+      "sha256": "cfd8a97184f27fee70e7e010e35ca60e647d0e10e7e98fbf03b83e7702ddff6c"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/514.bin",
+      "key": "cicn:514",
+      "metadata_path": "sources/resedit-1-0-3/cicn/514.json",
+      "sha256": "5a4624248ac886797eb726bdd47fc19558861b35255cf9ece812ac61d3864878"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/515.bin",
+      "key": "cicn:515",
+      "metadata_path": "sources/resedit-1-0-3/cicn/515.json",
+      "sha256": "0fefc3dd7d7a73e51163ba105afbc623c1e366c6d2d6800707449c3143ce8a1a"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/516.bin",
+      "key": "cicn:516",
+      "metadata_path": "sources/resedit-1-0-3/cicn/516.json",
+      "sha256": "481c8fb9ee2e2399cd05d18614d9a09bc209c302a2ff8c307c4455bd5ee13cf3"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/517.bin",
+      "key": "cicn:517",
+      "metadata_path": "sources/resedit-1-0-3/cicn/517.json",
+      "sha256": "a56ad532236be8d8411248f88e519aa7e58c5bd0314caaf62946be9d457c0d3e"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/518.bin",
+      "key": "cicn:518",
+      "metadata_path": "sources/resedit-1-0-3/cicn/518.json",
+      "sha256": "2d932af34bc906b893a8f00e11b67f1ad05bf6c99ac7043274f0f1f7d0a6bdc8"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/cicn/519.bin",
+      "key": "cicn:519",
+      "metadata_path": "sources/resedit-1-0-3/cicn/519.json",
+      "sha256": "9eaead223ece8b116b6dce6f2ee375a7ad66cb46e2678a82c29a88fe43ef88d7"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/clut/999.bin",
+      "key": "clut:999",
+      "metadata_path": "sources/resedit-1-0-3/clut/999.json",
+      "sha256": "67ed7b8bf51b271f54f8a0ebe4d0b2bc509ad88e5e9970d9854cde50f47abd46"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/icI4/128.bin",
+      "key": "icI4:128",
+      "metadata_path": "sources/resedit-1-0-3/icI4/128.json",
+      "sha256": "0d16550dbc180d82e0565c4a28abc5967dcfff579a8e7a8fc92b7cc0499c2bfa"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/icI4/129.bin",
+      "key": "icI4:129",
+      "metadata_path": "sources/resedit-1-0-3/icI4/129.json",
+      "sha256": "66a02d9dcd366c128d0b6a244d8bbdffd6df5767bf633c28ebb12f94b5d91061"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/icI8/128.bin",
+      "key": "icI8:128",
+      "metadata_path": "sources/resedit-1-0-3/icI8/128.json",
+      "sha256": "3d34539574743f7bdfd851bf15eaae53758623a2ed1ff7ad85020b4420562477"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/icI8/129.bin",
+      "key": "icI8:129",
+      "metadata_path": "sources/resedit-1-0-3/icI8/129.json",
+      "sha256": "c6258b2af599590fb465f6912789d95ec71a9efbdf3a6f218b9e52102600dfa6"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ics#/128.bin",
+      "key": "ics#:128",
+      "metadata_path": "sources/resedit-1-0-3/ics#/128.json",
+      "sha256": "498daca56708725833060580b60a21b3f13020499f34e5918a358c83f96ad880"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ics#/129.bin",
+      "key": "ics#:129",
+      "metadata_path": "sources/resedit-1-0-3/ics#/129.json",
+      "sha256": "1f6d219aa32ace71068ab95d450085e17767aa371594eae4b9bf01c63bb1de10"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ics4/128.bin",
+      "key": "ics4:128",
+      "metadata_path": "sources/resedit-1-0-3/ics4/128.json",
+      "sha256": "4f2196b71467fe1d6e29a58298f83475a0b7051972e091588a1149e0c32de0b6"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ics4/129.bin",
+      "key": "ics4:129",
+      "metadata_path": "sources/resedit-1-0-3/ics4/129.json",
+      "sha256": "4948c5674b66a70a31f6a7b386cf4a91faea6c49f85dd917926a9cffa5280550"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ics8/128.bin",
+      "key": "ics8:128",
+      "metadata_path": "sources/resedit-1-0-3/ics8/128.json",
+      "sha256": "e3c450bff7fd6d37684780ac91d525b52c5fc6477ef3919dbf9f80c2ff94ee43"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/ics8/129.bin",
+      "key": "ics8:129",
+      "metadata_path": "sources/resedit-1-0-3/ics8/129.json",
+      "sha256": "816c7aad76e56f38d1e46d53564fddfcba216ea4060c6e912602f87505171cd6"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/2186.bin",
+      "key": "snds:2186",
+      "metadata_path": "sources/resedit-1-0-3/snds/2186.json",
+      "sha256": "a8ff0be0a9bdc119ec470f5c2f7522c78c371954961d254a125109422dad759f"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/13493.bin",
+      "key": "snds:13493",
+      "metadata_path": "sources/resedit-1-0-3/snds/13493.json",
+      "sha256": "0f32788987ec4e5a21e0d5d3459fcfeb2def3f442ebf29b04817d6ffbb65648f"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/15396.bin",
+      "key": "snds:15396",
+      "metadata_path": "sources/resedit-1-0-3/snds/15396.json",
+      "sha256": "dcbb44827934e29aa76ac98f435eb7ab3587a018c1b5b78ecd9af53504d169f0"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/15490.bin",
+      "key": "snds:15490",
+      "metadata_path": "sources/resedit-1-0-3/snds/15490.json",
+      "sha256": "33efcb2ac1994d07d4b72b7f0f1580ee6836a3aae1d8a539f8e6e99e8b5c69bd"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/16059.bin",
+      "key": "snds:16059",
+      "metadata_path": "sources/resedit-1-0-3/snds/16059.json",
+      "sha256": "ce7dfa1dcdf9130cc8bbc9079732a0f0dd8f74db8f2f84fdd5292bb495cda1ff"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/16737.bin",
+      "key": "snds:16737",
+      "metadata_path": "sources/resedit-1-0-3/snds/16737.json",
+      "sha256": "76746b52017794456f50e0f7e738e8dbe9de81130e1a917f87234418c71d9248"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/16815.bin",
+      "key": "snds:16815",
+      "metadata_path": "sources/resedit-1-0-3/snds/16815.json",
+      "sha256": "ad2c5b7f8a32d4adb8c386f1f261ea83d5955e37ae8ca3f73ab2d71b020d20ba"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/19330.bin",
+      "key": "snds:19330",
+      "metadata_path": "sources/resedit-1-0-3/snds/19330.json",
+      "sha256": "e667bbdea77aec482a321dde3dd84ba82f140b9c0a3dd8ff2584c62db6024a72"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/21266.bin",
+      "key": "snds:21266",
+      "metadata_path": "sources/resedit-1-0-3/snds/21266.json",
+      "sha256": "0cc06b38f36a2d6647ee82007efa9bd51d156f5838529e865253f0901c99e573"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/22599.bin",
+      "key": "snds:22599",
+      "metadata_path": "sources/resedit-1-0-3/snds/22599.json",
+      "sha256": "0ceb0ebc138883350ecba9929b400e9002aad6521bb1c416d992a60b44a641e2"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/24100.bin",
+      "key": "snds:24100",
+      "metadata_path": "sources/resedit-1-0-3/snds/24100.json",
+      "sha256": "13e356a1ba8d7cb25f8411d9cb7b669166f557b4883e8fc9a65ba14eb67dd539"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/25233.bin",
+      "key": "snds:25233",
+      "metadata_path": "sources/resedit-1-0-3/snds/25233.json",
+      "sha256": "362890a260a3c95b68f2dab1f4ac56753cdd9e610a25a3bbab82b3e1aaee0dd4"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/snds/30683.bin",
+      "key": "snds:30683",
+      "metadata_path": "sources/resedit-1-0-3/snds/30683.json",
+      "sha256": "f16458e8e3b2d5efe77447b2549c1a605608865bce318fe8c06cbea470c04cee"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/styl/1000.bin",
+      "key": "styl:1000",
+      "metadata_path": "sources/resedit-1-0-3/styl/1000.json",
+      "sha256": "37c942bd07b6676c4f0fd7b2c2f6097ba25df00bfdcbe9a83470d15de586e1f6"
+    },
+    {
+      "binary_path": "sources/resedit-1-0-3/vers/1.bin",
+      "key": "vers:1",
+      "metadata_path": "sources/resedit-1-0-3/vers/1.json",
+      "sha256": "349a79d73cde33c03fa9901c60e43528339a4b9724d489a3af7c45b1bf4308f8"
+    }
+  ],
+  "resources_by_type": {
+    "ALRT": 7,
+    "BNDL": 1,
+    "CNTL": 1,
+    "CODE": 10,
+    "DATA": 2,
+    "DITL": 21,
+    "DLOG": 12,
+    "DREL": 1,
+    "FREF": 2,
+    "HEL1": 2,
+    "HELL": 1,
+    "ICN#": 2,
+    "ICON": 1,
+    "MDPL": 1,
+    "MENU": 5,
+    "PICT": 5,
+    "SIZE": 1,
+    "STR#": 1,
+    "TEXT": 2,
+    "ZERO": 1,
+    "cicn": 14,
+    "clut": 1,
+    "icI4": 2,
+    "icI8": 2,
+    "ics#": 2,
+    "ics4": 2,
+    "ics8": 2,
+    "snds": 13,
+    "styl": 1,
+    "vers": 1
+  },
+  "schema": "hellcats-resedit-inventory-v1",
+  "supporting_file_count": 12,
+  "supporting_files": [
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/Ghidra_import_presets.md",
+      "sha256": "233f44b614113b96d8095477bbfbbca58b3be5cc73d1883f9db6f1968d0b948c",
+      "size": 4301
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/Pacific Conflict.c",
+      "sha256": "d578598a6440b560553d865d46b221787645859e70cd79bce2df632ccdd68a11",
+      "size": 679036
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/Pacific Conflict.decomp.c",
+      "sha256": "5e2282a28c03c22bd6c7e3f50b79aa5dfc07d52aaecc72c5b8f45cec0b03d0c6",
+      "size": 1628795
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/Pacific_Conflict_loader_analysis.md",
+      "sha256": "faf3ce9550e324a36138ccde8217124eb5949b6d8942f350424640e99ba57d1f",
+      "size": 8860
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/checksums.sha256",
+      "sha256": "3a6433bce45feba6feefb133b6989227fb5a74b90ab8c135376fb53bd77108ae",
+      "size": 750
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/hex2bin.py",
+      "sha256": "106c90505a6f8c5c490dc00d635f2c0a959028e0af1eb408f267af05421ea1d6",
+      "size": 1462
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/sections.json",
+      "sha256": "08535a05859dabad574c94c68fcfb7720e292896c1d64c4280b52973c0be7b2d",
+      "size": 910
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/tools/README.md",
+      "sha256": "91060f30e83446003b37b7f40cd5f19752169229f4415f168f1a03b622e7861c",
+      "size": 4007
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/tools/inspect_pacific_conflict.py",
+      "sha256": "6f9757ddb0e0cc8f048f4c8a7c5f439b6a7ea80e9d48cc9ba5ec755373f8924b",
+      "size": 8758
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/tools/scan_code_windows.py",
+      "sha256": "d209a23427b153a980aac6f76b07a935ae354ba0525ec7ccc0a46ba41a40cc28",
+      "size": 4324
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/tools/sections.json",
+      "sha256": "6e00de55b67fe2facb8a13171e2fd179afef0a716bd53cddea1aa49d3e3b315b",
+      "size": 786
+    },
+    {
+      "kind": "unassociated supporting file",
+      "path": "sources/resedit-1-0-3/CODE/trap_toolbox.py",
+      "sha256": "8ccb0ae1a8b3a730bd42922c3b8f66627a9b98685702e90db0a2ba943113a325",
+      "size": 1047
+    }
+  ],
+  "unidentified_structure_count": 2,
+  "verified_executable_reference_count": 61,
+  "verified_type_level_executable_reference_count": 4
+}

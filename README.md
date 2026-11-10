@@ -15,6 +15,7 @@ Public monorepo for Darkwood open-source projects.
 - [Flow This Person Does Not Exist](library/flow-thispersondoesnotexist) — parallel fictional-person image fetcher.
 - [Flow JEV](library/flow-jev) — archived experimental Flow and JEV platform integration.
 - [Hearthbreaker](library/hearthbreaker) — archived Hearthstone helper preserved as a sanitized source snapshot.
+- [Hellcats Over the Pacific](library/hellcats-over-the-pacific) — evidence-backed Godot port of the classic Macintosh flight simulator.
 - [Kibono Flow](library/kibono-flow) — observable product-sync and ETL demonstration.
 - [LGS](library/lgs) — the LGS game and its Godot implementation.
 - [LLM Game of Life](library/llm-game-of-life) — pedagogical exploration of LLM concepts in PHP.

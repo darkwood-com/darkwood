@@ -1,0 +1,110 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "* The following bytes 0x644..0x9ec (not exported by Ghidra) are run_duty_roster_dialog [STRONG INFERENCE name], JT $132 (-> ID04 0x644) [PROVEN, bytes]: GetNewDialog(0x82 = DLOG 130 \"Duty Roster\"); JT $472; rank_pilots_by_score(scores, order); prune_inactive_pilots_beyond_ten(order); for up to ten pilots in score order whose status +0x20 == 0 (Active), row r: SetIText item 5 + r = rank name (A5-0xffe[record +0x22]), item 15 + r = pilot name (editable), item 25 + r = decimal compute_pilot_score; ",
+      "function_or_context": "duty_roster_filter_proc",
+      "line": 554,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 21,
+    "elements": [],
+    "format": "Classic Macintosh DialogTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 332,
+        "height": 300,
+        "left": 24,
+        "right": 486,
+        "top": 32,
+        "width": 462
+      },
+      "ditl_id": 130,
+      "go_away_box": false,
+      "refcon": 0,
+      "title": "",
+      "title_bytes_hex": "",
+      "visible": false,
+      "window_procedure_id": 1
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DLOG/130.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DLOG/130.bin",
+    "binary_size": 21,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Duty Roster",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DLOG/130.bin",
+        "sha256": "2ac0dbdea0752c8f1d5911f37401a0e44b7e5645f6d2320af9daa67fc4581e6d",
+        "size": 21
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DLOG/130.md",
+        "sha256": "7a5903540d5cb43d438e61b90745c3f98e462b9015c2b90f680b0b2149908916",
+        "size": 4249
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 287015,
+    "resource_fork_payload_sha256": "2ac0dbdea0752c8f1d5911f37401a0e44b7e5645f6d2320af9daa67fc4581e6d",
+    "resource_fork_payload_size": 21,
+    "sha256": "2ac0dbdea0752c8f1d5911f37401a0e44b7e5645f6d2320af9daa67fc4581e6d",
+    "source_exports": [
+      "sources/resedit-1-0-3/DLOG/130.bin",
+      "sources/resedit-1-0-3/DLOG/130.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "status": "PROVEN",
+        "target": "DITL:130"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh DialogTemplate; 21 curated payload bytes.",
+    "descriptive_name": "Dusty Roster Dialog",
+    "id": 130,
+    "key": "DLOG:130",
+    "original_fourcc": "DLOG",
+    "original_macintosh_name": "Dusty Roster",
+    "original_name_bytes_hex": "447573747920526f73746572",
+    "original_name_source": "sources/resedit-1-0-3/DLOG/130.md",
+    "purpose": "Dusty Roster Dialog",
+    "type": "DLOG"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

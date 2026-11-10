@@ -1,0 +1,546 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [
+    {
+      "evidence": "* Register interface D0 = dividend, D1 = divisor (unsigned 32-bit); returns D0 = quotient, D1 = remainder. Fast paths: dividend < divisor (quotient 0); dividend <= 0xffff (one DIVU.W); divisor <= 0xffff (two chained DIVU.W); otherwise normalises both by shifting right until the divisor fits 16 bits, estimates the quotient with DIVU.W and corrects it downward by multiplying back (MULU.W) until the product no longer exceeds the dividend [PROVEN, bytes 0x1c2..0x22a+]. A pre-68020 style routine (the",
+      "function_or_context": "rt_udivmod32_core",
+      "line": 119,
+      "source_path": "sources/resedit-1-0-3/CODE/ID01.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 180,
+    "elements": [
+      {
+        "index": 1,
+        "offset": 0,
+        "u16_be": 6
+      },
+      {
+        "index": 2,
+        "offset": 2,
+        "u16_be": 254
+      },
+      {
+        "index": 3,
+        "offset": 4,
+        "u16_be": 4
+      },
+      {
+        "index": 4,
+        "offset": 6,
+        "u16_be": 10
+      },
+      {
+        "index": 5,
+        "offset": 8,
+        "u16_be": 0
+      },
+      {
+        "index": 6,
+        "offset": 10,
+        "u16_be": 4
+      },
+      {
+        "index": 7,
+        "offset": 12,
+        "u16_be": 0
+      },
+      {
+        "index": 8,
+        "offset": 14,
+        "u16_be": 0
+      },
+      {
+        "index": 9,
+        "offset": 16,
+        "u16_be": 4
+      },
+      {
+        "index": 10,
+        "offset": 18,
+        "u16_be": 0
+      },
+      {
+        "index": 11,
+        "offset": 20,
+        "u16_be": 0
+      },
+      {
+        "index": 12,
+        "offset": 22,
+        "u16_be": 0
+      },
+      {
+        "index": 13,
+        "offset": 24,
+        "u16_be": 0
+      },
+      {
+        "index": 14,
+        "offset": 26,
+        "u16_be": 0
+      },
+      {
+        "index": 15,
+        "offset": 28,
+        "u16_be": 14
+      },
+      {
+        "index": 16,
+        "offset": 30,
+        "u16_be": 4
+      },
+      {
+        "index": 17,
+        "offset": 32,
+        "u16_be": 0
+      },
+      {
+        "index": 18,
+        "offset": 34,
+        "u16_be": 0
+      },
+      {
+        "index": 19,
+        "offset": 36,
+        "u16_be": 0
+      },
+      {
+        "index": 20,
+        "offset": 38,
+        "u16_be": 0
+      },
+      {
+        "index": 21,
+        "offset": 40,
+        "u16_be": 0
+      },
+      {
+        "index": 22,
+        "offset": 42,
+        "u16_be": 0
+      },
+      {
+        "index": 23,
+        "offset": 44,
+        "u16_be": 0
+      },
+      {
+        "index": 24,
+        "offset": 46,
+        "u16_be": 16
+      },
+      {
+        "index": 25,
+        "offset": 48,
+        "u16_be": 254
+      },
+      {
+        "index": 26,
+        "offset": 50,
+        "u16_be": 0
+      },
+      {
+        "index": 27,
+        "offset": 52,
+        "u16_be": 0
+      },
+      {
+        "index": 28,
+        "offset": 54,
+        "u16_be": 0
+      },
+      {
+        "index": 29,
+        "offset": 56,
+        "u16_be": 0
+      },
+      {
+        "index": 30,
+        "offset": 58,
+        "u16_be": 0
+      },
+      {
+        "index": 31,
+        "offset": 60,
+        "u16_be": 0
+      },
+      {
+        "index": 32,
+        "offset": 62,
+        "u16_be": 0
+      },
+      {
+        "index": 33,
+        "offset": 64,
+        "u16_be": 0
+      },
+      {
+        "index": 34,
+        "offset": 66,
+        "u16_be": 0
+      },
+      {
+        "index": 35,
+        "offset": 68,
+        "u16_be": 0
+      },
+      {
+        "index": 36,
+        "offset": 70,
+        "u16_be": 0
+      },
+      {
+        "index": 37,
+        "offset": 72,
+        "u16_be": 0
+      },
+      {
+        "index": 38,
+        "offset": 74,
+        "u16_be": 0
+      },
+      {
+        "index": 39,
+        "offset": 76,
+        "u16_be": 0
+      },
+      {
+        "index": 40,
+        "offset": 78,
+        "u16_be": 0
+      },
+      {
+        "index": 41,
+        "offset": 80,
+        "u16_be": 0
+      },
+      {
+        "index": 42,
+        "offset": 82,
+        "u16_be": 0
+      },
+      {
+        "index": 43,
+        "offset": 84,
+        "u16_be": 0
+      },
+      {
+        "index": 44,
+        "offset": 86,
+        "u16_be": 0
+      },
+      {
+        "index": 45,
+        "offset": 88,
+        "u16_be": 0
+      },
+      {
+        "index": 46,
+        "offset": 90,
+        "u16_be": 0
+      },
+      {
+        "index": 47,
+        "offset": 92,
+        "u16_be": 0
+      },
+      {
+        "index": 48,
+        "offset": 94,
+        "u16_be": 0
+      },
+      {
+        "index": 49,
+        "offset": 96,
+        "u16_be": 0
+      },
+      {
+        "index": 50,
+        "offset": 98,
+        "u16_be": 0
+      },
+      {
+        "index": 51,
+        "offset": 100,
+        "u16_be": 0
+      },
+      {
+        "index": 52,
+        "offset": 102,
+        "u16_be": 0
+      },
+      {
+        "index": 53,
+        "offset": 104,
+        "u16_be": 0
+      },
+      {
+        "index": 54,
+        "offset": 106,
+        "u16_be": 0
+      },
+      {
+        "index": 55,
+        "offset": 108,
+        "u16_be": 0
+      },
+      {
+        "index": 56,
+        "offset": 110,
+        "u16_be": 0
+      },
+      {
+        "index": 57,
+        "offset": 112,
+        "u16_be": 0
+      },
+      {
+        "index": 58,
+        "offset": 114,
+        "u16_be": 0
+      },
+      {
+        "index": 59,
+        "offset": 116,
+        "u16_be": 0
+      },
+      {
+        "index": 60,
+        "offset": 118,
+        "u16_be": 0
+      },
+      {
+        "index": 61,
+        "offset": 120,
+        "u16_be": 0
+      },
+      {
+        "index": 62,
+        "offset": 122,
+        "u16_be": 0
+      },
+      {
+        "index": 63,
+        "offset": 124,
+        "u16_be": 0
+      },
+      {
+        "index": 64,
+        "offset": 126,
+        "u16_be": 0
+      },
+      {
+        "index": 65,
+        "offset": 128,
+        "u16_be": 208
+      },
+      {
+        "index": 66,
+        "offset": 130,
+        "u16_be": 164
+      },
+      {
+        "index": 67,
+        "offset": 132,
+        "u16_be": 1288
+      },
+      {
+        "index": 68,
+        "offset": 134,
+        "u16_be": 0
+      },
+      {
+        "index": 69,
+        "offset": 136,
+        "u16_be": 0
+      },
+      {
+        "index": 70,
+        "offset": 138,
+        "u16_be": 0
+      },
+      {
+        "index": 71,
+        "offset": 140,
+        "u16_be": 0
+      },
+      {
+        "index": 72,
+        "offset": 142,
+        "u16_be": 90
+      },
+      {
+        "index": 73,
+        "offset": 144,
+        "u16_be": 584
+      },
+      {
+        "index": 74,
+        "offset": 146,
+        "u16_be": 0
+      },
+      {
+        "index": 75,
+        "offset": 148,
+        "u16_be": 2312
+      },
+      {
+        "index": 76,
+        "offset": 150,
+        "u16_be": 0
+      },
+      {
+        "index": 77,
+        "offset": 152,
+        "u16_be": 2
+      },
+      {
+        "index": 78,
+        "offset": 154,
+        "u16_be": 2
+      },
+      {
+        "index": 79,
+        "offset": 156,
+        "u16_be": 0
+      },
+      {
+        "index": 80,
+        "offset": 158,
+        "u16_be": 0
+      },
+      {
+        "index": 81,
+        "offset": 160,
+        "u16_be": 0
+      },
+      {
+        "index": 82,
+        "offset": 162,
+        "u16_be": 2
+      },
+      {
+        "index": 83,
+        "offset": 164,
+        "u16_be": 0
+      },
+      {
+        "index": 84,
+        "offset": 166,
+        "u16_be": 0
+      },
+      {
+        "index": 85,
+        "offset": 168,
+        "u16_be": 2
+      },
+      {
+        "index": 86,
+        "offset": 170,
+        "u16_be": 0
+      },
+      {
+        "index": 87,
+        "offset": 172,
+        "u16_be": 512
+      },
+      {
+        "index": 88,
+        "offset": 174,
+        "u16_be": 86
+      },
+      {
+        "index": 89,
+        "offset": 176,
+        "u16_be": 58
+      },
+      {
+        "index": 90,
+        "offset": 178,
+        "u16_be": 0
+      }
+    ],
+    "format": "Hellcats A5 World Zero-Run Initialization Word Stream",
+    "properties": {
+      "byte_order": "big_endian",
+      "consumer": "CODE 1 0x34 (C runtime start-up)",
+      "field_semantics": "verified",
+      "meaning": "zero bytes following each zero word of DATA 0, in order",
+      "word_count": 90,
+      "word_width_bytes": 2,
+      "zero_byte_total": 5880
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/ZERO/0.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/ZERO/0.bin",
+    "binary_size": 180,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/ZERO/0.bin",
+        "sha256": "f8765d796b57f88b6d836eb39559a6dd9190e25bf118212706958f6f53751cd4",
+        "size": 180
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/ZERO/0.md",
+        "sha256": "f69d12641a5a8bac8ba4f7f12716a35bac08ef9480cbe64c59995bdee3801889",
+        "size": 396
+      }
+    ],
+    "resource_attributes": "0x08",
+    "resource_fork_payload_offset": 3298,
+    "resource_fork_payload_sha256": "f8765d796b57f88b6d836eb39559a6dd9190e25bf118212706958f6f53751cd4",
+    "resource_fork_payload_size": 180,
+    "sha256": "f8765d796b57f88b6d836eb39559a6dd9190e25bf118212706958f6f53751cd4",
+    "source_exports": [
+      "sources/resedit-1-0-3/ZERO/0.bin",
+      "sources/resedit-1-0-3/ZERO/0.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Hellcats A5 World Zero-Run Initialization Word Stream; 180 curated payload bytes.",
+    "descriptive_name": "A5 World Zero-Run Initialization Data",
+    "id": 0,
+    "key": "ZERO:0",
+    "original_fourcc": "ZERO",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/ZERO/0.md",
+    "purpose": "A5 World Zero-Run Initialization Data",
+    "type": "ZERO"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

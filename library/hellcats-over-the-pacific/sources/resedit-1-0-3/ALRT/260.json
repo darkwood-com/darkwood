@@ -1,0 +1,118 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "* Bytes 0x560..0x584 [PROVEN]: JT $47a(0x104); return CautionAlert(260, nil).",
+      "function_or_context": "confirm_erase_high_scores",
+      "line": 496,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "return CautionAlert(0x104,0);                 /* $A988 (result via a local word) */",
+      "function_or_context": "confirm_erase_high_scores",
+      "line": 505,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 12,
+    "elements": [],
+    "format": "Classic Macintosh AlertTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 202,
+        "height": 108,
+        "left": 150,
+        "right": 472,
+        "top": 94,
+        "width": 322
+      },
+      "ditl_id": 260,
+      "stage_word": "0x5555",
+      "stages": [
+        5,
+        5,
+        5,
+        5
+      ]
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/ALRT/260.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/ALRT/260.bin",
+    "binary_size": 12,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Erase Hi Score",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/ALRT/260.bin",
+        "sha256": "97222e86925a3f8f67facae6336de3791c0396b373e191e0a98e118b17fb1bdf",
+        "size": 12
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/ALRT/260.md",
+        "sha256": "1cc3e988ad702b15b002ec07aad3c5469f64aa91b3d5e4b8e74b4d68afe48b33",
+        "size": 7592
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 287404,
+    "resource_fork_payload_sha256": "97222e86925a3f8f67facae6336de3791c0396b373e191e0a98e118b17fb1bdf",
+    "resource_fork_payload_size": 12,
+    "sha256": "97222e86925a3f8f67facae6336de3791c0396b373e191e0a98e118b17fb1bdf",
+    "source_exports": [
+      "sources/resedit-1-0-3/ALRT/260.bin",
+      "sources/resedit-1-0-3/ALRT/260.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "status": "PROVEN",
+        "target": "DITL:260"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh AlertTemplate; 12 curated payload bytes.",
+    "descriptive_name": "Erase Inactive High Scores Confirmation Alert",
+    "id": 260,
+    "key": "ALRT:260",
+    "original_fourcc": "ALRT",
+    "original_macintosh_name": "Erase Hi Score",
+    "original_name_bytes_hex": "45726173652048692053636f7265",
+    "original_name_source": "sources/resedit-1-0-3/ALRT/260.md",
+    "purpose": "Erase Inactive High Scores Confirmation Alert",
+    "type": "ALRT"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

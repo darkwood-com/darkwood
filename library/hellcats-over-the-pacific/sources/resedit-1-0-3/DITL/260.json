@@ -1,0 +1,165 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 120,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 96,
+          "height": 21,
+          "left": 125,
+          "right": 196,
+          "top": 75,
+          "width": 71
+        },
+        "data_hex": "43616e63656c",
+        "data_length": 6,
+        "descriptive_identity": "Cancel",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Cancel",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 96,
+          "height": 21,
+          "left": 225,
+          "right": 296,
+          "top": 75,
+          "width": 71
+        },
+        "data_hex": "4572617365",
+        "data_length": 5,
+        "descriptive_identity": "Erase",
+        "enabled": true,
+        "index": 2,
+        "item_type": "button",
+        "offset": 22,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Erase",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 52,
+          "height": 42,
+          "left": 70,
+          "right": 315,
+          "top": 10,
+          "width": 245
+        },
+        "data_hex": "41726520796f75207375726520796f752077616e7420746f20657261736520616c6c206e6f6e2d616374697665206475747920686967682073636f7265733f",
+        "data_length": 63,
+        "descriptive_identity": "Are you sure you want to erase all non-active duty high scores?",
+        "enabled": true,
+        "index": 3,
+        "item_type": "static_text",
+        "offset": 42,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Are you sure you want to erase all non-active duty high scores?",
+        "type_byte": "0x08",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 3,
+      "encoded_count_minus_one": 2,
+      "item_count": 3,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/260.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/260.bin",
+    "binary_size": 120,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/260.bin",
+        "sha256": "3eaad90b4ce27e38b726e29b04bfe3c398aff6c75b602b6cfa6603560300c36e",
+        "size": 120
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/260.md",
+        "sha256": "33924fcc3f6150d33b9de4203f1251ec7ee08c7163a6e92baf9b860eea3d02d3",
+        "size": 9490
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 284936,
+    "resource_fork_payload_sha256": "3eaad90b4ce27e38b726e29b04bfe3c398aff6c75b602b6cfa6603560300c36e",
+    "resource_fork_payload_size": 120,
+    "sha256": "3eaad90b4ce27e38b726e29b04bfe3c398aff6c75b602b6cfa6603560300c36e",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/260.bin",
+      "sources/resedit-1-0-3/DITL/260.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "ALRT:260",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 120 curated payload bytes.",
+    "descriptive_name": "Erase Inactive High Scores Confirmation Controls",
+    "id": 260,
+    "key": "DITL:260",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/260.md",
+    "purpose": "Erase Inactive High Scores Confirmation Controls",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

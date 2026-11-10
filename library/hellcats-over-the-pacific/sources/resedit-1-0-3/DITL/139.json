@@ -1,0 +1,148 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 102,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 52,
+          "height": 32,
+          "left": 25,
+          "right": 57,
+          "top": 20,
+          "width": 32
+        },
+        "data_hex": "0080",
+        "data_length": 2,
+        "descriptive_identity": "icon item",
+        "enabled": false,
+        "index": 1,
+        "item_type": "icon",
+        "offset": 2,
+        "padding_bytes": 0,
+        "referenced_resource_id": 128,
+        "referenced_resource_type": "ICON",
+        "reserved_handle": 0,
+        "type_byte": "0xA0",
+        "type_code": 32
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 86,
+          "height": 71,
+          "left": 75,
+          "right": 307,
+          "top": 15,
+          "width": 232
+        },
+        "data_hex": "536f6d6520736f756e647320776f6e277420706c61792064756520746f0d696e73756666696369656e74206d656d6f72792e0d0d436c69636b20746f20636f6e74696e7565c9",
+        "data_length": 70,
+        "descriptive_identity": "Some sounds won't play due to\rinsufficient memory.\r\rClick to continue…",
+        "enabled": false,
+        "index": 2,
+        "item_type": "static_text",
+        "offset": 18,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Some sounds won't play due to\rinsufficient memory.\r\rClick to continue…",
+        "type_byte": "0x88",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 2,
+      "encoded_count_minus_one": 1,
+      "item_count": 2,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/139.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/139.bin",
+    "binary_size": 102,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/139.bin",
+        "sha256": "bbfba7355ac2ce0f07905fb3d33990d61bcf588c7c2c32be2e403b8354c145ae",
+        "size": 102
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/139.md",
+        "sha256": "37a90fb39a57a95ac1a9a0a317c513828f9f9632ad068af0979a6ffe87d13092",
+        "size": 7478
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 286168,
+    "resource_fork_payload_sha256": "bbfba7355ac2ce0f07905fb3d33990d61bcf588c7c2c32be2e403b8354c145ae",
+    "resource_fork_payload_size": 102,
+    "sha256": "bbfba7355ac2ce0f07905fb3d33990d61bcf588c7c2c32be2e403b8354c145ae",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/139.bin",
+      "sources/resedit-1-0-3/DITL/139.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "DLOG:139",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": [
+      {
+        "evidence": "resource ID encoded in original DITL item data",
+        "kind": "dialog_item_1",
+        "status": "PROVEN",
+        "target": "ICON:128"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 102 curated payload bytes.",
+    "descriptive_name": "Insufficient Sound Memory Dialog Items",
+    "id": 139,
+    "key": "DITL:139",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/139.md",
+    "purpose": "Insufficient Sound Memory Dialog Items",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

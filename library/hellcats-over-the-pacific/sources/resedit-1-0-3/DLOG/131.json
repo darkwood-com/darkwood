@@ -1,0 +1,117 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "* GetNewDialog(0x83 = DLOG 131 \"Paused Dialog\", NULL, (WindowPtr)-1) ($A97C); JT $48a (ID02 0x435e); ShowWindow; DrawDialog ($A981); then polls GetNextEvent(0x18 = keyDown | keyUp mask) ($A970) until it has seen a keyDown (what 3) followed by a keyUp (what 4); DisposDialog. DITL 131 text: \"Paused... Press any key to continue.\" Reached through JT $122 (-> ID04 0x478). Body rebuilt as C below.",
+      "function_or_context": "show_paused_dialog",
+      "line": 411,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    },
+    {
+      "evidence": "dlg = GetNewDialog(0x83,0,-1);                /* $A97C: DLOG 131 */",
+      "function_or_context": "show_paused_dialog",
+      "line": 422,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 31,
+    "elements": [],
+    "format": "Classic Macintosh DialogTemplate",
+    "properties": {
+      "bounds": {
+        "bottom": 254,
+        "height": 104,
+        "left": 158,
+        "right": 470,
+        "top": 150,
+        "width": 312
+      },
+      "ditl_id": 131,
+      "go_away_box": true,
+      "refcon": 0,
+      "title": "New Dialog",
+      "title_bytes_hex": "4e6577204469616c6f67",
+      "visible": false,
+      "window_procedure_id": 1
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DLOG/131.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DLOG/131.bin",
+    "binary_size": 31,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "Paused Dialog",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DLOG/131.bin",
+        "sha256": "56f123570e59fad86438f4e2b8ff5a790c99e559e8085892a612531530193e1e",
+        "size": 31
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DLOG/131.md",
+        "sha256": "73e5001b9fb9fa12aa1f594b9c0a33e018efbd0fb332eab2c329ea4e929ad1d9",
+        "size": 4539
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 287040,
+    "resource_fork_payload_sha256": "56f123570e59fad86438f4e2b8ff5a790c99e559e8085892a612531530193e1e",
+    "resource_fork_payload_size": 31,
+    "sha256": "56f123570e59fad86438f4e2b8ff5a790c99e559e8085892a612531530193e1e",
+    "source_exports": [
+      "sources/resedit-1-0-3/DLOG/131.bin",
+      "sources/resedit-1-0-3/DLOG/131.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "status": "PROVEN",
+        "target": "DITL:131"
+      }
+    ]
+  },
+  "resource": {
+    "description": "Classic Macintosh DialogTemplate; 31 curated payload bytes.",
+    "descriptive_name": "Paused Dialog Dialog",
+    "id": 131,
+    "key": "DLOG:131",
+    "original_fourcc": "DLOG",
+    "original_macintosh_name": "Paused Dialog",
+    "original_name_bytes_hex": "506175736564204469616c6f67",
+    "original_name_source": "sources/resedit-1-0-3/DLOG/131.md",
+    "purpose": "Paused Dialog Dialog",
+    "type": "DLOG"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

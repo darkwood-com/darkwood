@@ -1,0 +1,128 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [
+    {
+      "evidence": "* GetNewDialog(0x8a = DLOG 138 \"About Hellcats 1-Bit\") when A5-0x137a == 1, else GetNewDialog(0x7f = DLOG 127 \"About Hellcats\"); returns at once when it fails. JT $472; ShowWindow; DrawDialog; SetPort; GetDItem(item 3), MoveTo its box, TextFont(1), TextSize(8); GetResource(vers, 1) ($A9A0) and draws a 5-character version \"M.m.r\" from its first word: M = (word >> 8) + '0', m = ((word & 0xf0) >> 8) + '0' - always '0', an original bug (>> 4 was surely meant) [PROVEN, bytes] - r = (word & 0xf) + '0'",
+      "function_or_context": "show_about_dialog",
+      "line": 2255,
+      "source_path": "sources/resedit-1-0-3/CODE/ID04.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "comparison_version_1_0_4": {
+    "claim_status": "VERIFIED",
+    "decoded": {
+      "consumed_bytes": 69,
+      "elements": [],
+      "format": "Classic Macintosh Version Resource",
+      "properties": {
+        "bugfix": 4,
+        "long_bytes_hex": "48656c6c636174732076657273696f6e20312e302e340da920436f70797269676874203139393220506172736f66742c20496e632e",
+        "long_string": "Hellcats version 1.0.4\r© Copyright 1992 Parsoft, Inc.",
+        "major": 1,
+        "minor": 0,
+        "non_release_revision": 0,
+        "region_code": 0,
+        "short_bytes_hex": "48656c6c63617473",
+        "short_string": "Hellcats",
+        "stage": "final",
+        "stage_code": "0x80",
+        "version": "1.0.4"
+      },
+      "trailing_bytes": 0
+    },
+    "decoded_structure_status": "VERIFIED",
+    "note": "Comparison only; this does not replace the curated ResEdit payload.",
+    "unresolved": []
+  },
+  "decoded": {
+    "consumed_bytes": 67,
+    "elements": [],
+    "format": "Classic Macintosh Version Resource",
+    "properties": {
+      "bugfix": 3,
+      "long_bytes_hex": "48656c6c636174732076657273696f6e20312e300da920436f70797269676874203139393220506172736f66742c20496e632e",
+      "long_string": "Hellcats version 1.0\r© Copyright 1992 Parsoft, Inc.",
+      "major": 1,
+      "minor": 0,
+      "non_release_revision": 0,
+      "region_code": 0,
+      "short_bytes_hex": "48656c6c63617473",
+      "short_string": "Hellcats",
+      "stage": "final",
+      "stage_code": "0x80",
+      "version": "1.0.3"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/vers/1.md",
+    "binary_matches_resource_fork_payload": false,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/vers/1.bin",
+    "binary_size": 67,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/vers/1.bin",
+        "sha256": "349a79d73cde33c03fa9901c60e43528339a4b9724d489a3af7c45b1bf4308f8",
+        "size": 67
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/vers/1.md",
+        "sha256": "08e528be0602215e4a8c6dfdceede5c49988d803b4f9a5a53bcd1dbac6539d98",
+        "size": 2222
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 301693,
+    "resource_fork_payload_sha256": "cc8c03d78a8be06fb51b17738d8e0af3de945f3a634746c34e951d677ee91437",
+    "resource_fork_payload_size": 69,
+    "sha256": "349a79d73cde33c03fa9901c60e43528339a4b9724d489a3af7c45b1bf4308f8",
+    "source_exports": [
+      "sources/resedit-1-0-3/vers/1.bin",
+      "sources/resedit-1-0-3/vers/1.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Version Resource; 67 curated payload bytes.",
+    "descriptive_name": "Hellcats 1.0.3 Version Record",
+    "id": 1,
+    "key": "vers:1",
+    "original_fourcc": "vers",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/vers/1.md",
+    "purpose": "Hellcats 1.0.3 Version Record",
+    "type": "vers"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": [
+    "Curated ResEdit payload differs from the independently recovered 1.0.4 resource-fork payload; both hashes and sizes are recorded and neither original source was overwritten."
+  ]
+}

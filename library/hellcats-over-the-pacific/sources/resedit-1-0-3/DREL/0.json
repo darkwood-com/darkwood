@@ -1,0 +1,382 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [
+    {
+      "evidence": "* Register interface D0 = dividend, D1 = divisor (unsigned 32-bit); returns D0 = quotient, D1 = remainder. Fast paths: dividend < divisor (quotient 0); dividend <= 0xffff (one DIVU.W); divisor <= 0xffff (two chained DIVU.W); otherwise normalises both by shifting right until the divisor fits 16 bits, estimates the quotient with DIVU.W and corrects it downward by multiplying back (MULU.W) until the product no longer exceeds the dividend [PROVEN, bytes 0x1c2..0x22a+]. A pre-68020 style routine (the",
+      "function_or_context": "rt_udivmod32_core",
+      "line": 119,
+      "source_path": "sources/resedit-1-0-3/CODE/ID01.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 144,
+    "elements": [
+      {
+        "a5_world_offset": 58172,
+        "index": 1
+      },
+      {
+        "a5_world_offset": 58184,
+        "index": 2
+      },
+      {
+        "a5_world_offset": 58196,
+        "index": 3
+      },
+      {
+        "a5_world_offset": 58208,
+        "index": 4
+      },
+      {
+        "a5_world_offset": 58220,
+        "index": 5
+      },
+      {
+        "a5_world_offset": 58232,
+        "index": 6
+      },
+      {
+        "a5_world_offset": 58244,
+        "index": 7
+      },
+      {
+        "a5_world_offset": 58256,
+        "index": 8
+      },
+      {
+        "a5_world_offset": 58268,
+        "index": 9
+      },
+      {
+        "a5_world_offset": 58280,
+        "index": 10
+      },
+      {
+        "a5_world_offset": 58292,
+        "index": 11
+      },
+      {
+        "a5_world_offset": 58304,
+        "index": 12
+      },
+      {
+        "a5_world_offset": 58316,
+        "index": 13
+      },
+      {
+        "a5_world_offset": 58328,
+        "index": 14
+      },
+      {
+        "a5_world_offset": 58340,
+        "index": 15
+      },
+      {
+        "a5_world_offset": 58352,
+        "index": 16
+      },
+      {
+        "a5_world_offset": 58364,
+        "index": 17
+      },
+      {
+        "a5_world_offset": 58376,
+        "index": 18
+      },
+      {
+        "a5_world_offset": 58388,
+        "index": 19
+      },
+      {
+        "a5_world_offset": 58400,
+        "index": 20
+      },
+      {
+        "a5_world_offset": 58412,
+        "index": 21
+      },
+      {
+        "a5_world_offset": 58424,
+        "index": 22
+      },
+      {
+        "a5_world_offset": 58436,
+        "index": 23
+      },
+      {
+        "a5_world_offset": 58448,
+        "index": 24
+      },
+      {
+        "a5_world_offset": 58460,
+        "index": 25
+      },
+      {
+        "a5_world_offset": 58472,
+        "index": 26
+      },
+      {
+        "a5_world_offset": 58484,
+        "index": 27
+      },
+      {
+        "a5_world_offset": 58496,
+        "index": 28
+      },
+      {
+        "a5_world_offset": 58508,
+        "index": 29
+      },
+      {
+        "a5_world_offset": 58520,
+        "index": 30
+      },
+      {
+        "a5_world_offset": 58532,
+        "index": 31
+      },
+      {
+        "a5_world_offset": 58544,
+        "index": 32
+      },
+      {
+        "a5_world_offset": 58556,
+        "index": 33
+      },
+      {
+        "a5_world_offset": 58568,
+        "index": 34
+      },
+      {
+        "a5_world_offset": 58580,
+        "index": 35
+      },
+      {
+        "a5_world_offset": 58592,
+        "index": 36
+      },
+      {
+        "a5_world_offset": 58604,
+        "index": 37
+      },
+      {
+        "a5_world_offset": 58616,
+        "index": 38
+      },
+      {
+        "a5_world_offset": 58628,
+        "index": 39
+      },
+      {
+        "a5_world_offset": 58640,
+        "index": 40
+      },
+      {
+        "a5_world_offset": 58652,
+        "index": 41
+      },
+      {
+        "a5_world_offset": 58664,
+        "index": 42
+      },
+      {
+        "a5_world_offset": 58676,
+        "index": 43
+      },
+      {
+        "a5_world_offset": 58688,
+        "index": 44
+      },
+      {
+        "a5_world_offset": 58700,
+        "index": 45
+      },
+      {
+        "a5_world_offset": 58712,
+        "index": 46
+      },
+      {
+        "a5_world_offset": 58724,
+        "index": 47
+      },
+      {
+        "a5_world_offset": 58736,
+        "index": 48
+      },
+      {
+        "a5_world_offset": 58748,
+        "index": 49
+      },
+      {
+        "a5_world_offset": 58760,
+        "index": 50
+      },
+      {
+        "a5_world_offset": 58772,
+        "index": 51
+      },
+      {
+        "a5_world_offset": 58784,
+        "index": 52
+      },
+      {
+        "a5_world_offset": 58796,
+        "index": 53
+      },
+      {
+        "a5_world_offset": 58808,
+        "index": 54
+      },
+      {
+        "a5_world_offset": 58820,
+        "index": 55
+      },
+      {
+        "a5_world_offset": 58832,
+        "index": 56
+      },
+      {
+        "a5_world_offset": 57168,
+        "index": 57
+      },
+      {
+        "a5_world_offset": 57172,
+        "index": 58
+      },
+      {
+        "a5_world_offset": 57176,
+        "index": 59
+      },
+      {
+        "a5_world_offset": 57180,
+        "index": 60
+      },
+      {
+        "a5_world_offset": 57184,
+        "index": 61
+      },
+      {
+        "a5_world_offset": 57188,
+        "index": 62
+      },
+      {
+        "a5_world_offset": 57378,
+        "index": 63
+      },
+      {
+        "a5_world_offset": 57382,
+        "index": 64
+      },
+      {
+        "a5_world_offset": 57386,
+        "index": 65
+      },
+      {
+        "a5_world_offset": 57390,
+        "index": 66
+      },
+      {
+        "a5_world_offset": 57394,
+        "index": 67
+      },
+      {
+        "a5_world_offset": 57398,
+        "index": 68
+      },
+      {
+        "a5_world_offset": 57402,
+        "index": 69
+      },
+      {
+        "a5_world_offset": 57406,
+        "index": 70
+      },
+      {
+        "a5_world_offset": 57410,
+        "index": 71
+      },
+      {
+        "a5_world_offset": 57414,
+        "index": 72
+      }
+    ],
+    "format": "Hellcats A5 World Relocation Offset Table",
+    "properties": {
+      "byte_order": "big_endian",
+      "entry_count": 72,
+      "entry_width_bytes": 2,
+      "maximum_offset": 58832,
+      "minimum_offset": 57168
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DREL/0.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DREL/0.bin",
+    "binary_size": 144,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DREL/0.bin",
+        "sha256": "3d59055692498a5e5848be740189913637de592cfe0e37a73fb7fe44f6d45caf",
+        "size": 144
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DREL/0.md",
+        "sha256": "acc29fcf8ce77fd4c8b27255b571c0a6a6670324d30a32ec20d22307cba351e3",
+        "size": 324
+      }
+    ],
+    "resource_attributes": "0x28",
+    "resource_fork_payload_offset": 3482,
+    "resource_fork_payload_sha256": "3d59055692498a5e5848be740189913637de592cfe0e37a73fb7fe44f6d45caf",
+    "resource_fork_payload_size": 144,
+    "sha256": "3d59055692498a5e5848be740189913637de592cfe0e37a73fb7fe44f6d45caf",
+    "source_exports": [
+      "sources/resedit-1-0-3/DREL/0.bin",
+      "sources/resedit-1-0-3/DREL/0.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Hellcats A5 World Relocation Offset Table; 144 curated payload bytes.",
+    "descriptive_name": "A5 World Relocation Offset Table",
+    "id": 0,
+    "key": "DREL:0",
+    "original_fourcc": "DREL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DREL/0.md",
+    "purpose": "A5 World Relocation Offset Table",
+    "type": "DREL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

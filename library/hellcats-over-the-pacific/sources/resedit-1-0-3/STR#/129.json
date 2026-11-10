@@ -1,0 +1,816 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "Explicit decompilation annotation",
+    "identity": "Original Macintosh resource name"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "VERIFIED",
+    "identity": "PROVEN"
+  },
+  "code_references": [
+    {
+      "evidence": "*   h = GetResource('STR#', 0x81)      CLR.L -(A7); PEA #'STR#'; MOVE.W #$81; $A9A0",
+      "function_or_context": "load_str129_string_table",
+      "line": 29,
+      "source_path": "sources/resedit-1-0-3/CODE/ID07.decomp.c",
+      "status": "VERIFIED"
+    }
+  ],
+  "decoded": {
+    "consumed_bytes": 3723,
+    "elements": [
+      {
+        "bytes_hex": "556e61626c6520746f2073746f726520696e737472756d656e742070616e656c20746f206469736b",
+        "index": 1,
+        "placeholders": [],
+        "text": "Unable to store instrument panel to disk"
+      },
+      {
+        "bytes_hex": "436f6e67726174756c6174696f6e73206f6e207375636365737366756c6c79206469746368696e6720796f757220616972637261667421",
+        "index": 2,
+        "placeholders": [],
+        "text": "Congratulations on successfully ditching your aircraft!"
+      },
+      {
+        "bytes_hex": "436f6e67726174756c6174696f6e73206f6e207375636365737366756c6c79206c616e64696e6720796f75722064697361626c656420616972637261667421",
+        "index": 3,
+        "placeholders": [],
+        "text": "Congratulations on successfully landing your disabled aircraft!"
+      },
+      {
+        "bytes_hex": "4e696365206c616e64696e673b20686f77657665722c20796f75206f7665726c6f6f6b6564206f6e6520736d616c6c2064657461696c2e2e2e",
+        "index": 4,
+        "placeholders": [],
+        "text": "Nice landing; however, you overlooked one small detail..."
+      },
+      {
+        "bytes_hex": "594f55204c414e44454420415420414e20454e454d59204241534521",
+        "index": 5,
+        "placeholders": [],
+        "text": "YOU LANDED AT AN ENEMY BASE!"
+      },
+      {
+        "bytes_hex": "4e696365206c616e64696e672e",
+        "index": 6,
+        "placeholders": [],
+        "text": "Nice landing."
+      },
+      {
+        "bytes_hex": "486f77657665722c20746865726520776173206e6f7468696e672077726f6e67207769746820796f75722048656c6c63617421",
+        "index": 7,
+        "placeholders": [],
+        "text": "However, there was nothing wrong with your Hellcat!"
+      },
+      {
+        "bytes_hex": "596f752068617665206265656e20646973686f6e6f7261626c79206469736368617267656420666f72206465737472756374696f6e206f662055532070726f7065727479",
+        "index": 8,
+        "placeholders": [],
+        "text": "You have been dishonorably discharged for destruction of US property"
+      },
+      {
+        "bytes_hex": "486f77657665722c20796f7520686176652064657374726f79656420667269656e646c7920756e69747321",
+        "index": 9,
+        "placeholders": [],
+        "text": "However, you have destroyed friendly units!"
+      },
+      {
+        "bytes_hex": "486f77657665722c20796f75206c616e64656420696e20656e656d79207465727269746f72792e",
+        "index": 10,
+        "placeholders": [],
+        "text": "However, you landed in enemy territory."
+      },
+      {
+        "bytes_hex": "486f77657665722c20796f75206469646e2774206c616e64206e65617220616e7920667269656e646c7920756e697473",
+        "index": 11,
+        "placeholders": [],
+        "text": "However, you didn't land near any friendly units"
+      },
+      {
+        "bytes_hex": "466f7274756e6174656c7920796f75206c616e64656420696e20667269656e646c79207465727269746f72792e",
+        "index": 12,
+        "placeholders": [],
+        "text": "Fortunately you landed in friendly territory."
+      },
+      {
+        "bytes_hex": "4c75636b696c7920796f7520676f74207069636b6564207570206279206120736561726368207061727479206265666f7265206265696e6720636170747572656421",
+        "index": 13,
+        "placeholders": [],
+        "text": "Luckily you got picked up by a search party before being captured!"
+      },
+      {
+        "bytes_hex": "596f752077657265207069636b65642075702062792061207365617263682070617274792e",
+        "index": 14,
+        "placeholders": [],
+        "text": "You were picked up by a search party."
+      },
+      {
+        "bytes_hex": "556e666f7274756e6174656c7920796f752064726f776e6564206265666f7265206265696e6720666f756e642e",
+        "index": 15,
+        "placeholders": [],
+        "text": "Unfortunately you drowned before being found."
+      },
+      {
+        "bytes_hex": "596f75207765726520636170747572656420627920746865204a6170616e65736520616e642074616b656e20746f206120504f572063616d702e",
+        "index": 16,
+        "placeholders": [],
+        "text": "You were captured by the Japanese and taken to a POW camp."
+      },
+      {
+        "bytes_hex": "596f7572206e657874206f66206b696e2077696c6c206265206e6f7469666965642e",
+        "index": 17,
+        "placeholders": [],
+        "text": "Your next of kin will be notified."
+      },
+      {
+        "bytes_hex": "556e666f7274756e6174656c7920796f752077657265206e6576657220666f756e6420627920746865207365617263682070617274792e",
+        "index": 18,
+        "placeholders": [],
+        "text": "Unfortunately you were never found by the search party."
+      },
+      {
+        "bytes_hex": "4c75636b696c792c2074686520656e656d79206469646e27742073656520796f7520636f6d6520646f776e20d1",
+        "index": 19,
+        "placeholders": [],
+        "text": "Luckily, the enemy didn't see you come down —"
+      },
+      {
+        "bytes_hex": "4a75737420646f6e2774206c65742069742068617070656e20616761696e21",
+        "index": 20,
+        "placeholders": [],
+        "text": "Just don't let it happen again!"
+      },
+      {
+        "bytes_hex": "436f6e67726174756c6174696f6e732c20796f75206d61646520697420746f207468652067726f756e6420696e206f6e652070696563652e",
+        "index": 21,
+        "placeholders": [],
+        "text": "Congratulations, you made it to the ground in one piece."
+      },
+      {
+        "bytes_hex": "486f77657665722c20796f75206261696c6564206f7574206f66206120706572666563746c7920676f6f6420616972706c616e6521",
+        "index": 22,
+        "placeholders": [],
+        "text": "However, you bailed out of a perfectly good airplane!"
+      },
+      {
+        "bytes_hex": "596f75206261696c6564206f7574206f66207468652068656c6c6361742c20627574206469646e2774206861766520656e6f75676820616c7469747564652e",
+        "index": 23,
+        "placeholders": [],
+        "text": "You bailed out of the hellcat, but didn't have enough altitude."
+      },
+      {
+        "bytes_hex": "504f5721",
+        "index": 24,
+        "placeholders": [],
+        "text": "POW!"
+      },
+      {
+        "bytes_hex": "57656c6c206275642c206c6f6f6b73206c696b6520796f7520626f7567687420746865206661726d206f6e2074686174206f6e6521",
+        "index": 25,
+        "placeholders": [],
+        "text": "Well bud, looks like you bought the farm on that one!"
+      },
+      {
+        "bytes_hex": "596f75207265616c6c79206175676572656420696e20746861742074696d65",
+        "index": 26,
+        "placeholders": [],
+        "text": "You really augered in that time"
+      },
+      {
+        "bytes_hex": "416e6420796f757220666174686572206861642073756368206869676820686f70657320666f7220796f7521",
+        "index": 27,
+        "placeholders": [],
+        "text": "And your father had such high hopes for you!"
+      },
+      {
+        "bytes_hex": "436f6e67726174756c6174696f6e73212020596f7527726520676f696e6720686f6d65202d20696e2074686520636172676f20686f6c6421",
+        "index": 28,
+        "placeholders": [],
+        "text": "Congratulations!  You're going home - in the cargo hold!"
+      },
+      {
+        "bytes_hex": "436f6e67726174756c6174696f6e732120596f75206861766520616368656976656420796f7572206f626a6563746976657320616e6420636f6d706c6574656420746865206d697373696f6e21",
+        "index": 29,
+        "placeholders": [],
+        "text": "Congratulations! You have acheived your objectives and completed the mission!"
+      },
+      {
+        "bytes_hex": "53756d6d617279206f66206d697373696f6e20757020746f207468652070726573656e742074696d652e",
+        "index": 30,
+        "placeholders": [],
+        "text": "Summary of mission up to the present time."
+      },
+      {
+        "bytes_hex": "596f752061726520646561642e",
+        "index": 31,
+        "placeholders": [],
+        "text": "You are dead."
+      },
+      {
+        "bytes_hex": "596f75206861766520736f6d6520706f696e74732074686174206861766e277420796574206265656e20616464656420746f20796f7572207065726d616e656e742073636f72652e2020596f75206d757374206c616e6420746f206164642074686520706f696e747320746f20796f7572207065726d616e656e742073636f72652e",
+        "index": 32,
+        "placeholders": [],
+        "text": "You have some points that havn't yet been added to your permanent score.  You must land to add the points to your permanent score."
+      },
+      {
+        "bytes_hex": "596f752068617665206163636f6d706c697368656420796f7572206d697373696f6e206f626a65637469766573212020596f752073686f756c642072657475726e20746f20626173652e",
+        "index": 33,
+        "placeholders": [],
+        "text": "You have accomplished your mission objectives!  You should return to base."
+      },
+      {
+        "bytes_hex": "5468652042313720686173206265656e2064657374726f796564202d20796f752068617665206661696c656420796f7572206d697373696f6e2e",
+        "index": 34,
+        "placeholders": [],
+        "text": "The B17 has been destroyed - you have failed your mission."
+      },
+      {
+        "bytes_hex": "546865204a6170616e65736520626f6d6265722068617320626f6d6265642048656e646572736f6e206669656c64202d20796f752068617665206661696c656420796f7572206d697373696f6e2e",
+        "index": 35,
+        "placeholders": [],
+        "text": "The Japanese bomber has bombed Henderson field - you have failed your mission."
+      },
+      {
+        "bytes_hex": "546865206361727269657220686173206265656e2073756e6b202d20796f752068617665206661696c656420796f7572206d697373696f6e2e",
+        "index": 36,
+        "placeholders": [],
+        "text": "The carrier has been sunk - you have failed your mission."
+      },
+      {
+        "bytes_hex": "596f7572206f726967696e616c2068656c6c63617420776173206c6f7374202d20796f752068617665206661696c656420796f7572206d697373696f6e2e",
+        "index": 37,
+        "placeholders": [],
+        "text": "Your original hellcat was lost - you have failed your mission."
+      },
+      {
+        "bytes_hex": "496e20666163742c20796f7527766520646f6e6520736f2077656c6c207468617420796f752068617665206265656e206368617267656420776974682074726561736f6e21",
+        "index": 38,
+        "placeholders": [],
+        "text": "In fact, you've done so well that you have been charged with treason!"
+      },
+      {
+        "bytes_hex": "54686520666972696e6720737175616420776173207175697465206d6572636966756c202d206e6f74206f6e652062756c6c6574206d697373656420697473206d61726b21",
+        "index": 39,
+        "placeholders": [],
+        "text": "The firing squad was quite merciful - not one bullet missed its mark!"
+      },
+      {
+        "bytes_hex": "5765276c6c206c657420796f75206f66662074686520686f6f6b20746869732074696d652073696e6365207468697320697320796f7572206669727374206f6666656e73652e",
+        "index": 40,
+        "placeholders": [],
+        "text": "We'll let you off the hook this time since this is your first offense."
+      },
+      {
+        "bytes_hex": "4a75737420646f6e2774206c65742069742068617070656e20616761696e21",
+        "index": 41,
+        "placeholders": [],
+        "text": "Just don't let it happen again!"
+      },
+      {
+        "bytes_hex": "5468697320697320796f7572207365636f6e64206f666673656e736521",
+        "index": 42,
+        "placeholders": [],
+        "text": "This is your second offsense!"
+      },
+      {
+        "bytes_hex": "546865206e6578742074696d6520796f752064657374726f7920667269656e646c7920756e69747320796f752077696c6c20626520646973686f6e6f7261626c7920646973636861726765642e",
+        "index": 43,
+        "placeholders": [],
+        "text": "The next time you destroy friendly units you will be dishonorably discharged."
+      },
+      {
+        "bytes_hex": "596f7527726520612074687265652074696d65206c6f73657221",
+        "index": 44,
+        "placeholders": [],
+        "text": "You're a three time loser!"
+      },
+      {
+        "bytes_hex": "4279206c6f73696e6720796f757220616972706c616e6520796f752068617665206265656e20756e7375636365737366756c20696e20636f6d706c6574696e6720796f7572206d697373696f6e2e",
+        "index": 45,
+        "placeholders": [],
+        "text": "By losing your airplane you have been unsuccessful in completing your mission."
+      },
+      {
+        "bytes_hex": "596f752077696c6c206e6f7420726563656976652061206d697373696f6e2061776172642e",
+        "index": 46,
+        "placeholders": [],
+        "text": "You will not receive a mission award."
+      },
+      {
+        "bytes_hex": "4279206c6f73696e6720796f7572206f726967696e616c2068656c6c63617420796f752068617665206661696c656420796f7572206d697373696f6e2e",
+        "index": 47,
+        "placeholders": [],
+        "text": "By losing your original hellcat you have failed your mission."
+      },
+      {
+        "bytes_hex": "596f752077696c6c206e6f7420726563656976652061206d697373696f6e2061776172642e",
+        "index": 48,
+        "placeholders": [],
+        "text": "You will not receive a mission award."
+      },
+      {
+        "bytes_hex": "506c6179657227732043756d756c617469766520486973746f7279",
+        "index": 49,
+        "placeholders": [],
+        "text": "Player's Cumulative History"
+      },
+      {
+        "bytes_hex": "4e6f206e6577206b696c6c7320746f207265706f72742e",
+        "index": 50,
+        "placeholders": [],
+        "text": "No new kills to report."
+      },
+      {
+        "bytes_hex": "4e6f7720616464696e6720706f696e747320746f207065726d616e656e742073636f7265",
+        "index": 51,
+        "placeholders": [],
+        "text": "Now adding points to permanent score"
+      },
+      {
+        "bytes_hex": "3d3d3d3d204b696c6c73203d3d3d3d",
+        "index": 52,
+        "placeholders": [],
+        "text": "==== Kills ===="
+      },
+      {
+        "bytes_hex": "5c72497473206e6f7420616c6c20626164206e6577732074686f7567682c20796f75206761696e656420656e6f75676820706f696e747320746f20616476616e636520696e2072616e6b21",
+        "index": 53,
+        "placeholders": [],
+        "text": "\\rIts not all bad news though, you gained enough points to advance in rank!"
+      },
+      {
+        "bytes_hex": "5c72436f6e67726174756c6174696f6e7321",
+        "index": 54,
+        "placeholders": [],
+        "text": "\\rCongratulations!"
+      },
+      {
+        "bytes_hex": "596f752068617665206761696e656420656e6f75676820706f696e747320746f20616476616e636520696e2072616e6b21",
+        "index": 55,
+        "placeholders": [],
+        "text": "You have gained enough points to advance in rank!"
+      },
+      {
+        "bytes_hex": "596f752061726520706f737468756d6f75736c792070726f6d6f74656420746f20746865206772616465206f6620",
+        "index": 56,
+        "placeholders": [],
+        "text": "You are posthumously promoted to the grade of "
+      },
+      {
+        "bytes_hex": "596f75206172652070726f6d6f74656420746f20746865206772616465206f6620",
+        "index": 57,
+        "placeholders": [],
+        "text": "You are promoted to the grade of "
+      },
+      {
+        "bytes_hex": "53636f72653a20",
+        "index": 58,
+        "placeholders": [],
+        "text": "Score: "
+      },
+      {
+        "bytes_hex": "206d692e2f67726964",
+        "index": 59,
+        "placeholders": [],
+        "text": " mi./grid"
+      },
+      {
+        "bytes_hex": "206d692e",
+        "index": 60,
+        "placeholders": [],
+        "text": " mi."
+      },
+      {
+        "bytes_hex": "48656c6c636174732072657175697265732061204d6163696e746f7368207769746820636f6c6f7220517569636b4472617720616e642061203638303230206f722068696768657220435055",
+        "index": 61,
+        "placeholders": [],
+        "text": "Hellcats requires a Macintosh with color QuickDraw and a 68020 or higher CPU"
+      },
+      {
+        "bytes_hex": "5c7048656c6c63617473",
+        "index": 62,
+        "placeholders": [],
+        "text": "\\pHellcats"
+      },
+      {
+        "bytes_hex": "5c704f4b",
+        "index": 63,
+        "placeholders": [],
+        "text": "\\pOK"
+      },
+      {
+        "bytes_hex": "5c7053656c6563742061204d697373696f6e",
+        "index": 64,
+        "placeholders": [],
+        "text": "\\pSelect a Mission"
+      },
+      {
+        "bytes_hex": "5c70414c544954554445",
+        "index": 65,
+        "placeholders": [],
+        "text": "\\pALTITUDE"
+      },
+      {
+        "bytes_hex": "5c70414952",
+        "index": 66,
+        "placeholders": [],
+        "text": "\\pAIR"
+      },
+      {
+        "bytes_hex": "5c705350454544",
+        "index": 67,
+        "placeholders": [],
+        "text": "\\pSPEED"
+      },
+      {
+        "bytes_hex": "5c70434c494d42",
+        "index": 68,
+        "placeholders": [],
+        "text": "\\pCLIMB"
+      },
+      {
+        "bytes_hex": "5c7052504d",
+        "index": 69,
+        "placeholders": [],
+        "text": "\\pRPM"
+      },
+      {
+        "bytes_hex": "5c704d616e69666f6c64",
+        "index": 70,
+        "placeholders": [],
+        "text": "\\pManifold"
+      },
+      {
+        "bytes_hex": "5c705072657373757265",
+        "index": 71,
+        "placeholders": [],
+        "text": "\\pPressure"
+      },
+      {
+        "bytes_hex": "5c70444952454354494f4e",
+        "index": 72,
+        "placeholders": [],
+        "text": "\\pDIRECTION"
+      },
+      {
+        "bytes_hex": "5c705455524e",
+        "index": 73,
+        "placeholders": [],
+        "text": "\\pTURN"
+      },
+      {
+        "bytes_hex": "5c7042414e4b",
+        "index": 74,
+        "placeholders": [],
+        "text": "\\pBANK"
+      },
+      {
+        "bytes_hex": "5c70464c415053",
+        "index": 75,
+        "placeholders": [],
+        "text": "\\pFLAPS"
+      },
+      {
+        "bytes_hex": "5c70414d4d4f",
+        "index": 76,
+        "placeholders": [],
+        "text": "\\pAMMO"
+      },
+      {
+        "bytes_hex": "5c704675656c",
+        "index": 77,
+        "placeholders": [],
+        "text": "\\pFuel"
+      },
+      {
+        "bytes_hex": "5c7047454152",
+        "index": 78,
+        "placeholders": [],
+        "text": "\\pGEAR"
+      },
+      {
+        "bytes_hex": "5c704269746d6170",
+        "index": 79,
+        "placeholders": [],
+        "text": "\\pBitmap"
+      },
+      {
+        "bytes_hex": "5c70486f72697a6f6e496e737472756d656e74",
+        "index": 80,
+        "placeholders": [],
+        "text": "\\pHorizonInstrument"
+      },
+      {
+        "bytes_hex": "5c704779726f496e737472756d656e74",
+        "index": 81,
+        "placeholders": [],
+        "text": "\\pGyroInstrument"
+      },
+      {
+        "bytes_hex": "5c704779726f466c616773",
+        "index": 82,
+        "placeholders": [],
+        "text": "\\pGyroFlags"
+      },
+      {
+        "bytes_hex": "5c704269746d6170204361636865",
+        "index": 83,
+        "placeholders": [],
+        "text": "\\pBitmap Cache"
+      },
+      {
+        "bytes_hex": "556e61626c6520746f2072656164207363656e65726172696f2066696c65",
+        "index": 84,
+        "placeholders": [],
+        "text": "Unable to read scenerario file"
+      },
+      {
+        "bytes_hex": "496e73756666696369656e74206d656d6f7279",
+        "index": 85,
+        "placeholders": [],
+        "text": "Insufficient memory"
+      },
+      {
+        "bytes_hex": "494e5445524e414c3a2045787465726e207265666572656e6365",
+        "index": 86,
+        "placeholders": [],
+        "text": "INTERNAL: Extern reference"
+      },
+      {
+        "bytes_hex": "494e5445524e414c3a204261642072656c6f636174696f6e2073697a65",
+        "index": 87,
+        "placeholders": [],
+        "text": "INTERNAL: Bad relocation size"
+      },
+      {
+        "bytes_hex": "5c70526573756d65",
+        "index": 88,
+        "placeholders": [],
+        "text": "\\pResume"
+      },
+      {
+        "bytes_hex": "5c70416c7469747564653a20",
+        "index": 89,
+        "placeholders": [],
+        "text": "\\pAltitude: "
+      },
+      {
+        "bytes_hex": "5c704b6e6f74733a20",
+        "index": 90,
+        "placeholders": [],
+        "text": "\\pKnots: "
+      },
+      {
+        "bytes_hex": "5c7048656164696e673a20",
+        "index": 91,
+        "placeholders": [],
+        "text": "\\pHeading: "
+      },
+      {
+        "bytes_hex": "5c70436c696d6220526174653a20",
+        "index": 92,
+        "placeholders": [],
+        "text": "\\pClimb Rate: "
+      },
+      {
+        "bytes_hex": "4f7574206f66206d656d6f72792e2020536f727279",
+        "index": 93,
+        "placeholders": [],
+        "text": "Out of memory.  Sorry"
+      },
+      {
+        "bytes_hex": "5c70456e7369676e",
+        "index": 94,
+        "placeholders": [],
+        "text": "\\pEnsign"
+      },
+      {
+        "bytes_hex": "5c704c742e204a756e696f72204772616465",
+        "index": 95,
+        "placeholders": [],
+        "text": "\\pLt. Junior Grade"
+      },
+      {
+        "bytes_hex": "5c704c69657574656e616e74",
+        "index": 96,
+        "placeholders": [],
+        "text": "\\pLieutenant"
+      },
+      {
+        "bytes_hex": "5c704c742e20436f6d6d616e646572",
+        "index": 97,
+        "placeholders": [],
+        "text": "\\pLt. Commander"
+      },
+      {
+        "bytes_hex": "5c70436f6d6d616e646572",
+        "index": 98,
+        "placeholders": [],
+        "text": "\\pCommander"
+      },
+      {
+        "bytes_hex": "5c704361707461696e",
+        "index": 99,
+        "placeholders": [],
+        "text": "\\pCaptain"
+      },
+      {
+        "bytes_hex": "5c70416374697665",
+        "index": 100,
+        "placeholders": [],
+        "text": "\\pActive"
+      },
+      {
+        "bytes_hex": "5c7044656164",
+        "index": 101,
+        "placeholders": [],
+        "text": "\\pDead"
+      },
+      {
+        "bytes_hex": "5c7052657469726564",
+        "index": 102,
+        "placeholders": [],
+        "text": "\\pRetired"
+      },
+      {
+        "bytes_hex": "5c70504f57",
+        "index": 103,
+        "placeholders": [],
+        "text": "\\pPOW"
+      },
+      {
+        "bytes_hex": "5c7044697363686172676564",
+        "index": 104,
+        "placeholders": [],
+        "text": "\\pDischarged"
+      },
+      {
+        "bytes_hex": "5c704d4941",
+        "index": 105,
+        "placeholders": [],
+        "text": "\\pMIA"
+      },
+      {
+        "bytes_hex": "46696768746572",
+        "index": 106,
+        "placeholders": [],
+        "text": "Fighter"
+      },
+      {
+        "bytes_hex": "426f6d626572",
+        "index": 107,
+        "placeholders": [],
+        "text": "Bomber"
+      },
+      {
+        "bytes_hex": "54616e6b",
+        "index": 108,
+        "placeholders": [],
+        "text": "Tank"
+      },
+      {
+        "bytes_hex": "4141412042617474657279",
+        "index": 109,
+        "placeholders": [],
+        "text": "AAA Battery"
+      },
+      {
+        "bytes_hex": "56656869636c65",
+        "index": 110,
+        "placeholders": [],
+        "text": "Vehicle"
+      },
+      {
+        "bytes_hex": "43617272696572",
+        "index": 111,
+        "placeholders": [],
+        "text": "Carrier"
+      },
+      {
+        "bytes_hex": "426174746c6573686970",
+        "index": 112,
+        "placeholders": [],
+        "text": "Battleship"
+      },
+      {
+        "bytes_hex": "43727569736572",
+        "index": 113,
+        "placeholders": [],
+        "text": "Cruiser"
+      },
+      {
+        "bytes_hex": "505420426f6174",
+        "index": 114,
+        "placeholders": [],
+        "text": "PT Boat"
+      },
+      {
+        "bytes_hex": "52756e776179",
+        "index": 115,
+        "placeholders": [],
+        "text": "Runway"
+      },
+      {
+        "bytes_hex": "48656c6c6361747320726571756972657320626c61636b20616e642077686974652c3136206f722032353620636f6c6f72732e",
+        "index": 116,
+        "placeholders": [],
+        "text": "Hellcats requires black and white,16 or 256 colors."
+      },
+      {
+        "bytes_hex": "5c7043616e2774206f70656e207265736f757263652066696c652e",
+        "index": 117,
+        "placeholders": [],
+        "text": "\\pCan't open resource file."
+      },
+      {
+        "bytes_hex": "5c70436c69636b206d6f75736520746f20657869742e",
+        "index": 118,
+        "placeholders": [],
+        "text": "\\pClick mouse to exit."
+      },
+      {
+        "bytes_hex": "5c704f4b",
+        "index": 119,
+        "placeholders": [],
+        "text": "\\pOK"
+      },
+      {
+        "bytes_hex": "556e617661696c61626c6520286d7573742072756e2066726f6d206f726967696e616c20756e6c6f636b656420666c6f70707929",
+        "index": 120,
+        "placeholders": [],
+        "text": "Unavailable (must run from original unlocked floppy)"
+      }
+    ],
+    "format": "Classic Macintosh String List",
+    "properties": {
+      "encoding": "mac_roman",
+      "string_count": 120
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/STR#/129.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/STR#/129.bin",
+    "binary_size": 3723,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": "English Strings",
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/STR#/129.bin",
+        "sha256": "5dcef38d03a5ea3793fb8611b8a92fefb9ac535c4253b1a0930f986ef480f563",
+        "size": 3723
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/STR#/129.md",
+        "sha256": "75a232f9605833cb798a962b2c1b9ac3e8ab1b1d543ac7496ff2becb7704a897",
+        "size": 14262
+      }
+    ],
+    "resource_attributes": "0x00",
+    "resource_fork_payload_offset": 60354,
+    "resource_fork_payload_sha256": "5dcef38d03a5ea3793fb8611b8a92fefb9ac535c4253b1a0930f986ef480f563",
+    "resource_fork_payload_size": 3723,
+    "sha256": "5dcef38d03a5ea3793fb8611b8a92fefb9ac535c4253b1a0930f986ef480f563",
+    "source_exports": [
+      "sources/resedit-1-0-3/STR#/129.bin",
+      "sources/resedit-1-0-3/STR#/129.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh String List; 3723 curated payload bytes.",
+    "descriptive_name": "English User-Interface String Table",
+    "id": 129,
+    "key": "STR#:129",
+    "original_fourcc": "STR#",
+    "original_macintosh_name": "English Strings",
+    "original_name_bytes_hex": "456e676c69736820537472696e6773",
+    "original_name_source": "sources/resedit-1-0-3/STR#/129.md",
+    "purpose": "English User-Interface String Table",
+    "type": "STR#"
+  },
+  "review": {
+    "claims": {
+      "instrument_label_role": "VERIFIED",
+      "mission_text_role": "PROVEN"
+    },
+    "notes": [
+      "Slots 29 through 37 are mission summary/success/failure prose consumed by host completion UI; they are not objective structures. Slots 65 through 78 are labels used by CODE:3 procedural instrument drawing; they are not cockpit artwork."
+    ]
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}

@@ -1,0 +1,165 @@
+{
+  "claim_evidence": {
+    "binary_integrity": "SHA-256 and length checked against the extracted payload and source container",
+    "decoded_structure": "Deterministic parser offsets, element counts, consumed bytes, and trailing bytes",
+    "gameplay_role": "No direct executable reference established",
+    "identity": "Reviewed semantic mapping grounded in decoded content"
+  },
+  "claims": {
+    "binary_integrity": "VERIFIED",
+    "decoded_structure": "VERIFIED",
+    "gameplay_role": "INFERRED",
+    "identity": "VERIFIED"
+  },
+  "code_references": [],
+  "decoded": {
+    "consumed_bytes": 146,
+    "elements": [
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 96,
+          "height": 21,
+          "left": 125,
+          "right": 196,
+          "top": 75,
+          "width": 71
+        },
+        "data_hex": "43616e63656c",
+        "data_length": 6,
+        "descriptive_identity": "Cancel",
+        "enabled": true,
+        "index": 1,
+        "item_type": "button",
+        "offset": 2,
+        "padding_bytes": 0,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Cancel",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 96,
+          "height": 21,
+          "left": 215,
+          "right": 305,
+          "top": 75,
+          "width": 90
+        },
+        "data_hex": "456e64204d697373696f6e",
+        "data_length": 11,
+        "descriptive_identity": "End Mission",
+        "enabled": true,
+        "index": 2,
+        "item_type": "button",
+        "offset": 22,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "End Mission",
+        "type_byte": "0x04",
+        "type_code": 4
+      },
+      {
+        "alignment": "word_aligned",
+        "bounds": {
+          "bottom": 65,
+          "height": 50,
+          "left": 70,
+          "right": 315,
+          "top": 15,
+          "width": 245
+        },
+        "data_hex": "41726520796f75207375726520796f752077616e7420746f20656e64207468652063757272656e74206d697373696f6e206e6f773f202028596f752077696c6c20636f6c6c656374206e6f20706f696e747329",
+        "data_length": 83,
+        "descriptive_identity": "Are you sure you want to end the current mission now?  (You will collect no points)",
+        "enabled": true,
+        "index": 3,
+        "item_type": "static_text",
+        "offset": 48,
+        "padding_bytes": 1,
+        "placeholders": [],
+        "reserved_handle": 0,
+        "text": "Are you sure you want to end the current mission now?  (You will collect no points)",
+        "type_byte": "0x08",
+        "type_code": 8
+      }
+    ],
+    "format": "Classic Macintosh Dialog Item List",
+    "properties": {
+      "decoded_item_count": 3,
+      "encoded_count_minus_one": 2,
+      "item_count": 3,
+      "parse_complete": true,
+      "structure_status": "verified"
+    },
+    "trailing_bytes": 0
+  },
+  "evidence": {
+    "appledouble_resource_fork_offset": 82,
+    "authoritative_export_path": "sources/resedit-1-0-3/DITL/259.md",
+    "binary_matches_resource_fork_payload": true,
+    "binary_origin": "ResEdit hexadecimal export",
+    "binary_path": "sources/resedit-1-0-3/DITL/259.bin",
+    "binary_size": 146,
+    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "comparison_resource_name": null,
+    "representations": [
+      {
+        "kind": "binary payload",
+        "path": "sources/resedit-1-0-3/DITL/259.bin",
+        "sha256": "262ee744f3f4f2a2677323c21b0c2f0bb0372ee9a355d1af97451a5809d6a08c",
+        "size": 146
+      },
+      {
+        "kind": "ResEdit Markdown/hex annotation",
+        "path": "sources/resedit-1-0-3/DITL/259.md",
+        "sha256": "22b801dbe2af149fcf3bd1b20ae5b7ddfd55952dcb56d005c5054788b45eda7a",
+        "size": 8612
+      }
+    ],
+    "resource_attributes": "0x20",
+    "resource_fork_payload_offset": 284708,
+    "resource_fork_payload_sha256": "262ee744f3f4f2a2677323c21b0c2f0bb0372ee9a355d1af97451a5809d6a08c",
+    "resource_fork_payload_size": 146,
+    "sha256": "262ee744f3f4f2a2677323c21b0c2f0bb0372ee9a355d1af97451a5809d6a08c",
+    "source_exports": [
+      "sources/resedit-1-0-3/DITL/259.bin",
+      "sources/resedit-1-0-3/DITL/259.md"
+    ]
+  },
+  "relationships": {
+    "incoming": [
+      {
+        "evidence": "big-endian DITL ID in original template bytes",
+        "kind": "template_item_list",
+        "source": "ALRT:259",
+        "status": "PROVEN"
+      }
+    ],
+    "outgoing": []
+  },
+  "resource": {
+    "description": "Classic Macintosh Dialog Item List; 146 curated payload bytes.",
+    "descriptive_name": "End Mission Confirmation Controls",
+    "id": 259,
+    "key": "DITL:259",
+    "original_fourcc": "DITL",
+    "original_macintosh_name": "",
+    "original_name_bytes_hex": "",
+    "original_name_source": "sources/resedit-1-0-3/DITL/259.md",
+    "purpose": "End Mission Confirmation Controls",
+    "type": "DITL"
+  },
+  "review": {
+    "claims": {},
+    "notes": []
+  },
+  "schema": "hellcats-resedit-resource-v1",
+  "type_code_references": [],
+  "unresolved": []
+}
