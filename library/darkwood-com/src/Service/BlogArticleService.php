@@ -1,0 +1,419 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Service;
+
+use App\Entity\Article;
+use App\Entity\ArticleTranslation;
+use App\Repository\ArticleRepository;
+use App\Repository\ArticleTranslationRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use finfo;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+use Vich\UploaderBundle\Storage\StorageInterface;
+
+use function array_values;
+use function count;
+use function is_dir;
+use function is_int;
+use function is_string;
+use function mkdir;
+use function uniqid;
+
+/**
+ * Class BlogArticleService.
+ *
+ * Object manager of articleTranslation.
+ */
+class BlogArticleService
+{
+    protected ArticleRepository $articleRepository;
+
+    protected ArticleTranslationRepository $articleTranslationRepository;
+
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected ParameterBagInterface $parameterBagInterface,
+        protected StorageInterface $storage,
+        private readonly CacheInterface $cache,
+    ) {
+        /** @var ArticleRepository $repository */
+        $repository = $em->getRepository(Article::class);
+        $this->articleRepository = $repository;
+
+        /** @var ArticleTranslationRepository $translationRepository */
+        $translationRepository = $em->getRepository(ArticleTranslation::class);
+        $this->articleTranslationRepository = $translationRepository;
+    }
+
+    /**
+     * Update a articleTranslation.
+     */
+    public function save(Article $article, $invalidate = false): Article
+    {
+        $article->setUpdated(new DateTime('now'));
+        foreach ($article->getTranslations() as $translation) {
+            $translation->setUpdated(new DateTime('now'));
+        }
+
+        $this->em->persist($article);
+        $this->em->flush();
+
+        return $article;
+    }
+
+    /**
+     * Remove one articleTranslation.
+     */
+    public function remove(Article $article)
+    {
+        $this->em->remove($article);
+        $this->em->flush();
+    }
+
+    public function duplicate(ArticleTranslation $articleTranslation, $locale)
+    {
+        $article = $articleTranslation->getArticle();
+        $duplicateArticleTranslation = $this->articleTranslationRepository->findOneByArticleAndLocale($article, $locale);
+        if (!$duplicateArticleTranslation) {
+            $duplicateArticleTranslation = new ArticleTranslation();
+            $duplicateArticleTranslation->setArticle($article);
+            $duplicateArticleTranslation->setLocale($locale);
+        }
+
+        $duplicateArticleTranslation->setCreated($articleTranslation->getCreated());
+        $duplicateArticleTranslation->setTitle($articleTranslation->getTitle());
+        $duplicateArticleTranslation->setSlug($articleTranslation->getSlug());
+        $duplicateArticleTranslation->setContent($articleTranslation->getContent());
+        $duplicateArticleTranslation->setActive($articleTranslation->getActive());
+        if ($articleTranslation->getImageName() !== null) {
+            $imageUrl = $this->storage->resolvePath($articleTranslation, 'image');
+            $imageContent = file_get_contents($imageUrl);
+            if (is_string($imageContent) && '' !== $imageContent) {
+                $duplicateArticleTranslation->setImage(
+                    $this->createUploadedFileFromBinaryContent($imageContent, $imageUrl)
+                );
+            }
+        }
+
+        return $duplicateArticleTranslation;
+    }
+
+    /**
+     * Download a remote image and attach it to an article translation cover.
+     */
+    public function applyTranslationImageFromUrl(ArticleTranslation $articleTranslation, string $imageUrl): bool
+    {
+        $imageUrl = trim($imageUrl);
+        if ('' === $imageUrl) {
+            return false;
+        }
+
+        $imageContent = @file_get_contents($imageUrl);
+        if (!is_string($imageContent) || '' === $imageContent) {
+            return false;
+        }
+
+        return $this->applyTranslationImageFromContent($articleTranslation, $imageContent, $imageUrl);
+    }
+
+    public function applyTranslationImageFromContent(
+        ArticleTranslation $articleTranslation,
+        string $imageContent,
+        string $sourceUrl,
+    ): bool {
+        if ('' === $imageContent) {
+            return false;
+        }
+
+        $articleTranslation->setImage(
+            $this->createUploadedFileFromBinaryContent($imageContent, $sourceUrl)
+        );
+
+        return true;
+    }
+
+    /**
+     * Update a articleTranslation.
+     */
+    public function saveTranslation(ArticleTranslation $articleTranslation, $exportLocales = false): ArticleTranslation
+    {
+        $articleTranslation->setUpdated(new DateTime('now'));
+        $this->em->persist($articleTranslation);
+        $this->em->flush();
+        if ($exportLocales) {
+            foreach ($this->parameterBagInterface->get('app_locales') as $locale) {
+                if ($locale !== $articleTranslation->getLocale()) {
+                    $exportPageTranslation = $this->duplicate($articleTranslation, $locale);
+                    $this->em->persist($exportPageTranslation);
+                    $this->em->flush();
+                }
+            }
+        }
+
+        return $articleTranslation;
+    }
+
+    public function removeTranslation(ArticleTranslation $articleTs)
+    {
+        $nbT = count($articleTs->getArticle()->getTranslations());
+        if ($nbT <= 1) {
+            $this->remove($articleTs->getArticle());
+
+            return;
+        }
+
+        $this->em->remove($articleTs);
+        $this->em->flush();
+    }
+
+    /**
+     * Find one by filters.
+     *
+     * @param array $filters
+     */
+    public function findOneBy($filters = []): ?object
+    {
+        return $this->articleRepository->findOneBy($filters);
+    }
+
+    /**
+     * @param string $slug
+     * @param string $locale
+     */
+    public function findOneBySlug($slug, $locale): ?Article
+    {
+        return $this->articleRepository->findOneBySlug($slug, $locale);
+    }
+
+    /**
+     * Search.
+     *
+     * @param array $filters
+     */
+    public function getQueryForSearch($filters = [], $locale = 'en', $order = 'normal'): Query
+    {
+        return $this->articleRepository->queryForSearch($filters, $locale, $order);
+    }
+
+    /**
+     * Find one to edit.
+     *
+     * @param string $id
+     */
+    public function findOneToEdit($id): ?Article
+    {
+        return $this->articleRepository->findOneToEdit($id);
+    }
+
+    /**
+     * @param int $id
+     */
+    public function find($id): ?ArticleTranslation
+    {
+        return $this->articleTranslationRepository->find($id);
+    }
+
+    /**
+     * Find all.
+     */
+    public function findAll()
+    {
+        return $this->articleRepository->findAll();
+    }
+
+    public function findActivesQueryBuilder($locale = null, $limit = null)
+    {
+        return $this->articleRepository->findActivesQueryBuilder($locale, $limit);
+    }
+
+    public function findWatchActivesQueryBuilder($locale = null, $limit = null)
+    {
+        return $this->articleRepository->findWatchActivesQueryBuilder($locale, $limit);
+    }
+
+    /**
+     * @param null $locale
+     * @param null $limit
+     *
+     * @return Paginator<Article>
+     */
+    public function findActives($locale = null, $limit = null): Paginator
+    {
+        return $this->articleRepository->findActives($locale, $limit);
+    }
+
+    /**
+     * @return list<Article>
+     */
+    public function findRelatedArticles(Article $article, ?string $locale = null, int $limit = 4): array
+    {
+        return $this->articleRepository->findRelatedBySharedTags($article, $locale, $limit);
+    }
+
+    /**
+     * @return Paginator<Article>
+     */
+    public function findManualActives(?string $locale = null, ?int $limit = null): Paginator
+    {
+        return $this->articleRepository->findManualActives($locale, $limit);
+    }
+
+    /**
+     * Home page articles for a locale, with a short-lived application cache on article IDs.
+     *
+     * @return array{
+     *     news: list<Article>,
+     *     lastWatchArticle: ?Article,
+     *     lastReleaseArticle: ?Article,
+     *     lastCreatorArticle: ?Article
+     * }
+     */
+    public function getDarkwoodHomeArticles(string $locale): array
+    {
+        /** @var array{newsIds: list<int>, watchId: ?int, releaseId: ?int, creatorId: ?int} $ids */
+        $ids = $this->cache->get('darkwood.home.articles.' . $locale, function (ItemInterface $item) use ($locale): array {
+            $item->expiresAfter(120);
+
+            $newsIds = [];
+            foreach ($this->articleRepository->findManualActives($locale, 5) as $article) {
+                $id = $article->getId();
+                if (is_int($id)) {
+                    $newsIds[] = $id;
+                }
+            }
+
+            return [
+                'newsIds' => $newsIds,
+                'watchId' => $this->articleRepository->findLatestWatchArticle($locale)?->getId(),
+                'releaseId' => $this->articleRepository->findLatestReleaseArticle($locale)?->getId(),
+                'creatorId' => $this->articleRepository->findLatestCreatorArticle($locale)?->getId(),
+            ];
+        });
+
+        $byId = $this->findArticlesByIdsWithTranslations(array_values(array_filter([
+            ...$ids['newsIds'],
+            $ids['watchId'],
+            $ids['releaseId'],
+            $ids['creatorId'],
+        ], static fn ($id): bool => is_int($id))));
+
+        $news = [];
+        foreach ($ids['newsIds'] as $newsId) {
+            if (isset($byId[$newsId])) {
+                $news[] = $byId[$newsId];
+            }
+        }
+
+        return [
+            'news' => $news,
+            'lastWatchArticle' => null !== $ids['watchId'] ? ($byId[$ids['watchId']] ?? null) : null,
+            'lastReleaseArticle' => null !== $ids['releaseId'] ? ($byId[$ids['releaseId']] ?? null) : null,
+            'lastCreatorArticle' => null !== $ids['creatorId'] ? ($byId[$ids['creatorId']] ?? null) : null,
+        ];
+    }
+
+    public function findLatestWatchArticle(?string $locale): ?Article
+    {
+        return $this->articleRepository->findLatestWatchArticle($locale);
+    }
+
+    public function findReleaseActivesQueryBuilder($locale = null, $limit = null)
+    {
+        return $this->articleRepository->findReleaseActivesQueryBuilder($locale, $limit);
+    }
+
+    public function findLatestReleaseArticle(?string $locale): ?Article
+    {
+        return $this->articleRepository->findLatestReleaseArticle($locale);
+    }
+
+    public function findCreatorActivesQueryBuilder($locale = null, $limit = null)
+    {
+        return $this->articleRepository->findCreatorActivesQueryBuilder($locale, $limit);
+    }
+
+    public function findLatestCreatorArticle(?string $locale): ?Article
+    {
+        return $this->articleRepository->findLatestCreatorArticle($locale);
+    }
+
+    /**
+     * @param list<int> $ids
+     *
+     * @return array<int, Article>
+     */
+    private function findArticlesByIdsWithTranslations(array $ids): array
+    {
+        if ($ids === []) {
+            return [];
+        }
+
+        /** @var list<Article> $articles */
+        $articles = $this->articleRepository->createQueryBuilder('n')
+            ->select('n', 'nts')
+            ->leftJoin('n.translations', 'nts')
+            ->andWhere('n.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $byId = [];
+        foreach ($articles as $article) {
+            $id = $article->getId();
+            if (is_int($id)) {
+                $byId[$id] = $article;
+            }
+        }
+
+        return $byId;
+    }
+
+    private function createUploadedFileFromBinaryContent(string $content, string $sourceUrl): UploadedFile
+    {
+        $extension = $this->guessImageExtensionFromUrl($sourceUrl);
+        $imageName = uniqid('article-cover-', true) . '.' . $extension;
+        $tmpFile = $this->getTempDirectory() . '/' . $imageName;
+        file_put_contents($tmpFile, $content);
+
+        $mimeType = null;
+        if (class_exists(finfo::class)) {
+            $detectedMimeType = (new finfo(FILEINFO_MIME_TYPE))->file($tmpFile);
+            if (is_string($detectedMimeType) && '' !== $detectedMimeType) {
+                $mimeType = $detectedMimeType;
+            }
+        }
+
+        return new UploadedFile($tmpFile, $imageName, $mimeType, null, true);
+    }
+
+    private function getTempDirectory(): string
+    {
+        $tmpDir = $this->parameterBagInterface->get('kernel.project_dir') . '/var/tmp';
+        if (!is_dir($tmpDir)) {
+            mkdir($tmpDir, 0o775, true);
+        }
+
+        return $tmpDir;
+    }
+
+    private function guessImageExtensionFromUrl(string $url): string
+    {
+        $path = (string) parse_url($url, PHP_URL_PATH);
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        if (is_string($extension) && '' !== $extension) {
+            return $extension;
+        }
+
+        return 'png';
+    }
+}

@@ -1,0 +1,88 @@
+{% set currentUri = app.request.uri %}
+{% set projectActive = false %}
+{% for appLink in appLinks %}
+    {% if currentUri == appLink.link %}
+        {% set projectActive = true %}
+    {% endif %}
+{% endfor %}
+
+<nav class="theme-nav row g-0 align-items-center" aria-label="Apps navigation">
+    <div class="theme-nav__primary col-md">
+        <a class="theme-nav__brand" href="{{ path('apps_home') }}">
+            <img src="{{ asset('logo.svg') }}" alt="Darkwood Apps" class="theme-nav__brand-mark">
+            <span class="theme-nav__brand-text">Apps</span>
+        </a>
+
+        <ul class="theme-nav__links">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle{% if projectActive %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ 'apps.menu.apps'|trans }}
+                </a>
+                <ul class="dropdown-menu">
+                    {% for appLink in appLinks %}
+                        <li>
+                            <a href="{{ appLink.link }}" class="dropdown-item{% if currentUri == appLink.link %} active{% endif %}">
+                                {{ appLink.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="theme-nav__actions col-md-auto">
+        <div class="theme-nav__locales dropdown" aria-label="Locales">
+            <a href="{{ path('apps_home') }}" class="dropdown-toggle theme-nav__locale-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{{ asset('/common/images/site/flags/' ~ app.request.locale ~ '.png') }}" alt="{{ app.request.locale }}" class="theme-nav__flag">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                {% for locale, pageLink in pageLinks %}
+                    <li>
+                        <a href="{{ pageLink }}" class="dropdown-item{% if app.request.locale == locale %} active{% endif %}">
+                            <img src="{{ asset('/common/images/site/flags/' ~ locale ~ '.png') }}" alt="{{ locale }}" class="theme-nav__flag">
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {% if app.user %}
+            <a class="theme-nav__profile" href="{{ path('common_profile') }}">
+                <img src="{{ asset(vich_uploader_asset(app.user, 'image')|default('/common/images/profile/default.jpg'))|imagine_filter('user') }}" alt="{{ app.user.username }}">
+                <span>{{ app.user.username }}</span>
+            </a>
+            <form action="{{ path('security_logout') }}" method="get">
+                <button type="submit" class="theme-nav__button theme-nav__button--logout">
+                    {{ 'common.menu.logout_btn'|trans }}
+                </button>
+            </form>
+        {% else %}
+            <a class="theme-nav__button theme-nav__button--login" href="{{ path('security_login') }}">
+                {{ 'common.menu.login_btn'|trans }}
+            </a>
+        {% endif %}
+    </div>
+</nav>
+
+<ul class="theme-mobile-nav">
+    <li class="theme-mobile-nav__home">
+        <a href="{{ path('apps_home') }}" class="{% if currentRoute == 'apps_home' %}active{% endif %}">
+            Apps
+        </a>
+    </li>
+    <li class="dropup">
+        <a href="#" class="dropdown-toggle{% if projectActive %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ 'apps.menu.apps'|trans }}
+        </a>
+        <ul class="dropdown-menu">
+            {% for appLink in appLinks %}
+                <li>
+                    <a href="{{ appLink.link }}" class="dropdown-item{% if currentUri == appLink.link %} active{% endif %}">
+                        {{ appLink.label }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+</ul>

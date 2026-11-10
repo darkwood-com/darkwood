@@ -1,0 +1,98 @@
+{% extends ""~ site_ref ~"/base.html.twig" %}
+
+{% set login_theme = login_theme|default('default') %}
+
+{% block content %}
+
+{% if login_theme != 'default' %}
+<div class="login-shell login-theme-oidc login-theme-{{ login_theme }}">
+    {% include 'common/pages/oidc_login/' ~ login_theme ~ '_brand.html.twig' with {two_factor: false} only %}
+
+    <form id="login_form" method="post" action="{{ path('security_login') }}" novalidate="novalidate">
+        {% if error %}
+            <div class="alert_error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="alert_success">
+                You are logged in as {{ app.user.username }}, <a href="{{ path('security_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <label for="inputUsername">{{ 'common.menu.login_username'|trans }}</label>
+        <input type="text" value="{{ last_username }}" name="username" autocomplete="username" id="inputUsername" required autofocus>
+
+        <label for="inputPassword">{{ 'common.menu.login_password'|trans }}</label>
+        <input type="password" name="password" autocomplete="current-password" id="inputPassword" required>
+
+        <input type="submit" id="login_login" name="login_login" value="{{ 'common.menu.login_btn'|trans }}">
+    </form>
+
+    <div class="login-links">
+        <p>
+            {{ 'common.login.no_account_intro'|trans }}
+            <a href="{{ path('common_register') }}">{{ 'common.action.register'|trans|lower }}</a>{{ 'common.login.no_account_end'|trans }}
+        </p>
+        <p>
+            {{ 'common.login.forgot_password_intro'|trans }}
+            <a href="{{ path('common_resetting_request') }}">{{ 'common.login.forgot_password_link'|trans }}</a>{{ 'common.login.forgot_password_end'|trans }}
+        </p>
+    </div>
+
+    <p class="login-footer">Authentication secured by Darkwood Identity.</p>
+</div>
+{% else %}
+<h1>{{ page.title }}</h1>
+<h2>{{ 'common.login.login'|trans }}</h2>
+<form id="login_form" method="post" action="{{ path('security_login') }}" novalidate="novalidate">
+    {% if error %}
+        <ul>
+            <li><div class="alert_error">{{ error.messageKey|trans(error.messageData, 'security') }}</div></li>
+        </ul>
+    {% endif %}
+
+    {% if app.user %}
+        <ul>
+            <li>
+                <div class="alert_success">
+                    You are logged in as {{ app.user.username }}, <a href="{{ path('security_logout') }}">Logout</a>
+                </div>
+            </li>
+        </ul>
+    {% endif %}
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+    <ul>
+        <li>
+            <label for="inputUsername">{{ 'common.menu.login_username'|trans }}</label>
+            <input type="text" value="{{ last_username }}" name="username" autocomplete="username" id="inputUsername" required autofocus>
+        </li>
+        <li>
+            <label for="inputPassword">{{ 'common.menu.login_password'|trans }}</label>
+            <input type="password" name="password" autocomplete="current-password" id="inputPassword" required>
+        </li>
+    </ul>
+    <ul>
+        <li><input type="submit" id="login_login" name="login_login" value="{{ 'common.menu.login_btn'|trans }}"></li>
+    </ul>
+</form>
+
+<div class="clearfix"></div>
+
+<p>
+    {{ 'common.login.no_account_intro'|trans }}
+    <a href="{{ path('common_register') }}">{{ 'common.action.register'|trans|lower }}</a>{{ 'common.login.no_account_end'|trans }}
+</p>
+
+<p>
+    {{ 'common.login.forgot_password_intro'|trans }}
+    <a href="{{ path('common_resetting_request') }}">{{ 'common.login.forgot_password_link'|trans }}</a>{{ 'common.login.forgot_password_end'|trans }}
+</p>
+{% endif %}
+
+{% endblock %}

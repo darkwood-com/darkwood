@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+# See also https://symfony.com/doc/current/service_container/import.html
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    heroclip_oauth_resource_default: 'https://heroclip.darkwood.com'
+    heroclip_oauth_client_default: 'heroclip-chatgpt'
+    darkwaar_oauth_client_default: 'darkwaar'
+    baserow_host: '%env(default::BASEROW_HOST)%'
+    baserow_username: '%env(default::BASEROW_USERNAME)%'
+    baserow_password: '%env(default::BASEROW_PASSWORD)%'
+    darkwood_host: '%env(DARKWOOD_HOST)%'
+    www_host_fallback: 'redirect-disabled.invalid'
+    www_host: '%env(default:www_host_fallback:WWW_HOST)%'
+    apps_host: '%env(APPS_HOST)%'
+    photos_host: '%env(PHOTOS_HOST)%'
+    blog_host: '%env(BLOG_HOST)%'
+    hello_host: '%env(HELLO_HOST)%'
+    podcasts_host: '%env(PODCASTS_HOST)%'
+    admin_host: '%env(ADMIN_HOST)%'
+    api_host: '%env(API_HOST)%'
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    app.supported_locales: ['fr', 'en', 'de']
+    app_locales: ['en', 'fr', 'de']
+    newsletter.unsubscribe_secret_default: '%kernel.secret%'
+    newsletter.unsubscribe_secret: '%env(default:newsletter.unsubscribe_secret_default:NEWSLETTER_UNSUBSCRIBE_SECRET)%'
+    notifier.null_dsn: 'null://null'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer: '@error_handler.error_renderer.html'
+
+    Symfony\Component\Security\Core\User\UserProviderInterface: '@security.user.provider.concrete.app_user_provider'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DataFixtures/'
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Form/Type/RecaptchaType.php'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    App\Controller\TwoFactorFormController:
+        arguments:
+            $providerRegistry: '@scheb_two_factor.provider_registry'
+            $twoFactorFirewallContext: '@scheb_two_factor.firewall_context'
+            $logoutUrlGenerator: '@security.logout_url_generator'
+
+    App\Service\Newsletter\NewsletterUnsubscribeTokenService:
+        arguments:
+            $secret: '%newsletter.unsubscribe_secret%'
+
+    App\Notification\TelegramNotifier:
+        arguments:
+            $telegramDsn: '%env(default:notifier.null_dsn:TELEGRAM_DSN)%'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    twig.extension.stringloader:
+        class: Twig\Extension\StringLoaderExtension
+        tags:
+            - { name: twig.extension }
+
+    # Pipe tables (GFM-style) are not part of core CommonMark; Twig Extra wires extensions by tag.
+    League\CommonMark\Extension\Table\TableExtension:
+        tags:
+            - { name: twig.markdown.league_extension }
+
+    App\Markdown\MermaidExtension:
+        tags:
+            - { name: twig.markdown.league_extension }
+
+    League\Bundle\OAuth2ServerBundle\Converter\UserConverterInterface: '@App\Security\Oidc\UuidUserConverter'
+
+    App\Security\Oidc\RolesClaimSetConfigurator:
+        arguments:
+            $claimExtractor: '@ajgarlag.openid_connect_provider.openid_connect.claim_extractor'

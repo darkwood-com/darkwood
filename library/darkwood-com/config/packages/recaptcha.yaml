@@ -1,0 +1,22 @@
+# In-app reCAPTCHA (replaces excelwebzone/recaptcha-bundle for Symfony 8).
+# Uses GOOGLE_RECAPTCHA_SITE_KEY and GOOGLE_RECAPTCHA_SECRET from .env.
+# When secret or site key is unset, placeholders are used and the widget is disabled (e.g. local dev).
+parameters:
+    recaptcha.placeholder_secret: 'recaptcha_disabled'
+    recaptcha.empty_site_key: ''
+    recaptcha.site_key: '%env(default:recaptcha.empty_site_key:GOOGLE_RECAPTCHA_SITE_KEY)%'
+    recaptcha.secret: '%env(default:recaptcha.placeholder_secret:GOOGLE_RECAPTCHA_SECRET)%'
+    recaptcha.enabled: true
+
+services:
+    app.recaptcha:
+        class: ReCaptcha\ReCaptcha
+        arguments:
+            $secret: '%recaptcha.secret%'
+
+    App\Form\Type\RecaptchaType:
+        arguments:
+            $siteKey: '%recaptcha.site_key%'
+            $enabled: '%recaptcha.enabled%'
+        tags:
+            - { name: form.type }

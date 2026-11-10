@@ -1,0 +1,10 @@
+api_platform:
+    resource: .
+    host: '%api_host%'
+    type: api_platform
+    prefix: /api
+
+auth:
+    path: /auth
+    host: '%api_host%'
+    methods: ['POST']

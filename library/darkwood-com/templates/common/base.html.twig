@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" href="/favicon-32x32.png" type="image/png"/>
+    <link rel="apple-touch-icon" sizes="48x48" href="/icons/icon-48x48.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png"/>
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png"/>
+    <link rel="apple-touch-icon" sizes="256x256" href="/icons/icon-256x256.png"/>
+    <link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png"/>
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png"/>
+
+    {{ include('common/partials/seo.html.twig', {
+        data: seo_data(page, article|default(null))
+    }) }}
+
+    <link rel="author" href="{{ asset('/humans.txt') }}" />
+    <meta name="Owner" content="Mathieu Ledru"/>
+    <meta name="Author" content="Mathieu Ledru"/>
+    <meta name="Publisher" content="Mathieu Ledru"/>
+    <meta name="Date-Creation-yyyymmdd" content="20051005"/>
+
+    {# google webmaster tool -#}
+    <meta name="google-site-verification" content="LJqS0GX15gkq-lSFKr_tuWRfw-EUz4rgZR1LoEvzpKU" />
+
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ path(page.page.site.ref ~ '_sitemap_xml') }}" />
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://feeds.feedburner.com/darkwood-com/blog" />
+
+    {% set hreflang = hreflang_data(page.page.ref, entity|default(null)) %}
+    {{ include('common/partials/hreflangs.html.twig', hreflang) }}
+
+    {% block css -%}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block head_extra %}{% endblock %}
+</head>
+<body class="{% block layout %}layout{% endblock %}">
+
+    {% block body %}{% endblock %}
+
+    {% block javascript -%}
+
+    <!-- Axeptio -->
+    <script>
+    window.axeptioSettings = {
+      clientId: "6145e8f7792dad02e5afc21f",
+      cookiesVersion: "darkwood-{{ app.request.locale }}"
+    };
+
+    (function(d, s) {
+      var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+      e.async = true; e.src = "//static.axept.io/sdk.js";
+      t.parentNode.insertBefore(e, t);
+    })(document, "script");
+
+    void 0 === window._axcb && (window._axcb = []);
+    window._axcb.push(function(axeptio) {
+        axeptio.on("cookies:complete", function(choices) {
+            if(choices.Matomo) {
+                // Matomo tracking
+                var _paq = window._paq = window._paq || [];
+                /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+                _paq.push(['trackPageView']);
+                _paq.push(['enableLinkTracking']);
+                (function() {
+                    var u="//stats.darkwood.com/";
+                    _paq.push(['setTrackerUrl', u+'matomo.php']);
+                    _paq.push(['setSiteId', '1']);
+                    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+                })();
+            }
+        })
+    })
+    </script>
+    <!-- End Axeptio -->
+
+    <!-- scripts -->
+    {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+
+</body>
+</html>

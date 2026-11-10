@@ -1,0 +1,31 @@
+api_platform:
+    mcp:
+        enabled: true
+        format: jsonld
+    title: Darkwood API Platform
+    version: 1.0.7
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+    docs_formats:
+        jsonld: ['application/ld+json']
+        jsonopenapi: ['application/vnd.openapi+json']
+        html: ['text/html']
+    error_formats:
+        jsonld: ['application/ld+json']
+        json: ['application/problem+json']
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+        extra_properties:
+            standard_put: true
+    use_symfony_listeners: true
+    swagger:
+         api_keys:
+             JWT:
+                name: Authorization
+                type: header
+    serializer:
+        hydra_prefix: false
+    inflector: api_platform.metadata.inflector

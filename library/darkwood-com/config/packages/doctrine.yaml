@@ -1,0 +1,53 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+
+        # Set server version to avoid DBAL 5 deprecation (MySQL < 8). Use 8 for MySQL 8+, 16 for PostgreSQL.
+        server_version: '%env(DATABASE_SERVER_VERSION)%'
+        profiling_collect_backtrace: '%kernel.debug%'
+        charset: '%env(DATABASE_CHARSET)%'
+    orm:
+        validate_xml_mapping: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        identity_generation_preferences:
+            Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
+        auto_mapping: true
+        mappings:
+            App:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
+        dql:
+            numeric_functions:
+                DEGREES: DoctrineExtensions\Query\Mysql\Degrees
+                ACOS: DoctrineExtensions\Query\Mysql\Acos
+                SIN: DoctrineExtensions\Query\Mysql\Sin
+                RADIANS: DoctrineExtensions\Query\Mysql\Radians
+                COS: DoctrineExtensions\Query\Mysql\Cos
+                RAND: DoctrineExtensions\Query\Mysql\Rand
+
+when@test:
+    doctrine:
+        dbal:
+            # "TEST_TOKEN" is typically set by ParaTest
+            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+
+when@prod:
+    doctrine:
+        orm:
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system

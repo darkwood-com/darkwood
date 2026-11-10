@@ -1,0 +1,264 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use App\Entity\Article;
+use App\Entity\CommentPage;
+use App\Form\CommentType;
+use App\Service\ArticleReactionService;
+use App\Service\BlogArticleService;
+use App\Service\CommentService;
+use App\Service\DarkwoodGameService;
+use App\Service\UserService;
+use App\Validator\Constraints\PaginationDTO;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+use function in_array;
+
+#[Route(host: '%darkwood_host%')]
+class DarkwoodController extends AbstractController
+{
+    public function __construct(
+        private readonly CommonController $commonController,
+        private readonly BlogArticleService $articleService,
+        private readonly ArticleReactionService $articleReactionService,
+        private readonly TranslatorInterface $translator,
+        private readonly PaginatorInterface $paginator,
+        private readonly CommentService $commentService,
+        private readonly UserService $userService,
+        private readonly DarkwoodGameService $gameService,
+    ) {}
+
+    #[Route(path: ['fr' => '/fr', 'en' => '/', 'de' => '/de'], name: 'darkwood_home', defaults: ['ref' => 'home'])]
+    public function home(Request $request, $ref): Response
+    {
+        $page = $this->commonController->getPage($request, $ref);
+        $homeArticles = $this->articleService->getDarkwoodHomeArticles($request->getLocale());
+        $articles = $homeArticles['news'];
+        $lastWatchArticle = $homeArticles['lastWatchArticle'];
+        $lastReleaseArticle = $homeArticles['lastReleaseArticle'];
+        $lastCreatorArticle = $homeArticles['lastCreatorArticle'];
+        $reactionArticles = array_values(array_filter([$lastWatchArticle, $lastReleaseArticle, $lastCreatorArticle, ...$articles]));
+
+        $response = $this->render('darkwood/pages/home.html.twig', [
+            'page' => $page,
+            'news' => $articles,
+            'lastWatchArticle' => $lastWatchArticle,
+            'lastReleaseArticle' => $lastReleaseArticle,
+            'lastCreatorArticle' => $lastCreatorArticle,
+            'reactionSummaries' => $this->buildReactionSummaries($reactionArticles),
+            'reactionEmojis' => $this->articleReactionService->getAvailableEmojis(),
+            'showLinks' => true,
+        ]);
+
+        return $this->withAnonymousSharedCache($request, $response, 120);
+    }
+
+    #[Route(path: ['fr' => '/fr/mentions-legales', 'en' => '/legal-mentions', 'de' => '/de/impressum'], name: 'darkwood_legal_mention', defaults: ['ref' => 'legal_mention'])]
+    public function legalMention(Request $request, $ref)
+    {
+        return $this->commonController->legalMention($request, $ref);
+    }
+
+    #[Route(path: ['fr' => '/fr/plan-du-site', 'en' => '/sitemap', 'de' => '/de/sitemap'], name: 'darkwood_sitemap', defaults: ['ref' => 'sitemap'])]
+    public function sitemap(Request $request, $ref)
+    {
+        return $this->commonController->sitemap($request, $ref);
+    }
+
+    #[Route(path: ['fr' => '/fr/sitemap.xml', 'en' => '/sitemap.xml', 'de' => '/de/sitemap.xml'], name: 'darkwood_sitemap_xml')]
+    public function sitemapXml(Request $request)
+    {
+        return $this->commonController->sitemapXml($request);
+    }
+
+    #[Route(path: ['fr' => '/fr/rss', 'en' => '/rss', 'de' => '/de/rss'], name: 'darkwood_rss')]
+    public function rss(Request $request)
+    {
+        return $this->commonController->rss($request);
+    }
+
+    #[Route(path: ['fr' => '/fr/contact', 'en' => '/contact', 'de' => '/de/kontakt'], name: 'darkwood_contact', defaults: ['ref' => 'contact'])]
+    public function contact(Request $request, $ref)
+    {
+        return $this->commonController->contact($request, $ref);
+    }
+
+    #[Route(path: ['fr' => '/fr/news/{slug}', 'en' => '/news/{slug}', 'de' => '/de/news/{slug}'], name: 'darkwood_news', defaults: ['ref' => 'news', 'slug' => null])]
+    public function news(Request $request, $ref, $slug): Response
+    {
+        $page = $this->commonController->getPage($request, $ref);
+        $news = $this->articleService->findOneBySlug($slug, $request->getLocale());
+        if (!$news instanceof Article) {
+            throw $this->createNotFoundException('News not found !');
+        }
+
+        $response = $this->render('darkwood/pages/news.html.twig', ['page' => $page, 'news' => $news, 'showLinks' => true]);
+
+        return $this->withAnonymousSharedCache($request, $response, 120);
+    }
+
+    #[Route(path: ['fr' => '/fr/jouer/{display}', 'en' => '/play/{display}', 'de' => '/de/spiel/{display}'], name: 'darkwood_play', defaults: ['ref' => 'play', 'display' => null])]
+    public function play(Request $request, $ref = 'play', $display = null)
+    {
+        $page = $this->commonController->getPage($request, $ref);
+        $parameters = $this->gameService->play($request, null, $this->getUser(), $display);
+        if ($parameters instanceof Response) {
+            return $parameters;
+        }
+
+        $parameters['page'] = $page;
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('darkwood/partials/play/' . $parameters['display'] . '/' . $parameters['state'] . '.html.twig', $parameters);
+        }
+
+        return $this->render('darkwood/pages/play.html.twig', $parameters);
+    }
+
+    #[Route(path: ['fr' => '/fr/chat', 'en' => '/chat', 'de' => '/de/chat'], name: 'darkwood_chat', defaults: ['ref' => 'chat'])]
+    public function chat(Request $request, $ref)
+    {
+        if ($request->query->get('sort') && $request->query->get('sort') !== 'c.created') {
+            throw $this->createNotFoundException('Sort query is not allowed');
+        }
+
+        $page = $this->commonController->getPage($request, $ref);
+        $comment = new CommentPage();
+        $comment->setUser($this->getUser());
+        $comment->setPage($page->getPage());
+
+        $form = $this->createForm(CommentType::class, $comment);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->commentService->save($comment);
+                $this->container->get('request_stack')->getSession()->getFlashBag()->add('success', $this->translator->trans('common.comment.submited'));
+
+                return $this->redirectToRoute('darkwood_chat', ['ref' => $ref]);
+            }
+        }
+
+        $query = $this->commentService->findActiveCommentByPageQuery($page->getPage());
+        $comments = $this->paginator->paginate($query, max(1, $request->query->getInt('page', 1)), 10);
+
+        return $this->render('darkwood/pages/chat.html.twig', ['form' => $form, 'page' => $page, 'comments' => $comments]);
+    }
+
+    #[Route(path: ['fr' => '/fr/liste-des-joueurs', 'en' => '/player-list', 'de' => '/de/liste-der-spieler'], name: 'darkwood_users', defaults: ['ref' => 'users'])]
+    public function users(Request $request, $ref): Response
+    {
+        if ($request->query->get('sort') && !in_array($request->query->get('sort'), ['u.created', 'u.username'], true)) {
+            throw $this->createNotFoundException('Sort query is not allowed');
+        }
+
+        $page = $this->commonController->getPage($request, $ref);
+        $query = $this->userService->findActiveQuery();
+        $users = $this->paginator->paginate($query, max(1, $request->query->getInt('page', 1)), 56);
+
+        return $this->render('darkwood/pages/users.html.twig', ['page' => $page, 'users' => $users]);
+    }
+
+    #[Route(path: ['fr' => '/fr/regles-du-jeu', 'en' => '/rules-of-the-game', 'de' => '/de/regeln-des-spiels'], name: 'darkwood_rules', defaults: ['ref' => 'rules'])]
+    public function rules(Request $request, $ref): Response
+    {
+        $page = $this->commonController->getPage($request, $ref);
+
+        return $this->render('darkwood/pages/rules.html.twig', ['page' => $page]);
+    }
+
+    #[Route(path: ['fr' => '/fr/livre-d-or', 'en' => '/guestbook', 'de' => '/de/gastebuch'], name: 'darkwood_guestbook', defaults: ['ref' => 'guestbook'])]
+    public function guestbook(Request $request, $ref)
+    {
+        if ($request->query->get('sort') && $request->query->get('sort') !== 'c.created') {
+            throw $this->createNotFoundException('Sort query is not allowed');
+        }
+
+        $page = $this->commonController->getPage($request, $ref);
+        $comment = new CommentPage();
+        $comment->setUser($this->getUser());
+        $comment->setPage($page->getPage());
+
+        $form = $this->createForm(CommentType::class, $comment);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->commentService->save($comment);
+                $this->container->get('request_stack')->getSession()->getFlashBag()->add('success', $this->translator->trans('common.comment.submited'));
+
+                return $this->redirectToRoute('darkwood_guestbook', ['ref' => $ref]);
+            }
+        }
+
+        $query = $this->commentService->findActiveCommentByPageQuery($page->getPage());
+        $comments = $this->paginator->paginate($query, max(1, $request->query->getInt('page', 1)), 10);
+
+        return $this->render('darkwood/pages/guestbook.html.twig', ['form' => $form, 'page' => $page, 'comments' => $comments]);
+    }
+
+    #[Route(path: ['fr' => '/fr/extra', 'en' => '/extra', 'de' => '/de/extra'], name: 'darkwood_extra', defaults: ['ref' => 'extra'])]
+    public function extra(Request $request, $ref): Response
+    {
+        $page = $this->commonController->getPage($request, $ref);
+
+        return $this->render('darkwood/pages/extra.html.twig', ['page' => $page, 'showLinks' => true]);
+    }
+
+    #[Route(path: ['fr' => '/fr/classement', 'en' => '/rank', 'de' => '/de/rang'], name: 'darkwood_rank', defaults: ['ref' => 'rank'])]
+    public function rank(Request $request, #[MapQueryString] ?PaginationDTO $pagination, $ref): Response
+    {
+        $page = $this->commonController->getPage($request, $ref);
+        $mode = $request->query->get('mode');
+        $query = $this->gameService->findActiveQuery($mode);
+        $request->query->set('sort', $pagination?->sort ?? '');
+
+        $players = $this->paginator->paginate($query, $pagination?->page ?? 1, 56);
+
+        return $this->render('darkwood/pages/rank.html.twig', ['page' => $page, 'players' => $players, 'mode' => $mode]);
+    }
+
+    /**
+     * @param list<Article> $articles
+     *
+     * @return array<int, array{counts: array<string, int>, userReactions: list<string>}>
+     */
+    private function buildReactionSummaries(array $articles): array
+    {
+        return $this->articleReactionService->getSummariesForArticles($articles, $this->getUser());
+    }
+
+    /**
+     * Allow shared HTTP caching for anonymous traffic (same pattern as BlogController::legalMention).
+     * Keep private when a session, remember-me cookie, Authorization header, or authenticated user is present.
+     */
+    private function withAnonymousSharedCache(Request $request, Response $response, int $sharedMaxAge): Response
+    {
+        $sessionCookieName = $request->hasSession() ? $request->getSession()->getName() : session_name();
+        $hasPrivateContext = $request->headers->has('Authorization')
+            || $request->cookies->has($sessionCookieName)
+            || $request->cookies->has('REMEMBERME')
+            || $this->getUser();
+
+        if ($hasPrivateContext) {
+            $response->headers->set('Cache-Control', 'private, max-age=0, must-revalidate');
+
+            return $response;
+        }
+
+        $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, '1');
+
+        return $response
+            ->setPublic()
+            ->setMaxAge(0)
+            ->setSharedMaxAge($sharedMaxAge)
+        ;
+    }
+}

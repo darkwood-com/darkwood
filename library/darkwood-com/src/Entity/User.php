@@ -1,0 +1,629 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use App\Entity\Game\Player;
+use App\Entity\Traits\TimestampTrait;
+use App\Repository\UserRepository;
+use DateTime;
+use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
+use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface as TotpTwoFactorInterface;
+use Stringable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
+
+#[Vich\Uploadable]
+#[UniqueEntity('email', message: "The email '{{ value }}' is already used.")]
+#[UniqueEntity('username', message: "The username '{{ value }}' is already taken.")]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: '`user`')]
+class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterface, TotpTwoFactorInterface
+{
+    use TimestampTrait;
+
+    private const string TOTP_ALGORITHM = TotpConfiguration::ALGORITHM_SHA1;
+
+    private const int TOTP_PERIOD = 30;
+
+    private const int TOTP_DIGITS = 6;
+
+    /**
+     * Key used for the private $password property when this object is cast to array (PHP internal format).
+     */
+    private const string PASSWORD_ARRAY_KEY = "\0" . self::class . "\0password";
+
+    #[Assert\NotBlank(message: 'form.general.required')]
+    #[Assert\Email(message: "The email '{{ value }}' is not a valid email.", mode: 'strict')]
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true, nullable: false)]
+    protected string $email;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    protected $civility = 'm';
+
+    #[Assert\Length(min: 2, max: 255, minMessage: 'form.general.short', maxMessage: 'form.general.long')]
+    #[ORM\Column(length: 255, nullable: true)]
+    protected $firstname;
+
+    #[Assert\Length(min: 2, max: 255, minMessage: 'form.general.short', maxMessage: 'form.general.long')]
+    #[ORM\Column(length: 255, nullable: true)]
+    protected $lastname;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?DateTimeInterface $birthday = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    protected $city;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    protected ?string $comment = null;
+
+    #[ORM\OneToOne(targetEntity: Player::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    protected ?Player $player = null;
+
+    /**
+     * @var File
+     */
+    #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'imageName')]
+    protected $image;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $imageName = null;
+
+    #[ORM\Column(name: 'facebook_id', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $facebookId = null;
+
+    /**
+     * Comments.
+     *
+     * @var Collection<Comment>
+     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    protected Collection $comments;
+
+    /**
+     * Contacts.
+     *
+     * @var Collection<Contact>
+     */
+    #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    protected Collection $contacts;
+
+    /**
+     * Id.
+     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $id = null;
+
+    /**
+     * Stable, immutable public identity for cross-application references (OIDC sub).
+     * Stored as RFC 4122 text (e.g. "018f…") for readability across apps/SQL.
+     */
+    #[ORM\Column(type: Types::STRING, length: 36, unique: true)]
+    private ?string $uuid = null;
+
+    #[Assert\Length(min: 2, max: 32, minMessage: 'The username must be at least {{ limit }} characters long', maxMessage: 'The username cannot be longer than {{ limit }} characters')]
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
+    private ?string $username = null;
+
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $password = null;
+
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
+    private ?bool $emailSent = null;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private ?bool $isVerified = false;
+
+    #[ORM\Column(type: Types::STRING, length: 64, nullable: true)]
+    private ?string $totpSecret = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $bonzaiOrderId = null;
+
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $isPremium = false;
+
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $newsletterEnabled = false;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $customPrompt = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $resetRequestedAt = null;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->uuid = Uuid::v7()->toRfc4122();
+        $this->comments = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    /**
+     * Serialize the user for the session. We remove the password completely so it is never stored.
+     * After unserialization getPassword() returns null; Symfony refreshes the user from the provider
+     * without checking the password (see "Remove the password completely" in the Security doc).
+     *
+     * @see https://symfony.com/doc/current/security.html#user_session_refresh
+     */
+    public function __serialize(): array
+    {
+        return [$this->id, $this->username, $this->email, $this->password];
+    }
+
+    /**
+     * Restore the user from the session. Password is set to null (never restored from session).
+     * Uses reflection because PHP 8+ forbids assigning to properties whose name starts with "\0".
+     *
+     * @see https://symfony.com/doc/current/security.html#user_session_refresh
+     */
+    public function __unserialize(array $data): void
+    {
+        [$this->id, $this->username, $this->email, $this->password] = $data;
+    }
+
+    #[ORM\PrePersist]
+    public function ensureUuid(): void
+    {
+        if (null === $this->uuid || '' === $this->uuid) {
+            $this->uuid = Uuid::v7()->toRfc4122();
+        }
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getUuid(): string
+    {
+        if (null === $this->uuid || '' === $this->uuid) {
+            $this->uuid = Uuid::v7()->toRfc4122();
+        }
+
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid): self
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->username;
+    }
+
+    public function setUsername($username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getEmail(): mixed
+    {
+        return $this->email;
+    }
+
+    public function setEmail(mixed $email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) ($this->email ?? $this->username);
+    }
+
+    public function isTotpAuthenticationEnabled(): bool
+    {
+        return null !== $this->totpSecret;
+    }
+
+    public function getTotpAuthenticationUsername(): ?string
+    {
+        return $this->email ?? $this->username;
+    }
+
+    public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
+    {
+        if (!$this->isTotpAuthenticationEnabled()) {
+            return null;
+        }
+
+        return new TotpConfiguration(
+            $this->totpSecret,
+            self::TOTP_ALGORITHM,
+            self::TOTP_PERIOD,
+            self::TOTP_DIGITS,
+        );
+    }
+
+    public function getTotpSecret(): ?string
+    {
+        return $this->totpSecret;
+    }
+
+    public function setTotpSecret(?string $totpSecret): self
+    {
+        $this->totpSecret = $totpSecret;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    /**
+     * @see UserInterface
+     * No plain credentials are stored on the user; this is a no-op.
+     */
+    public function eraseCredentials(): void {}
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set firstname.
+     */
+    public function setFirstname(mixed $firstname)
+    {
+        $this->firstname = $firstname;
+    }
+
+    /**
+     * Get firstname.
+     */
+    public function getFirstname(): mixed
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Set lastname.
+     */
+    public function setLastname(mixed $lastname)
+    {
+        $this->lastname = $lastname;
+    }
+
+    /**
+     * Get lastname.
+     */
+    public function getLastname(): mixed
+    {
+        return $this->lastname;
+    }
+
+    public function setBirthday(?DateTimeInterface $birthday): self
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    public function getBirthday(): ?DateTimeInterface
+    {
+        return $this->birthday;
+    }
+
+    public function getCity(): mixed
+    {
+        return $this->city;
+    }
+
+    public function setCity(mixed $city)
+    {
+        $this->city = $city;
+    }
+
+    public function getComment(): mixed
+    {
+        return $this->comment;
+    }
+
+    public function setComment(mixed $comment)
+    {
+        $this->comment = $comment;
+    }
+
+    public function getImage(): mixed
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param File|UploadedFile $image
+     */
+    public function setImage(File $image)
+    {
+        $this->image = $image;
+        if ($image) {
+            // doctrine listeners event
+            $this->updated = new DateTime('now');
+        }
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    /**
+     * @param string $imageName
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getFacebookId(): string
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     * @param string $facebookId
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+    }
+
+    public function setCivility(mixed $civility)
+    {
+        $this->civility = $civility;
+    }
+
+    public function getCivility(): mixed
+    {
+        return $this->civility;
+    }
+
+    /**
+     * Add comment.
+     */
+    public function addComment(Comment $comment): void
+    {
+        $this->comments[] = $comment;
+        $comment->setUser($this);
+    }
+
+    /**
+     * Remove comment.
+     */
+    public function removeComment(Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+        $comment->setUser(null);
+    }
+
+    /**
+     * Get comments.
+     *
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Add contact.
+     */
+    public function addContact(Contact $contact): void
+    {
+        $this->contacts[] = $contact;
+        $contact->setUser($this);
+    }
+
+    /**
+     * Remove contact.
+     */
+    public function removeContact(Contact $contact)
+    {
+        $this->contacts->removeElement($contact);
+        $contact->setUser(null);
+    }
+
+    /**
+     * Get contacts.
+     *
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    /**
+     * Set player.
+     */
+    public function setPlayer(?Player $player = null): void
+    {
+        $this->player = $player;
+    }
+
+    /**
+     * Get player.
+     */
+    public function getPlayer(): ?Player
+    {
+        return $this->player;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+        return null;
+    }
+
+    public function getEmailSent(): ?bool
+    {
+        return $this->emailSent;
+    }
+
+    public function setEmailSent(bool $emailSent): self
+    {
+        $this->emailSent = $emailSent;
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getBonzaiOrderId(): ?string
+    {
+        return $this->bonzaiOrderId;
+    }
+
+    public function setBonzaiOrderId(?string $bonzaiOrderId): self
+    {
+        $this->bonzaiOrderId = $bonzaiOrderId;
+
+        return $this;
+    }
+
+    public function isPremium(): bool
+    {
+        return $this->isPremium;
+    }
+
+    public function setIsPremium(bool $isPremium): self
+    {
+        $this->isPremium = $isPremium;
+
+        return $this;
+    }
+
+    public function isNewsletterEnabled(): bool
+    {
+        return $this->newsletterEnabled;
+    }
+
+    public function setNewsletterEnabled(bool $newsletterEnabled): self
+    {
+        $this->newsletterEnabled = $newsletterEnabled;
+
+        return $this;
+    }
+
+    public function getCustomPrompt(): ?string
+    {
+        return $this->customPrompt;
+    }
+
+    public function setCustomPrompt(?string $customPrompt): self
+    {
+        $this->customPrompt = $customPrompt;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getResetRequestedAt(): ?DateTimeInterface
+    {
+        return $this->resetRequestedAt;
+    }
+
+    public function setResetRequestedAt(?DateTimeInterface $resetRequestedAt): self
+    {
+        $this->resetRequestedAt = $resetRequestedAt;
+
+        return $this;
+    }
+}
