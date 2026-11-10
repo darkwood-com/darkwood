@@ -1,0 +1,13 @@
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*test.*#i'
+    - '#.*vendor.*#'
+  layers:
+    - name: JevPlatform
+      collectors:
+        - type: classLike
+          value: ^Darkwood\\AI\\Platform\\Bridge\\Jev\\.*
+  ruleset:
+    JevPlatform: []
