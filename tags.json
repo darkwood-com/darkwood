@@ -362,7 +362,7 @@
       "path": "library/chinesepuzzle",
       "domain": "darkwood",
       "description": "Solitaire-style card puzzle for Godot with canonical editable design sources.",
-      "topics": ["game", "godot", "gdscript"]
+      "topics": ["game", "gdscript", "godot"]
     }
   ]
 }
