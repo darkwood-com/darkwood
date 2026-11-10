@@ -1,0 +1,11 @@
+<section class="workbench library-example" aria-labelledby="flow-library-title">
+  <p class="eyebrow">DARKWOOD/FLOW · {{ flow_library.result.package }}</p>
+  <h2 id="flow-library-title">Un état qui passe réellement d’une étape à l’autre.</h2>
+  <p>Le premier job additionne 4, 7 et 9. Les deux suivants réutilisent le total pour calculer une moyenne et ce qui reste sur 100. Flow compose les jobs et transporte cet état dans un <code>Ip</code> ; le calcul et les données restent de simples primitives PHP.</p>
+  <p class="mode-note">{% if is_static %}Ce résultat a été produit par PHP et la véritable bibliothèque pendant le build de cette page. GitHub Pages ne réexécute pas PHP. L’atelier interactif ci-dessus est une illustration JavaScript distincte.{% else %}Ce résultat est produit par la bibliothèque PHP lors de cette requête Symfony.{% endif %}</p>
+  <div class="memory-lanes"><article><p>Total partagé</p><h3>{{ flow_library.result.result.total }}</h3></article><article><p>Moyenne · reste sur 100</p><h3>{{ flow_library.result.result.mean|number_format(2, ',', ' ') }} · {{ flow_library.result.result.remaining }}</h3></article><article><p>Calcul du total</p><h3>{{ flow_library.result.calculations }} seule fois</h3></article></div>
+  <details><summary>Lire le véritable exemple PHP exécutable</summary><pre><code>{{ flow_library.source }}</code></pre></details>
+  <details><summary>Résultat réel de l’exécution</summary><pre>{{ flow_library.result|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre></details>
+  <p>Reproduire : <code>nix develop -c php examples/flow-memory.php</code>. À chaque exécution, l’état est neuf. Flow ne fournit ici ni sauvegarde durable, ni cache intersession : conserver le résultat exige un stockage choisi par l’application.</p>
+  <p><a href="https://flow.darkwood.com" target="_blank" rel="noopener noreferrer">Découvrir Flow ↗</a> · <a href="https://github.com/darkwood-com/flow" target="_blank" rel="noopener noreferrer">Code source officiel de Flow ↗</a></p>
+</section>
