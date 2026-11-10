@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Depth result — Nolife Local{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# Vendored under public/vendor — no CDN required for the GLB viewer. #}
+    <script type="module" src="{{ asset('vendor/model-viewer.min.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<main class="page">
+    <header class="hero compact">
+        <p class="eyebrow"><a href="{{ path('depth_index') }}">← Back</a></p>
+        <h1>Inference result</h1>
+    </header>
+
+    <aside class="panel local-badge" aria-label="Local inference">
+        <p class="local-badge-title">Local inference</p>
+        <dl class="metrics">
+            <div><dt>Model</dt><dd>{{ result.modelLabel }}{% if result.modelBytes %} ({{ (result.modelBytes / 1048576)|number_format(0) }} MB){% endif %}</dd></div>
+            <div><dt>Backend</dt><dd>{{ result.backend }}</dd></div>
+            <div><dt>Network AI requests</dt><dd>none</dd></div>
+            <div><dt>Processed</dt><dd>{{ result.width }} × {{ result.height }}</dd></div>
+        </dl>
+    </aside>
+
+    <section class="compare compare-slider">
+        <figure>
+            <figcaption>Original ↔ Depth</figcaption>
+            <div class="slider-container" id="depth-compare">
+                <img src="{{ path('depth_asset', {id: result.id, name: result.originalAssetName}) }}" alt="Source image" class="slider-base">
+                <div class="slider-overlay" id="slider-overlay">
+                    <img src="{{ path('depth_asset', {id: result.id, name: 'depth.png'}) }}" alt="Depth map">
+                </div>
+                <input type="range" min="0" max="100" value="50" class="slider-control" id="depth-slider" aria-label="Compare original and depth">
+            </div>
+        </figure>
+        {% if result.confidenceImagePath %}
+        <figure>
+            <figcaption>Confidence (model certainty per pixel)</figcaption>
+            <img src="{{ path('depth_asset', {id: result.id, name: 'confidence.png'}) }}" alt="Confidence map">
+        </figure>
+        {% endif %}
+    </section>
+
+    <section class="panel metrics">
+        <h2>Metadata</h2>
+        <dl>
+            <div><dt>Infer step</dt><dd>{{ result.durationMs|number_format(1) }} ms</dd></div>
+            <div><dt>Orchestration (Flow/PHP)</dt><dd>{{ result.orchestrationMs|number_format(1) }} ms</dd></div>
+            <div><dt>Pipeline total</dt><dd>{{ result.totalPipelineMs|number_format(1) }} ms</dd></div>
+            <div><dt>Model load</dt><dd>{{ result.loadMs|number_format(1) }} ms</dd></div>
+            <div><dt>Source resolution</dt><dd>{{ result.sourceWidth }} × {{ result.sourceHeight }}</dd></div>
+            <div><dt>Processed resolution</dt><dd>{{ result.width }} × {{ result.height }}</dd></div>
+            <div>
+                <dt>Depth range</dt>
+                <dd>
+                    {{ result.depthMin|number_format(3) }} – {{ result.depthMax|number_format(3) }}
+                    {% if result.isMetric %}(metric){% else %}(relative units — not meters){% endif %}
+                </dd>
+            </div>
+            <div><dt>Points</dt><dd>{{ result.pointCount|number_format(0, '.', ' ') }}</dd></div>
+            {% if result.glbBytes %}
+            <div><dt>GLB size</dt><dd>{{ (result.glbBytes / 1024)|number_format(0) }} KB</dd></div>
+            {% endif %}
+            <div><dt>Run metadata</dt><dd><a href="{{ path('depth_asset', {id: result.id, name: 'metadata.json'}) }}">metadata.json</a></dd></div>
+        </dl>
+
+        {% if result.pipelineTimings|length > 0 %}
+        <h3>Local pipeline</h3>
+        <ol class="pipeline-steps" aria-label="Flow pipeline steps">
+            {% set step_labels = {
+                'validate': 'Validate & prepare',
+                'infer': 'Depth Anything 3',
+                'colormap': 'Depth colormap',
+                'glb': 'GLB export',
+                'result': 'Result assembly'
+            } %}
+            {% for step, ms in result.pipelineTimings %}
+                <li>
+                    <span class="pipeline-step">{{ step_labels[step] ?? step }}</span>
+                    <span class="pipeline-ms">{{ ms|number_format(1) }} ms</span>
+                </li>
+            {% endfor %}
+            <li class="pipeline-total">
+                <span class="pipeline-step">Total (flow steps)</span>
+                <span class="pipeline-ms">{{ result.totalPipelineMs|number_format(1) }} ms</span>
+            </li>
+        </ol>
+        {% endif %}
+
+        {% set camera = result.cameraSummary %}
+        {% if camera %}
+        <h3>Estimated camera</h3>
+        <p class="cold-start-note">From DA3 pose head — intrinsics in pixels at processed resolution.</p>
+        <dl>
+            <div><dt>Focal length (fx, fy)</dt><dd>{{ camera.fx|number_format(1) }}, {{ camera.fy|number_format(1) }}</dd></div>
+            <div><dt>Principal point (cx, cy)</dt><dd>{{ camera.cx|number_format(1) }}, {{ camera.cy|number_format(1) }}</dd></div>
+        </dl>
+        {% endif %}
+    </section>
+
+    {% if result.glbPath %}
+    <section class="panel viewer">
+        <div class="viewer-header">
+            <h2>3D reconstruction</h2>
+            <a href="{{ path('depth_download_glb', {id: result.id}) }}" class="secondary">Download GLB</a>
+        </div>
+        <model-viewer
+            src="{{ path('depth_asset', {id: result.id, name: 'scene.glb'}) }}"
+            camera-controls
+            touch-action="pan-y"
+            shadow-intensity="0.4"
+            style="width: 100%; height: 480px; background: #111;"
+            alt="Textured depth point cloud"
+        ></model-viewer>
+    </section>
+    {% endif %}
+</main>
+<script>
+(() => {
+    const slider = document.getElementById('depth-slider');
+    const overlay = document.getElementById('slider-overlay');
+    const container = document.getElementById('depth-compare');
+    if (!slider || !overlay || !container) return;
+    const overlayImg = overlay.querySelector('img');
+    const fit = () => {
+        if (overlayImg) overlayImg.style.width = container.clientWidth + 'px';
+    };
+    const update = () => { overlay.style.width = slider.value + '%'; };
+    slider.addEventListener('input', update);
+    window.addEventListener('resize', fit);
+    fit();
+    update();
+})();
+</script>
+{% endblock %}
