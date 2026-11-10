@@ -342,6 +342,13 @@
       "domain": "matyo91",
       "description": "Multi-agent experiment measuring useful output against consumed resources.",
       "topics": ["agents", "demo", "flow", "php"]
+    },
+    {
+      "id": "darkwood-ai",
+      "path": "library/ai",
+      "domain": "darkwood",
+      "description": "Complementary AI component ecosystem for Symfony AI.",
+      "topics": ["ai", "components", "php", "symfony"]
     }
   ]
 }
