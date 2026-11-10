@@ -1,0 +1,19 @@
+{
+    "name": "darkwood/quake-3-arena-php",
+    "description": "Faithful PHP port of Quake III Arena (id Software) — PHP runtime + SDL2/OpenGL FFI",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": "^8.5",
+        "ext-zip": "*",
+        "ext-ffi": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Quake3\\": "src/"
+        }
+    },
+    "bin": [
+        "bin/quake3.php"
+    ]
+}

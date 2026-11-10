@@ -13,6 +13,7 @@ Public monorepo for Darkwood open-source projects.
 - [Flow Partial Function Application](library/flow-partial-function-application) — PHP 8.6 and Darkwood Flow study.
 - [Flow Pipe](library/flow-pipe) — streaming token-pipeline demonstration.
 - [Flow This Person Does Not Exist](library/flow-thispersondoesnotexist) — parallel fictional-person image fetcher.
+- [Flow JEV](library/flow-jev) — archived experimental Flow and JEV platform integration.
 - [Kibono Flow](library/kibono-flow) — observable product-sync and ETL demonstration.
 - [LGS](library/lgs) — the LGS game and its Godot implementation.
 - [LLM Game of Life](library/llm-game-of-life) — pedagogical exploration of LLM concepts in PHP.
@@ -24,8 +25,11 @@ Public monorepo for Darkwood open-source projects.
 - [Nolife Models](library/nolife-models) — local AI model catalog and runtime explorer.
 - [Nolife Tokens](library/nolife-tokens) — token-analysis and Flow pipeline experiments.
 - [Nolife Tracker](library/nolife-tracker) — terminal registry for AI accounts and subscriptions.
+- [Omer Quotes](library/omer-quotes) — archived quotation extraction and exploration project.
 - [PHP Flow](library/php-flow) — PHP profiling demonstration using Darkwood Flow.
+- [Quake III Arena PHP](library/quake-3-arena-php) — archived PHP FFI engine study.
 - [RxJS Flow](library/rxjs-flow) — RxJS streaming concepts mapped onto Darkwood Flow.
+- [SketchUp Shape](library/sketchup-shape) — archived shape-generation experiment.
 - [VibePHP Flow](library/vibephp-flow) — VibePHP profiling demonstration using Darkwood Flow.
 
 Projects live under [`library/`](library/). Public discovery metadata is available
