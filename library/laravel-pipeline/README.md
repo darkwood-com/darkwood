@@ -60,8 +60,8 @@ Runs both implementations and prints elapsed times, overlap observation, and exe
 ### Example output (approximate)
 
 ```text
-Synchronous pipeline: 2.45 s
-Darkwood Flow:        1.10 s
+Synchronous pipeline: 2.42 s
+Darkwood Flow:        0.81 s
 Observed overlap:     yes
 
 Execution model:
