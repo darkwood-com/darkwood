@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+parameters:
+    whisper_cli_path: ''
+    whisper_model_path: ''
+    whisper_stream_path: ''
+    flowvox.whisper.mode: 'batch'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # darkwood/navi — domain + runner (+ demo command navi:workflow:run)
+    Navi\:
+        resource: '../vendor/darkwood/navi/src/'
+        exclude:
+            - '../vendor/darkwood/navi/src/Kernel.php'
+
+    Navi\Application\Workflow\WorkflowRunner: ~
+
+    Symfony\Component\Messenger\Transport\TransportFactoryInterface: '@messenger.transport_factory'
+    Symfony\Component\Messenger\Transport\Serialization\SerializerInterface: '@messenger.default_serializer'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/IpStrategy/'
+            - '../src/Entity/'
+            - '../src/Model/'
+            - '../src/Domain/Event/'
+            - '../src/Application/Transcription/TranscriptionContext.php'
+            - '../src/Application/Transcription/TranscriptionResult.php'
+            - '../src/Application/Transcription/RealtimeSessionConfig.php'
+
+    App\Service\VoiceRecorder:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $avfoundationAudioDevice: '%env(int:default:whisper_ffmpeg_capture_default:WHISPER_FFMPEG_CAPTURE_DEVICE)%'
+
+    App\Service\WhisperCaptureDeviceLister:
+        arguments:
+            $streamBinaryPath: '%env(default:whisper_stream_path:string:WHISPER_STREAM_PATH)%'
+            $modelPath: '%env(default:whisper_model_path:string:WHISPER_MODEL_PATH)%'
+
+    App\Service\WhisperCpp:
+        arguments:
+            $whisperCliPath: '%env(default:whisper_cli_path:string:WHISPER_CLI_PATH)%'
+            $modelPath: '%env(default:whisper_model_path:string:WHISPER_MODEL_PATH)%'
+
+    App\Service\WhisperStreamRunner:
+        shared: false
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $streamBinaryPath: '%env(default:whisper_stream_path:string:WHISPER_STREAM_PATH)%'
+            $modelPath: '%env(default:whisper_model_path:string:WHISPER_MODEL_PATH)%'
+            $language: '%env(default:whisper_stream_language_default:WHISPER_STREAM_LANGUAGE)%'
+            $lengthMs: '%env(int:default:whisper_stream_length_ms_default:WHISPER_STREAM_LENGTH_MS)%'
+            $stepMs: '%env(int:default:whisper_stream_step_ms_default:WHISPER_STREAM_STEP_MS)%'
+            $vadThreshold: '%env(float:default:whisper_stream_vad_default:WHISPER_STREAM_VAD_THRESHOLD)%'
+            $threads: '%env(int:default:whisper_stream_threads_default:WHISPER_STREAM_THREADS)%'
+            $captureId: '%env(int:default:whisper_stream_capture_default:WHISPER_STREAM_CAPTURE_ID)%'
+
+    App\Service\WorkerEventEmitter:
+        shared: false
+
+    App\Application\Port\VoiceControlPort: '@App\Infrastructure\Messenger\MessengerVoiceControlAdapter'
+    App\Application\Port\VoiceEventPublisherPort: '@App\Infrastructure\Mercure\MercureVoiceEventPublisher'
+
+    App\Infrastructure\Mercure\MercureSubscribeUrlFactory:
+        arguments:
+            $mercurePublicUrl: '%env(default::MERCURE_PUBLIC_URL)%'
+
+    App\Infrastructure\Transcription\WhisperCppTranscriptionProvider:
+        tags: ['app.transcription_provider']
+
+    App\Infrastructure\Transcription\WhisperCppStreamTranscriptionProvider:
+        tags: ['app.transcription_provider']
+
+    App\Command\VoiceWorkerCommand:
+        arguments:
+            $whisperMode: '%flowvox.whisper.mode%'
+            $whisperLanguage: '%env(default:whisper_stream_language_default:WHISPER_STREAM_LANGUAGE)%'
+
+    App\Infrastructure\Transcription\OpenAiBatchTranscriptionProvider:
+        arguments:
+            $model: '%env(default:openai_transcription_model_default:OPENAI_TRANSCRIPTION_MODEL)%'
+        tags: ['app.transcription_provider']
+
+    App\Infrastructure\Transcription\OpenAiRealtimeTranscriptionProvider:
+        arguments:
+            $transcriptionModel: '%env(default:openai_realtime_transcription_model_default:OPENAI_REALTIME_TRANSCRIPTION_MODEL)%'
+        tags: ['app.transcription_provider']
+
+    App\Infrastructure\Transcription\OpenAiRealtimeAgentProvider:
+        tags: ['app.transcription_provider']
+
+    App\Infrastructure\Transcription\OpenAiRealtimeTranslateProvider:
+        tags: ['app.transcription_provider']
+
+    App\Application\Transcription\TranscriptionProviderRegistry:
+        arguments:
+            $providers: !tagged_iterator app.transcription_provider
+            $defaultProvider: '%flowvox.transcription.default_provider%'
+
+    App\Infrastructure\Navi\LogVoiceEventAction:
+        arguments:
+            $logFile: '%flowvox.navi.trace.log_file%'
+
+    App\Infrastructure\Navi\VoiceEventTraceLogger:
+        arguments:
+            $enabled: '%flowvox.navi.trace.enabled%'
+            $skipHeartbeat: true
+
+    App\Command\VoiceTraceTestCommand:
+        arguments:
+            $traceLogFile: '%flowvox.navi.trace.log_file%'
+            $traceEnabled: '%flowvox.navi.trace.enabled%'
