@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  scraper:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - LINKEDIN_SESSION=${LINKEDIN_SESSION}
+      - PROFILE_URL=${PROFILE_URL}
+    restart: unless-stopped

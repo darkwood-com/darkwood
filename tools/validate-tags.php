@@ -69,6 +69,10 @@ function validateTags(string $repositoryRoot): void
     }
 
     $directories = array_values(array_filter(glob($repositoryRoot.'/library/*') ?: [], 'is_dir'));
+    $organizationProfile = $repositoryRoot.'/library/.github';
+    if (is_dir($organizationProfile)) {
+        $directories[] = $organizationProfile;
+    }
     $declared = array_map(static fn (string $path): string => $repositoryRoot.'/'.$path, array_keys($paths));
     sort($directories);
     sort($declared);
