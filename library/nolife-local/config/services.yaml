@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+# See also https://symfony.com/doc/current/service_container/import.html
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    da3.library_path: '%env(DA3_LIBRARY_PATH)%'
+    da3.model_q4k_path: '%env(DA3_MODEL_PATH)%'
+    da3.model_f32_path: '%env(DA3_MODEL_F32_PATH)%'
+    da3.threads: '%env(int:DA3_THREADS)%'
+    da3.backend: '%env(DA3_BACKEND)%'
+    da3.inference_dir: '%kernel.project_dir%/var/inference'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+
+    App\Bridge\NativeDepthBridge:
+        arguments:
+            $libraryPath: '%da3.library_path%'
+            $threads: '%da3.threads%'
+
+    App\Flow\DepthInferenceFlow:
+        arguments:
+            $modelPathQ4k: '%da3.model_q4k_path%'
+            $modelPathF32: '%da3.model_f32_path%'
+            $inferenceDir: '%da3.inference_dir%'
+            $backendLabel: '%da3.backend%'
+
+    App\Command\DepthBenchCommand:
+        arguments:
+            $modelPathQ4k: '%da3.model_q4k_path%'
+            $modelPathF32: '%da3.model_f32_path%'
+
+    App\Command\DepthWarmupCommand:
+        arguments:
+            $modelPathQ4k: '%da3.model_q4k_path%'
+            $modelPathF32: '%da3.model_f32_path%'
+            $projectDir: '%kernel.project_dir%'
+
+    App\Command\DepthCleanupCommand:
+        arguments:
+            $inferenceDir: '%da3.inference_dir%'
+
+    App\Command\DepthCheckCommand:
+        arguments:
+            $libraryPath: '%da3.library_path%'
+            $modelPathQ4k: '%da3.model_q4k_path%'
+            $modelPathF32: '%da3.model_f32_path%'
+            $inferenceDir: '%da3.inference_dir%'
+
+    App\Controller\DepthController:
+        arguments:
+            $inferenceDir: '%da3.inference_dir%'

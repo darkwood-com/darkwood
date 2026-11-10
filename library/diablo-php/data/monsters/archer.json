@@ -1,0 +1,1 @@
+{"id":"archer","name":"Skeleton Archer","hp":30,"armorClass":6,"minDamage":2,"maxDamage":5,"toHit":48,"xpReward":40,"ai":"ranged","detectionRange":12}
