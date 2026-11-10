@@ -363,6 +363,13 @@
       "domain": "darkwood",
       "description": "Solitaire-style card puzzle for Godot with canonical editable design sources.",
       "topics": ["game", "gdscript", "godot"]
+    },
+    {
+      "id": "mateafox",
+      "path": "library/mateafox",
+      "domain": "matyo91",
+      "description": "Archived Mateafox TypeScript API and Gatsby web application.",
+      "topics": ["archive", "gatsby", "typescript", "web"]
     }
   ]
 }
