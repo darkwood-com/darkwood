@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class LinearIpStrategyTest extends TestCase
 {
-    public function testStrategy()
+    public function testStrategy(): void
     {
         $ip1 = new Ip();
         $ip2 = new Ip();

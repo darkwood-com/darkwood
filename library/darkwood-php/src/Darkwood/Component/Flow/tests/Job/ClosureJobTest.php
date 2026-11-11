@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClosureJobTest extends TestCase
 {
-    public function testJob()
+    public function testJob(): void
     {
         $job = new ClosureJob(static function ($n) {
             return $n + 1;

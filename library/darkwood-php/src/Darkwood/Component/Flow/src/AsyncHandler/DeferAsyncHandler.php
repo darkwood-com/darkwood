@@ -42,7 +42,7 @@ final class DeferAsyncHandler implements AsyncHandlerInterface
 
         $popIp = $this->ipPool->addIp($ip);
         $next = $job([$ip->data, $event->getDefer()]);
-        $next(static function ($result) use ($event, $popIp): void {
+        $next(static function ($result) use ($event, $popIp) {
             [$data] = $result;
             $callback = $event->getCallback();
             $callback($data);

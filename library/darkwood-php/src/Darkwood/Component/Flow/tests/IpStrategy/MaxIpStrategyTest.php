@@ -9,13 +9,14 @@ use Flow\Event\PullEvent;
 use Flow\Event\PushEvent;
 use Flow\Ip;
 use Flow\IpStrategy\MaxIpStrategy;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class MaxIpStrategyTest extends TestCase
 {
-    #[DataProvider('provideStrategyCases')]
-    public function testStrategy(int $doneIndex)
+    /**
+     * @dataProvider provideStrategyCases
+     */
+    public function testStrategy(int $doneIndex): void
     {
         $strategy = new MaxIpStrategy(2);
         $strategy->push(new PushEvent(new Ip()));

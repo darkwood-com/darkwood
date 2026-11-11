@@ -1,10 +1,14 @@
 {
   "name": "@darkwood-com/flow",
   "description": "Flow",
+  "author": {
+    "name": "Mathieu Ledru",
+    "email": "mathieu@darkwood.fr"
+  },
   "bugs": {
     "url": "https://github.com/darkwood-com/flow"
   },
-  "homepage": "https://github.com/darkwood-com/flow/tree/8.1#readme",
+  "homepage": "https://github.com/darkwood-com/flow/tree/1.x#readme",
   "keywords": [
     "flow"
   ],

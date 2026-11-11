@@ -43,7 +43,7 @@ class ReactDriver implements DriverInterface
     public function __construct(?LoopInterface $eventLoop = null)
     {
         if (!function_exists('React\Async\async')) {
-            throw new NativeRuntimeException('ReactPHP is not loaded. Suggest install it with composer require react/event-loop.');
+            throw new NativeRuntimeException('ReactPHP is not loaded. Suggest install it with composer require react/event-loop');
         }
 
         $this->eventLoop = $eventLoop ?? Loop::get();
@@ -70,9 +70,9 @@ class ReactDriver implements DriverInterface
         $deferred = new Deferred();
 
         try {
-            $callback(static function ($return) use ($deferred): void {
+            $callback(static function ($return) use ($deferred) {
                 $deferred->resolve($return);
-            }, static function ($fn, $next): void {
+            }, static function ($fn, $next) {
                 $fn($next);
             });
         } catch (Throwable $exception) {
@@ -90,26 +90,26 @@ class ReactDriver implements DriverInterface
 
                 $promise = $async($data);
 
-                return static function ($then) use ($promise): void {
+                return static function ($then) use ($promise) {
                     $promise->then($then);
                 };
             };
         };
 
         $defer = function (Closure|JobInterface $job) {
-            return function ($then) use ($job): void {
+            return function ($then) use ($job) {
                 $promise = $this->defer($job);
                 $promise->then($then);
             };
         };
 
-        $loop = function () use (&$loop, &$stream, $async, $defer): void {
+        $loop = function () use (&$loop, &$stream, $async, $defer) {
             foreach ($stream['dispatchers'] as $index => $dispatcher) {
                 $nextIps = $dispatcher->dispatch(new PullEvent(), Event::PULL)->getIps();
                 foreach ($nextIps as $nextIp) {
                     $job = $stream['fnFlows'][$index]['job'];
 
-                    $stream['dispatchers'][$index]->dispatch(new AsyncEvent($async, $defer, $job, $nextIp, static function ($data) use (&$stream, $index, $nextIp): void {
+                    $stream['dispatchers'][$index]->dispatch(new AsyncEvent($async, $defer, $job, $nextIp, static function ($data) use (&$stream, $index, $nextIp) {
                         if ($data instanceof RuntimeException && array_key_exists($index, $stream['fnFlows']) && $stream['fnFlows'][$index]['errorJob'] !== null) {
                             $stream['fnFlows'][$index]['errorJob']($data);
                         } elseif (array_key_exists($index + 1, $stream['fnFlows'])) {
@@ -143,7 +143,7 @@ class ReactDriver implements DriverInterface
         $this->ticks++;
         $timer = $this->eventLoop->addPeriodicTimer($interval, $callback);
 
-        return function () use ($timer): void {
+        return function () use ($timer) {
             $this->eventLoop->cancelTimer($timer);
             $this->ticks--;
         };

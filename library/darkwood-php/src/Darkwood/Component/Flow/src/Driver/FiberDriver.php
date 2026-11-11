@@ -52,11 +52,11 @@ class FiberDriver implements DriverInterface
 
     public function defer(Closure $callback): mixed
     {
-        $fiber = new Fiber(static function () use ($callback): void {
+        $fiber = new Fiber(static function () use ($callback) {
             try {
-                $callback(static function ($result): void {
+                $callback(static function ($result) {
                     Fiber::suspend($result);
-                }, static function ($fn, $next): void {
+                }, static function ($fn, $next) {
                     $fn($next);
                 });
             } catch (Throwable $exception) {
@@ -79,18 +79,18 @@ class FiberDriver implements DriverInterface
                     $fiber = $async($data);
                     $fiber->start();
 
-                    $next = static function ($return): void {};
+                    $next = static function ($return) {};
 
                     $fiberDatas[] = [
                         'fiber' => $fiber,
-                        'next' => static function ($return) use (&$next): void {
-                            $next($return); // @phpstan-ignore expr.resultUnused
+                        'next' => static function ($return) use (&$next) {
+                            $next($return);
                         },
                     ];
 
-                    return static function (Closure $callback) use ($isTick, &$next): void {
+                    return static function (Closure $callback) use ($isTick, &$next) {
                         if ($isTick === false) {
-                            $next = static function ($return) use ($callback): void {
+                            $next = static function ($return) use ($callback) {
                                 $callback($return);
                             };
                         }
@@ -101,14 +101,14 @@ class FiberDriver implements DriverInterface
 
         $defer = static function ($isTick) use (&$fiberDatas) {
             return static function (Closure|JobInterface $job) use ($isTick, &$fiberDatas) {
-                return static function (Closure $next) use ($isTick, $job, &$fiberDatas): void {
+                return static function (Closure $next) use ($isTick, $job, &$fiberDatas) {
                     $fiber = new Fiber(static function () use ($isTick, $job, $next) {
                         try {
-                            $job(static function ($return) use ($isTick, $next): void {
+                            $job(static function ($return) use ($isTick, $next) {
                                 if ($isTick === false) {
                                     $next($return);
                                 }
-                            }, static function ($fn, $next): void {
+                            }, static function ($fn, $next) {
                                 $fn($next);
                             });
                         } catch (Throwable $exception) {
@@ -120,7 +120,7 @@ class FiberDriver implements DriverInterface
 
                     $fiberDatas[] = [
                         'fiber' => $fiber,
-                        'next' => static function ($return): void {}, /*function ($return) use ($isTick, $next) {
+                        'next' => static function ($return) {}, /*function ($return) use ($isTick, $next) {
                             if ($isTick === false) {
                                 $next($return);
                             }
@@ -150,7 +150,7 @@ class FiberDriver implements DriverInterface
                         return $async(false)($job);
                     }, static function (Closure|JobInterface $job) use ($defer) {
                         return $defer(false)($job);
-                    }, $stream['fnFlows'][$index]['job'], $nextIp, static function ($data) use (&$stream, $index, $nextIp): void {
+                    }, $stream['fnFlows'][$index]['job'], $nextIp, static function ($data) use (&$stream, $index, $nextIp) {
                         if ($data instanceof RuntimeException && array_key_exists($index, $stream['fnFlows']) && $stream['fnFlows'][$index]['errorJob'] !== null) {
                             $stream['fnFlows'][$index]['errorJob']($data);
                         } elseif (array_key_exists($index + 1, $stream['fnFlows'])) {
@@ -193,7 +193,7 @@ class FiberDriver implements DriverInterface
             'callback' => $callback,
         ];
 
-        return function () use ($i): void {
+        return function () use ($i) {
             unset($this->ticks[$i]);
         };
     }

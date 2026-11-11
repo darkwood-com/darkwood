@@ -6,7 +6,6 @@ namespace Flow\Test\Examples\Transport\Receiver;
 
 use ArrayObject;
 use Flow\Examples\Transport\Receiver\CollectionReceiver;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SplObjectStorage;
 use stdClass;
@@ -21,9 +20,10 @@ class CollectionReceiverTest extends TestCase
     /**
      * @param array<ReceiverInterface>                             $receivers
      * @param SplObjectStorage<ReceiverInterface, array<Envelope>> $expectedReceiversIps
+     *
+     * @dataProvider receiverProvider
      */
-    #[DataProvider('provideGetCases')]
-    public function testGet($receivers, $expectedReceiversIps)
+    public function testGet($receivers, $expectedReceiversIps): void
     {
         $collectionReceiver = new CollectionReceiver($receivers);
         $envelopes = $collectionReceiver->get();
@@ -43,23 +43,14 @@ class CollectionReceiverTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
-     */
-    public static function provideGetCases(): iterable
-    {
-        [$receivers, $expectedReceiversIps] = self::buildReceiverFixtures();
-
-        return [[$receivers, $expectedReceiversIps]];
-    }
-
-    /**
      * @param array<ReceiverInterface>                             $receivers
      * @param SplObjectStorage<ReceiverInterface, array<Envelope>> $expectedReceiversIps
      * @param array<mixed, ReceiverInterface>                      $expectedAckIpsReceivers
      * @param array<mixed, ReceiverInterface>                      $expectedRejectIpsReceivers
+     *
+     * @dataProvider receiverProvider
      */
-    #[DataProvider('provideAckAndRejectCases')]
-    public function testAckAndReject($receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers)
+    public function testAckAndReject($receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers): void
     {
         $collectionReceiver = new CollectionReceiver($receivers);
 
@@ -95,40 +86,12 @@ class CollectionReceiverTest extends TestCase
     /**
      * @return array<array<mixed>>
      */
-    public static function provideAckAndRejectCases(): iterable
-    {
-        return [self::buildReceiverFixtures()];
-    }
-
-    /**
-     * Asserts that two associative arrays are similar.
-     *
-     * Both arrays must have the same indexes with identical values
-     * without respect to key ordering
-     *
-     * @param array<mixed, mixed> $expected
-     * @param array<mixed, mixed> $array
-     */
-    protected function assertArraySimilar(array $expected, array $array): void
-    {
-        self::assertSame([], array_diff_key($array, $expected));
-
-        foreach ($expected as $key => $value) {
-            if (is_array($value)) {
-                self::assertArraySimilar($value, $array[$key]);
-            } else {
-                self::assertContains($value, $array);
-            }
-        }
-    }
-
-    /**
-     * @return array{0: array<ReceiverInterface>, 1: SplObjectStorage<ReceiverInterface, array<Envelope>>, 2: ArrayObject<string, ReceiverInterface>, 3: ArrayObject<string, ReceiverInterface>}
-     */
-    private static function buildReceiverFixtures(): array
+    public static function receiverProvider(): iterable
     {
         $expectedReceiversIps = new SplObjectStorage();
+        /** @var array<mixed, ReceiverInterface> $expectedAckIpsReceivers */
         $expectedAckIpsReceivers = new ArrayObject();
+        /** @var array<mixed, ReceiverInterface> $expectedRejectIpsReceivers */
         $expectedRejectIpsReceivers = new ArrayObject();
         $receivers = [];
         for ($i = 0; $i < 10; $i++) {
@@ -139,15 +102,11 @@ class CollectionReceiverTest extends TestCase
 
             $receiver = new class($envelopes, $expectedAckIpsReceivers, $expectedRejectIpsReceivers) implements ReceiverInterface {
                 /**
-                 * @param array<Envelope>                        $envelopes
-                 * @param ArrayObject<string, ReceiverInterface> $expectedAckIpsReceivers
-                 * @param ArrayObject<string, ReceiverInterface> $expectedRejectIpsReceivers
+                 * @param array<Envelope>                 $envelopes
+                 * @param array<mixed, ReceiverInterface> $expectedAckIpsReceivers
+                 * @param array<mixed, ReceiverInterface> $expectedRejectIpsReceivers
                  */
-                public function __construct(
-                    private array $envelopes,
-                    private ArrayObject $expectedAckIpsReceivers,
-                    private ArrayObject $expectedRejectIpsReceivers,
-                ) {}
+                public function __construct(private $envelopes, private $expectedAckIpsReceivers, private $expectedRejectIpsReceivers) {}
 
                 public function get(): iterable
                 {
@@ -157,17 +116,17 @@ class CollectionReceiverTest extends TestCase
                 }
 
                 /**
-                 * @return ArrayObject<string, ReceiverInterface>
+                 * @return array<mixed, ReceiverInterface>
                  */
-                public function getExpectedAckIpsReceivers(): ArrayObject
+                public function getExpectedAckIpsReceivers()
                 {
                     return $this->expectedAckIpsReceivers;
                 }
 
                 /**
-                 * @return ArrayObject<string, ReceiverInterface>
+                 * @return array<mixed, ReceiverInterface>
                  */
-                public function getExpectedRejectIpsReceivers(): ArrayObject
+                public function getExpectedRejectIpsReceivers()
                 {
                     return $this->expectedRejectIpsReceivers;
                 }
@@ -196,7 +155,31 @@ class CollectionReceiverTest extends TestCase
             $receivers[] = $receiver;
         }
 
-        return [$receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers];
+        return [
+            [$receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers],
+        ];
+    }
+
+    /**
+     * Asserts that two associative arrays are similar.
+     *
+     * Both arrays must have the same indexes with identical values
+     * without respect to key ordering
+     *
+     * @param array<mixed, mixed> $expected
+     * @param array<mixed, mixed> $array
+     */
+    protected function assertArraySimilar(array $expected, array $array): void
+    {
+        self::assertSame([], array_diff_key($array, $expected));
+
+        foreach ($expected as $key => $value) {
+            if (is_array($value)) {
+                self::assertArraySimilar($value, $array[$key]);
+            } else {
+                self::assertContains($value, $array);
+            }
+        }
     }
 
     private function getTransportMessageId(Envelope $envelope): string
