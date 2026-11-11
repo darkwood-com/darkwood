@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace Flow;
 
-use Flow\Event\PoolEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-/**
- * @template T
- */
-interface IpStrategyInterface extends EventSubscriberInterface
+interface IpStrategyInterface
 {
-    /**
-     * @param PoolEvent<T> $event
-     */
-    public function pool(PoolEvent $event): void;
+    public function push(Ip $ip): void;
+
+    public function pop(): ?Ip;
+
+    public function done(Ip $ip): void;
 }

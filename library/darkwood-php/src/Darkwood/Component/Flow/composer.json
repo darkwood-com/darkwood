@@ -3,41 +3,40 @@
     "description": "Flow",
     "type": "library",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Mathieu Ledru",
+            "email": "mathieu@darkwood.fr"
+        }
+    ],
     "keywords": [
         "amphp",
         "async",
         "fiber",
         "monad",
         "reactphp",
-        "spatie",
         "swoole",
         "symfony",
         "php"
     ],
     "require": {
-        "php": ">=8.5",
-        "symfony/config": "^8.1",
-        "symfony/dependency-injection": "^8.1",
-        "symfony/event-dispatcher": "^8.1",
-        "symfony/http-kernel": "^8.1",
-        "symfony/string": "^8.1"
+        "php": "^8.2"
     },
     "require-dev": {
-        "amphp/amp": "^3.1",
-        "doctrine/dbal": "^4.3",
-        "openswoole/ide-helper": "^26.2.0",
-        "react/async": "^4.3",
-        "spatie/async": "^1.8",
-        "symfony/doctrine-messenger": "^8.1",
-        "symfony/http-client": "^8.1"
+        "amphp/amp": "^3.0",
+        "openswoole/ide-helper": "^22.0",
+        "phpunit/phpunit": "^10.3",
+        "react/async": "^4.1",
+        "symfony/doctrine-messenger": "^6.3",
+        "symfony/messenger": "^6.3",
+        "symfony/orm-pack": "^2.4",
+        "symfony/webhook": "^6.3"
     },
     "suggest": {
         "amphp/amp": "Provide asynchronous with AMP",
-        "ext-async": "Provides the experimental TrueAsync driver for Flow",
         "ext-openswoole": "Provide asynchronous with OpenSwoole",
         "react/async": "Provide asynchronous with ReactPHP",
-        "symfony/messenger": "Provide Symfony Messenger support",
-        "spatie/async": "Provide asynchronous with Spatie"
+        "symfony/messenger": "Provide symfony messenger support"
     },
     "autoload": {
         "psr-4": {
@@ -51,17 +50,18 @@
         }
     },
     "scripts": {
-        "env": "cd tools && castor flow:tools:env",
-        "docs-serve": "cd tools && castor flow:tools:docs-serve",
-        "php-cs-fixer": "cd tools && castor flow:tools:php-cs-fixer",
-        "phpstan": "cd tools && castor flow:tools:phpstan",
-        "phpunit": "cd tools && castor flow:tools:phpunit",
-        "symfony-lsp": "symfony lsp:check"
+        "dev": "castor flow:tools:dev",
+        "cs-fix": "castor flow:tools:cs-fix",
+        "phpstan": "castor flow:tools:phpstan",
+        "test": "castor flow:tools:test",
+        "docs-serve": "castor flow:tools:docs-serve"
     },
-    "config": {
-        "platform": {
-            "ext-openswoole": "26.2.0"
-        }
+    "scripts-descriptions": {
+        "dev": "Start dev server",
+        "cs-fix": "Check and fix coding styles using PHP CS Fixer",
+        "phpstan": "Execute PHPStan analysis",
+        "test": "Launch PHPUnit test suite",
+        "docs-serve": "Start documentation server locally"
     },
     "minimum-stability": "stable"
 }

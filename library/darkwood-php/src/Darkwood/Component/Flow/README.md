@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/darkwood-com/flow">
+  <a href="https://github.com/darkwood-fr/flow">
     <img src="docs/src/images/logo.png" width="auto" height="128px" alt="Flow">
   </a>
 </p>
@@ -14,8 +14,8 @@ Flow concept aims to solve
 
 ## Installation
 
-PHP 8.5 is the minimal version to use Flow
-The recommended way to install it through [Composer](http://getcomposer.org) and execute
+PHP 8.2 is the minimal version to use Flow  
+The recommended way to install it through [Composer](http://getcomposer.org/) and execute
 
 ```bash
 composer require darkwood/flow
@@ -27,38 +27,13 @@ composer require darkwood/flow
 <?php
 
 use Flow\Flow\Flow;
-use Flow\FlowFactory;
 use Flow\Ip;
 
-class D1 {
-    public function __construct(public int $n1) {}
-}
+$flow = (new Flow(fn (object $data) => $data['number'] += 1))
+    ->fn(new Flow(fn (object $data) => $data['number'] *= 2));
 
-class D2 {
-    public function __construct(public int $n2) {}
-}
-
-class D3 {
-    public function __construct(public int $n3) {}
-}
-
-class D4 {
-    public function __construct(public int $n4) {}
-}
-
-$flow = (new FlowFactory())->create(static function() {
-    yield fn (D1 $data1) => new D2($data1->n1 += 1);
-    yield fn (D2 $data2) => new D3($data2->n2 * 2);
-    yield function(D3 $data3) {
-        printf("my number %d\n", $ip->data->n3)); // display 'my number 10'
-
-        return new D4($data3->n3);
-    };
-});
-
-$ip = new Ip(new D1(4));
-$flow($ip);
-$flow->await();
+$ip = new Ip(new ArrayObject(['number' => 4]));
+$flow($ip, fn ($ip) => printf("my number %d\n", $ip->data['number'])); // display 'my number 10'
 ```
 
 ## Examples
@@ -66,13 +41,14 @@ $flow->await();
 A working script is available in the bundled `examples` directory
 
 - Run Flow : `php examples/flow.php`
-- Run Y-Combinator Flow : `php examples/yflow.php`
 - Start Server : `php examples/server.php`  
   Start Client(s) : `php examples/client.php`
 
+Messaging part require to install [Docker](https://www.docker.com) and execute `docker-compose up -d`
+
 ## Documentation
 
-[https://darkwood-com.github.io/flow](https://darkwood-com.github.io/flow)
+[https://darkwood-fr.github.io/flow](https://darkwood-fr.github.io/flow)
 
 ## License
 
