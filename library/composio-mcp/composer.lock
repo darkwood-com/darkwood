@@ -2439,12 +2439,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mcp-bundle.git",
-                "reference": "5cb3d1a9713626dd96f521622995d55486052dd3"
+                "reference": "e9ff693e4eb165a53247007925cf6fcde197721d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mcp-bundle/zipball/5cb3d1a9713626dd96f521622995d55486052dd3",
-                "reference": "5cb3d1a9713626dd96f521622995d55486052dd3",
+                "url": "https://api.github.com/repos/symfony/mcp-bundle/zipball/e9ff693e4eb165a53247007925cf6fcde197721d",
+                "reference": "e9ff693e4eb165a53247007925cf6fcde197721d",
                 "shasum": ""
             },
             "require": {
@@ -2496,7 +2496,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-11T11:21:05+00:00"
+            "time": "2025-07-12T20:52:10+00:00"
         },
         {
             "name": "symfony/mcp-sdk",
@@ -4465,7 +4465,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "symfony/ai-agent": 20,
         "symfony/mcp-bundle": 20
     },
     "prefer-stable": true,
