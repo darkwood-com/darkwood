@@ -7,25 +7,24 @@ namespace Flow\Tools;
 use Castor\Attribute\AsOption;
 use Castor\Attribute\AsTask;
 
-use function Castor\context;
 use function Castor\run;
 
 #[AsTask(description: 'Launch PHPUnit test suite', aliases: ['phpunit'])]
 function phpunit(
     #[AsOption(description: 'Replace default result output with TestDox format')]
     bool $testDox,
-    #[AsOption(description: 'Apply XDEBUG_MODE', autocomplete: ['coverage'])]
+    #[AsOption(description: 'Apply XDEBUG_MODE', suggestedValues: ['coverage'])]
     ?string $xdebugMode,
     #[AsOption(description: 'Path to HTML coverage')]
     ?string $coverateHtmlPath,
     #[AsOption(description: 'Path to XML coverage')]
     ?string $coverateHtmlXml,
 ): int {
-    $command = [__DIR__ . '/vendor/bin/phpunit', '--configuration=' . __DIR__ . '/phpunit.dist.xml'];
-    $ctx = context()->withAllowFailure();
+    $command = [__DIR__ . '/vendor/bin/phpunit', '--configuration=' . __DIR__ . '/phpunit.xml'];
+    $environment = null;
 
     if ($xdebugMode !== null || $coverateHtmlPath !== null || $coverateHtmlXml !== null) {
-        $ctx = $ctx->withEnvironment(['XDEBUG_MODE' => $xdebugMode ?? 'coverage']);
+        $environment = ['XDEBUG_MODE=' => $xdebugMode ?? 'coverage'];
     }
 
     if ($testDox) {
@@ -42,5 +41,5 @@ function phpunit(
         $command[] = $coverateHtmlXml;
     }
 
-    return run($command, $ctx)->getExitCode();
+    return run($command, $environment, allowFailure: true)->getExitCode();
 }
