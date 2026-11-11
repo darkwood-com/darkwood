@@ -15,9 +15,9 @@ use function count;
 
 class DoctrineIpTransportTest extends TestCase
 {
-    public function testMultipleClientTransport()
+    public function testMultipleClientTransport(): void
     {
-        $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
+        $connection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
         $supervisorTransport = new DoctrineIpTransport($connection);
 
         $clientTransports = [];
@@ -35,7 +35,7 @@ class DoctrineIpTransportTest extends TestCase
             foreach ($ips as $ip) {
                 $supervisorTransport->ack($ip);
                 $data = $ip->getMessage();
-                self::assertSame(1, $data['number']);
+                self::assertEquals(1, $data['number']);
                 $data['number'] = 2;
                 $supervisorTransport->send(Envelope::wrap($data, [$ip->last(DoctrineIpTransportIdStamp::class)]));
             }
@@ -47,7 +47,7 @@ class DoctrineIpTransportTest extends TestCase
             foreach ($ips as $ip) {
                 $clientTransport->ack($ip);
                 $data = $ip->getMessage();
-                self::assertSame(2, $data['number']);
+                self::assertEquals(2, $data['number']);
             }
         }
     }
