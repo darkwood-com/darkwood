@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Flow\Test\Examples\Transport\Receiver;
 
 use ArrayObject;
+use Flow\EnvelopeTrait;
 use Flow\Examples\Transport\Receiver\CollectionReceiver;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SplObjectStorage;
 use stdClass;
@@ -18,12 +18,15 @@ use function is_array;
 
 class CollectionReceiverTest extends TestCase
 {
+    use EnvelopeTrait;
+
     /**
      * @param array<ReceiverInterface>                             $receivers
      * @param SplObjectStorage<ReceiverInterface, array<Envelope>> $expectedReceiversIps
+     *
+     * @dataProvider receiverProvider
      */
-    #[DataProvider('provideGetCases')]
-    public function testGet($receivers, $expectedReceiversIps)
+    public function testGet($receivers, $expectedReceiversIps): void
     {
         $collectionReceiver = new CollectionReceiver($receivers);
         $envelopes = $collectionReceiver->get();
@@ -32,24 +35,14 @@ class CollectionReceiverTest extends TestCase
         foreach ($expectedReceiversIps as $receiver) {
             $expectedIps = $expectedReceiversIps[$receiver];
             foreach ($expectedIps as $envelope) {
-                $expectedIpIds[] = $this->getTransportMessageId($envelope);
+                $expectedIpIds[] = $this->getEnvelopeId($envelope);
             }
         }
         $envelopeIds = array_map(function (Envelope $envelope) {
-            return $this->getTransportMessageId($envelope);
+            return $this->getEnvelopeId($envelope);
         }, iterator_to_array($envelopes));
 
         $this->assertArraySimilar($expectedIpIds, $envelopeIds);
-    }
-
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function provideGetCases(): iterable
-    {
-        [$receivers, $expectedReceiversIps] = self::buildReceiverFixtures();
-
-        return [[$receivers, $expectedReceiversIps]];
     }
 
     /**
@@ -57,20 +50,21 @@ class CollectionReceiverTest extends TestCase
      * @param SplObjectStorage<ReceiverInterface, array<Envelope>> $expectedReceiversIps
      * @param array<mixed, ReceiverInterface>                      $expectedAckIpsReceivers
      * @param array<mixed, ReceiverInterface>                      $expectedRejectIpsReceivers
+     *
+     * @dataProvider receiverProvider
      */
-    #[DataProvider('provideAckAndRejectCases')]
-    public function testAckAndReject($receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers)
+    public function testAckAndReject($receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers): void
     {
         $collectionReceiver = new CollectionReceiver($receivers);
 
         $envelopes = $collectionReceiver->get();
         foreach ($envelopes as $envelope) {
-            $envelopeId = $this->getTransportMessageId($envelope);
+            $envelopeId = $this->getEnvelopeId($envelope);
             $expectedReceiver = null;
             foreach ($expectedReceiversIps as $receiver) {
                 $expectedIps = $expectedReceiversIps[$receiver];
                 foreach ($expectedIps as $expectedIp) {
-                    $expectedIpId = $this->getTransportMessageId($expectedIp);
+                    $expectedIpId = $this->getEnvelopeId($expectedIp);
                     if ($envelopeId === $expectedIpId) {
                         $expectedReceiver = $receiver;
 
@@ -95,9 +89,74 @@ class CollectionReceiverTest extends TestCase
     /**
      * @return array<array<mixed>>
      */
-    public static function provideAckAndRejectCases(): iterable
+    public static function receiverProvider(): iterable
     {
-        return [self::buildReceiverFixtures()];
+        $expectedReceiversIps = new SplObjectStorage();
+        /** @var array<mixed, ReceiverInterface> $expectedAckIpsReceivers */
+        $expectedAckIpsReceivers = new ArrayObject();
+        /** @var array<mixed, ReceiverInterface> $expectedRejectIpsReceivers */
+        $expectedRejectIpsReceivers = new ArrayObject();
+        $receivers = [];
+        for ($i = 0; $i < 10; $i++) {
+            $envelopes = [];
+            for ($j = 0; $j < 3; $j++) {
+                $envelopes[] = Envelope::wrap(new stdClass(), [new TransportMessageIdStamp(uniqid('envelope_', true))]);
+            }
+
+            $receiver = new class($envelopes, $expectedAckIpsReceivers, $expectedRejectIpsReceivers) implements ReceiverInterface {
+                use EnvelopeTrait;
+
+                /**
+                 * @param array<Envelope>                 $envelopes
+                 * @param array<mixed, ReceiverInterface> $expectedAckIpsReceivers
+                 * @param array<mixed, ReceiverInterface> $expectedRejectIpsReceivers
+                 */
+                public function __construct(private $envelopes, private $expectedAckIpsReceivers, private $expectedRejectIpsReceivers)
+                {
+                }
+
+                public function get(): iterable
+                {
+                    foreach ($this->envelopes as $envelope) {
+                        yield $envelope;
+                    }
+                }
+
+                /**
+                 * @return array<mixed, ReceiverInterface>
+                 */
+                public function getExpectedAckIpsReceivers()
+                {
+                    return $this->expectedAckIpsReceivers;
+                }
+
+                /**
+                 * @return array<mixed, ReceiverInterface>
+                 */
+                public function getExpectedRejectIpsReceivers()
+                {
+                    return $this->expectedRejectIpsReceivers;
+                }
+
+                public function ack(Envelope $envelope): void
+                {
+                    $id = $this->getEnvelopeId($envelope);
+                    $this->expectedAckIpsReceivers[$id] = $this;
+                }
+
+                public function reject(Envelope $envelope): void
+                {
+                    $id = $this->getEnvelopeId($envelope);
+                    $this->expectedRejectIpsReceivers[$id] = $this;
+                }
+            };
+            $expectedReceiversIps->offsetSet($receiver, $envelopes);
+            $receivers[] = $receiver;
+        }
+
+        return [
+            [$receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers],
+        ];
     }
 
     /**
@@ -120,90 +179,5 @@ class CollectionReceiverTest extends TestCase
                 self::assertContains($value, $array);
             }
         }
-    }
-
-    /**
-     * @return array{0: array<ReceiverInterface>, 1: SplObjectStorage<ReceiverInterface, array<Envelope>>, 2: ArrayObject<string, ReceiverInterface>, 3: ArrayObject<string, ReceiverInterface>}
-     */
-    private static function buildReceiverFixtures(): array
-    {
-        $expectedReceiversIps = new SplObjectStorage();
-        $expectedAckIpsReceivers = new ArrayObject();
-        $expectedRejectIpsReceivers = new ArrayObject();
-        $receivers = [];
-        for ($i = 0; $i < 10; $i++) {
-            $envelopes = [];
-            for ($j = 0; $j < 3; $j++) {
-                $envelopes[] = Envelope::wrap(new stdClass(), [new TransportMessageIdStamp(uniqid('envelope_', true))]);
-            }
-
-            $receiver = new class($envelopes, $expectedAckIpsReceivers, $expectedRejectIpsReceivers) implements ReceiverInterface {
-                /**
-                 * @param array<Envelope>                        $envelopes
-                 * @param ArrayObject<string, ReceiverInterface> $expectedAckIpsReceivers
-                 * @param ArrayObject<string, ReceiverInterface> $expectedRejectIpsReceivers
-                 */
-                public function __construct(
-                    private array $envelopes,
-                    private ArrayObject $expectedAckIpsReceivers,
-                    private ArrayObject $expectedRejectIpsReceivers,
-                ) {}
-
-                public function get(): iterable
-                {
-                    foreach ($this->envelopes as $envelope) {
-                        yield $envelope;
-                    }
-                }
-
-                /**
-                 * @return ArrayObject<string, ReceiverInterface>
-                 */
-                public function getExpectedAckIpsReceivers(): ArrayObject
-                {
-                    return $this->expectedAckIpsReceivers;
-                }
-
-                /**
-                 * @return ArrayObject<string, ReceiverInterface>
-                 */
-                public function getExpectedRejectIpsReceivers(): ArrayObject
-                {
-                    return $this->expectedRejectIpsReceivers;
-                }
-
-                public function ack(Envelope $envelope): void
-                {
-                    $id = $this->getTransportMessageId($envelope);
-                    $this->expectedAckIpsReceivers[$id] = $this;
-                }
-
-                public function reject(Envelope $envelope): void
-                {
-                    $id = $this->getTransportMessageId($envelope);
-                    $this->expectedRejectIpsReceivers[$id] = $this;
-                }
-
-                private function getTransportMessageId(Envelope $envelope): string
-                {
-                    /** @var null|TransportMessageIdStamp $stamp */
-                    $stamp = $envelope->last(TransportMessageIdStamp::class);
-
-                    return $stamp ? $stamp->getId() : '';
-                }
-            };
-            $expectedReceiversIps->offsetSet($receiver, $envelopes);
-            $receivers[] = $receiver;
-        }
-
-        return [$receivers, $expectedReceiversIps, $expectedAckIpsReceivers, $expectedRejectIpsReceivers];
-    }
-
-    private function getTransportMessageId(Envelope $envelope): string
-    {
-        /** @var null|TransportMessageIdStamp $stamp */
-        $stamp = $envelope->last(TransportMessageIdStamp::class);
-
-        return $stamp ? $stamp->getId() : '';
     }
 }

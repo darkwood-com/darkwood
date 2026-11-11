@@ -7,38 +7,19 @@ namespace Flow;
 use Closure;
 
 /**
- * @template T1
+ * https://vkcom.github.io/kphp/kphp-language/static-type-system/generic-functions.html
+ * 
+ * @template T1 of callable(A):B
+ * @template T2 of callable(A):B
  */
 interface FlowInterface
 {
-    /**
-     * @param Ip<T1> $ip
-     */
-    public function __invoke(Ip $ip): void;
+    public function __invoke(Ip $ip, Closure $callback = null): void;
 
     /**
-     * @template T2
-     *
-     * @param array<mixed>|Closure(T1): T2|FlowInterface<T2>|JobInterface<T1,T2> $flow can be Closure as Job, array constructor arguments for Flow instantiation, array configuration for Flow instantiation or FlowInterface instance
-     *                                                                                 #param ?array{
-     *                                                                                 0: Closure,
-     *                                                                                 1?: Closure,
-     *                                                                                 2?: IpStrategyInterface,
-     *                                                                                 3?: DriverInterface
-     *                                                                                 }|array{
-     *                                                                                 "job"?: JobInterface|Closure,
-     *                                                                                 "errorJob"?: JobInterface|Closure,
-     *                                                                                 "ipStrategy"?: IpStrategyInterface,
-     *                                                                                 "driver"?: DriverInterface
-     *                                                                                 }|Closure|FlowInterface<T2> $config
-     *
-     * @return FlowInterface<T1>
+     * 
+     * @param FlowInterface $flow 
+     * @return FlowInterface 
      */
-    public function fn(array|Closure|JobInterface|self $flow): self;
-
-    /**
-     * Await asynchronous call for current IPs.
-     * After await, all IPs have been proceed, it continues synchronously.
-     */
-    public function await(): void;
+    public function fn(self $flow): self;
 }
