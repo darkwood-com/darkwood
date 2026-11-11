@@ -14,11 +14,11 @@ Type this command `make generate-gif` to generate [assets/github.gif](assets/git
 ## :memo: Blog
 
 <!-- BLOG-POST-LIST:START -->
-- [🤖 Darkwood Watch - 2026-11-09](https://blog.darkwood.com/article/darkwood-watch-2026-11-09)
-- [🧠 Memory: What Makes Continuation Possible](https://blog.darkwood.com/article/memory-what-makes-continuation-possible)
-- [💫 Hacker News Creator - The end of Microsoft Research's AI Frontiers group](https://blog.darkwood.com/article/hacker-news-creator-the-end-of-microsoft-research-s-ai-frontiers-group)
-- [💫 Reddit Creator - r/php: Introducing FlockPHP v1.0!](https://blog.darkwood.com/article/reddit-creator-r-php-introducing-flockphp-v1-0)
-- [🤖 Darkwood Watch - 2026-11-08](https://blog.darkwood.com/article/darkwood-watch-2026-11-08)
+- [🤖 Darkwood Watch - 2026-11-03](https://blog.darkwood.com/article/darkwood-watch-2026-11-03)
+- [💫 Bluesky Creator - @martinfowler.com: One of the curses of the growth of AI](https://blog.darkwood.com/article/bluesky-creator-martinfowler-com-one-of-the-curses-of-the-growth-of-ai)
+- [💫 Hacker News Creator - The Impact of Generative AI on Critical Thinking: Self-Reported (2025)](https://blog.darkwood.com/article/hacker-news-creator-the-impact-of-generative-ai-on-critical-thinking-self-reported-2025)
+- [💫 Reddit Creator - r/webdev: The main thread is the wrong place for a data grid](https://blog.darkwood.com/article/reddit-creator-r-webdev-the-main-thread-is-the-wrong-place-for-a-data-grid)
+- [🤖 Darkwood Watch - 2026-11-02](https://blog.darkwood.com/article/darkwood-watch-2026-11-02)
 <!-- BLOG-POST-LIST:END -->
 
 ## :link: Links
@@ -67,9 +67,3 @@ Type this command `make generate-gif` to generate [assets/github.gif](assets/git
 </p>
 
 Icons by [https://icons8.com](https://icons8.com)
-
-## Contributions
-
-This profile is maintained in the
-[`darkwood-com/darkwood`](https://github.com/darkwood-com/darkwood) monorepo
-under `library/matyo91`. Please open changes against the canonical source.
