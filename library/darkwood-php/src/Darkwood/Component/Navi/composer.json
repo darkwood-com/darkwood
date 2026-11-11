@@ -1,7 +1,7 @@
 {
     "name": "darkwood/navi",
-    "type": "library",
     "description": "Public architectural layer for structured workflow execution.",
+    "type": "project",
     "license": "MIT",
     "minimum-stability": "stable",
     "prefer-stable": true,
@@ -9,12 +9,12 @@
         "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "symfony/console": "^8.1",
-        "symfony/dotenv": "^8.1",
-        "symfony/flex": "^2.11",
-        "symfony/framework-bundle": "^8.1",
-        "symfony/runtime": "^8.1",
-        "symfony/yaml": "^8.1"
+        "symfony/console": "8.0.*",
+        "symfony/dotenv": "8.0.*",
+        "symfony/flex": "^2.10",
+        "symfony/framework-bundle": "8.0.*",
+        "symfony/runtime": "8.0.*",
+        "symfony/yaml": "8.0.*"
     },
     "require-dev": {
     },
@@ -39,15 +39,21 @@
     },
     "scripts": {
         "demo": "php bin/console navi:workflow:run",
-        "php-cs-fixer": "cd tools && castor app:tools:php-cs-fixer",
-        "phpstan": "cd tools && castor app:tools:phpstan",
-        "phpunit": "cd tools && castor app:tools:phpunit",
-        "env": "cd tools && castor app:tools:env",
-        "symfony-lsp": "cd tools && castor app:tools:symfony-lsp",
+        "test": "tools/phpunit/vendor/bin/phpunit --configuration=tools/phpunit/phpunit.xml",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        }
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "env": "cd tools && castor app:tools:env",
+        "php-cs-fixer": "cd tools && castor app:tools:php-cs-fixer",
+        "phpstan": "cd tools && castor app:tools:phpstan",
+        "phpunit": "cd tools && castor app:tools:phpunit"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -55,7 +61,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "^8.1"
+            "require": "8.0.*"
         }
     }
 }

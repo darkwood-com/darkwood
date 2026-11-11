@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Navi\Domain\Execution;
 
-final class ActionResult
+final readonly class ActionResult
 {
     /**
      * @param Event[] $events

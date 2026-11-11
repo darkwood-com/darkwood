@@ -21,7 +21,7 @@ function phpunit(
     #[AsOption(description: 'Path to XML coverage')]
     ?string $coverateHtmlXml,
 ): int {
-    $command = [__DIR__ . '/vendor/bin/phpunit', '--configuration=' . __DIR__ . '/phpunit.dist.xml'];
+    $command = [__DIR__ . '/vendor/bin/phpunit', '--configuration=' . __DIR__ . '/phpunit.xml'];
     $ctx = context()->withAllowFailure();
 
     if ($xdebugMode !== null || $coverateHtmlPath !== null || $coverateHtmlXml !== null) {

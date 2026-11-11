@@ -37,9 +37,7 @@
             self'.packages.satis
           ];
 
-          shellHook = ''
-            export COMPOSER_MEMORY_LIMIT=-1
-          '';
+          shellHook = '''';
         };
 
         checks = {

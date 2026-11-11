@@ -6,7 +6,7 @@ namespace Navi\Domain\Execution;
 
 use InvalidArgumentException;
 
-final class ActionName
+final readonly class ActionName
 {
     private function __construct(private string $value) {}
 

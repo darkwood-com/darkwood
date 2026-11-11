@@ -19,7 +19,6 @@ function phpCsFixer(
 
     if ($dryRun) {
         $command[] = '--dry-run';
-        $command[] = '--diff';
     }
 
     return run($command, context()->withAllowFailure())->getExitCode();

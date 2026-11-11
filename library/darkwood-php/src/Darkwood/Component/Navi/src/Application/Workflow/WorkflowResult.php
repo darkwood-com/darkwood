@@ -6,7 +6,7 @@ namespace Navi\Application\Workflow;
 
 use Navi\Domain\Execution\ExecutionState;
 
-final class WorkflowResult
+final readonly class WorkflowResult
 {
     public function __construct(private ExecutionState $state) {}
 

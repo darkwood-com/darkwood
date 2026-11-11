@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 final class WorkflowRunnerTest extends TestCase
 {
-    public function testRunMergesActionPayloadsAndRecordsCompletedActionsAndEvents()
+    public function testRunMergesActionPayloadsAndRecordsCompletedActionsAndEvents(): void
     {
         $runner = new WorkflowRunner();
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Navi\Domain\Execution;
 
-final class Context
+final readonly class Context
 {
     /**
      * @param array<string, mixed> $values

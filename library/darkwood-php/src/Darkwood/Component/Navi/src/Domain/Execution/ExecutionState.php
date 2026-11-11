@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Navi\Domain\Execution;
 
-final class ExecutionState
+final readonly class ExecutionState
 {
     /**
      * @param ActionName[] $completedActions
