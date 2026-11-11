@@ -1,21 +1,25 @@
 {
-  "name": "@darkwood-com/flow",
+  "name": "@darkwood-fr/flow",
   "description": "Flow",
-  "bugs": {
-    "url": "https://github.com/darkwood-com/flow"
+  "author": {
+    "name": "Mathieu Ledru",
+    "email": "mathieu@darkwood.fr"
   },
-  "homepage": "https://github.com/darkwood-com/flow/tree/8.1#readme",
+  "bugs": {
+    "url": "https://github.com/darkwood-fr/flow"
+  },
+  "homepage": "https://github.com/darkwood-fr/flow/tree/1.x#readme",
   "keywords": [
     "flow"
   ],
-  "version": "1.2.5",
+  "version": "1.1.2",
   "browserslist": [
     "defaults"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/darkwood-com/flow.git"
+    "url": "https://github.com/darkwood-fr/flow.git"
   },
   "publishConfig": {
     "access": "public"
@@ -26,7 +30,7 @@
     "prestart": "npm run clean",
     "start": "exec-bin node_modules/.bin/hugo/hugo server --bind=0.0.0.0 --disableFastRender -s src",
     "prebuild": "npm run clean",
-    "build": "exec-bin node_modules/.bin/hugo/hugo --gc --minify -s src --baseURL https://flow.darkwood.com",
+    "build": "exec-bin node_modules/.bin/hugo/hugo --gc --minify -s src",
     "build:preview": "npm run build -D -F",
     "clean": "shx rm -rf public resources",
     "clean:install": "shx rm -rf package-lock.json node_modules ",
@@ -73,18 +77,5 @@
   },
   "otherDependencies": {
     "hugo": "0.88.1"
-  },
-  "deployment": {
-    "order": [
-      ".jpg$",
-      ".gif$"
-    ],
-    "targets": [
-      {
-        "name": "github",
-        "URL": "https://flow.darkwood.com",
-        "branch": "gh-pages"
-      }
-    ]
   }
 }

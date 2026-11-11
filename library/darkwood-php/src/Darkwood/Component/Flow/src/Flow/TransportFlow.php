@@ -6,53 +6,42 @@ namespace Flow\Flow;
 
 use Closure;
 use Exception;
-use Flow\Driver\FiberDriver;
+use Flow\Driver\AmpDriver;
 use Flow\DriverInterface;
+use Flow\EnvelopeTrait;
 use Flow\FlowInterface;
 use Flow\Ip;
+use SplObjectStorage;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Receiver\ReceiverInterface;
 use Symfony\Component\Messenger\Transport\Sender\SenderInterface;
 
-/**
- * @template T1
- * @template T2
- *
- * @extends FlowDecorator<T1,T2>
- */
 class TransportFlow extends FlowDecorator
 {
-    /**
-     * @var DriverInterface<T1,T2>
-     */
-    private DriverInterface $driver;
+    use EnvelopeTrait;
 
     /**
-     * @param null|DriverInterface<T1,T2> $driver
+     * @var SplObjectStorage<Ip, Envelope>
      */
+    private SplObjectStorage $envelopePool;
+
+    /**
+     * @var array<int, Envelope>
+     */
+    private array $envelopeIds;
+
+    private DriverInterface $driver;
+
     public function __construct(
         private FlowInterface $flow,
         private ReceiverInterface $producer,
         private SenderInterface $consumer,
-        ?DriverInterface $driver = null
+        DriverInterface $driver = null
     ) {
         parent::__construct($flow);
-        $this->fn(function (Envelope $envelope): void {
-            try {
-                $this->consumer->send(Envelope::wrap($envelope->getMessage(), array_reduce($envelope->all(), static function (array $all, array $stamps) {
-                    foreach ($stamps as $stamp) {
-                        $all[] = $stamp;
-                    }
 
-                    return $all;
-                }, [])));
-                $this->producer->ack($envelope);
-            } catch (Exception $e) {
-                $this->producer->reject($envelope);
-            }
-        });
-
-        $this->driver = $driver ?? new FiberDriver();
+        $this->envelopePool = new SplObjectStorage();
+        $this->driver = $driver ?? new AmpDriver();
     }
 
     /**
@@ -62,7 +51,7 @@ class TransportFlow extends FlowDecorator
      */
     public function pull(int $interval): Closure
     {
-        return $this->driver->tick($interval, function (): void {
+        return $this->driver->tick($interval, function () {
             $envelopes = $this->producer->get();
             foreach ($envelopes as $envelope) {
                 $this->emit($envelope);
@@ -72,7 +61,36 @@ class TransportFlow extends FlowDecorator
 
     private function emit(Envelope $envelope): void
     {
-        $ip = new Ip($envelope);
-        ($this->flow)($ip);
+        $id = $this->getEnvelopeId($envelope);
+        if (!isset($this->envelopeIds[$id])) {
+            $this->envelopeIds[$id] = $envelope;
+            $ip = new Ip($envelope->getMessage());
+            $this->envelopePool->offsetSet($ip, $envelope);
+
+            try {
+                $self = $this;
+                ($this->flow)($ip, static function ($ip) use ($self) {
+                    $envelope = $self->envelopePool->offsetGet($ip);
+                    $self->consumer->send(Envelope::wrap($ip->data, array_reduce($envelope->all(), static function (array $all, array $stamps) {
+                        foreach ($stamps as $stamp) {
+                            $all[] = $stamp;
+                        }
+
+                        return $all;
+                    }, [])));
+                    $self->producer->ack($envelope);
+
+                    $self->envelopePool->offsetUnset($ip);
+                    $id = $self->getEnvelopeId($envelope);
+                    unset($self->envelopeIds[$id]);
+                });
+            } catch (Exception $e) {
+                $envelope = $this->envelopePool->offsetGet($ip);
+                $this->producer->reject($envelope);
+                $this->envelopePool->offsetUnset($ip);
+                $id = $this->getEnvelopeId($envelope);
+                unset($this->envelopeIds[$id]);
+            }
+        }
     }
 }
