@@ -380,7 +380,7 @@
             "versioned_id": "browser_source",
             "settings": {
                 "is_local_file": true,
-                "local_file": "/Users/math/Sites/darkwood/matyo91-live/overlays/countdown/index.html",
+                "local_file": "/Users/math/Sites/darkwood/darkwood/library/matyo91-live/overlays/countdown/index.html",
                 "width": 1040,
                 "height": 95,
                 "css": "body {\nbackground-color: #FFFFFF;\n}"
@@ -887,7 +887,7 @@
             "id": "image_source",
             "versioned_id": "image_source",
             "settings": {
-                "file": "/Users/math/Sites/darkwood/matyo91-live/medias/dw512x512-head.jpg"
+                "file": "/Users/math/Sites/darkwood/darkwood/library/matyo91-live/medias/dw512x512-head.jpg"
             },
             "mixers": 0,
             "sync": 0,
@@ -1233,7 +1233,7 @@
             "versioned_id": "browser_source",
             "settings": {
                 "is_local_file": true,
-                "local_file": "/Users/math/Sites/darkwood/matyo91-live/overlays/social/index.html",
+                "local_file": "/Users/math/Sites/darkwood/darkwood/library/matyo91-live/overlays/social/index.html",
                 "width": 960,
                 "height": 60,
                 "css": "body { background-color: #FFFFFF; margin: 0px auto; overflow: hidden; }"
