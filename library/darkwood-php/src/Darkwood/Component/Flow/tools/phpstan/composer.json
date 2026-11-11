@@ -1,21 +1,18 @@
 {
 	"require": {
-        "php": ">=8.5",
-        "symfony/config": "^8.1",
-        "symfony/dependency-injection": "^8.1",
-        "symfony/event-dispatcher": "^8.1",
-        "symfony/http-kernel": "^8.1",
-        "symfony/string": "^8.1"
+        "php": ">=8.3",
+        "symfony/event-dispatcher": "^7.0",
+		"symfony/messenger": "^7.0"
     },
     "require-dev": {
-        "amphp/amp": "^3.1",
-        "doctrine/dbal": "^4.3",
-        "openswoole/ide-helper": "^26.2.0",
-        "phpstan/phpstan": "^2.1 <2.1.56",
-        "react/async": "^4.3",
-        "spatie/async": "^1.8",
-        "symfony/doctrine-messenger": "^8.1",
-        "symfony/http-client": "^8.1"
+        "amphp/amp": "^3.0",
+        "openswoole/ide-helper": "^22.1.5",
+        "phpstan/phpstan": "^1.11",
+        "phpunit/phpunit": "^10.3",
+        "react/async": "^4.2",
+        "spatie/async": "^1.6",
+        "symfony/doctrine-messenger": "^7.0",
+        "symfony/orm-pack": "^2.4"
     },
     "autoload": {
         "psr-4": {
@@ -26,11 +23,6 @@
         "psr-4": {
             "Flow\\Examples\\": "../../examples",
             "Flow\\Test\\": "../../tests"
-        }
-    },
-    "config": {
-        "platform": {
-            "ext-openswoole": "26.2.0"
         }
     }
 }

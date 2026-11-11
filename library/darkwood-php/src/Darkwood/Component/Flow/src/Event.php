@@ -27,7 +27,7 @@ final class Event
     /**
      * The PULL event occurs when Flow need a next IP to async process.
      *
-     * This event allows you to choose what IPs come next from your pushed IPs and will be used for async process execution.
+     * This event allows you to choose what IP come next from your pushed IPs and will be used for async process execution.
      *
      * @Event("Flow\Event\PullEvent")
      */
@@ -36,18 +36,9 @@ final class Event
     /**
      * The POP event occurs when Flow finish async process of an IP.
      *
-     * This event allows you to take into account that IP went asynchronously processed through the Flow and can now jump to the next one.
+     * This event allows you to take into account that IP went asyncronously proceed throught the Flow and can now jump to the next one.
      *
      * @Event("Flow\Event\PopEvent")
      */
     public const POP = 'pop';
-
-    /**
-     * The POOL event occurs when Flow need to get the pool IPs to process.
-     *
-     * This event allows you to get the pool IPs to process.
-     *
-     * @Event("Flow\Event\PoolEvent")
-     */
-    public const POOL = 'pool';
 }

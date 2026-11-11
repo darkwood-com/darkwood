@@ -13,23 +13,23 @@ use function PHPUnit\Framework\assertSame;
 
 class DeferAsyncHandlerTest extends TestCase
 {
-    public function testAsyncEvent()
+    public function testAsyncEvent(): void
     {
         $result = null;
 
         $event = new AsyncEvent(
             static fn ($x) => $x,
             static fn ($x) => $x,
-            static function (array $args) use (&$result) {
+            static function ($args) use (&$result) {
                 [[$n1, $n2], $defer] = $args;
                 $result = $n1 + $n2;
 
-                return static function ($callback) use ($result): void {
-                    $callback([$result]);
+                return static function ($callback) use ($result) {
+                    $callback($result);
                 };
             },
             new Ip([1, 7]),
-            static function (): void {}
+            static function () {}
         );
 
         $asyncHandler = new DeferAsyncHandler();

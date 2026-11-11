@@ -8,7 +8,6 @@ use ArrayObject;
 use Flow\DriverInterface;
 use Flow\Flow\Flow;
 use Flow\Flow\TransportFlow;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
@@ -22,15 +21,14 @@ class TransportFlowTest extends TestCase
     use FlowTrait;
 
     /**
+     * @dataProvider provideJobsCases
+     *
      * @param DriverInterface<T1,T2> $driver
      * @param array<mixed>           $jobs
      */
-    #[DataProvider('provideJobsCases')]
-    public function testJobs(DriverInterface $driver, array $jobs, int $resultNumber)
+    public function testJobs(DriverInterface $driver, array $jobs, int $resultNumber): void
     {
-        self::markTestSkipped('Transport flow test is temporarily disabled.');
-
-        /*$flow = array_reduce(
+        $flow = array_reduce(
             array_map(static function ($args) use ($driver) {
                 [$job, $ipStrategy] = $args;
 
@@ -59,7 +57,7 @@ class TransportFlowTest extends TestCase
             return $data;
         });
 
-        $flow->await();*/
+        $flow->await();
     }
 
     /**

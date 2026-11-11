@@ -13,7 +13,7 @@ use function PHPUnit\Framework\assertSame;
 
 class AsyncHandlerTest extends TestCase
 {
-    public function testAsyncEvent()
+    public function testAsyncEvent(): void
     {
         $result = null;
 
@@ -24,12 +24,12 @@ class AsyncHandlerTest extends TestCase
                 [$n1, $n2] = $data;
                 $result = $n1 + $n2;
 
-                return static function ($callback) use ($result): void {
-                    $callback($result);
+                return static function ($callback) {
+                    $callback();
                 };
             },
             new Ip([2, 6]),
-            static function (): void {}
+            static function () {}
         );
 
         $asyncHandler = new AsyncHandler();

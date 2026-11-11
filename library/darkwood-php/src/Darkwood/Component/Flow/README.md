@@ -14,7 +14,7 @@ Flow concept aims to solve
 
 ## Installation
 
-PHP 8.5 is the minimal version to use Flow
+PHP 8.3 is the minimal version to use Flow
 The recommended way to install it through [Composer](http://getcomposer.org) and execute
 
 ```bash
@@ -27,7 +27,6 @@ composer require darkwood/flow
 <?php
 
 use Flow\Flow\Flow;
-use Flow\FlowFactory;
 use Flow\Ip;
 
 class D1 {
@@ -46,7 +45,7 @@ class D4 {
     public function __construct(public int $n4) {}
 }
 
-$flow = (new FlowFactory())->create(static function() {
+$flow = Flow::do(static function() {
     yield fn (D1 $data1) => new D2($data1->n1 += 1);
     yield fn (D2 $data2) => new D3($data2->n2 * 2);
     yield function(D3 $data3) {
@@ -58,7 +57,6 @@ $flow = (new FlowFactory())->create(static function() {
 
 $ip = new Ip(new D1(4));
 $flow($ip);
-$flow->await();
 ```
 
 ## Examples
@@ -67,7 +65,7 @@ A working script is available in the bundled `examples` directory
 
 - Run Flow : `php examples/flow.php`
 - Run Y-Combinator Flow : `php examples/yflow.php`
-- Start Server : `php examples/server.php`  
+- Start Server : `php examples/server.php`
   Start Client(s) : `php examples/client.php`
 
 ## Documentation

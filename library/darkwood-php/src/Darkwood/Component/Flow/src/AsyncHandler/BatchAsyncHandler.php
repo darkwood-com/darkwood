@@ -7,29 +7,28 @@ namespace Flow\AsyncHandler;
 use Flow\AsyncHandlerInterface;
 use Flow\Event;
 use Flow\Event\AsyncEvent;
-use Flow\Event\PoolEvent;
-
-use function count;
+use Symfony\Component\Messenger\Handler\Acknowledger;
+use Symfony\Component\Messenger\Handler\BatchHandlerInterface;
+use Symfony\Component\Messenger\Handler\BatchHandlerTrait;
+use Throwable;
 
 /**
- * @template T
+ * @template T1
+ * @template T2
  *
- * @implements AsyncHandlerInterface<T>
+ * @implements AsyncHandlerInterface<T1>
  */
-final class BatchAsyncHandler implements AsyncHandlerInterface
+final class BatchAsyncHandler implements BatchHandlerInterface, AsyncHandlerInterface
 {
-    /**
-     * @var array<AsyncEvent<T>>
-     */
-    private array $jobs = [];
+    use BatchHandlerTrait;
 
     /**
-     * @var AsyncHandlerInterface<T>
+     * @var AsyncHandlerInterface<T2>
      */
     private AsyncHandlerInterface $asyncHandler;
 
     /**
-     * @param null|AsyncHandlerInterface<T> $asyncHandler
+     * @param null|AsyncHandlerInterface<T2> $asyncHandler
      */
     public function __construct(
         private int $batchSize = 10,
@@ -38,37 +37,47 @@ final class BatchAsyncHandler implements AsyncHandlerInterface
         $this->asyncHandler = $asyncHandler ?? new AsyncHandler();
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
             Event::ASYNC => 'async',
-            Event::POOL => 'pool',
         ];
     }
 
     public function async(AsyncEvent $event): void
     {
-        $this->jobs[] = [$event];
-
-        if (!$this->shouldFlush()) {
-            return;
-        }
-
-        $jobs = $this->jobs;
-        $this->jobs = [];
-
-        foreach ($jobs as [$event]) {
+        $ack = new Acknowledger(get_debug_type($this), function (?Throwable $e = null, $event = null) {
             $this->asyncHandler->async($event);
+        });
+
+        $this->handle($event, $ack);
+    }
+
+    /**
+     * PHPStan should normaly pass for method.unused
+     * https://github.com/phpstan/phpstan/issues/6039
+     * https://phpstan.org/r/8f7de023-9888-4dcb-b12c-e2fcf9547b6c.
+     *
+     * @param array{0: AsyncEvent<T1>, 1: Acknowledger}[] $jobs
+     *
+     * @phpstan-ignore method.unused
+     */
+    private function process(array $jobs): void
+    {
+        foreach ($jobs as [$event, $ack]) {
+            $ack->ack($event);
         }
     }
 
-    public function pool(PoolEvent $event): void
+    /**
+     * PHPStan should normaly pass for method.unused
+     * https://github.com/phpstan/phpstan/issues/6039
+     * https://phpstan.org/r/8f7de023-9888-4dcb-b12c-e2fcf9547b6c.
+     *
+     * @phpstan-ignore method.unused
+     */
+    private function getBatchSize(): int
     {
-        $this->asyncHandler->pool($event);
-    }
-
-    private function shouldFlush(): bool
-    {
-        return $this->batchSize <= count($this->jobs);
+        return $this->batchSize;
     }
 }

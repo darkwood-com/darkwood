@@ -13,7 +13,7 @@ use function PHPUnit\Framework\assertSame;
 
 class BatchAsyncHandlerTest extends TestCase
 {
-    public function testAsyncEvent()
+    public function testAsyncEvent(): void
     {
         $result1 = null;
 
@@ -24,12 +24,12 @@ class BatchAsyncHandlerTest extends TestCase
                 [$n1, $n2] = $data;
                 $result1 = $n1 + $n2;
 
-                return static function ($callback) use ($result1): void {
-                    $callback($result1);
+                return static function ($callback) {
+                    $callback();
                 };
             },
             new Ip([2, 6]),
-            static function (): void {}
+            static function () {}
         );
 
         $result2 = null;
@@ -41,12 +41,12 @@ class BatchAsyncHandlerTest extends TestCase
                 [$n1, $n2] = $data;
                 $result2 = $n1 + $n2;
 
-                return static function ($callback) use ($result2): void {
-                    $callback($result2);
+                return static function ($callback) {
+                    $callback();
                 };
             },
             new Ip([6, 10]),
-            static function (): void {}
+            static function () {}
         );
 
         $asyncHandler = new BatchAsyncHandler(2);

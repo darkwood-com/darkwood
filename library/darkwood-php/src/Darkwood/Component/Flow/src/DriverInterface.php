@@ -13,11 +13,11 @@ use Closure;
 interface DriverInterface
 {
     /**
-     * #return JobInterface<TArgs,void>|Closure(TArgs): void when called this start async $callback.
+     * #return Closure(TArgs): void when called this start async $callback.
      *
-     * @param Closure(TArgs): TReturn|JobInterface<TArgs,TReturn> $callback
+     * @param Closure(TArgs): TReturn $callback
      */
-    public function async(Closure|JobInterface $callback): Closure;
+    public function async(Closure $callback): Closure;
 
     /**
      * This allow more granular control on async
@@ -30,9 +30,7 @@ interface DriverInterface
     public function defer(Closure $callback): mixed;
 
     /**
-     * Waits for all asynchronous operations in the stream to complete and rolls back to synchronous execution.
-     *
-     * @param array{'fnFlows': array<mixed>, 'dispatchers': array<mixed>} $stream The stream containing asynchronous operations to await
+     * @param array{'ips': int, 'fnFlows': array<mixed>, 'dispatchers': array<mixed>} $stream
      */
     public function await(array &$stream): void;
 
