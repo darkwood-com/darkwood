@@ -4,94 +4,42 @@ declare(strict_types=1);
 
 namespace Flow\IpStrategy;
 
-use Flow\Event;
-use Flow\Event\PoolEvent;
-use Flow\Event\PopEvent;
-use Flow\Event\PullEvent;
-use Flow\Event\PushEvent;
+use Flow\Ip;
 use Flow\IpStrategyInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @template T
- *
- * @implements IpStrategyInterface<T>
- */
 class MaxIpStrategy implements IpStrategyInterface
 {
-    /**
-     * @var IpStrategyInterface<T>
-     */
     private IpStrategyInterface $ipStrategy;
-
-    private EventDispatcherInterface $dispatcher;
 
     private int $processing = 0;
 
-    /**
-     * @param null|IpStrategyInterface<T> $ipStrategy
-     */
-    public function __construct(
-        private int $max = 1,
-        ?IpStrategyInterface $ipStrategy = null,
-        ?EventDispatcherInterface $dispatcher = null,
-    ) {
+    public function __construct(private int $max = 1, IpStrategyInterface $ipStrategy = null)
+    {
         $this->ipStrategy = $ipStrategy ?? new LinearIpStrategy();
-        $this->dispatcher = $dispatcher ?? new EventDispatcher();
-        $this->dispatcher->addSubscriber($this->ipStrategy);
     }
 
-    public static function getSubscribedEvents(): array
+    public function push(Ip $ip): void
     {
-        return [
-            Event::PUSH => 'push',
-            Event::PULL => 'pull',
-            Event::POP => 'pop',
-            Event::POOL => 'pool',
-        ];
+        $this->ipStrategy->push($ip);
     }
 
-    /**
-     * @param PushEvent<T> $event
-     */
-    public function push(PushEvent $event): void
+    public function pop(): ?Ip
     {
-        $this->dispatcher->dispatch($event, Event::PUSH);
-    }
-
-    /**
-     * @param PullEvent<T> $event
-     */
-    public function pull(PullEvent $event): void
-    {
-        // Do not shift from the inner pool while at capacity — re-PUSH would rotate FIFO order.
-        if ($this->processing >= $this->max) {
-            return;
-        }
-
-        $ips = $this->dispatcher->dispatch(new PullEvent(), Event::PULL)->getIps();
-        foreach ($ips as $ip) {
-            if ($this->processing < $this->max) {
+        if ($this->processing < $this->max) {
+            $ip = $this->ipStrategy->pop();
+            if ($ip) {
                 $this->processing++;
-                $event->addIp($ip);
-            } else {
-                $this->dispatcher->dispatch(new PushEvent($ip), Event::PUSH);
             }
+
+            return $ip;
         }
+
+        return null;
     }
 
-    /**
-     * @param PopEvent<T> $event
-     */
-    public function pop(PopEvent $event): void
+    public function done(Ip $ip): void
     {
-        $this->dispatcher->dispatch($event, Event::POP);
+        $this->ipStrategy->done($ip);
         $this->processing--;
-    }
-
-    public function pool(PoolEvent $event): void
-    {
-        $event->addIps($this->dispatcher->dispatch($event, Event::POOL)->getIps());
     }
 }

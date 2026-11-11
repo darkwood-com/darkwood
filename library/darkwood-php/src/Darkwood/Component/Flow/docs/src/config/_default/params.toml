@@ -9,11 +9,11 @@ description = "Assemble your code by adopting asynchronous as native implementat
 ## Open Graph
 images = ["flow.png"]
 ogLocale = "en_US"
-domainTLD = "darkwood-com.github.io"
+domainTLD = "darkwood-fr.github.io"
 titleHome = "Doks Theme"
 
 ## Twitter Cards
-twitterSite = "@darkwood_com"
+twitterSite = "@darkwood_fr"
 twitterCreator = "@matyo91"
 
 ## JSON-LD
@@ -31,9 +31,9 @@ schemaLogoHeight = 512
 schemaImage = "flow.png"
 schemaImageWidth = 1280
 schemaImageHeight = 640
-schemaTwitter = "https://twitter.com/darkwood_com"
+schemaTwitter = "https://twitter.com/darkwood_fr"
 schemaLinkedIn = ""
-schemaGitHub = "https://github.com/darkwood-com/flow"
+schemaGitHub = "https://github.com/darkwood-fr/flow"
 schemaSection = "blog"
 
 ## Sitelinks Search Box
@@ -62,7 +62,7 @@ alertDismissable = true
 alertText = "Introducing the Doks child theme, several DX + UX updates, and more! <a class=\"alert-link stretched-link\" href=\"https://getdoks.org/blog/doks-v0.2/\">Check out Doks v0.2</a>"
 
 # Edit Page
-docsRepo = "https://github.com/darkwood-com/flow"
+docsRepo = "https://github.com/darkwood-fr/flow"
 editPage = true
 
 [options]
