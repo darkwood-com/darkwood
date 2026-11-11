@@ -913,7 +913,7 @@
             "id": "ffmpeg_source",
             "versioned_id": "ffmpeg_source",
             "settings": {
-                "local_file": "/Users/math/Sites/darkwood/dj-stream/medias/world.mp4",
+                "local_file": "/Users/math/Sites/darkwood/darkwood/library/dj-stream/medias/world.mp4",
                 "looping": true
             },
             "mixers": 255,

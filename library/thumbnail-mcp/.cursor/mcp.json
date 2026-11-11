@@ -2,7 +2,7 @@
   "mcpServers": {
     "thumbnail-mcp": {
       "name": "Thumbnail MCP",
-      "command": "php /Users/math/Sites/darkwood/thumbnail-mcp/bin/console mcp:server"
+      "command": "php /Users/math/Sites/darkwood/darkwood/library/thumbnail-mcp/bin/console mcp:server"
     }
   }
 }
