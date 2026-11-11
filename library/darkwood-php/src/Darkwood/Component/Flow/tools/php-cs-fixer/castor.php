@@ -7,7 +7,6 @@ namespace Flow\Tools;
 use Castor\Attribute\AsOption;
 use Castor\Attribute\AsTask;
 
-use function Castor\context;
 use function Castor\run;
 
 #[AsTask(description: 'Check and fix coding styles using PHP CS Fixer', aliases: ['php-cs-fixer'])]
@@ -19,8 +18,7 @@ function phpCsFixer(
 
     if ($dryRun) {
         $command[] = '--dry-run';
-        $command[] = '--diff';
     }
 
-    return run($command, context()->withAllowFailure())->getExitCode();
+    return run($command, allowFailure: true)->getExitCode();
 }

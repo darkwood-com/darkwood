@@ -4,26 +4,15 @@ declare(strict_types=1);
 
 namespace Flow\Driver;
 
-use Amp\DeferredFuture;
-use Amp\Future;
 use Closure;
 use Flow\DriverInterface;
-use Flow\Event;
-use Flow\Event\AsyncEvent;
-use Flow\Event\PopEvent;
-use Flow\Event\PullEvent;
-use Flow\Event\PushEvent;
 use Flow\Exception\RuntimeException;
-use Flow\Ip;
-use Flow\JobInterface;
 use Revolt\EventLoop;
-use Revolt\EventLoop\Driver;
 use RuntimeException as NativeRuntimeException;
 use Throwable;
 
 use function Amp\async;
 use function Amp\delay;
-use function array_key_exists;
 use function function_exists;
 
 /**
@@ -34,113 +23,34 @@ use function function_exists;
  */
 class AmpDriver implements DriverInterface
 {
-    use DriverTrait;
+    /**
+     * @var array<string>
+     */
+    private array $ticksIds = [];
 
-    private int $ticks = 0;
-
-    public function __construct(?Driver $driver = null)
+    public function __construct()
     {
-        if (!function_exists('Amp\async')) {
-            throw new NativeRuntimeException('Amp is not loaded. Suggest install it with composer require amphp/amp.');
-        }
-
-        if ($driver !== null) {
-            EventLoop::setDriver($driver);
+        if (!function_exists('Amp\\async')) {
+            throw new NativeRuntimeException('Amp is not loaded. Suggest install it with composer require amphp/amp');
         }
     }
 
-    /**
-     * @return Closure(TArgs): Future<TReturn>
-     */
-    public function async(Closure|JobInterface $callback): Closure
+    public function async(Closure $callback, Closure $onResolve = null): Closure
     {
-        return static function (...$args) use ($callback) {
-            return async(static function (Closure|JobInterface $callback, array $args) {
+        return static function (...$args) use ($callback, $onResolve): void {
+            async(static function (Closure $callback, array $args, Closure $onResolve = null) {
                 try {
-                    return $callback(...$args, ...($args = []));
+                    $return = $callback(...$args, ...($args = []));
+                    if ($onResolve) {
+                        $onResolve($return);
+                    }
                 } catch (Throwable $exception) {
-                    return new RuntimeException($exception->getMessage(), $exception->getCode(), $exception);
+                    if ($onResolve) {
+                        $onResolve(new RuntimeException($exception->getMessage(), $exception->getCode(), $exception));
+                    }
                 }
-            }, $callback, $args);
+            }, $callback, $args, $onResolve);
         };
-    }
-
-    /**
-     * @return Future<TReturn>
-     */
-    public function defer(Closure $callback): Future
-    {
-        $deferred = new DeferredFuture();
-
-        EventLoop::queue(static function () use ($callback, $deferred): void {
-            try {
-                $callback(static function ($return) use ($deferred): void {
-                    $deferred->complete($return);
-                }, static function ($fn, $next): void {
-                    $fn($next);
-                });
-            } catch (Throwable $exception) {
-                $deferred->complete(new RuntimeException($exception->getMessage(), $exception->getCode(), $exception));
-            }
-        });
-
-        return $deferred->getFuture();
-    }
-
-    public function await(array &$stream): void
-    {
-        $async = function (Closure|JobInterface $job) {
-            return function (mixed $data) use ($job) {
-                $async = $this->async($job);
-
-                $future = $async($data);
-
-                return static function (Closure $map) use ($future): void {
-                    $future->map(static function (mixed $value) use ($map): null {
-                        $map($value);
-
-                        return null;
-                    })->ignore();
-                };
-            };
-        };
-
-        $defer = function (Closure|JobInterface $job) {
-            return function (Closure $map) use ($job): void {
-                /** @var Closure(TReturn): mixed $map */
-                $future = $this->defer($job);
-                $future->map($map);
-            };
-        };
-
-        $loop = function () use (&$loop, &$stream, $async, $defer): void {
-            foreach ($stream['dispatchers'] as $index => $dispatcher) {
-                $nextIps = $dispatcher->dispatch(new PullEvent(), Event::PULL)->getIps();
-                foreach ($nextIps as $nextIp) {
-                    $job = $stream['fnFlows'][$index]['job'];
-
-                    $stream['dispatchers'][$index]->dispatch(new AsyncEvent($async, $defer, $job, $nextIp, static function ($data) use (&$stream, $index, $nextIp): void {
-                        if ($data instanceof RuntimeException && array_key_exists($index, $stream['fnFlows']) && $stream['fnFlows'][$index]['errorJob'] !== null) {
-                            $stream['fnFlows'][$index]['errorJob']($data);
-                        } elseif (array_key_exists($index + 1, $stream['fnFlows'])) {
-                            $ip = new Ip($data);
-                            $stream['dispatchers'][$index + 1]->dispatch(new PushEvent($ip), Event::PUSH);
-                        }
-
-                        $stream['dispatchers'][$index]->dispatch(new PopEvent($nextIp), Event::POP);
-                    }), Event::ASYNC);
-                }
-            }
-
-            if ($this->countIps($stream['dispatchers']) > 0 || $this->ticks > 0) {
-                EventLoop::defer($loop);
-            } else {
-                EventLoop::getDriver()->stop();
-            }
-        };
-        EventLoop::defer($loop);
-
-        EventLoop::run();
     }
 
     public function delay(float $seconds): void
@@ -148,14 +58,33 @@ class AmpDriver implements DriverInterface
         delay($seconds);
     }
 
-    public function tick(float $interval, Closure $callback): Closure
+    public function tick(int $interval, Closure $callback): Closure
     {
-        $this->ticks++;
-        $tickId = EventLoop::repeat($interval, $callback);
+        $tickId = EventLoop::repeat($interval / 1000, $callback);
 
-        return function () use ($tickId): void {
+        $cancel = function () use ($tickId) {
+            unset($this->ticksIds[$tickId]);
             EventLoop::cancel($tickId);
-            $this->ticks--;
         };
+
+        $this->ticksIds[$tickId] = $cancel;
+
+        return $cancel;
+    }
+
+    public function start(): void
+    {
+        if (!EventLoop::getDriver()->isRunning()) {
+            EventLoop::run();
+        }
+    }
+
+    public function stop(): void
+    {
+        foreach ($this->ticksIds as $cancel) {
+            $cancel();
+        }
+
+        EventLoop::getDriver()->stop();
     }
 }

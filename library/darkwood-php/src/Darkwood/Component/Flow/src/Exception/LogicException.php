@@ -7,4 +7,6 @@ namespace Flow\Exception;
 use Flow\ExceptionInterface;
 use LogicException as NativeLogicException;
 
-class LogicException extends NativeLogicException implements ExceptionInterface {}
+class LogicException extends NativeLogicException implements ExceptionInterface
+{
+}

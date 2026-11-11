@@ -4,60 +4,39 @@ declare(strict_types=1);
 
 namespace Flow\IpStrategy;
 
-use Flow\Event;
-use Flow\Event\PoolEvent;
 use Flow\Event\PullEvent;
-use Flow\Event\PushEvent;
-use Flow\IpPool;
+use Flow\Ip;
+use Flow\IpStrategyEvent;
 use Flow\IpStrategyInterface;
 
 /**
  * @template T
- *
- * @implements IpStrategyInterface<T>
  */
 class StackIpStrategy implements IpStrategyInterface
 {
     /**
-     * @var IpPool<T>
+     * @var array<Ip<T>>
      */
-    private IpPool $ipPool;
+    private array $ips = [];
 
-    public function __construct()
-    {
-        $this->ipPool = new IpPool();
-    }
-
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
-            Event::PUSH => 'push',
-            Event::PULL => 'pull',
-            Event::POOL => 'pool',
+            IpStrategyEvent::PUSH => 'push',
+            IpStrategyEvent::PULL => 'pull',
         ];
     }
 
-    /**
-     * @param PushEvent<T> $event
-     */
-    public function push(PushEvent $event): void
+    public function push(Ip $ip): void
     {
-        $this->ipPool->addIp($event->getIp());
+        $this->ips[] = $ip;
     }
 
     /**
-     * @param PullEvent<T> $event
+     * @return PullEvent<T> $event
      */
     public function pull(PullEvent $event): void
     {
-        $ip = $this->ipPool->popIp();
-        if ($ip !== null) {
-            $event->addIp($ip);
-        }
-    }
-
-    public function pool(PoolEvent $event): void
-    {
-        $event->addIps($this->ipPool->getIps());
+        $event->setIp(array_pop($this->ips));
     }
 }

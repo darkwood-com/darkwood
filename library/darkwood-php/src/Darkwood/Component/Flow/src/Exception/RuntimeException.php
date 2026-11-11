@@ -7,4 +7,6 @@ namespace Flow\Exception;
 use Flow\ExceptionInterface;
 use RuntimeException as NativeRuntimeException;
 
-class RuntimeException extends NativeRuntimeException implements ExceptionInterface {}
+class RuntimeException extends NativeRuntimeException implements ExceptionInterface
+{
+}
