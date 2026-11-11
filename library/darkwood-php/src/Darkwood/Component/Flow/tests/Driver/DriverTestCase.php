@@ -6,10 +6,10 @@ namespace Flow\Test\Driver;
 
 use Exception;
 use Flow\DriverInterface;
-use Flow\Event;
 use Flow\Event\PushEvent;
 use Flow\Exception\RuntimeException;
 use Flow\Ip;
+use Flow\IpStrategyEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -19,12 +19,11 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 abstract class DriverTestCase extends TestCase
 {
-    public function testAsync()
+    public function testAsync(): void
     {
-        self::markTestSkipped('Driver async test is temporarily disabled.');
-        /*$driver = $this->createDriver();
+        $driver = $this->createDriver();
         $value = $driver->async(static function () {})();
-        self::assertNull($value);*/
+        self::assertNull($value);
     }
 
     /*public function testAsync(): void
@@ -35,7 +34,7 @@ abstract class DriverTestCase extends TestCase
         self::assertNull($value);
     }
 
-    public function testAsyncReturn()
+    public function testAsyncReturn(): void
     {
         $driver = $this->createDriver();
         $stream = $driver->async(static function () {
@@ -45,7 +44,7 @@ abstract class DriverTestCase extends TestCase
         self::assertSame(2, $value);
     }
 
-    public function testAsyncError()
+    public function testAsyncError(): void
     {
         $driver = $this->createDriver();
         $stream = $driver->async(static function () {
@@ -56,7 +55,7 @@ abstract class DriverTestCase extends TestCase
         self::assertInstanceOf(Exception::class, $value->getPrevious());
     }
 
-    public function testDelay()
+    public function testDelay(): void
     {
         $driver = $this->createDriver();
         $stream = $driver->async(static function () use ($driver) {
@@ -66,7 +65,7 @@ abstract class DriverTestCase extends TestCase
         self::assertNull($value);
     }
 
-    public function testTick()
+    public function testTick(): void
     {
         $i = 0;
         $driver = $this->createDriver();
@@ -75,7 +74,7 @@ abstract class DriverTestCase extends TestCase
         });
 
         $dispatcher = new EventDispatcher();
-        $dispatcher->dispatch(new PushEvent(new Ip()), Event::PUSH);
+        $dispatcher->dispatch(new PushEvent(new Ip()), IpStrategyEvent::PUSH);
 
         $stream = [
             'ips' => 1,

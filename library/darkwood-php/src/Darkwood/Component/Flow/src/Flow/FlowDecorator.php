@@ -7,7 +7,6 @@ namespace Flow\Flow;
 use Closure;
 use Flow\FlowInterface;
 use Flow\Ip;
-use Flow\JobInterface;
 
 /**
  * @template T1
@@ -27,9 +26,14 @@ abstract class FlowDecorator implements FlowInterface
         ($this->flow)($ip);
     }
 
-    public function fn(array|Closure|FlowInterface|JobInterface $flow): FlowInterface
+    public function fn(array|Closure|FlowInterface $flow): FlowInterface
     {
         return $this->flow->fn($flow);
+    }
+
+    public static function do(callable $callable, ?array $config = null): FlowInterface
+    {
+        return Flow::do($callable, $config);
     }
 
     public function await(): void

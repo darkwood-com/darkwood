@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace Flow\Driver;
 
-use Amp\DeferredFuture;
-use Amp\Future;
 use Closure;
 use Flow\DriverInterface;
-use Flow\Event;
-use Flow\Event\AsyncEvent;
 use Flow\Event\PopEvent;
 use Flow\Event\PullEvent;
 use Flow\Event\PushEvent;
 use Flow\Exception\RuntimeException;
 use Flow\Ip;
-use Flow\JobInterface;
+use Flow\IpStrategyEvent;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Driver;
 use RuntimeException as NativeRuntimeException;
@@ -34,14 +30,12 @@ use function function_exists;
  */
 class AmpDriver implements DriverInterface
 {
-    use DriverTrait;
-
     private int $ticks = 0;
 
     public function __construct(?Driver $driver = null)
     {
-        if (!function_exists('Amp\async')) {
-            throw new NativeRuntimeException('Amp is not loaded. Suggest install it with composer require amphp/amp.');
+        if (!function_exists('Amp\\async')) {
+            throw new NativeRuntimeException('Amp is not loaded. Suggest install it with composer require amphp/amp');
         }
 
         if ($driver !== null) {
@@ -49,13 +43,10 @@ class AmpDriver implements DriverInterface
         }
     }
 
-    /**
-     * @return Closure(TArgs): Future<TReturn>
-     */
-    public function async(Closure|JobInterface $callback): Closure
+    public function async(Closure $callback): Closure
     {
         return static function (...$args) use ($callback) {
-            return async(static function (Closure|JobInterface $callback, array $args) {
+            return async(static function (Closure $callback, array $args) {
                 try {
                     return $callback(...$args, ...($args = []));
                 } catch (Throwable $exception) {
@@ -65,74 +56,43 @@ class AmpDriver implements DriverInterface
         };
     }
 
-    /**
-     * @return Future<TReturn>
-     */
-    public function defer(Closure $callback): Future
-    {
-        $deferred = new DeferredFuture();
-
-        EventLoop::queue(static function () use ($callback, $deferred): void {
-            try {
-                $callback(static function ($return) use ($deferred): void {
-                    $deferred->complete($return);
-                }, static function ($fn, $next): void {
-                    $fn($next);
-                });
-            } catch (Throwable $exception) {
-                $deferred->complete(new RuntimeException($exception->getMessage(), $exception->getCode(), $exception));
-            }
-        });
-
-        return $deferred->getFuture();
-    }
-
     public function await(array &$stream): void
     {
-        $async = function (Closure|JobInterface $job) {
-            return function (mixed $data) use ($job) {
-                $async = $this->async($job);
+        $async = function ($ip, $fnFlows, $index) {
+            $async = $this->async($fnFlows[$index]['job']);
 
-                $future = $async($data);
-
-                return static function (Closure $map) use ($future): void {
-                    $future->map(static function (mixed $value) use ($map): null {
-                        $map($value);
-
-                        return null;
-                    })->ignore();
-                };
-            };
-        };
-
-        $defer = function (Closure|JobInterface $job) {
-            return function (Closure $map) use ($job): void {
-                /** @var Closure(TReturn): mixed $map */
-                $future = $this->defer($job);
-                $future->map($map);
-            };
-        };
-
-        $loop = function () use (&$loop, &$stream, $async, $defer): void {
-            foreach ($stream['dispatchers'] as $index => $dispatcher) {
-                $nextIps = $dispatcher->dispatch(new PullEvent(), Event::PULL)->getIps();
-                foreach ($nextIps as $nextIp) {
-                    $job = $stream['fnFlows'][$index]['job'];
-
-                    $stream['dispatchers'][$index]->dispatch(new AsyncEvent($async, $defer, $job, $nextIp, static function ($data) use (&$stream, $index, $nextIp): void {
-                        if ($data instanceof RuntimeException && array_key_exists($index, $stream['fnFlows']) && $stream['fnFlows'][$index]['errorJob'] !== null) {
-                            $stream['fnFlows'][$index]['errorJob']($data);
-                        } elseif (array_key_exists($index + 1, $stream['fnFlows'])) {
-                            $ip = new Ip($data);
-                            $stream['dispatchers'][$index + 1]->dispatch(new PushEvent($ip), Event::PUSH);
-                        }
-
-                        $stream['dispatchers'][$index]->dispatch(new PopEvent($nextIp), Event::POP);
-                    }), Event::ASYNC);
-                }
+            if ($ip->data === null) {
+                return $async();
             }
 
-            if ($this->countIps($stream['dispatchers']) > 0 || $this->ticks > 0) {
+            return $async($ip->data);
+        };
+
+        $loop = function () use (&$loop, &$stream, $async) {
+            $nextIp = null;
+            do {
+                foreach ($stream['dispatchers'] as $index => $dispatcher) {
+                    $nextIp = $dispatcher->dispatch(new PullEvent(), IpStrategyEvent::PULL)->getIp();
+                    if ($nextIp !== null) {
+                        $async($nextIp, $stream['fnFlows'], $index)
+                            ->map(static function ($data) use (&$stream, $index, $nextIp) {
+                                if ($data instanceof RuntimeException and array_key_exists($index, $stream['fnFlows']) && $stream['fnFlows'][$index]['errorJob'] !== null) {
+                                    $stream['fnFlows'][$index]['errorJob']($data);
+                                } elseif (array_key_exists($index + 1, $stream['fnFlows'])) {
+                                    $ip = new Ip($data);
+                                    $stream['ips']++;
+                                    $stream['dispatchers'][$index + 1]->dispatch(new PushEvent($ip), IpStrategyEvent::PUSH);
+                                }
+
+                                $stream['dispatchers'][$index]->dispatch(new PopEvent($nextIp), IpStrategyEvent::POP);
+                                $stream['ips']--;
+                            })
+                        ;
+                    }
+                }
+            } while ($nextIp !== null);
+
+            if ($stream['ips'] > 0 or $this->ticks > 0) {
                 EventLoop::defer($loop);
             } else {
                 EventLoop::getDriver()->stop();
@@ -148,12 +108,12 @@ class AmpDriver implements DriverInterface
         delay($seconds);
     }
 
-    public function tick(float $interval, Closure $callback): Closure
+    public function tick($interval, Closure $callback): Closure
     {
         $this->ticks++;
         $tickId = EventLoop::repeat($interval, $callback);
 
-        return function () use ($tickId): void {
+        return function () use ($tickId) {
             EventLoop::cancel($tickId);
             $this->ticks--;
         };

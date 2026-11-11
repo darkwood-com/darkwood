@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class LinearIpStrategyTest extends TestCase
 {
-    public function testStrategy()
+    public function testStrategy(): void
     {
         $ip1 = new Ip();
         $ip2 = new Ip();
@@ -23,16 +23,16 @@ class LinearIpStrategyTest extends TestCase
 
         $pullEvent = new PullEvent();
         $strategy->pull($pullEvent);
-        self::assertNotEmpty($pullEvent->getIps());
-        self::assertSame($ip1, $pullEvent->getIps()[0]);
+        self::assertNotNull($pullEvent->getIp());
+        self::assertSame($ip1, $pullEvent->getIp());
 
         $pullEvent = new PullEvent();
         $strategy->pull($pullEvent);
-        self::assertNotEmpty($pullEvent->getIps());
-        self::assertSame($ip2, $pullEvent->getIps()[0]);
+        self::assertNotNull($pullEvent->getIp());
+        self::assertSame($ip2, $pullEvent->getIp());
 
         $pullEvent = new PullEvent();
         $strategy->pull($pullEvent);
-        self::assertEmpty($pullEvent->getIps());
+        self::assertNull($pullEvent->getIp());
     }
 }

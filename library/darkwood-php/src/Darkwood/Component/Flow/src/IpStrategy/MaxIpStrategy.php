@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Flow\IpStrategy;
 
-use Flow\Event;
-use Flow\Event\PoolEvent;
 use Flow\Event\PopEvent;
 use Flow\Event\PullEvent;
 use Flow\Event\PushEvent;
+use Flow\IpStrategyEvent;
 use Flow\IpStrategyInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -42,13 +41,12 @@ class MaxIpStrategy implements IpStrategyInterface
         $this->dispatcher->addSubscriber($this->ipStrategy);
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
-            Event::PUSH => 'push',
-            Event::PULL => 'pull',
-            Event::POP => 'pop',
-            Event::POOL => 'pool',
+            IpStrategyEvent::PUSH => 'push',
+            IpStrategyEvent::PULL => 'pull',
+            IpStrategyEvent::POP => 'pop',
         ];
     }
 
@@ -57,7 +55,7 @@ class MaxIpStrategy implements IpStrategyInterface
      */
     public function push(PushEvent $event): void
     {
-        $this->dispatcher->dispatch($event, Event::PUSH);
+        $this->dispatcher->dispatch($event, IpStrategyEvent::PUSH);
     }
 
     /**
@@ -65,19 +63,13 @@ class MaxIpStrategy implements IpStrategyInterface
      */
     public function pull(PullEvent $event): void
     {
-        // Do not shift from the inner pool while at capacity — re-PUSH would rotate FIFO order.
-        if ($this->processing >= $this->max) {
-            return;
-        }
-
-        $ips = $this->dispatcher->dispatch(new PullEvent(), Event::PULL)->getIps();
-        foreach ($ips as $ip) {
-            if ($this->processing < $this->max) {
+        if ($this->processing < $this->max) {
+            $ip = $this->dispatcher->dispatch($event, IpStrategyEvent::PULL)->getIp();
+            if ($ip) {
                 $this->processing++;
-                $event->addIp($ip);
-            } else {
-                $this->dispatcher->dispatch(new PushEvent($ip), Event::PUSH);
             }
+
+            $event->setIp($ip);
         }
     }
 
@@ -86,12 +78,7 @@ class MaxIpStrategy implements IpStrategyInterface
      */
     public function pop(PopEvent $event): void
     {
-        $this->dispatcher->dispatch($event, Event::POP);
+        $this->dispatcher->dispatch($event, IpStrategyEvent::POP);
         $this->processing--;
-    }
-
-    public function pool(PoolEvent $event): void
-    {
-        $event->addIps($this->dispatcher->dispatch($event, Event::POOL)->getIps());
     }
 }
