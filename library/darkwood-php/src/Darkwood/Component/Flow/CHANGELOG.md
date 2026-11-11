@@ -1,64 +1,6 @@
 # Changelog
 
-Versions from **1.3.0** onward follow the unified Darkwood release line
-(see [CHANGELOG-8.1.md](../../../../CHANGELOG-8.1.md) at the monorepo root).
-
-## Unreleased
-
-- Add `StreamSelectDriver`: Generator jobs + native `stream_select()` via yieldable `waitReadable()` / `waitWritable()` / `waitDelay()` (generic stream readiness — not an HTTP client; no Fibers)
-- Fix `MaxIpStrategy`: do not pull/re-queue IPs while at capacity (preserves FIFO order)
-
-## 8.1.6
-
-- Update to Symfony 8.1.6
-- Add `symfony lsp:check` to QA tooling
-
-## 8.1.5
-
-- Update to Symfony 8.1.5
-
-## 8.1.3
-
-- Update to Symfony 8.1.3
-
-## 8.1.2
-
-- Update to Symfony 8.1.2
-- Upgrade QA tooling (PHP CS Fixer, Rector, PHPStan, PHPUnit)
-
-## 8.1.1
-
-- Add `TrueAsyncDriver` for the experimental `ext-async` backend
-- Update to Symfony 8.1.1
-- Upgrade QA tooling (PHP CS Fixer, Rector, PHPStan, PHPUnit)
-
-## 8.1.0
-
-- Update to Symfony 8.1.0
-- Add Rector to QA tools
-
-## 1.3.0
-
-- Adopt unified Darkwood versioning (same tag as all `darkwood/*` packages)
-- No functional changes beyond the monorepo consolidation in this release
-
-## Prior releases (pre-unified versioning)
-
-## v1.2.6
-
-- Update to Open Swoole 26.2.0
-- Remove symfony messenger
-
-## v1.2.5
-
-- Update to PHP 8.5 and Symfony 8.0
-- Add examples/httpchunkflow.php
-
-## v1.2.4
-
-- Add LambdaFlow
-
-## v1.2.3
+## v1.2.x
 
 - Add event Event::POOL occurs when Flow needs to count IPs to process.
 - Add `Flow\IpPool` for managing pools of Ips.
@@ -82,7 +24,7 @@ Versions from **1.3.0** onward follow the unified Darkwood release line
         - https://github.com/wazum/symfony-messenger-batch
     - Add Flow\AsyncHandler\DeferAsyncHandler to gain granular control on the async Event::SYNC step event
 - Flow\Flow\YFlow rework
-- Add more examples in `examples/yflow.php` to play with Y-Combinators
+- Add more exemples in `examples/yflow.php` to play with Y-Combinators
 - Update DX for Flow\DriverInterface : add `defer` to gain much granular control on asynchronous callbacks
 
 ## v1.2.0
@@ -95,8 +37,8 @@ Versions from **1.3.0** onward follow the unified Darkwood release line
 - Add Flow\FlowInterface::do notation from https://github.com/fp4php/functional
 - Update Flow\FlowInterface::fn to accept as first argument
     - Closure : it's the job itself
-    - array : constructor arguments for Flow instantiation
-    - array (view as shape) : configuration for Flow instantiation
+    - array : constructor arguments for Flow instanciation
+    - array (view as shape) : configuration for Flow instanciation
     - FlowInterface : the FlowInterface instance itself
     - array : map of all possible above choices
 - Update to Symfony 7.0
@@ -132,7 +74,7 @@ Versions from **1.3.0** onward follow the unified Darkwood release line
 - Bundle `Flow` to PHP monorepository
 - Merge from `packages/symfony` to `packages/php` and make Flow [Symfony](https://symfony.com) friendly
 - New DX interface `Flow\FlowInterface`
-- Error management is now integrated to Flow
+- Error managment is now integrated to Flow
 - Remove context associated with processing IP
 - Deprecate `Flow\Flow\SequenceFlow` in favor for `Flow\Flow\Flow`
 - Deprecate `Flow\Flow\ErrorFlow` in favor for `Flow\Flow\Flow`

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class YJobTest extends TestCase
 {
-    public function testJob()
+    public function testJob(): void
     {
         $job = new YJob(static function (Closure $factorial) {
             return static function (int $n) use ($factorial) {

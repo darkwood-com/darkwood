@@ -41,7 +41,7 @@ class AmpDriver implements DriverInterface
     public function __construct(?Driver $driver = null)
     {
         if (!function_exists('Amp\async')) {
-            throw new NativeRuntimeException('Amp is not loaded. Suggest install it with composer require amphp/amp.');
+            throw new NativeRuntimeException('Amp is not loaded. Suggest install it with composer require amphp/amp');
         }
 
         if ($driver !== null) {
@@ -72,11 +72,11 @@ class AmpDriver implements DriverInterface
     {
         $deferred = new DeferredFuture();
 
-        EventLoop::queue(static function () use ($callback, $deferred): void {
+        EventLoop::queue(static function () use ($callback, $deferred) {
             try {
-                $callback(static function ($return) use ($deferred): void {
+                $callback(static function ($return) use ($deferred) {
                     $deferred->complete($return);
-                }, static function ($fn, $next): void {
+                }, static function ($fn, $next) {
                     $fn($next);
                 });
             } catch (Throwable $exception) {
@@ -95,31 +95,28 @@ class AmpDriver implements DriverInterface
 
                 $future = $async($data);
 
-                return static function (Closure $map) use ($future): void {
-                    $future->map(static function (mixed $value) use ($map): null {
-                        $map($value);
-
-                        return null;
-                    })->ignore();
+                return static function (Closure $map) use ($future) {
+                    /** @var Closure(TReturn): mixed $map */
+                    $future->map($map);
                 };
             };
         };
 
         $defer = function (Closure|JobInterface $job) {
-            return function (Closure $map) use ($job): void {
+            return function (Closure $map) use ($job) {
                 /** @var Closure(TReturn): mixed $map */
                 $future = $this->defer($job);
                 $future->map($map);
             };
         };
 
-        $loop = function () use (&$loop, &$stream, $async, $defer): void {
+        $loop = function () use (&$loop, &$stream, $async, $defer) {
             foreach ($stream['dispatchers'] as $index => $dispatcher) {
                 $nextIps = $dispatcher->dispatch(new PullEvent(), Event::PULL)->getIps();
                 foreach ($nextIps as $nextIp) {
                     $job = $stream['fnFlows'][$index]['job'];
 
-                    $stream['dispatchers'][$index]->dispatch(new AsyncEvent($async, $defer, $job, $nextIp, static function ($data) use (&$stream, $index, $nextIp): void {
+                    $stream['dispatchers'][$index]->dispatch(new AsyncEvent($async, $defer, $job, $nextIp, static function ($data) use (&$stream, $index, $nextIp) {
                         if ($data instanceof RuntimeException && array_key_exists($index, $stream['fnFlows']) && $stream['fnFlows'][$index]['errorJob'] !== null) {
                             $stream['fnFlows'][$index]['errorJob']($data);
                         } elseif (array_key_exists($index + 1, $stream['fnFlows'])) {
@@ -153,7 +150,7 @@ class AmpDriver implements DriverInterface
         $this->ticks++;
         $tickId = EventLoop::repeat($interval, $callback);
 
-        return function () use ($tickId): void {
+        return function () use ($tickId) {
             EventLoop::cancel($tickId);
             $this->ticks--;
         };

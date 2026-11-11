@@ -39,7 +39,7 @@ class ParallelDriver implements DriverInterface
     public function __construct()
     {
         if (!class_exists(Runtime::class)) {
-            throw new NativeRuntimeException('Parallel extension is not loaded. Suggest install it with pecl install parallel.');
+            throw new NativeRuntimeException('Parallel extension is not loaded. Suggest install it with pecl install parallel');
         }
     }
 
@@ -66,10 +66,10 @@ class ParallelDriver implements DriverInterface
             try {
                 $result = null;
                 $callback(
-                    static function ($value) use (&$result): void {
+                    static function ($value) use (&$result) {
                         $result = $value;
                     },
-                    static function ($fn, $next): void {
+                    static function ($fn, $next) {
                         $fn($next);
                     }
                 );
@@ -90,18 +90,18 @@ class ParallelDriver implements DriverInterface
 
                     $parallel = $async($data);
 
-                    $next = static function ($return): void {};
+                    $next = static function ($return) {};
 
                     $parallelDatas[] = [
                         'parallel' => $parallel,
-                        'next' => static function ($return) use (&$next): void {
-                            $next($return); // @phpstan-ignore expr.resultUnused
+                        'next' => static function ($return) use (&$next) {
+                            $next($return);
                         },
                     ];
 
-                    return static function (Closure $callback) use ($isTick, &$next): void {
+                    return static function (Closure $callback) use ($isTick, &$next) {
                         if ($isTick === false) {
-                            $next = static function ($return) use ($callback): void {
+                            $next = static function ($return) use ($callback) {
                                 $callback($return);
                             };
                         }
@@ -112,15 +112,15 @@ class ParallelDriver implements DriverInterface
 
         $defer = static function ($isTick) use (&$parallelDatas) {
             return static function (Closure|JobInterface $job) use ($isTick, &$parallelDatas) {
-                return static function (Closure $next) use ($isTick, $job, &$parallelDatas): void {
+                return static function (Closure $next) use ($isTick, $job, &$parallelDatas) {
                     $parallel = new Runtime('vendor/autoload.php');
                     $parallel->run(static function () use ($isTick, $job, $next) {
                         try {
-                            $job(static function ($return) use ($isTick, $next): void {
+                            $job(static function ($return) use ($isTick, $next) {
                                 if ($isTick === false) {
                                     $next($return);
                                 }
-                            }, static function ($fn, $next): void {
+                            }, static function ($fn, $next) {
                                 $fn($next);
                             });
                         } catch (Throwable $exception) {
@@ -130,7 +130,7 @@ class ParallelDriver implements DriverInterface
 
                     $parallelDatas[] = [
                         'parallel' => $parallel,
-                        'next' => static function ($return): void {}, /*function ($return) use ($isTick, $next) {
+                        'next' => static function ($return) {}, /*function ($return) use ($isTick, $next) {
                             if ($isTick === false) {
                                 $next($return);
                             }
@@ -160,7 +160,7 @@ class ParallelDriver implements DriverInterface
                         return $async(false)($job);
                     }, static function (Closure|JobInterface $job) use ($defer) {
                         return $defer(false)($job);
-                    }, $stream['fnFlows'][$index]['job'], $nextIp, static function ($data) use (&$stream, $index, $nextIp): void {
+                    }, $stream['fnFlows'][$index]['job'], $nextIp, static function ($data) use (&$stream, $index, $nextIp) {
                         if ($data instanceof RuntimeException && array_key_exists($index, $stream['fnFlows']) && $stream['fnFlows'][$index]['errorJob'] !== null) {
                             $stream['fnFlows'][$index]['errorJob']($data);
                         } elseif (array_key_exists($index + 1, $stream['fnFlows'])) {
@@ -198,7 +198,7 @@ class ParallelDriver implements DriverInterface
             'callback' => $callback,
         ];
 
-        return function () use ($i): void {
+        return function () use ($i) {
             unset($this->ticks[$i]);
         };
     }

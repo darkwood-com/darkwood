@@ -28,7 +28,7 @@ class StackIpStrategy implements IpStrategyInterface
         $this->ipPool = new IpPool();
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
             Event::PUSH => 'push',

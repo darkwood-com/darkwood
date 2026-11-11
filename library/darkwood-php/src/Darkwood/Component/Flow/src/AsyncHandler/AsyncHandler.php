@@ -27,7 +27,7 @@ final class AsyncHandler implements AsyncHandlerInterface
         $this->ipPool = new IpPool();
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
             Event::ASYNC => 'async',
@@ -43,7 +43,7 @@ final class AsyncHandler implements AsyncHandlerInterface
 
         $popIp = $this->ipPool->addIp($ip);
         $next = $asyncJob($ip->data);
-        $next(static function ($data) use ($event, $popIp): void {
+        $next(static function ($data) use ($event, $popIp) {
             $event->getCallback()($data);
             $popIp();
         });
