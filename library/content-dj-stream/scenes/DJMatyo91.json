@@ -379,7 +379,7 @@
             "versioned_id": "browser_source",
             "settings": {
                 "is_local_file": true,
-                "local_file": "library/dj-stream/overlays/countdown/index.html",
+                "local_file": "library/content-dj-stream/overlays/countdown/index.html",
                 "width": 1040,
                 "height": 95,
                 "css": "body {\nbackground-color: #FFFFFF;\n}"
@@ -595,8 +595,8 @@
             "versioned_id": "browser_source",
             "settings": {
                 "is_local_file": true,
-                "local_file": "library/dj-stream/overlays/kisscam/index.html",
-                "url": "library/dj-stream/overlays/kisscam/index.html",
+                "local_file": "library/content-dj-stream/overlays/kisscam/index.html",
+                "url": "library/content-dj-stream/overlays/kisscam/index.html",
                 "width": 988,
                 "height": 60,
                 "css": "body { background-color: #FFFFFF; margin: 0px auto; overflow: hidden; }"
@@ -1270,7 +1270,7 @@
             "id": "image_source",
             "versioned_id": "image_source",
             "settings": {
-                "file": "library/dj-stream/medias/cricket.jpg"
+                "file": "library/content-dj-stream/medias/cricket.jpg"
             },
             "mixers": 0,
             "sync": 0,
@@ -1296,7 +1296,7 @@
             "id": "ffmpeg_source",
             "versioned_id": "ffmpeg_source",
             "settings": {
-                "local_file": "library/dj-stream/medias/world.mp4",
+                "local_file": "library/content-dj-stream/medias/world.mp4",
                 "looping": true
             },
             "mixers": 255,
@@ -1364,7 +1364,7 @@
             "versioned_id": "browser_source",
             "settings": {
                 "is_local_file": true,
-                "local_file": "library/dj-stream/overlays/social/index.html",
+                "local_file": "library/content-dj-stream/overlays/social/index.html",
                 "width": 988,
                 "height": 60,
                 "css": "body { background-color: #FFFFFF; margin: 0px auto; overflow: hidden; }"
