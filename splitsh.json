@@ -7,7 +7,6 @@
     "navi": { "prefix": "library/darkwood-php/src/Darkwood/Component/Navi", "remote": "git@github.com:darkwood-com/navi.git", "branch": "8.1" },
     "ia-exception-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle", "remote": "git@github.com:darkwood-com/ia-exception-bundle.git", "branch": "8.1" },
     "media-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/MediaBundle", "remote": "git@github.com:darkwood-com/media-bundle.git", "branch": "8.1" },
-    "matyo91": { "prefix": "library/matyo91", "remote": "git@github.com:matyo91/matyo91.git", "branch": "main" },
-    "flowvox-ios": { "prefix": "library/flowvox-ios", "remote": "git@github.com:matyo91/flowvox-ios.git", "branch": "main" }
+    "matyo91": { "prefix": "library/matyo91", "remote": "git@github.com:matyo91/matyo91.git", "branch": "main" }
   }
 }
