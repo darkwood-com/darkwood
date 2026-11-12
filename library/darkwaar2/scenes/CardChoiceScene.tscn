@@ -1,0 +1,66 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2x3qj4k5m6n7"]
+
+[ext_resource type="Script" path="res://scripts/CardChoiceScene.gd" id="1_2h8k9"]
+[ext_resource type="Texture2D" uid="uid://choisescenebg" path="res://assets/choiseScene_bg.jpg" id="2_0h8k9"]
+[ext_resource type="Texture2D" uid="uid://confirmbtn" path="res://assets/confirm_btn.png" id="3_0h8k9"]
+
+[node name="CardChoiceScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_2h8k9")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("2_0h8k9")
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 20.0
+offset_right = 200.0
+offset_bottom = 60.0
+text = "Choose Your Deck"
+horizontal_alignment = 1
+
+[node name="CardContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 100.0
+offset_right = 400.0
+offset_bottom = 200.0
+
+[node name="SelectedCardsContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 250.0
+offset_right = 400.0
+offset_bottom = 350.0
+
+[node name="ConfirmButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -100.0
+offset_right = -50.0
+offset_bottom = -50.0
+texture_normal = ExtResource("3_0h8k9")
+
