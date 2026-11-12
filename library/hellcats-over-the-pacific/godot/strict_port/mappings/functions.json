@@ -3993,7 +3993,7 @@
       "structurally_verified": true,
       "behaviorally_verified": true,
       "integrated": true,
-      "runtime_verified": false,
+      "runtime_verified": true,
       "deterministic_test": "godot/tests/strict_port/fixtures/ai_state_cases.json",
       "renamed_from": "FUN_00019c26",
       "blocked_by": []
@@ -4010,7 +4010,7 @@
       "structurally_verified": true,
       "behaviorally_verified": true,
       "integrated": true,
-      "runtime_verified": false,
+      "runtime_verified": true,
       "deterministic_test": "godot/tests/strict_port/fixtures/ai_state_cases.json",
       "renamed_from": "FUN_00019c5e",
       "blocked_by": []
@@ -4027,7 +4027,7 @@
       "structurally_verified": true,
       "behaviorally_verified": true,
       "integrated": true,
-      "runtime_verified": false,
+      "runtime_verified": true,
       "deterministic_test": "godot/tests/strict_port/fixtures/ai_state_cases.json",
       "renamed_from": "FUN_00019fba",
       "blocked_by": []
@@ -4044,7 +4044,7 @@
       "structurally_verified": true,
       "behaviorally_verified": true,
       "integrated": true,
-      "runtime_verified": false,
+      "runtime_verified": true,
       "deterministic_test": "godot/tests/strict_port/fixtures/ai_state_cases.json",
       "renamed_from": "FUN_0001a1a6",
       "blocked_by": []

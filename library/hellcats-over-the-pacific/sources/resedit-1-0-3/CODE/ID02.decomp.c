@@ -848,7 +848,7 @@ char * ansi_strncat /* Original: FUN_00000412 */ (char *dst /* param_1 */,char *
  * Role evidence (was HYPOTHESIS): its only callers are the four BSRs of run_flight_session (0x558, 0x700,
  * 0x7be, 0x7dc), each before a flight runs [PROVEN, tools/decomp/xrefs.py]: it opens the overlay's session for a flight.
  * Decoded from ID02.bin bytes at file 0x45a.
- * Ghidra could not decode this body (rebuilt as C below); bytes 0x45a..0x4a2 [PROVEN]: UnloadSeg(JT $a2, i.e. CODE 4) ($A9F1); ensure_free_memory_and_init_sound (0x4c6); calls the overlay hook A5-0x1082; JSR 0x1f8e; if FreeMem (JT $212 = ID09 0x1b2, $A01C) < 100000 then MaxMem(&grow) (JT $21a = ID09 0x1bc, $A11D) to compact the heap; calls the overlay hook A5-0x107e; JSR 0x95a; JSR 0x20be. The bytes that follow (0x4a4..0x4c4, not exported) are the matching end_overlay_session: if sound is enabled (A5-0x12ee) shutdown_sound (0x4318); overlay hook A5-0x1076; JSR 0x1e68; JSR 0x9fa; if A5-0x1028 DrawMenuBar ($A937). Callers: 0x558 (inside FUN_000004fc), 0x700, 0x7be, 0x7dc; end_overlay_session from 0x6e2, 0x7c4, 0x84c. The pair brackets running the game overlay (Pacific Conflict) [HYPOTHESIS].
+ * Ghidra could not decode this body (rebuilt as C below); bytes 0x45a..0x4a2 [PROVEN]: UnloadSeg(JT $a2, i.e. CODE 4) ($A9F1); ensure_free_memory_and_init_sound (0x4c6); calls the overlay hook A5-0x1082; JSR 0x1f8e; if FreeMem (JT $212 = ID09 0x1b2, $A01C) < 100000 then MaxMem(&grow) (JT $21a = ID09 0x1bc, $A11D) to compact the heap; calls the overlay hook A5-0x107e; JSR 0x95a; JSR 0x20be. The bytes that follow (0x4a4..0x4c4, not exported) are the matching end_overlay_session: if sound is enabled (A5-0x12ee) shutdown_sound (0x4318); overlay hook A5-0x1076; JSR 0x1e68; JSR 0x9fa; if A5-0x1028 DrawMenuBar ($A937). Callers: 0x558 (inside run_flight_session (FUN_000004fc)), 0x700, 0x7be, 0x7dc; end_overlay_session from 0x6e2, 0x7c4, 0x84c. The pair brackets running the game overlay (Pacific Conflict) [HYPOTHESIS].
  */
 // WARNING: Control flow encountered bad instruction data
 
@@ -1421,7 +1421,7 @@ int new_offscreen_cport /* Original: FUN_00000ca6 */ (short rowBytes /* param_1 
  * Callers: rebuild_all_palette_index_maps (port = long A5-0x103a, then cleared);
  * ID03 file 0x3828 via JT $392.
  * [STRONG INFERENCE] A5-0x103a is a pointer-allocated GrafPort; the following
- * routine FUN_00000d3a (re)creates it when A5-0x103a == 0 (offscreen bitmap
+ * routine blit_offscreen_frame_to_window (FUN_00000d3a) (re)creates it when A5-0x103a == 0 (offscreen bitmap
  * with rowBytes = ((width * depth + 15) >> 4) * 2) - to be confirmed next.
  */
 void close_and_dispose_port /* Original: FUN_00000d24 */ (int port /* param_1: GrafPtr allocated by new_offscreen_cport */)
@@ -1775,7 +1775,7 @@ int build_notched_frame_poly /* Original: FUN_000010ce */ (short top,short left,
  * slot A5-0x10ea (JT $3c2). Ghidra exported no body (rebuilt as C below; args: long paint flag 8,
  * colour long $c, second-pass colour long $10). Bytes 0x11ec..0x1306
  * [PROVEN]: CurrentA5 thunk; two polygons built by
- * FUN_000010ce from data at A5-0x1194 (each after PenSize); black/white;
+ * build_notched_frame_poly (FUN_000010ce) from data at A5-0x1194 (each after PenSize); black/white;
  * loop x2: set_draw_color_index(...), set_back_color_index (FUN_00001632)(A5-0x118c), PaintPoly,
  * FillPoly(pattern A5-0x14e2), FramePoly in standard grey indices A5-0x118c /
  * A5-0x118a (init_standard_colour_indices), then OffsetPoly both by
@@ -2001,7 +2001,7 @@ int get_blended_fill_pattern /* Original: FUN_0000150a */ (void)
  *     *A5-0x14a6 + 6(c - 8); PenPat(rgb_to_bw_pattern(*entry)) (JT $1ca -> ID06 0x116) }
  *   else thePort (A5-0x160c)->fgColor (+0x50) = (long)colour.
  * Callers: paint_view_horizon_bands_a5safe (4x), paint_rect_color_index_a5safe
- * (FUN_00000fa0, ID02.c:799).
+ * (paint_rect_color_index_a5safe (FUN_00000fa0), ID02.c:799).
  */
 void set_draw_color_index /* Original: FUN_000015cc */ (short index /* param_1: palette index */)
 
@@ -2149,7 +2149,7 @@ void draw_view_frame_outline /* Original: FUN_000016aa */ (void)
  * nil); TST.W -$12 -> JT $27a HUnlock; SetClip(-4); DisposeRgn(-8); DisposeRgn(-4) - identical to the C. */
 /* Original: FUN_00001876; source: ID02.c:964. Recovered name: blit_image_clipped_to_region [STRONG INFERENCE].
  * Ghidra truncated at $A89B; body rebuilt as C. Bytes 0x1876..0x195a [PROVEN]:
- *   PenSize(1,1); r = NewRgn; OpenRgn; FUN_000016aa (draws the clip
+ *   PenSize(1,1); r = NewRgn; OpenRgn; draw_view_frame_outline (FUN_000016aa) (draws the clip
  *   shape); CloseRgn(r); saved = NewRgn; GetClip(saved); SetClip(r);
  *   if (!(HGetState(h = long A5-0x12b0) & 0x80)) { HLock(h); locked = 1 }
  *     (JT $2d2 = ID09 0x3b0 $A069; JT $272 HLock);
@@ -2277,7 +2277,7 @@ int new_handle_clear_or_die_a5safe /* Original: FUN_000019a2 */ (int size /* par
  *   ExitToShell ($A9F4).
  * A5-0xdd2 = A5-0xf46 + 93*4, i.e. string 93 of STR# 129 loaded by ID07
  * load_str129_string_table [PROVEN arithmetic]; presumably the out-of-memory
- * message shown by FUN_00001d48 [HYPOTHESIS]. Ghidra's register0x0000003c
+ * message shown by show_caution_alert_with_number (FUN_00001d48) [HYPOTHESIS]. Ghidra's register0x0000003c
  * stack modelling (an artifact) replaced by the rebuilt body.
  * Callers: new_handle_clear_or_die_a5safe, realloc_and_clear_handle_a5safe.
  */
@@ -2322,9 +2322,9 @@ void dispose_handle_a5safe /* Original: FUN_00001a04 */ (undefined4 h /* param_1
  *   ReallocHandle(h, size) (JT $26a = ID09 0x264, $A027);
  *   if (MemError (JT $29a = ID09 0x29e: word $0220 MemErr) != 0)
  *       fatal_memory_error_exit (FUN_000019e2);
- *   HLock(h) (JT $272); FUN_000002b0(*h, 0, size) (BSR 0x2b0; Ghidra could not
+ *   HLock(h) (JT $272); ansi_memset (FUN_000002b0)(*h, 0, size) (BSR 0x2b0; Ghidra could not
  *   decompile it - memset-like [HYPOTHESIS]); HUnlock(h) (JT $27a).
- * Ghidra error (the MemError result modelled as always 0, making the FUN_000019e2
+ * Ghidra error (the MemError result modelled as always 0, making the fatal_memory_error_exit (FUN_000019e2)
  * branch look dead) corrected in the rebuilt body.
  * Overlay service slot A5-0x10ba (JT $40a).
  */
@@ -2506,7 +2506,7 @@ char * format_int_decimal_pstring /* Original: FUN_00001c8a */ (int v /* param_1
  *          else     ParamText(msg, s, A5-0xd04, A5-0xd02) }
  *     (corrected: Pascal pushes the first parameter first, so the last two are not reversed);
  *     (the A5 words appear to be empty Pascal strings [HYPOTHESIS]);
- *   FUN_0000442e(0x102) [likely centres ALRT 258, cf. ID05 0x06];
+ *   position_alert_template (FUN_0000442e)(0x102) [likely centres ALRT 258, cf. ID05 0x06];
  *   CautionAlert(258, nil) $A988; p2cstr(msg) (JT $2fa).
  * Callers: fatal_memory_error_exit (STR# 129[93], 0); ID02.c:1542; ID08 via JT $4ba.
  */
@@ -2544,7 +2544,7 @@ void show_caution_alert_with_number /* Original: FUN_00001d48 */ (int msg /* par
  * identical to the C. */
 /* Original: FUN_00001dd4; source: ID02.c. Recovered name: show_sound_error_dialog_once [PROVEN].
  * Decoded from ID02.bin bytes at file 0x1dd4.
- * Only when the flag A5-0xd12 is 0: GetNewDialog(0x8b = DLOG 139 "Sound Error", NULL, (WindowPtr)-1) ($A97C); FUN_0000435e(dialog); ShowWindow; DrawDialog ($A981); waits for the mouse button to go down (Button $A974) then DisposDialog and waits for it to be released; sets A5-0xd12 = 1 so it is shown only once. Ghidra could not decode the body (rebuilt as C below).
+ * Only when the flag A5-0xd12 is 0: GetNewDialog(0x8b = DLOG 139 "Sound Error", NULL, (WindowPtr)-1) ($A97C); position_window_on_screen (FUN_0000435e)(dialog); ShowWindow; DrawDialog ($A981); waits for the mouse button to go down (Button $A974) then DisposDialog and waits for it to be released; sets A5-0xd12 = 1 so it is shown only once. Ghidra could not decode the body (rebuilt as C below).
  */
 // WARNING: Control flow encountered bad instruction data
 
@@ -2577,7 +2577,7 @@ void show_sound_error_dialog_once /* Original: FUN_00001dd4 */ (void)
  * GetNewDialog($80, nil, -1) to -4; BSR 0x435e; ShowWindow; DrawDialog; D0 = -4 - identical to the C. */
 /* Original: FUN_00001e32; source: ID02.c. Recovered name: show_creating_panel_dialog [PROVEN].
  * Decoded from ID02.bin bytes at file 0x1e32.
- * GetNewDialog(0x80 = DLOG 128 "Creating Instrument Panel", NULL, (WindowPtr)-1); FUN_0000435e(dialog); ShowWindow; DrawDialog; returns the dialog (the caller disposes it once the panel is built). Ghidra could not decode the body (rebuilt as C below).
+ * GetNewDialog(0x80 = DLOG 128 "Creating Instrument Panel", NULL, (WindowPtr)-1); position_window_on_screen (FUN_0000435e)(dialog); ShowWindow; DrawDialog; returns the dialog (the caller disposes it once the panel is built). Ghidra could not decode the body (rebuilt as C below).
  */
 // WARNING: Control flow encountered bad instruction data
 
@@ -2601,7 +2601,7 @@ int show_creating_panel_dialog /* Original: FUN_00001e32 */ (void)
  * CLR.L slot - identical to the C (Ghidra's stack-confused C replaced). */
 /* Original: FUN_00001e68; source: ID02.c. Recovered name: release_sound_slots [PROVEN].
  * Decoded from ID02.bin bytes at file 0x1e68.
- * For the 20 sound slots at A5-0xd62 (one long each): when non-zero, h = RecoverHandle(slot - 0x14) (JT $262 = ID09 glue $A128); if h, HPurge(h) (JT $282, $A049) and HUnlock(h) (JT $27a, $A02A); slot = 0. A slot therefore holds a pointer 0x14 bytes into a locked snd handle (presumably past its header). Callers: end_overlay_session (0x4b4), FUN_00001f8e (0x1f9e).
+ * For the 20 sound slots at A5-0xd62 (one long each): when non-zero, h = RecoverHandle(slot - 0x14) (JT $262 = ID09 glue $A128); if h, HPurge(h) (JT $282, $A049) and HUnlock(h) (JT $27a, $A02A); slot = 0. A slot therefore holds a pointer 0x14 bytes into a locked snd handle (presumably past its header). Callers: end_overlay_session (0x4b4), load_game_sounds (FUN_00001f8e) (0x1f9e).
  */
 void release_sound_slots /* Original: FUN_00001e68 */ (void)
 
@@ -2632,7 +2632,7 @@ void release_sound_slots /* Original: FUN_00001e68 */ (void)
  * A5-0xd62 = h; MOVEQ #0 - identical to the C. */
 /* Original: FUN_00001edc; source: ID02.c. Recovered name: load_named_sound_into_slot [PROVEN].
  * Decoded from ID02.bin bytes at file 0x1edc.
- * C args: +8 Pascal name, +0xc short slot. h = GetNamedResource('snd ', name) ($A9A1); none -> return 1. HNoPurge (JT $28a, $A04A); HUnlock (JT $27a); if FreeMem < 0x3000 and MaxMem(&grow) < 0x3000: HUnlock, HPurge, ReleaseResource ($A9A3), return 1 (out of memory). Makes sure the resource is marked purgeable (GetResAttrs $A9A6; if bit 0x20 is clear, SetResAttrs | 0x20 $A9A7 and ChangedResource); A5-0xd62[slot] = h; returns 0. Callers: FUN_00001f8e (0x1fc8.., thirteen call sites). Ghidra could not decode the body (rebuilt as C below).
+ * C args: +8 Pascal name, +0xc short slot. h = GetNamedResource('snd ', name) ($A9A1); none -> return 1. HNoPurge (JT $28a, $A04A); HUnlock (JT $27a); if FreeMem < 0x3000 and MaxMem(&grow) < 0x3000: HUnlock, HPurge, ReleaseResource ($A9A3), return 1 (out of memory). Makes sure the resource is marked purgeable (GetResAttrs $A9A6; if bit 0x20 is clear, SetResAttrs | 0x20 $A9A7 and ChangedResource); A5-0xd62[slot] = h; returns 0. Callers: load_game_sounds (FUN_00001f8e) (0x1fc8.., thirteen call sites). Ghidra could not decode the body (rebuilt as C below).
  */
 // WARNING: Control flow encountered bad instruction data
 
@@ -2869,7 +2869,7 @@ void scan_display_devices /* Original: FUN_00002192 */ (void)
  * Decoded from ID02.bin bytes at file 0x2334.
  * Ghidra could not decode the body (rebuilt as C below: screen Rect by value; the width-fitting loop
  * narrows the view by 4 * (8 / depth) until h = w * 480 / 640 fits or a second estimate passes; on depths
- * other than 1 the ID06 JT $1b2 routine is called twice); outline from bytes 0x2334..0x27e2 [PROVEN calls and constants]. View-size option = settings word +0xe (handle A5-0x13ac), forced to 1 when settings +0x1c (multi-monitor) is on and A5-0x1032 is set; switch through JT $3a (table at 0x2378, 1..4): view width = screen width A5-0x137e, 1/2, 3/4 or 1/4 of it. When the menu bar is hidden (A5-0x1028) the device base addresses (A5-0x136e records, 0x16 bytes) are moved down by MBarHeight ($0BAA) rows and the height reduced; a special case for size 1 on a 512 x (342 - MBarHeight) screen (the compact Mac) hides / restores the menu bar the other way and sets A5-0x1028. Computes the view height and byte offsets with the depth A5-0x137a, stores the view size in A5-0x1372 (width) / A5-0x1370 (height). Creates the game window once: NewCWindow (procID 2, behind -1) ($AA45) -> A5-0x14ca, two palettes ($AA91 with 13 and 217 entries) -> A5-0x14ae / -0x14aa with FUN_00004738(4 / 8), FUN_0000462c; otherwise HideWindow, MoveWindow / SizeWindow ($A91B / $A91D), FUN_0000462c, ShowWindow. Sets the origin for a right-hand device (A5-0x1342); disposes the old buffer A5-0x103a (0xd24); ID06 JT $1b2 (file 0x858); overlay hook A5-0x10a2 when A5-0x102e; at depth 1 ID06 init_raster_target (JT $1aa) on the screen base A5-0x1346 / rowBytes A5-0x134a with height 127, JSR 0x19e2 and A5-0x1300 = ID06 JT $1d2 (file 0xee). Caller: configure_display_from_main_device (0x27e4; its JSR d16(PC) at 0x29e6).
+ * other than 1 the ID06 JT $1b2 routine is called twice); outline from bytes 0x2334..0x27e2 [PROVEN calls and constants]. View-size option = settings word +0xe (handle A5-0x13ac), forced to 1 when settings +0x1c (multi-monitor) is on and A5-0x1032 is set; switch through JT $3a (table at 0x2378, 1..4): view width = screen width A5-0x137e, 1/2, 3/4 or 1/4 of it. When the menu bar is hidden (A5-0x1028) the device base addresses (A5-0x136e records, 0x16 bytes) are moved down by MBarHeight ($0BAA) rows and the height reduced; a special case for size 1 on a 512 x (342 - MBarHeight) screen (the compact Mac) hides / restores the menu bar the other way and sets A5-0x1028. Computes the view height and byte offsets with the depth A5-0x137a, stores the view size in A5-0x1372 (width) / A5-0x1370 (height). Creates the game window once: NewCWindow (procID 2, behind -1) ($AA45) -> A5-0x14ca, two palettes ($AA91 with 13 and 217 entries) -> A5-0x14ae / -0x14aa with configure_palette_entries (FUN_00004738)(4 / 8), select_palette_for_depth (FUN_0000462c); otherwise HideWindow, MoveWindow / SizeWindow ($A91B / $A91D), select_palette_for_depth (FUN_0000462c), ShowWindow. Sets the origin for a right-hand device (A5-0x1342); disposes the old buffer A5-0x103a (0xd24); ID06 JT $1b2 (file 0x858); overlay hook A5-0x10a2 when A5-0x102e; at depth 1 ID06 init_raster_target (JT $1aa) on the screen base A5-0x1346 / rowBytes A5-0x134a with height 127, JSR 0x19e2 and A5-0x1300 = ID06 JT $1d2 (file 0xee). Caller: configure_display_from_main_device (0x27e4; its JSR d16(PC) at 0x29e6).
  */
 // WARNING: Control flow encountered bad instruction data
 
@@ -3034,7 +3034,7 @@ void layout_game_window_and_view /* Original: FUN_00002334 */ (short top,short l
  * Ghidra could not decode the body (rebuilt as C below: the unsupported-depth path is a single retry, the
  * alert number is 0, the rescan stores the old depth in A5-0x137a, the menu-bar shift is added to the device
  * base addresses and the final screen Rect {mbar, 0, mbar + height, width} goes by value to the layout); bytes
- * 0x27e4..0x29f0 [PROVEN]. scan_display_devices; depth = pixelSize of the main device pixmap. If it is not 1, 4 or 8: hides the game window A5-0x14ca when visible (HideWindow $A916, A5-0xd10 = 1), shows STR# 129 slot 116 "Hellcats requires black and white,16 or 256 colors." with show_caution_alert_with_number (0x1d48), rescans. Then A5-0x137a = depth; A5-0x102e = window state (ShowWindow when it was hidden and a mission A5-0x12f8 is set); A5-0x13ae = -1 (no panel configuration yet); A5-0x1386 = the main PixMap's baseAddr (the screen; MOVEA.L x4 then MOVE.L (A0) at 0x28bc); A5-0x137a / -0x137c / -0x137e = depth / screen height / width; A5-0x1378 = rowBytes & 0x1fff; A5-0x12d4 = settings +0x1c; A5-0x1000 / A5-0x1312 from the low-memory byte $0CB2 glue and gdFlags bit 0; subtracts the menu-bar height ($0BAA) from the view rects (A5-0x136e records) and the height; A5-0x1028 = 0; then FUN_00002334 (layout). Callers: refresh_display_if_changed, 0x2d92, 0x35dc.
+ * 0x27e4..0x29f0 [PROVEN]. scan_display_devices; depth = pixelSize of the main device pixmap. If it is not 1, 4 or 8: hides the game window A5-0x14ca when visible (HideWindow $A916, A5-0xd10 = 1), shows STR# 129 slot 116 "Hellcats requires black and white,16 or 256 colors." with show_caution_alert_with_number (0x1d48), rescans. Then A5-0x137a = depth; A5-0x102e = window state (ShowWindow when it was hidden and a mission A5-0x12f8 is set); A5-0x13ae = -1 (no panel configuration yet); A5-0x1386 = the main PixMap's baseAddr (the screen; MOVEA.L x4 then MOVE.L (A0) at 0x28bc); A5-0x137a / -0x137c / -0x137e = depth / screen height / width; A5-0x1378 = rowBytes & 0x1fff; A5-0x12d4 = settings +0x1c; A5-0x1000 / A5-0x1312 from the low-memory byte $0CB2 glue and gdFlags bit 0; subtracts the menu-bar height ($0BAA) from the view rects (A5-0x136e records) and the height; A5-0x1028 = 0; then layout_game_window_and_view (FUN_00002334) (layout). Callers: refresh_display_if_changed, 0x2d92, 0x35dc.
  */
 // WARNING: Control flow encountered bad instruction data
 
@@ -3151,7 +3151,7 @@ void refresh_display_if_changed /* Original: FUN_000029f2 */ (void)
  * Effect: copies settings words from S into a live options block in the A5
  * world; for some fields, a change triggers a callback through a function
  * pointer, gated by long A5-0x1006 != 0 [UNKNOWN: probably "overlay/game
- * context loaded"]; any triggered callback forces a redraw (FUN_00004db0).
+ * context loaded"]; any triggered callback forces a redraw (redraw_main_window (FUN_00004db0)).
  * Callers [PROVEN, bytes; BSR/JSR d16(PC) scan of ID02.bin]: file 0x6ce,
  * 0x6f6, 0x716, 0x218a, 0x2a20, 0x39a0 (do_menu_command epilogue). None appear
  * in the exported C (all inside truncated or mis-decoded bodies).
@@ -3182,7 +3182,7 @@ void refresh_display_if_changed /* Original: FUN_000029f2 */ (void)
  * 0x2a3a, 0x2aec, 0x2b1a, 0x2b50, 0x3694, 0x4d1a); no direct writer. They are
  * therefore filled indirectly (overlay code or block copy) [STRONG INFERENCE];
  * the callbacks run overlay-side code only when the overlay is loaded.
- * Note: S+0x0e (menu 4 items 8-10) is not copied here; FUN_000035bc handles it.
+ * Note: S+0x0e (menu 4 items 8-10) is not copied here; set_view_size_option (FUN_000035bc) handles it.
  * Order of reads/writes is preserved exactly as exported.
  */
 void apply_settings_to_live_options /* Original: FUN_00002a44 */ (void)
@@ -3403,7 +3403,7 @@ void initialize_application /* Original: FUN_00002bbc */ (void)
 /* Original: FUN_00002db8; source: ID02.c:1570. Recovered name: wait_for_click_or_key [STRONG INFERENCE].
  * Ghidra truncated at $A9B4 (body rebuilt as C below). Bytes 0x2db8..0x2e34 [PROVEN]: loop {
  *   SystemTask $A9B4; got = GetNextEvent(-1 everyEvent, &evt) $A970 (EXTB.L);
- *   BSR 0x29f2 (FUN_000029f2); if (!got) continue;
+ *   BSR 0x29f2 (refresh_display_if_changed (FUN_000029f2)); if (!got) continue;
  *   switch (evt.what) [ID01 switch helper, table 0x2de4 parsed by script]:
  *     1 mouseDown, 3 keyDown, 5 autoKey -> return;
  *     6 updateEvt -> if (A5-0x14c6 && evt.message == main_window) {
@@ -3618,11 +3618,11 @@ void handle_activate_event /* Original: FUN_00002fa0 */ (undefined8 evt_what_mes
  * where -$8, modifiers -$4); word got_event at -$2(A6).
  *
  *   HiliteMenu(0) ($A938); SystemTask ($A9B4)
- *   BSR 0x3174 (FUN_00003174); JSR $172(A5) -> seg4 file 0x432 = report_panel_store_failure
+ *   BSR 0x3174 (update_menu_items (FUN_00003174)); JSR $172(A5) -> seg4 file 0x432 = report_panel_store_failure
  *        (ID04.decomp.c's unexported block; checked against its bytes by the runtime cases) [PROVEN]
  *   got_event = GetNextEvent(-1 /everyEvent/, &evt) ($A970), then
  *       word 0x49C0 = EXTB.L D0 (68020+ only; Capstone 68000 mode rejects it)
- *   BSR 0x29f2 (FUN_000029f2); if (!got_event) return
+ *   BSR 0x29f2 (refresh_display_if_changed (FUN_000029f2)); if (!got_event) return
  *   switch (evt.what) via JSR $3a(A5) (ID01 switch helper; table at 0x300e:
  *   lo=1, hi=8, default -> return):
  *     1 mouseDown  -> BSR 0x2f1e (handle_mouse_down)(&evt)
@@ -3707,7 +3707,7 @@ void poll_and_dispatch_event /* Original: FUN_00002fd4 */ (void)
  *   word A5-0x14c4 = 1
  *   ok = JSR $1e2(A5) -> seg 8 file 0x6 = ID08 load_overlay_from_resource
  *   UnloadSeg(JT $1ea = seg 8 entry); UnloadSeg(JT $56a = seg 5 entry)
- *   BSR file 0x30fa (FUN_000030fa) = install_menus   [PROVEN, target of the BSR]
+ *   BSR file 0x30fa (install_menus (FUN_000030fa)) = install_menus   [PROVEN, target of the BSR]
  *   if (ok && word A5-0x102e != 0) BSR file 0x35e4 = start_new_mission [PROVEN, target of the BSR]
  *   for (;) BSR file 0x2fd4 (poll_and_dispatch_event, FUN_00002fd4) [never returns]
  *   (UNLK/RTS at 0x30f6 unreachable)
@@ -4001,9 +4001,9 @@ void start_new_mission /* Original: FUN_000035e4 */ (void)
  *       1 -> BCHG #0, S+3;  DIRTY      2 -> BCHG #0, S+5;  DIRTY
  *       4 -> BCHG #0, byte A5-0x102f (not persisted, no DIRTY)
  *       5 -> BCHG #0, S+7;  DIRTY      6 -> BCHG #0, S+9;  DIRTY
- *       8 -> FUN_000035bc(1); DIRTY    9 -> FUN_000035bc(3); DIRTY
- *      10 -> FUN_000035bc(2); DIRTY    3, 7 -> no action (separators) [HYPOTHESIS]
- *       FUN_000035bc(v) [ID02.c C]: if word S+0xe != v, store v, BSR 0x27e4
+ *       8 -> set_view_size_option (FUN_000035bc)(1); DIRTY    9 -> set_view_size_option (FUN_000035bc)(3); DIRTY
+ *      10 -> set_view_size_option (FUN_000035bc)(2); DIRTY    3, 7 -> no action (separators) [HYPOTHESIS]
+ *       set_view_size_option (FUN_000035bc)(v) [ID02.c C]: if word S+0xe != v, store v, BSR 0x27e4
  *       (also called at end of initialize_application) [UNKNOWN: re-layout?]
  *  5 (0x38ac) item switch [table 0x38b4, 1..11]:
  *       1..5 -> word S+0x10 = item (1..5); DIRTY   [radio group; default 2]
@@ -4011,7 +4011,7 @@ void start_new_mission /* Original: FUN_000035e4 */ (void)
  *       7 -> BCHG #0, S+0x13   8 -> S+0x17   9 -> S+0x15   10 -> S+0x19
  *      11 -> S+0x1b; each DIRTY
  *  Epilogue (every path, file 0x39a0): BSR 0x2a44 (apply_settings_to_live_options,
- *  FUN_00002a44: copies S words into live A5 options), UNLK, RTS.
+ *  apply_settings_to_live_options (FUN_00002a44): copies S words into live A5 options), UNLK, RTS.
  *  BCHG on odd byte S+2n+1 flips bit 0 of big-endian word S+2n.
  *  Defaults when HEL1 127 is created (initialize_application): S+0x0e=1,
  *  S+0x10=2, S+0x24=2, S+0x26=1. Bit-0 toggles imply on/off options
@@ -4614,7 +4614,7 @@ undefined8 vbl_sound_handler_two_channel /* Original: FUN_00003bc4 */ (void)
  * Ghidra error: it replaced the runtime pointer load with the constant
  * &DAT_66fa4e75 (bytes from the file, cf. ID09 selector artifact); corrected
  * to the SoundBase load.
- * Callers: shutdown_sound, FUN_00003dd0.
+ * Callers: shutdown_sound, init_sound_system (FUN_00003dd0).
  */
 void clear_sound_buffer_to_silence /* Original: FUN_00003d36 */ (void)
 
@@ -4717,8 +4717,8 @@ void select_two_channel_sound_handler /* Original: FUN_00003db8 */ (int channel 
  *   A5-0xc32 = 1, A5-0xc2e = 0, A5-0xc2a = 0x172 (370);
  *   alloc_sound_buffer_node(0 and 1, A5-0xc26, 0, 0x172, 0)  (looping silence);
  *   A5-0x360 = param ? JT A5+0x412: JT A5+0x41a;  A5-0x35c = JT A5+0x422;
- *   first time (word A5-0x352 == 0): set it, FUN_00003aae, FUN_000039a8,
- *     FUN_00003bc4;
+ *   first time (word A5-0x352 == 0): set it, vbl_sound_handler_ch0_variant (FUN_00003aae), vbl_sound_handler_ch0_unrolled (FUN_000039a8),
+ *     vbl_sound_handler_two_channel (FUN_00003bc4);
  *   A5-0xc36 = low-memory long $0196 (saved; restored by shutdown_sound);
  *   $0196 = A5-0x360 (install the selected routine; $0196 = Lvl1DT[1], VBL
  *   level-1 interrupt vector, identified );
@@ -4963,7 +4963,7 @@ void release_channel_loop /* Original: FUN_000041a6 */ (int channel /* param_1 *
 /* Original: FUN_00004242; source: ID02.c:2343. Recovered name: silence_sound_channel [STRONG INFERENCE].
  * Bytes file 0x4242..0x42ae match the C [PROVEN]: CurrentA5 thunk; if (sound
  * active word A5-0xc38 && 0 <= ch < 2) channel_record[ch] (0x238 bytes each at
- * A5-0x7d0) +0 = FUN_00003d50(ch, A5-0xc26, 0, 0x172, 0) - queues a 370-sample
+ * A5-0x7d0) +0 = alloc_sound_buffer_node (FUN_00003d50)(ch, A5-0xc26, 0, 0x172, 0) - queues a 370-sample
  * buffer from A5-0xc26 (silence [HYPOTHESIS]). Ghidra's unaff_A4 argument is
  * the word 0 pushed by CLR.W (artifact; now written as 0). shutdown_sound also passes ch = 2,
  * which the bounds check ignores. Service slot A5-0x10ca (JT $432).
@@ -5207,7 +5207,7 @@ void select_palette_for_depth /* Original: FUN_0000462c */ (void)
  * the C. */
 /* Original: FUN_000046b4; source: ID02.c:2484-2506. Recovered name: rebuild_all_palette_index_maps [STRONG INFERENCE].
  * Bytes file 0x46b4..0x4736 match the C [PROVEN]: clears collision flag
- * A5-0x102a; B&W (A5-0x137a == 1) -> FUN_00004b62; else if depth word
+ * A5-0x102a; B&W (A5-0x137a == 1) -> init_standard_colour_indices (FUN_00004b62); else if depth word
  * A5-0x2cc != 0: if long A5-0x103a, close_and_dispose_port(A5-0x103a) and clear it;
  * for slot 1..3 used: build_palette_index_map(slot, &local -4(A6), slot.stored (+4),
  * scratch -$204(A6)). Ghidra's CONCAT22 call lost the last three arguments (restored below).
@@ -5312,7 +5312,7 @@ void configure_palette_entries /* Original: FUN_00004738 */ (short depth /* para
  * [HYPOTHESIS]), restores A5/D2. Installed as function pointer A5-0x1122 via
  * JT A5+0x46a by build_palette_index_map when palette indices collide.
  *: it is the 'discard' alternative to apply_pending_color_entries_a5safe
- * (FUN_00000c68, SetEntries) normally installed in that slot.
+ * (apply_pending_color_entries_a5safe (FUN_00000c68), SetEntries) normally installed in that slot.
  */
 void clear_ctab_size_callback /* Original: FUN_0000488a */ (void)
 
@@ -5354,7 +5354,7 @@ void clear_ctab_size_callback /* Original: FUN_0000488a */ (void)
  * Interpretation [STRONG INFERENCE]: maps palette entries to actual device
  * pixel values (and back); a collision selects an alternate routine via the
  * function pointer A5-0x1122. Traps per Inside Macintosh (Palette Manager).
- * Callers: check_device_color_state_changed (2x), FUN_000046b4.
+ * Callers: check_device_color_state_changed (2x), rebuild_all_palette_index_maps (FUN_000046b4).
  */
 short build_palette_index_map /* Original: FUN_000048ae */ (short slot /* param_1: display device slot */,short *start /* param_2: out, first index found (0, or 256) */,short *map /* param_3: out, colour level -> palette index */,short *inverse /* param_4: out, palette index -> colour level */)
 
@@ -5424,7 +5424,7 @@ short build_palette_index_map /* Original: FUN_000048ae */ (short slot /* param_
  * Not found: -1. Result by mode word A5-0x137a: 1 or 4 -> index;
  * 8 -> index + 200 (the 0xc8+ palette entries set by configure_palette_entries);
  * other modes return the leftover register value (preserved, UNKNOWN).
- * Callers: FUN_00004b62 (9 calls; not decompiled by Ghidra, see note below it).
+ * Callers: init_standard_colour_indices (FUN_00004b62) (9 calls; not decompiled by Ghidra, see note below it).
  */
 undefined4 lookup_palette_index_for_rgb_level /* Original: FUN_000049fe */ (undefined4 rg /* param_1: red level in ._0_2_, green level in ._2_2_ (0..4) */,undefined4 b_word /* param_2: blue level in ._0_2_ */)
 
@@ -5548,7 +5548,7 @@ void init_standard_colour_indices /* Original: FUN_00004b62 */ (void)
  * Exported C matches bytes file 0x4c18..0x4d22 [PROVEN] once the build_palette_index_map
  * arguments Ghidra dropped are restored (fresh map -$20a / stored record +4, scratch -$40a).
  * - Clears word A5-0x102a and local "changed" flag (local_e).
- * - If word A5-0x137a == 1: FUN_00004b62 only (likely 1-bit / B&W path).
+ * - If word A5-0x137a == 1: init_standard_colour_indices (FUN_00004b62) only (likely 1-bit / B&W path).
  * - Else for slot i = 1..3 of the 0x16-byte table at A5-0x136e (+0 long
  *   = device handle, +4 long = stored word array):
  *     if slot used: count = build_palette_index_map(i, &start, fresh, scratch);
@@ -5716,7 +5716,7 @@ void handle_update_event /* Original: FUN_00004d6a */ (int evt /* param_1: Event
  *     BSR 0x4c18 (check_device_color_state_changed, FUN_00004c18);
  *     UnloadSeg(JT $18a = segment 3 entry) $A9F1;
  *     (*(code **)(A5-0x109e));      overlay-side callback [UNKNOWN target]
- *     BSR 0x4d96 [not a Ghidra function]; FUN_00000930(0, 1) (BSR 0x930);
+ *     BSR 0x4d96 [not a Ghidra function]; call_overlay_session_hooks (FUN_00000930)(0, 1) (BSR 0x930);
  *     BSR 0xa26 [not a Ghidra function]; ShowCursor $A853;
  *   }
  * Callers: poll_and_dispatch_event (updateEvt, between Begin/EndUpdate),

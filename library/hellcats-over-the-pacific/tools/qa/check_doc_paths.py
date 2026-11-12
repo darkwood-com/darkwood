@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Every docs/ path named in the repository's text exists.
+"""Every docs/ path named in the repository's text exists, and every `godot/` or `tools/` path
+quoted in its Markdown (outside docs/history, the removed prototype's record).
 
 Markdown links are checked by check_markdown_links.py; this covers the plain mentions in code,
 comments and prose (`docs/reference/STRUCTS.md`, "see docs/topics/SOUND_SYSTEM.md"), which a moved
@@ -16,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 MENTION = re.compile(r"(?<![\w./-])docs/[\w./#-]*[\w]")
 TEXT = {".md", ".py", ".gd", ".c", ".txt", ".cfg", ".sh"}
+CODE = re.compile(r"`((?:godot|tools)/[\w./-]+)`")
 
 
 def main() -> int:
@@ -31,9 +33,13 @@ def main() -> int:
                 target = mention.split("#", 1)[0].rstrip(".")
                 if not (ROOT / target).exists():
                     broken.append(f"{name}:{number}: {mention}")
+            if path.suffix == ".md" and not name.startswith("docs/history/"):
+                for mention in CODE.findall(line):
+                    if not (ROOT / mention).exists():
+                        broken.append(f"{name}:{number}: {mention}")
     for b in broken:
         print(f"BROKEN {b}")
-    print(f"{'FAIL' if broken else 'PASS'} docs/ path mentions: {len(broken)} broken")
+    print(f"{'FAIL' if broken else 'PASS'} docs/ and quoted code path mentions: {len(broken)} broken")
     return 1 if broken else 0
 
 

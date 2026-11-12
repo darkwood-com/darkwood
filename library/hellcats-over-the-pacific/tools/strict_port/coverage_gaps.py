@@ -65,8 +65,6 @@ UNPLACED = {"create_spinner_controller": 6, "spin_object_heading": 6,
             "create_singleton_type10_controller": 0x10,
             "create_sinking_controller": 0x16, "tick_sinking_controller": 0x16}
 LANDING = "a touchdown and stop on a friendly deck or runway (outcome 9: run_flight_session's refuel)"
-APPROACH = ("the game's landing approach: Flying Fortress's B-17 completing its route, or 'G' with the "
-            "hidden setting +0x0a (host +0xa4) set")
 FIRE = "an aircraft set burning by its damage (+0x684 bit 0x10, update_aircraft_damage_state)"
 NEEDS = {
     "fatal_memory_error_exit": (FAILURE, "the Memory Manager refusing a block (out of memory)"),
@@ -94,10 +92,6 @@ NEEDS = {
     "respawn_player_at_anchor": (FLOWN, LANDING + ", then the next sortie"),
     "fill_pose_history_flags": (FLOWN, LANDING + ", then the next sortie"),
     "load_player_fuel_and_bombs": (FLOWN, LANDING + ", then the next sortie"),
-    "try_begin_landing_approach": (FLOWN, APPROACH),
-    "find_nearest_runway_approach_ends": (FLOWN, APPROACH),
-    "store_xyz_asr": (FLOWN, APPROACH),
-    "tick_landing_approach_glide": (FLOWN, APPROACH),
     "tally_destroyed_entity": (FLOWN, "the player destroying a target (a kill tallied)"),
     "create_ground_fire_controller": (FLOWN, FIRE),
     "spawn_ground_fire_object": (FLOWN, FIRE),

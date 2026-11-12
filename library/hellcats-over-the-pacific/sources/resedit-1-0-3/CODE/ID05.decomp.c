@@ -423,7 +423,7 @@ char * get_dialog_item_text_upper /* Original: FUN_000004e4 */ (int dlg /* param
  *   code-string builder (file 0x3ba; see code_dialog_filter header)
  *     (a, outA=-$100, b, outB=-$200);
  *   if (record_code_index_equals(*a, outB + 6)) return;   already valid: no dialog, port not restored
- *   FUN_000008d6(&w1, &w2, &w3)  -> random challenge from the A5-0xba table;
+ *   pick_random_protection_challenge (FUN_000008d6)(&w1, &w2, &w3)  -> random challenge from the A5-0xba table;
  *   NumToString (JT $2f2, ID09 0x404) of w1/w2/w3 into s1/s2/s3;
  *   center_template_rect_on_screen('DLOG', 1000);
  *   dlg = GetNewDialog(1000, nil, (WindowPtr)-1) $A97C; if (!dlg) ExitToShell;

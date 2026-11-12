@@ -664,13 +664,13 @@ def check_stale_wording() -> None:
 
 
 def check_doc_links() -> str:
-    """Markdown links and plain docs/ path mentions all resolve."""
+    """Markdown links, plain docs/ path mentions and quoted code paths all resolve."""
     import subprocess
     for script in ("check_markdown_links.py", "check_doc_paths.py"):
         r = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "qa" / script)], capture_output=True, text=True)
         if r.returncode != 0:
             fail(r.stdout.strip() or r.stderr.strip())
-    return "markdown links and docs/ paths resolve"
+    return "markdown links, docs/ and quoted code paths resolve"
 
 
 def check_callees() -> str:

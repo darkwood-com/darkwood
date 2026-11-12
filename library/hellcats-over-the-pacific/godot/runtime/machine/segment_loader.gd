@@ -143,10 +143,6 @@ func _arity(port, method: String) -> int:
 	push_error("ported method %s not found" % method)
 	return 0
 
-## The segment port holding a ported routine name.
-func port_of(segment: int):
-	return instances.get(segment)
-
 func all_ports() -> Array:
 	var out: Array = instances.values()
 	if overlay != null:

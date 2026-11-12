@@ -311,7 +311,7 @@ bool free_aligned /* Original: FUN_0000024c */ (int block /* param_1: block from
 /* Original: FUN_0000026c; source: ID06.c:208. Recovered name: init_row_table_fields [STRONG INFERENCE].
  * Overlay service slot (not in service table).
  * Exported C complete. Row table +0 = JT A5+0x192 (renderer callback);
- * +8 = FUN_0000017c(...); +0xa = 11 (fixed-point shift); +0xc = target +4
+ * +8 = lookup_colour_map (FUN_0000017c)(...); +0xa = 11 (fixed-point shift); +0xc = target +4
  * width * target +6 / 8 (row stride remainder); row entry +8 = target +0xc +
  * (row % 8) * 4 (8-row repeating table: dither pattern [HYPOTHESIS]);
  * +0xe = rows; +0x10 = +0x14 = 0. Returns 1. Caller: alloc_row_table.
@@ -578,7 +578,7 @@ void free_row_table /* Original: FUN_00000512 */ (void)
  * existing table has fewer than n entries (+0xe), it is freed; otherwise
  * reused. Allocates (alloc_aligned_clear) the 0x24-byte record -> A5-0x1cd2 and
  * n * 12 bytes of entries -> record+4, clears every entry, then returns
- * FUN_0000026c(param_1). One 12-byte entry per raster row [STRONG INFERENCE].
+ * init_row_table_fields (FUN_0000026c)(param_1). One 12-byte entry per raster row [STRONG INFERENCE].
  */
 undefined4 alloc_row_table /* Original: FUN_00000598 */ (undefined4 level_rows /* param_1: high word = colour level, low word = row count */)
 
@@ -691,10 +691,10 @@ undefined4 init_edge_pool /* Original: FUN_00000666 */ (void)
  * centre A5-0x1cca / -0x1cc8 = width / height ASR.W #1 (the C's half-words corrected to (short) so the
  * shift is arithmetic as in the bytes); returns 1 - otherwise identical to the C. */
 /* Original: FUN_000007b0; source: ID06.c:494. Recovered name: init_raster_target [STRONG INFERENCE].
- * Exported C complete. If FUN_000000b0 != 0: allocate (once) the 16-byte
+ * Exported C complete. If alloc_pattern_tables (FUN_000000b0) != 0: allocate (once) the 16-byte
  * target record -> A5-0x1cce: +0 = param_1 (pixel base), +4 = param_2 high
  * word, +6 = 1, +8 = param_3 high word (width), +0xa = param_3 low word
- * (height), +0xc = FUN_000000f4; alloc_row_table(param_2 low, height);
+ * (height), +0xc = get_pattern_table (FUN_000000f4); alloc_row_table(param_2 low, height);
  * init_edge_pool; A5-0x1cca = width >> 1, A5-0x1cc8 = height >> 1 (centre).
  * Returns 1 on success, 0 on any failure.
  */

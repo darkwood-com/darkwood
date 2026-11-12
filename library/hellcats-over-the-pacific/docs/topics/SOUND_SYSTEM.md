@@ -74,14 +74,18 @@ vertical-blanking level-1 interrupt vector, `Lvl1DT[1]` at low-memory
 | 0x1f8e | `load_game_sounds` | 11 named sounds into slots 0, 1, 2, 5–12 (slot 0 variant chosen by free memory > 0x2e400); `A5-0x112a` = &slots for the overlay |
 | 0x20be | `lock_sound_slots` | HLock each handle, slot = data pointer *h + 0x14 |
 
-## Open questions
+## Handler behaviour [PROVEN, emulator-checked ports]
 
-- Exact difference between the two channel-0 handler variants.
-- End-of-buffer and continuation handling inside the handlers.
-- Whether nodes from `enqueue_sample_on_channel` are actually reached
-  (depends on handler end-of-buffer logic).
-- ~~How the three-node sustain loop is released~~ — `release_channel_loop`
-  rewrites continuations to break self-loops.
+The strict ports in `godot/strict_port/code/ID02.gd` settle what was open here:
+
+- The two channel-0 handlers: 0x39a8 resamples every sample; 0x3aae copies a
+  frame that fits in the node straight (370 bytes, longs through `MOVEP`).
+- End of a node: at or past its end (signed), its continuation (+0x18) takes
+  over from that node's loop start (+0xc), fraction 0 (`_voice_wrap`).
+- `enqueue_sample_on_channel` (0x4050) is unreachable in the original: nothing
+  live references it ([`RUNTIME_COVERAGE.md`](../generated/RUNTIME_COVERAGE.md)).
+- The three-node sustain loop is released by `release_channel_loop`, which
+  rewrites the continuations to break the self-loops.
 
 ## Overlay sound driver (Pacific Conflict)
 
@@ -115,5 +119,5 @@ is at DATA offset size − (x − 0xba0), checked on 13 names).
 | 8 | Explosion (Distant Explosion if missing) | countdown `DAT_0001b84a` = 30 frames, set by `spawn_effect` when the camera is < 10000 away |
 | 9 | Distant Explosion | countdown `DAT_0001b848` = 15 frames, `spawn_effect` at < 40000 |
 | 10 | Wind | channel 0 when the engine is off and player +0x66a (engine RPM, the tachometer value) > 0x2710 |
-| 11 | Ditch | `_DAT_0001b850` (update_aircraft_entity, two ground-contact paths; condition not yet decoded) |
+| 11 | Ditch | `_DAT_0001b850`: the player in water (+0x684 bit 0x1000), set by update_aircraft_entity when a wreck (bit 0x800) comes to rest on a water surface (type byte +0x2c == 0x10, which also sets 0x1000), or when grounded in water with the gear not fully down (abs(+0x679) != 0x2d) |
 | 12 | Grass | `_DAT_0001b854` (update_aircraft_entity, random while rolling on rough ground) |

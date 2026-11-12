@@ -52,7 +52,7 @@ typedef unsigned char    byte;
  * The game's STR# 129 holds exactly 120 strings, so the unchecked loop stays inside it
  * [PROVEN, resource count]; any other resource is not bounds-checked. [UNKNOWN] NULL-handle
  * behaviour (no test before HLock / dereference).
- * Caller: FUN_00000190 (ID07.c:26), sole call site in the exports.
+ * Caller: init_string_pointer_groups (FUN_00000190) (ID07.c:26), sole call site in the exports.
  */
 void load_str129_string_table /* Original: FUN_00000006 */ (void)
 

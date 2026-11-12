@@ -9,6 +9,7 @@ Every row must cite **source file:line** or **binary offset**. All statements ta
 | Offset (hex) | Size / type | Description | Source |
 |--------------|-------------|-------------|--------|
 | +0x98 | short | Condition used in input path | Pacific Conflict.c:7420 |
+| +0xa4 | short | Landing-approach option, no menu item [PROVEN: HEL1:127 +0x0a → A5-0x12e4, ID02 0x2a44 apply_settings_to_live_options]. Set: 'G' lowering the gear in flight calls try_begin_landing_approach (0x19fba); clear: the player's handler +0x32 is 0xe772 | Pacific Conflict.c:7734, 7331 |
 | +0xa8 | short | Mission phase (0 &lt; phase &lt; 6 → run four arrays) | Pacific Conflict.c:5104 |
 | +0xac | short | Ground Clutter option (0 → clear_pending_entity_slots) [PROVEN: MENU 5 item 9 → HEL1:127 +0x15 → A5-0x12dc] | Pacific Conflict.c:5101 |
 | +0xb0 | short | Shadows option [PROVEN] | semantic C (shadow_pre_render) |
@@ -273,7 +274,7 @@ test `btst #n,$684` means word bit n + 8. Word +0x686 is last frame's copy
 | 12 | 0x1000 | water contact 0xe832 / 0xf384; cleared on leaving the ground 0xf0d8 | 0x8066 (ditch outcome), 0xef90, 0x108da | in water | STRONG_INFERENCE |
 | 13 | 0x2000 | set while the gear retracts (+0x679 < 0, 0xf5a0), cleared while it extends (0xf588) | aircraft_tick replay 0xe628 / 0xe6d4 (gear = 0x2d when clear, 0 when set; on a change, re-derives the gear direction from the sign) | GEAR LEVER UP | PROVEN flow / STRONG_INFERENCE |
 | 14 | 0x4000 | aircraft_create 0xe11a, respawn (= 0x4000), key 'M' 0x7af6; cleared by keys '0'..'9' (0x79a6) and the throttle step (0x7df0) | 0x7de4, 0x82b6 (refuel snapshot), 0xeb5c, update_aircraft_entity (with +0x66e == 0 clears engine-running +0x669) | ENGINE SWITCHED OFF | PROVEN flow / STRONG_INFERENCE name |
-| 15 | 0x8000 | apply_random_aircraft_damage when the bullet's +0x36 != 0; bullet +0x36 = 1 only for rounds fired by the player (update_aircraft_entity gun path, `psVar11[0x1b] = 1`) | kept by andi #$8000 at 0xf7ea (the only bit to survive a crash); no explicit test found | HIT BY THE PLAYER (kill attribution); its consumer is not yet identified | PROVEN writer chain / STRONG_INFERENCE |
+| 15 | 0x8000 | apply_random_aircraft_damage when the bullet's +0x36 != 0; bullet +0x36 = 1 only for rounds fired by the player (update_aircraft_entity gun path, `psVar11[0x1b] = 1`) | kept by andi #$8000 at 0xf7ea (the only bit to survive a crash); update_aircraft_damage_state 0x10882 (tst.b +0x684 / bge): a destroyed aircraft with target type +0x50 != 0 is counted, type < 1 in host +0xd2, type t > 0 in host +0xb8 + 2t (the counters tally_destroyed_entity 0x488 keeps) | HIT BY THE PLAYER: only aircraft the player hit count as kills | PROVEN (bytes, semantic C) |
 
 ## Object flag long (+4)
 

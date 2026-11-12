@@ -8,7 +8,7 @@ Evidence-first. Tags follow the vocabulary of [`../port/DECOMPILATION_PROGRESS.m
 |--------|------------|----------|
 | **Overlay (Pacific Conflict)** | Mixed code+data; code from 0x20; no A5-relative globals; fixed base (Ghidra base 0). | [Pacific_Conflict_loader_analysis.md](../../sources/resedit-1-0-3/CODE/Pacific_Conflict_loader_analysis.md) §1, §4, §5 (H3) |
 | **Identity mapping** | For overlay: `runtime_address = file_offset` when load base = 0. | Ibid. §6. Safe parsing: `0x20 ≤ A < 0x3e700`. |
-| **Relocation** | No reloc table. Only FUN_00000020 patches two cells: DAT_0001a7d2, DAT_0001a81c (base/handle from loader). | Ibid. §3. ResEdit/CODE/Pacific Conflict.c FUN_00000020. |
+| **Relocation** | Two tables of 8-byte records after the code and data (header sizes A5-0x100e, A5-0x100a): the loader adds the image address to each long named, the first table's from the code, the second's from the data (flag bit 7 skips a record). Inside the image, FUN_00000020 also patches two cells: DAT_0001a7d2, DAT_0001a81c (base/handle from loader). | ID08.decomp.c `load_overlay_from_resource` (relocation loop); `godot/runtime/machine/overlay_loader.gd`. Pacific Conflict.c FUN_00000020. |
 | **CODE segments (ID01–ID09)** | Segment-local offsets; segment loaded by LoadSeg; A5 world for globals (unaff_A5 in ID02/ID05.c). | ID02.c, ID05.c; Apple Segment Manager (Inside Mac: RTArch-118). |
 
 ## 2) Entrypoint and overlay loading
@@ -19,21 +19,9 @@ Evidence-first. Tags follow the vocabulary of [`../port/DECOMPILATION_PROGRESS.m
 | **Who loads overlay** | ID08 FUN_00000006 (resource traps 0x2a2, 0x2b2, 0x2aa) is the best candidate for loading the 255360-byte blob. | Ibid. §7. ID08.c. |
 | **ID00 role** | CODE 0 (ID00.bin): jump-table / segment-loader table for CODE 1–9, not overlay data. | Byte evidence retained below. |
 
-## 3) Entity offsets read by update_aircraft_entity
+## 3) ID00.bin layout and stored routine offset (proven)
 
-**[RECONSTRUCTED]** Entity layout from FUN_0000e792 (Pacific Conflict.c:14016+). Only offsets explicitly read/written in that function or its callees are considered proven.
-
-| Offset (hex) | Use | Source |
-|--------------|-----|--------|
-| 0x00, 0x04, 0x08, 0x0c–0x20, 0x22, 0x2e, 0x32, 0x3a, 0x48, 0x50 | position, ptrs, state | [STRUCTS.md](../reference/STRUCTS.md) “Entity (FUN_0000e792)” |
-| 0x61a, 0x61e, 0x626, 0x62a, 0x63e, 0x662, 0x666, 0x669, 0x66a, 0x66e, 0x672, 0x679 | movement, weapon | Ibid. |
-| 0x67c, 0x67d, 0x67e, 0x685, 0x19a, 0x1a0, 0x1a1, 0x1a3 | weapon_count, status | Ibid. |
-
-Full entity size and padding: **[UNKNOWN]**.
-
-## 4) ID00.bin layout and stored routine offset (proven)
-
-### 4.1) Header and table
+### 3.1) Header and table
 
 - **Bytes 0x00–0x0f:** Four big-endian u32: `0x00000598`, `0x0000225e`, `0x00000578`, `0x00000020`.
   **[RECONSTRUCTED]** `xxd` on `ResEdit/CODE/ID00.bin`.
@@ -41,7 +29,7 @@ Full entity size and padding: **[UNKNOWN]**.
   **[RECONSTRUCTED]** retained byte evidence; Apple Toolbox trap A9F0 = LoadSeg. The former one-off decoder was not retained.
 - **Interpretation:** Each record begins with a stored routine offset, followed by the callable six-byte `MOVE.W #segment_id,-(SP); _LoadSeg` stub. The A5 jump-table address points at record +2.
 
-### 4.2) Meaning of the stored routine offset
+### 3.2) Meaning of the stored routine offset
 
 **[PROVEN]** The first u16 is the target offset relative to the four-byte header of the destination CODE resource. Therefore the physical target in `IDnn.bin` is always `stored_routine_offset + 4`.
 
@@ -82,7 +70,7 @@ Full entity size and padding: **[UNKNOWN]**.
 References: decoded `ResEdit/CODE/ID02`, `ID05`, `ID06`, `ID07` (`xxd` on
 `.bin`) and the correlation results preserved above.
 
-## 5) First proven launcher handoff chain
+## 4) First proven launcher handoff chain
 
 Classic Mac 68k Segment Manager uses a jump table in CODE 0; ID00.bin is that jump table (or equivalent). Handoff:
 
@@ -113,18 +101,18 @@ Classic Mac 68k Segment Manager uses a jump table in CODE 0; ID00.bin is that ju
 - Jump table / LoadSeg semantics: [Inside Mac: Mac OS Runtime Architectures — The Jump Table](https://dev.os9.ca/techpubs/mac/runtimehtml/RTArch-118.html).
 - Complete decoded table: `ID00.decomp.c`; every target uses the four-byte CODE-resource header adjustment.
 
-## 6) Uniform four-byte file-coordinate adjustment
+## 5) Uniform four-byte file-coordinate adjustment
 
 | Segment | Bytes immediately before correlated target | Explanation |
 |---------|--------------------------------------------|-------------|
 | **ID02** | At (target − 4): **4e 5e** (UNLK); at (target − 2): **4e 75** (RTS); at target: **4e 56** (LINK). | Tail points to the **UNLK** of the previous function. Decompiler labels the **LINK** as function start ⇒ delta **+4**. |
 | **ID05** | Stored offset 0 maps to file 0x04: **4e 75** (RTS); file 0x06 begins a separate **LINK** routine. | The zero-offset jump-table entry is the header-adjacent no-op return. |
-| **ID06** | At (target − 4): **4e 5e** (UNLK); at (target − 2): **4e 75** (RTS); at target: **4e 56** (LINK). | Same as ID02: tail = first_instruction − 4. Proven for tails 0x0e0c, 0x096a, 0x09d4 only (see §4.2). |
+| **ID06** | At (target − 4): **4e 5e** (UNLK); at (target − 2): **4e 75** (RTS); at target: **4e 56** (LINK). | Same as ID02: tail = first_instruction − 4. Proven for tails 0x0e0c, 0x096a, 0x09d4 only (see §3.2). |
 | **ID07** | At (target − 4): **4e 5e** (UNLK); at (target − 2): **4e 75** (RTS); at target: **4e 56** (LINK). | Same as ID02; single ID00 entry for segment 7, tail 0x018c → FUN_00000190. |
 
 The `+4` is not an epilogue heuristic: it converts a code-area-relative stored offset to a physical offset in the resource file. `ID03`, `ID04`, `ID05`, `ID07`, and `ID08` all contain header-adjacent `RTS` targets at file 0x04; their following `LINK` routines at 0x06 are separate entries only when explicitly named by another stored offset.
 
-## 7) Segment-6 entries omitted by Ghidra
+## 6) Segment-6 entries omitted by Ghidra
 
 The following targets are structurally resolved by the uniform `stored + 4` rule, but Ghidra did not export all of them as `FUN_*` functions. Their higher-level semantics remain **[UNKNOWN]**:
 
@@ -139,16 +127,16 @@ The following targets are structurally resolved by the uniform `stored + 4` rule
 
 Segment 7 has two ID00 entries: stored offset 0 targets the RTS at file 0x0004, and stored offset 0x018c targets `FUN_00000190` at file 0x0190.
 
-## 8) Implementation handoff artifact
+## 7) Implementation handoff artifact
 
 - **[PROVEN]** The proven loader targets below are checked against the jump table the game runtime links ([`godot/runtime/data/jump_table.json`](../../godot/runtime/data/jump_table.json), generated from `ID00.bin` by `tools/runtime/build_runtime_data.py`) by `check_loader_targets` in [`tools/qa/test_regression.py`](../../tools/qa/test_regression.py): each one's A5 offset is `jump_table_offset + id00_entry_offset - 16 + 2`, its segment and entry point as tabled here.
 - **[UNKNOWN]** Additional targets may be added to that check only when the maintainer re-runs the proof.
 
-## 9) Godot integration boundary
+## 8) Godot integration boundary
 
-- **[RECONSTRUCTED]** The game runtime ([`docs/architecture/GAME_RUNTIME.md`](GAME_RUNTIME.md)) links every jump-table entry to its strict-port routine (`godot/runtime/machine/segment_loader.gd`) and loads the Pacific Conflict overlay with its relocations; the earlier clean-room loader metadata boundary of the MVP prototype is gone with it.
+How the runtime links the jump table and loads the overlay: [`GAME_RUNTIME.md`](GAME_RUNTIME.md).
 
-## 10) Loader targets the QA check holds
+## 9) Loader targets the QA check holds
 
 The complete set of 175 loader targets is structurally decoded in `ID00.decomp.c`. These six byte-inspected examples are the ones the QA check holds:
 

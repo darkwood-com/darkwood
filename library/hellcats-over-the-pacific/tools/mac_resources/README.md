@@ -12,7 +12,7 @@ Deterministic, read-only inventory and HFS extraction for Hellcats Macintosh sou
 
 ```bash
 # From repo root — corpus inventory (files under sources/)
-python3 tools/mac_resources/inventory.py -o artifacts/rea/resources/inventory.json
+python3 tools/mac_resources/inventory.py -o /tmp/hellcats-resources/inventory.json
 
 # Optional classic resource-fork parse of one file
 python3 tools/mac_resources/parse_rsrc.py path/to/file.rsrc
@@ -20,11 +20,11 @@ python3 tools/mac_resources/parse_rsrc.py path/to/file.rsrc
 # Extract data + resource forks from a classic HFS floppy image (requires machfs)
 python3 tools/mac_resources/extract.py \
   --dsk path/to/Hellcats_1_0_3.dsk \
-  -o artifacts/reverse-engineering/resources/from_103
+  -o /tmp/hellcats-resources/from_103
 
 # Re-hash extracted payloads against inventory.json
 python3 tools/mac_resources/verify.py \
-  artifacts/reverse-engineering/resources/from_103/hfs/inventory.json
+  /tmp/hellcats-resources/from_103/hfs/inventory.json
 ```
 
 Optional `--decode-app-rsrc` runs `resource_dasm` / `rsrcdump` on application

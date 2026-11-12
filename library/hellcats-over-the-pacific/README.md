@@ -132,7 +132,7 @@ original offsets. The resource fork is mirrored byte for byte into
 
 Every function's chain (`.c` -> `.decomp.c` -> `.gd`) is recorded in
 `godot/strict_port/mappings/functions.json`. Its behaviour is checked against
-the original machine code: `tools/m68k_emu.py` runs the original bytes on a
+the original machine code: `tools/strict_port/m68k_emu.py` runs the original bytes on a
 68000 emulator, `tools/strict_port/gen_*_cases.py` record what they do (memory,
 results, the calls they make out of their segment), and
 `godot/tests/strict_port/` replays the same cases on the port.
@@ -187,14 +187,19 @@ or the runtime), so each stage stays the source for the next.
 ## Validation
 
 From the repository root. QA runs every Python check (retrieval, inventory, progress, resource
-metadata, sync, callees, generated cases, documentation links, comment and header rules):
+metadata, sync, callees, generated cases, documentation links, comment and header rules) in
+`shell.nix`'s Python (Pillow for the resources' pixel comparisons, Capstone for the m68k checks):
 
 ```sh
-python3 tools/qa/test_regression.py
+nix-shell --run 'python3 tools/qa/test_regression.py'
 /Applications/Godot.app/Contents/MacOS/Godot --headless --path godot \
   --log-file /tmp/hellcats-godot.log --script res://tests/run_all.gd
 git diff --check
 ```
+
+The Godot run ends with "ObjectDB instances were leaked" and "resources still in use": each
+strict-port segment's `code_table` holds Callables bound to the segment itself, so its instances
+and their memory live until exit. That is expected, not a failure; the result line decides.
 
 After scripts move (a pull that renames folders under `godot/`), rebuild Godot's class cache
 once, or the tests stop on "hides a global script class":

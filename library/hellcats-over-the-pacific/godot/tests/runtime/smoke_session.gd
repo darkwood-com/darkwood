@@ -42,7 +42,7 @@ extends SceneTree
 ##
 ##   Godot --headless --path godot --script res://tests/runtime/smoke_session.gd [-- --shots <dir>]
 ##       [--coverage <file> [--merge]] [--depth 4|1] [--24bit] [--mission 2-9 [--seconds <s>]]
-##       [--missing-scenery | --lost-pilot] [--haze] [--one-line]
+##       [--missing-scenery | --lost-pilot] [--haze] [--one-line] [--approach]
 ##
 ## --shots <dir>: the screen saved as PNG at each "shot" step.
 ## --depth 4 | 1: a 16-colour or black-and-white screen (MacMachine.screen_depth) instead of 8 bits.
@@ -56,6 +56,11 @@ extends SceneTree
 ## --haze: saved settings with Scenery > Haze and Real Time Shading on (with --mission: the missions
 ##   drawn with haze from the start).
 ## --one-line: saved settings with Options > One line Instruments on.
+## --approach (the full session): saved settings with the word +0x0a set, which
+##   apply_settings_to_live_options (ID02 0x2a44) copies to host +0xa4, the landing-approach option
+##   the original gives no menu item; in phase 5, while the target lock flies the player, 'g'
+##   (APPROACH_STEPS): the gear moved in flight, which asks try_begin_landing_approach
+##   (process_flight_input_and_outcome) for the glide to the nearest runway.
 ## --coverage <file>: the strict port runs from the instrumented copies
 ##   tools/strict_port/coverage_copies.py writes into res://.coverage (each taking over its
 ##   original's path before the runtime's scripts load), and a passing session writes every
@@ -66,7 +71,7 @@ extends SceneTree
 ## The evidence for the mappings' runtime_verified (tests/runtime/fixtures/smoke_coverage.json, read
 ## by tools/strict_port/check_sync.py) merges these runs, each reaching code the others cannot:
 ##   - the full session at 8 bits, --depth 4, --depth 1 and --24bit (each depth its renderer, the
-##     24-bit Mac the MMU swaps);
+##     24-bit Mac the MMU swaps), and with --approach (the landing approach);
 ##   - --mission 2, 3, 4, 8 and 9, --mission 4, 7, 8 and 9 --seconds 300, and --mission 3 --haze
 ##     --one-line;
 ##   - --missing-scenery (the scenery-open error) and --lost-pilot (High Scores' erase);
@@ -163,6 +168,23 @@ static func mission_steps(mission: int) -> Array:
 		[40, "shot", 0, 0], [80, "shot", 0, 0], [118, "shot", 0, 0], [180, "shot", 0, 0],
 		[240, "shot", 0, 0], [298, "shot", 0, 0]]
 
+## --approach: 'g' (key code 0x05) at 190, in phase 5's flight under the target lock, and again: that
+## one is merged after the lock's release (234.8; the 195 / 215 shots are listed after it too), so it
+## fires with it. The approach runs; the glide ends in a crash before the release.
+const APPROACH_STEPS := [[190, "key", 0x05, 0x67], [190.5, "shot", 0, 0], [200, "key", 0x05, 0x67],
+		[200.5, "shot", 0, 0], [210, "shot", 0, 0]]
+
+## `extra` merged into `base`, each step after the last one of `base` not later than it (the order
+## of `base`'s own steps kept: a step listed after a later one fires with it).
+static func _with_steps(base: Array, extra: Array) -> Array:
+	var out: Array = base.duplicate()
+	for e in extra:
+		var at: int = out.size()
+		while at > 0 and out[at - 1][0] > e[0]:
+			at -= 1
+		out.insert(at, e)
+	return out
+
 ## --missing-scenery: the saved settings (HEL1 127, written into SAVES) name a scenery file the
 ## volume does not hold, as when a player has moved it: the start-up load fails
 ## (load_overlay_from_resource's FSOpen, twice) and show_scenery_open_error_alert (ID04 0x44e,
@@ -253,8 +275,11 @@ func _initialize() -> void:
 	_clear(SAVES)
 	var haze: bool = args.has("--haze")
 	var one_line: bool = args.has("--one-line")
-	if missing_scenery or haze or one_line:
-		_write_settings(MISSING_SCENERY if missing_scenery else "", haze, one_line)
+	var approach: bool = args.has("--approach") and steps == STEPS
+	if approach:
+		steps = _with_steps(STEPS, APPROACH_STEPS)
+	if missing_scenery or haze or one_line or approach:
+		_write_settings(MISSING_SCENERY if missing_scenery else "", haze, one_line, approach)
 	if lost_pilot:
 		_write_lost_pilot()
 
@@ -271,7 +296,7 @@ func _initialize() -> void:
 ## (apply_settings_to_live_options copies them to host +0xaa / +0xb2 at depth 8); with `one_line`,
 ## Options > One line Instruments (+9): numeric readouts instead of the panel, printed through the
 ## host's draw_text_in_columns_a5safe (+0x27a).
-func _write_settings(scenery: String, haze: bool, one_line: bool) -> void:
+func _write_settings(scenery: String, haze: bool, one_line: bool, approach: bool = false) -> void:
 	var data: PackedByteArray = load("res://resources/ui/resource_files.gd").load_bytes("HEL1", 127)
 	if scenery != "":
 		var bytes: PackedByteArray = scenery.to_ascii_buffer()
@@ -283,6 +308,8 @@ func _write_settings(scenery: String, haze: bool, one_line: bool) -> void:
 		data[0x1b] = 1
 	if one_line:
 		data[0x9] = 1
+	if approach:
+		data[0xb] = 1
 	_write_saved(127, data)
 
 ## A saved roster (HEL1 128, the original's otherwise) whose record 0 is a lost pilot: name "Lost"

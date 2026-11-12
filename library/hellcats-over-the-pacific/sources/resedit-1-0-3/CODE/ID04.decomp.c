@@ -464,7 +464,7 @@ short ask_save_changes /* Original: FUN_000004f0 */ (void)
 /* Original: FUN_00000516; source: ID04.c:219. Recovered name: confirm_end_mission [STRONG INFERENCE].
  * JT $13a. Bytes 0x516..0x55e [PROVEN]:
  *   if (word A5-0x12f8 < 3 || word A5-0x14c4 != 0) return 2;   [no mission]
- *   if (FUN_000018e0 == 0) return 2;
+ *   if (get_mission_kill_report_state (FUN_000018e0) == 0) return 2;
  *   JT $47a(0x103); return CautionAlert(259, nil).
  * ALRT 259 "Really End Mission" / DITL 259 [PROVEN, dump]: item 1 "Cancel",
  * 2 "End Mission"; text "Are you sure you want to end the current mission
@@ -695,7 +695,7 @@ short fuel_slider_dialog_filter /* Original: FUN_00000a8e */ (int dlg /* param_1
  *   A5-0x12d2, 0 -> 100; A5-0x225c = fuel;
  *   dialog = GetNewDialog(0x81 = DLOG 129, NULL, (WindowPtr)-1); JT $472;
  *   0x1b8(dialog, 2, 1) default ring on user item 2, default item 1;
- *   user items: 4 -> JT $11a (ID04 0x9ee, FUN_000009ee), 19 -> JT $142
+ *   user items: 4 -> JT $11a (ID04 0x9ee, draw_select_mission_title (FUN_000009ee)), 19 -> JT $142
  *   draw_grey_user_item, 5 -> JT $8a fuel bar;
  *   mission 1 -> 2; set_radio_group_selection(dialog, A5-0x2256, 8,
  *   mission + 7); set_radio_group_selection(dialog, A5-0x2246, 3, 8);
@@ -1167,7 +1167,7 @@ void scroll_bar_action_proc /* Original: FUN_000016c4 */ (int ctl,short part)
 /* Original: FUN_000017e6; source: ID04.c. Recovered name: create_scrolling_text_item [STRONG INFERENCE].
  * Ghidra could not decode this body (rebuilt as C below); decoded from ID04.bin
  * bytes at file 0x17e6.
- * Args (C): +8 DialogPtr, +0xc short item. GetDItem ($A98D) -> box; scroll-bar rect = box with left = box.right - 16, InsetRect(0, -2) ($A8A9), OffsetRect(2, 0) ($A8A8). GetPort/SetPort(dialog). TENew(&box, &box) ($A9D2) -> TEHandle A5-0x223a [PROVEN]. NewControl(dialog, &barRect, title A5-0x213c, visible 1, value/min/max 0, procID 16 = scrollBarProc, refCon 0) ($A954) -> ControlHandle A5-0x2236 [PROVEN]. JSR 0x1638 (FUN_00001638, adjusts the TE rects to the box, -16 right). Installs JT $92 (-> ID04 0x14f2) as the item user-item procedure via set_dialog_user_item_proc, then restores the port. Caller: show_mission_summary_dialog 0x2ebc. [STRONG INFERENCE] the scrolling text field of DLOG 133 (mission awards / narrative, cf. its "Skip Text" button).
+ * Args (C): +8 DialogPtr, +0xc short item. GetDItem ($A98D) -> box; scroll-bar rect = box with left = box.right - 16, InsetRect(0, -2) ($A8A9), OffsetRect(2, 0) ($A8A8). GetPort/SetPort(dialog). TENew(&box, &box) ($A9D2) -> TEHandle A5-0x223a [PROVEN]. NewControl(dialog, &barRect, title A5-0x213c, visible 1, value/min/max 0, procID 16 = scrollBarProc, refCon 0) ($A954) -> ControlHandle A5-0x2236 [PROVEN]. JSR 0x1638 (fit_text_view_to_box (FUN_00001638), adjusts the TE rects to the box, -16 right). Installs JT $92 (-> ID04 0x14f2) as the item user-item procedure via set_dialog_user_item_proc, then restores the port. Caller: show_mission_summary_dialog 0x2ebc. [STRONG INFERENCE] the scrolling text field of DLOG 133 (mission awards / narrative, cf. its "Skip Text" button).
  */
 // WARNING: Control flow encountered bad instruction data
 
@@ -1226,7 +1226,7 @@ void dispose_scrolling_text_item /* Original: FUN_0000189c */ (void)
 /* Original: FUN_000018b0; source: ID04.c. Recovered name: append_line_to_scrolling_text [STRONG INFERENCE].
  * Ghidra truncated this body after the first call (rebuilt as C below); decoded from ID04.bin
  * bytes at file 0x18b0.
- * Arg +0xe: C string. JSR $522(A5) = ID02 0x3e8 (strlen: counts bytes to NUL) [PROVEN]; TEInsert(text, len, A5-0x223a) ($A9DE); TEInsert(A5-0x213a, 1, A5-0x223a) inserts one separator byte (probably CR) [HYPOTHESIS for CR]; then JSR 0x158c (FUN_0000158c, scroll-bar value / scroll update via GetCtlValue $A960, SetCtlValue $A963). Args +8..+0xd are not used. No direct JSR found in ID04 bytes [UNKNOWN caller path].
+ * Arg +0xe: C string. JSR $522(A5) = ID02 0x3e8 (strlen: counts bytes to NUL) [PROVEN]; TEInsert(text, len, A5-0x223a) ($A9DE); TEInsert(A5-0x213a, 1, A5-0x223a) inserts one separator byte (probably CR) [HYPOTHESIS for CR]; then JSR 0x158c (scroll_text_to_show_selection (FUN_0000158c), scroll-bar value / scroll update via GetCtlValue $A960, SetCtlValue $A963). Args +8..+0xd are not used. No direct JSR found in ID04 bytes [UNKNOWN caller path].
  */
 // WARNING: Control flow encountered bad instruction data
 
@@ -1580,7 +1580,7 @@ void aircraft_kill_markers_user_item_proc /* Original: FUN_000020e8 */ (int dlg,
 
 
 
-/*: bytes 0x2104..0x2d84 lie inside Ghidra's FUN_000020e8 range
+/*: bytes 0x2104..0x2d84 lie inside Ghidra's aircraft_kill_markers_user_item_proc (FUN_000020e8) range
  * (Ghidra stopped at the JMP (A0) at 0x2102) and hold two functions that
  * Ghidra did not export. Decoded from ID04.bin; no C was changed.
  *

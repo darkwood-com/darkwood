@@ -6,10 +6,12 @@ files are editable only for evidence-backed reconstruction; preserve function
 boundaries, widths, fixed-point arithmetic, addresses, original `FUN_*` identities,
 and unresolved annotations.
 
-New faithful Godot work belongs under `godot/strict_port/`. Keep the chain
+Translations of original functions belong under `godot/strict_port/`; the
+emulated Macintosh around them under `godot/runtime/`, which maps around the port
+and never works around it. Keep the chain
 `original .c -> semantic .decomp.c -> faithful .gd` explicit in
-`godot/strict_port/mappings/functions.json`; never treat the playable MVP as a
-source of original behavior.
+`godot/strict_port/mappings/functions.json`. `docs/history/` (the removed MVP
+prototype) is never a source of original behavior.
 
 Start with `README.md`, then retrieve only what the task needs:
 

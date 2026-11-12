@@ -31,14 +31,26 @@ removed.
 ## Next milestones
 
 The project's next steps are in the README's
-[roadmap](../../README.md#next-steps):
+[roadmap](../../README.md#next-steps).
 
-1. clean up the code and documentation grown during the port;
-2. remove the virtual machine (68k memory and arithmetic, runtime, Toolbox) so
-   the game's logic runs directly on Godot objects;
-3. replace the game's own vector, camera, rotation, rendering and dialog code
-   with Godot's native equivalents, each pinned first by the strict port's
-   tests.
+## Checkpoint
+
+- Baselines: Python QA passes in `shell.nix` (Pillow, Capstone); Godot suite 81/81 (its exit leak
+  warnings are the segments' self-bound `code_table` Callables, README Validation); the full
+  `smoke_session.gd` passes.
+- Runtime coverage 661 / 740: `smoke_session.gd --approach` (saved setting +0x0a = host +0xa4,
+  STRUCTS.md; 'g' twice in phase 5's flight under the target lock) ran
+  try_begin_landing_approach and its three callees.
+- Step 1 cleanup done: nothing unreferenced in godot/runtime, resources, scenes or tools/;
+  quoted code paths are checked (`check_doc_paths.py`); the semantic C's header comments name
+  recovered functions as `name (FUN_*)` except false entries, runtime aliases and Ghidra labels.
+- Blocked: the refuel path (outcome 9, 5 functions) needs a touchdown and stop on a friendly
+  runway; the --approach glide, flown with the target lock still held, ends "augered in" before
+  phase 5's release (234.8 s), so no scripted flight lands yet.
+- GAME_RUNTIME.md's Architecture table already inventories the runtime for step 2; its milestone 5
+  now links the routine index instead of repeating it.
+- Next: README step 2 (removing the virtual machine) changes the architecture the strict port
+  runs on; it waits on the maintainer's choice of a first subsystem.
 
 ## Evidence and retrieval
 
@@ -52,7 +64,7 @@ Detailed current references:
 
 - `DECOMPILATION_PROGRESS.md` — semantic reconstruction target and workflow
 - `DECOMPILATION_SYMBOLS.md` — canonical semantic symbol and field registry
-- `STRICT_PORT_FOUNDATION.md` — strict translation contract and milestones
+- `STRICT_PORT_FOUNDATION.md` — strict translation contract: layout, rules, conventions, verification
 - `GAME_RUNTIME.md` — the emulated Macintosh around the strict port
 - `RESOURCE_ANALYSIS.md` — resource corpus and decoding status
 - `SUBSYSTEM_MAP.md` — original-system to Godot navigation

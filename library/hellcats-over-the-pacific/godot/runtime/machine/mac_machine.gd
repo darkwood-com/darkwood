@@ -58,7 +58,6 @@ static var addressing_24: bool = false
 static var volume_name: String = "Macintosh HD"
 
 ## Low-memory globals the code reads.
-const LM_TICKS := 0x16a
 const LM_SOUND_HOOK := 0x196
 const LM_SOUND_BASE := 0x266
 const LM_CURRENT_A5 := 0x904
