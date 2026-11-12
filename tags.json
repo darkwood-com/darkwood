@@ -391,6 +391,76 @@
       "domain": "darkwood",
       "description": "Public Darkwood website and application source.",
       "topics": ["php", "symfony", "web"]
+    },
+    {
+      "id": "adventofcode",
+      "path": "library/adventofcode",
+      "domain": "matyo91",
+      "description": "Archived Rust solutions and inputs for Advent of Code 2020.",
+      "topics": ["archive", "rust"]
+    },
+    {
+      "id": "cursor-slack",
+      "path": "library/cursor-slack",
+      "domain": "matyo91",
+      "description": "Archived notes and experiment for Cursor and Slack integration.",
+      "topics": ["archive", "automation", "slack"]
+    },
+    {
+      "id": "darkwaar1",
+      "path": "library/darkwaar1",
+      "domain": "darkwood",
+      "description": "First historical Godot prototype for Darkwaar.",
+      "topics": ["archive", "game", "godot"]
+    },
+    {
+      "id": "darkwaar2",
+      "path": "library/darkwaar2",
+      "domain": "darkwood",
+      "description": "Second historical Godot prototype for Darkwaar.",
+      "topics": ["archive", "game", "godot"]
+    },
+    {
+      "id": "darkwaar3",
+      "path": "library/darkwaar3",
+      "domain": "darkwood",
+      "description": "Third historical Godot prototype for Darkwaar, including its web export evidence.",
+      "topics": ["archive", "game", "godot"]
+    },
+    {
+      "id": "darkwaar4",
+      "path": "library/darkwaar4",
+      "domain": "darkwood",
+      "description": "Fourth historical Godot prototype for Darkwaar.",
+      "topics": ["archive", "game", "godot"]
+    },
+    {
+      "id": "php-pipe-operator",
+      "path": "library/php-pipe-operator",
+      "domain": "matyo91",
+      "description": "Archived demonstration of a pipe-oriented PHP syntax experiment.",
+      "topics": ["archive", "demo", "php"]
+    },
+    {
+      "id": "uniflow-admin",
+      "path": "library/uniflow-admin",
+      "domain": "darkwood",
+      "description": "Archived generated administration interface for Uniflow.",
+      "topics": ["archive", "react", "uniflow"]
+    },
+    {
+      "id": "vocal-chat-app",
+      "path": "library/vocal-chat-app",
+      "domain": "matyo91",
+      "description": "Archived Meteor experiment transforming recorded voice into blog content.",
+      "topics": ["archive", "audio", "meteor"]
+    },
+    {
+      "id": "warship",
+      "path": "library/warship",
+      "domain": "matyo91",
+      "description": "Archived PHP implementation of a battleship-style game.",
+      "topics": ["archive", "game", "php"]
     }
   ]
 }
