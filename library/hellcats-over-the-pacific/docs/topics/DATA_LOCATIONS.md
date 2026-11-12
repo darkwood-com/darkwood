@@ -8,7 +8,7 @@ Where the original keeps its mission, world and cockpit data, and how the code r
 
 The eight selectable missions are not stored as complete records in `STR#`,
 `DITL`, or any `DATA` resource. Their scene/object descriptions are in the data
-fork of the separate file `sources/hellcats-over-the-pacific/Pacific Conflict`;
+fork of the separate file `sources/mac-os-9/Pacific Conflict`;
 mission-number-specific rules are also hardcoded in the executable overlay at
 the front of that file. The main application's resources provide the selection
 UI, saved scenery filename, result text, loader, and host runtime.
@@ -21,7 +21,7 @@ insufficient.
 
 ### External file layout
 
-`sources/hellcats-over-the-pacific/Pacific Conflict` is 255,360 bytes
+`sources/mac-os-9/Pacific Conflict` is 255,360 bytes
 (`0x3e580`), SHA-256
 `ee6040c7c38586551f95bf62a96453eef41b8b27409bc89d7a6689dc2c8b5030`.
 
@@ -135,7 +135,7 @@ inaccurate to promote the offsets above into a fully decoded mission format.
 ### Result
 
 The original world is driven by the packed scene graph in the external
-`sources/hellcats-over-the-pacific/Pacific Conflict` data fork, not by
+`sources/mac-os-9/Pacific Conflict` data fork, not by
 `PICT:137`, `DITL:137`, `MDPL`, or an embedded main-application scenery
 resource. The navigation map traverses the same active mission scene graph used
 to build and render 3D objects. `DLOG`/`DITL:137` supplies only the dialog shell

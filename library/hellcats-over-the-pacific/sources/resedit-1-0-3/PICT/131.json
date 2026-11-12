@@ -811,15 +811,10 @@
     "trailing_bytes": 0
   },
   "evidence": {
-    "appledouble_resource_fork_offset": 82,
     "authoritative_export_path": null,
-    "binary_matches_resource_fork_payload": true,
-    "binary_origin": "recovered resource-fork payload",
+    "binary_origin": "Hellcats 1.0.3 disk resource fork",
     "binary_path": "sources/resedit-1-0-3/PICT/131.bin",
     "binary_size": 1302,
-    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
-    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
-    "comparison_resource_name": null,
     "representations": [
       {
         "kind": "binary payload",
@@ -846,17 +841,20 @@
         "size": 3624
       }
     ],
+    "resedit_export_status": null,
     "resource_attributes": "0x20",
-    "resource_fork_payload_offset": 137501,
-    "resource_fork_payload_sha256": "b46dfb31745c10cf1902e86c550c9de1f4527d791dc32edb4bd67c3e1395663d",
-    "resource_fork_payload_size": 1302,
+    "resource_fork_payload_offset": 156517,
+    "resource_name": null,
     "sha256": "b46dfb31745c10cf1902e86c550c9de1f4527d791dc32edb4bd67c3e1395663d",
+    "source_container": "sources/mac-os-9/Hellcats_1_0_3.dsk",
+    "source_container_file": "Hellcats:Hellcats:Hellcats",
     "source_exports": [
       "sources/resedit-1-0-3/PICT/131.bin",
       "sources/resedit-1-0-3/PICT/131.bmp",
       "sources/resedit-1-0-3/PICT/131.md",
       "sources/resedit-1-0-3/PICT/131.png"
-    ]
+    ],
+    "source_version": "1.0.3"
   },
   "relationships": {
     "incoming": [],
@@ -884,5 +882,11 @@
   },
   "schema": "hellcats-resedit-resource-v1",
   "type_code_references": [],
-  "unresolved": []
+  "unresolved": [],
+  "version_1_0_4": {
+    "appledouble_resource_fork_offset": 82,
+    "container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "status": "identical"
+  }
 }

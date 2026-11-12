@@ -15,7 +15,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CODE = ROOT / "sources" / "resedit-1-0-3" / "CODE"
 DEFAULT_OUTPUT = ROOT / "docs" / "DECOMPILATION_INVENTORY.json"
-STRICT_MAP = ROOT / "godot" / "strict_port" / "mappings" / "functions.json"
+STRICT_MAP = ROOT / "godot" / "original" / "mappings" / "functions.json"
 FUN_RE = re.compile(
     r"^(?P<ret>[A-Za-z_][\w\s*]*?)\b(?P<name>[A-Za-z_]\w*)"
     r"\s*\([^;{}]*\)\s*\{",

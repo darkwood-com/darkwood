@@ -11,12 +11,12 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-MODULE_PATH = REPO_ROOT / "tools/strict_port/check_sync.py"
+MODULE_PATH = REPO_ROOT / "tools/original/check_sync.py"
 SPEC = importlib.util.spec_from_file_location("strict_port_check_sync", MODULE_PATH)
 assert SPEC and SPEC.loader
 SYNC = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(SYNC)
-MANIFEST = REPO_ROOT / "godot/strict_port/mappings/functions.json"
+MANIFEST = REPO_ROOT / "godot/original/mappings/functions.json"
 
 
 class StrictPortSyncTest(unittest.TestCase):

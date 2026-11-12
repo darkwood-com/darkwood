@@ -13,7 +13,7 @@
   },
   "code_references": [],
   "decoded": {
-    "consumed_bytes": 16804,
+    "consumed_bytes": 14954,
     "elements": [
       {
         "command": "0x8051",
@@ -32,38 +32,33 @@
       "compression": "none",
       "encoding": 0,
       "format_number": 1,
-      "loop_end": 16761,
-      "loop_start": 16760,
+      "loop_end": 14911,
+      "loop_start": 14910,
       "modifier_count": 1,
       "modifier_init_options": "0x000000A0",
       "modifier_synth_id": 5,
       "sample_data_offset": 42,
-      "sample_length": 16762,
+      "sample_length": 14912,
       "sample_pointer": 0,
       "sample_rate_fixed_16_16": "0x56EE8BA3",
       "sample_rate_hz": 22254.545455932617,
-      "sample_sha256": "a380cf667be1a2e3a11ac97ab01b5bf1d6a15b3081fd158f7e0dee915a660907",
+      "sample_sha256": "409a00f4d0124640c65380fe3e286c15796f67ee705353fa5ce2d8297f1bc3d0",
       "sample_width_bits": 8,
       "sound_header_offset": 20
     },
     "trailing_bytes": 0
   },
   "evidence": {
-    "appledouble_resource_fork_offset": 82,
     "authoritative_export_path": null,
-    "binary_matches_resource_fork_payload": true,
-    "binary_origin": "recovered resource-fork payload",
+    "binary_origin": "Hellcats 1.0.3 disk resource fork",
     "binary_path": "sources/resedit-1-0-3/snds/21266.bin",
-    "binary_size": 16804,
-    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
-    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
-    "comparison_resource_name": "Distant Explosion",
+    "binary_size": 14954,
     "representations": [
       {
         "kind": "binary payload",
         "path": "sources/resedit-1-0-3/snds/21266.bin",
-        "sha256": "0cc06b38f36a2d6647ee82007efa9bd51d156f5838529e865253f0901c99e573",
-        "size": 16804
+        "sha256": "bea713f5aa9eeb1b9c71b9fbc16748e663a91966ddc8f83371039acd922b5b07",
+        "size": 14954
       },
       {
         "kind": "ResEdit Markdown/hex annotation",
@@ -78,23 +73,26 @@
         "size": 12555
       }
     ],
+    "resedit_export_status": null,
     "resource_attributes": "0x20",
-    "resource_fork_payload_offset": 305326,
-    "resource_fork_payload_sha256": "0cc06b38f36a2d6647ee82007efa9bd51d156f5838529e865253f0901c99e573",
-    "resource_fork_payload_size": 16804,
-    "sha256": "0cc06b38f36a2d6647ee82007efa9bd51d156f5838529e865253f0901c99e573",
+    "resource_fork_payload_offset": 216560,
+    "resource_name": "Distant Explosion",
+    "sha256": "bea713f5aa9eeb1b9c71b9fbc16748e663a91966ddc8f83371039acd922b5b07",
+    "source_container": "sources/mac-os-9/Hellcats_1_0_3.dsk",
+    "source_container_file": "Hellcats:Hellcats:Hellcats",
     "source_exports": [
       "sources/resedit-1-0-3/snds/21266.bin",
       "sources/resedit-1-0-3/snds/21266.md",
       "sources/resedit-1-0-3/snds/21266.mp3"
-    ]
+    ],
+    "source_version": "1.0.3"
   },
   "relationships": {
     "incoming": [],
     "outgoing": []
   },
   "resource": {
-    "description": "Classic Macintosh snd Format 1 Sampled Sound; 16804 curated payload bytes.",
+    "description": "Classic Macintosh snd Format 1 Sampled Sound; 14954 curated payload bytes.",
     "descriptive_name": "Distant Explosion Sampled Sound",
     "id": 21266,
     "key": "snds:21266",
@@ -144,5 +142,36 @@
       "status": "VERIFIED"
     }
   ],
-  "unresolved": []
+  "unresolved": [],
+  "version_1_0_4": {
+    "appledouble_resource_fork_offset": 82,
+    "container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "decoded_structure_status": "VERIFIED",
+    "properties": {
+      "base_frequency_midi": 60,
+      "channels": 1,
+      "command_count": 1,
+      "compression": "none",
+      "encoding": 0,
+      "format_number": 1,
+      "loop_end": 16761,
+      "loop_start": 16760,
+      "modifier_count": 1,
+      "modifier_init_options": "0x000000A0",
+      "modifier_synth_id": 5,
+      "sample_data_offset": 42,
+      "sample_length": 16762,
+      "sample_pointer": 0,
+      "sample_rate_fixed_16_16": "0x56EE8BA3",
+      "sample_rate_hz": 22254.545455932617,
+      "sample_sha256": "a380cf667be1a2e3a11ac97ab01b5bf1d6a15b3081fd158f7e0dee915a660907",
+      "sample_width_bits": 8,
+      "sound_header_offset": 20
+    },
+    "resource_fork_payload_offset": 305326,
+    "sha256": "0cc06b38f36a2d6647ee82007efa9bd51d156f5838529e865253f0901c99e573",
+    "size": 16804,
+    "status": "differs"
+  }
 }

@@ -1,0 +1,1845 @@
+{
+  "schema": "hellcats-strict-resedit-mirror-v1",
+  "source_root": "sources/resedit-1-0-3",
+  "version": "1.0.3",
+  "imported_types": [
+    "ALRT",
+    "DITL",
+    "DLOG",
+    "ICON",
+    "PICT",
+    "CNTL",
+    "BNDL",
+    "FREF",
+    "ICN#",
+    "ics#",
+    "icI4",
+    "icI8",
+    "ics4",
+    "ics8",
+    "cicn",
+    "clut",
+    "MENU",
+    "STR#",
+    "TEXT",
+    "styl",
+    "vers",
+    "SIZE",
+    "snds",
+    "DATA",
+    "DREL",
+    "HEL1",
+    "HELL",
+    "MDPL",
+    "ZERO"
+  ],
+  "types": {
+    "ALRT": {
+      "status": "imported",
+      "resources": 7,
+      "files": [
+        {
+          "path": "godot/assets/alrt/1001.bin",
+          "sha256": "5b546eaafbefa2434198337711da6cac810339ed181451c4cccee94be2cc125f",
+          "source": "sources/resedit-1-0-3/ALRT/1001.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/alrt/1001.tscn",
+          "sha256": "11dd4aee2670d56205165191db6a84f44eb683361c15b06e172fa78aba8ff731",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/alrt/256.bin",
+          "sha256": "faa7e1ba523f855ee7eae4865be8922c4f4705325538e8355cbf72c86e5a1ea8",
+          "source": "sources/resedit-1-0-3/ALRT/256.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/alrt/256.tscn",
+          "sha256": "f3f902016a54bb459a338e77b581bfa55f273ffdb03b625d28e8c5cafcf75116",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/alrt/257.bin",
+          "sha256": "3b2322e6f7a336b895be0eb31e876d858980150272433837cded4db971ac587c",
+          "source": "sources/resedit-1-0-3/ALRT/257.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/alrt/257.tscn",
+          "sha256": "714ab2c5943fde471308f218f514821f2729f4c81d7be4c43d519f3b6384955e",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/alrt/258.bin",
+          "sha256": "f01fb35c3f45fc906bdde6dc121a50f8958895b67056cda1a3eb8037781d7ad9",
+          "source": "sources/resedit-1-0-3/ALRT/258.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/alrt/258.tscn",
+          "sha256": "68802e6b26a597bc1c0b983a4fb27dc29e8e56cd45c04180ea312c1cb19eab35",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/alrt/259.bin",
+          "sha256": "73f6bbb22255124f0e15708b5170d694771cd2d0b6a5b0752f005180b4872865",
+          "source": "sources/resedit-1-0-3/ALRT/259.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/alrt/259.tscn",
+          "sha256": "300cae0c4b0676db30c2a25266d09896d99e5161006a774869adb3fd6cd70569",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/alrt/260.bin",
+          "sha256": "97222e86925a3f8f67facae6336de3791c0396b373e191e0a98e118b17fb1bdf",
+          "source": "sources/resedit-1-0-3/ALRT/260.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/alrt/260.tscn",
+          "sha256": "9cf043f0fc114defbb491eb66e17eb5c4a3a547570d0728bac9a423471bce56a",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/alrt/261.bin",
+          "sha256": "0fa1054cc4bf89c921f7d7cbcb792010313a83b6f7fb2c9217792e907138f649",
+          "source": "sources/resedit-1-0-3/ALRT/261.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/alrt/261.tscn",
+          "sha256": "bcf2b9c1f1446135a22ca10ce8d4b678f8cca3c48b85819f3bc11a14cdc113ba",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "BNDL": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/bndl/132.bin",
+          "sha256": "aace99900579f07a25b4e787cf547108a340eb3d09518f77e5925e507ad99c34",
+          "source": "sources/resedit-1-0-3/BNDL/132.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/bndl/132.tscn",
+          "sha256": "b72d640a4304adaa4c54e7a13b40419d7ebc1aee315e0915286c7f5786960efd",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "CNTL": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/cntl/128.bin",
+          "sha256": "4ac7791b17115e52a68f54f81f202bb486874cf41347827d19f434fe29930e45",
+          "source": "sources/resedit-1-0-3/CNTL/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cntl/128.tscn",
+          "sha256": "b159e934c26377e1f95b147ea674a6663355480a23c656b02fa36128e5cea588",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "DATA": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/data/0.bin",
+          "sha256": "e349cca624d4a06ec196ef2b18e1d5c4041e4070420816fb0741b3240b713073",
+          "source": "sources/resedit-1-0-3/DATA/0.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/data/0.tscn",
+          "sha256": "391ee963cdb2c8b93b417b210127efe79b6890d1ff660c0fd9705989069b6cf4",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/data/128.bin",
+          "sha256": "312a2d52ae2d8b40bf3a4d0f858dbb4fbac88e6488841dc74c8806894d95151d",
+          "source": "sources/resedit-1-0-3/DATA/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/data/128.tscn",
+          "sha256": "5c0c2df408b255c72cb4a44e39aaa7ccd12cb5fc72e05189aeea5e0b613c9845",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "DITL": {
+      "status": "imported",
+      "resources": 21,
+      "files": [
+        {
+          "path": "godot/assets/ditl/1000.bin",
+          "sha256": "a2433bcf8c4a1bc76d8ee356fb1e7086517af65d161fd8d490b89f8cce1b2f2a",
+          "source": "sources/resedit-1-0-3/DITL/1000.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/1000.tscn",
+          "sha256": "814bffb6454ea4acf51a2edbebd56e9c43698de29b9159d08f14793bbfe538db",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/1001.bin",
+          "sha256": "66f5359139a02d80dd404556d95c39457b3d8cc382af61802c082beac155fa7c",
+          "source": "sources/resedit-1-0-3/DITL/1001.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/1001.tscn",
+          "sha256": "b3b780c8dffbb615e3ae60d25dadd10a0fed9dca5aeb95e715afb83bdfc98cb9",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/127.bin",
+          "sha256": "446cac7d096349eb704494145822fda0c4a387814d19335edd22c8b5f1f75953",
+          "source": "sources/resedit-1-0-3/DITL/127.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/127.tscn",
+          "sha256": "5c7baf4e9b2a0b5432eb2e7a67aec7f6611461b2ae2d706d0a555fe2f3e91a46",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/128.bin",
+          "sha256": "7d10615ab0be097b156e58e3a9bdc03b9b38d288352ebdb4d2b8224d005c341f",
+          "source": "sources/resedit-1-0-3/DITL/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/128.tscn",
+          "sha256": "30658f5024c1e7496ad97034c3fb08e69b0d95c600eee5dbb6e6609fa005c020",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/129.bin",
+          "sha256": "bf774e08456c5a3fd74bf832aa4773ba023898ad9732922323680fb1a3548b9c",
+          "source": "sources/resedit-1-0-3/DITL/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/129.tscn",
+          "sha256": "5f283ef0ef45d16f6102a7e4a3007ffca04588da89f1725448fe904ec0dffc1a",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/130.bin",
+          "sha256": "a006b2a90ba621ffd622423500fd8263b8d0f925d80e3c1c8d391b4779e45ebb",
+          "source": "sources/resedit-1-0-3/DITL/130.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/130.tscn",
+          "sha256": "e2661b1215f9868bf453e4b41d876a19140453576049cd70e9856522666ef694",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/131.bin",
+          "sha256": "0348e507991320a0d86518af46edd77e6a3c05e5c02d847a967de2544ad4eff4",
+          "source": "sources/resedit-1-0-3/DITL/131.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/131.tscn",
+          "sha256": "27aad51c5168a5210f30d02e1a0ff4a06fc2760e3077ba21ac1bf6b90b1616e0",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/132.bin",
+          "sha256": "2e4bb733f91ee03ab26be077cecf366ea98fcd0f4996ae7c6f7c244043922266",
+          "source": "sources/resedit-1-0-3/DITL/132.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/132.tscn",
+          "sha256": "e0e298f97f9cb75cefe3d7bbe660b865efdc34d672ca5a667a2ed1bf4f44d709",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/133.bin",
+          "sha256": "5890492aef3a4b0b46742108bd0a5ab1ec47dc835a953f7044a4cb3ca9c2985e",
+          "source": "sources/resedit-1-0-3/DITL/133.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/133.tscn",
+          "sha256": "0577e31cb20ad59b167bafdc0843d39f2a2c4227d64de89301c5b46556420a4e",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/134.bin",
+          "sha256": "aaa60f79ff2b66d799b18cb4961f2e12762bb69f1cdced6eb1901f798bcc6e50",
+          "source": "sources/resedit-1-0-3/DITL/134.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/134.tscn",
+          "sha256": "17bbcb8b2b28031752f063964804ef45a3d8d20fd84add93dbd92a3dfbcbf450",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/135.bin",
+          "sha256": "18ff7250f9ba3a90cca071f2ff78518172339ca6972688f44b4d4d9279599687",
+          "source": "sources/resedit-1-0-3/DITL/135.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/135.tscn",
+          "sha256": "6efbb301e05dee86b3cea83f7e8a07b4171a9cb6ae87c1269ef8ca33b94a5036",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/136.bin",
+          "sha256": "7295ce86ead1fcdc1d3fddaae46a330ea3b57c05cd0b7e625a4053579f22d1a0",
+          "source": "sources/resedit-1-0-3/DITL/136.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/136.tscn",
+          "sha256": "b2edd9a5cdb746d928c03577332f6d650fc1730b1a66917e1c14972938e67fdc",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/137.bin",
+          "sha256": "eefdc52e90dd620997bb566c26128623a6df2039f9e910203847ba847b10c4e4",
+          "source": "sources/resedit-1-0-3/DITL/137.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/137.tscn",
+          "sha256": "8fadfafcdf58666ecf91e047b74832e0adcea877f691b8a4fa5528d38b90b5f0",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/138.bin",
+          "sha256": "df629f590857deba13e493c7b4dcf95ae4fb8f695cebe852dac1811e93694d05",
+          "source": "sources/resedit-1-0-3/DITL/138.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/138.tscn",
+          "sha256": "6d4370a2a90a00b34421a0f3236635b93c92cf34b47fcf7b292ba1c19bc70cf1",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/139.bin",
+          "sha256": "bbfba7355ac2ce0f07905fb3d33990d61bcf588c7c2c32be2e403b8354c145ae",
+          "source": "sources/resedit-1-0-3/DITL/139.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/139.tscn",
+          "sha256": "f7a1e527302925d14f0e554fce47011bc803d681f4cf7f3ed6d708c3a4f49e05",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/256.bin",
+          "sha256": "faec433aaaf6b092b086db6f323a4d00cb06c4512ab7b44ee66a2a6456cc36b2",
+          "source": "sources/resedit-1-0-3/DITL/256.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/256.tscn",
+          "sha256": "8a96977fcc8fe7dc7bc68a4e9a82a8ecb2063bf294844faa989bcfcc46459cac",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/257.bin",
+          "sha256": "757f8057e139c31d83e9c4ddac75f5a97d23ceb730ec4e89be7d6b3b45aa70ed",
+          "source": "sources/resedit-1-0-3/DITL/257.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/257.tscn",
+          "sha256": "0035af35addd70959bd5611e2500aa9875b230f6402da2c6891945f9f460b7c2",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/258.bin",
+          "sha256": "b0af31c9b611ff22450b45c368b738395882fe9047215811e61c47d8ec652cb0",
+          "source": "sources/resedit-1-0-3/DITL/258.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/258.tscn",
+          "sha256": "a97c3cc125e36b1722d95331f2de8dd10fbd1fddfeb1e5749fd8bfcdfc617936",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/259.bin",
+          "sha256": "262ee744f3f4f2a2677323c21b0c2f0bb0372ee9a355d1af97451a5809d6a08c",
+          "source": "sources/resedit-1-0-3/DITL/259.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/259.tscn",
+          "sha256": "baa6df7b26255d63c70c372e935a1d863db3ab3e060f39e0cc38bdbc00ebc281",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/260.bin",
+          "sha256": "3eaad90b4ce27e38b726e29b04bfe3c398aff6c75b602b6cfa6603560300c36e",
+          "source": "sources/resedit-1-0-3/DITL/260.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/260.tscn",
+          "sha256": "88395bdc6d60482a14ebde69375a8ea9b733f0836c6ee4a4236321e14c709357",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ditl/261.bin",
+          "sha256": "d1ccb5377f37fea3f6dca2a22ba747989afe9971ffb8add5095ba39b89428d20",
+          "source": "sources/resedit-1-0-3/DITL/261.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ditl/261.tscn",
+          "sha256": "30326c4d090786e859755f19bedfab79cd8371b1f523ffeff2e41f3ccc433a8d",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "DLOG": {
+      "status": "imported",
+      "resources": 12,
+      "files": [
+        {
+          "path": "godot/assets/dlog/1000.bin",
+          "sha256": "128fdcf906fd6751f3079a45ac231cdd34739c48a742f372d03458880d3fe975",
+          "source": "sources/resedit-1-0-3/DLOG/1000.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/1000.tscn",
+          "sha256": "0b531c394fd18b04ba3da3aff7e65635cdca26542808a27c58188c25a498c168",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/127.bin",
+          "sha256": "bbb83325153e6c349493df5663fc3df3e941bb9f2b6747fbb0db65254124a045",
+          "source": "sources/resedit-1-0-3/DLOG/127.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/127.tscn",
+          "sha256": "7ab05125d2f61827d0a7eeebb8f8a9c60b11d79188b4b06856783549f9122060",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/128.bin",
+          "sha256": "f0a645da90cf17f6e9fc75c3ab771bd9885d4b4ef1e74895ee84cdaef68aa705",
+          "source": "sources/resedit-1-0-3/DLOG/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/128.tscn",
+          "sha256": "b7f7043bbc456edad2bf647bda169ab066185ba042da428613556695b503bbc6",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/129.bin",
+          "sha256": "da050892f38071f889cc318af4af75075d80cf8a771b5eed0f6dcc937c57e662",
+          "source": "sources/resedit-1-0-3/DLOG/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/129.tscn",
+          "sha256": "0033aead12b0535a279af29748773b2c14c9bafcb4fe977868dca258cda5306b",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/130.bin",
+          "sha256": "2ac0dbdea0752c8f1d5911f37401a0e44b7e5645f6d2320af9daa67fc4581e6d",
+          "source": "sources/resedit-1-0-3/DLOG/130.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/130.tscn",
+          "sha256": "6812901f1f3c208b74c9ee8fd0856e989ad5592015b33ce7792e151dc2a84f71",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/131.bin",
+          "sha256": "56f123570e59fad86438f4e2b8ff5a790c99e559e8085892a612531530193e1e",
+          "source": "sources/resedit-1-0-3/DLOG/131.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/131.tscn",
+          "sha256": "f935133df28551f40dfa577098a912f4238307cc336c809537bf9818000a6a16",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/132.bin",
+          "sha256": "9808c1c67434eb2260a10e9613c551e3a2ff159ac15a92328ff60557e0431daa",
+          "source": "sources/resedit-1-0-3/DLOG/132.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/132.tscn",
+          "sha256": "d120a40b301dc68e4b5e7fb5f40925f48b6f9e1bc0a539054698dd9232e9484d",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/133.bin",
+          "sha256": "1fa39947262d0426428585ee077c5fc7b27b2f13bc89537499938dfcbb40a5b2",
+          "source": "sources/resedit-1-0-3/DLOG/133.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/133.tscn",
+          "sha256": "76354bcd08a265d9df6e45668bde76e9673efa5052b4bae9b2c889ae6501d5de",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/134.bin",
+          "sha256": "9bec10c86e72594f71a4f567f418a0dafce48fde71d550d03b394955518599b7",
+          "source": "sources/resedit-1-0-3/DLOG/134.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/134.tscn",
+          "sha256": "f1136d99ba06092f4336fbfdc8305057d632739625ec56df64990a2696076072",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/137.bin",
+          "sha256": "bf415d2f46b469966a9c1aa58203153c6a9aa184d8910b11e8b05dbd8063de7f",
+          "source": "sources/resedit-1-0-3/DLOG/137.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/137.tscn",
+          "sha256": "3296b767bbfa69d62b69923a302d20a2637fb1bc316d276fa92df2d84963c17b",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/138.bin",
+          "sha256": "2d7f6b2fd961faaae8c9fd0f9c7789bca2b126d08f036988e55d072559579925",
+          "source": "sources/resedit-1-0-3/DLOG/138.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/138.tscn",
+          "sha256": "3c19c155d4feff01c5ea7ac1358b643081d0c8aec1cbee84f633c70415c69233",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/dlog/139.bin",
+          "sha256": "cb5553724130c954977acd112c0e4a423c16b1f9878c579dc326381c1ecb172f",
+          "source": "sources/resedit-1-0-3/DLOG/139.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/dlog/139.tscn",
+          "sha256": "3debbff057eccee236f6907a9cdf256a6f38d331c0cb286c5b7e849c3fda6666",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "DREL": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/drel/0.bin",
+          "sha256": "3d59055692498a5e5848be740189913637de592cfe0e37a73fb7fe44f6d45caf",
+          "source": "sources/resedit-1-0-3/DREL/0.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/drel/0.tscn",
+          "sha256": "3c6630a1086ca1161d9f41d1eb56a60b6e25c4f715bc123a033bbf73c7698f09",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "FREF": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/fref/130.bin",
+          "sha256": "6ae70fda6b5f837884e8d6de071429e82370e929a86f133fd3c2b8775a9d594b",
+          "source": "sources/resedit-1-0-3/FREF/130.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/fref/130.tscn",
+          "sha256": "1b7f189d1d61e4b24398fe0b7d5803a773f9640051de53355e20f5e0267e2883",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/fref/131.bin",
+          "sha256": "64118f850e77c49811b1cf18bb3d722f19513f040a7896e3578b60483bb2a36f",
+          "source": "sources/resedit-1-0-3/FREF/131.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/fref/131.tscn",
+          "sha256": "32da004bb984bb290ac2d6927de592e5d6070fc23fdc2e3a1e854f01863a8413",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "HEL1": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/hel1/127.bin",
+          "sha256": "4b2a8187e593929d6c145cac3a34873765a434528c1d04dfed115b6f574f4cec",
+          "source": "sources/resedit-1-0-3/HEL1/127.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/hel1/127.tscn",
+          "sha256": "f3f5c78f1961f4510fe3d045cc8a9567b1372e1b36ca497a42678c0cce3f40fa",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/hel1/128.bin",
+          "sha256": "0a6869b91a99abb4534e1febd1eb286da6a9784ce5c0708d82bb2893dfad3201",
+          "source": "sources/resedit-1-0-3/HEL1/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/hel1/128.tscn",
+          "sha256": "ecec96e6d01705e6f8a749bb5bc7031ae292624566b7a5be16f9a9bcb71e445e",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "HELL": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/hell/0.bin",
+          "sha256": "3b868199dd6359d979f2782ad5d2fe209698c06e9059dde136fcd2ff8c600433",
+          "source": "sources/resedit-1-0-3/HELL/0.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/hell/0.tscn",
+          "sha256": "a199b934a74334ffa3e144b10289d1eebb162313575b6fd23d8c06edd0b14682",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "ICN#": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/icn#/128.bin",
+          "sha256": "9c803c1d30e71993596276dd47a470c0c227cde3667379a2b6154652104b6ee8",
+          "source": "sources/resedit-1-0-3/ICN#/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/icn#/128.png",
+          "sha256": "edf2b14187b4ccb3aa382f9b6d0507148020f4a81940d928f258cfce18e3cfd7",
+          "source": "sources/resedit-1-0-3/ICN#/128.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/icn#/128.tscn",
+          "sha256": "fee944bf1402fc7574a20983d0c8c68b38b78c929fba1ccd08cf4b2eded1ed06",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/icn#/129.bin",
+          "sha256": "2722b1cabda0910ecc11c6d029c2f559358ad5d70bbf17bc7704d5ed3b9e84bc",
+          "source": "sources/resedit-1-0-3/ICN#/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/icn#/129.png",
+          "sha256": "5abde23496077ddc697c5abd29d7b2a89295eac74acc5d38afbbe8b166a1285d",
+          "source": "sources/resedit-1-0-3/ICN#/129.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/icn#/129.tscn",
+          "sha256": "860866a3c08d74840b3afdaa4e6d462902df53386b5459f77b6c83ae0f4abeed",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "ICON": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/icon/128.bin",
+          "sha256": "b9dc2e989567ef4ec460f0d72f2e39fed230c14c46cf49d0c769f16c8236c28c",
+          "source": "sources/resedit-1-0-3/ICON/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/icon/128.png",
+          "sha256": "158f36cc4d497c42d01ec2716150cf555ff49e21742b7ce1d8dc896a8a60731e",
+          "source": "sources/resedit-1-0-3/ICON/128.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/icon/128.tscn",
+          "sha256": "f90340d68d029772607b3d9e9ead814058adb2a0e5c0db26db3a6fbbe480b3d5",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "MDPL": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/mdpl/128.bin",
+          "sha256": "d3837bd42eb43128291042b0ccdc04f486aee6f49e4a048c3c1704ad73a615ab",
+          "source": "sources/resedit-1-0-3/MDPL/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/mdpl/128.tscn",
+          "sha256": "5e4aead724485f916645df94c70a0bf8b6d2bd726ddebcbf61df1d22962a13f5",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "MENU": {
+      "status": "imported",
+      "resources": 5,
+      "files": [
+        {
+          "path": "godot/assets/menu/1.bin",
+          "sha256": "dd7814b6d1763f6e165f054886bf356d0ba41bd2d9ef499a3bd0227a327d5abb",
+          "source": "sources/resedit-1-0-3/MENU/1.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/menu/1.tscn",
+          "sha256": "91333d5e28e5f9f86f3b96e9e4de4aa33c55fcfffcf0019a33bf2ffeb78d5498",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/menu/2.bin",
+          "sha256": "94009e2f0ff20f9b4fa22238bc4e51a4ae8b93f86684fceafe0baf675410f2fa",
+          "source": "sources/resedit-1-0-3/MENU/2.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/menu/2.tscn",
+          "sha256": "805cab697a2a5d7dfee4bc2d5bda0097f354578ed91be2a8332de6ccebabd25e",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/menu/3.bin",
+          "sha256": "b7c37cfd05c6c5dda23f4b0d20829512f53750326650b068168c4b18ab7d4ffe",
+          "source": "sources/resedit-1-0-3/MENU/3.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/menu/3.tscn",
+          "sha256": "518e100db3e5943fca4c3872412b35a03a9f94ba094dcffd44302fa7ca6e0620",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/menu/4.bin",
+          "sha256": "e9f6b5a11f9aea00800d571c5f6736bbb80702b26f73047d62e10bc5ad7051aa",
+          "source": "sources/resedit-1-0-3/MENU/4.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/menu/4.tscn",
+          "sha256": "69a2f8ee2f33f455a1f8de4c57bfbf402689b1c48b856171bd58d248262871b1",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/menu/5.bin",
+          "sha256": "6ff162f2948b20801724a1c6aa27553066e364e5b61fe04c06be50d876cdd034",
+          "source": "sources/resedit-1-0-3/MENU/5.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/menu/5.tscn",
+          "sha256": "d83b390a28116aa949251638b874aa0fce486be40707323e503f82b35ab8878c",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "PICT": {
+      "status": "imported",
+      "resources": 5,
+      "files": [
+        {
+          "path": "godot/assets/pict/1000.bin",
+          "sha256": "aa1b8e60d163cc5b0218e8769c3d9a71be759e55a056b585b311ad21c92d2ae0",
+          "source": "sources/resedit-1-0-3/PICT/1000.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/pict/1000.png",
+          "sha256": "e086d7201d0211810e89bfa8eac564c9a6d065b63a5df3abbbfe458b5804e5dc",
+          "source": "sources/resedit-1-0-3/PICT/1000.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/pict/1000.tscn",
+          "sha256": "2f1d5421a281406aea356a1407c1f78ff6085c65fd0bf61942d0942db29611e6",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/pict/128.bin",
+          "sha256": "7501ac1783490a6fb1380e42542d8f4b1cdc88cefc02368bb6750fca66a98898",
+          "source": "sources/resedit-1-0-3/PICT/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/pict/128.png",
+          "sha256": "db56a5b4c6d0f9a414b3b69995b406a363221c5ed704b6c612bf3d184e551be0",
+          "source": "sources/resedit-1-0-3/PICT/128.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/pict/128.tscn",
+          "sha256": "36334b2906b7bffb643b9646123da4af078a3d88647e0e11d4c4eb0454465197",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/pict/129.bin",
+          "sha256": "806378df61d18913425258241e4bea9f2c398075875d93d3f6dc083e2ef7cfb1",
+          "source": "sources/resedit-1-0-3/PICT/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/pict/129.png",
+          "sha256": "0994f7a1bd6304c6b496b94d53ef061bb3c11f7de987d05905da8c9d1a6afa98",
+          "source": "sources/resedit-1-0-3/PICT/129.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/pict/129.tscn",
+          "sha256": "84ba69cfad02b83f2394cdd8b7b6f25e86924167a458c6762f036647a7511882",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/pict/130.bin",
+          "sha256": "a59e0538231c02293ebf07ce321f94fa2a99ef5fb5b48d2a1e4a46e1565c9a1a",
+          "source": "sources/resedit-1-0-3/PICT/130.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/pict/130.png",
+          "sha256": "0ae04e6b4ef30c31eb21ac98018044b41038399c0df63bd4cde5185d54025cc4",
+          "source": "sources/resedit-1-0-3/PICT/130.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/pict/130.tscn",
+          "sha256": "40024452d4afa8360f266f380ca2581ce4b95518b6829a269221da9052e8eeb4",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/pict/131.bin",
+          "sha256": "b46dfb31745c10cf1902e86c550c9de1f4527d791dc32edb4bd67c3e1395663d",
+          "source": "sources/resedit-1-0-3/PICT/131.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/pict/131.png",
+          "sha256": "7eda4d538601be83698a1cc4e153e1cce19ced56eafab5293c1330f95a8c3ab9",
+          "source": "sources/resedit-1-0-3/PICT/131.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/pict/131.tscn",
+          "sha256": "07081434be2036bfb00f198843f3b9446e6567d86a13b63dbf91ee4a17d66d04",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "SIZE": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/size/-1.bin",
+          "sha256": "8e1c0d6ca99e491cab13f7d5d9410ebf7b150d4c54222526f9094b64a0a0a74c",
+          "source": "sources/resedit-1-0-3/SIZE/-1.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/size/-1.tscn",
+          "sha256": "ad125afcd1f14b76175ff19f27cc243f941847ab3c268ad94c9c475de55177e8",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "STR#": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/str#/129.bin",
+          "sha256": "5dcef38d03a5ea3793fb8611b8a92fefb9ac535c4253b1a0930f986ef480f563",
+          "source": "sources/resedit-1-0-3/STR#/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/str#/129.tscn",
+          "sha256": "067b4892a8af1d3ebbc70b71e263a6726baf3625038cb120729b15274cbe144b",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "TEXT": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/text/1000.bin",
+          "sha256": "919b7c162f0e658569e262ac1e890ac595f292710ea84acb033a219cf3d6e417",
+          "source": "sources/resedit-1-0-3/TEXT/1000.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/text/1000.tscn",
+          "sha256": "4367a3195a1c22f2c4d3c7fc7f0d6a25608a0ca8c5bcd8731c967ca27081b0b4",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/text/128.bin",
+          "sha256": "ac8331548074c4c4f45191b16d7aba8267e1c3c7c0df349e23ae6df4f2c087bc",
+          "source": "sources/resedit-1-0-3/TEXT/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/text/128.tscn",
+          "sha256": "5fdfe64b7f0dc5dd4091166740a895ae4ec1834461696bc1e3e403d10faa5eec",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "ZERO": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/zero/0.bin",
+          "sha256": "f8765d796b57f88b6d836eb39559a6dd9190e25bf118212706958f6f53751cd4",
+          "source": "sources/resedit-1-0-3/ZERO/0.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/zero/0.tscn",
+          "sha256": "e70031519df57fc2ac08c2a1b4173b527f8a91d266b299a58b0d88c69f68cbfb",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "cicn": {
+      "status": "imported",
+      "resources": 14,
+      "files": [
+        {
+          "path": "godot/assets/cicn/256.bin",
+          "sha256": "fbbbdf644863299e9cf37b3bac7f8bd18af9ee97395afab4ca58b88217b15ec1",
+          "source": "sources/resedit-1-0-3/cicn/256.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/256.png",
+          "sha256": "f93e5fd3d4cf37b2ae1c7a954185703e6fdbca9445a2a2f670fa683d89afcba5",
+          "source": "sources/resedit-1-0-3/cicn/256.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/256.tscn",
+          "sha256": "61d6431abcc40e5ada3b8ffbe82e8cd0004955d4ea23f80eb8096049a858659f",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/257.bin",
+          "sha256": "aff20ca1e6516454134926991cfe3a081006a27a36ad814dd8ee1b63e6539c31",
+          "source": "sources/resedit-1-0-3/cicn/257.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/257.png",
+          "sha256": "3161e98cdbd2b58afa5b17771fd1f7175d6d81d7c0a7bed461ec07dd6d239573",
+          "source": "sources/resedit-1-0-3/cicn/257.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/257.tscn",
+          "sha256": "7b2921ffa678aebb81cf594ced2205f5dd5dc9b6a51c790c87bdbe35bb77a7c5",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/258.bin",
+          "sha256": "b8548f7610c83a47ea132e1c6812cf5fc7475ad64dc6f00200a5a895c60f945a",
+          "source": "sources/resedit-1-0-3/cicn/258.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/258.png",
+          "sha256": "b4ab43bc307b2f652b99b86e992a425aa94de547a8544ef929405d0ba31909d2",
+          "source": "sources/resedit-1-0-3/cicn/258.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/258.tscn",
+          "sha256": "6f32f709c9e5336ed842f8c465bbfca3be9933e58bacd586ffca2d0bf88e01b2",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/259.bin",
+          "sha256": "b48942fbff245574608134226553616d0794bbb19ff6954fa45ef5fb804d2afd",
+          "source": "sources/resedit-1-0-3/cicn/259.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/259.png",
+          "sha256": "d2ac6ae3e4b2196983f6eabe9542ac943c492ad064d5785b140f0bf3587e0518",
+          "source": "sources/resedit-1-0-3/cicn/259.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/259.tscn",
+          "sha256": "4971633e4d9e4809ea558902b3e24efcf445f4d4be20c47c4080ad8a706719f6",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/260.bin",
+          "sha256": "273d0bf8ab384a65753bce7a0a66397f3419a84c7fd2dd78fa6d1f550e1f1f59",
+          "source": "sources/resedit-1-0-3/cicn/260.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/260.png",
+          "sha256": "461c56c310a7303badc0d3f31588f59eb751f0c2922dc88cab8c7817f898d099",
+          "source": "sources/resedit-1-0-3/cicn/260.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/260.tscn",
+          "sha256": "84231c83e0ec0d04168b04a4463ec55ab8c34084e3b9a7785e063d599eb8aa7d",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/261.bin",
+          "sha256": "6cecd7970840a7f1a126c349330fd4c9563372398cf92c921f2f3ac4ed6379c7",
+          "source": "sources/resedit-1-0-3/cicn/261.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/261.png",
+          "sha256": "9c1b72b438a9e732f03fb3a2deaf60dda676fc167d6a3cb0e66e19c31223e797",
+          "source": "sources/resedit-1-0-3/cicn/261.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/261.tscn",
+          "sha256": "2462dedfe8c4534bd4ceae35d0567e0611a195b547fda8536e3a5c303a7f9fa0",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/512.bin",
+          "sha256": "017105aaa5449a765d2979eb9a6e6545eea62db23f5c7ddf2e7ac8f0f24aab20",
+          "source": "sources/resedit-1-0-3/cicn/512.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/512.png",
+          "sha256": "eb90dedc430225c37b5f73f936bedc2e46c9fb481f33816c7fbfbd890076315c",
+          "source": "sources/resedit-1-0-3/cicn/512.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/512.tscn",
+          "sha256": "b499525a4233704b00a726e4d554d91e40e8771d1b1dfd256f86a36803ea0327",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/513.bin",
+          "sha256": "cfd8a97184f27fee70e7e010e35ca60e647d0e10e7e98fbf03b83e7702ddff6c",
+          "source": "sources/resedit-1-0-3/cicn/513.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/513.png",
+          "sha256": "8d18c1a50fb673469353463205ce8d95c7f2b03ee549990d8b15835b488aac71",
+          "source": "sources/resedit-1-0-3/cicn/513.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/513.tscn",
+          "sha256": "5331258d98d5e2b4df3de04b78a919b9252aff15e8613ef1f9dbd9044d952a76",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/514.bin",
+          "sha256": "5a4624248ac886797eb726bdd47fc19558861b35255cf9ece812ac61d3864878",
+          "source": "sources/resedit-1-0-3/cicn/514.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/514.png",
+          "sha256": "26f4b23dc1b18e376048314105c49ebbdae98bbce8b5f01bb6bbfd624336d36b",
+          "source": "sources/resedit-1-0-3/cicn/514.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/514.tscn",
+          "sha256": "541c1b51492fd51dd0e9fd7844d837d8f6d679b82623f5e9cdc17bab87837aac",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/515.bin",
+          "sha256": "0fefc3dd7d7a73e51163ba105afbc623c1e366c6d2d6800707449c3143ce8a1a",
+          "source": "sources/resedit-1-0-3/cicn/515.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/515.png",
+          "sha256": "ee0c96938ee90d2930b5ab8a470e8bafcd146c621496f027c23a6dfae340f5c4",
+          "source": "sources/resedit-1-0-3/cicn/515.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/515.tscn",
+          "sha256": "a707e3885badd7076277aeb11f21034d275c7c6503070543732abc823da66a50",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/516.bin",
+          "sha256": "481c8fb9ee2e2399cd05d18614d9a09bc209c302a2ff8c307c4455bd5ee13cf3",
+          "source": "sources/resedit-1-0-3/cicn/516.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/516.png",
+          "sha256": "9199a6e1d3aca703e5e58cd31bca78be34499b397ec77a4243065f48a8c126ac",
+          "source": "sources/resedit-1-0-3/cicn/516.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/516.tscn",
+          "sha256": "f0a9cc096fd93da05c7d5f99fe7d4a638dee2a59852a164dc94904e13d1dc8bc",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/517.bin",
+          "sha256": "a56ad532236be8d8411248f88e519aa7e58c5bd0314caaf62946be9d457c0d3e",
+          "source": "sources/resedit-1-0-3/cicn/517.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/517.png",
+          "sha256": "f2d614b30831a999ff6e012fabf2fcf998f70e965516f63681cd65d8ac8fd961",
+          "source": "sources/resedit-1-0-3/cicn/517.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/517.tscn",
+          "sha256": "6d585ed27a43ea4799e98df3c9b95b02af695506de52d98f5b8288d49659a0ec",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/518.bin",
+          "sha256": "2d932af34bc906b893a8f00e11b67f1ad05bf6c99ac7043274f0f1f7d0a6bdc8",
+          "source": "sources/resedit-1-0-3/cicn/518.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/518.png",
+          "sha256": "f132dd3ffdd83582af724fe925c100f6444dcfb5d92f6d7807aed8b40ab76d7e",
+          "source": "sources/resedit-1-0-3/cicn/518.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/518.tscn",
+          "sha256": "4b58da906e06e1fd661f6eeefe1f41afedf4e55ed14acb2ab9d6d0dc203d3432",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/cicn/519.bin",
+          "sha256": "9eaead223ece8b116b6dce6f2ee375a7ad66cb46e2678a82c29a88fe43ef88d7",
+          "source": "sources/resedit-1-0-3/cicn/519.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/cicn/519.png",
+          "sha256": "13590ab6a3604af7d97dee9106cd0a24896a22e5c7a4c278c713499daaf465c0",
+          "source": "sources/resedit-1-0-3/cicn/519.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/cicn/519.tscn",
+          "sha256": "e23818fae413209a20e2a52747179b17b56ba2586df6b9e6eb560375a9143ab9",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "clut": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/clut/999.bin",
+          "sha256": "67ed7b8bf51b271f54f8a0ebe4d0b2bc509ad88e5e9970d9854cde50f47abd46",
+          "source": "sources/resedit-1-0-3/clut/999.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/clut/999.tscn",
+          "sha256": "9ee058cebf80262c4d2f3d5fbf785113b088045d7a8dc0652695e021f5b1e9f8",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "icI4": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/ici4/128.bin",
+          "sha256": "0d16550dbc180d82e0565c4a28abc5967dcfff579a8e7a8fc92b7cc0499c2bfa",
+          "source": "sources/resedit-1-0-3/icI4/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ici4/128.png",
+          "sha256": "00fe895fbafaa209cf5c48ebcb39919108702e48eda22ba9f4b27c6a47e00a52",
+          "source": "sources/resedit-1-0-3/icI4/128.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ici4/128.tscn",
+          "sha256": "b8f1c6cc5b099cb41d2bdcbe8ef63d97de463e4b75e82667d8489c99cd51cd62",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ici4/129.bin",
+          "sha256": "66a02d9dcd366c128d0b6a244d8bbdffd6df5767bf633c28ebb12f94b5d91061",
+          "source": "sources/resedit-1-0-3/icI4/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ici4/129.png",
+          "sha256": "1b589b74604921fc3afb1ce0e2c86a14d6a51082594d1953e86d16482fbee98c",
+          "source": "sources/resedit-1-0-3/icI4/129.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ici4/129.tscn",
+          "sha256": "b3ef278e170b0aefe666788db4cde701e772921ca876b6b600e8c7a7598c0103",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "icI8": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/ici8/128.bin",
+          "sha256": "3d34539574743f7bdfd851bf15eaae53758623a2ed1ff7ad85020b4420562477",
+          "source": "sources/resedit-1-0-3/icI8/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ici8/128.png",
+          "sha256": "71aa716e24e3e36db0c89a22cee20f8b60f19527c5c2a641b87ab4ce218c97d3",
+          "source": "sources/resedit-1-0-3/icI8/128.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ici8/128.tscn",
+          "sha256": "ecf01ca2a5c3f1acd076559776a00ef068794358d39610309f90eae8ef95b04a",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ici8/129.bin",
+          "sha256": "c6258b2af599590fb465f6912789d95ec71a9efbdf3a6f218b9e52102600dfa6",
+          "source": "sources/resedit-1-0-3/icI8/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ici8/129.png",
+          "sha256": "e9bee185eb574a07e9e9f3b45143eaf0390cf0d6a23988f6b678c7b5b605fd50",
+          "source": "sources/resedit-1-0-3/icI8/129.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ici8/129.tscn",
+          "sha256": "62eae2d215bc8715afc1252e1f07c2e088e2caa32abab27cfb8a565c9f5b20c2",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "ics#": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/ics#/128.bin",
+          "sha256": "498daca56708725833060580b60a21b3f13020499f34e5918a358c83f96ad880",
+          "source": "sources/resedit-1-0-3/ics#/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ics#/128.png",
+          "sha256": "7ed527cf855d8205c737a322ffa49e2fdcadd2ea25c602a0cd778a1420efac8d",
+          "source": "sources/resedit-1-0-3/ics#/128.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ics#/128.tscn",
+          "sha256": "b528a38c1a4199108266dbfc7665213da1a558c8ceff7d692f51d3e2fa49e146",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ics#/129.bin",
+          "sha256": "1f6d219aa32ace71068ab95d450085e17767aa371594eae4b9bf01c63bb1de10",
+          "source": "sources/resedit-1-0-3/ics#/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ics#/129.png",
+          "sha256": "0386d453e0778f8c2cca830d71fe6602c70fec72c2d0ad6b81d82945fe3e3571",
+          "source": "sources/resedit-1-0-3/ics#/129.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ics#/129.tscn",
+          "sha256": "57155c8ee4a617aeca51ff7c69313c2b9e65c3683adcec8e2b4317d40e112832",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "ics4": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/ics4/128.bin",
+          "sha256": "4f2196b71467fe1d6e29a58298f83475a0b7051972e091588a1149e0c32de0b6",
+          "source": "sources/resedit-1-0-3/ics4/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ics4/128.png",
+          "sha256": "f19479c5b3ccc3e9b6a17d3b0c13dd7c8cfda758143847c56d93ba8e0a49dbc8",
+          "source": "sources/resedit-1-0-3/ics4/128.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ics4/128.tscn",
+          "sha256": "b0410d3ebf8788e4a9dfcf5541996abd5e70e04ad3671905f68b30a1609b6970",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ics4/129.bin",
+          "sha256": "4948c5674b66a70a31f6a7b386cf4a91faea6c49f85dd917926a9cffa5280550",
+          "source": "sources/resedit-1-0-3/ics4/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ics4/129.png",
+          "sha256": "6d82fd8b9e00967b529f1052806a32829a07aacfb9b53d5c7f16a3f8a8ce125e",
+          "source": "sources/resedit-1-0-3/ics4/129.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ics4/129.tscn",
+          "sha256": "273966e5b8814f3657e9ed47cc1bea3aedfce1ab9a27e6bf58390572c094579c",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "ics8": {
+      "status": "imported",
+      "resources": 2,
+      "files": [
+        {
+          "path": "godot/assets/ics8/128.bin",
+          "sha256": "e3c450bff7fd6d37684780ac91d525b52c5fc6477ef3919dbf9f80c2ff94ee43",
+          "source": "sources/resedit-1-0-3/ics8/128.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ics8/128.png",
+          "sha256": "bbf34bfdd8fb0600066efa8879f3f669a74654fb507f3ce7922d949794c91c8d",
+          "source": "sources/resedit-1-0-3/ics8/128.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ics8/128.tscn",
+          "sha256": "3e6f9506c78c2ba77b7bf111ec8612b23049bd2659a20b4fdae67102f0b92272",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/ics8/129.bin",
+          "sha256": "816c7aad76e56f38d1e46d53564fddfcba216ea4060c6e912602f87505171cd6",
+          "source": "sources/resedit-1-0-3/ics8/129.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/ics8/129.png",
+          "sha256": "24d2d078c775589f3ead3af17db60338c315471cc1de46b348ddb406148fecb4",
+          "source": "sources/resedit-1-0-3/ics8/129.png",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/ics8/129.tscn",
+          "sha256": "67b67b0a51cb7d462675a7727920947f22552f54c4b1fa9d34e62c3c0aafe587",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "snds": {
+      "status": "imported",
+      "resources": 13,
+      "files": [
+        {
+          "path": "godot/assets/snds/13493.bin",
+          "sha256": "0bb695b88f413637da7220802c6fcda2334e8cbace55fb4f41764bb4d8a9a9a6",
+          "source": "sources/resedit-1-0-3/snds/13493.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/13493.mp3",
+          "sha256": "ad29073ab4d9de64a0d5885b90ddf1ce02bd75df04a70417a12c90fd40eb856b",
+          "source": "sources/resedit-1-0-3/snds/13493.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/13493.tscn",
+          "sha256": "ba40f640214b6a2d8b62821bf55c4ec1bb518e5983332578b00a90464a8ec465",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/15396.bin",
+          "sha256": "dcbb44827934e29aa76ac98f435eb7ab3587a018c1b5b78ecd9af53504d169f0",
+          "source": "sources/resedit-1-0-3/snds/15396.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/15396.mp3",
+          "sha256": "491f6eda5d6b63df48a63c64614704b89ee6f94d381039a0e8cc5c92f984c17e",
+          "source": "sources/resedit-1-0-3/snds/15396.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/15396.tscn",
+          "sha256": "c53081197d707eaa91ceee337b3efc0745e27d225dde64857ed1a2958a4a4492",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/15490.bin",
+          "sha256": "054bffa96ed4ab2a57611e0fd4b4b559f63e172252a1169c100464aee4d58d66",
+          "source": "sources/resedit-1-0-3/snds/15490.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/15490.mp3",
+          "sha256": "9c297d75f40a9f3418ff837f48c706bb861252fe7e0f3fc220891b9abbb24262",
+          "source": "sources/resedit-1-0-3/snds/15490.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/15490.tscn",
+          "sha256": "751f9353c2d588eec79202f87d9c20de16a446fe8af53d0cf44f84f1b62c08a5",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/16059.bin",
+          "sha256": "9b6c665c6410d6aea78914a56df598da904930fb9a84878f9737adc8f7187d57",
+          "source": "sources/resedit-1-0-3/snds/16059.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/16059.mp3",
+          "sha256": "cbc8462ae5da94c958c3571ddae0edf3900c7a4dd6ae001108c9fd949d433f36",
+          "source": "sources/resedit-1-0-3/snds/16059.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/16059.tscn",
+          "sha256": "3c145a6570ae667717d8068aa8debcc63bbe24e254fa39f80e07c7ca5ce53a8f",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/16737.bin",
+          "sha256": "76746b52017794456f50e0f7e738e8dbe9de81130e1a917f87234418c71d9248",
+          "source": "sources/resedit-1-0-3/snds/16737.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/16737.mp3",
+          "sha256": "b90cc9c4c60497be55a334e1a4c7d1d9854e08b24c54c735d1c1499f4fa4c02f",
+          "source": "sources/resedit-1-0-3/snds/16737.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/16737.tscn",
+          "sha256": "154f3dc6eaf7ccc137ed9e0c7dae7739a093170fe6cbd9fe4f16e2b376f873b1",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/16815.bin",
+          "sha256": "a247996783133c75fa8f7ba10a16f82a34f4d4aa9fa4e9ecbea54ff01c9e7cce",
+          "source": "sources/resedit-1-0-3/snds/16815.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/16815.mp3",
+          "sha256": "bae23c107ba2fbd166fe51488cf24d96ca2a5e0b7c4e3b79feac1378372322ae",
+          "source": "sources/resedit-1-0-3/snds/16815.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/16815.tscn",
+          "sha256": "62a088df0f1fdde46c809f5c7f0970d6ee27cc7f7ae81e810bee6710676d84f2",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/19330.bin",
+          "sha256": "e667bbdea77aec482a321dde3dd84ba82f140b9c0a3dd8ff2584c62db6024a72",
+          "source": "sources/resedit-1-0-3/snds/19330.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/19330.mp3",
+          "sha256": "060598ef31f7ffa1fcdec0ede653fdc330194a944c1b5cf8ea75141d2a5fac86",
+          "source": "sources/resedit-1-0-3/snds/19330.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/19330.tscn",
+          "sha256": "ad54afe5fe09ffccf8fe955b9f2278020c420e1fc3dfc51a2feda83c74e16fca",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/21266.bin",
+          "sha256": "bea713f5aa9eeb1b9c71b9fbc16748e663a91966ddc8f83371039acd922b5b07",
+          "source": "sources/resedit-1-0-3/snds/21266.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/21266.mp3",
+          "sha256": "23558c8ebc3bc21acef2f46788a56da612b643d0306a3342dd3f773787e9a9c7",
+          "source": "sources/resedit-1-0-3/snds/21266.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/21266.tscn",
+          "sha256": "bb728ed6c1b79565e2f5caf9f77f267d154ac81fc8cde78142018c9ea6cf348f",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/2186.bin",
+          "sha256": "2c2b130716c1c667b5ae6208a75a3d897f9b83d6a8fcad610c72a1f782efcecd",
+          "source": "sources/resedit-1-0-3/snds/2186.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/2186.mp3",
+          "sha256": "f458161027a3bd335a3a11c37b915f432d28368a1eb6c25b3aed4699d30058fa",
+          "source": "sources/resedit-1-0-3/snds/2186.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/2186.tscn",
+          "sha256": "bcec5ed16f29e7412bfc9fe13c5fe0c2cf97b7f1ec0400ca0fe1a068b99df879",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/22599.bin",
+          "sha256": "0ceb0ebc138883350ecba9929b400e9002aad6521bb1c416d992a60b44a641e2",
+          "source": "sources/resedit-1-0-3/snds/22599.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/22599.mp3",
+          "sha256": "9c1185a71fe50ab34ddfa8be37fdeb4cd050a9778cdb35adfa504f3063b7e140",
+          "source": "sources/resedit-1-0-3/snds/22599.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/22599.tscn",
+          "sha256": "36e11410207561ed6eb79d4a5cde3871d23fe3c25eb1e8ae262d9f67a0a88954",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/24100.bin",
+          "sha256": "39fd8533345884cfaf9f3ee7739cd332427f0b37412efdba179fd88dd4c744b5",
+          "source": "sources/resedit-1-0-3/snds/24100.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/24100.mp3",
+          "sha256": "caa93edb802ed43ba04516636cbeeb478306082623d96fca3b5fde80682966d1",
+          "source": "sources/resedit-1-0-3/snds/24100.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/24100.tscn",
+          "sha256": "c43db6ee5c24fe36d40cd9e84ad4d451a1f412bd8ab710f4683e89038cb4c704",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/25233.bin",
+          "sha256": "4bb0afeef0044ee7c17bb1d69f37cce1ec6b3fffaec4e1985a80d0dadc938cc5",
+          "source": "sources/resedit-1-0-3/snds/25233.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/25233.mp3",
+          "sha256": "29566b002c287e8d20d706c0fe24e9f114ba936cc30ccc77a6b06fb2a48b4ec7",
+          "source": "sources/resedit-1-0-3/snds/25233.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/25233.tscn",
+          "sha256": "e72aaa5b4f9341fba1f697cd94515faf8b496fe261a899d5d4283f9a3d6b55f2",
+          "source": null,
+          "kind": "scene"
+        },
+        {
+          "path": "godot/assets/snds/30683.bin",
+          "sha256": "f16458e8e3b2d5efe77447b2549c1a605608865bce318fe8c06cbea470c04cee",
+          "source": "sources/resedit-1-0-3/snds/30683.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/snds/30683.mp3",
+          "sha256": "34044455d47717f554b4c434f77d7a347cbc9c38fb19fd9ecfe7191b1827871f",
+          "source": "sources/resedit-1-0-3/snds/30683.mp3",
+          "kind": "media"
+        },
+        {
+          "path": "godot/assets/snds/30683.tscn",
+          "sha256": "ca32e8b52dc8dd406db94ff5565622ebce694c86fd2f336b0044b741033b89fe",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "styl": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/styl/1000.bin",
+          "sha256": "37c942bd07b6676c4f0fd7b2c2f6097ba25df00bfdcbe9a83470d15de586e1f6",
+          "source": "sources/resedit-1-0-3/styl/1000.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/styl/1000.tscn",
+          "sha256": "5c0965848d19d19d4b8dc5373c434c2e0a7092b9969777a37b7b49953abb541a",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    },
+    "vers": {
+      "status": "imported",
+      "resources": 1,
+      "files": [
+        {
+          "path": "godot/assets/vers/1.bin",
+          "sha256": "349a79d73cde33c03fa9901c60e43528339a4b9724d489a3af7c45b1bf4308f8",
+          "source": "sources/resedit-1-0-3/vers/1.bin",
+          "kind": "payload"
+        },
+        {
+          "path": "godot/assets/vers/1.tscn",
+          "sha256": "780f6a75fbe1b8ba934445727440916526651705fb5039ff25d0a3f606a060d8",
+          "source": null,
+          "kind": "scene"
+        }
+      ]
+    }
+  },
+  "versions": {
+    "1.0.4": {
+      "source_root": "sources/hellcats-1-0-4",
+      "files": [
+        {
+          "path": "godot/assets/hellcats-1.0.4/hel1/127.bin",
+          "sha256": "1c2bd5f009050172f140b4a6613a95a5bb0975ccadbeb4ffd8689f86a728c3a8"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/size/0.bin",
+          "sha256": "8e1c0d6ca99e491cab13f7d5d9410ebf7b150d4c54222526f9094b64a0a0a74c"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/size/1.bin",
+          "sha256": "6464dd622d1fb6832ebf0e09cff949d13f99f1963837675f1557a5c4fd093ca6"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/snds/13493.bin",
+          "sha256": "0f32788987ec4e5a21e0d5d3459fcfeb2def3f442ebf29b04817d6ffbb65648f"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/snds/15490.bin",
+          "sha256": "33efcb2ac1994d07d4b72b7f0f1580ee6836a3aae1d8a539f8e6e99e8b5c69bd"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/snds/16059.bin",
+          "sha256": "ce7dfa1dcdf9130cc8bbc9079732a0f0dd8f74db8f2f84fdd5292bb495cda1ff"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/snds/16815.bin",
+          "sha256": "ad2c5b7f8a32d4adb8c386f1f261ea83d5955e37ae8ca3f73ab2d71b020d20ba"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/snds/21266.bin",
+          "sha256": "0cc06b38f36a2d6647ee82007efa9bd51d156f5838529e865253f0901c99e573"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/snds/2186.bin",
+          "sha256": "a8ff0be0a9bdc119ec470f5c2f7522c78c371954961d254a125109422dad759f"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/snds/24100.bin",
+          "sha256": "13e356a1ba8d7cb25f8411d9cb7b669166f557b4883e8fc9a65ba14eb67dd539"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/snds/25233.bin",
+          "sha256": "362890a260a3c95b68f2dab1f4ac56753cdd9e610a25a3bbab82b3e1aaee0dd4"
+        },
+        {
+          "path": "godot/assets/hellcats-1.0.4/vers/1.bin",
+          "sha256": "cc8c03d78a8be06fb51b17738d8e0af3de945f3a634746c34e951d677ee91437"
+        }
+      ]
+    }
+  }
+}

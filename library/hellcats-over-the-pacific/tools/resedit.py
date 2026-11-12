@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Deterministic inspector and metadata generator for sources/resedit-1-0-3.
 
-The comparison payloads come from the classic resource fork embedded in
-sources/mac-os-9/Hellcats_1_0_4.appledouble. Generated *.bin
-and *.json files are derived evidence; existing ResEdit exports are never
-rewritten.
+Every payload comes from the Hellcats 1.0.3 application's resource fork on the
+original floppy, sources/mac-os-9/Hellcats_1_0_3.dsk (read with
+tools/mac_resources/hfs.py). A ResEdit hex export must equal that payload or be
+a recorded prefix of it. The Hellcats 1.0.4 fork embedded in
+sources/mac-os-9/Hellcats_1_0_4.appledouble is recorded per resource as the
+1.0.4 comparison. Generated *.bin and *.json files are derived evidence;
+existing ResEdit exports are never rewritten.
 """
 
 from __future__ import annotations
@@ -21,6 +24,9 @@ from typing import Any, Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 RESEDIT = ROOT / "sources" / "resedit-1-0-3"
+DISK_1_0_3 = ROOT / "sources" / "mac-os-9" / "Hellcats_1_0_3.dsk"
+APP_1_0_3 = "Hellcats:Hellcats:Hellcats"
+SOURCE_VERSION = "1.0.3"
 APPLEDOUBLE = (
     ROOT / "sources" / "mac-os-9" / "Hellcats_1_0_4.appledouble"
 )
@@ -1443,9 +1449,11 @@ def outgoing_refs(typ: str, rid: int, decoded: dict[str, Any]) -> list[dict[str,
 
 
 def build_records(write: bool) -> tuple[list[dict[str, Any]], list[str]]:
-    fork, apple_off = extract_appledouble_resource_fork(APPLEDOUBLE)
-    fork_entries = parse_fork(fork)
-    by_key = {(e["type"], e["id"]): e for e in fork_entries}
+    sys.path.insert(0, str(ROOT / "tools" / "mac_resources"))
+    import hfs  # noqa: E402  (tools/mac_resources/hfs.py)
+    by_key = {(e["type"], e["id"]): e for e in parse_fork(hfs.find(DISK_1_0_3, APP_1_0_3).rsrc)}
+    fork_104, apple_off = extract_appledouble_resource_fork(APPLEDOUBLE)
+    by_key_104 = {(e["type"], e["id"]): e for e in parse_fork(fork_104)}
     items = discover_items()
     code_refs = scan_code_references()
     named_type_refs = scan_named_type_references()
@@ -1455,7 +1463,7 @@ def build_records(write: bool) -> tuple[list[dict[str, Any]], list[str]]:
         fourcc = TYPE_TO_FOURCC.get(typ, typ)
         entry = by_key.get((fourcc, rid))
         if entry is None:
-            errors.append(f"missing authoritative resource fork entry for {typ}:{rid} (fourcc {fourcc!r})")
+            errors.append(f"{typ}:{rid} (fourcc {fourcc!r}) is not in the 1.0.3 disk's resource fork")
             continue
         stem = output_stem(typ, rid)
         bin_path = RESEDIT / typ / f"{stem}.bin"
@@ -1465,8 +1473,18 @@ def build_records(write: bool) -> tuple[list[dict[str, Any]], list[str]]:
         original_name = resedit_name if has_resedit_name else entry["name"]
         original_name_bytes = (original_name.encode("mac_roman").hex()
                                if original_name is not None else None)
-        payload = resedit_payload if resedit_payload is not None else fork_payload
-        source_matches = payload == fork_payload
+        payload = fork_payload
+        export_status = None
+        if resedit_payload is not None:
+            if resedit_payload == fork_payload:
+                export_status = "identical"
+            elif fork_payload.startswith(resedit_payload):
+                export_status = f"truncated: the first {len(resedit_payload)} of {len(fork_payload)} bytes"
+            else:
+                errors.append(f"ResEdit export of {typ}:{rid} differs from the 1.0.3 disk payload")
+                continue
+        entry_104 = by_key_104.get((fourcc, rid))
+        payload_104 = entry_104["payload"] if entry_104 else None
         if typ == "CODE":
             if not bin_path.is_file():
                 errors.append(f"protected CODE binary is missing: {bin_path.relative_to(ROOT)}")
@@ -1555,18 +1573,15 @@ def build_records(write: bool) -> tuple[list[dict[str, Any]], list[str]]:
                          "description": f"{decoded['format']}; {len(payload)} curated payload bytes."},
             "evidence": {"binary_path": str(bin_path.relative_to(ROOT)),
                          "binary_size": len(payload), "sha256": hashlib.sha256(payload).hexdigest(),
-                         "binary_origin": "ResEdit hexadecimal export" if resedit_payload is not None
-                            else "recovered resource-fork payload",
-                         "authoritative_export_path": resedit_payload_path,
-                         "resource_attributes": f"0x{entry['attributes']:02X}",
-                         "comparison_container": str(APPLEDOUBLE.relative_to(ROOT)),
-                         "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
-                         "appledouble_resource_fork_offset": apple_off,
+                         "binary_origin": "Hellcats 1.0.3 disk resource fork",
+                         "source_version": SOURCE_VERSION,
+                         "source_container": str(DISK_1_0_3.relative_to(ROOT)),
+                         "source_container_file": APP_1_0_3,
                          "resource_fork_payload_offset": entry["payload_offset"],
-                         "resource_fork_payload_size": len(fork_payload),
-                         "resource_fork_payload_sha256": hashlib.sha256(fork_payload).hexdigest(),
-                         "binary_matches_resource_fork_payload": source_matches,
-                         "comparison_resource_name": entry["name"],
+                         "resource_name": entry["name"],
+                         "authoritative_export_path": resedit_payload_path,
+                         "resedit_export_status": export_status,
+                         "resource_attributes": f"0x{entry['attributes']:02X}",
                          "source_exports": exports,
                          "representations": representations},
             "decoded": decoded,
@@ -1591,15 +1606,22 @@ def build_records(write: bool) -> tuple[list[dict[str, Any]], list[str]]:
             "review": review,
             "unresolved": unresolved,
         }
-        if not source_matches and typ in ("DITL", "vers"):
-            alternate, alternate_status, alternate_unresolved = decode_payload(typ, rid, fork_payload)
-            record["comparison_version_1_0_4"] = {
-                "claim_status": "INFERRED" if typ == "DITL" else "VERIFIED",
+        record["version_1_0_4"] = {
+            "container": str(APPLEDOUBLE.relative_to(ROOT)),
+            "container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+            "appledouble_resource_fork_offset": apple_off,
+            "status": "absent" if payload_104 is None else (
+                "identical" if payload_104 == payload else "differs"),
+        }
+        if payload_104 is not None and payload_104 != payload:
+            alternate, alternate_status, _ = decode_payload(typ, rid, payload_104)
+            record["version_1_0_4"].update({
+                "resource_fork_payload_offset": entry_104["payload_offset"],
+                "size": len(payload_104),
+                "sha256": hashlib.sha256(payload_104).hexdigest(),
                 "decoded_structure_status": alternate_status,
-                "decoded": alternate,
-                "unresolved": alternate_unresolved,
-                "note": "Comparison only; this does not replace the curated ResEdit payload.",
-            }
+                "properties": alternate.get("properties", {}),
+            })
         if typ == "PICT" and decoded["properties"].get("png_pixel_comparison", {}).get("status") == "mismatch":
             record["unresolved"].append("The rendered picture differs from its PNG export.")
         if typ == "cicn" and decoded["properties"]["png_pixel_comparison"]["status"] != "pixel_exact":
@@ -1616,10 +1638,9 @@ def build_records(write: bool) -> tuple[list[dict[str, Any]], list[str]]:
         if typ == "MDPL":
             record["claims"]["identity"] = "PROVEN"
             record["unresolved"].append("The MDPL layout's header (before 0x5c) and its block at 0x136..0x182 are not interpreted; the type is the drawing program's, not a documented Apple structure.")
-        if not source_matches:
+        if export_status and export_status != "identical":
             record["unresolved"].append(
-                "Curated ResEdit payload differs from the independently recovered 1.0.4 resource-fork payload; both hashes and sizes are recorded and neither original source was overwritten."
-            )
+                f"The ResEdit export {resedit_payload_path} is {export_status}; the payload is the 1.0.3 disk's, the export is kept as it was.")
         records.append(record)
 
     lookup = {r["resource"]["key"]: r for r in records}

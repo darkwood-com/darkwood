@@ -5,6 +5,10 @@ physical file offsets in `ID02.bin`. Byte sequences and data layouts are
 **[PROVEN]**; names of low-memory globals and traps come from Inside
 Macintosh (**[STRONG INFERENCE]**); interpretations are marked.
 
+Hellcats 1.0.4 replaces this driver: each function below from 0x3dd0 to 0x4318 jumps into code
+the updater appends to CODE 2, with longer samples for eight sounds
+([RESOURCE_ANALYSIS.md](../reference/RESOURCE_ANALYSIS.md#hellcats-104)). This page is 1.0.3's.
+
 ## Hardware model
 
 The game drives the classic Macintosh sound buffer directly: low-memory
@@ -76,7 +80,7 @@ vertical-blanking level-1 interrupt vector, `Lvl1DT[1]` at low-memory
 
 ## Handler behaviour [PROVEN, emulator-checked ports]
 
-The strict ports in `godot/strict_port/code/ID02.gd` settle what was open here:
+The Original port in `godot/original/port/ID02.gd` settle what was open here:
 
 - The two channel-0 handlers: 0x39a8 resamples every sample; 0x3aae copies a
   frame that fits in the node straight (370 bytes, longs through `MOVEP`).

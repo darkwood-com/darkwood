@@ -1824,7 +1824,7 @@ void tally_destroyed_entity /* Original: FUN_00000488 */ (int entity /* param_1:
  *   { if (DAT_0001b738 == 0) return 1;
  *     return (DAT_0001b738->object->y - DAT_0001b738->ground_2e > 4999) ? 1 : 0; }
  *
- * The game runtime runs it as godot/runtime/machine/overlay_loader.gd _04b0.
+ * The game runtime runs it as godot/original/mac/machine/overlay_loader.gd _04b0.
  */
 
 /* Original: FUN_000004f8; source: Pacific Conflict.c. Recovered name: transform_through_node_chain [STRONG INFERENCE].
@@ -16464,7 +16464,7 @@ LAB_0000d11c:
  *     if (panels_drawn) { update_throttle_gauge(); update_radar_range_buttons();
  *                         update_bomb_indicator(); mark_view_overlays_drawn(); } }
  *
- * The game runtime runs it as godot/runtime/machine/overlay_loader.gd _d23a.
+ * The game runtime runs it as godot/original/mac/machine/overlay_loader.gd _d23a.
  */
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
@@ -28909,7 +28909,7 @@ void erase_radar_blip_depth8 /* Original: FUN_00017780 */ (short x /* blip scree
  * relocated long at runtime 0x70ec = file 0x710c; tools/decomp/xrefs.py) [PROVEN]. MOVEA.L $1b5a0, A1 starts it; it
  * writes the blip's 12-byte cross at (x, y) in the colour byte host +0x1e7, where
  * erase_radar_blip_depth8 restores those bytes from the saved panel [PROVEN, bytes; strict port
- * draw_radar_blip_depth8, checked by tools/strict_port/gen_radar_blip_cases.py]. */
+ * draw_radar_blip_depth8, checked by tools/original/gen_radar_blip_cases.py]. */
 
 
 

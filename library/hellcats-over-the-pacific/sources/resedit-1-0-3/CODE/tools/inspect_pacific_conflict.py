@@ -132,13 +132,13 @@ def detect_section_tables(data: bytes, header_u32: list, file_size: int) -> list
 
 def main():
     ap = argparse.ArgumentParser(description="Inspect Pacific Conflict binary: header, sections, code regions.")
-    ap.add_argument("input", nargs="?", default=None, help="Path to Pacific Conflict binary (default: ../../../hellcats-over-the-pacific/Pacific Conflict)")
+    ap.add_argument("input", nargs="?", default=None, help="Path to Pacific Conflict binary (default: sources/mac-os-9/Pacific Conflict)")
     ap.add_argument("-o", "--output", help="Write JSON to file")
     ap.add_argument("--sections-json", help="Write sections.json to this path")
     args = ap.parse_args()
 
     script_dir = Path(__file__).resolve().parent
-    default_path = script_dir / ".." / ".." / ".." / "Hellcats" / "Pacific Conflict"
+    default_path = script_dir / ".." / ".." / ".." / "mac-os-9" / "Pacific Conflict"
     path = Path(args.input) if args.input else default_path
 
     if not path.exists():

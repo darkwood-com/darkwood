@@ -54,7 +54,7 @@ class ResEditMetadataTests(unittest.TestCase):
                              decoded["consumed_bytes"] + decoded["trailing_bytes"])
         unknown = {r["resource"]["key"] for r in self.records
                    if r["claims"]["decoded_structure"] == "UNKNOWN"}
-        self.assertEqual({"DATA:0", "DITL:135", "MDPL:128"}, unknown)
+        self.assertEqual({"MDPL:128"}, unknown)
 
     def test_core_resource_decodes(self) -> None:
         self.assertEqual(259, self.by_key["ALRT:259"]["decoded"]["properties"]["ditl_id"])
@@ -135,26 +135,35 @@ class ResEditMetadataTests(unittest.TestCase):
                 self.assertTrue(any(back["source"] == source and back["kind"] == link["kind"]
                                     for back in target["relationships"]["incoming"]))
 
-    def test_version_provenance_and_truncated_ditl_are_explicit(self) -> None:
-        version = self.by_key["vers:1"]
-        self.assertFalse(version["evidence"]["binary_matches_resource_fork_payload"])
-        self.assertEqual("1.0.4", version["comparison_version_1_0_4"]["decoded"]["properties"]["version"])
+    def test_payloads_come_from_the_1_0_3_disk(self) -> None:
+        for record in self.records:
+            evidence = record["evidence"]
+            self.assertEqual("1.0.3", evidence["source_version"])
+            self.assertEqual("sources/mac-os-9/Hellcats_1_0_3.dsk", evidence["source_container"])
+        exports = {r["resource"]["key"]: r["evidence"]["resedit_export_status"] for r in self.records
+                   if r["evidence"]["resedit_export_status"] not in (None, "identical")}
+        self.assertEqual({"DITL:135": "truncated: the first 536 of 544 bytes"}, exports)
+
+    def test_ditl_135_is_complete_from_the_disk(self) -> None:
         ditl = self.by_key["DITL:135"]
-        self.assertFalse(ditl["decoded"]["properties"]["parse_complete"])
-        self.assertEqual("TRUNCATED", ditl["decoded"]["elements"][-1]["status"])
-        recovered = ditl["comparison_version_1_0_4"]["decoded"]["elements"][-1]
-        self.assertEqual("editable_text", recovered["item_type"])
-        self.assertEqual("INFERRED", ditl["comparison_version_1_0_4"]["claim_status"])
+        self.assertEqual(544, ditl["evidence"]["binary_size"])
+        self.assertTrue(ditl["decoded"]["properties"]["parse_complete"])
+        last = ditl["decoded"]["elements"][-1]
+        self.assertEqual((9, "editable_text"), (last["index"], last["item_type"]))
+        self.assertEqual({"top": 230, "left": 31, "bottom": 247, "right": 221, "width": 190, "height": 17},
+                         last["bounds"])
 
-    def test_code_2_provenance_is_preserved(self) -> None:
+    def test_1_0_4_differences_are_explicit(self) -> None:
+        differs = {r["resource"]["key"] for r in self.records if r["version_1_0_4"]["status"] == "differs"}
+        sounds = {f"snds:{rid}" for rid in (2186, 13493, 15490, 16059, 16815, 21266, 24100, 25233)}
+        # The updater replaces CODE 2, vers 1 and the eight sounds; HEL1 127/128 are the saved settings
+        # and scores the 1.0.4 copy had written by playing.
+        self.assertEqual({"CODE:2", "HEL1:127", "HEL1:128", "vers:1"} | sounds, differs)
+        self.assertEqual("1.0.4", self.by_key["vers:1"]["version_1_0_4"]["properties"]["version"])
         code = self.by_key["CODE:2"]
-        self.assertEqual(19994, code["evidence"]["binary_size"])
-        self.assertEqual(24832, code["evidence"]["resource_fork_payload_size"])
-        self.assertFalse(code["evidence"]["binary_matches_resource_fork_payload"])
-        mismatches = {r["resource"]["key"] for r in self.records
-                      if not r["evidence"]["binary_matches_resource_fork_payload"]}
-        self.assertEqual({"CODE:2", "DITL:135", "HEL1:127", "HEL1:128", "vers:1"}, mismatches)
-
+        self.assertEqual((19994, 24832), (code["evidence"]["binary_size"], code["version_1_0_4"]["size"]))
+        gun = self.by_key["snds:25233"]
+        self.assertEqual((2947, 6226), (gun["evidence"]["binary_size"], gun["version_1_0_4"]["size"]))
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

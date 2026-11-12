@@ -64,8 +64,8 @@ def main() -> int:
     correspondence = run("correspondence", "--segment", "Pacific Conflict", "FUN_0001358c")
     assert '"original"' in correspondence and '"strict_port"' in correspondence
     test_case = run("tests", "test_effect_init", "--case", "run")
-    assert "godot/tests/strict_port/test_effect_init.gd:83-156 [selected test]" in test_case
-    assert "module setup" in test_case and "res://strict_port/code/pacific_conflict.gd" in test_case
+    assert "godot/tests/original/port/test_effect_init.gd:83-156 [selected test]" in test_case
+    assert "module setup" in test_case and "res://original/port/pacific_conflict.gd" in test_case
     assert "direct helpers: 7" in test_case and "func _plain" in test_case
     recovered_failures = {
         ("ID02", "FUN_000002b0"): "ansi_memset",

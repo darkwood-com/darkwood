@@ -13,7 +13,7 @@
   },
   "code_references": [],
   "decoded": {
-    "consumed_bytes": 6227,
+    "consumed_bytes": 4697,
     "elements": [
       {
         "command": "0x8051",
@@ -32,38 +32,33 @@
       "compression": "none",
       "encoding": 0,
       "format_number": 1,
-      "loop_end": 6184,
-      "loop_start": 6183,
+      "loop_end": 4654,
+      "loop_start": 4653,
       "modifier_count": 1,
       "modifier_init_options": "0x000000A0",
       "modifier_synth_id": 5,
       "sample_data_offset": 42,
-      "sample_length": 6185,
+      "sample_length": 4655,
       "sample_pointer": 0,
       "sample_rate_fixed_16_16": "0x56EE8BA3",
       "sample_rate_hz": 22254.545455932617,
-      "sample_sha256": "596588f4d345278294e9ffb07d3a13bb5abf89b8b7c037271cce9193e29e555a",
+      "sample_sha256": "e848f09775c977958a526a23d441937871bfd0f908e7a0350849e0545d147902",
       "sample_width_bits": 8,
       "sound_header_offset": 20
     },
     "trailing_bytes": 0
   },
   "evidence": {
-    "appledouble_resource_fork_offset": 82,
     "authoritative_export_path": null,
-    "binary_matches_resource_fork_payload": true,
-    "binary_origin": "recovered resource-fork payload",
+    "binary_origin": "Hellcats 1.0.3 disk resource fork",
     "binary_path": "sources/resedit-1-0-3/snds/24100.bin",
-    "binary_size": 6227,
-    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
-    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
-    "comparison_resource_name": "Wheel",
+    "binary_size": 4697,
     "representations": [
       {
         "kind": "binary payload",
         "path": "sources/resedit-1-0-3/snds/24100.bin",
-        "sha256": "13e356a1ba8d7cb25f8411d9cb7b669166f557b4883e8fc9a65ba14eb67dd539",
-        "size": 6227
+        "sha256": "39fd8533345884cfaf9f3ee7739cd332427f0b37412efdba179fd88dd4c744b5",
+        "size": 4697
       },
       {
         "kind": "ResEdit Markdown/hex annotation",
@@ -78,23 +73,26 @@
         "size": 5253
       }
     ],
+    "resedit_export_status": null,
     "resource_attributes": "0x20",
-    "resource_fork_payload_offset": 387778,
-    "resource_fork_payload_sha256": "13e356a1ba8d7cb25f8411d9cb7b669166f557b4883e8fc9a65ba14eb67dd539",
-    "resource_fork_payload_size": 6227,
-    "sha256": "13e356a1ba8d7cb25f8411d9cb7b669166f557b4883e8fc9a65ba14eb67dd539",
+    "resource_fork_payload_offset": 158603,
+    "resource_name": "Wheel",
+    "sha256": "39fd8533345884cfaf9f3ee7739cd332427f0b37412efdba179fd88dd4c744b5",
+    "source_container": "sources/mac-os-9/Hellcats_1_0_3.dsk",
+    "source_container_file": "Hellcats:Hellcats:Hellcats",
     "source_exports": [
       "sources/resedit-1-0-3/snds/24100.bin",
       "sources/resedit-1-0-3/snds/24100.md",
       "sources/resedit-1-0-3/snds/24100.mp3"
-    ]
+    ],
+    "source_version": "1.0.3"
   },
   "relationships": {
     "incoming": [],
     "outgoing": []
   },
   "resource": {
-    "description": "Classic Macintosh snd Format 1 Sampled Sound; 6227 curated payload bytes.",
+    "description": "Classic Macintosh snd Format 1 Sampled Sound; 4697 curated payload bytes.",
     "descriptive_name": "Wheel Sampled Sound",
     "id": 24100,
     "key": "snds:24100",
@@ -144,5 +142,36 @@
       "status": "VERIFIED"
     }
   ],
-  "unresolved": []
+  "unresolved": [],
+  "version_1_0_4": {
+    "appledouble_resource_fork_offset": 82,
+    "container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "decoded_structure_status": "VERIFIED",
+    "properties": {
+      "base_frequency_midi": 60,
+      "channels": 1,
+      "command_count": 1,
+      "compression": "none",
+      "encoding": 0,
+      "format_number": 1,
+      "loop_end": 6184,
+      "loop_start": 6183,
+      "modifier_count": 1,
+      "modifier_init_options": "0x000000A0",
+      "modifier_synth_id": 5,
+      "sample_data_offset": 42,
+      "sample_length": 6185,
+      "sample_pointer": 0,
+      "sample_rate_fixed_16_16": "0x56EE8BA3",
+      "sample_rate_hz": 22254.545455932617,
+      "sample_sha256": "596588f4d345278294e9ffb07d3a13bb5abf89b8b7c037271cce9193e29e555a",
+      "sample_width_bits": 8,
+      "sound_header_offset": 20
+    },
+    "resource_fork_payload_offset": 387778,
+    "sha256": "13e356a1ba8d7cb25f8411d9cb7b669166f557b4883e8fc9a65ba14eb67dd539",
+    "size": 6227,
+    "status": "differs"
+  }
 }

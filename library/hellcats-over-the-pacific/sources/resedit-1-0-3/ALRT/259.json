@@ -52,15 +52,10 @@
     "trailing_bytes": 0
   },
   "evidence": {
-    "appledouble_resource_fork_offset": 82,
     "authoritative_export_path": "sources/resedit-1-0-3/ALRT/259.md",
-    "binary_matches_resource_fork_payload": true,
-    "binary_origin": "ResEdit hexadecimal export",
+    "binary_origin": "Hellcats 1.0.3 disk resource fork",
     "binary_path": "sources/resedit-1-0-3/ALRT/259.bin",
     "binary_size": 12,
-    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
-    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
-    "comparison_resource_name": "Really End Mission",
     "representations": [
       {
         "kind": "binary payload",
@@ -75,15 +70,18 @@
         "size": 7765
       }
     ],
+    "resedit_export_status": "identical",
     "resource_attributes": "0x20",
-    "resource_fork_payload_offset": 287372,
-    "resource_fork_payload_sha256": "73f6bbb22255124f0e15708b5170d694771cd2d0b6a5b0752f005180b4872865",
-    "resource_fork_payload_size": 12,
+    "resource_fork_payload_offset": 389023,
+    "resource_name": "Really End Mission",
     "sha256": "73f6bbb22255124f0e15708b5170d694771cd2d0b6a5b0752f005180b4872865",
+    "source_container": "sources/mac-os-9/Hellcats_1_0_3.dsk",
+    "source_container_file": "Hellcats:Hellcats:Hellcats",
     "source_exports": [
       "sources/resedit-1-0-3/ALRT/259.bin",
       "sources/resedit-1-0-3/ALRT/259.md"
-    ]
+    ],
+    "source_version": "1.0.3"
   },
   "relationships": {
     "incoming": [],
@@ -114,5 +112,11 @@
   },
   "schema": "hellcats-resedit-resource-v1",
   "type_code_references": [],
-  "unresolved": []
+  "unresolved": [],
+  "version_1_0_4": {
+    "appledouble_resource_fork_offset": 82,
+    "container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "status": "identical"
+  }
 }

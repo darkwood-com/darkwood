@@ -1,6 +1,6 @@
 {
   "confirmed_outgoing_reference_count": 32,
-  "decoded_resource_count": 117,
+  "decoded_resource_count": 118,
   "enriched_resource_count": 119,
   "internal_element_count": 1441,
   "representation_count": 294,
@@ -217,7 +217,7 @@
       "binary_path": "sources/resedit-1-0-3/DITL/135.bin",
       "key": "DITL:135",
       "metadata_path": "sources/resedit-1-0-3/DITL/135.json",
-      "sha256": "839e12c46681eac1a1ff34899e448ebbe1f0bf4d7c9e298b10c7e3663c40b99f"
+      "sha256": "18ff7250f9ba3a90cca071f2ff78518172339ca6972688f44b4d4d9279599687"
     },
     {
       "binary_path": "sources/resedit-1-0-3/DITL/136.bin",
@@ -667,13 +667,13 @@
       "binary_path": "sources/resedit-1-0-3/snds/2186.bin",
       "key": "snds:2186",
       "metadata_path": "sources/resedit-1-0-3/snds/2186.json",
-      "sha256": "a8ff0be0a9bdc119ec470f5c2f7522c78c371954961d254a125109422dad759f"
+      "sha256": "2c2b130716c1c667b5ae6208a75a3d897f9b83d6a8fcad610c72a1f782efcecd"
     },
     {
       "binary_path": "sources/resedit-1-0-3/snds/13493.bin",
       "key": "snds:13493",
       "metadata_path": "sources/resedit-1-0-3/snds/13493.json",
-      "sha256": "0f32788987ec4e5a21e0d5d3459fcfeb2def3f442ebf29b04817d6ffbb65648f"
+      "sha256": "0bb695b88f413637da7220802c6fcda2334e8cbace55fb4f41764bb4d8a9a9a6"
     },
     {
       "binary_path": "sources/resedit-1-0-3/snds/15396.bin",
@@ -685,13 +685,13 @@
       "binary_path": "sources/resedit-1-0-3/snds/15490.bin",
       "key": "snds:15490",
       "metadata_path": "sources/resedit-1-0-3/snds/15490.json",
-      "sha256": "33efcb2ac1994d07d4b72b7f0f1580ee6836a3aae1d8a539f8e6e99e8b5c69bd"
+      "sha256": "054bffa96ed4ab2a57611e0fd4b4b559f63e172252a1169c100464aee4d58d66"
     },
     {
       "binary_path": "sources/resedit-1-0-3/snds/16059.bin",
       "key": "snds:16059",
       "metadata_path": "sources/resedit-1-0-3/snds/16059.json",
-      "sha256": "ce7dfa1dcdf9130cc8bbc9079732a0f0dd8f74db8f2f84fdd5292bb495cda1ff"
+      "sha256": "9b6c665c6410d6aea78914a56df598da904930fb9a84878f9737adc8f7187d57"
     },
     {
       "binary_path": "sources/resedit-1-0-3/snds/16737.bin",
@@ -703,7 +703,7 @@
       "binary_path": "sources/resedit-1-0-3/snds/16815.bin",
       "key": "snds:16815",
       "metadata_path": "sources/resedit-1-0-3/snds/16815.json",
-      "sha256": "ad2c5b7f8a32d4adb8c386f1f261ea83d5955e37ae8ca3f73ab2d71b020d20ba"
+      "sha256": "a247996783133c75fa8f7ba10a16f82a34f4d4aa9fa4e9ecbea54ff01c9e7cce"
     },
     {
       "binary_path": "sources/resedit-1-0-3/snds/19330.bin",
@@ -715,7 +715,7 @@
       "binary_path": "sources/resedit-1-0-3/snds/21266.bin",
       "key": "snds:21266",
       "metadata_path": "sources/resedit-1-0-3/snds/21266.json",
-      "sha256": "0cc06b38f36a2d6647ee82007efa9bd51d156f5838529e865253f0901c99e573"
+      "sha256": "bea713f5aa9eeb1b9c71b9fbc16748e663a91966ddc8f83371039acd922b5b07"
     },
     {
       "binary_path": "sources/resedit-1-0-3/snds/22599.bin",
@@ -727,13 +727,13 @@
       "binary_path": "sources/resedit-1-0-3/snds/24100.bin",
       "key": "snds:24100",
       "metadata_path": "sources/resedit-1-0-3/snds/24100.json",
-      "sha256": "13e356a1ba8d7cb25f8411d9cb7b669166f557b4883e8fc9a65ba14eb67dd539"
+      "sha256": "39fd8533345884cfaf9f3ee7739cd332427f0b37412efdba179fd88dd4c744b5"
     },
     {
       "binary_path": "sources/resedit-1-0-3/snds/25233.bin",
       "key": "snds:25233",
       "metadata_path": "sources/resedit-1-0-3/snds/25233.json",
-      "sha256": "362890a260a3c95b68f2dab1f4ac56753cdd9e610a25a3bbab82b3e1aaee0dd4"
+      "sha256": "4bb0afeef0044ee7c17bb1d69f37cce1ec6b3fffaec4e1985a80d0dadc938cc5"
     },
     {
       "binary_path": "sources/resedit-1-0-3/snds/30683.bin",
@@ -804,8 +804,8 @@
     {
       "kind": "unassociated supporting file",
       "path": "sources/resedit-1-0-3/CODE/Pacific Conflict.decomp.c",
-      "sha256": "c3895f31d2622631c8f0ad24119eab42840a0f875299378819c916600e76ec25",
-      "size": 1633440
+      "sha256": "9e36c6dbb50e62277d504e7bc7118bf56775ffae05134c7765ba0a05424e701f",
+      "size": 1633447
     },
     {
       "kind": "unassociated supporting file",
@@ -834,19 +834,19 @@
     {
       "kind": "unassociated supporting file",
       "path": "sources/resedit-1-0-3/CODE/tools/README.md",
-      "sha256": "91060f30e83446003b37b7f40cd5f19752169229f4415f168f1a03b622e7861c",
-      "size": 4007
+      "sha256": "27657a542ff36dab2ce999b0bd799eccc55c461f12037740c60aaa919381d984",
+      "size": 3990
     },
     {
       "kind": "unassociated supporting file",
       "path": "sources/resedit-1-0-3/CODE/tools/inspect_pacific_conflict.py",
-      "sha256": "6f9757ddb0e0cc8f048f4c8a7c5f439b6a7ea80e9d48cc9ba5ec755373f8924b",
-      "size": 8758
+      "sha256": "abccd51bf981c945548963941cd52e456f0df2292573f248063c7e570f6cc26b",
+      "size": 8740
     },
     {
       "kind": "unassociated supporting file",
       "path": "sources/resedit-1-0-3/CODE/tools/scan_code_windows.py",
-      "sha256": "d209a23427b153a980aac6f76b07a935ae354ba0525ec7ccc0a46ba41a40cc28",
+      "sha256": "77ebf33a75aceb1419faa3dbc01e94d5d0c4feea1f203f41dba04bd86524cd84",
       "size": 4324
     },
     {
@@ -862,7 +862,7 @@
       "size": 1047
     }
   ],
-  "unidentified_structure_count": 2,
+  "unidentified_structure_count": 1,
   "verified_executable_reference_count": 61,
   "verified_type_level_executable_reference_count": 4
 }

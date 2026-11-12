@@ -3,8 +3,11 @@
 This repository ports *Hellcats Over the Pacific* (Graphic Simulations / Parsoft,
 1991, Macintosh) to Godot 4.7 from the original program itself. It preserves
 the Macintosh evidence, a readable semantic reconstruction of the decompiled
-code, a strict GDScript translation of every function, and a runtime that runs
-that translation as the original game from Godot's main scene.
+code, a faithful GDScript translation of every function, and a runtime that runs
+that translation as the original game from Godot's main scene: the **Original
+edition**. Two more editions are planned: **Native** (the same game rules on
+Godot facilities, without the emulated Macintosh) and **Enhanced** (optional,
+switchable improvements on Native).
 [How the port was made](#how-hellcats-was-ported-to-godot) explains the
 pipeline.
 
@@ -17,7 +20,7 @@ Read only the material needed for the task:
 | Current state and next milestone | [`docs/architecture/PROJECT_STATUS.md`](docs/architecture/PROJECT_STATUS.md) |
 | Reconstruction checkpoint | [`docs/port/DECOMPILATION_PROGRESS.md`](docs/port/DECOMPILATION_PROGRESS.md) |
 | Semantic names, globals, fields | [`docs/reference/DECOMPILATION_SYMBOLS.md`](docs/reference/DECOMPILATION_SYMBOLS.md) via `tools/re_query.py symbol` |
-| Strict translation rules and coverage | [`docs/port/STRICT_PORT_FOUNDATION.md`](docs/port/STRICT_PORT_FOUNDATION.md) |
+| Original port: translation rules and coverage | [`docs/port/STRICT_PORT_FOUNDATION.md`](docs/port/STRICT_PORT_FOUNDATION.md) |
 | Resource corpus | [`docs/reference/RESOURCE_ANALYSIS.md`](docs/reference/RESOURCE_ANALYSIS.md) via `tools/resedit.py` |
 | System navigation | [`docs/architecture/SUBSYSTEM_MAP.md`](docs/architecture/SUBSYSTEM_MAP.md) |
 | Documentation index | [`docs/README.md`](docs/README.md) |
@@ -47,17 +50,19 @@ python3 tools/progress_stats.py
 ## Evidence and code layout
 
 ```text
-sources/hellcats-over-the-pacific.zip     original disks, resource fork, manuals
+sources/mac-os-9/                         original disks, archives, manuals (its README)
 sources/resedit-1-0-3/CODE/*.c            immutable Ghidra exports
 sources/resedit-1-0-3/CODE/*.decomp.c     semantic reconstructions
 sources/resedit-1-0-3/<TYPE>/<ID>.*       resource payload, JSON, local identity
+sources/hellcats-1-0-4/                   the 1.0.4 delta (generated from the floppies)
 sources/screenshots/, sources/videos/     reference captures of the original
-godot/strict_port/code/                   faithful C-to-GDScript translations
-godot/strict_port/compat/                 68k arithmetic and memory helpers
-godot/resources/<type>/                   the resource fork, mirrored
-godot/runtime/machine/, toolbox/         the emulated Macintosh around the port
-godot/scenes/main/, scenes/game/          the main scene, screen and speaker
-godot/tests/                              deterministic tests
+godot/launcher/Main.tscn                  the main scene: runs the Original edition
+godot/original/port/                      faithful C-to-GDScript translations
+godot/original/compat/                    68k arithmetic and memory helpers
+godot/original/mac/machine/, toolbox/     the emulated Macintosh around the port
+godot/original/Game.tscn                  the screen and speaker the program runs in
+godot/assets/<type>/                      the resource fork, mirrored, with its decoders
+godot/tests/original/{port,mac}/          deterministic tests and end-to-end sessions
 docs/                                     live references and contracts
 tools/                                    retrieval, verification, extraction, QA
 ```
@@ -65,21 +70,25 @@ tools/                                    retrieval, verification, extraction, Q
 The critical correspondence is:
 
 ```text
-immutable Ghidra .c -> semantic .decomp.c -> faithful strict-port .gd
+immutable Ghidra .c -> semantic .decomp.c -> faithful Original port .gd
 ```
 
 Original function identities and source hashes live in
-`godot/strict_port/mappings/functions.json`. Source-local provenance comments
+`godot/original/mappings/functions.json`. Source-local provenance comments
 remain valuable review evidence.
 
 ## Running the game
 
-Open `godot/project.godot` in Godot 4.7 and run `res://scenes/main/Main.tscn`:
-it runs the original program from the strict port on an emulated Macintosh
+Open `godot/project.godot` in Godot 4.7 and run `res://launcher/Main.tscn`:
+it runs the Original edition: the original program, ported, on an emulated Macintosh
 (Toolbox, screen, sound, input), as [`docs/architecture/GAME_RUNTIME.md`](docs/architecture/GAME_RUNTIME.md)
 describes. The mouse is the joystick; the keys are the original's (V cockpit,
 C chase, T tower, F flaps, G gear, J eject, P pause, `=` / `-` throttle, ⌘Q quit).
 Pilots and settings the game saves go to Godot's `user://resources`.
+The edition is chosen on the command line, Original by default:
+`godot --path godot -- --edition=original`. `native` runs its first slices around Original
+([godot/native/README.md](godot/native/README.md)); `enhanced` is not implemented yet and says so. `--version=1.0.4` runs Hellcats 1.0.4, rebuilt from its original
+updater, instead of 1.0.3.
 
 ## How Hellcats was ported to Godot
 
@@ -87,7 +96,7 @@ The port moves the original program through four stages, each kept beside the
 one before so any line of GDScript can be traced back to the bytes it came from:
 
 ```text
-resource fork -> Ghidra .c -> semantic .decomp.c -> strict-port .gd -> runtime + scenes
+resource fork -> Ghidra .c -> semantic .decomp.c -> Original port .gd -> runtime + scenes
  (ResEdit)        (immutable)   (readable)           (exact mapping)   (mapped around)
 ```
 
@@ -100,6 +109,9 @@ resources. Each of the eleven code segments (`ID00`..`ID09` and the *Pacific
 Conflict* scenery overlay) was decompiled by Ghidra into
 `sources/resedit-1-0-3/CODE/*.c`. Those exports are evidence: they are never
 edited, and their checksums are protected.
+Every payload is checked against the 1.0.3 application on the original floppy
+(`sources/mac-os-9/`, whose README lists the original media), from which
+`tools/resedit.py` takes it.
 
 ### 2. A readable decompilation
 
@@ -119,31 +131,31 @@ preserved, and anything not yet understood stays annotated as such. The
 registry (`tools/decomp/inventory_functions.py`, `docs/reference/DECOMPILATION_SYMBOLS.md`)
 holds all 740 functions with their status and evidence.
 
-### 3. The strict port
+### 3. The Original port
 
 Each `.decomp.c` function was then translated one to one into GDScript under
-`godot/strict_port/code/`: same function, same order of operations, same
+`godot/original/port/`: same function, same order of operations, same
 widths, signedness, overflow and fixed-point behaviour. The 68000's arithmetic
 is reproduced by `compat/c68k.gd` (16- and 32-bit wraps, `DIVS` / `MULS`,
 shifts, rotates) and its flat memory by `compat/memory_68k.gd`, so the
 translated code reads and writes the original data structures at their
 original offsets. The resource fork is mirrored byte for byte into
-`godot/resources/<type>/`, with Godot scenes to view it.
+`godot/assets/<type>/`, with Godot scenes to view it.
 
 Every function's chain (`.c` -> `.decomp.c` -> `.gd`) is recorded in
-`godot/strict_port/mappings/functions.json`. Its behaviour is checked against
-the original machine code: `tools/strict_port/m68k_emu.py` runs the original bytes on a
-68000 emulator, `tools/strict_port/gen_*_cases.py` record what they do (memory,
+`godot/original/mappings/functions.json`. Its behaviour is checked against
+the original machine code: `tools/original/m68k_emu.py` runs the original bytes on a
+68000 emulator, `tools/original/gen_*_cases.py` record what they do (memory,
 results, the calls they make out of their segment), and
-`godot/tests/strict_port/` replays the same cases on the port.
+`godot/tests/original/port/` replays the same cases on the port.
 
 ### 4. The runtime, mapped around the port
 
-The strict port is not touched to make it run. Instead it is *mapped around*:
-`godot/runtime/` builds the Macintosh the program expects, so the original
+The Original port is not touched to make it run. Instead it is *mapped around*:
+`godot/original/mac/` builds the Macintosh the program expects, so the original
 `main()` runs as it did in 1991.
 
-- **`runtime/`:** one 24-bit address space laid out as the original expects
+- **`original/mac/`:** one 24-bit address space laid out as the original expects
   (low memory, the A5 world from `DATA` / `ZERO` / `DREL`, the stack, the
   heap, the sound buffer, an 8-bit screen); the segment loader that links the
   jump table to the ported routines; the overlay loader that reads and
@@ -154,7 +166,7 @@ The strict port is not touched to make it run. Instead it is *mapped around*:
   Control and Menu Managers, Color QuickDraw (ports, patterns, regions, text,
   CopyBits, pictures, colour icons), the Palette Manager, TextEdit, Standard
   File and the Sound Manager.
-- **Scenes:** `scenes/main/Main.tscn` runs `scenes/game/Game.tscn`, whose
+- **Scenes:** `launcher/Main.tscn` runs `original/Game.tscn`, whose
   screen shows the Mac's frame buffer through its colour table, whose speaker
   plays the sound buffer the program mixes every tick, and which hands Godot's
   mouse and keys to the program as Mac events.
@@ -162,27 +174,37 @@ The strict port is not touched to make it run. Instead it is *mapped around*:
 Ghidra never defined 35 small routines (a few dialog procedures, the mission
 summary's text and map, the carrier deck's collision, C library and Toolbox
 glue). Those are written from their disassembly, mostly in
-`runtime/unexported.gd`, each citing its address; the
+`original/mac/machine/unexported.gd`, each citing its address; the
 [index in docs/architecture/GAME_RUNTIME.md](docs/architecture/GAME_RUNTIME.md#routines-outside-the-740)
 lists them with where the port reaches them.
 
 The result is the original game, flight model, renderer, missions, dialogs and
-sound, running in Godot from a strict GDScript version of all 740 decompiled
+sound, running in Godot from a faithful GDScript version of all 740 decompiled
 functions. When playing turns up a gap, the fix goes back up the chain to the
-stage the evidence points at (the decompilation, the strict port and its tests,
+stage the evidence points at (the decompilation, the Original port and its tests,
 or the runtime), so each stage stays the source for the next.
 
 ### Next steps
 
-1. **Clean up** the code and the documentation that grew during the port.
-2. **Go native.** Remove the virtual machine around the port, the 68k memory
-   and arithmetic helpers, the runtime and the Toolbox, so the game's own logic
-   runs directly on Godot objects: a complete native Hellcats for Godot.
-3. **Use Godot itself.** Much of the game re-implements what Godot provides:
-   vector and matrix arithmetic, the camera and its projection, rotations, the
-   polygon renderer, and the dialog system. Each can become the Godot-native
-   equivalent (`Vector3`, `Basis`, `Camera3D`, meshes, `Control` nodes) once
-   its behaviour is pinned by the tests the strict port already has.
+The project grows into three editions of one Godot project: **Original** (the
+faithful Macintosh reconstruction above), **Native** (the same game rules on
+Godot facilities, without the emulated Macintosh) and **Enhanced** (optional,
+switchable improvements on Native). The roadmap, one validated phase at a time
+(class names such as `StrictID02` and the `"strict_port"` data keys stay as they are):
+
+0. ~~Correct the original evidence~~ (done: payloads from the 1.0.3 disk,
+   redundant media removed).
+1. ~~Standardize the edition terminology~~ (done in the documentation).
+2. ~~Move `godot/` to `original/`, `launcher/`, `assets/`~~ (done, paths only).
+3. ~~An edition launcher and the native and enhanced scaffolds~~ (done: `--edition`).
+4. ~~Deterministic stepping and state traces to compare editions~~ (done: GAME_RUNTIME.md).
+5. ~~Hellcats 1.0.4: rebuild it from 1.0.3 and the updater, port the changed CODE 2~~ (done:
+   runs with `--version=1.0.4`; [RESOURCE_ANALYSIS.md](docs/reference/RESOURCE_ANALYSIS.md#hellcats-104)).
+6. Native adapters around the original port: input (InputMap controls), sound (the 1.0.3 driver on
+   typed state, sample-exact), dialogs (Godot controls over the standard items), then files.
+7. A typed native state model, replacing the emulated memory subsystem by subsystem.
+8. Leyte Gulf: match its functions against 1.0.3, then port it (started: [LEYTE_GULF.md](docs/topics/LEYTE_GULF.md)).
+9. The enhanced edition.
 
 ## Validation
 
@@ -198,7 +220,7 @@ git diff --check
 ```
 
 The Godot run ends with "ObjectDB instances were leaked" and "resources still in use": each
-strict-port segment's `code_table` holds Callables bound to the segment itself, so its instances
+Original port segment's `code_table` holds Callables bound to the segment itself, so its instances
 and their memory live until exit. That is expected, not a failure; the result line decides.
 
 After scripts move (a pull that renames folders under `godot/`), rebuild Godot's class cache
@@ -213,7 +235,7 @@ has not run has not:
 
 ```sh
 /Applications/Godot.app/Contents/MacOS/Godot --headless --path godot \
-  --script res://tests/runtime/smoke_session.gd
+  --script res://tests/original/mac/smoke_session.gd
 ```
 
 Verify protected Ghidra exports from their directory because the checksum

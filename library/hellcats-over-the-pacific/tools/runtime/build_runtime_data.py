@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Write the data the Godot game runtime (godot/runtime/machine) needs from the original files.
+"""Write the data the Godot game runtime (godot/original/mac/machine) needs from the original files.
 
-- godot/runtime/data/jump_table.json: the CODE 0 jump table (sources/resedit-1-0-3/CODE/ID00.bin):
+- godot/original/mac/data/jump_table.json: the CODE 0 jump table (sources/resedit-1-0-3/CODE/ID00.bin):
   per entry its A5 offset as callers use it (jsr $offset(a5): the slot + 2), segment, target
   offset in the segment file (stored routine offset + 4) and, when that routine is ported, the
-  strict port's file and method (godot/strict_port/mappings/functions.json) and whether it takes
+  strict port's file and method (godot/original/mappings/functions.json) and whether it takes
   Pascal arguments (CODE 9, the Toolbox glue: pushed left to right, so they reach the slot in
   reverse); plus the A5 world sizes from the CODE 0 header.
-- godot/runtime/data/scenery/Pacific Conflict: the scenery file the game opens (its data fork is
+- godot/original/mac/data/scenery/Pacific Conflict: the scenery file the game opens (its data fork is
   the overlay code and the world), byte-identical to sources/mac-os-9/Pacific Conflict.
 
-- godot/runtime/data/overlay_methods.json: the Pacific Conflict overlay's ported routines by
+- godot/original/mac/data/overlay_methods.json: the Pacific Conflict overlay's ported routines by
   runtime address (file offset - 0x20, the addresses the overlay stores and the host calls).
-- godot/runtime/data/segment_methods.json: every ported routine of CODE 2..9 by segment and
+- godot/original/mac/data/segment_methods.json: every ported routine of CODE 2..9 by segment and
   offset (the ports also call ported routines by offset).
-- godot/runtime/data/resource_names.json: each resource's original Macintosh name (from the
+- godot/original/mac/data/resource_names.json: each resource's original Macintosh name (from the
   resource evidence JSON), for GetNamedResource.
 
 --check verifies they are up to date.
@@ -32,9 +32,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CODE0 = ROOT / "sources" / "resedit-1-0-3" / "CODE" / "ID00.bin"
-MAPPINGS = ROOT / "godot" / "strict_port" / "mappings" / "functions.json"
+MAPPINGS = ROOT / "godot" / "original" / "mappings" / "functions.json"
 SCENERY = ROOT / "sources" / "mac-os-9" / "Pacific Conflict"
-OUT = ROOT / "godot" / "runtime" / "data"
+OUT = ROOT / "godot" / "original" / "mac" / "data"
 
 
 def jump_table() -> bytes:
@@ -66,7 +66,7 @@ def overlay_methods() -> bytes:
             rows["0x%x" % (int(row["source_address"], 16) - 0x20)] = row["target_function"]
     # Second entries the port documents inside another routine's extent ("## 0x<file offset> ..."
     # right above the func), which the mapping does not list on their own.
-    port = (ROOT / "godot" / "strict_port" / "code" / "pacific_conflict.gd").read_text().splitlines()
+    port = (ROOT / "godot" / "original" / "port" / "pacific_conflict.gd").read_text().splitlines()
     for i, line in enumerate(port):
         m = re.match(r"## 0x([0-9a-f]+)[:( ]", line)
         if not m or int(m.group(1), 16) < 0x20 or (i > 0 and port[i - 1].startswith("##")):

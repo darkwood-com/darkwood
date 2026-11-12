@@ -1,7 +1,7 @@
 # Subsystem map
 
-How the original program hangs together, one page. Every function named here is strict-ported
-(`godot/strict_port/code/`, the module named after its segment) and runs as the original through
+How the original program hangs together, one page. Every function named here is in the Original port
+(`godot/original/port/`, the module named after its segment) and runs as the original through
 the runtime ([`GAME_RUNTIME.md`](GAME_RUNTIME.md)). Symbol-level detail: `tools/re_query.py`.
 Confidence tags follow the vocabulary in [`../port/DECOMPILATION_PROGRESS.md`](../port/DECOMPILATION_PROGRESS.md).
 

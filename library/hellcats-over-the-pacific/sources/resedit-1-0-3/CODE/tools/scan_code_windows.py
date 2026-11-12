@@ -96,7 +96,7 @@ def main():
     args = ap.parse_args()
 
     script_dir = Path(__file__).resolve().parent
-    default_path = script_dir / ".." / ".." / ".." / "Hellcats" / "Pacific Conflict"
+    default_path = script_dir / ".." / ".." / ".." / "mac-os-9" / "Pacific Conflict"
     path = Path(args.input) if args.input else default_path
 
     if not path.exists():

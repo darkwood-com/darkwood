@@ -45,8 +45,6 @@ def classify(rel: str, path: Path) -> str:
         return "overlay"
     if name.endswith(".rsrc"):
         return "rsrc-candidate"
-    if name in ("Hellcats", "Hellcats.bin") and parent == "Hellcats":
-        return "app-stub"
     if path.suffix.lower() == ".dsk":
         return "disk-image"
     if path.suffix.lower() in {".png", ".pdf", ".txt", ".mov", ".sit"}:
@@ -116,9 +114,6 @@ def inventory_sources(sources: Path) -> dict:
                 if len(head) >= 4:
                     item["first_u16_be"] = int.from_bytes(head[0:2], "big")
                     item["second_u16_be"] = int.from_bytes(head[2:4], "big")
-            elif kind == "app-stub" and size == 0:
-                item["parse_status"] = "empty"
-                item["note"] = "zero-byte stub; not a usable Macintosh application image"
             entries.append(item)
 
     # Stable canonical form

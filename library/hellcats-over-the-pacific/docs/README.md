@@ -7,7 +7,7 @@ one home; other places link to it.
 | Folder | Holds |
 |---|---|
 | [`architecture/`](architecture/) | How the pieces fit: status, the runtime, the original's subsystems and loader |
-| [`port/`](port/) | The rules: the strict port contract and the reconstruction checkpoint |
+| [`port/`](port/) | The rules: the Original port contract and the reconstruction checkpoint |
 | [`reference/`](reference/) | Lookup tables: symbols and corrections, structures, overlay tables, resources |
 | [`topics/`](topics/) | One subsystem each, as the original does it |
 | [`generated/`](generated/) | Written by tools; do not edit by hand |
@@ -16,7 +16,7 @@ one home; other places link to it.
 | Need | Document |
 |---|---|
 | Current state and integration boundary | [`architecture/PROJECT_STATUS.md`](architecture/PROJECT_STATUS.md) |
-| The game runtime around the strict port | [`architecture/GAME_RUNTIME.md`](architecture/GAME_RUNTIME.md) |
+| The game runtime around the Original port | [`architecture/GAME_RUNTIME.md`](architecture/GAME_RUNTIME.md) |
 | The original's subsystems, and its segment loader | [`architecture/SUBSYSTEM_MAP.md`](architecture/SUBSYSTEM_MAP.md), [`architecture/LOADER_CHAIN.md`](architecture/LOADER_CHAIN.md) |
 | How C becomes GDScript, and how it is verified | [`port/STRICT_PORT_FOUNDATION.md`](port/STRICT_PORT_FOUNDATION.md) |
 | Semantic reconstruction rules | [`port/DECOMPILATION_PROGRESS.md`](port/DECOMPILATION_PROGRESS.md) |

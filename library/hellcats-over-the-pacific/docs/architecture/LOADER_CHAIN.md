@@ -8,7 +8,7 @@ Evidence-first. Tags follow the vocabulary of [`../port/DECOMPILATION_PROGRESS.m
 |--------|------------|----------|
 | **Overlay (Pacific Conflict)** | Mixed code+data; code from 0x20; no A5-relative globals; fixed base (Ghidra base 0). | [Pacific_Conflict_loader_analysis.md](../../sources/resedit-1-0-3/CODE/Pacific_Conflict_loader_analysis.md) §1, §4, §5 (H3) |
 | **Identity mapping** | For overlay: `runtime_address = file_offset` when load base = 0. | Ibid. §6. Safe parsing: `0x20 ≤ A < 0x3e700`. |
-| **Relocation** | Two tables of 8-byte records after the code and data (header sizes A5-0x100e, A5-0x100a): the loader adds the image address to each long named, the first table's from the code, the second's from the data (flag bit 7 skips a record). Inside the image, FUN_00000020 also patches two cells: DAT_0001a7d2, DAT_0001a81c (base/handle from loader). | ID08.decomp.c `load_overlay_from_resource` (relocation loop); `godot/runtime/machine/overlay_loader.gd`. Pacific Conflict.c FUN_00000020. |
+| **Relocation** | Two tables of 8-byte records after the code and data (header sizes A5-0x100e, A5-0x100a): the loader adds the image address to each long named, the first table's from the code, the second's from the data (flag bit 7 skips a record). Inside the image, FUN_00000020 also patches two cells: DAT_0001a7d2, DAT_0001a81c (base/handle from loader). | ID08.decomp.c `load_overlay_from_resource` (relocation loop); `godot/original/mac/machine/overlay_loader.gd`. Pacific Conflict.c FUN_00000020. |
 | **CODE segments (ID01–ID09)** | Segment-local offsets; segment loaded by LoadSeg; A5 world for globals (unaff_A5 in ID02/ID05.c). | ID02.c, ID05.c; Apple Segment Manager (Inside Mac: RTArch-118). |
 
 ## 2) Entrypoint and overlay loading
@@ -129,7 +129,7 @@ Segment 7 has two ID00 entries: stored offset 0 targets the RTS at file 0x0004, 
 
 ## 7) Implementation handoff artifact
 
-- **[PROVEN]** The proven loader targets below are checked against the jump table the game runtime links ([`godot/runtime/data/jump_table.json`](../../godot/runtime/data/jump_table.json), generated from `ID00.bin` by `tools/runtime/build_runtime_data.py`) by `check_loader_targets` in [`tools/qa/test_regression.py`](../../tools/qa/test_regression.py): each one's A5 offset is `jump_table_offset + id00_entry_offset - 16 + 2`, its segment and entry point as tabled here.
+- **[PROVEN]** The proven loader targets below are checked against the jump table the game runtime links ([`godot/original/mac/data/jump_table.json`](../../godot/original/mac/data/jump_table.json), generated from `ID00.bin` by `tools/runtime/build_runtime_data.py`) by `check_loader_targets` in [`tools/qa/test_regression.py`](../../tools/qa/test_regression.py): each one's A5 offset is `jump_table_offset + id00_entry_offset - 16 + 2`, its segment and entry point as tabled here.
 - **[UNKNOWN]** Additional targets may be added to that check only when the maintainer re-runs the proof.
 
 ## 8) Godot integration boundary

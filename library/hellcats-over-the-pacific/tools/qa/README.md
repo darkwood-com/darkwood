@@ -5,9 +5,9 @@ Godot-native runtime tests in `godot/tests`.
 
 ## Game smoke (manual, ~10 min)
 
-Run after changes to the game runtime (`godot/runtime/`, `godot/scenes/`).
+Run after changes to the game runtime (`godot/original/mac/`, `godot/original/Game.tscn`, `godot/launcher/`).
 
-- Open the `godot/` project directory and run `res://scenes/main/Main.tscn`.
+- Open the `godot/` project directory and run `res://launcher/Main.tscn`.
 - The menu bar appears; Return passes the copy protection; the Active Duty Roster
   and Select a Mission dialogs work with the mouse and keyboard.
 - A mission starts on the carrier: V gives the cockpit and its instruments, `=`

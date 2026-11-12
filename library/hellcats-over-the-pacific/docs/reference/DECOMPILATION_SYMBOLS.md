@@ -1018,6 +1018,6 @@ inventory yet.
 
 A global's readable name is a `#define` alias in its segment's `*.decomp.c` (`#define CurrentA5
 DAT_00000904 /* ... */`), with its evidence in the alias's comment; the Ghidra symbol stays the
-real name. The strict port names the same global by its address constant, the alias first in
+real name. The Original port names the same global by its address constant, the alias first in
 its comment. QA checks both: every alias has its evidence comment, and every port constant of an
 aliased global names that alias.

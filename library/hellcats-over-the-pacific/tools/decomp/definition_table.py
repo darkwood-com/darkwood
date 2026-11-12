@@ -2,7 +2,7 @@
 """The Pacific Conflict overlay's object definition table, read from its bytes: the built-in
 records overlay_init_template_pointer_tables (file 0x54) copies into DAT_0001b524[key], each a key
 word and six handler longs (runtime addresses), named from the strict port's overlay method map
-(godot/runtime/data/overlay_methods.json), the registry, or the runtime's written routines.
+(godot/original/mac/data/overlay_methods.json), the registry, or the runtime's written routines.
 
 Writes docs/reference/OVERLAY_DEFINITION_TABLE.md; --check fails when the document is stale.
 
@@ -16,8 +16,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OVERLAY = ROOT / "godot" / "runtime" / "data" / "scenery" / "Pacific Conflict"
-METHODS = ROOT / "godot" / "runtime" / "data" / "overlay_methods.json"
+OVERLAY = ROOT / "godot" / "original" / "mac" / "data" / "scenery" / "Pacific Conflict"
+METHODS = ROOT / "godot" / "original" / "mac" / "data" / "overlay_methods.json"
 INVENTORY = ROOT / "docs" / "DECOMPILATION_INVENTORY.json"
 DOC = ROOT / "docs" / "reference" / "OVERLAY_DEFINITION_TABLE.md"
 DELTA = 0x20                      # runtime address = file offset - 0x20
@@ -100,7 +100,7 @@ def document() -> str:
         "docs/reference/STRUCTS.md's aircraft type record lists. Every record's first word equals its",
         "key, including the fixed-slot ones, which are stored at their slot offset, and every non-zero handler",
         "long is one the loader relocates (a real pointer). Each slot's role is",
-        "its dispatcher's (in the strict port, godot/strict_port/code/pacific_conflict.gd):",
+        "its dispatcher's (in the Original port, godot/original/port/pacific_conflict.gd):",
         "",
         "- +2 tick (controller): every frame, `advance_frame_and_tick_controllers` and",
         "  `tick_flagged_object_controllers`;",

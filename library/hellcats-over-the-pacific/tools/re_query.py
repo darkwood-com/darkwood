@@ -14,7 +14,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 INVENTORY = ROOT / "docs" / "DECOMPILATION_INVENTORY.json"
 SYMBOLS = ROOT / "docs" / "reference" / "DECOMPILATION_SYMBOLS.md"
-STRICT_MAP = ROOT / "godot" / "strict_port" / "mappings" / "functions.json"
+STRICT_MAP = ROOT / "godot" / "original" / "mappings" / "functions.json"
 CONTROL_WORDS = {"if", "for", "while", "switch", "return", "sizeof"}
 ADDRESS_RE = re.compile(r"^(?:0x|\$)?([0-9A-Fa-f]+)$")
 GLOBAL_RE = re.compile(r"\b_?DAT_[0-9A-Fa-f]+\b")

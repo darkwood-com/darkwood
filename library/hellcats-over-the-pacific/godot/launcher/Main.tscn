@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://original/Game.tscn" id="1"]
+[ext_resource type="Script" path="res://launcher/launcher.gd" id="2"]
+[ext_resource type="PackedScene" path="res://native/Game.tscn" id="3"]
+
+[node name="Main" type="Node"]
+script = ExtResource("2")
+original = ExtResource("1")
+native = ExtResource("3")

@@ -1,7 +1,7 @@
 # Semantic reconstruction rules
 
 The semantic `*.decomp.c` files (`sources/resedit-1-0-3/CODE/`) make Ghidra's exports readable
-and correct, and are what the strict port translates. Every function is `VERIFIED` (current
+and correct, and are what the Original port translates. Every function is `VERIFIED` (current
 counts: `python3 tools/progress_stats.py`); CODE 0 is also complete: `ID00.c` is a byte-exact
 data export and `ID00.decomp.c` decodes its header and all 175 jump-table entries. The four
 functions Ghidra could not decompile (ID02 `FUN_000002b0` / `FUN_00004b62`, ID05 `FUN_000008b8` /
@@ -17,7 +17,7 @@ functions Ghidra could not decompile (ID02 `FUN_000002b0` / `FUN_00004b62`, ID05
 - Names and corrections: [`../reference/DECOMPILATION_SYMBOLS.md`](../reference/DECOMPILATION_SYMBOLS.md);
   layouts: [`../reference/STRUCTS.md`](../reference/STRUCTS.md); global names: each file's
   `#define` aliases
-- C-to-GDScript mappings: `godot/strict_port/mappings/functions.json`
+- C-to-GDScript mappings: `godot/original/mappings/functions.json`
 
 Source-local provenance comments are evidence: they stay even where the same identity can be
 retrieved elsewhere.

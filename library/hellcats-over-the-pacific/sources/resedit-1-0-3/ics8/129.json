@@ -49,15 +49,10 @@
     "trailing_bytes": 0
   },
   "evidence": {
-    "appledouble_resource_fork_offset": 82,
     "authoritative_export_path": "sources/resedit-1-0-3/ics8/129.md",
-    "binary_matches_resource_fork_payload": true,
-    "binary_origin": "ResEdit hexadecimal export",
+    "binary_origin": "Hellcats 1.0.3 disk resource fork",
     "binary_path": "sources/resedit-1-0-3/ics8/129.bin",
     "binary_size": 256,
-    "comparison_container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
-    "comparison_container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
-    "comparison_resource_name": null,
     "representations": [
       {
         "kind": "binary payload",
@@ -78,16 +73,19 @@
         "size": 940
       }
     ],
+    "resedit_export_status": "identical",
     "resource_attributes": "0x20",
-    "resource_fork_payload_offset": 65230,
-    "resource_fork_payload_sha256": "816c7aad76e56f38d1e46d53564fddfcba216ea4060c6e912602f87505171cd6",
-    "resource_fork_payload_size": 256,
+    "resource_fork_payload_offset": 85228,
+    "resource_name": null,
     "sha256": "816c7aad76e56f38d1e46d53564fddfcba216ea4060c6e912602f87505171cd6",
+    "source_container": "sources/mac-os-9/Hellcats_1_0_3.dsk",
+    "source_container_file": "Hellcats:Hellcats:Hellcats",
     "source_exports": [
       "sources/resedit-1-0-3/ics8/129.bin",
       "sources/resedit-1-0-3/ics8/129.md",
       "sources/resedit-1-0-3/ics8/129.png"
-    ]
+    ],
+    "source_version": "1.0.3"
   },
   "relationships": {
     "incoming": [],
@@ -113,5 +111,11 @@
   "type_code_references": [],
   "unresolved": [
     "The PNG export differs from the default colour table on 166 pixels (indices 216, 245, 246, 248, 250, 255); the icl8 exports, using the same indices, match the table exactly, so the export is the suspect."
-  ]
+  ],
+  "version_1_0_4": {
+    "appledouble_resource_fork_offset": 82,
+    "container": "sources/mac-os-9/Hellcats_1_0_4.appledouble",
+    "container_format": "AppleDouble with embedded classic resource fork (Hellcats 1.0.4)",
+    "status": "identical"
+  }
 }

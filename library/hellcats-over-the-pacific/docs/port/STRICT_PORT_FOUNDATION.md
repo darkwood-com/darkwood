@@ -1,7 +1,7 @@
-# Strict port contract
+# Original port contract
 
-The strict port is the GDScript translation of every decompiled function of Hellcats Over the
-Pacific: the nine CODE segments of the application and the Pacific Conflict overlay. It is
+The Original port is the Original edition's GDScript translation of every decompiled function
+of Hellcats Over the Pacific: the nine CODE segments of the application and the Pacific Conflict overlay. It is
 translated from the semantic `*.decomp.c` files (`sources/resedit-1-0-3/CODE/`), which in turn
 annotate Ghidra's exports of the original 1.0.3 binaries. The game runtime around it (the Mac
 it runs on, its Toolbox, the loaders) is described in
@@ -13,14 +13,17 @@ Current counts come from `python3 tools/progress_stats.py`; they are not copied 
 ## Layout
 
 ```text
-godot/strict_port/
-  code/                one module per original segment (ID01.gd .. ID09.gd, pacific_conflict.gd)
+godot/original/
+  port/                one module per original segment (ID01.gd .. ID09.gd, pacific_conflict.gd)
   compat/              c68k.gd (C / 68000 integer semantics), memory_68k.gd (the address space)
-  mappings/            functions.json (the provenance record), resources.json (the mirror)
+  mappings/            functions.json (the provenance record)
+  mac/                 the emulated Macintosh around the port (GAME_RUNTIME.md)
+  Game.tscn            the scene that runs the original program
+godot/assets/
+  <type>/              the resource mirror (see below), resources.json its manifest
   ui/                  decoders and views of the original resources
-  <type>/              the resource mirror (see below)
-godot/tests/strict_port/   deterministic cases replayed against the port
-tools/strict_port/         case generators, the 68000 emulator, sync / callee / coverage checks
+godot/tests/original/port/   deterministic cases replayed against the port
+tools/original/              case generators, the 68000 emulator, sync / callee / coverage checks
 ```
 
 A segment's functions stay in one module: function ownership and shared state follow the
@@ -36,7 +39,7 @@ original's segments, not one file per function.
    for an original function.
 4. Record each mapping once, in `mappings/functions.json`. Comments explain; they are not a second
    provenance record.
-5. Unknown or unresolved behaviour is `BLOCKED`; it is never approximated inside the strict layer.
+5. Unknown or unresolved behaviour is `BLOCKED`; it is never approximated inside the port.
 
 ## Port conventions
 
@@ -82,15 +85,15 @@ variables, so it passes the rect's two longs, and says so at the call.
 
 Each check is independent; QA (`python3 tools/qa/test_regression.py`) runs them all.
 
-- **Sync** (`tools/strict_port/check_sync.py --json`): every mapping's target exists, its
+- **Sync** (`tools/original/check_sync.py --json`): every mapping's target exists, its
   deterministic test exists, and the hash of its complete C definition matches the one reviewed;
   a changed definition is `SOURCE_CHANGED`. The checker never edits the manifest.
-- **Calls** (`tools/strict_port/check_callees.py`): every mapped function a semantic C body calls
+- **Calls** (`tools/original/check_callees.py`): every mapped function a semantic C body calls
   is reached by the port (by name, slot, segment offset or overlay address, directly or through
   the file's private helpers), and the port calls no mapped function its C bodies do not. C calls
   by Ghidra name are resolved by address. A callee reached through a computed address is listed in
   `ALLOWED`, a call Ghidra left as a label in `EXTRA_ALLOWED`, each with its evidence.
-- **Behaviour** (`godot/tests/strict_port/`): the generators in `tools/strict_port/gen_*_cases.py`
+- **Behaviour** (`godot/tests/original/port/`): the generators in `tools/original/gen_*_cases.py`
   (sharing the overlay's layout and helpers through `cases.py`; a segment family's layout stays in
   its first generator) run the original 68000 code in `m68k_emu.py` and record, per case, every memory change and every
   call it makes; `helpers/segment_cases.gd` (a segment) and `helpers/original_cases.gd` (the
@@ -107,12 +110,12 @@ cases, record the reviewed hash in the mapping, then run the checks and the test
 
 ## Resource mirror
 
-`godot/strict_port/` mirrors `sources/resedit-1-0-3/` type by type (each folder named after its
+`godot/assets/` mirrors `sources/resedit-1-0-3/` type by type (each folder named after its
 source folder in lower case: `ALRT` -> `alrt`, `ICN#` -> `icn#`), because Godot loads only files
 inside its project. Each resource keeps its original payload (`<id>.bin`, byte-identical), the
 media already derived next to it (PICT and ICON PNGs, `snds` MP3s), and one scene that draws it.
-CODE is not mirrored; its port is `code/`. `tools/strict_port/import_resedit.py` writes the mirror
-and `resources/resources.json` (every file with its source and SHA-256); its `--check`, run by QA,
+CODE is not mirrored; its port is `godot/original/port/`. `tools/original/import_resedit.py` writes the mirror
+and `assets/resources.json` (every file with its source and SHA-256); its `--check`, run by QA,
 fails on any missing, changed or extra file.
 
 The scenes hold no decoded data: the views in `ui/` decode the `.bin` at run time, as ResEdit's

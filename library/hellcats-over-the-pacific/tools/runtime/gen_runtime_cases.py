@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate comparison cases for routines the game runtime writes outside the 740
-(godot/runtime/machine/unexported.gd, overlay_loader.gd) by running their ORIGINAL bytes on the
-68000 interpreter (tools/strict_port/m68k_emu.py), as the strict port's own cases are made.
+(godot/original/mac/machine/unexported.gd, overlay_loader.gd) by running their ORIGINAL bytes on the
+68000 interpreter (tools/original/m68k_emu.py), as the strict port's own cases are made.
 
 Covered: ID02 0x3e8 ansi_strlen and 0x434 ansi_strncmp (strings at 0xa000 / 0xb000), 0x95a /
 0x9fa lock / unlock_session_handles, 0x2da0 save_changed_settings, 0x4d96 restore_screen_globals, 0x4d24 apply_display_palettes, 0x1b42
@@ -19,7 +19,7 @@ the runtime's own (0xc0000), so A5 globals sit where the runtime keeps them, and
 slots a routine calls (HLock $272 / HUnlock $27a) and the Toolbox traps (ChangedResource,
 WriteResource, SetGDevice) are stubs that pop their Pascal argument and do nothing else. Each case gives the
 memory it starts from, the D0 the original returns and the memory it leaves at the addresses it
-lists; godot/tests/runtime/test_unexported_routines.gd replays them on the runtime's routines.
+lists; godot/tests/original/mac/test_unexported_routines.gd replays them on the runtime's routines.
 
 Usage: python3 tools/runtime/gen_runtime_cases.py [--check]
 """
@@ -30,12 +30,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "tools" / "strict_port"))
+sys.path.insert(0, str(ROOT / "tools" / "original"))
 from m68k_emu import Emulator  # noqa: E402
 
-FIXTURE = ROOT / "godot" / "tests" / "runtime" / "fixtures" / "unexported_cases.json"
+FIXTURE = ROOT / "godot" / "tests" / "original" / "mac" / "fixtures" / "unexported_cases.json"
 ID02 = ROOT / "sources" / "resedit-1-0-3" / "CODE" / "ID02.bin"
-OVERLAY = ROOT / "godot" / "runtime" / "data" / "scenery" / "Pacific Conflict"
+OVERLAY = ROOT / "godot" / "original" / "mac" / "data" / "scenery" / "Pacific Conflict"
 STACK_TOP = 0x2F000
 A5 = 0x0C0000                  # MacMachine.A5
 MEMORY = 0xD0000

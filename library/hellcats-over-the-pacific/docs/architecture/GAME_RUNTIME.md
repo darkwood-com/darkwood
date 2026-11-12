@@ -1,38 +1,38 @@
-# Game runtime: running the strict port in Godot
+# Game runtime: running the Original edition in Godot
 
-`godot/scenes/game/Game.tscn` runs the original program (`StrictID02.main`, CODE 2 0x309a) from
-the strict port on a Macintosh built in GDScript under `godot/runtime/`. `godot/strict_port/` is
+`godot/original/Game.tscn` runs the original program (`StrictID02.main`, CODE 2 0x309a) from
+the Original port on a Macintosh built in GDScript under `godot/original/mac/`. `godot/original/` is
 not edited: the runtime provides what the port calls through its tables.
 
 ## Architecture
 
 | Part | File | Role |
 |---|---|---|
-| Machine | `runtime/machine/mac_machine.gd` | One flat 68000 address space (the strict port's `Memory68k`), its memory map, low-memory globals, missing-feature log |
-| Segments | `runtime/machine/segment_loader.gd` | The CODE 2..9 ports on that memory and A5, linked through the CODE 0 jump table (`runtime/data/jump_table.json`); unported slots go to runtime stand-ins |
-| Toolbox | `runtime/toolbox/*.gd` | The trap table: every A-line word starts as a logging stand-in; the managers install what they implement |
-| Thread | `runtime/machine/game_thread.gd` | `main()` never returns and polls for events, so it runs on its own thread |
-| Screen | `runtime/machine/mac_screen.gd`, `.gdshader` | The 640 x 480 screen, 8 bits a pixel by default, 4 or 1 (`MacMachine.screen_depth`; the device, ports and screenBits follow it), on a 32-bit Mac or a 24-bit one with a 32-bit screen (`MacMachine.addressing_24`), shown as palette indices through the device's colour table |
+| Machine | `original/mac/machine/mac_machine.gd` | One flat 68000 address space (the Original port's `Memory68k`), its memory map, low-memory globals, missing-feature log |
+| Segments | `original/mac/machine/segment_loader.gd` | The CODE 2..9 ports on that memory and A5, linked through the CODE 0 jump table (`original/mac/data/jump_table.json`); unported slots go to runtime stand-ins |
+| Toolbox | `original/mac/toolbox/*.gd` | The trap table: every A-line word starts as a logging stand-in; the managers install what they implement |
+| Thread | `original/mac/machine/game_thread.gd` | `main()` never returns and polls for events, so it runs on its own thread |
+| Screen | `original/mac/machine/mac_screen.gd`, `.gdshader` | The 640 x 480 screen, 8 bits a pixel by default, 4 or 1 (`MacMachine.screen_depth`; the device, ports and screenBits follow it), on a 32-bit Mac or a 24-bit one with a 32-bit screen (`MacMachine.addressing_24`), shown as palette indices through the device's colour table |
 
-`tools/runtime/build_runtime_data.py` writes `runtime/data/` from the original files: the jump
+`tools/runtime/build_runtime_data.py` writes `original/mac/data/` from the original files: the jump
 table (175 entries, 117 targeting ported routines), the resource names, and the Pacific Conflict
 scenery file (`--check` verifies them).
 
-Memory map (24-bit, `runtime/machine/mac_memory.gd`: the high address byte is ignored, as by the
-Memory Manager of the game's era): the overlay at its base 0 (the strict overlay port addresses its
+Memory map (24-bit, `original/mac/machine/mac_memory.gd`: the high address byte is ignored, as by the
+Memory Manager of the game's era): the overlay at its base 0 (the overlay port addresses its
 data by file offset - 0x20), low-memory globals sharing that range, A5 at 0x0c0000, the stack
 below 0x0ff000, the heap from 0x100000, the sound buffer at 0x6f0000 and the screen at 0x700000.
 
 Start-up as the original's C runtime (CODE 1 0x34) does it: the A5 world from DATA 0 (words, each
 zero word followed by a ZERO 0 count of zero bytes) up to A5, then DREL 0's cells relocated by A5.
 
-Overlay loading (`runtime/machine/overlay_loader.gd`): ID08 reads the scenery file, allocates the
+Overlay loading (`original/mac/machine/overlay_loader.gd`): ID08 reads the scenery file, allocates the
 image and relocates it by its address. The runtime gives the image the address 0x01000000 (low 24
 bits 0), takes that base off the relocated longs again and puts back the low-memory globals the
 image covered, with the values they held when the file was opened (on the Mac the image never
 touches them; a reload from File > Open… must not undo what the program set since, such as the
 SoundHook), so the bytes sit where the overlay port reads them; then it links the overlay's
-entry and hooks (`runtime/data/overlay_methods.json`: ported routines by runtime address) and
+entry and hooks (`original/mac/data/overlay_methods.json`: ported routines by runtime address) and
 gives the overlay the host's jump-table slot addresses (the service table ID02 0x1b42 fills). Calls
 through code addresses follow C: a caller may pass more arguments than the routine declares (the
 definition pre-render hooks get the controller and a phase), and the extra ones are dropped, as
@@ -42,7 +42,7 @@ Calling conventions: a port passes a call's arguments last-pushed first. That is
 order of MPW C routines; the CODE 9 glue is Pascal, so the slot reverses them for it.
 
 Text: the resource fork holds no FONT / NFNT and Godot ships no Chicago or Geneva, so
-`runtime/toolbox/glyph_cache.gd` rasterises the nearest installed face without antialiasing
+`original/mac/toolbox/glyph_cache.gd` rasterises the nearest installed face without antialiasing
 (on the main thread, before the game thread starts) into one-bit glyphs QuickDraw draws.
 
 Arguments a port passes by value where the original passed an address (rects and strings its
@@ -61,13 +61,13 @@ own restored afterwards; without the restore the frames sank a little each frame
 overwrote the overlay's data (the span run-writer tables at 0x20cec).
 
 Ported routines the ports call by offset (`_local`) or by stored code address are all registered
-(`runtime/data/segment_methods.json`, and the overlay's routines by runtime address, including
+(`original/mac/data/segment_methods.json`, and the overlay's routines by runtime address, including
 the second entries the port documents inside another routine's extent); a call to a routine
 without a result answers 0.
 
 Colour: a colour port keeps the pixel values it draws with in fgColor / bkColor (+0x50 / +0x54),
 as Color QuickDraw does; the program both sets RGB colours and stores device indices there itself.
-The screen device's 256 colours (`runtime/toolbox/palette_manager.gd`) start as the default 8-bit
+The screen device's 256 colours (`original/mac/toolbox/palette_manager.gd`) start as the default 8-bit
 table and follow the program: SetEntries, its palettes (SetEntryColor / SetEntryUsage, SetPalette /
 ActivatePalette, AnimateEntry / AnimatePalette); palette entry i owns device index i + 1 (0 and 255,
 white and black, stay the system's), PmForeColor leaves that index in the port, and the Godot
@@ -77,7 +77,7 @@ PixMap handle, marked by the rowBytes field's two high bits).
 Sound: the program mixes its channels itself into the Mac's sound buffer (SoundBase, 370 samples
 every tick) from the VBL handler it puts in the SoundHook; the runtime runs that hook once per
 elapsed tick at the program's trap calls, as the interrupt would arrive between them
-(`runtime/toolbox/sound_manager.gd`), and `runtime/machine/mac_speaker.gd` plays the samples at
+(`original/mac/toolbox/sound_manager.gd`), and `original/mac/machine/mac_speaker.gd` plays the samples at
 22254.5 Hz. Saving: the resources the program writes back (the pilot roster, the settings) are
 kept under Godot's `user://resources/<type>/<id>.bin` and read before the originals; delete that
 folder to start afresh.
@@ -98,23 +98,23 @@ on key-up) knows only ⌘T, ⌘1..5, ⌘Q, ⌘S and ⌘E; any other ⌘ key, suc
 does nothing until the flight is interrupted. HideCursor / ShowCursor / InitCursor keep the Mac
 cursor's level, which hides Godot's pointer during the flight.
 
-The strict port passes the rects that traps change in place (InsetRect, OffsetRect) by their
+The Original port passes the rects that traps change in place (InsetRect, OffsetRect) by their
 frame address, as the original pushes them, so the change lands where the program reads it back;
 read-only rects may still come by value (two longs). FSRead's count is the caller's long too: the
 bytes read are written back into it. Pictures (DrawPicture, dialog picture items) are decoded from
 the mirror's PNG on the game's thread without making textures.
 
 Routines outside the 740 (Ghidra never defined them) are written from their disassembly in
-`runtime/machine/unexported.gd` and registered where the port calls them.
+`original/mac/machine/unexported.gd` and registered where the port calls them.
 
 `tools/qa/test_regression.py` (`check_runtime_coverage`) keeps the runtime complete: every
-jump-table slot and segment-local offset the strict port calls, every slot the CODE segments hand
+jump-table slot and segment-local offset the Original port calls, every slot the CODE segments hand
 out as a procedure, every code pointer in the overlay's relocation table and every trap word the
 ports use must have a routine behind it, so a gap fails the check before anyone plays into it.
 
 Those written routines are also checked against their original bytes where they stand alone:
-`tools/runtime/gen_runtime_cases.py` runs them on the 68000 interpreter (`tools/strict_port/
-m68k_emu.py`) and `godot/tests/runtime/test_unexported_routines.gd` replays the cases on the
+`tools/runtime/gen_runtime_cases.py` runs them on the 68000 interpreter (`tools/original/
+m68k_emu.py`) and `godot/tests/original/mac/test_unexported_routines.gd` replays the cases on the
 runtime, comparing the D0 and the memory each leaves (ansi_strlen, ansi_strncmp, lock / unlock_
 session_handles, save_changed_settings, restore_screen_globals, apply_display_palettes,
 install_overlay_service_table, release_panel_bitmaps, report_panel_store_failure,
@@ -130,31 +130,49 @@ player_left_ground_zone, the 1-bit erase hook and redraw_view_readouts (its four
 stubbed): every written routine but the IUCompString glue, whose comparison is the System's _Pack6
 and not in the game's bytes; Toolbox traps and Pascal glue stubbed on the emulator side).
 
-An end-to-end session is `tests/runtime/smoke_session.gd`, kept out of `run_all.gd` because it runs
-for minutes of real time: `Godot --headless --path godot --script res://tests/runtime/smoke_session.gd`.
+Stepped time makes a run reproducible: `MacMachine.use_stepped_clock(steps, stop)` sets Ticks
+to 0 and moves it only at the program's own waits (`idle`: a null event, a dialog or menu waiting
+for the mouse) and every 64 TickCount reads of a busy loop, never with the host clock. The steps,
+`[tick, Callable(machine)]`, post input on the program's thread when their tick comes; `on_tick`
+records state; at `stop` the program parks. `tests/helpers/state_trace.gd` captures a traced tick
+(MD5s of the A5 world and of the overlay's image, the overlay's random-number table exactly, and the
+same two without what an edition may keep elsewhere: the sound driver's A5 block, low memory; not
+the screen, whose text depends on the host's fonts) and names the first tick and field where two
+traces differ. `tests/original/mac/test_stepped_run.gd` runs the game twice that way (Return at the
+copy protection, 600 ticks, traced every 30) and requires both runs and the recorded Original trace
+(`fixtures/stepped_trace.json`, rewritten with `HELLCATS_RECORD_TRACE=1`) to agree. Those 600
+ticks stay in the opening dialogs. The smoke session's `--stepped` runs any of its scripts the same
+way (steps at tick seconds * 60) and `--trace` / `--expect` write or check a trace: the recorded
+flight is `--mission 2 --seconds 60 --stepped --expect res://tests/original/mac/fixtures/stepped_mission2_trace.json`
+(120 entries; the A5 world, the overlay's objects and the random-number table all move, about
+a minute of host time).
+
+An end-to-end session is `tests/original/mac/smoke_session.gd`, kept out of `run_all.gd` because it runs
+for minutes of real time: `Godot --headless --path godot --script res://tests/original/mac/smoke_session.gd`.
 Its header lists the phases (the missions played, the menus by key and by mouse, the dialogs) and
 the options, among them the runs the evidence merges. It fails when the program's thread dies, the runtime notes anything missing or a script error happens, and it saves
 into `user://smoke_session_resources`, never the player's `user://resources`. Its `--coverage` runs
-are the evidence behind the mappings' `runtime_verified`, with `tests/runtime/protection_session.gd`'s for
-the copy-protection challenge the smoke session never meets (`tests/runtime/fixtures/smoke_coverage.json`,
-read by `tools/strict_port/check_sync.py`); what did not run, and why (unreachable
+are the evidence behind the mappings' `runtime_verified`, with `tests/original/mac/protection_session.gd`'s for
+the copy-protection challenge the smoke session never meets (`tests/original/mac/fixtures/smoke_coverage.json`,
+read by `tools/original/check_sync.py`); what did not run, and why (unreachable
 in the original, or what it needs: a failure, another machine or scenery, longer or flown play),
-is [`RUNTIME_COVERAGE.md`](../generated/RUNTIME_COVERAGE.md) (generated by `tools/strict_port/coverage_gaps.py`).
+is [`RUNTIME_COVERAGE.md`](../generated/RUNTIME_COVERAGE.md) (generated by `tools/original/coverage_gaps.py`).
 
 ### Traps the game never issues
 
-The Toolbox installs 293 trap words. Scanning the original bytes at instruction boundaries (the host
+The Toolbox installs 294 trap words. Scanning the original bytes at instruction boundaries (the host
 segments ID01..ID08 and the *Pacific Conflict* code; ID09's glue is answered by stand-ins instead) finds
-174 issued words (auto-pop variants folded). Of the other 119, three are still reached another way
-(_Open $A000 and SwapMMUMode $A05D by the strict port of ID09's glue, FlushEvents $A032 by a
+174 issued words (auto-pop variants folded). Of the other 120, three are still reached another way
+(_Open $A000 and SwapMMUMode $A05D by the Original port of ID09's glue, FlushEvents $A032 by a
 stand-in).
-The remaining 116 have no user besides their installation, in the game's bytes, the strict port, the
-runtime or the tests. They are cleanup candidates, kept for now because another scenery file opened
+The remaining 117 have no user besides their installation, in the game's bytes, the Original port, the
+runtime or the tests, in 1.0.3; Hellcats 1.0.4's sound driver (`port/ID02_104.gd`) uses three of them:
+_SoundDispatch $A800 (SndPlayDoubleBuffer), NewPtrClear $A31E and DisposePtr $A01F. They are cleanup candidates, kept for now because another scenery file opened
 with File > Open... could issue them (counts and list checked against the bytes by
 `tools/qa/test_regression.py`, optional-unused-traps):
 
 $A001 $A002 $A01C $A01F $A021 $A023 $A027 $A029 $A02A $A036 $A049 $A04A $A063 $A069 $A06A $A11D
-$A11E $A122 $A31E $A322 $A802 $A803 $A804 $A806 $A81F $A820 $A827 $A828 $A851 $A856 $A860 $A86D
+$A11E $A122 $A31E $A322 $A800 $A802 $A803 $A804 $A806 $A81F $A820 $A827 $A828 $A851 $A856 $A860 $A86D
 $A87C $A886 $A889 $A896 $A897 $A89E $A8A4 $A8AA $A8AB $A8B1 $A8B2 $A8B3 $A8B9 $A8C8 $A8C9 $A8D2
 $A8D4 $A8D5 $A8DC $A8DD $A8DE $A8E0 $A8E4 $A8E5 $A8E7 $A8F5 $A904 $A910 $A914 $A917 $A918 $A919
 $A91A $A925 $A927 $A929 $A92A $A92D $A936 $A93B $A944 $A949 $A94C $A950 $A956 $A95E $A961 $A962
@@ -215,11 +233,11 @@ jump-table slot (`$offset`), its segment offset (local), or a code address.
 | Milestone | State |
 |---|---|
 | 1. Machine, jump-table linking, trap table, game thread, screen scene | done |
-| 2. Memory Manager, Resource Manager (from the strict resource mirror), Color QuickDraw device, SysEnvirons | done |
+| 2. Memory Manager, Resource Manager (from the resource mirror), Color QuickDraw device, SysEnvirons | done |
 | 3. `initialize_application` runs to its end; InitWindows draws the desktop and menu bar | done |
 | 4. Overlay load: File Manager, the A5 world from DATA / ZERO / DREL, the image at runtime base 0, overlay entry, hooks and host services | done |
 | 5. The routines outside the 740, written from their bytes ([index](#routines-outside-the-740)) | done |
 | 6. QuickDraw (ports, patterns and modes, lines, rects, round rects, ovals, regions as rects plus single-oval regions for clipping and PtInRgn, text from a glyph cache, CopyBits, pictures, colour icons), Window / Dialog / Control (scroll bars: NewControl, FindControl, TrackControl) / Menu managers, TextEdit, Standard File's Get File (File > Open…, over the scenery volume; the overlay reloads), palettes | done |
 | 7. Event Manager from Godot input (mouse, Mac key codes and GetKeys, ticks), update and activate events | done |
-| 8. Pilot roster, mission selection, the 3D flight view from the carrier's deck, the cockpit view (V) with its instrument panel, keyboard and mouse input, ejecting, and the mission summary (its text, scroll bar, medals and rank); sound (the VBL sound hook run every tick into SoundBase and played through `scenes/game/Game.tscn`'s Speaker; SndPlay of 'snd ' resources); saving (WriteResource / UpdateResFile kept under `user://resources`) | done |
-| 9. `scenes/main/Main.tscn` runs the game (Godot quits cleanly with the program's thread parked); the MVP prototype (its scenes, `hellcats/` scripts, data, tests and fixtures) removed, the QA checks moved to the game runtime | done |
+| 8. Pilot roster, mission selection, the 3D flight view from the carrier's deck, the cockpit view (V) with its instrument panel, keyboard and mouse input, ejecting, and the mission summary (its text, scroll bar, medals and rank); sound (the VBL sound hook run every tick into SoundBase and played through `original/Game.tscn`'s Speaker; SndPlay of 'snd ' resources); saving (WriteResource / UpdateResFile kept under `user://resources`) | done |
+| 9. `launcher/Main.tscn` runs the game (Godot quits cleanly with the program's thread parked); the MVP prototype (its scenes, `hellcats/` scripts, data, tests and fixtures) removed, the QA checks moved to the game runtime | done |

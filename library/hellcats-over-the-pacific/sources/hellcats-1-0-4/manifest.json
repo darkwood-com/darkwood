@@ -1,0 +1,251 @@
+{
+  "schema": "hellcats-version-delta-v1",
+  "version": "1.0.4",
+  "base_version": "1.0.3",
+  "base": "sources/resedit-1-0-3",
+  "generated_by": "tools/mac_resources/update_1_0_4.py --write",
+  "sources": {
+    "sources/mac-os-9/Hellcats_1_0_3.dsk": "59791cca82a175c1c41a36bf732e089c7e00307201194f943612130e205cf5d4",
+    "sources/mac-os-9/Version_1_0_4.dsk": "7e888dfb681bb3c82272db20a84b90335780cc32f78f4cc50fe3fac13d83c659"
+  },
+  "resources": [
+    {
+      "key": "CODE:2",
+      "path": "sources/hellcats-1-0-4/CODE/ID02.bin",
+      "name": null,
+      "attributes": "0x38",
+      "size": 24832,
+      "sha256": "bc6e0ac4878f48db467b7ca59f7016009ef561bfe88ef5e1d47d4390a974f685",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "HEL1:127",
+      "path": "sources/hellcats-1-0-4/HEL1/127.bin",
+      "name": "Hellcats Saved Settings",
+      "attributes": "0x00",
+      "size": 298,
+      "sha256": "1c2bd5f009050172f140b4a6613a95a5bb0975ccadbeb4ffd8689f86a728c3a8",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "SIZE:0",
+      "path": "sources/hellcats-1-0-4/SIZE/0.bin",
+      "name": null,
+      "attributes": "0x00",
+      "size": 10,
+      "sha256": "8e1c0d6ca99e491cab13f7d5d9410ebf7b150d4c54222526f9094b64a0a0a74c",
+      "change": "carried, not listed"
+    },
+    {
+      "key": "SIZE:1",
+      "path": "sources/hellcats-1-0-4/SIZE/1.bin",
+      "name": null,
+      "attributes": "0x00",
+      "size": 10,
+      "sha256": "6464dd622d1fb6832ebf0e09cff949d13f99f1963837675f1557a5c4fd093ca6",
+      "change": "carried, not listed"
+    },
+    {
+      "key": "snd :2186",
+      "path": "sources/hellcats-1-0-4/snds/2186.bin",
+      "name": "Grass",
+      "attributes": "0x20",
+      "size": 6356,
+      "sha256": "a8ff0be0a9bdc119ec470f5c2f7522c78c371954961d254a125109422dad759f",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "snd :13493",
+      "path": "sources/hellcats-1-0-4/snds/13493.bin",
+      "name": "Hit",
+      "attributes": "0x20",
+      "size": 3556,
+      "sha256": "0f32788987ec4e5a21e0d5d3459fcfeb2def3f442ebf29b04817d6ffbb65648f",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "snd :15490",
+      "path": "sources/hellcats-1-0-4/snds/15490.bin",
+      "name": "Explosion",
+      "attributes": "0x20",
+      "size": 27108,
+      "sha256": "33efcb2ac1994d07d4b72b7f0f1580ee6836a3aae1d8a539f8e6e99e8b5c69bd",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "snd :16059",
+      "path": "sources/hellcats-1-0-4/snds/16059.bin",
+      "name": "Gear",
+      "attributes": "0x20",
+      "size": 23392,
+      "sha256": "ce7dfa1dcdf9130cc8bbc9079732a0f0dd8f74db8f2f84fdd5292bb495cda1ff",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "snd :16815",
+      "path": "sources/hellcats-1-0-4/snds/16815.bin",
+      "name": "ugh",
+      "attributes": "0x20",
+      "size": 8772,
+      "sha256": "ad2c5b7f8a32d4adb8c386f1f261ea83d5955e37ae8ca3f73ab2d71b020d20ba",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "snd :21266",
+      "path": "sources/hellcats-1-0-4/snds/21266.bin",
+      "name": "Distant Explosion",
+      "attributes": "0x20",
+      "size": 16804,
+      "sha256": "0cc06b38f36a2d6647ee82007efa9bd51d156f5838529e865253f0901c99e573",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "snd :24100",
+      "path": "sources/hellcats-1-0-4/snds/24100.bin",
+      "name": "Wheel",
+      "attributes": "0x20",
+      "size": 6227,
+      "sha256": "13e356a1ba8d7cb25f8411d9cb7b669166f557b4883e8fc9a65ba14eb67dd539",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "snd :25233",
+      "path": "sources/hellcats-1-0-4/snds/25233.bin",
+      "name": "Gun",
+      "attributes": "0x20",
+      "size": 6226,
+      "sha256": "362890a260a3c95b68f2dab1f4ac56753cdd9e610a25a3bbab82b3e1aaee0dd4",
+      "change": "listed by the updater's script"
+    },
+    {
+      "key": "vers:1",
+      "path": "sources/hellcats-1-0-4/vers/1.bin",
+      "name": null,
+      "attributes": "0x20",
+      "size": 69,
+      "sha256": "cc8c03d78a8be06fb51b17738d8e0af3de945f3a634746c34e951d677ee91437",
+      "change": "listed by the updater's script"
+    }
+  ],
+  "code2": {
+    "old_size": 19994,
+    "new_size": 24832,
+    "unchanged_functions": 119,
+    "prefix_unchanged": true,
+    "patched_functions": [
+      {
+        "function": "init_sound_system",
+        "offset": "0x3dd0",
+        "changed_bytes": 3,
+        "jmp_to": "0x5006",
+        "overwritten": "4e560000"
+      },
+      {
+        "function": "play_sample_on_channel",
+        "offset": "0x3f54",
+        "changed_bytes": 3,
+        "jmp_to": "0x51fe",
+        "overwritten": "4e56fff4"
+      },
+      {
+        "function": "enqueue_sample_on_channel",
+        "offset": "0x4050",
+        "changed_bytes": 3,
+        "jmp_to": "0x52f4",
+        "overwritten": "4e56fff8"
+      },
+      {
+        "function": "set_sound_playback_rate",
+        "offset": "0x412e",
+        "changed_bytes": 3,
+        "jmp_to": "0x541e",
+        "overwritten": "4e56fff8"
+      },
+      {
+        "function": "release_channel_loop",
+        "offset": "0x41a6",
+        "changed_bytes": 3,
+        "jmp_to": "0x547c",
+        "overwritten": "4e56fff8"
+      },
+      {
+        "function": "silence_sound_channel",
+        "offset": "0x4242",
+        "changed_bytes": 3,
+        "jmp_to": "0x5506",
+        "overwritten": "4e56fff8"
+      },
+      {
+        "function": "is_channel_playing",
+        "offset": "0x42b0",
+        "changed_bytes": 3,
+        "jmp_to": "0x5568",
+        "overwritten": "4e56fff6"
+      },
+      {
+        "function": "shutdown_sound",
+        "offset": "0x4318",
+        "changed_bytes": 3,
+        "jmp_to": "0x55ba",
+        "overwritten": "4e56fffc"
+      }
+    ],
+    "appended": {
+      "start": "0x4e1a",
+      "end": "0x6100",
+      "size": 4838,
+      "old_bytes_kept_below": null
+    }
+  },
+  "new_routines": [
+    {
+      "offset": "0x4e1a",
+      "role": "sound_double_back (Pascal, RTD #8): mixes the four channels into the next buffer; base of the driver's data"
+    },
+    {
+      "offset": "0x4fa6",
+      "role": "alloc_sound_buffer_node (1.0.4): pops and fills a node of a channel's free list"
+    },
+    {
+      "offset": "0x5006",
+      "role": "init_sound_system (1.0.4): SndNewChannel, primes the buffers, SndPlayDoubleBuffer"
+    },
+    {
+      "offset": "0x51fe",
+      "role": "play_sample_on_channel (1.0.4)"
+    },
+    {
+      "offset": "0x52f4",
+      "role": "enqueue_sample_on_channel (1.0.4)"
+    },
+    {
+      "offset": "0x541e",
+      "role": "set_sound_playback_rate (1.0.4)"
+    },
+    {
+      "offset": "0x547c",
+      "role": "release_channel_loop (1.0.4)"
+    },
+    {
+      "offset": "0x5506",
+      "role": "silence_sound_channel (1.0.4)"
+    },
+    {
+      "offset": "0x5568",
+      "role": "is_channel_playing (1.0.4)"
+    },
+    {
+      "offset": "0x55ba",
+      "role": "shutdown_sound (1.0.4): SndDisposeChannel, DisposePtr"
+    },
+    {
+      "offset": "0x5634",
+      "role": "empty routine (RTS)"
+    }
+  ],
+  "data_area": {
+    "start": "0x5636",
+    "end": "0x6100"
+  },
+  "unchanged": "every other resource equals sources/resedit-1-0-3 (update_1_0_4.py --check)"
+}

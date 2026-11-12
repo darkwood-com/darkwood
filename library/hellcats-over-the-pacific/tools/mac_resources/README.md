@@ -17,7 +17,12 @@ python3 tools/mac_resources/inventory.py -o /tmp/hellcats-resources/inventory.js
 # Optional classic resource-fork parse of one file
 python3 tools/mac_resources/parse_rsrc.py path/to/file.rsrc
 
-# Extract data + resource forks from a classic HFS floppy image (requires machfs)
+# List or extract the forks of an HFS floppy (no dependencies)
+python3 tools/mac_resources/hfs.py list sources/mac-os-9/Hellcats_1_0_3.dsk
+python3 tools/mac_resources/hfs.py extract sources/mac-os-9/LeyteGulf.dsk -o /tmp/hellcats-resources/leyte
+
+# The same through machfs, optionally decoding application forks
+# (requires machfs)
 python3 tools/mac_resources/extract.py \
   --dsk path/to/Hellcats_1_0_3.dsk \
   -o /tmp/hellcats-resources/from_103
@@ -35,9 +40,10 @@ forks after HFS extraction.
 - Emits JSON with path, size, SHA-256, kind (inventory) or HFS entry metadata (extract).
 - Attempts classic Mac resource-map parse only for `*.rsrc` candidates.
 - On parse failure, records `parse_status: failed` and an error string — **never invents** type/ID/name lists.
-- `Hellcats.rsrc` is **not** a classic fork (repeating `0xc8`).
-- `Hellcats_1_0_4.appledouble` contains the comparison resource fork used by
-  `tools/resedit.py`; prefer `.dsk` images when inspecting other editions.
+- `hfs.py` reads the `.dsk` floppies without dependencies; `tools/resedit.py`
+  takes the 1.0.3 payloads from `Hellcats_1_0_3.dsk` through it.
+- `Hellcats_1_0_4.appledouble` contains the 1.0.4 comparison fork used by
+  `tools/resedit.py`. `sources/mac-os-9/README.md` lists every original file.
 - Output is deterministic (stable sort + `sort_keys`).
 
 ## Kinds (`inventory.py`)
@@ -50,6 +56,5 @@ forks after HFS extraction.
 | `decomp-c` | Semantic reconstruction `*.decomp.c` |
 | `overlay` | `Pacific Conflict` blob |
 | `rsrc-candidate` | File named `*.rsrc` |
-| `app-stub` | Empty `Hellcats` / `Hellcats.bin` |
 | `reference` | Manuals, screenshots, FAQ, etc. |
 | `disk-image` | Classic HFS `.dsk` (when discovered) |

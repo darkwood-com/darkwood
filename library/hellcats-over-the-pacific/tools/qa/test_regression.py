@@ -17,7 +17,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 GODOT_ROOT = REPO_ROOT / "godot"
 GODOT_TESTS = GODOT_ROOT / "tests"
-JUMP_TABLE = GODOT_ROOT / "runtime" / "data" / "jump_table.json"
+JUMP_TABLE = GODOT_ROOT / "original" / "mac" / "data" / "jump_table.json"
 RUNNER_PATH = GODOT_TESTS / "run_all.gd"
 
 
@@ -100,13 +100,13 @@ def check_loader_targets() -> None:
 
 
 def check_game_scenes() -> None:
-    """The main scene runs the original game (scenes/game/Game.tscn); the MVP prototype is gone."""
-    main = (GODOT_ROOT / "scenes" / "main" / "Main.tscn").read_text(encoding="utf-8")
-    if 'path="res://scenes/game/Game.tscn"' not in main:
-        fail("scenes/main/Main.tscn must instance res://scenes/game/Game.tscn")
+    """The main scene runs the original game (original/Game.tscn); the MVP prototype is gone."""
+    main = (GODOT_ROOT / "launcher" / "Main.tscn").read_text(encoding="utf-8")
+    if 'path="res://original/Game.tscn"' not in main:
+        fail("launcher/Main.tscn must instance res://original/Game.tscn")
     project = (GODOT_ROOT / "project.godot").read_text(encoding="utf-8")
-    if 'run/main_scene="res://scenes/main/Main.tscn"' not in project:
-        fail("project.godot main scene must be res://scenes/main/Main.tscn")
+    if 'run/main_scene="res://launcher/Main.tscn"' not in project:
+        fail("project.godot main scene must be res://launcher/Main.tscn")
     for gone in ("hellcats", "docs", "data/mission_01", "tests/unit", "tests/integration"):
         if (GODOT_ROOT / gone).exists():
             fail(f"godot/{gone} belongs to the removed MVP prototype or the old layout")
@@ -160,7 +160,7 @@ def check_global_alias_docs() -> None:
             aliases[(segment, symbol)] = alias
     const_re = re.compile(r"^const _?(DAT_[0-9a-f]{8}): int = 0x[0-9a-f]+ ## (\w+)", re.M)
     wrong = []
-    for path in sorted((REPO_ROOT / "godot" / "strict_port" / "code").glob("*.gd")):
+    for path in sorted((REPO_ROOT / "godot" / "original" / "port").glob("*.gd")):
         segment = "Pacific Conflict" if path.stem == "pacific_conflict" else path.stem
         for symbol, name in const_re.findall(path.read_text(encoding="utf-8")):
             alias = aliases.get((segment, symbol))
@@ -219,7 +219,7 @@ def check_runtime_coverage() -> None:
     jump-table slots and segment-local offsets the ports call, the slots the CODE segments hand out
     as procedure pointers (PEA / LEA d16(A5), UnloadSeg's segment names aside), the code pointers in
     the overlay's relocation table, and the trap words the ports use."""
-    runtime = GODOT_ROOT / "runtime"
+    runtime = GODOT_ROOT / "original" / "mac"
     runtime_src = "\n".join(p.read_text(encoding="utf-8") for p in sorted(runtime.glob("**/*.gd")))
     entries = {e["a5_offset"]: e for e in _load_json(JUMP_TABLE)["entries"]}
     segment_methods = _load_json(runtime / "data" / "segment_methods.json")
@@ -234,8 +234,9 @@ def check_runtime_coverage() -> None:
         installed |= {int(w, 16) for w in re.findall(r"0xa[0-9a-f]{3}", group)}
     # Only on sysenvirons_glue_fallback's path, which needs SysEnvirons missing (the runtime has it).
     unreachable_traps = {0xA260, 0xA207}
+    not_yet_run: dict = {}
     problems = []
-    for path in sorted((GODOT_ROOT / "strict_port" / "code").glob("*.gd")):
+    for path in sorted((GODOT_ROOT / "original" / "port").glob("*.gd")):
         src = path.read_text(encoding="utf-8")
         consts = {m.group(1): int(m.group(2), 16) for m in re.finditer(r"^const (\w+): int = (0x[0-9a-f]+)", src, re.M)}
         value = lambda tok: int(tok, 16) if tok.startswith("0x") else consts.get(tok)
@@ -252,7 +253,8 @@ def check_runtime_coverage() -> None:
                     problems.append(f"{path.name}: segment {seg} offset 0x{off:x} has no routine")
         for tok in re.findall(r"_trap\((\w+)", src):
             word = value(tok)
-            if word is not None and 0xA000 <= word <= 0xAFFF and word not in installed | unreachable_traps:
+            if word is not None and 0xA000 <= word <= 0xAFFF and word not in installed | unreachable_traps \
+                    | not_yet_run.get(path.name, set()):
                 problems.append(f"{path.name}: trap {word:04x} ({tok}) is not installed")
     code_dir = REPO_ROOT / "sources" / "resedit-1-0-3" / "CODE"
     for n in range(1, 10):
@@ -265,7 +267,7 @@ def check_runtime_coverage() -> None:
                     problems.append(f"ID0{n} 0x{o:x}: slot ${disp:x} passed as a procedure has no routine")
     scenery = (runtime / "data" / "scenery" / "Pacific Conflict").read_bytes()
     u32 = lambda o: int.from_bytes(scenery[o:o + 4], "big")
-    port_src = (GODOT_ROOT / "strict_port" / "code" / "pacific_conflict.gd").read_text(encoding="utf-8")
+    port_src = (GODOT_ROOT / "original" / "port" / "pacific_conflict.gd").read_text(encoding="utf-8")
     rts_only = re.search(r"^const RTS_ONLY := \[([^\]]*)\]", port_src, re.M).group(1)
     covered = overlay_methods | {int(a, 16) for a in re.findall(r"0x[0-9a-f]+", rts_only)}
     covered |= {int(a, 16) for a in re.findall(r"code_table\[(0x[0-9a-f]+)\] =", port_src + runtime_src)}
@@ -300,17 +302,40 @@ def check_runtime_coverage() -> None:
 
 def check_resedit_mirror() -> None:
     import subprocess
-    result = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "strict_port" / "import_resedit.py"), "--check"],
+    result = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "original" / "import_resedit.py"), "--check"],
                             capture_output=True, text=True)
     if result.returncode != 0:
-        fail("the resource folders in godot/resources drifted from sources/resedit-1-0-3:\n" + result.stdout)
+        fail("the resource folders in godot/assets drifted from sources/resedit-1-0-3:\n" + result.stdout)
+
+
+def check_1_0_4_rebuild() -> None:
+    """The 1.0.4 fork rebuilt from the 1.0.3 disk and the updater equals the AppleDouble 1.0.4 copy,
+    the resources the game writes as it is played (HEL1 127 / 128, the HEL2 caches) aside."""
+    import subprocess
+    result = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "mac_resources" / "update_1_0_4.py"), "--check"],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("tools/mac_resources/update_1_0_4.py --check:\n" + result.stdout + result.stderr)
+
+
+def check_1_0_4_sound() -> None:
+    """The reconstructed 1.0.4 sound driver routines match the 1.0.4 bytes on the interpreter."""
+    import subprocess
+    result = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "original" / "check_1_0_4_sound.py")],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("tools/original/check_1_0_4_sound.py:\n" + result.stdout + result.stderr[-2000:])
+    result = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "original" / "gen_id02_104_sound_cases.py"), "--check"],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("tools/original/gen_id02_104_sound_cases.py --check:\n" + result.stdout + result.stderr[-2000:])
 
 
 def check_source_extraction() -> None:
     """check_sync's function extractor finds the definition, not a comment that names the function
     with parentheses after it (twelve mappings had been hashed over such a comment and the function
     after it, the wrapped-signature pattern spanning lines from the comment)."""
-    sys.path.insert(0, str(REPO_ROOT / "tools" / "strict_port"))
+    sys.path.insert(0, str(REPO_ROOT / "tools" / "original"))
     import check_sync
     source = (
         "/* see also\n"
@@ -364,7 +389,7 @@ def check_entry_points() -> None:
     indexed = {(m.group(1), int(m.group(2), 16)) for m in re.finditer(r"\| (ID0\d) \| (0x[0-9a-f]+) \|", index)}
     code_dir = REPO_ROOT / "sources" / "resedit-1-0-3" / "CODE"
     problems = []
-    for e in json.loads((REPO_ROOT / "godot" / "runtime" / "data" / "jump_table.json").read_text(encoding="utf-8"))["entries"]:
+    for e in json.loads((REPO_ROOT / "godot" / "original" / "mac" / "data" / "jump_table.json").read_text(encoding="utf-8"))["entries"]:
         segment, target = f"ID0{e['segment']}", int(e["target"])
         if (segment, target) in starts or (segment, target) in indexed:
             continue
@@ -376,7 +401,7 @@ def check_entry_points() -> None:
         decomp = (code_dir / f"{segment}.decomp.c").read_text(encoding="utf-8", errors="replace").lower()
         if not re.search(rf"\b0x0*{target:x}\b", decomp):
             problems.append(f"jump-table slot ${int(e['a5_offset']):x} -> {segment} 0x{target:x} is not accounted for")
-    image = (REPO_ROOT / "godot" / "runtime" / "data" / "scenery" / "Pacific Conflict").read_bytes()
+    image = (REPO_ROOT / "godot" / "original" / "mac" / "data" / "scenery" / "Pacific Conflict").read_bytes()
     code = struct.unpack(">I", image[4:8])[0]
     overlay_starts = {a - 0x20 for s, a in starts if s == "Pacific Conflict"}
     known = {0x4B0, 0xD23A, 0x15134, 0x16208,        # runtime-written routines (docs/architecture/GAME_RUNTIME.md)
@@ -409,7 +434,7 @@ def check_trap_annotations() -> None:
         v.sort()
     code_dir = REPO_ROOT / "sources" / "resedit-1-0-3" / "CODE"
     glue = (code_dir / "ID09.bin").read_bytes()
-    entries = json.loads((REPO_ROOT / "godot" / "runtime" / "data" / "jump_table.json").read_text(encoding="utf-8"))["entries"]
+    entries = json.loads((REPO_ROOT / "godot" / "original" / "mac" / "data" / "jump_table.json").read_text(encoding="utf-8"))["entries"]
     targets = sorted({int(e["target"]) for e in entries if e["segment"] == 9} | set(starts["ID09"]))
     issued_by_slot: dict[int, set[int]] = {}
     for e in entries:
@@ -424,7 +449,7 @@ def check_trap_annotations() -> None:
         segment = path.name.replace(".decomp.c", "")
         if segment in ("ID00", "ID09"):
             continue
-        image = (REPO_ROOT / "godot" / "runtime" / "data" / "scenery" / "Pacific Conflict") if segment == "Pacific Conflict" else code_dir / f"{segment}.bin"
+        image = (REPO_ROOT / "godot" / "original" / "mac" / "data" / "scenery" / "Pacific Conflict") if segment == "Pacific Conflict" else code_dir / f"{segment}.bin"
         data = image.read_bytes()
         text = path.read_text(encoding="utf-8", errors="replace")
         for d in inventory_functions.definitions(path):
@@ -459,7 +484,7 @@ def check_port_headers() -> None:
     """Every strict-port function cites the address it translates in its doc comment: a leading
     "## 0xnnnn" that is one of its mapping rows' source addresses (overlay: file or runtime), or that
     address elsewhere in the comment."""
-    mapping = json.loads((REPO_ROOT / "godot" / "strict_port" / "mappings" / "functions.json").read_text(encoding="utf-8"))
+    mapping = json.loads((REPO_ROOT / "godot" / "original" / "mappings" / "functions.json").read_text(encoding="utf-8"))
     rows = mapping["functions"] if isinstance(mapping, dict) else mapping
     targets: dict[tuple[str, str], list[int]] = {}
     for r in rows:
@@ -496,7 +521,7 @@ def check_runtime_headers() -> None:
     rest = index.find("\n## ", 5)
     index = index if rest < 0 else index[:rest]
     sources = [(REPO_ROOT / p).read_text(encoding="utf-8").split("\n") for p in (
-        "godot/runtime/machine/unexported.gd", "godot/runtime/machine/overlay_loader.gd", "godot/runtime/toolbox/toolbox.gd")]
+        "godot/original/mac/machine/unexported.gd", "godot/original/mac/machine/overlay_loader.gd", "godot/original/mac/toolbox/toolbox.gd")]
     problems, count = [], 0
     for line in index.split("\n"):
         cells = [c.strip() for c in line.split("|")[1:-1]]
@@ -532,7 +557,7 @@ def check_unused_traps() -> str:
         import capstone  # type: ignore
     except Exception:
         return "skipped (capstone not installed)"
-    runtime_src = "\n".join(p.read_text(encoding="utf-8") for p in sorted((GODOT_ROOT / "runtime").glob("**/*.gd")))
+    runtime_src = "\n".join(p.read_text(encoding="utf-8") for p in sorted((GODOT_ROOT / "original" / "mac").glob("**/*.gd")))
     installed = {int(w, 16) for w in re.findall(r"install\((0xa[0-9a-f]{3})", runtime_src)}
     for group in re.findall(r"for word in \[([^\]]*)\]", runtime_src):
         installed |= {int(w, 16) for w in re.findall(r"0xa[0-9a-f]{3}", group)}
@@ -549,7 +574,7 @@ def check_unused_traps() -> str:
     for n in range(1, 9):
         b = (REPO_ROOT / "sources" / "resedit-1-0-3" / "CODE" / f"ID0{n}.bin").read_bytes()
         scan(b, 0, len(b))
-    s = (GODOT_ROOT / "runtime" / "data" / "scenery" / "Pacific Conflict").read_bytes()
+    s = (GODOT_ROOT / "original" / "mac" / "data" / "scenery" / "Pacific Conflict").read_bytes()
     scan(s, 0x20, 0x20 + int.from_bytes(s[4:8], "big"))
     others = {w for w in installed if fold(w) not in issued}
     text = (REPO_ROOT / "docs" / "architecture" / "GAME_RUNTIME.md").read_text(encoding="utf-8")
@@ -567,13 +592,13 @@ def check_unused_traps() -> str:
 
 
 def check_runtime_coverage_doc() -> str:
-    """docs/generated/RUNTIME_COVERAGE.md is what tools/strict_port/coverage_gaps.py generates now."""
+    """docs/generated/RUNTIME_COVERAGE.md is what tools/original/coverage_gaps.py generates now."""
     try:
         import capstone  # type: ignore  # noqa: F401
     except Exception:
         return "skipped (capstone not installed)"
     import subprocess
-    r = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "strict_port" / "coverage_gaps.py"), "--check"],
+    r = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "original" / "coverage_gaps.py"), "--check"],
                        capture_output=True, text=True)
     if r.returncode != 0:
         fail(r.stdout.strip() or r.stderr.strip())
@@ -586,7 +611,7 @@ def check_validation_commands() -> str:
     commands = [
         ["tools/qa/test_re.py"], ["tools/decomp/inventory_functions.py", "--check"],
         ["tools/progress_stats.py", "--check"], ["tools/resedit.py", "verify"],
-        ["tools/strict_port/check_sync.py"], ["tools/runtime/gen_runtime_cases.py", "--check"],
+        ["tools/original/check_sync.py"], ["tools/runtime/gen_runtime_cases.py", "--check"],
         ["tools/decomp/definition_table.py", "--check"],
     ]
     for command in commands:
@@ -647,7 +672,7 @@ def check_stale_wording() -> None:
     and tools, and no copied progress counts ("657 of 740") in the docs, which generated/ holds."""
     stale = re.compile(r"not ported yet|not yet ported|\bunported\b(?! (?:overlay|function))", re.I)
     bad = []
-    for folder in ("godot/strict_port", "godot/runtime", "godot/tests", "tools"):
+    for folder in ("godot/original", "godot/original/mac", "godot/tests", "tools"):
         for path in sorted((REPO_ROOT / folder).rglob("*")):
             if path.suffix in (".gd", ".py") and path.name != "test_regression.py" and ".coverage" not in path.parts:
                 for number, line in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
@@ -676,7 +701,7 @@ def check_doc_links() -> str:
 def check_callees() -> str:
     """Each strict-port function reaches what its semantic C calls (no inlined shortcut)."""
     import subprocess
-    r = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "strict_port" / "check_callees.py")],
+    r = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "original" / "check_callees.py")],
                        capture_output=True, text=True)
     if r.returncode != 0:
         fail(r.stdout.strip() or r.stderr.strip())
@@ -686,7 +711,7 @@ def check_callees() -> str:
 def check_coverage_copies() -> str:
     """The coverage instrumentation credits each strict-port function in its own body."""
     import subprocess
-    r = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "strict_port" / "coverage_copies.py"), "--check"],
+    r = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "original" / "coverage_copies.py"), "--check"],
                        capture_output=True, text=True)
     if r.returncode != 0:
         fail(r.stdout.strip() or r.stderr.strip())
@@ -702,6 +727,8 @@ def main() -> int:
         ("global-alias-docs", check_global_alias_docs),
         ("symbol-function-names", check_symbol_function_names),
         ("resedit-mirror", check_resedit_mirror),
+        ("1.0.4-rebuild", check_1_0_4_rebuild),
+        ("1.0.4-sound", check_1_0_4_sound),
         ("runtime-coverage", check_runtime_coverage),
         ("source-extraction", check_source_extraction),
         ("xrefs", check_xrefs),

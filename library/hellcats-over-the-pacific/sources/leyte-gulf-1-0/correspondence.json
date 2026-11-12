@@ -1,0 +1,5201 @@
+{
+ "schema": "hellcats-leyte-correspondence-v1",
+ "generated_by": "tools/mac_resources/leyte_correspondence.py",
+ "leyte": "sources/mac-os-9/LeyteGulf.dsk Leyte Gulf:Leyte Gulf",
+ "counts": {
+  "host": {
+   "identical": 77,
+   "moved": 98,
+   "same_instructions": 89,
+   "not_found": 33
+  },
+  "overlay": {
+   "same_instructions": 82,
+   "not_found": 262,
+   "moved": 63,
+   "identical": 36
+  }
+ },
+ "functions": [
+  {
+   "segment": "ID01",
+   "address": "0x110",
+   "name": "rt_udiv32",
+   "match": "identical",
+   "leyte": "0x110"
+  },
+  {
+   "segment": "ID01",
+   "address": "0x130",
+   "name": "rt_umod32",
+   "match": "identical",
+   "leyte": "0x130"
+  },
+  {
+   "segment": "ID01",
+   "address": "0x152",
+   "name": "rt_sdiv32",
+   "match": "identical",
+   "leyte": "0x152"
+  },
+  {
+   "segment": "ID01",
+   "address": "0x172",
+   "name": "rt_smod32",
+   "match": "identical",
+   "leyte": "0x172"
+  },
+  {
+   "segment": "ID01",
+   "address": "0x194",
+   "name": "rt_sdivmod32_core",
+   "match": "identical",
+   "leyte": "0x194"
+  },
+  {
+   "segment": "ID01",
+   "address": "0x1c2",
+   "name": "rt_udivmod32_core",
+   "match": "identical",
+   "leyte": "0x1c2"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1e",
+   "name": "abs_long",
+   "match": "identical",
+   "leyte": "0x1e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x38",
+   "name": "ansi_div",
+   "match": "identical",
+   "leyte": "0x38"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x66",
+   "name": "ansi_ldiv",
+   "match": "identical",
+   "leyte": "0x66"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x9a",
+   "name": "ansi_isalnum",
+   "match": "moved",
+   "leyte": "0x9a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xb6",
+   "name": "ansi_isalpha",
+   "match": "moved",
+   "leyte": "0xb6"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xd2",
+   "name": "ansi_iscntrl",
+   "match": "moved",
+   "leyte": "0xd2"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xee",
+   "name": "ansi_isdigit",
+   "match": "moved",
+   "leyte": "0xee"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x10a",
+   "name": "ansi_isgraph",
+   "match": "moved",
+   "leyte": "0x10a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x126",
+   "name": "ansi_islower",
+   "match": "moved",
+   "leyte": "0x126"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x142",
+   "name": "ansi_isprint",
+   "match": "moved",
+   "leyte": "0x142"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x15e",
+   "name": "ansi_ispunct",
+   "match": "moved",
+   "leyte": "0x15e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x17a",
+   "name": "ansi_isspace",
+   "match": "moved",
+   "leyte": "0x17a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x196",
+   "name": "ansi_isupper",
+   "match": "moved",
+   "leyte": "0x196"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1b2",
+   "name": "ansi_isxdigit",
+   "match": "moved",
+   "leyte": "0x1b2"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1ce",
+   "name": "ansi_toupper",
+   "match": "moved",
+   "leyte": "0x1ce"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x200",
+   "name": "ansi_tolower",
+   "match": "moved",
+   "leyte": "0x200"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x232",
+   "name": "ansi_memcpy",
+   "match": "identical",
+   "leyte": "0x232"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x24a",
+   "name": "ansi_memmove",
+   "match": "identical",
+   "leyte": "0x24a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2b0",
+   "name": "ansi_memset",
+   "match": "identical",
+   "leyte": "0x2b0"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2c8",
+   "name": "ansi_strcpy",
+   "match": "identical",
+   "leyte": "0x2c8"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2d8",
+   "name": "ansi_strcat",
+   "match": "identical",
+   "leyte": "0x2d8"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2ee",
+   "name": "ansi_strcmp",
+   "match": "identical",
+   "leyte": "0x2ee"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x30c",
+   "name": "ansi_strchr",
+   "match": "identical",
+   "leyte": "0x30c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x324",
+   "name": "ansi_strcspn",
+   "match": "identical",
+   "leyte": "0x324"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x33e",
+   "name": "ansi_strpbrk",
+   "match": "identical",
+   "leyte": "0x33e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x35a",
+   "name": "ansi_strrchr",
+   "match": "identical",
+   "leyte": "0x35a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x370",
+   "name": "ansi_strspn",
+   "match": "identical",
+   "leyte": "0x370"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x38c",
+   "name": "ansi_strstr",
+   "match": "identical",
+   "leyte": "0x38c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3aa",
+   "name": "ansi_strtok",
+   "match": "same_instructions",
+   "leyte": "0x3aa"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3f6",
+   "name": "ansi_strncpy",
+   "match": "identical",
+   "leyte": "0x3f6"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x412",
+   "name": "ansi_strncat",
+   "match": "identical",
+   "leyte": "0x412"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x45a",
+   "name": "begin_overlay_session",
+   "match": "moved",
+   "leyte": "0x45a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4c6",
+   "name": "ensure_free_memory_and_init_sound",
+   "match": "moved",
+   "leyte": "0x4c6"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4fc",
+   "name": "run_flight_session",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x930",
+   "name": "call_overlay_session_hooks",
+   "match": "same_instructions",
+   "leyte": "0x9be"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xa42",
+   "name": "draw_thick_line_pixel_index_a5safe",
+   "match": "moved",
+   "leyte": "0xad0"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xa86",
+   "name": "draw_thick_xor_line_a5safe",
+   "match": "identical",
+   "leyte": "0xb14"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xad0",
+   "name": "paint_view_horizon_bands_a5safe",
+   "match": "same_instructions",
+   "leyte": "0xb5e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xc68",
+   "name": "apply_pending_color_entries_a5safe",
+   "match": "moved",
+   "leyte": "0xcf6"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xca6",
+   "name": "new_offscreen_cport",
+   "match": "same_instructions",
+   "leyte": "0xd34"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xd24",
+   "name": "close_and_dispose_port",
+   "match": "moved",
+   "leyte": "0xdb2"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xd3a",
+   "name": "blit_offscreen_frame_to_window",
+   "match": "same_instructions",
+   "leyte": "0xdc8"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xe3e",
+   "name": "blit_pixels_via_port_a5safe",
+   "match": "same_instructions",
+   "leyte": "0xecc"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xe9e",
+   "name": "open_offscreen_cport_a5safe",
+   "match": "same_instructions",
+   "leyte": "0xf2c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xf52",
+   "name": "close_port_a5safe",
+   "match": "identical",
+   "leyte": "0xfe0"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xf74",
+   "name": "swap_port_a5safe",
+   "match": "same_instructions",
+   "leyte": "0x1002"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xfa0",
+   "name": "paint_rect_color_index_a5safe",
+   "match": "moved",
+   "leyte": "0x102e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0xfd2",
+   "name": "paint_polygon_rgb_a5safe",
+   "match": "same_instructions",
+   "leyte": "0x1060"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x10ce",
+   "name": "build_notched_frame_poly",
+   "match": "moved",
+   "leyte": "0x115c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x11ec",
+   "name": "draw_notched_frame_pair_a5safe",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1308",
+   "name": "draw_text_in_columns_a5safe",
+   "match": "same_instructions",
+   "leyte": "0x161e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x14e6",
+   "name": "swap_mmu_mode_a5safe",
+   "match": "moved",
+   "leyte": "0x17fc"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x150a",
+   "name": "get_blended_fill_pattern",
+   "match": "same_instructions",
+   "leyte": "0x1820"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x15cc",
+   "name": "set_draw_color_index",
+   "match": "same_instructions",
+   "leyte": "0x18e2"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1632",
+   "name": "set_back_color_index",
+   "match": "same_instructions",
+   "leyte": "0x1948"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1656",
+   "name": "design_x_to_screen",
+   "match": "same_instructions",
+   "leyte": "0x196c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1680",
+   "name": "design_y_to_screen",
+   "match": "same_instructions",
+   "leyte": "0x196c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x16aa",
+   "name": "draw_view_frame_outline",
+   "match": "same_instructions",
+   "leyte": "0x19c0"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1876",
+   "name": "blit_image_clipped_to_region",
+   "match": "same_instructions",
+   "leyte": "0x1b8c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x195c",
+   "name": "blit_image_clipped_to_region_a5safe",
+   "match": "identical",
+   "leyte": "0x1c72"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x197c",
+   "name": "run_segment3_entry_and_unload_a5safe",
+   "match": "moved",
+   "leyte": "0x1c92"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x19a2",
+   "name": "new_handle_clear_or_die_a5safe",
+   "match": "moved",
+   "leyte": "0x1cb8"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x19e2",
+   "name": "fatal_memory_error_exit",
+   "match": "moved",
+   "leyte": "0x1cf8"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1a04",
+   "name": "dispose_handle_a5safe",
+   "match": "moved",
+   "leyte": "0x1d1a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1a28",
+   "name": "realloc_and_clear_handle_a5safe",
+   "match": "moved",
+   "leyte": "0x1d3e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1a84",
+   "name": "hlock_a5safe",
+   "match": "moved",
+   "leyte": "0x1d1a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1aa8",
+   "name": "hunlock_a5safe",
+   "match": "moved",
+   "leyte": "0x1d1a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1acc",
+   "name": "hpurge_a5safe",
+   "match": "moved",
+   "leyte": "0x1d1a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1af0",
+   "name": "hnopurge_a5safe",
+   "match": "identical",
+   "leyte": "0x1d9a"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1b14",
+   "name": "freemem_a5safe",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1c8a",
+   "name": "format_int_decimal_pstring",
+   "match": "identical",
+   "leyte": "0x1fa8"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1d48",
+   "name": "show_caution_alert_with_number",
+   "match": "moved",
+   "leyte": "0x2066"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1dd4",
+   "name": "show_sound_error_dialog_once",
+   "match": "moved",
+   "leyte": "0x20f2"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1e32",
+   "name": "show_creating_panel_dialog",
+   "match": "moved",
+   "leyte": "0x2150"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1e68",
+   "name": "release_sound_slots",
+   "match": "moved",
+   "leyte": "0x2186"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1edc",
+   "name": "load_named_sound_into_slot",
+   "match": "moved",
+   "leyte": "0x21fa"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x1f8e",
+   "name": "load_game_sounds",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x20be",
+   "name": "lock_sound_slots",
+   "match": "moved",
+   "leyte": "0x23ee"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x212a",
+   "name": "reset_overlay_state",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2192",
+   "name": "scan_display_devices",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2334",
+   "name": "layout_game_window_and_view",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x27e4",
+   "name": "configure_display_from_main_device",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x29f2",
+   "name": "refresh_display_if_changed",
+   "match": "same_instructions",
+   "leyte": "0x2d60"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2a44",
+   "name": "apply_settings_to_live_options",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2bbc",
+   "name": "initialize_application",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2db8",
+   "name": "wait_for_click_or_key",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2e36",
+   "name": "show_resource_file_error_box",
+   "match": "moved",
+   "leyte": "0x356e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2ee4",
+   "name": "copy_pascal_string",
+   "match": "identical",
+   "leyte": "0x361c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2f1e",
+   "name": "handle_mouse_down",
+   "match": "same_instructions",
+   "leyte": "0x3656"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2fa0",
+   "name": "handle_activate_event",
+   "match": "same_instructions",
+   "leyte": "0x36d8"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x2fd4",
+   "name": "poll_and_dispatch_event",
+   "match": "same_instructions",
+   "leyte": "0x370c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x309a",
+   "name": "main",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x30fa",
+   "name": "install_menus",
+   "match": "identical",
+   "leyte": "0x3838"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3174",
+   "name": "update_menu_items",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3590",
+   "name": "set_menu_item_enabled",
+   "match": "identical",
+   "leyte": "0x3ce4"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x35bc",
+   "name": "set_view_size_option",
+   "match": "moved",
+   "leyte": "0x3d10"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x35e4",
+   "name": "start_new_mission",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x36a2",
+   "name": "do_menu_command",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x39a8",
+   "name": "vbl_sound_handler_ch0_unrolled",
+   "match": "identical",
+   "leyte": "0x4126"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3aae",
+   "name": "vbl_sound_handler_ch0_variant",
+   "match": "identical",
+   "leyte": "0x422c"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3bc4",
+   "name": "vbl_sound_handler_two_channel",
+   "match": "identical",
+   "leyte": "0x4342"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3d36",
+   "name": "clear_sound_buffer_to_silence",
+   "match": "identical",
+   "leyte": "0x44b4"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3d50",
+   "name": "alloc_sound_buffer_node",
+   "match": "identical",
+   "leyte": "0x44ce"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3db8",
+   "name": "select_two_channel_sound_handler",
+   "match": "identical",
+   "leyte": "0x4536"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3dd0",
+   "name": "init_sound_system",
+   "match": "moved",
+   "leyte": "0x454e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x3f54",
+   "name": "play_sample_on_channel",
+   "match": "identical",
+   "leyte": "0x46d2"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4050",
+   "name": "enqueue_sample_on_channel",
+   "match": "identical",
+   "leyte": "0x47ce"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x412e",
+   "name": "set_sound_playback_rate",
+   "match": "identical",
+   "leyte": "0x48ac"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x41a6",
+   "name": "release_channel_loop",
+   "match": "identical",
+   "leyte": "0x4924"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4242",
+   "name": "silence_sound_channel",
+   "match": "identical",
+   "leyte": "0x49c0"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x42b0",
+   "name": "is_channel_playing",
+   "match": "identical",
+   "leyte": "0x4a2e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4318",
+   "name": "shutdown_sound",
+   "match": "identical",
+   "leyte": "0x4a96"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x435e",
+   "name": "position_window_on_screen",
+   "match": "same_instructions",
+   "leyte": "0x4adc"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x442e",
+   "name": "position_alert_template",
+   "match": "same_instructions",
+   "leyte": "0x4bac"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4582",
+   "name": "centre_window_on_screen",
+   "match": "same_instructions",
+   "leyte": "0x4d00"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4610",
+   "name": "detach_window_palette",
+   "match": "moved",
+   "leyte": "0x4d8e"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x462c",
+   "name": "select_palette_for_depth",
+   "match": "same_instructions",
+   "leyte": "0x4daa"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x46b4",
+   "name": "rebuild_all_palette_index_maps",
+   "match": "same_instructions",
+   "leyte": "0x4e32"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4738",
+   "name": "configure_palette_entries",
+   "match": "moved",
+   "leyte": "0x4eb6"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x488a",
+   "name": "clear_ctab_size_callback",
+   "match": "moved",
+   "leyte": "0x5008"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x48ae",
+   "name": "build_palette_index_map",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID02",
+   "address": "0x49fe",
+   "name": "lookup_palette_index_for_rgb_level",
+   "match": "same_instructions",
+   "leyte": "0x5192"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4b62",
+   "name": "init_standard_colour_indices",
+   "match": "moved",
+   "leyte": "0x52f6"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4c18",
+   "name": "check_device_color_state_changed",
+   "match": "same_instructions",
+   "leyte": "0x53ac"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4d34",
+   "name": "process_pending_update_events",
+   "match": "same_instructions",
+   "leyte": "0x54c8"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4d6a",
+   "name": "handle_update_event",
+   "match": "same_instructions",
+   "leyte": "0x54fe"
+  },
+  {
+   "segment": "ID02",
+   "address": "0x4db0",
+   "name": "redraw_main_window",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID03",
+   "address": "0x6",
+   "name": "set_scaled_text_style",
+   "match": "same_instructions",
+   "leyte": "0x6"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x56",
+   "name": "scale_design_480_min10",
+   "match": "same_instructions",
+   "leyte": "0x56"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x8a",
+   "name": "scale_design_4800",
+   "match": "same_instructions",
+   "leyte": "0x8a"
+  },
+  {
+   "segment": "ID03",
+   "address": "0xa6",
+   "name": "scale_design_4800_pen_centred",
+   "match": "moved",
+   "leyte": "0xa6"
+  },
+  {
+   "segment": "ID03",
+   "address": "0xc8",
+   "name": "max3_int",
+   "match": "identical",
+   "leyte": "0xc8"
+  },
+  {
+   "segment": "ID03",
+   "address": "0xf4",
+   "name": "nearest_palette_index_rgb",
+   "match": "same_instructions",
+   "leyte": "0xf4"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x2a8",
+   "name": "new_offscreen_bw_port",
+   "match": "moved",
+   "leyte": "0x2a8"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x33c",
+   "name": "dispose_offscreen_bw_port",
+   "match": "moved",
+   "leyte": "0x33c"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x35e",
+   "name": "draw_spinning_disc_indicator",
+   "match": "same_instructions",
+   "leyte": "0x35e"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x514",
+   "name": "draw_ring_with_status_indicators",
+   "match": "moved",
+   "leyte": "0x514"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x77e",
+   "name": "draw_vector_glyph_string_centred",
+   "match": "moved",
+   "leyte": "0x77e"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x912",
+   "name": "draw_vector_number",
+   "match": "moved",
+   "leyte": "0x912"
+  },
+  {
+   "segment": "ID03",
+   "address": "0xa3c",
+   "name": "antialias_downsample_bw_3x",
+   "match": "moved",
+   "leyte": "0xa3c"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x146a",
+   "name": "composite_instrument_bitmap",
+   "match": "same_instructions",
+   "leyte": "0x146a"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x1538",
+   "name": "begin_instrument_supersample",
+   "match": "same_instructions",
+   "leyte": "0x1538"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x1844",
+   "name": "finish_instrument_supersample",
+   "match": "moved",
+   "leyte": "0x1844"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x1876",
+   "name": "draw_altimeter",
+   "match": "same_instructions",
+   "leyte": "0x1876"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x1b48",
+   "name": "draw_airspeed_indicator",
+   "match": "same_instructions",
+   "leyte": "0x1b48"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x1fee",
+   "name": "draw_climb_indicator",
+   "match": "same_instructions",
+   "leyte": "0x1fee"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x22fe",
+   "name": "draw_tachometer",
+   "match": "same_instructions",
+   "leyte": "0x22fe"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x2600",
+   "name": "draw_manifold_pressure_gauge",
+   "match": "same_instructions",
+   "leyte": "0x2600"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x2950",
+   "name": "draw_direction_indicator",
+   "match": "same_instructions",
+   "leyte": "0x2950"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x2d1c",
+   "name": "draw_turn_and_bank_indicator",
+   "match": "same_instructions",
+   "leyte": "0x2d1c"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x32b8",
+   "name": "draw_gyro_instrument",
+   "match": "same_instructions",
+   "leyte": "0x32b8"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x3832",
+   "name": "make_inset_face_oval_region",
+   "match": "moved",
+   "leyte": "0x3832"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x38fc",
+   "name": "draw_artificial_horizon",
+   "match": "same_instructions",
+   "leyte": "0x38fc"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x3c02",
+   "name": "draw_instrument",
+   "match": "same_instructions",
+   "leyte": "0x3c02"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x3f24",
+   "name": "draw_bevelled_frame",
+   "match": "moved",
+   "leyte": "0x3f24"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x4110",
+   "name": "draw_numbered_bevel_box",
+   "match": "same_instructions",
+   "leyte": "0x4110"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x4304",
+   "name": "draw_panel_section_with_numbered_boxes",
+   "match": "same_instructions",
+   "leyte": "0x4304"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x4790",
+   "name": "draw_percent_scale_gauge",
+   "match": "same_instructions",
+   "leyte": "0x4790"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x4b32",
+   "name": "draw_split_display_box",
+   "match": "moved",
+   "leyte": "0x4b32"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x4c42",
+   "name": "draw_flaps_indicator",
+   "match": "same_instructions",
+   "leyte": "0x4e32"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x4ecc",
+   "name": "draw_ammo_counter",
+   "match": "same_instructions",
+   "leyte": "0x50bc"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x5158",
+   "name": "draw_arc_scale_ticks",
+   "match": "moved",
+   "leyte": "0x5348"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x532e",
+   "name": "draw_fuel_gauge",
+   "match": "same_instructions",
+   "leyte": "0x551e"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x54fe",
+   "name": "draw_landing_gear_indicator",
+   "match": "same_instructions",
+   "leyte": "0x56ee"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x5718",
+   "name": "dial_point_at_angle",
+   "match": "moved",
+   "leyte": "0x5908"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x5860",
+   "name": "compute_panel_screen_addresses",
+   "match": "same_instructions",
+   "leyte": "0x5a50"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x5ab6",
+   "name": "store_panel_bitmaps_as_resources",
+   "match": "same_instructions",
+   "leyte": "0x5ca6"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x5c36",
+   "name": "open_cport_on_buffer",
+   "match": "same_instructions",
+   "leyte": "0x5e26"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x5cb6",
+   "name": "close_port_glue",
+   "match": "identical",
+   "leyte": "0x5ea6"
+  },
+  {
+   "segment": "ID03",
+   "address": "0x5cc4",
+   "name": "prepare_instrument_panel",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID03",
+   "address": "0x6c1c",
+   "name": "remap_cached_panel_colours",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID03",
+   "address": "0x71a2",
+   "name": "remap_panel_colours_identity",
+   "match": "moved",
+   "leyte": "0x741e"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x6",
+   "name": "disable_dialog_control",
+   "match": "identical",
+   "leyte": "0x6"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x2e",
+   "name": "enable_dialog_control",
+   "match": "identical",
+   "leyte": "0x2e"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x54",
+   "name": "hide_dialog_control",
+   "match": "identical",
+   "leyte": "0x54"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x78",
+   "name": "show_dialog_control",
+   "match": "identical",
+   "leyte": "0x78"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x9c",
+   "name": "set_dialog_item_text",
+   "match": "identical",
+   "leyte": "0xec"
+  },
+  {
+   "segment": "ID04",
+   "address": "0xc4",
+   "name": "set_dialog_control_title",
+   "match": "identical",
+   "leyte": "0x114"
+  },
+  {
+   "segment": "ID04",
+   "address": "0xec",
+   "name": "set_dialog_user_item_proc",
+   "match": "identical",
+   "leyte": "0x13c"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x120",
+   "name": "frame_dialog_item_box",
+   "match": "same_instructions",
+   "leyte": "0x170"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x16e",
+   "name": "draw_default_button_outline",
+   "match": "same_instructions",
+   "leyte": "0x1be"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x1f2",
+   "name": "draw_grey_user_item",
+   "match": "moved",
+   "leyte": "0x242"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x220",
+   "name": "draw_percent_bar_item",
+   "match": "same_instructions",
+   "leyte": "0x270"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x2c0",
+   "name": "percent_bar_user_item_proc",
+   "match": "identical",
+   "leyte": "0x310"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x362",
+   "name": "get_radio_group_selection",
+   "match": "identical",
+   "leyte": "0x3b2"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x3c2",
+   "name": "run_with_temporary_window",
+   "match": "same_instructions",
+   "leyte": "0x412"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x44e",
+   "name": "show_scenery_open_error_alert",
+   "match": "moved",
+   "leyte": "0x49e"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x478",
+   "name": "show_paused_dialog",
+   "match": "moved",
+   "leyte": "0x4c8"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x4f0",
+   "name": "ask_save_changes",
+   "match": "moved",
+   "leyte": "0x540"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x516",
+   "name": "confirm_end_mission",
+   "match": "same_instructions",
+   "leyte": "0x566"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x560",
+   "name": "confirm_erase_high_scores",
+   "match": "moved",
+   "leyte": "0x5b0"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x588",
+   "name": "compute_pilot_score",
+   "match": "moved",
+   "leyte": "0x5d8"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x5e4",
+   "name": "duty_roster_filter_proc",
+   "match": "same_instructions",
+   "leyte": "0x634"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x9ee",
+   "name": "draw_select_mission_title",
+   "match": "same_instructions",
+   "leyte": "0xa3e"
+  },
+  {
+   "segment": "ID04",
+   "address": "0xa8e",
+   "name": "fuel_slider_dialog_filter",
+   "match": "same_instructions",
+   "leyte": "0xade"
+  },
+  {
+   "segment": "ID04",
+   "address": "0xbda",
+   "name": "scenario_selection_filter_proc",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0xe48",
+   "name": "refuel_dialog_filter_proc",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0xf4e",
+   "name": "rank_pilots_by_score",
+   "match": "moved",
+   "leyte": "0x11ba"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x1106",
+   "name": "reset_pilot_record",
+   "match": "moved",
+   "leyte": "0x1372"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x116a",
+   "name": "prune_inactive_pilots_beyond_ten",
+   "match": "moved",
+   "leyte": "0x13d6"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x1200",
+   "name": "draw_high_scores_table",
+   "match": "same_instructions",
+   "leyte": "0x146c"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x14a0",
+   "name": "draw_scrolling_text_item",
+   "match": "moved",
+   "leyte": "0x170c"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x14f2",
+   "name": "scrolling_text_user_item_proc",
+   "match": "identical",
+   "leyte": "0x175e"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x150e",
+   "name": "sync_text_scroll_to_control",
+   "match": "moved",
+   "leyte": "0x177a"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x1562",
+   "name": "update_scroll_bar_maximum",
+   "match": "same_instructions",
+   "leyte": "0x17ce"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x158c",
+   "name": "scroll_text_to_show_selection",
+   "match": "same_instructions",
+   "leyte": "0x17f8"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x1638",
+   "name": "fit_text_view_to_box",
+   "match": "same_instructions",
+   "leyte": "0x18a4"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x16c4",
+   "name": "scroll_bar_action_proc",
+   "match": "same_instructions",
+   "leyte": "0x1930"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x17e6",
+   "name": "create_scrolling_text_item",
+   "match": "same_instructions",
+   "leyte": "0x1a52"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x189c",
+   "name": "dispose_scrolling_text_item",
+   "match": "moved",
+   "leyte": "0x1b08"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x18b0",
+   "name": "append_line_to_scrolling_text",
+   "match": "moved",
+   "leyte": "0x1b1c"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x18e0",
+   "name": "get_mission_kill_report_state",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0x192e",
+   "name": "update_summary_dialog_buttons",
+   "match": "same_instructions",
+   "leyte": "0x1b8e"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x1a0e",
+   "name": "build_rank_and_name_string",
+   "match": "same_instructions",
+   "leyte": "0x1c6e"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x1bc8",
+   "name": "draw_targets_destroyed_row",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0x1d9e",
+   "name": "draw_targets_destroyed_list",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0x1f5e",
+   "name": "draw_aircraft_kill_markers",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0x20e8",
+   "name": "aircraft_kill_markers_user_item_proc",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0x2d86",
+   "name": "set_score_item_text",
+   "match": "moved",
+   "leyte": "0x35d8"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x2de6",
+   "name": "show_mission_summary_dialog",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0x3124",
+   "name": "play_named_sound_async",
+   "match": "same_instructions",
+   "leyte": "0x39a8"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x3178",
+   "name": "stop_named_sound",
+   "match": "moved",
+   "leyte": "0x39fc"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x31aa",
+   "name": "conclude_mission",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0x3260",
+   "name": "draw_map_grid_and_centre_mark",
+   "match": "same_instructions",
+   "leyte": "0x3adc"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x3352",
+   "name": "plot_map_symbol_callback",
+   "match": "same_instructions",
+   "leyte": "0x3bce"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x33d6",
+   "name": "draw_map_view_item",
+   "match": "same_instructions",
+   "leyte": "0x3c52"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x35f8",
+   "name": "map_view_user_item_proc",
+   "match": "same_instructions",
+   "leyte": "0x3e74"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x3902",
+   "name": "map_dialog_filter_proc",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID04",
+   "address": "0x3a56",
+   "name": "poll_click_or_key_event",
+   "match": "identical",
+   "leyte": "0x42c8"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x3a8c",
+   "name": "show_about_dialog",
+   "match": "same_instructions",
+   "leyte": "0x42fe"
+  },
+  {
+   "segment": "ID04",
+   "address": "0x3d42",
+   "name": "check_system_requirements",
+   "match": "moved",
+   "leyte": "0x45b4"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x6",
+   "name": "center_template_rect_on_screen",
+   "match": "moved",
+   "leyte": "0x6"
+  },
+  {
+   "segment": "ID05",
+   "address": "0xc8",
+   "name": "get_machine_screen_fingerprint",
+   "match": "same_instructions",
+   "leyte": "0xc8"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x160",
+   "name": "read_DATA128_pair",
+   "match": "moved",
+   "leyte": "0x160"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x1bc",
+   "name": "write_DATA128_pair",
+   "match": "moved",
+   "leyte": "0x1bc"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x214",
+   "name": "read_TEXT128_pair",
+   "match": "moved",
+   "leyte": "0x214"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x270",
+   "name": "write_TEXT128_pair",
+   "match": "moved",
+   "leyte": "0x270"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x2c8",
+   "name": "code_dialog_filter",
+   "match": "moved",
+   "leyte": "0x2c8"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x4e4",
+   "name": "get_dialog_item_text_upper",
+   "match": "moved",
+   "leyte": "0x4e4"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x560",
+   "name": "run_protection_dialog",
+   "match": "moved",
+   "leyte": "0x560"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x728",
+   "name": "ansi_rand",
+   "match": "identical",
+   "leyte": "0x728"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x746",
+   "name": "ansi_srand",
+   "match": "identical",
+   "leyte": "0x746"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x754",
+   "name": "encode_base26_6chars",
+   "match": "identical",
+   "leyte": "0x754"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x7a8",
+   "name": "decode_base26_6chars",
+   "match": "identical",
+   "leyte": "0x7a8"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x7f6",
+   "name": "poison_overlay_bytes",
+   "match": "identical",
+   "leyte": "0x7f6"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x85e",
+   "name": "restore_poisoned_overlay_bytes",
+   "match": "identical",
+   "leyte": "0x85e"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x8b8",
+   "name": "init_protection_table",
+   "match": "identical",
+   "leyte": "0x8b8"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x8d6",
+   "name": "pick_random_protection_challenge",
+   "match": "identical",
+   "leyte": "0x8d6"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x934",
+   "name": "record_code_index_equals",
+   "match": "identical",
+   "leyte": "0x934"
+  },
+  {
+   "segment": "ID05",
+   "address": "0x964",
+   "name": "validate_protection_response",
+   "match": "moved",
+   "leyte": "0x964"
+  },
+  {
+   "segment": "ID05",
+   "address": "0xa62",
+   "name": "random_28bit_value",
+   "match": "identical",
+   "leyte": "0xa62"
+  },
+  {
+   "segment": "ID05",
+   "address": "0xa90",
+   "name": "pack_fields_to_code_buf68",
+   "match": "identical",
+   "leyte": "0xa90"
+  },
+  {
+   "segment": "ID05",
+   "address": "0xb10",
+   "name": "unpack_fields_from_code",
+   "match": "identical",
+   "leyte": "0xb10"
+  },
+  {
+   "segment": "ID05",
+   "address": "0xb84",
+   "name": "encode_code28_to_buf54",
+   "match": "identical",
+   "leyte": "0xb84"
+  },
+  {
+   "segment": "ID05",
+   "address": "0xba8",
+   "name": "decode_code_to_long_a",
+   "match": "identical",
+   "leyte": "0xba8"
+  },
+  {
+   "segment": "ID05",
+   "address": "0xbc2",
+   "name": "encode_long_to_buf40",
+   "match": "identical",
+   "leyte": "0xbc2"
+  },
+  {
+   "segment": "ID05",
+   "address": "0xbde",
+   "name": "decode_code_to_long_b",
+   "match": "identical",
+   "leyte": "0xbde"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x4",
+   "name": "init_pattern_tables",
+   "match": "same_instructions",
+   "leyte": "0x4"
+  },
+  {
+   "segment": "ID06",
+   "address": "0xb0",
+   "name": "alloc_pattern_tables",
+   "match": "moved",
+   "leyte": "0xb0"
+  },
+  {
+   "segment": "ID06",
+   "address": "0xf4",
+   "name": "get_pattern_table",
+   "match": "moved",
+   "leyte": "0xf4"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x116",
+   "name": "rgb_to_bw_pattern",
+   "match": "moved",
+   "leyte": "0x116"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x17c",
+   "name": "lookup_colour_map",
+   "match": "same_instructions",
+   "leyte": "0x17c"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x1a2",
+   "name": "reverse_lookup_colour_map",
+   "match": "same_instructions",
+   "leyte": "0x1a2"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x1dc",
+   "name": "alloc_aligned_clear",
+   "match": "moved",
+   "leyte": "0x1dc"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x24c",
+   "name": "free_aligned",
+   "match": "moved",
+   "leyte": "0x24c"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x26c",
+   "name": "init_row_table_fields",
+   "match": "moved",
+   "leyte": "0x26c"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x318",
+   "name": "render_scanline_spans",
+   "match": "moved",
+   "leyte": "0x318"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x512",
+   "name": "free_row_table",
+   "match": "moved",
+   "leyte": "0x512"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x598",
+   "name": "alloc_row_table",
+   "match": "moved",
+   "leyte": "0x598"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x666",
+   "name": "init_edge_pool",
+   "match": "same_instructions",
+   "leyte": "0x666"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x7b0",
+   "name": "init_raster_target",
+   "match": "moved",
+   "leyte": "0x7b0"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x87a",
+   "name": "set_raster_target_base",
+   "match": "moved",
+   "leyte": "0x87a"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x8a2",
+   "name": "set_active_row_count",
+   "match": "same_instructions",
+   "leyte": "0x8a2"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x916",
+   "name": "get_raster_target_size",
+   "match": "moved",
+   "leyte": "0x916"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x942",
+   "name": "realloc_row_table",
+   "match": "moved",
+   "leyte": "0x942"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x96e",
+   "name": "reset_edge_table",
+   "match": "moved",
+   "leyte": "0x96e"
+  },
+  {
+   "segment": "ID06",
+   "address": "0x9d8",
+   "name": "add_polygon_edges",
+   "match": "same_instructions",
+   "leyte": "0x9d8"
+  },
+  {
+   "segment": "ID06",
+   "address": "0xd02",
+   "name": "add_rect_polygon",
+   "match": "identical",
+   "leyte": "0xd02"
+  },
+  {
+   "segment": "ID06",
+   "address": "0xd84",
+   "name": "rebase_edge_rows_for_band",
+   "match": "moved",
+   "leyte": "0xd84"
+  },
+  {
+   "segment": "ID06",
+   "address": "0xdca",
+   "name": "restore_edge_rows_after_band",
+   "match": "moved",
+   "leyte": "0xdca"
+  },
+  {
+   "segment": "ID06",
+   "address": "0xe10",
+   "name": "rasterize_and_present",
+   "match": "same_instructions",
+   "leyte": "0xe10"
+  },
+  {
+   "segment": "ID07",
+   "address": "0x6",
+   "name": "load_str129_string_table",
+   "match": "same_instructions",
+   "leyte": "0x6"
+  },
+  {
+   "segment": "ID07",
+   "address": "0x190",
+   "name": "init_string_pointer_groups",
+   "match": "moved",
+   "leyte": "0x190"
+  },
+  {
+   "segment": "ID08",
+   "address": "0x6",
+   "name": "load_overlay_from_resource",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID08",
+   "address": "0x338",
+   "name": "sysbeep_and_exit_to_shell",
+   "match": "identical",
+   "leyte": "0x340"
+  },
+  {
+   "segment": "ID08",
+   "address": "0x348",
+   "name": "alloc_and_read_resource_payload",
+   "match": "same_instructions",
+   "leyte": "0x350"
+  },
+  {
+   "segment": "ID08",
+   "address": "0x39c",
+   "name": "bootstrap_window_and_load_overlay",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID09",
+   "address": "0x48",
+   "name": "sysenvirons_glue_fallback",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID09",
+   "address": "0x2a6",
+   "name": "fsopen_glue",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "ID09",
+   "address": "0x3c2",
+   "name": "swapmmumode_glue",
+   "match": "identical",
+   "leyte": "0x436"
+  },
+  {
+   "segment": "ID09",
+   "address": "0x432",
+   "name": "length_prefixed_bytes_to_c_string_in_place",
+   "match": "identical",
+   "leyte": "0x4a6"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x20",
+   "name": "overlay_patch_template_u16_pair",
+   "match": "same_instructions",
+   "leyte": "0x24"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x32",
+   "name": "copy_block_return_dst",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x54",
+   "name": "overlay_init_template_pointer_tables",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x334",
+   "name": "any_mission_kills_recorded",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x354",
+   "name": "probe_nearest_facility_kind",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3fa",
+   "name": "load_player_fuel_and_bombs",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x488",
+   "name": "tally_destroyed_entity",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x4f8",
+   "name": "transform_through_node_chain",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x5fa",
+   "name": "traverse_scene_tree",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x6a6",
+   "name": "for_each_mission_scene_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x6ec",
+   "name": "collect_map_features",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x954",
+   "name": "plot_mission_map_symbols",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xaba",
+   "name": "nearest_type80_centroid_visitor",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xbea",
+   "name": "point_near_camera_or_type80_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc4c",
+   "name": "anchor_point_visitor",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xd6a",
+   "name": "find_anchor_point",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xdb0",
+   "name": "ensure_handle_allocated",
+   "match": "same_instructions",
+   "leyte": "0x143c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe0a",
+   "name": "lock_handle_nopurge",
+   "match": "same_instructions",
+   "leyte": "0x1496"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe32",
+   "name": "unlock_handle_purgeable",
+   "match": "same_instructions",
+   "leyte": "0x14be"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe5a",
+   "name": "lock_overlay_buffers",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xea0",
+   "name": "allocate_session_buffers",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xf92",
+   "name": "lock_session_buffers",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1094",
+   "name": "unlock_session_buffers",
+   "match": "same_instructions",
+   "leyte": "0x16fc"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1112",
+   "name": "overlay_main_entry",
+   "match": "same_instructions",
+   "leyte": "0x177a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11e6",
+   "name": "widen_printf_format",
+   "match": "same_instructions",
+   "leyte": "0x184e"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1254",
+   "name": "overlay_printf",
+   "match": "same_instructions",
+   "leyte": "0x18bc"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1294",
+   "name": "reset_palette_owner_tables",
+   "match": "same_instructions",
+   "leyte": "0x18fc"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1300",
+   "name": "init_depth8_colour_state",
+   "match": "moved",
+   "leyte": "0x1968"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x131c",
+   "name": "init_depth4_colour_state",
+   "match": "moved",
+   "leyte": "0x1984"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x147a",
+   "name": "queue_face_palette_entry",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1548",
+   "name": "write_face_palette_slot",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x159e",
+   "name": "assign_face_colour",
+   "match": "same_instructions",
+   "leyte": "0x1c06"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16e2",
+   "name": "init_mission_object_tables",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x18d6",
+   "name": "overlay_initialise",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1958",
+   "name": "heap_sbrk",
+   "match": "identical",
+   "leyte": "0x1f90"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1974",
+   "name": "heap_new_size_class_block",
+   "match": "identical",
+   "leyte": "0x1fac"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x199a",
+   "name": "heap_add_large_block",
+   "match": "moved",
+   "leyte": "0x1fd2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19b0",
+   "name": "heap_add_large_block_tail",
+   "match": "moved",
+   "leyte": "0x1fe8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19d0",
+   "name": "heap_free_coalesce",
+   "match": "moved",
+   "leyte": "0x2008"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1a48",
+   "name": "heap_roving_cursor_store",
+   "match": "identical",
+   "leyte": "0x2080"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1a68",
+   "name": "heap_alloc",
+   "match": "moved",
+   "leyte": "0x20a0"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1b38",
+   "name": "heap_zero_payload",
+   "match": "same_instructions",
+   "leyte": "0x2170"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1b4c",
+   "name": "heap_zero_payload_tail",
+   "match": "identical",
+   "leyte": "0x2184"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1b6c",
+   "name": "heap_alloc_cleared",
+   "match": "identical",
+   "leyte": "0x21a4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1b84",
+   "name": "heap_calloc",
+   "match": "identical",
+   "leyte": "0x21bc"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1ba8",
+   "name": "heap_realloc_grow_only",
+   "match": "same_instructions",
+   "leyte": "0x21e0"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1be4",
+   "name": "heap_realloc_grow_only_tail",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1c04",
+   "name": "copy_object_vertex_buffer",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1c5c",
+   "name": "translate_int3_vecs",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1cac",
+   "name": "scale_int3_vecs",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1d02",
+   "name": "matmul3x3_s16",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1d56",
+   "name": "FUN_00001d56",
+   "match": "moved",
+   "leyte": "0x23a4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1d76",
+   "name": "sin_fixed14",
+   "match": "moved",
+   "leyte": "0x23c4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1db8",
+   "name": "FUN_00001db8",
+   "match": "moved",
+   "leyte": "0x23a4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1dd8",
+   "name": "cos_fixed14",
+   "match": "same_instructions",
+   "leyte": "0x2426"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1e3a",
+   "name": "acos_fixed14",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1ebc",
+   "name": "atan_fixed14",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1f22",
+   "name": "attitude_from_velocity",
+   "match": "same_instructions",
+   "leyte": "0x2574"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x202a",
+   "name": "load_attitude_angle_sincos",
+   "match": "moved",
+   "leyte": "0x267c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x20a0",
+   "name": "load_attitude_angle_sincos_5_6",
+   "match": "moved",
+   "leyte": "0x26f2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x20e6",
+   "name": "fill_attitude_rotation_bases",
+   "match": "moved",
+   "leyte": "0x2738"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x21a0",
+   "name": "fill_attitude_rotation_basis_4",
+   "match": "moved",
+   "leyte": "0x27f2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x21e0",
+   "name": "fill_attitude_rotation_basis_4_rx",
+   "match": "moved",
+   "leyte": "0x2832"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2220",
+   "name": "fill_attitude_rotation_bases_5_6",
+   "match": "moved",
+   "leyte": "0x2872"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x229e",
+   "name": "build_attitude_matrix_from_dir_roll",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2428",
+   "name": "finalize_attitude_matrix_3ang_alt",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2464",
+   "name": "build_attitude_matrix_3ang_alt",
+   "match": "moved",
+   "leyte": "0x2b74"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2488",
+   "name": "compose_attitude_matrix_x_alt",
+   "match": "moved",
+   "leyte": "0x2b98"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x24d6",
+   "name": "build_attitude_matrix_x_alt",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x24f8",
+   "name": "finalize_attitude_matrix_3ang",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x253e",
+   "name": "build_attitude_matrix_3ang",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2562",
+   "name": "finalize_attitude_matrix_4ang",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x25a8",
+   "name": "build_attitude_matrix",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x25d6",
+   "name": "compose_attitude_matrix_x",
+   "match": "moved",
+   "leyte": "0x2f0c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x262e",
+   "name": "build_attitude_matrix_x",
+   "match": "moved",
+   "leyte": "0x2f64"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2654",
+   "name": "compose_attitude_matrix_6ang",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x26cc",
+   "name": "build_attitude_matrix_6ang",
+   "match": "moved",
+   "leyte": "0x3002"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2700",
+   "name": "compose_attitude_matrix_6ang_alt",
+   "match": "moved",
+   "leyte": "0x2f94"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x276e",
+   "name": "build_attitude_matrix_6ang_alt",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x27a2",
+   "name": "invoke_tagged_attitude_compose_neg_sins4",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x27cc",
+   "name": "invoke_tagged_attitude_compose_neg_sins6",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2802",
+   "name": "transform_int3_vecs_asr_by_1d744",
+   "match": "moved",
+   "leyte": "0x3146"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x28a6",
+   "name": "rotate_int3_vecs_by_3ang",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x28dc",
+   "name": "transform_vecs12_by_matrix3",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2976",
+   "name": "transform_vecs12_to_int3_by_matrix3",
+   "match": "moved",
+   "leyte": "0x32c6"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2a0e",
+   "name": "transform_listed_object_vecs12_by_1d744",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2aba",
+   "name": "FUN_00002aba",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2ada",
+   "name": "transform_int3_vecs_by_matrix3",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2bd8",
+   "name": "apply_template_chain_xform",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2d10",
+   "name": "apply_template_chain_xform_always",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2de8",
+   "name": "FUN_00002de8",
+   "match": "identical",
+   "leyte": "0x38e8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2e08",
+   "name": "abs_int",
+   "match": "identical",
+   "leyte": "0x3908"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2e12",
+   "name": "noop_stub_2e12",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x2e14",
+   "name": "scan_convert_edge_rows",
+   "match": "moved",
+   "leyte": "0x3914"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3266",
+   "name": "init_span_table_32ba",
+   "match": "identical",
+   "leyte": "0x3d66"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x32ba",
+   "name": "fill_span_rows_4bit_a",
+   "match": "identical",
+   "leyte": "0x3dba"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3412",
+   "name": "init_span_table_3466",
+   "match": "identical",
+   "leyte": "0x3f12"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3466",
+   "name": "fill_span_rows_4bit_b",
+   "match": "identical",
+   "leyte": "0x3f66"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x35b4",
+   "name": "init_span_table_3608",
+   "match": "identical",
+   "leyte": "0x3f12"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3608",
+   "name": "fill_span_rows_4bit_c",
+   "match": "moved",
+   "leyte": "0x4108"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3732",
+   "name": "overlay_init_noop",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3734",
+   "name": "init_code_pointer_tables",
+   "match": "moved",
+   "leyte": "0x4234"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x37b4",
+   "name": "fill_span_rows_8bit",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x38f4",
+   "name": "respawn_player_at_anchor",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3ac4",
+   "name": "start_mission_scene",
+   "match": "same_instructions",
+   "leyte": "0x4702"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3b98",
+   "name": "update_object_camera_metric",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3be0",
+   "name": "FUN_00003be0",
+   "match": "moved",
+   "leyte": "0x481e"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3c00",
+   "name": "compute_camera_abs_metric",
+   "match": "moved",
+   "leyte": "0x483e"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3c48",
+   "name": "FUN_00003c48",
+   "match": "moved",
+   "leyte": "0x4886"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3c68",
+   "name": "approx_dist3_xyz",
+   "match": "identical",
+   "leyte": "0x48a6"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3cca",
+   "name": "segment_point_min_distance",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3da8",
+   "name": "update_object_distance_band",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3e02",
+   "name": "update_record_distance_band",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3e5c",
+   "name": "snapshot_face_colours",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x3ea0",
+   "name": "shade_object_faces",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x41ec",
+   "name": "recolour_kind2_object",
+   "match": "same_instructions",
+   "leyte": "0x4e64"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x4210",
+   "name": "refresh_object_colours_for_depth",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x435a",
+   "name": "apply_entity_mission_rates",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x44a4",
+   "name": "dispatch_entity_tick",
+   "match": "same_instructions",
+   "leyte": "0x516e"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x44e8",
+   "name": "run_simulation_tick",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x45ba",
+   "name": "alloc_object_from_desc",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x4690",
+   "name": "instantiate_object_from_desc",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x46da",
+   "name": "instantiate_mission_pool_slot",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x4808",
+   "name": "build_object_poly_buffers",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x4916",
+   "name": "set_object_faces_bw_pattern",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x4958",
+   "name": "build_land_outline_at_detail",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x4e06",
+   "name": "reset_object_to_template_pose",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x4e4e",
+   "name": "reset_object_to_template_pose_tail",
+   "match": "same_instructions",
+   "leyte": "0x5c98"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x4e6e",
+   "name": "activate_near_range_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x5116",
+   "name": "spawn_mission_pool_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x51ec",
+   "name": "retire_entity",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x528a",
+   "name": "dispatch_entity_cleanup",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x52dc",
+   "name": "deactivate_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x53f8",
+   "name": "collect_near_objects",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x555a",
+   "name": "collect_far_objects",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x5832",
+   "name": "dispatch_overlap_collisions",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x58ec",
+   "name": "build_visible_object_list",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x5a14",
+   "name": "update_altitude_detail_bands",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x5df8",
+   "name": "clear_pending_entity_slots",
+   "match": "same_instructions",
+   "leyte": "0x6c8a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x5e28",
+   "name": "update_ground_scatter_objects",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x640c",
+   "name": "spawn_cloud_layer",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x6598",
+   "name": "overlay_frame_step",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x6e74",
+   "name": "reset_span_row_lists",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x6ece",
+   "name": "clear_flag_00020ae4",
+   "match": "identical",
+   "leyte": "0x7f2a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x6ed6",
+   "name": "update_view_clip_bounds",
+   "match": "moved",
+   "leyte": "0x7f32"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x6fb8",
+   "name": "reset_distance_base_globals",
+   "match": "moved",
+   "leyte": "0x8014"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x6ff6",
+   "name": "configure_renderer_for_display",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x7310",
+   "name": "begin_flight_for_rank",
+   "match": "same_instructions",
+   "leyte": "0x8374"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x739a",
+   "name": "copy_player_pose_to_camera",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x740a",
+   "name": "process_flight_input_and_outcome",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x823e",
+   "name": "process_flight_input_tail",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x8784",
+   "name": "request_instant_replay",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x879e",
+   "name": "resolve_bailout_outcome",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x88a0",
+   "name": "place_camera_behind_object",
+   "match": "same_instructions",
+   "leyte": "0x99e2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x8972",
+   "name": "update_bailout_view",
+   "match": "same_instructions",
+   "leyte": "0x9ab4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x8abe",
+   "name": "turn_camera_toward_point",
+   "match": "same_instructions",
+   "leyte": "0x9c00"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x8c30",
+   "name": "update_tracking_camera",
+   "match": "same_instructions",
+   "leyte": "0x9d72"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x8ff4",
+   "name": "begin_replay_view",
+   "match": "same_instructions",
+   "leyte": "0xa136"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x923e",
+   "name": "apply_player_mouse_controls",
+   "match": "same_instructions",
+   "leyte": "0xa380"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x92e4",
+   "name": "advance_frame_and_tick_controllers",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x947c",
+   "name": "apply_controller_velocities",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x94d2",
+   "name": "tick_flagged_object_controllers",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x9550",
+   "name": "stop_all_sound_channels",
+   "match": "same_instructions",
+   "leyte": "0xa6c4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x95ac",
+   "name": "play_game_sound",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x96ae",
+   "name": "stop_game_sound",
+   "match": "same_instructions",
+   "leyte": "0xa8c4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x96f4",
+   "name": "update_game_sounds",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x9ae0",
+   "name": "face_is_back_facing",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x9b8c",
+   "name": "add_face_edges_to_rows",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x9d34",
+   "name": "emit_face_chain",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x9da6",
+   "name": "emit_faces_bsp",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x9ef8",
+   "name": "emit_faces_in_order",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x9fc4",
+   "name": "emit_faces_unnumbered",
+   "match": "moved",
+   "leyte": "0xb246"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xa07e",
+   "name": "track_ground_plane_horizon",
+   "match": "same_instructions",
+   "leyte": "0xb300"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xa16e",
+   "name": "output_face_colour",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xa220",
+   "name": "output_face_bw",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xa2f2",
+   "name": "submit_object_faces",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xa512",
+   "name": "transform_face_vertices",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xa676",
+   "name": "project_prepared_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xa75e",
+   "name": "transform_and_project_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xac72",
+   "name": "render_visible_objects",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xb028",
+   "name": "clip_face_near_plane",
+   "match": "moved",
+   "leyte": "0xc310"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xb190",
+   "name": "clip_polygon_x_min",
+   "match": "moved",
+   "leyte": "0xc478"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xb242",
+   "name": "clip_polygon_x_max",
+   "match": "moved",
+   "leyte": "0xc52a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xb2f4",
+   "name": "clip_polygon_y_min",
+   "match": "moved",
+   "leyte": "0xc5dc"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xb3aa",
+   "name": "clip_polygon_y_max",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xb460",
+   "name": "reset_background_rows",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xb49e",
+   "name": "reset_overlay_display_state",
+   "match": "same_instructions",
+   "leyte": "0xc786"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xb4b6",
+   "name": "draw_sky_and_ground",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xba2a",
+   "name": "draw_panel_frame_lines",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xbca8",
+   "name": "copy_rect_depth4",
+   "match": "identical",
+   "leyte": "0xcfc6"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xbfb0",
+   "name": "copy_rect_depth8",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc11e",
+   "name": "begin_offscreen_drawing",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc17e",
+   "name": "end_offscreen_drawing",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc1aa",
+   "name": "update_heading_tape",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc572",
+   "name": "draw_gauge_needle",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc664",
+   "name": "update_altimeter_needles",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc80c",
+   "name": "update_airspeed_needle",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc8d6",
+   "name": "update_direction_needle",
+   "match": "same_instructions",
+   "leyte": "0xdc16"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc948",
+   "name": "update_climb_needle",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xc9c2",
+   "name": "update_tachometer_needle",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xca44",
+   "name": "update_manifold_needle",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xcac6",
+   "name": "update_bomb_indicator",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xcb62",
+   "name": "update_throttle_gauge",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xcc12",
+   "name": "update_flaps_needle",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xccca",
+   "name": "update_gear_needles",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xce1c",
+   "name": "update_ammo_needle",
+   "match": "same_instructions",
+   "leyte": "0xe1fa"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xcec4",
+   "name": "update_fuel_needles",
+   "match": "same_instructions",
+   "leyte": "0xe2a2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xd00c",
+   "name": "update_view_readouts_and_overlays",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xd27c",
+   "name": "mark_view_overlays_drawn",
+   "match": "same_instructions",
+   "leyte": "0xe664"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xd298",
+   "name": "present_spans_to_window",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xd34c",
+   "name": "present_bw_frame",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xd3bc",
+   "name": "draw_line_depth8",
+   "match": "identical",
+   "leyte": "0xe7a4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xd5b0",
+   "name": "draw_line_depth4",
+   "match": "identical",
+   "leyte": "0xe998"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xd91a",
+   "name": "restore_line_depth8",
+   "match": "identical",
+   "leyte": "0xed02"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xdb60",
+   "name": "restore_line_depth4",
+   "match": "identical",
+   "leyte": "0xef48"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xdf5e",
+   "name": "fill_pose_history",
+   "match": "identical",
+   "leyte": "0xf346"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xdf98",
+   "name": "fill_pose_history_angles",
+   "match": "identical",
+   "leyte": "0xf380"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xdfd2",
+   "name": "fill_pose_history_flags",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xdff0",
+   "name": "init_aircraft_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe0a4",
+   "name": "aircraft_destroy",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe0ce",
+   "name": "aircraft_create",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe1e6",
+   "name": "create_enemy_fighter",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe262",
+   "name": "spawn_enemy_fighter",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe2a4",
+   "name": "create_friendly_bomber",
+   "match": "same_instructions",
+   "leyte": "0xf714"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe340",
+   "name": "create_enemy_bomber",
+   "match": "same_instructions",
+   "leyte": "0xf7b0"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe372",
+   "name": "isqrt_floor",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe3b2",
+   "name": "acos_scaled_dot3",
+   "match": "same_instructions",
+   "leyte": "0xf822"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe40c",
+   "name": "fold_angle_pm_0x2000",
+   "match": "moved",
+   "leyte": "0xf87c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe42a",
+   "name": "table_lerp_1b2c0",
+   "match": "identical",
+   "leyte": "0xf89a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe468",
+   "name": "damp_short_if_below_0x200",
+   "match": "same_instructions",
+   "leyte": "0xf8d8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe4a4",
+   "name": "compute_template_force_from_626",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe512",
+   "name": "compute_template_force_from_626_tail",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe570",
+   "name": "scale_template_field_38",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe5aa",
+   "name": "aircraft_tick",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xe792",
+   "name": "update_aircraft_entity",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xf810",
+   "name": "player_slew_mode",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xfb2a",
+   "name": "animate_landing_gear",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xfe0a",
+   "name": "aircraft_collision",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0xfe96",
+   "name": "aircraft_notice_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x100bc",
+   "name": "release_ai_target",
+   "match": "same_instructions",
+   "leyte": "0x11ec8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x100d4",
+   "name": "enemy_fighter_notice_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x102d6",
+   "name": "atan2_fixed14",
+   "match": "same_instructions",
+   "leyte": "0x1215a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10360",
+   "name": "build_relative_steer_sample",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10558",
+   "name": "enqueue_control_inputs_avg4",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10650",
+   "name": "update_aircraft_damage_state",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x109ba",
+   "name": "apply_relative_heading_steer",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10b2e",
+   "name": "steer_entity_toward_point",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10b84",
+   "name": "ai_bootstrap_climb_phase",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10c2c",
+   "name": "adjust_ai_throttle_vs_speed",
+   "match": "same_instructions",
+   "leyte": "0x12aba"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10cb2",
+   "name": "max_ai_throttle_maybe_invert_679",
+   "match": "same_instructions",
+   "leyte": "0x12b40"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10cd8",
+   "name": "invert_ai_bias_67b_if_positive",
+   "match": "moved",
+   "leyte": "0x12b66"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10ce8",
+   "name": "tick_ai_climb_then_waypoint",
+   "match": "same_instructions",
+   "leyte": "0x12b76"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10d68",
+   "name": "ensure_ai_script_1b2e0_tick",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10da8",
+   "name": "ensure_ai_script_1b310_tick",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10de8",
+   "name": "ensure_ai_script_1b340_tick",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10e28",
+   "name": "ai_script_try_fire_burst",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10ecc",
+   "name": "tick_ai_1b310_approach_fire",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x10f68",
+   "name": "tick_ai_1b370_mission",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x110f4",
+   "name": "ai_attack_or_fly",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11182",
+   "name": "ai_fly",
+   "match": "moved",
+   "leyte": "0x13120"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x111ae",
+   "name": "ai_fly_bomber",
+   "match": "same_instructions",
+   "leyte": "0x1314c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x111da",
+   "name": "ai_dive_at_target",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x112e0",
+   "name": "ai_bombing_run",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11486",
+   "name": "create_spinner_controller",
+   "match": "identical",
+   "leyte": "0x1359a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x114b4",
+   "name": "spin_object_heading",
+   "match": "identical",
+   "leyte": "0x135c8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x114ca",
+   "name": "overlay_rng_mul_mix",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1150a",
+   "name": "overlay_rng_init",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11544",
+   "name": "overlay_rng_warmup_epilogue",
+   "match": "moved",
+   "leyte": "0x13652"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11564",
+   "name": "overlay_rng_next",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x115b0",
+   "name": "create_plume_controller",
+   "match": "moved",
+   "leyte": "0x136e2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x115da",
+   "name": "register_smoke_template",
+   "match": "moved",
+   "leyte": "0x1370c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x115fc",
+   "name": "spawn_smoke_plume",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11670",
+   "name": "attach_trailing_plume",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x116e8",
+   "name": "destroy_plume_controller",
+   "match": "same_instructions",
+   "leyte": "0x13814"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x116fc",
+   "name": "tick_smoke_plume",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11796",
+   "name": "shape_free_plume",
+   "match": "same_instructions",
+   "leyte": "0x138c0"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11940",
+   "name": "shape_trailing_plume",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11a90",
+   "name": "plume_pre_render",
+   "match": "same_instructions",
+   "leyte": "0x1b6ec"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11aae",
+   "name": "create_camera_facing_controller",
+   "match": "moved",
+   "leyte": "0x13bd6"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11ae6",
+   "name": "face_camera_heading",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11afe",
+   "name": "create_effect_controller",
+   "match": "same_instructions",
+   "leyte": "0x13c26"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11b48",
+   "name": "register_effect_template",
+   "match": "moved",
+   "leyte": "0x13c70"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11b96",
+   "name": "replay_logged_effects",
+   "match": "moved",
+   "leyte": "0x13cbe"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11c2c",
+   "name": "mark_effect_log_end",
+   "match": "moved",
+   "leyte": "0x13d54"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11c58",
+   "name": "spawn_effect",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11db4",
+   "name": "spawn_destruction_effect",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11efc",
+   "name": "init_effect_kind2_burst",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1203a",
+   "name": "init_effect_kind0_flat_ring",
+   "match": "same_instructions",
+   "leyte": "0x14182"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x120ca",
+   "name": "init_effect_kind1_column",
+   "match": "same_instructions",
+   "leyte": "0x14210"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1217e",
+   "name": "init_effect_kind3_debris_explosion",
+   "match": "same_instructions",
+   "leyte": "0x142c2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12296",
+   "name": "animate_effect_kind2_burst",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x123ce",
+   "name": "animate_effect_kind0_ring",
+   "match": "same_instructions",
+   "leyte": "0x1451a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12466",
+   "name": "animate_effect_kind0_ring_tail",
+   "match": "same_instructions",
+   "leyte": "0x145b2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12486",
+   "name": "animate_effect_kind1_column",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12528",
+   "name": "animate_effect_kind3_debris",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12738",
+   "name": "face_object_to_camera",
+   "match": "moved",
+   "leyte": "0x1488a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12768",
+   "name": "tick_effect",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x127aa",
+   "name": "effect_pre_render_hook",
+   "match": "same_instructions",
+   "leyte": "0x1d51a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x127c6",
+   "name": "create_ordnance_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1281e",
+   "name": "register_ordnance_template",
+   "match": "same_instructions",
+   "leyte": "0x149d8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12840",
+   "name": "spawn_weapon_entity",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x128b6",
+   "name": "ordnance_ballistic_step",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12a2a",
+   "name": "ordnance_tick",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12b66",
+   "name": "apply_blast_damage",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12d34",
+   "name": "ordnance_detonation",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12f52",
+   "name": "ordnance_collision",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12f92",
+   "name": "create_singleton_type10_controller",
+   "match": "same_instructions",
+   "leyte": "0x157fa"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x12fd2",
+   "name": "point_in_polygon_xy",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x13070",
+   "name": "point_in_polygon_xz",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1310e",
+   "name": "point_in_polygon_yz",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x131ac",
+   "name": "project_face_vertices_xy",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1320a",
+   "name": "project_face_vertices_xz",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x13268",
+   "name": "project_face_vertices_yz",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x132c8",
+   "name": "point_over_face_xz",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x13346",
+   "name": "surface_type_at_point",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x13452",
+   "name": "surface_type_under_object",
+   "match": "identical",
+   "leyte": "0x15d92"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1346c",
+   "name": "point_in_face_by_axis",
+   "match": "same_instructions",
+   "leyte": "0x15dac"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1358c",
+   "name": "contact_pair_hash",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x135a0",
+   "name": "find_contact_record",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x135e8",
+   "name": "create_shape_contact_record",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1377a",
+   "name": "age_contact_records",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x137da",
+   "name": "drop_contact_records_for_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1383c",
+   "name": "create_fractal_contact_record",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x13980",
+   "name": "fractal_height_at",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x13cdc",
+   "name": "test_terrain_collision",
+   "match": "same_instructions",
+   "leyte": "0x1663a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x13e4e",
+   "name": "test_proximity_collision",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x13eae",
+   "name": "test_player_vs_type0e_proximity",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x13ee0",
+   "name": "test_object_collision",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x14198",
+   "name": "handle_terrain_contact",
+   "match": "same_instructions",
+   "leyte": "0x16b06"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1429c",
+   "name": "handle_player_contact",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x14348",
+   "name": "dispatch_collision",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1443a",
+   "name": "sort_group_parts_by_distance",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x14830",
+   "name": "lift_object_onto_terrain",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x14af2",
+   "name": "release_fractal_reference",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x14bea",
+   "name": "carry_attached_objects",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x14d86",
+   "name": "step_sinking_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x14f48",
+   "name": "apply_hit_to_sinkable_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x150c8",
+   "name": "create_carrier_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1530e",
+   "name": "create_firing_ship_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15356",
+   "name": "tick_firing_ship_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15580",
+   "name": "create_sinking_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x155d8",
+   "name": "tick_sinking_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x155ec",
+   "name": "create_basic_ship_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1562e",
+   "name": "clip_polygon_y_nonneg",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15762",
+   "name": "sink_object_shape_at_waterline",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15b92",
+   "name": "create_bullet_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15bd4",
+   "name": "register_bullet_template",
+   "match": "identical",
+   "leyte": "0x19bcc"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15bf6",
+   "name": "spawn_ordnance_scattered",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15d20",
+   "name": "spawn_ordnance_oriented",
+   "match": "same_instructions",
+   "leyte": "0x19d16"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15d78",
+   "name": "spawn_ordnance_oriented_3ang",
+   "match": "same_instructions",
+   "leyte": "0x19d6e"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15dc8",
+   "name": "tick_bullet",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15e62",
+   "name": "bullet_pre_render",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15ebe",
+   "name": "erase_dots_depth8",
+   "match": "moved",
+   "leyte": "0x19eb2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15f3e",
+   "name": "plot_dot_depth8",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15fb8",
+   "name": "erase_dots_depth4",
+   "match": "moved",
+   "leyte": "0x19fb4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16128",
+   "name": "plot_dot_depth4",
+   "match": "moved",
+   "leyte": "0x1a124"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16230",
+   "name": "plot_dot_bw",
+   "match": "moved",
+   "leyte": "0x1a22c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x162ba",
+   "name": "draw_distant_object_dots",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1665a",
+   "name": "bullet_hits_shape",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16724",
+   "name": "apply_random_aircraft_damage",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x167f4",
+   "name": "bullet_hits_aircraft",
+   "match": "same_instructions",
+   "leyte": "0x1a7e4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x168ae",
+   "name": "impact_one_time_in_16",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x168d2",
+   "name": "alloc_transformed_vertex_block",
+   "match": "same_instructions",
+   "leyte": "0x1a8c2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1691c",
+   "name": "alloc_copied_vertex_block",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16966",
+   "name": "advance_route_waypoint",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16a3a",
+   "name": "create_trail_controller",
+   "match": "same_instructions",
+   "leyte": "0x1ab7a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16a78",
+   "name": "register_trail_templates",
+   "match": "moved",
+   "leyte": "0x1abb8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16ac4",
+   "name": "init_trail_kind0",
+   "match": "identical",
+   "leyte": "0x1ac04"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16ad6",
+   "name": "init_trail_kind1",
+   "match": "identical",
+   "leyte": "0x1ac16"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16ae8",
+   "name": "spawn_trail",
+   "match": "same_instructions",
+   "leyte": "0x1ac28"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16b4c",
+   "name": "attach_smoke_trail",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16b9e",
+   "name": "attach_burning_trail",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16c24",
+   "name": "destroy_trail_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16c6a",
+   "name": "animate_smoke_trail",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x16e06",
+   "name": "animate_burning_trail",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1702a",
+   "name": "tick_trail",
+   "match": "same_instructions",
+   "leyte": "0x1b1ca"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1706a",
+   "name": "create_ground_fire_controller",
+   "match": "moved",
+   "leyte": "0x136de"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17098",
+   "name": "register_ground_fire_template",
+   "match": "moved",
+   "leyte": "0x1b238"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x170ba",
+   "name": "spawn_ground_fire_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17102",
+   "name": "attach_ground_fire",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1713c",
+   "name": "destroy_ground_fire_controller",
+   "match": "same_instructions",
+   "leyte": "0x1b2e2"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17150",
+   "name": "animate_ground_fire",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17380",
+   "name": "tick_ground_fire",
+   "match": "same_instructions",
+   "leyte": "0x157d8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x173a2",
+   "name": "create_debris_controller",
+   "match": "moved",
+   "leyte": "0x1b546"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x173dc",
+   "name": "register_debris_template",
+   "match": "identical",
+   "leyte": "0x1b580"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x173fe",
+   "name": "spawn_debris_fragment",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x174c4",
+   "name": "tick_debris_fragment",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17566",
+   "name": "create_ground_mark_controller",
+   "match": "moved",
+   "leyte": "0x1b548"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1759e",
+   "name": "register_ground_mark_template",
+   "match": "same_instructions",
+   "leyte": "0x1b742"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x175c0",
+   "name": "tick_ground_mark",
+   "match": "identical",
+   "leyte": "0x1b764"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x175de",
+   "name": "spawn_ground_mark",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x176b2",
+   "name": "add_radar_track",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1771a",
+   "name": "set_view_distance",
+   "match": "moved",
+   "leyte": "0x1b8bc"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17736",
+   "name": "cycle_view_distance",
+   "match": "moved",
+   "leyte": "0x1b8d8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1776a",
+   "name": "reset_radar_tracks",
+   "match": "identical",
+   "leyte": "0x1b90c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17780",
+   "name": "erase_radar_blip_depth8",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17868",
+   "name": "erase_radar_blip_depth4",
+   "match": "same_instructions",
+   "leyte": "0x1ba0a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17948",
+   "name": "draw_radar_blip_depth4",
+   "match": "moved",
+   "leyte": "0x1baea"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17a34",
+   "name": "erase_radar_blip_bw",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17a60",
+   "name": "draw_radar_blip_bw",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17a8c",
+   "name": "update_radar_range_buttons",
+   "match": "same_instructions",
+   "leyte": "0x1bc2e"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17b68",
+   "name": "update_radar_scope",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17d16",
+   "name": "create_aircraft_spawner_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17db8",
+   "name": "destroy_aircraft_spawner_controller",
+   "match": "same_instructions",
+   "leyte": "0x1bf68"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17dd4",
+   "name": "tick_aircraft_spawner",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x17ffe",
+   "name": "remove_mission_target",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x18040",
+   "name": "create_wave_spawner_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x180c8",
+   "name": "tick_wave_spawner",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1820a",
+   "name": "ai_pursue_target",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x188ba",
+   "name": "create_shadow_controller",
+   "match": "moved",
+   "leyte": "0x1ab7e"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x188f4",
+   "name": "register_shadow_templates",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x18942",
+   "name": "destroy_shadow_controller",
+   "match": "identical",
+   "leyte": "0x1ca90"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x18956",
+   "name": "spawn_object_shadow",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x189d0",
+   "name": "tick_shadow",
+   "match": "same_instructions",
+   "leyte": "0x1cb22"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x18a34",
+   "name": "shadow_pre_render",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x18b52",
+   "name": "create_flak_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x18b98",
+   "name": "destroy_flak_controller",
+   "match": "same_instructions",
+   "leyte": "0x19094"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x18bba",
+   "name": "flak_notice_object",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x18c96",
+   "name": "tick_flak_gun",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x190c0",
+   "name": "create_turret_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1910e",
+   "name": "register_turret_template",
+   "match": "same_instructions",
+   "leyte": "0x1d296"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19130",
+   "name": "spawn_turret_on_object",
+   "match": "same_instructions",
+   "leyte": "0x1d2b8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1917c",
+   "name": "tick_turret",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19394",
+   "name": "turret_pre_render",
+   "match": "same_instructions",
+   "leyte": "0x148f8"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x193b6",
+   "name": "create_parachute_controller",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1940e",
+   "name": "register_parachute_template",
+   "match": "identical",
+   "leyte": "0x1d58e"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19430",
+   "name": "spawn_bailout_parachute",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1951a",
+   "name": "destroy_parachute_controller",
+   "match": "moved",
+   "leyte": "0x1d69c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1952e",
+   "name": "parachute_descend",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19938",
+   "name": "parachute_tick",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19a1a",
+   "name": "create_cloud_controller",
+   "match": "moved",
+   "leyte": "0x1ab7e"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19a54",
+   "name": "register_cloud_templates",
+   "match": "moved",
+   "leyte": "0x1dbd4"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19aa2",
+   "name": "spawn_camera_relative_object",
+   "match": "same_instructions",
+   "leyte": "0x1dc22"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19b30",
+   "name": "follow_camera_offset",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19b82",
+   "name": "create_view_attached_controller",
+   "match": "same_instructions",
+   "leyte": "0x1dd02"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19bbc",
+   "name": "tick_view_attached_object",
+   "match": "same_instructions",
+   "leyte": "0x1dd3c"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19c26",
+   "name": "store_xyz_asr",
+   "match": "same_instructions",
+   "leyte": "0x1dda6"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19c5e",
+   "name": "find_nearest_runway_approach_ends",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x19fba",
+   "name": "try_begin_landing_approach",
+   "match": "same_instructions",
+   "leyte": "0x1e152"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1a1a6",
+   "name": "tick_landing_approach_glide",
+   "match": "not_found",
+   "leyte": null
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1a63e",
+   "name": "memmove_block",
+   "match": "identical",
+   "leyte": "0x1f63a"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1a716",
+   "name": "memzero",
+   "match": "identical",
+   "leyte": "0x1f712"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x1a75e",
+   "name": "c_strlen",
+   "match": "not_found",
+   "leyte": null
+  }
+ ]
+}

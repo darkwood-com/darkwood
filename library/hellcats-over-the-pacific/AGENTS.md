@@ -6,11 +6,15 @@ files are editable only for evidence-backed reconstruction; preserve function
 boundaries, widths, fixed-point arithmetic, addresses, original `FUN_*` identities,
 and unresolved annotations.
 
-Translations of original functions belong under `godot/strict_port/`; the
-emulated Macintosh around them under `godot/runtime/`, which maps around the port
-and never works around it. Keep the chain
+The game has three editions. **Original** is the faithful reconstruction and
+the behavioural reference: translations of original functions (the Original
+port) under `godot/original/`, and the emulated Macintosh around them under
+`godot/original/mac/`, which maps around the port and never works around it.
+**Native** (Godot facilities, same rules) and **Enhanced** (optional
+improvements on Native) are planned and never change Original. The README's
+roadmap gives the current phase. Keep the chain
 `original .c -> semantic .decomp.c -> faithful .gd` explicit in
-`godot/strict_port/mappings/functions.json`. `docs/history/` (the removed MVP
+`godot/original/mappings/functions.json`. `docs/history/` (the removed MVP
 prototype) is never a source of original behavior.
 
 Start with `README.md`, then retrieve only what the task needs:
