@@ -1,6 +1,6 @@
 {
   "$schema": "./tags.schema.json",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "repository": "https://github.com/darkwood-com/darkwood",
   "projects": [
     {
@@ -8,6 +8,13 @@
       "path": "library/composio-mcp",
       "domain": "matyo91",
       "description": "Symfony MCP server integrating Composio actions and workflows.",
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
       "topics": [
         "ai",
         "mcp",
@@ -20,6 +27,13 @@
       "path": "library/connect-flow",
       "domain": "matyo91",
       "description": "Symfony prototype connecting natural-language capabilities to the Darkwood Flow runtime.",
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
       "topics": [
         "ai",
         "demo",
@@ -33,462 +47,1227 @@
       "path": "library/darkwood-php",
       "domain": "darkwood",
       "description": "PHP libraries and Symfony bundles maintained by Darkwood.",
-      "topics": ["framework", "php", "symfony"]
+      "kind": "component",
+      "lifecycle": {
+        "status": "active",
+        "support": "standard",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "framework",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "darkwood-publish-article-mcp-apps",
       "path": "library/darkwood-publish-article-mcp-apps",
       "domain": "darkwood",
       "description": "MCP application for article generation and publication workflows.",
-      "topics": ["ai", "mcp", "php"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "active",
+        "support": "standard",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "mcp",
+        "php"
+      ]
     },
     {
       "id": "darkwood-showreel",
       "path": "library/darkwood-showreel",
       "domain": "matyo91",
       "description": "Web and terminal showreel built with Symfony and Symfony TUI.",
-      "topics": ["demo", "php", "showreel", "symfony", "web"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "php",
+        "showreel",
+        "symfony",
+        "web"
+      ]
     },
     {
       "id": "diablo-php",
       "path": "library/diablo-php",
       "domain": "matyo91",
       "description": "Archived PHP and FFI implementation inspired by the original Diablo engine.",
-      "topics": ["archive", "game", "php"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "game",
+        "php"
+      ]
     },
     {
       "id": "flow-pipe",
       "path": "library/flow-pipe",
       "domain": "matyo91",
       "description": "Symfony Console demonstration of streaming token pipelines with Darkwood Flow.",
-      "topics": ["demo", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "flow-partial-function-application",
       "path": "library/flow-partial-function-application",
       "domain": "matyo91",
       "description": "PHP 8.6 study of partial function application, token scanning and Darkwood Flow.",
-      "topics": ["demo", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "flow-thispersondoesnotexist",
       "path": "library/flow-thispersondoesnotexist",
       "domain": "matyo91",
       "description": "Parallel fictional-person image fetcher demonstrating Darkwood Flow.",
-      "topics": ["demo", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "flow-jev",
       "path": "library/flow-jev",
       "domain": "matyo91",
       "description": "Archived experimental Symfony Flow and JEV platform integration.",
-      "topics": ["archive", "demo", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "hearthbreaker",
       "path": "library/hearthbreaker",
       "domain": "darkwood",
       "description": "Archived Hearthstone collection helper preserved as a sanitized source snapshot.",
-      "topics": ["archive", "game", "php", "symfony"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "game",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "hellcats-over-the-pacific",
       "path": "library/hellcats-over-the-pacific",
       "domain": "matyo91",
       "description": "Evidence-backed Godot port of the classic Hellcats Over the Pacific game.",
-      "topics": ["game", "godot", "reverse-engineering"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "active",
+        "support": "standard",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "game",
+        "godot",
+        "reverse-engineering"
+      ]
     },
     {
       "id": "kibono-flow",
       "path": "library/kibono-flow",
       "domain": "matyo91",
       "description": "Observable product-sync consumer combining Darkwood Flow with a Kiboko ETL pipeline.",
-      "topics": ["demo", "etl", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "etl",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "lgs",
       "path": "library/lgs",
       "domain": "darkwood",
       "description": "The LGS game and its Godot implementation.",
-      "topics": ["game", "godot"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "active",
+        "support": "standard",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "game",
+        "godot"
+      ]
     },
     {
       "id": "llm-game-of-life",
       "path": "library/llm-game-of-life",
       "domain": "matyo91",
       "description": "Pedagogical PHP prototype exploring LLM concepts through Conway's Game of Life.",
-      "topics": ["ai", "demo", "game", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "demo",
+        "game",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "mario-orquestration",
       "path": "library/mario-orquestration",
       "domain": "matyo91",
       "description": "Symfony AI multi-agent demonstration generating platformer levels for Godot.",
-      "topics": ["ai", "demo", "game", "godot", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "demo",
+        "game",
+        "godot",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "matyo91",
       "path": "library/matyo91",
       "domain": "matyo91",
       "description": "Assets and automation for the matyo91 GitHub profile.",
-      "topics": ["github-profile", "personal"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "github-profile",
+        "personal"
+      ]
     },
     {
-      "id": "matyo91-live",
-      "path": "library/matyo91-live",
+      "id": "content-matyo91-live",
+      "path": "library/content-matyo91-live",
       "domain": "matyo91",
       "description": "Streaming scenes, overlays and editable media sources for matyo91 live sessions.",
-      "topics": ["media", "personal", "streaming"]
+      "kind": "content",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "media",
+        "personal",
+        "streaming"
+      ]
     },
     {
       "id": "nolife-language",
       "path": "library/nolife-language",
       "domain": "matyo91",
       "description": "Symfony CLI experiment measuring language and wording effects on LLM token cost.",
-      "topics": ["ai", "demo", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "demo",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "nolife-local",
       "path": "library/nolife-local",
       "domain": "matyo91",
       "description": "Archived local AI and 3D experimentation application using Symfony and PHP FFI.",
-      "topics": ["ai", "archive", "php", "symfony"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "archive",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "nolife-models",
       "path": "library/nolife-models",
       "domain": "matyo91",
       "description": "Local explorer and comparator for public AI model catalogs and Ollama runtimes.",
-      "topics": ["ai", "ollama", "php", "symfony"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "ollama",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "nolife-tokens",
       "path": "library/nolife-tokens",
       "domain": "matyo91",
       "description": "Symfony CLI experiments for token analysis and Darkwood Flow pipelines.",
-      "topics": ["ai", "demo", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "nolife-tracker",
       "path": "library/nolife-tracker",
       "domain": "matyo91",
       "description": "Terminal-first registry for AI provider accounts, subscriptions and entitlements.",
-      "topics": ["ai", "cli", "php", "symfony"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "cli",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "omer-quotes",
       "path": "library/omer-quotes",
       "domain": "matyo91",
       "description": "Archived Symfony project for extracting and exploring quotations from source repositories.",
-      "topics": ["archive", "php", "symfony"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "php-flow",
       "path": "library/php-flow",
       "domain": "matyo91",
       "description": "PHP profiling demonstration built on Darkwood Flow.",
-      "topics": ["demo", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "quake-3-arena-php",
       "path": "library/quake-3-arena-php",
       "domain": "matyo91",
       "description": "Archived PHP FFI study of the Quake III Arena engine.",
-      "topics": ["archive", "game", "php"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "game",
+        "php"
+      ]
     },
     {
       "id": "rxjs-flow",
       "path": "library/rxjs-flow",
       "domain": "matyo91",
       "description": "Study mapping RxJS streaming concepts onto Darkwood Flow.",
-      "topics": ["demo", "flow", "php", "rxjs", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "php",
+        "rxjs",
+        "symfony"
+      ]
     },
     {
       "id": "sketchup-shape",
       "path": "library/sketchup-shape",
       "domain": "matyo91",
       "description": "Archived Symfony experiment for generating and validating SketchUp shape specifications.",
-      "topics": ["archive", "php", "symfony"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "vibephp-flow",
       "path": "library/vibephp-flow",
       "domain": "matyo91",
       "description": "VibePHP profiling demonstration built on Darkwood Flow.",
-      "topics": ["demo", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "github",
       "path": "library/.github",
       "domain": "darkwood",
       "description": "Public GitHub organization profile, community files and issue templates.",
-      "topics": ["github", "organization-profile"]
+      "kind": "infrastructure",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "github",
+        "organization-profile"
+      ]
     },
     {
       "id": "crypto-trade",
       "path": "library/crypto-trade",
       "domain": "darkwood",
       "description": "Experimental cryptocurrency trading and market-analysis application.",
-      "topics": ["finance", "php", "web"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "finance",
+        "php",
+        "web"
+      ]
     },
     {
       "id": "darkwood-memory",
       "path": "library/darkwood-memory",
       "domain": "matyo91",
       "description": "Interactive demonstrations accompanying the Darkwood memory article.",
-      "topics": ["creative-coding", "memory", "web"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "active",
+        "support": "standard",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "creative-coding",
+        "memory",
+        "web"
+      ]
     },
     {
       "id": "flow-live",
       "path": "library/flow-live",
       "domain": "matyo91",
       "description": "Live demonstration application built around Darkwood Flow.",
-      "topics": ["demo", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "prime-ai-answer",
       "path": "library/prime-ai-answer",
       "domain": "matyo91",
       "description": "MCP experiment for producing concise AI-assisted answers.",
-      "topics": ["ai", "mcp"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "mcp"
+      ]
     },
     {
       "id": "recherche-entreprise-mcp",
       "path": "library/recherche-entreprise-mcp",
       "domain": "matyo91",
       "description": "PHP MCP and company-research experimentation project.",
-      "topics": ["mcp", "php", "symfony"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "mcp",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "thumbnail-mcp",
       "path": "library/thumbnail-mcp",
       "domain": "matyo91",
       "description": "Replicate-backed MCP tool for generating thumbnail images.",
-      "topics": ["ai", "image-generation", "mcp"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "image-generation",
+        "mcp"
+      ]
     },
     {
       "id": "url-scrapping-api",
       "path": "library/url-scrapping-api",
       "domain": "matyo91",
       "description": "Symfony API for extracting structured content from web pages.",
-      "topics": ["api", "automation", "php", "symfony"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "api",
+        "automation",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "wysiwyl",
       "path": "library/wysiwyl",
       "domain": "darkwood",
       "description": "What You See Is What You Learn public experiment.",
-      "topics": ["experiment", "web"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "experiment",
+        "web"
+      ]
     },
     {
       "id": "flowvox",
       "path": "library/flowvox",
       "domain": "darkwood",
       "description": "Symfony voice workflow with local and hosted transcription providers.",
-      "topics": ["audio", "php", "symfony", "transcription"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "audio",
+        "php",
+        "symfony",
+        "transcription"
+      ]
     },
     {
       "id": "flowvox-ios",
       "path": "library/flowvox-ios",
       "domain": "darkwood",
       "description": "Hotwire Native iOS shell for the Flowvox voice workflow.",
-      "topics": ["audio", "ios", "mobile", "swift"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "audio",
+        "ios",
+        "mobile",
+        "swift"
+      ]
     },
     {
-      "id": "dj-stream",
-      "path": "library/dj-stream",
+      "id": "content-dj-stream",
+      "path": "library/content-dj-stream",
       "domain": "darkwood",
       "description": "Archived OBS scenes, overlays and media sources for a DJ stream setup.",
-      "topics": ["archive", "media", "obs", "streaming"]
+      "kind": "content",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "media",
+        "obs",
+        "streaming"
+      ]
     },
     {
       "id": "framework-x-flow",
       "path": "library/framework-x-flow",
       "domain": "matyo91",
       "description": "Framework X HTTP runtime experiment orchestrated with Darkwood Flow.",
-      "topics": ["demo", "flow", "http", "php"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "http",
+        "php"
+      ]
     },
     {
       "id": "laravel-pipeline",
       "path": "library/laravel-pipeline",
       "domain": "matyo91",
       "description": "Comparison of a Laravel-inspired pipeline with Darkwood Flow.",
-      "topics": ["demo", "flow", "php", "symfony"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "nolife-agency",
       "path": "library/nolife-agency",
       "domain": "matyo91",
       "description": "Experimental agent workflow for generating and reviewing a client website.",
-      "topics": ["agents", "demo", "flow", "php"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "agents",
+        "demo",
+        "flow",
+        "php"
+      ]
     },
     {
       "id": "nolife-tests",
       "path": "library/nolife-tests",
       "domain": "matyo91",
       "description": "Behavior-focused testing demonstration built around Darkwood Flow jobs.",
-      "topics": ["demo", "flow", "php", "testing"]
+      "kind": "experiment",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "demo",
+        "flow",
+        "php",
+        "testing"
+      ]
     },
     {
       "id": "sqlite-compiler-php",
       "path": "library/sqlite-compiler-php",
       "domain": "matyo91",
       "description": "Experimental ARM64 C compiler in PHP targeting the SQLite amalgamation.",
-      "topics": ["compiler", "php", "sqlite"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "compiler",
+        "php",
+        "sqlite"
+      ]
     },
     {
       "id": "thanks-agent",
       "path": "library/thanks-agent",
       "domain": "matyo91",
       "description": "Multi-agent experiment measuring useful output against consumed resources.",
-      "topics": ["agents", "demo", "flow", "php"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "agents",
+        "demo",
+        "flow",
+        "php"
+      ]
     },
     {
-      "id": "darkwood-ai",
-      "path": "library/ai",
+      "id": "darkwood-ai-php",
+      "path": "library/darkwood-ai-php",
       "domain": "darkwood",
       "description": "Complementary AI component ecosystem for Symfony AI.",
-      "topics": ["ai", "components", "php", "symfony"]
+      "kind": "component",
+      "lifecycle": {
+        "status": "active",
+        "support": "standard",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "ai",
+        "components",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "navi-key-management",
       "path": "library/navi-key-management",
       "domain": "matyo91",
       "description": "Experimental credential management interface for Navi AI connections.",
-      "topics": ["credentials", "navi", "php", "security"]
+      "kind": "tool",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "credentials",
+        "navi",
+        "php",
+        "security"
+      ]
     },
     {
       "id": "chinesepuzzle",
       "path": "library/chinesepuzzle",
       "domain": "darkwood",
       "description": "Solitaire-style card puzzle for Godot with canonical editable design sources.",
-      "topics": ["game", "gdscript", "godot"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "maintenance",
+        "support": "best-effort",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "game",
+        "gdscript",
+        "godot"
+      ]
     },
     {
       "id": "mateafox",
       "path": "library/mateafox",
       "domain": "matyo91",
       "description": "Archived Mateafox TypeScript API and Gatsby web application.",
-      "topics": ["archive", "gatsby", "typescript", "web"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "gatsby",
+        "typescript",
+        "web"
+      ]
     },
     {
       "id": "slidewire",
       "path": "library/slidewire",
       "domain": "darkwood",
       "description": "Presentation authoring and controlled publication platform.",
-      "topics": ["laravel", "presentation", "publication", "web"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "active",
+        "support": "standard",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "laravel",
+        "presentation",
+        "publication",
+        "web"
+      ]
     },
     {
       "id": "uniflow",
       "path": "library/uniflow",
       "domain": "darkwood",
       "description": "Open-source workflow and commerce platform with project-scoped release history.",
-      "topics": ["php", "platform", "sylius", "workflow"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "active",
+        "support": "standard",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "php",
+        "platform",
+        "sylius",
+        "workflow"
+      ]
     },
     {
-      "id": "darkwood-com",
-      "path": "library/darkwood-com",
+      "id": "darkwood-portal",
+      "path": "library/darkwood-portal",
       "domain": "darkwood",
       "description": "Public Darkwood website and application source.",
-      "topics": ["php", "symfony", "web"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "active",
+        "support": "standard",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "php",
+        "symfony",
+        "web"
+      ]
     },
     {
       "id": "adventofcode",
       "path": "library/adventofcode",
       "domain": "matyo91",
       "description": "Archived Rust solutions and inputs for Advent of Code 2020.",
-      "topics": ["archive", "rust"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "rust"
+      ]
     },
     {
       "id": "cursor-slack",
       "path": "library/cursor-slack",
       "domain": "matyo91",
       "description": "Archived notes and experiment for Cursor and Slack integration.",
-      "topics": ["archive", "automation", "slack"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "automation",
+        "slack"
+      ]
     },
     {
-      "id": "darkwaar1",
-      "path": "library/darkwaar1",
+      "id": "darkwaar-1",
+      "path": "library/darkwaar-1",
       "domain": "darkwood",
       "description": "First historical Godot prototype for Darkwaar.",
-      "topics": ["archive", "game", "godot"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "game",
+        "godot"
+      ]
     },
     {
-      "id": "darkwaar2",
-      "path": "library/darkwaar2",
+      "id": "darkwaar-2",
+      "path": "library/darkwaar-2",
       "domain": "darkwood",
       "description": "Second historical Godot prototype for Darkwaar.",
-      "topics": ["archive", "game", "godot"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "game",
+        "godot"
+      ]
     },
     {
-      "id": "darkwaar3",
-      "path": "library/darkwaar3",
+      "id": "darkwaar-3",
+      "path": "library/darkwaar-3",
       "domain": "darkwood",
       "description": "Third historical Godot prototype for Darkwaar, including its web export evidence.",
-      "topics": ["archive", "game", "godot"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "game",
+        "godot"
+      ]
     },
     {
-      "id": "darkwaar4",
-      "path": "library/darkwaar4",
+      "id": "darkwaar-4",
+      "path": "library/darkwaar-4",
       "domain": "darkwood",
       "description": "Fourth historical Godot prototype for Darkwaar.",
-      "topics": ["archive", "game", "godot"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "game",
+        "godot"
+      ]
     },
     {
       "id": "php-pipe-operator",
       "path": "library/php-pipe-operator",
       "domain": "matyo91",
       "description": "Archived demonstration of a pipe-oriented PHP syntax experiment.",
-      "topics": ["archive", "demo", "php"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "demo",
+        "php"
+      ]
     },
     {
       "id": "uniflow-admin",
       "path": "library/uniflow-admin",
       "domain": "darkwood",
       "description": "Archived generated administration interface for Uniflow.",
-      "topics": ["archive", "react", "uniflow"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "react",
+        "uniflow"
+      ]
     },
     {
       "id": "vocal-chat-app",
       "path": "library/vocal-chat-app",
       "domain": "matyo91",
       "description": "Archived Meteor experiment transforming recorded voice into blog content.",
-      "topics": ["archive", "audio", "meteor"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "audio",
+        "meteor"
+      ]
     },
     {
       "id": "warship",
       "path": "library/warship",
       "domain": "matyo91",
       "description": "Archived PHP implementation of a battleship-style game.",
-      "topics": ["archive", "game", "php"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "game",
+        "php"
+      ]
     },
     {
       "id": "bleu-libellule",
       "path": "library/bleu-libellule",
       "domain": "matyo91",
       "description": "Archived static web presentation preserved from its original public source.",
-      "topics": ["archive", "css", "html", "web"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "css",
+        "html",
+        "web"
+      ]
     },
     {
       "id": "cursor-slack-symfony",
       "path": "library/cursor-slack-symfony",
       "domain": "matyo91",
       "description": "Archived Symfony experiment integrating Cursor-generated workflows with Slack.",
-      "topics": ["archive", "automation", "php", "slack", "symfony"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "automation",
+        "php",
+        "slack",
+        "symfony"
+      ]
     },
     {
       "id": "joplin-api",
       "path": "library/joplin-api",
       "domain": "matyo91",
       "description": "Archived Symfony API experiment for Joplin integration.",
-      "topics": ["api", "archive", "joplin", "php", "symfony"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "api",
+        "archive",
+        "joplin",
+        "php",
+        "symfony"
+      ]
     },
     {
       "id": "remove-background",
       "path": "library/remove-background",
       "domain": "matyo91",
       "description": "Archived image background-removal experiment with provenance limitations retained.",
-      "topics": ["archive", "image-processing", "python"]
+      "kind": "product",
+      "lifecycle": {
+        "status": "archived",
+        "support": "none",
+        "archivedAt": null,
+        "replacement": null
+      },
+      "topics": [
+        "archive",
+        "image-processing",
+        "python"
+      ]
     }
   ]
 }

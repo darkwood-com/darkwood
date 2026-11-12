@@ -25,7 +25,7 @@ function validateTags(string $repositoryRoot): void
         fail('invalid JSON: '.$exception->getMessage());
     }
 
-    if (1 !== ($catalogue['schemaVersion'] ?? null) || !is_string($catalogue['repository'] ?? null)) {
+    if (2 !== ($catalogue['schemaVersion'] ?? null) || !is_string($catalogue['repository'] ?? null)) {
         fail('invalid root metadata');
     }
     if (!is_array($catalogue['projects'] ?? null) || !array_is_list($catalogue['projects']) || [] === $catalogue['projects']) {
@@ -35,8 +35,8 @@ function validateTags(string $repositoryRoot): void
     $ids = [];
     $paths = [];
     foreach ($catalogue['projects'] as $project) {
-        if (!is_array($project) || array_keys($project) !== ['id', 'path', 'domain', 'description', 'topics']) {
-            fail('each project must contain only id, path, domain, description and topics');
+        if (!is_array($project) || array_keys($project) !== ['id', 'path', 'domain', 'description', 'kind', 'lifecycle', 'topics']) {
+            fail('each project must contain only id, path, domain, description, kind, lifecycle and topics');
         }
         $id = $project['id'];
         $path = $project['path'];
@@ -52,6 +52,19 @@ function validateTags(string $repositoryRoot): void
         }
         if (!in_array($project['domain'], ['darkwood', 'matyo91'], true)) {
             fail($id.' must have a public logical domain');
+        }
+        if (!in_array($project['kind'], ['product', 'component', 'content', 'tool', 'infrastructure', 'operations', 'experiment', 'other'], true)) {
+            fail($id.' must have a valid functional kind');
+        }
+        $lifecycle = $project['lifecycle'] ?? null;
+        if (!is_array($lifecycle) || array_keys($lifecycle) !== ['status', 'support', 'archivedAt', 'replacement']) {
+            fail($id.' must have complete lifecycle metadata');
+        }
+        if (!in_array($lifecycle['status'], ['active', 'maintenance', 'archived', 'deprecated'], true)
+            || !in_array($lifecycle['support'], ['standard', 'security', 'best-effort', 'none'], true)
+            || (null !== $lifecycle['archivedAt'] && (!is_string($lifecycle['archivedAt']) || 1 !== preg_match('~^\\d{4}-\\d{2}-\\d{2}$~', $lifecycle['archivedAt'])))
+            || (null !== $lifecycle['replacement'] && !is_string($lifecycle['replacement']))) {
+            fail($id.' has invalid lifecycle metadata');
         }
         if (!is_array($topics) || !array_is_list($topics) || [] === $topics) {
             fail($id.' must have topics');
