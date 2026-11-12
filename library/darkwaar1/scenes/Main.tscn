@@ -1,0 +1,103 @@
+[gd_scene load_steps=3 format=3 uid="uid://c9x8y7z6a5b4c3d2"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_1a2b3"]
+[ext_resource type="PackedScene" uid="uid://b8x7y9z0a1b2c3d4" path="res://scenes/Board.tscn" id="2_2c3d4"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_1a2b3")
+
+[node name="Board" parent="." instance=ExtResource("2_2c3d4")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+
+[node name="Moves" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = -60.0
+text = "Coups: 0"
+theme_override_font_sizes/font_size = 24
+
+[node name="Limit" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -100.0
+offset_right = -20.0
+offset_bottom = -60.0
+text = "Limite: 0"
+theme_override_font_sizes/font_size = 24
+
+[node name="Buttons" type="HBoxContainer" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -50.0
+offset_right = 150.0
+offset_bottom = -10.0
+
+[node name="Undo" type="Button" parent="CanvasLayer/HUD/Buttons"]
+layout_mode = 2
+text = "Undo"
+
+[node name="Reset" type="Button" parent="CanvasLayer/HUD/Buttons"]
+layout_mode = 2
+text = "Reset"
+
+[node name="Next" type="Button" parent="CanvasLayer/HUD/Buttons"]
+layout_mode = 2
+text = "Next"
+
+[node name="Modal" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+visible = false
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/Modal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0, 0, 0, 0.7)
+
+[node name="Label" type="Label" parent="CanvasLayer/Modal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -25.0
+offset_right = 200.0
+offset_bottom = 25.0
+text = "Message"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 32
