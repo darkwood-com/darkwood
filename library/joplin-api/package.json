@@ -1,0 +1,9 @@
+{
+  "name": "go",
+  "private": true,
+  "homepage": "https://go.darkwood.fr",
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "license": "AGPL-3.0-or-later"
+}
