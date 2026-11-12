@@ -461,6 +461,34 @@
       "domain": "matyo91",
       "description": "Archived PHP implementation of a battleship-style game.",
       "topics": ["archive", "game", "php"]
+    },
+    {
+      "id": "bleu-libellule",
+      "path": "library/bleu-libellule",
+      "domain": "matyo91",
+      "description": "Archived static web presentation preserved from its original public source.",
+      "topics": ["archive", "css", "html", "web"]
+    },
+    {
+      "id": "cursor-slack-symfony",
+      "path": "library/cursor-slack-symfony",
+      "domain": "matyo91",
+      "description": "Archived Symfony experiment integrating Cursor-generated workflows with Slack.",
+      "topics": ["archive", "automation", "php", "slack", "symfony"]
+    },
+    {
+      "id": "joplin-api",
+      "path": "library/joplin-api",
+      "domain": "matyo91",
+      "description": "Archived Symfony API experiment for Joplin integration.",
+      "topics": ["api", "archive", "joplin", "php", "symfony"]
+    },
+    {
+      "id": "remove-background",
+      "path": "library/remove-background",
+      "domain": "matyo91",
+      "description": "Archived image background-removal experiment with provenance limitations retained.",
+      "topics": ["archive", "image-processing", "python"]
     }
   ]
 }
