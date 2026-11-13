@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "profiles": {
+    "m4": {
+      "mode": "full",
+      "description": "Canonical integration checkout on iMac M4.",
+      "cards": [],
+      "keepPaths": []
+    },
+    "m1": {
+      "mode": "sparse",
+      "description": "Known iMac M1 development selection; adjust through card commands as work changes.",
+      "cards": [
+        "chinesepuzzle",
+        "composio-mcp",
+        "content-dj-stream",
+        "content-matyo91-live",
+        "crypto-trade",
+        "darkwood-memory",
+        "darkwood-php",
+        "darkwood-showreel",
+        "flow-live",
+        "lgs",
+        "prime-ai-answer",
+        "recherche-entreprise-mcp",
+        "slidewire",
+        "thumbnail-mcp",
+        "url-scrapping-api",
+        "wysiwyl"
+      ],
+      "keepPaths": ["tests", "tools"]
+    },
+    "grokbot": {
+      "mode": "sparse",
+      "description": "Automation-oriented public selection; load task-specific cards explicitly.",
+      "cards": ["darkwood-ai-php", "darkwood-php", "hellcats-over-the-pacific"],
+      "keepPaths": ["tests", "tools"]
+    },
+    "vps4-box": {
+      "mode": "manual",
+      "description": "Existing development checkout remains on branch 8.1 until its branch policy is resolved.",
+      "cards": [],
+      "keepPaths": []
+    },
+    "vps4-production": {
+      "mode": "sparse",
+      "description": "Public applications required by VPS-4 production.",
+      "cards": ["darkwood-portal", "slidewire", "uniflow"],
+      "keepPaths": []
+    }
+  }
+}

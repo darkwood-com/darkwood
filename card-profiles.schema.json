@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Darkwood card environment profiles",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "profiles"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mode", "description", "cards", "keepPaths"],
+        "properties": {
+          "mode": { "enum": ["full", "sparse", "manual"] },
+          "description": { "type": "string", "minLength": 1 },
+          "cards": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "keepPaths": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+        }
+      }
+    }
+  }
+}
+

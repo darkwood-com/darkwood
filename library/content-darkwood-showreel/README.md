@@ -16,7 +16,7 @@ The project also includes a dedicated 16:9 motion reel:
 ## Structure
 
 ```text
-darkwood-showreel/
+content-darkwood-showreel/
 ├── assets/
 │   ├── audio/
 │   │   └── showreel-track.mp3        # RFURecordingz — Contraption — Higher, Forever (Breeze & Styles Remix); https://www.youtube.com/watch?v=kNmG75Tq4Kc
