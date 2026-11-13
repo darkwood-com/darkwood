@@ -1,4 +1,4 @@
-# Slidewire
+# Slides
 
 Présentations Darkwood en Laravel et Blade, avec lecteur interactif, design system partagé, exports PDF et suivi des publications Speaker Deck / SlideShare.
 

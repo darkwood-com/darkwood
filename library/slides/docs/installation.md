@@ -16,7 +16,7 @@ nix --extra-experimental-features 'nix-command flakes' develop ../darkwood-com
 
 ## Première installation
 
-Depuis la racine de Slidewire :
+Depuis la racine de Slides :
 
 ```sh
 composer install
