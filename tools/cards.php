@@ -101,23 +101,17 @@ function cardsDependencies(array $card): array
 }
 
 /** @return list<string> */
-function cardsResolveLoad(array $index, string $id, array &$external, array $seen = []): array
+function cardsResolveLoad(array $index, string $id, array &$external): array
 {
-    if (isset($seen[$id])) {
-        return [];
-    }
     if (!isset($index[$id])) {
         $external[] = $id;
         return [];
     }
-    $seen[$id] = true;
-    $resolved = [];
     foreach (cardsDependencies($index[$id]) as $dependency) {
-        $resolved = array_merge($resolved, cardsResolveLoad($index, $dependency, $external, $seen));
+        $external[] = $dependency;
     }
-    $resolved[] = $id;
 
-    return array_values(array_unique($resolved));
+    return [$id];
 }
 
 /** @return list<string> */
@@ -205,7 +199,7 @@ function cardsExternalSymlinks(string $root, string $absolutePath): array
     return $links;
 }
 
-function cardsPreflightUnload(string $root, array $index, string $id, bool $sparse): void
+function cardsPreflightUnload(string $root, array $index, string $id, bool $sparse, bool $profileAuthority = false): void
 {
     $card = $index[$id] ?? null;
     if (!is_array($card)) {
@@ -229,9 +223,11 @@ function cardsPreflightUnload(string $root, array $index, string $id, bool $spar
         cardsFail("{$id} contains ignored files; classify or remove them explicitly before unload");
     }
 
-    foreach ($index as $otherId => $other) {
-        if ($otherId !== $id && cardsLoaded($root, $other, true) && in_array($id, cardsDependencies($other), true)) {
-            cardsFail("{$id} is required by loaded card {$otherId}");
+    if (!$profileAuthority) {
+        foreach ($index as $otherId => $other) {
+            if ($otherId !== $id && cardsLoaded($root, $other, true) && in_array($id, cardsDependencies($other), true)) {
+                cardsFail("{$id} is required by loaded card {$otherId}");
+            }
         }
     }
 
@@ -358,7 +354,7 @@ function cardsMain(array $argv): void
         }
         fwrite(STDOUT, 'loaded: '.implode(', ', $ids)."\n");
         if ([] !== $external) {
-            fwrite(STDOUT, 'external dependencies (not loaded here): '.implode(', ', array_unique($external))."\n");
+            fwrite(STDOUT, 'declared dependencies (not auto-loaded): '.implode(', ', array_unique($external))."\n");
         }
         return;
     }
@@ -449,7 +445,7 @@ function cardsMain(array $argv): void
         $requested = array_values(array_unique($requested));
         foreach ($index as $id => $card) {
             if ($sparse && cardsLoaded($root, $card, true) && !in_array($id, $requested, true)) {
-                cardsPreflightUnload($root, $index, $id, true);
+                cardsPreflightUnload($root, $index, $id, true, true);
             }
         }
         $paths = array_merge($selected['keepPaths'] ?? [], array_map(static fn (string $id): string => (string) $index[$id]['path'], $requested));
@@ -464,7 +460,10 @@ function cardsMain(array $argv): void
         cardsSetProfile($root, $name);
         fwrite(STDOUT, "profile applied: {$name}; loaded cards: ".implode(', ', $requested)."\n");
         if ([] !== $external) {
-            fwrite(STDOUT, 'external dependencies (not loaded here): '.implode(', ', array_unique($external))."\n");
+            $outside = array_values(array_diff(array_unique($external), $requested));
+            if ([] !== $outside) {
+                fwrite(STDOUT, 'dependencies outside profile (not auto-loaded): '.implode(', ', $outside)."\n");
+            }
         }
         return;
     }

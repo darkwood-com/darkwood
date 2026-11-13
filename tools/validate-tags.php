@@ -34,6 +34,7 @@ function validateTags(string $repositoryRoot): void
 
     $ids = [];
     $paths = [];
+    $materializedPaths = [];
     foreach ($catalogue['projects'] as $project) {
         if (!is_array($project) || array_keys($project) !== ['id', 'path', 'domain', 'description', 'kind', 'status', 'dependencies', 'topics']) {
             fail('each project must contain only id, path, domain, description, kind, status, dependencies and topics');
@@ -75,8 +76,22 @@ function validateTags(string $repositoryRoot): void
         if ($topics !== $sortedTopics || count($topics) !== count(array_unique($topics))) {
             fail($id.' topics must be sorted and unique');
         }
-        if (!is_dir($repositoryRoot.'/'.$path) || is_link($repositoryRoot.'/'.$path)) {
+        $absolutePath = $repositoryRoot.'/'.$path;
+        $sparseTracked = false;
+        if (!file_exists($absolutePath) && !is_link($absolutePath)) {
+            $prefix = 'git -C '.escapeshellarg($repositoryRoot).' ';
+            $sparse = trim((string) shell_exec($prefix.'config --bool core.sparseCheckout 2>/dev/null'));
+            $type = trim((string) shell_exec($prefix.'cat-file -t '.escapeshellarg('HEAD:'.$path).' 2>/dev/null'));
+            $index = [];
+            exec($prefix.'ls-files -t -- '.escapeshellarg($path).' 2>/dev/null', $index, $code);
+            $sparseTracked = 'true' === $sparse && 'tree' === $type && 0 === $code && [] !== $index
+                && array_reduce($index, static fn (bool $valid, string $entry): bool => $valid && str_starts_with($entry, 'S '), true);
+        }
+        if ((!is_dir($absolutePath) && !$sparseTracked) || is_link($absolutePath)) {
             fail($id.' directory is missing or is a symlink');
+        }
+        if (is_dir($absolutePath)) {
+            $materializedPaths[$path] = true;
         }
         $ids[$id] = true;
         $paths[$path] = true;
@@ -87,7 +102,7 @@ function validateTags(string $repositoryRoot): void
     if (is_dir($organizationProfile)) {
         $directories[] = $organizationProfile;
     }
-    $declared = array_map(static fn (string $path): string => $repositoryRoot.'/'.$path, array_keys($paths));
+    $declared = array_map(static fn (string $path): string => $repositoryRoot.'/'.$path, array_keys($materializedPaths));
     sort($directories);
     sort($declared);
     if ($directories !== $declared) {

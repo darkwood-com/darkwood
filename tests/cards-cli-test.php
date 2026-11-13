@@ -57,6 +57,7 @@ try {
         'schemaVersion' => 1,
         'profiles' => [
             'test' => ['mode' => 'sparse', 'description' => 'fixture', 'cards' => ['a'], 'keepPaths' => ['tools', 'bin']],
+            'dependent-only' => ['mode' => 'sparse', 'description' => 'profile authority', 'cards' => ['b'], 'keepPaths' => ['tools', 'bin']],
         ],
     ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
 
@@ -94,7 +95,11 @@ try {
     $protected = $run([PHP_BINARY, 'bin/darkwood', 'cards', 'unload', 'a'], $fixture);
     $must(0 !== $protected['code'] && str_contains($protected['err'], 'required by active profile'), 'Profile did not protect its card.');
 
-    fwrite(STDOUT, "cards CLI: list/status, load, guarded unload, reload and profile protection verified\n");
+    $dependentOnly = $run([PHP_BINARY, 'bin/darkwood', 'cards', 'profile', 'apply', 'dependent-only'], $fixture);
+    $must(0 === $dependentOnly['code'], 'Authoritative profile apply failed: '.$dependentOnly['err']);
+    $must(!is_dir($fixture.'/library/a') && is_file($fixture.'/library/b/README.md'), 'Profile materialized a declared dependency outside its selection.');
+
+    fwrite(STDOUT, "cards CLI: list/status, load, guarded unload, reload and authoritative profiles verified\n");
 } finally {
     if (is_dir($fixture)) {
         $remove($fixture);
