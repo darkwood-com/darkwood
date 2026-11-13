@@ -22,7 +22,7 @@ const SoundManager := preload("res://original/mac/toolbox/sound_manager.gd")
 const StandardFile := preload("res://original/mac/toolbox/standard_file.gd")
 
 ## Manager scripts an edition puts in place of these (name -> script, set before a machine is made):
-## the Native edition's Dialog Manager. Empty for Original.
+## the Native edition's Dialog, Resource (its saves) and Menu Managers. Empty for Original.
 static var overrides: Dictionary = {}
 
 var machine
@@ -43,7 +43,7 @@ func _init(owner) -> void:
 	for word in range(0xa000, 0xac00):
 		traps[word] = _missing(word)
 	heap = MemoryManager.new(owner)
-	resources = ResourceManager.new(owner, heap)
+	resources = overrides.get("resources", ResourceManager).new(owner, heap)
 	quickdraw = QuickDraw.new(owner, heap)
 	files = FileManager.new(owner)
 	events = EventManager.new(owner)
@@ -57,7 +57,7 @@ func _init(owner) -> void:
 	windows.install(self)
 	dialogs = overrides.get("dialogs", DialogManager).new(owner, self)
 	dialogs.install(self)
-	menus = MenuManager.new(owner, self)
+	menus = overrides.get("menus", MenuManager).new(owner, self)
 	menus.install(self)
 	for word in [0xa930, 0xa9cc, 0xa97b, 0xa9f1]:       ## InitMenus, TEInit, InitDialogs, UnloadSeg
 		install(word, func(_a: Array) -> int: return 0)

@@ -34,6 +34,7 @@ var mouse := Vector2i(320, 240)
 var button := false
 var modifiers: int = 0
 var keymap := PackedByteArray()
+var _key_chars := {}   ## Mac key code -> the character its key-down carried
 ## The system event mask: the Mac's default, every event but key-up, until SetEventMask.
 const DEFAULT_EVENT_MASK := 0xffef
 const LM_SYS_EVT_MASK := 0x144
@@ -69,8 +70,18 @@ func move_mouse(where: Vector2i) -> void:
 	mouse = where
 	_lock.unlock()
 
-## A key: its Mac virtual key code and character, down / up / repeat.
+## A key: its Mac virtual key code and character, down / up / repeat. A Mac key-up event carries the
+## key's character, as its key-down did; Godot's key releases carry none (InputEventKey.unicode is 0
+## on release): a key-up without one gets its key-down's. The game switches on the character (its
+## throttle ramp, +0x24cf6, stops on the '+' / '-' key-up: without it one press ran the throttle to
+## 0 or 9; tester report, loop 8).
 func post_key(key_code: int, char_code: int, down: bool, repeat: bool, mods: int) -> void:
+	if down:
+		_key_chars[key_code] = char_code
+	elif char_code == 0:
+		char_code = _key_chars.get(key_code, 0)
+	if not down:
+		_key_chars.erase(key_code)
 	_lock.lock()
 	modifiers = mods
 	if key_code >= 0 and key_code < 128:

@@ -76,8 +76,15 @@ static func build_control(e: Dictionary) -> Control:
 			var l := LineEdit.new()
 			l.text = e["text"]
 			l.editable = false
-			l.add_theme_stylebox_override("read_only", _box(Color.WHITE, 1))
-			l.add_theme_color_override("font_uneditable_color", Color.BLACK)
+			var selected: bool = e.get("selected", false) and String(e["text"]).length() > 0
+			l.add_theme_stylebox_override("read_only", _box(Color.BLACK if selected else Color.WHITE, 1))
+			l.add_theme_color_override("font_uneditable_color", Color.WHITE if selected else Color.BLACK)
+			if e.get("focused", false) and not selected:
+				var caret := ColorRect.new()
+				caret.name = "Caret"
+				caret.color = Color.BLACK
+				caret.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				l.add_child(caret)
 			c = l
 		_:
 			var l := Label.new()
@@ -109,4 +116,18 @@ func _place() -> void:
 		var c: Control = _controls[i]
 		c.position = a
 		c.size = b - a
-		c.add_theme_font_size_override("font_size", maxi(8, int(round((b - a).y / maxf(r.size.y, 1) * 11.0))))
+		var font_size: int = maxi(8, int(round((b - a).y / maxf(r.size.y, 1) * 11.0)))
+		c.add_theme_font_size_override("font_size", font_size)
+		var caret: ColorRect = c.get_node_or_null("Caret")
+		if caret != null:
+			_place_caret(c as LineEdit, caret, font_size)
+
+## The caret after the edit field's text, blinking at the Mac's rate (GetCaretTime: 32 ticks, a half
+## second each way).
+func _place_caret(field: LineEdit, caret: ColorRect, font_size: int) -> void:
+	var font: Font = field.get_theme_font("font")
+	var margin: float = field.get_theme_stylebox("read_only").get_margin(SIDE_LEFT)
+	var width: float = font.get_string_size(field.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	caret.position = Vector2(margin + width + 1, field.size.y * 0.2)
+	caret.size = Vector2(maxf(1, font_size / 11.0), field.size.y * 0.6)
+	caret.visible = int(Time.get_ticks_msec() / 533) % 2 == 0

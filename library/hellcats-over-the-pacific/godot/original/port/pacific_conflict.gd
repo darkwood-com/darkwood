@@ -6622,7 +6622,7 @@ func atan2_fixed14(dx: int, dz: int, d2_in: int = 0) -> int:
 ## rudder +0x654 slots; running sums +0x65c / +0x65e / +0x660), clamped to +-0x140 / +-0x200 /
 ## +-0x40: the new value is added, the next slot's value (written 3 calls ago) subtracted, and
 ## the outputs +0x666 / +0x662 / +0x664 = sum / 4 toward zero. Nothing when the damage byte +0x685
-## has bit 0 (word bit 0x100).
+## has bit 0 (damage word +0x684 bit 0: byte +0x685 is its low byte).
 func enqueue_control_inputs_avg4(ctl: int, rudder: int, elevator: int, aileron: int) -> void:
 	assert(memory != null, "enqueue_control_inputs_avg4 requires original global memory")
 	if (memory.read_u8(ctl + 0x685) & 1) != 0:

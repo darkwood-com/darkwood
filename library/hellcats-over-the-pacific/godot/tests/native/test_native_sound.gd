@@ -10,7 +10,8 @@ const SAMPLE_B := 0x210000
 const TICKS := 240
 
 ## The Native sound driver against the Original one: the same calls, made at the same ticks, on two
-## machines; every tick's output samples (the Sound Manager's queue) and every is_channel_playing
+## machines; every tick's output samples (Original: the Sound Manager's reading of SoundBase; Native:
+## the driver's own queue, which the Native speaker plays) and every is_channel_playing
 ## answer must be equal. The script covers a looping sample at several rates, a one-shot, channel 1
 ## mixed in and running out, an enqueued sample, a released loop and silencing.
 func run() -> bool:
@@ -67,6 +68,7 @@ func _run(native: bool) -> Array:
 			226: p.play_sample_on_channel(0, SAMPLE_A, 0, 0x500, 0, 0)
 		m.stepped_ticks += 1
 		sounds.service()
-		out.append_array(sounds.take())
+		var heard: PackedFloat32Array = sounds.take()
+		out.append_array(p.take() if native else heard)
 		playing.append([p.is_channel_playing(0), p.is_channel_playing(1)])
 	return [out, playing, [m.memory.read_u16(m.A5 - 0xc38), m.memory.read_u32(0x196)] if native else m.memory.read_u32(0x196)]

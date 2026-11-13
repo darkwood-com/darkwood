@@ -308,6 +308,15 @@ def check_resedit_mirror() -> None:
         fail("the resource folders in godot/assets drifted from sources/resedit-1-0-3:\n" + result.stdout)
 
 
+def check_routed_port() -> None:
+    """The Native routed port is the Original's functions with only their memory accesses routed."""
+    import subprocess
+    result = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "native" / "gen_routed_port.py"), "--check"],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail(result.stdout)
+
+
 def check_1_0_4_rebuild() -> None:
     """The 1.0.4 fork rebuilt from the 1.0.3 disk and the updater equals the AppleDouble 1.0.4 copy,
     the resources the game writes as it is played (HEL1 127 / 128, the HEL2 caches) aside."""
@@ -727,6 +736,7 @@ def main() -> int:
         ("global-alias-docs", check_global_alias_docs),
         ("symbol-function-names", check_symbol_function_names),
         ("resedit-mirror", check_resedit_mirror),
+        ("routed-port", check_routed_port),
         ("1.0.4-rebuild", check_1_0_4_rebuild),
         ("1.0.4-sound", check_1_0_4_sound),
         ("runtime-coverage", check_runtime_coverage),

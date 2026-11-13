@@ -12,7 +12,9 @@ var _lock := Mutex.new()
 var _snapshot: Dictionary = {"version": 0, "items": []}
 
 ## The front dialog's standard items: [{index, type, enabled, active, rect (global, Mac screen),
-## text, value}], with a version that changes with each new snapshot.
+## text, value, focused, selected}], with a version that changes with each new snapshot. `focused` is
+## the edit field typing goes to (editField), `selected` whether its whole text is selected (Tab or
+## SelIText: the next key replaces it).
 func snapshot() -> Dictionary:
 	_lock.lock()
 	var s: Dictionary = _snapshot.duplicate(true)
@@ -29,8 +31,10 @@ func publish() -> void:
 			var e: Dictionary = list[i]
 			if not (e["type"] in SHOWN) or e["handle"] == 0:
 				continue
+			var focused: bool = e["type"] == EDIT_TEXT and int(dialogs[d]["edit"]) == i
 			var entry := {"index": i + 1, "type": e["type"], "enabled": e["enabled"], "active": true,
-				"rect": Rect2i((e["box"] as Rect2i).position + origin, (e["box"] as Rect2i).size), "text": "", "value": 0}
+				"rect": Rect2i((e["box"] as Rect2i).position + origin, (e["box"] as Rect2i).size), "text": "", "value": 0,
+				"focused": focused, "selected": focused and bool(dialogs[d].get("sel_all", false))}
 			if e["type"] in [BUTTON, CHECKBOX, RADIO]:
 				var c: int = memory.read_u32(e["handle"])
 				var title := PackedByteArray()

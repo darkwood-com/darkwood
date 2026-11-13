@@ -78,8 +78,12 @@ func _link_pending() -> void:
 	_attach(_u32(bytes, 20))
 	machine.log_line("overlay %s loaded: code 0x%x, %d relocations" % [name, code, first + second])
 
+## The overlay port's script an edition puts in place of the Original's (set before the overlay
+## loads): the Native edition's, with typed state. Null for Original.
+static var port_override = null
+
 func _attach(entry: int) -> void:
-	port = Overlay.new(machine.memory)
+	port = (port_override if port_override != null else Overlay).new(machine.memory)
 	var own: Array = port.code_table.keys()          # the port's own routines, before the host slots
 	var segments = machine.segments
 	segments.link_overlay(port)

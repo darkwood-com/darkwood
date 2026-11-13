@@ -84,7 +84,8 @@ it runs the Original edition: the original program, ported, on an emulated Macin
 (Toolbox, screen, sound, input), as [`docs/architecture/GAME_RUNTIME.md`](docs/architecture/GAME_RUNTIME.md)
 describes. The mouse is the joystick; the keys are the original's (V cockpit,
 C chase, T tower, F flaps, G gear, J eject, P pause, `=` / `-` throttle, ⌘Q quit).
-Pilots and settings the game saves go to Godot's `user://resources`.
+Pilots and settings the game saves go to Godot's `user://resources` (the Native edition keeps its
+own in `user://native/saves.cfg`, imported once from those).
 The edition is chosen on the command line, Original by default:
 `godot --path godot -- --edition=original`. `native` runs its first slices around Original
 ([godot/native/README.md](godot/native/README.md)); `enhanced` is not implemented yet and says so. `--version=1.0.4` runs Hellcats 1.0.4, rebuilt from its original
@@ -200,9 +201,11 @@ switchable improvements on Native). The roadmap, one validated phase at a time
 4. ~~Deterministic stepping and state traces to compare editions~~ (done: GAME_RUNTIME.md).
 5. ~~Hellcats 1.0.4: rebuild it from 1.0.3 and the updater, port the changed CODE 2~~ (done:
    runs with `--version=1.0.4`; [RESOURCE_ANALYSIS.md](docs/reference/RESOURCE_ANALYSIS.md#hellcats-104)).
-6. Native adapters around the original port: input (InputMap controls), sound (the 1.0.3 driver on
-   typed state, sample-exact), dialogs (Godot controls over the standard items), then files.
-7. A typed native state model, replacing the emulated memory subsystem by subsystem.
+6. ~~Native adapters around the original port~~ (done, godot/native/README.md): input (InputMap controls), sound (the 1.0.3 driver on
+   typed state, sample-exact), dialogs (Godot controls over the standard items), saves (a Godot
+   ConfigFile, importing Original's saves without changing them), menus (Godot labels over the bar).
+7. A typed native state model, replacing the emulated memory subsystem by subsystem (started: the
+   overlay RNG).
 8. Leyte Gulf: match its functions against 1.0.3, then port it (started: [LEYTE_GULF.md](docs/topics/LEYTE_GULF.md)).
 9. The enhanced edition.
 

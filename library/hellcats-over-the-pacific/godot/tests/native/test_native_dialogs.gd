@@ -37,6 +37,26 @@ func run() -> bool:
 			[original, native][i].toolbox.dialogs.dispose(pair[i])
 	ok = Assertions.assert_true(native.memory._bytes == original.memory._bytes, "the Mac memory is the same, byte for byte") and ok
 	ok = Assertions.assert_equal(native.toolbox.dialogs.snapshot()["items"], [], "no dialog left, nothing shown") and ok
+	return _check_edit_focus(native) and ok
+
+## The edit field typing goes to: the first one when the dialog opens (a caret in the overlay), then
+## one selected whole by SelIText (shown inverted, no caret).
+func _check_edit_focus(m) -> bool:
+	var dm = m.toolbox.dialogs
+	var d: int = dm.get_new_dialog(130, 0, 0xffffffff)
+	m.toolbox.windows.show(d, true)
+	dm.draw_dialog(d)
+	var edits: Array = dm.snapshot()["items"].filter(func(e): return e["type"] == 16)
+	var ok := Assertions.assert_true(edits.size() >= 2, "DLOG 130 has edit fields")
+	ok = Assertions.assert_equal(edits.map(func(e): return e["focused"]), [true] + edits.slice(1).map(func(_e): return false),
+		"the first edit field has the focus") and ok
+	var first: Control = DialogOverlay.build_control(edits[0])
+	ok = Assertions.assert_true(first.get_node_or_null("Caret") != null, "a caret in the focused field") and ok
+	first.free()
+	dm.set_edit(d, int(edits[1]["index"]) - 1, true)
+	var second: Dictionary = dm.snapshot()["items"].filter(func(e): return e["index"] == edits[1]["index"])[0]
+	ok = Assertions.assert_equal([second["focused"], second["selected"]], [true, true], "SelIText selects the second field") and ok
+	dm.dispose(d)
 	return ok
 
 func _machine(native: bool):

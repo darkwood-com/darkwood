@@ -178,6 +178,23 @@ static func mission_steps(mission: int) -> Array:
 		[40, "shot", 0, 0], [80, "shot", 0, 0], [118, "shot", 0, 0], [180, "shot", 0, 0],
 		[240, "shot", 0, 0], [298, "shot", 0, 0]]
 
+## --views (with --mission): the aircraft flown (full throttle at 10, the stick back at 22 to climb,
+## banked left 34..42), and the view keys cycled once it is airborne, a shot 0.6 s after each:
+## cockpit 'v', chase 'c', tracking 't', 'e' (the designated aircraft, when there is one), the look
+## keys (arrows) and back, twice (tester report A, loop 8: cockpit pixels left over the scenery).
+const VIEW_KEYS := [[0x09, 0x76], [0x08, 0x63], [0x09, 0x76], [0x11, 0x74], [0x09, 0x76], [0x0e, 0x65],
+		[0x09, 0x76], [0x7b, 0x1c], [0x7c, 0x1d], [0x7e, 0x1e], [0x7d, 0x1f], [0x09, 0x76]]
+static func view_steps() -> Array:
+	var out: Array = [[10, "throttle", 0, 0], [22, "mouse", 320, 300], [30, "mouse", 320, 250],
+		[34, "mouse", 240, 250], [42, "mouse", 320, 250]]
+	var t: float = 26.0
+	for round in 2:
+		for k in VIEW_KEYS:
+			out.append([t, "key", k[0], k[1]])
+			out.append([t + 0.6, "shot", 0, 0])
+			t += 1.0
+	return out
+
 ## --approach: 'g' (key code 0x05) at 190, in phase 5's flight under the target lock, and again: that
 ## one is merged after the lock's release (234.8; the 195 / 215 shots are listed after it too), so it
 ## fires with it. The approach runs; the glide ends in a crash before the release.
@@ -253,6 +270,20 @@ var error_log := ErrorLog.new()
 func _initialize() -> void:
 	OS.add_logger(error_log)
 	var args: PackedStringArray = OS.get_cmdline_user_args()
+	# Unknown arguments fail: a shell that passes "--stepped --edition native" as one word would
+	# otherwise run the Original edition under a Native label.
+	var flags := ["--24bit", "--approach", "--haze", "--lost-pilot", "--missing-scenery", "--one-line", "--stepped", "--merge", "--views"]
+	var valued := ["--shots", "--coverage", "--mission", "--seconds", "--depth", "--version", "--edition", "--trace", "--expect"]
+	var k: int = 0
+	while k < args.size():
+		if valued.has(args[k]) and k + 1 < args.size():
+			k += 2
+		elif flags.has(args[k]):
+			k += 1
+		else:
+			push_error("smoke session: unknown argument '%s'" % args[k])
+			quit(2)
+			return
 	var at: int = args.find("--shots")
 	if at >= 0 and at + 1 < args.size():
 		shots = args[at + 1]
@@ -267,6 +298,8 @@ func _initialize() -> void:
 	at = args.find("--mission")
 	if at >= 0 and at + 1 < args.size():
 		steps = mission_steps(int(args[at + 1]))
+		if args.has("--views"):
+			steps = _with_steps(steps, view_steps())
 		end = MISSION_END
 		at = args.find("--seconds")
 		if at >= 0 and at + 1 < args.size():
@@ -303,8 +336,22 @@ func _initialize() -> void:
 		load("res://assets/ui/resource_files.gd").version = args[at + 1]
 	var loader = load("res://original/mac/machine/segment_loader.gd")
 	if args.has("--edition") and args[args.find("--edition") + 1] == "native":
-		loader.overrides = {2: load("res://native/sound/native_id02.gd")}
-		load("res://original/mac/toolbox/toolbox.gd").overrides = {"dialogs": load("res://native/dialogs/dialog_manager.gd")}
+		loader.overrides = {6: load("res://native/state/native_id06.gd")}
+		if load("res://assets/ui/resource_files.gd").version == "1.0.3":   # as native_game.gd: 1.0.4 keeps its own driver
+			loader.overrides[2] = load("res://native/sound/native_id02.gd")
+		var native_saves = load("res://native/saves/resource_manager.gd")
+		native_saves.store_path = SAVES + "/native.cfg"     # inside the session's own folder, emptied first
+		load("res://original/mac/toolbox/toolbox.gd").overrides = {"dialogs": load("res://native/dialogs/dialog_manager.gd"),
+			"resources": native_saves, "menus": load("res://native/menus/menu_manager.gd")}
+		var native_overlay = load("res://native/state/native_overlay.gd")
+		# A Native overlay that fails to load would leave the Original's in place and the traces would
+		# agree trivially: fail instead.
+		assert(native_overlay != null and native_overlay.can_instantiate(), "the Native overlay failed to load")
+		if native_overlay == null or not native_overlay.can_instantiate():
+			push_error("smoke session: the Native overlay failed to load")
+			quit(1)
+			return
+		load("res://original/mac/machine/overlay_loader.gd").port_override = native_overlay
 	machine = MacMachine.new()
 	loader.overrides = {}
 	load("res://original/mac/toolbox/toolbox.gd").overrides = {}

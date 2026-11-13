@@ -147,6 +147,21 @@ flight is `--mission 2 --seconds 60 --stepped --expect res://tests/original/mac/
 (120 entries; the A5 world, the overlay's objects and the random-number table all move, about
 a minute of host time).
 
+A trace compares only with one from the same scenario: the same input script, initial state,
+version, edition fields and trace schema. The three references:
+
+| Scenario | Reference | Check |
+|---|---|---|
+| Deterministic stepped test (600 ticks, Return at the copy protection) | `fixtures/stepped_trace.json` | `tests/original/mac/test_stepped_run.gd` (in `run_all.gd`); never a smoke-session `--expect` target: the smoke session's input script differs, so its trace parts from it at the first scripted step |
+| Mission 2, 60 s | `fixtures/stepped_mission2_trace.json` | `smoke_session.gd -- --mission 2 --seconds 60 --stepped [--edition native] --expect res://tests/original/mac/fixtures/stepped_mission2_trace.json` (Native compares `NATIVE_FIELDS`) |
+| Full smoke session (191 steps) | none recorded: Original and Native against each other | `smoke_session.gd -- --stepped --trace <a>` and `-- --stepped --edition native --trace <b>`, then every entry's `game_globals` / `world` / `rng` equal (852 entries) |
+| Full smoke session, Hellcats 1.0.4 | none recorded: Original and Native against each other | the same with `--version 1.0.4` on both runs (852 entries; Native keeps 1.0.4's own sound driver, as `native_game.gd` does) |
+
+State an edition keeps outside the Mac memory is traced from where it lives: `rng` from the port's
+`rng_bytes()`, and in `world` the blocks the port lists in `native_state_ranges()` (Native's
+Godot-backed replay camera, 0x1d814 and 0x24d18, camera angles 0x1d800..0x1d811, camera position 0x1d830..0x1d83b and view state 0x1d856..0x1d859) take the place of the memory's bytes, so the hash
+covers the values Native actually holds; the memory's bytes there are not Native's state.
+
 An end-to-end session is `tests/original/mac/smoke_session.gd`, kept out of `run_all.gd` because it runs
 for minutes of real time: `Godot --headless --path godot --script res://tests/original/mac/smoke_session.gd`.
 Its header lists the phases (the missions played, the menus by key and by mouse, the dialogs) and
