@@ -48,8 +48,9 @@ Public monorepo for Darkwood open-source projects.
 
 Projects live under [`library/`](library/). Public discovery metadata is available
 in [`tags.json`](tags.json). See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the
-public issue and code contribution policy. Card status, dependencies and
-sparse load/unload commands are documented in [`CARDS.md`](CARDS.md).
+public issue and code contribution policy. Card status, kind and dependencies
+are described by the public catalogue; environment materialization is managed
+outside this distribution repository.
 
 ## License
 

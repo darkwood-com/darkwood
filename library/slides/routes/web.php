@@ -1,12 +1,8 @@
 <?php
 
-use App\Http\Controllers\PublicationController;
 use App\Support\PresentationCatalog;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-
-Route::get('/publications', [PublicationController::class, 'index']);
-Route::post('/publications/associate', [PublicationController::class, 'associate']);
 
 Route::get('/', function (PresentationCatalog $catalog, Request $request) {
     $presentations = $catalog->entries();

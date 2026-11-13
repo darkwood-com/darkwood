@@ -9,7 +9,7 @@ use InvalidArgumentException;
 
 class PublicationAssociations
 {
-    public function __construct(private PublicationProviders $providers) {}
+    public function __construct(private RemotePublicationIdentity $identities) {}
 
     /** Manual confirmation proves the editorial association, not remote PDF equality. */
     public function associate(Presentation $presentation, string $provider, string $remoteId, string $url, bool $confirmed): ExternalPublication
@@ -17,7 +17,7 @@ class PublicationAssociations
         if (! $confirmed) {
             throw new InvalidArgumentException('The editorial correspondence must be explicitly confirmed.');
         }
-        $this->providers->validateIdentity($provider, $remoteId, $url);
+        $this->identities->validate($provider, $remoteId, $url);
 
         return DB::transaction(function () use ($presentation, $provider, $remoteId, $url) {
             $existing = $presentation->publications()->where('provider', $provider)->first();

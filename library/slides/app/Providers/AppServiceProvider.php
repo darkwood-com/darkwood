@@ -2,10 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\ExternalPublication;
-use App\Models\PublicationAttempt;
-use App\Support\PublicationRegistry;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use WendellAdriel\SlideWire\Commands\MakeSlideCommand;
 
@@ -25,13 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if ($this->app->runningUnitTests()) {
-            return;
-        }
-        foreach ([ExternalPublication::class, PublicationAttempt::class] as $model) {
-            $model::saved(function () {
-                DB::afterCommit(fn () => app(PublicationRegistry::class)->backup());
-            });
-        }
+        // Provider orchestration is intentionally implemented in private Slides Core.
     }
 }

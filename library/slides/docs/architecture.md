@@ -8,17 +8,20 @@ Les sources sont dans `resources/views/pages/slides/`. Le compilateur du paquet 
 
 Les UUID identifient les présentations, indépendamment des titres, slugs et IDs internes de frames. Un renommage conserve toujours l'UUID.
 
-## Données de publication
+## Données publiques de publication
 
-La base Laravel est le journal opérationnel :
+La base Laravel restitue les associations publiques :
 
 - `presentations` : catalogue compilé et nombre de slides ;
 - `external_publications` : association d'une présentation à un provider ;
-- `publication_attempts` : réservation et reprise d'une opération assistée.
+- `publication_attempts` : compatibilité avec les données historiques.
 
-Les modèles sont dans `app/Models/`, les services dans `app/Support/` et les commandes dans `app/Console/Commands/`. Les contraintes SQL imposent une association par `(slide_id, provider)`, un propriétaire canonique par `(provider, remote_id)` et une seule tentative active par destination.
+Les contraintes SQL imposent une association par `(slide_id, provider)` et un
+propriétaire canonique par `(provider, remote_id)`.
 
-`resources/data/publications.json` est une projection publique explicitement exportée depuis la base. Le journal complet est sauvegardé après commit dans `storage/app/private/publications/registry.json`. Cette sauvegarde n'est pas une deuxième source de vérité. Voir [les procédures de publication](publications.md).
+`resources/data/publications.json` est une projection publique explicitement
+exportée depuis la base. Les procédures fournisseur et les journaux opérateur
+appartiennent au plan de contrôle privé. Voir [l'interface publique](publications.md).
 
 `resources/data/presentation-metadata.json` fournit les titres de couverture, auteurs et autres métadonnées publiques utilisés par les rapports. Ces informations ne portent aucune identité de publication distante.
 
@@ -30,9 +33,11 @@ Les artefacts sont conservés sous `storage/app/publications/UUID/EXPORT/`. Un m
 
 ## Frontières d'accès
 
-Le catalogue et les présentations sont publics. Les routes de suivi des publications sont désactivées par défaut et interdites en production. L'activation locale exige un utilisateur authentifié explicitement autorisé, un hôte local et une IP loopback.
-
-Les intégrations ne réalisent aucun upload automatique : l'opérateur utilise les interfaces officielles des providers et atteste le résultat. Les cookies et credentials ne font pas partie du registre. Les erreurs publiques sont filtrées ; les logs standards utilisent `RedactSensitiveData`.
+Le catalogue et les présentations sont publics. Aucune route HTTP de pilotage
+des fournisseurs n'est enregistrée. Les commandes Artisan de catalogue,
+d'export, de manifeste, d'association et de diagnostic constituent l'interface
+locale explicite. Elles ne réalisent aucun upload et n'acceptent aucun cookie ou
+credential fournisseur. Les logs standards utilisent `RedactSensitiveData`.
 
 ## Bibliothèque d’accueil
 

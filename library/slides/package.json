@@ -10,7 +10,6 @@
         "test:interactions": "node tests/Browser/darkwood-interactions.cjs",
         "test:render-results": "node tests/Browser/design-results.cjs",
         "test:bounds": "node tests/Browser/content-bounds.cjs",
-        "test:ui": "node tests/Browser/publication-design.cjs",
         "test:pdf-layout": "node tests/Browser/pdf-readiness.cjs",
         "render": "node bin/render-presentations.cjs",
         "render:reading": "node tests/Browser/darkwood-dense.cjs",

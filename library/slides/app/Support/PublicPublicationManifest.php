@@ -37,7 +37,7 @@ class PublicPublicationManifest
                     throw new InvalidArgumentException('Incomplete public identity.');
                 }
             }
-            app(PublicationProviders::class)->validateIdentity($row['provider'], $row['remote_id'], $row['remote_url']);
+            app(RemotePublicationIdentity::class)->validate($row['provider'], $row['remote_id'], $row['remote_url']);
             if (isset($row['source_hash']) && (! is_string($row['source_hash']) || ! preg_match('/^[a-f0-9]{64}$/D', $row['source_hash']))) {
                 throw new InvalidArgumentException('Invalid public PDF hash.');
             }
