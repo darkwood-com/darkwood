@@ -70,7 +70,7 @@ try {
         $must(0 === $result['code'], 'Fixture setup failed: '.$result['err']);
     }
 
-    $status = $run([PHP_BINARY, 'bin/darkwood', 'cards', 'status'], $fixture);
+    $status = $run([PHP_BINARY, $fixture.'/bin/darkwood', 'cards', 'status'], sys_get_temp_dir());
     $must(0 === $status['code'] && str_contains($status['out'], '1 loaded, 1 unloaded'), 'Initial physical status is wrong.');
 
     $load = $run([PHP_BINARY, 'bin/darkwood', 'cards', 'load', 'b'], $fixture);

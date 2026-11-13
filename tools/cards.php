@@ -292,7 +292,10 @@ function cardsPrintTable(array $rows): void
 
 function cardsMain(array $argv): void
 {
-    $rootResult = cardsRun(['git', 'rev-parse', '--show-toplevel']);
+    $toolRoot = realpath(dirname(__DIR__));
+    $rootResult = false === $toolRoot
+        ? ['code' => 1, 'out' => '', 'err' => '']
+        : cardsRun(['git', '-C', $toolRoot, 'rev-parse', '--show-toplevel']);
     if (0 !== $rootResult['code']) {
         cardsFail('run this command inside a Darkwood monorepo');
     }
