@@ -29,7 +29,7 @@ bin/darkwood cards profile show vps4-production
 bin/darkwood cards profile apply vps4-production
 ```
 
-Full checkouts report every card as loaded. `unload` is intentionally refused until sparse checkout is enabled. Loading resolves same-catalogue dependencies and reports external dependencies without attempting to edit another repository.
+Full checkouts report every card as loaded. `unload` is intentionally refused until sparse checkout is enabled. Dependencies are displayed but never auto-loaded: package dependencies can be satisfied by installed vendors and each environment profile remains the authority for source materialization.
 
 Before an unload, the command refuses to continue when it finds tracked or untracked changes, ignored files, a loaded dependent card, open processes, Caddy/systemd references, an external symlink, or a card protected by the active environment profile. Persistent data remains outside the Git operation. The command never invokes `git clean`, deletes Git history, or removes `/var/lib` data.
 
