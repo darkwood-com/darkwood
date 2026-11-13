@@ -1,6 +1,7 @@
 # Slides
 
-Présentations Darkwood en Laravel et Blade, avec lecteur interactif, design system partagé, exports PDF et suivi des publications Speaker Deck / SlideShare.
+Présentations Darkwood en Laravel et Blade, avec lecteur interactif, design
+system partagé, exports PDF et manifeste public portable.
 
 ## Démarrer
 
@@ -26,9 +27,12 @@ Pour une première installation, préparer l'environnement et la base selon le [
 - [Déploiement](docs/deployment.md)
 - [Tests et maintenance](docs/testing.md)
 
-## Identifiants et publications
+## Identifiants et manifeste public
 
-[resources/presentations.json](resources/presentations.json) définit les UUID stables du catalogue. Le [manifeste public](resources/data/publications.json) conserve les correspondances avec les providers. Le journal opérationnel et ses sauvegardes restent dans la base et le stockage privé.
+[resources/presentations.json](resources/presentations.json) définit les UUID
+stables du catalogue. Le [manifeste public](resources/data/publications.json)
+conserve les correspondances publiables. L'orchestration des comptes Speaker
+Deck et SlideShare est volontairement extérieure à ce dépôt public.
 
 ```sh
 php artisan publications:diagnose --json
@@ -36,4 +40,6 @@ php artisan test
 npm test
 ```
 
-Les exports, builds et consultations du lecteur ne publient aucun document sur les comptes externes.
+Les exports, builds et consultations du lecteur ne publient aucun document sur
+les comptes externes. Les commandes publiques exposent uniquement les limites
+stables nécessaires au catalogue, à l'export et au manifeste.

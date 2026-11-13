@@ -4,9 +4,7 @@
 
 Servir uniquement le répertoire `public/` comme racine HTTP. Configurer l'environnement privé avec `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://slides.darkwood.com`, une clé Laravel conservée et la connexion de base adaptée.
 
-Ne pas stocker les secrets dans Git. Le fichier `.env` appartient au compte applicatif, en mode `0600`. Préserver la base et `storage/` entre les versions du code ; le compte applicatif doit pouvoir écrire dans `storage/` et `bootstrap/cache/`. Les sauvegardes de publication utilisent un sous-répertoire privé `0700` et des fichiers `0600`.
-
-Les routes HTTP d'administration des publications restent interdites en production. Les credentials, journaux et données de session ne doivent pas être accessibles sous la racine publique.
+Ne pas stocker les secrets dans Git. Le fichier `.env` appartient au compte applicatif, en mode `0600`. Préserver la base et `storage/` entre les versions du code ; le compte applicatif doit pouvoir écrire dans `storage/` et `bootstrap/cache/`. Les credentials et données de session ne doivent pas être accessibles sous la racine publique.
 
 ## Mettre à jour le code
 
@@ -28,7 +26,10 @@ Redémarrer ou recharger le processus applicatif selon l'hébergement. Vérifier
 
 ## Synchroniser les associations
 
-Le poste de publication est le seul écrivain des attestations. Il exporte et versionne un manifeste public approuvé avec `publications:manifest --export`. Le serveur reçoit ce manifeste et sert le lecteur ; il ne crée pas de publications concurrentes.
+Le plan de contrôle privé est le seul pilote des attestations. Il exporte et
+versionne un manifeste public approuvé avec `publications:manifest --export`.
+Le serveur reçoit ce manifeste et sert le lecteur ; il ne contacte aucun compte
+fournisseur.
 
 Un `git pull` ne remplace pas la base et n'importe aucun mapping automatiquement. Après sauvegarde de la base de destination :
 
@@ -49,4 +50,5 @@ php artisan publications:manifest --import=resources/data/publications.json --ac
 
 Ce drapeau ne réattribue jamais un ID distant et n'efface pas un hash connu. Une date inconnue ne supprime pas une date attestée. Ne pas exporter depuis le miroir serveur pour écraser les attestations du poste de publication.
 
-Pour une récupération complète incluant les tentatives et artefacts, utiliser la [restauration privée](publications.md). Les sauvegardes privées ne transitent pas par le manifeste Git.
+Les artefacts et données d'exploitation privées ne transitent pas par le
+manifeste Git.

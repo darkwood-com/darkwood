@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\ExternalPublication;
 use App\Models\PublicationAttempt;
 use App\Support\PresentationCatalog;
-use App\Support\PublicationRegistry;
 use App\Support\PublicPublicationManifest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -177,26 +176,6 @@ class PublicPublicationManifestTest extends TestCase
         $this->assertSame(1, $data['active_attempt_count']);
         $this->assertSame(0, $data['orphan_count']);
         $this->assertCount(57, $data['missing']);
-    }
-
-    public function test_full_backup_stays_private_and_contains_recovery_material(): void
-    {
-        $root = sys_get_temp_dir().'/publication-private-'.uniqid();
-        $original = $this->app->storagePath();
-        try {
-            $this->app->useStoragePath($root);
-            app(PublicPublicationManifest::class)->import($this->data());
-            ExternalPublication::first()->update(['last_error' => 'fixture-private-detail']);
-            app(PublicationRegistry::class)->backup();
-            $file = $root.'/app/private/publications/registry.json';
-            $this->assertSame(0600, fileperms($file) & 0777);
-            $this->assertSame(0700, fileperms(dirname($file)) & 0777);
-            $this->assertStringContainsString('fixture-private-detail', file_get_contents($file));
-            $this->assertArrayNotHasKey('last_error', app(PublicPublicationManifest::class)->snapshot()['publications'][0]);
-        } finally {
-            $this->app->useStoragePath($original);
-            File::deleteDirectory($root);
-        }
     }
 
     public function test_import_preserves_known_dates_and_never_erases_a_published_hash(): void
