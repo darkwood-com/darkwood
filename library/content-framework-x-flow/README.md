@@ -14,7 +14,7 @@ It does **not** claim Framework X is a cloud agent platform.
 ## Installation
 
 ```bash
-cd library/framework-x-flow
+cd library/content-framework-x-flow
 composer install
 ```
 
