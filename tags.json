@@ -5,10 +5,10 @@
   "projects": [
     {
       "id": "composio-mcp",
-      "path": "library/composio-mcp",
+      "path": "library/content-composio-mcp",
       "domain": "matyo91",
       "description": "Symfony MCP server integrating Composio actions and workflows.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [
         "darkwood-php"
@@ -86,10 +86,10 @@
     },
     {
       "id": "diablo-php",
-      "path": "library/diablo-php",
+      "path": "library/content-diablo-php",
       "domain": "matyo91",
       "description": "Archived PHP and FFI implementation inspired by the original Diablo engine.",
-      "kind": "product",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
@@ -327,10 +327,10 @@
     },
     {
       "id": "nolife-models",
-      "path": "library/nolife-models",
+      "path": "library/content-nolife-models",
       "domain": "matyo91",
       "description": "Local explorer and comparator for public AI model catalogs and Ollama runtimes.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
@@ -360,10 +360,10 @@
     },
     {
       "id": "nolife-tracker",
-      "path": "library/nolife-tracker",
+      "path": "library/content-nolife-tracker",
       "domain": "matyo91",
       "description": "Terminal-first registry for AI provider accounts, subscriptions and entitlements.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
@@ -408,10 +408,10 @@
     },
     {
       "id": "quake-3-arena-php",
-      "path": "library/quake-3-arena-php",
+      "path": "library/content-quake-3-arena-php",
       "domain": "matyo91",
       "description": "Archived PHP FFI study of the Quake III Arena engine.",
-      "kind": "product",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
@@ -422,10 +422,10 @@
     },
     {
       "id": "rxjs-flow",
-      "path": "library/rxjs-flow",
+      "path": "library/content-rxjs-flow",
       "domain": "matyo91",
       "description": "Study mapping RxJS streaming concepts onto Darkwood Flow.",
-      "kind": "experiment",
+      "kind": "content",
       "status": "done",
       "dependencies": [
         "darkwood-php"
@@ -533,10 +533,10 @@
     },
     {
       "id": "prime-ai-answer",
-      "path": "library/prime-ai-answer",
+      "path": "library/content-prime-ai-answer",
       "domain": "matyo91",
       "description": "MCP experiment for producing concise AI-assisted answers.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
@@ -546,10 +546,10 @@
     },
     {
       "id": "recherche-entreprise-mcp",
-      "path": "library/recherche-entreprise-mcp",
+      "path": "library/content-recherche-entreprise-mcp",
       "domain": "matyo91",
       "description": "PHP MCP and company-research experimentation project.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
@@ -560,10 +560,10 @@
     },
     {
       "id": "thumbnail-mcp",
-      "path": "library/thumbnail-mcp",
+      "path": "library/content-thumbnail-mcp",
       "domain": "matyo91",
       "description": "Replicate-backed MCP tool for generating thumbnail images.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
@@ -574,10 +574,10 @@
     },
     {
       "id": "url-scrapping-api",
-      "path": "library/url-scrapping-api",
+      "path": "library/content-url-scrapping-api",
       "domain": "matyo91",
       "description": "Symfony API for extracting structured content from web pages.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [
         "darkwood-php"
@@ -651,10 +651,10 @@
     },
     {
       "id": "framework-x-flow",
-      "path": "library/framework-x-flow",
+      "path": "library/content-framework-x-flow",
       "domain": "matyo91",
       "description": "Framework X HTTP runtime experiment orchestrated with Darkwood Flow.",
-      "kind": "experiment",
+      "kind": "content",
       "status": "done",
       "dependencies": [
         "darkwood-php"
@@ -668,10 +668,10 @@
     },
     {
       "id": "laravel-pipeline",
-      "path": "library/laravel-pipeline",
+      "path": "library/content-laravel-pipeline",
       "domain": "matyo91",
       "description": "Comparison of a Laravel-inspired pipeline with Darkwood Flow.",
-      "kind": "experiment",
+      "kind": "content",
       "status": "done",
       "dependencies": [
         "darkwood-php"
@@ -719,10 +719,10 @@
     },
     {
       "id": "sqlite-compiler-php",
-      "path": "library/sqlite-compiler-php",
+      "path": "library/content-sqlite-compiler-php",
       "domain": "matyo91",
       "description": "Experimental ARM64 C compiler in PHP targeting the SQLite amalgamation.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [
         "darkwood-php"
@@ -735,10 +735,10 @@
     },
     {
       "id": "thanks-agent",
-      "path": "library/thanks-agent",
+      "path": "library/content-thanks-agent",
       "domain": "matyo91",
       "description": "Multi-agent experiment measuring useful output against consumed resources.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [
         "darkwood-php"
@@ -767,10 +767,10 @@
     },
     {
       "id": "navi-key-management",
-      "path": "library/navi-key-management",
+      "path": "library/content-navi-key-management",
       "domain": "matyo91",
       "description": "Experimental credential management interface for Navi AI connections.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [
         "darkwood-php"
@@ -1031,10 +1031,10 @@
     },
     {
       "id": "joplin-api",
-      "path": "library/joplin-api",
+      "path": "library/content-joplin-api",
       "domain": "matyo91",
       "description": "Archived Symfony API experiment for Joplin integration.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
@@ -1047,10 +1047,10 @@
     },
     {
       "id": "remove-background",
-      "path": "library/remove-background",
+      "path": "library/content-remove-background",
       "domain": "matyo91",
       "description": "Archived image background-removal experiment with provenance limitations retained.",
-      "kind": "tool",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
