@@ -1,6 +1,6 @@
 {
   "$schema": "./tags.schema.json",
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "repository": "https://github.com/darkwood-com/darkwood",
   "projects": [
     {
@@ -9,12 +9,10 @@
       "domain": "matyo91",
       "description": "Symfony MCP server integrating Composio actions and workflows.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "ai",
         "mcp",
@@ -28,12 +26,10 @@
       "domain": "matyo91",
       "description": "Symfony prototype connecting natural-language capabilities to the Darkwood Flow runtime.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "ai",
         "demo",
@@ -48,12 +44,8 @@
       "domain": "darkwood",
       "description": "PHP libraries and Symfony bundles maintained by Darkwood.",
       "kind": "component",
-      "lifecycle": {
-        "status": "active",
-        "support": "standard",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "framework",
         "php",
@@ -66,12 +58,10 @@
       "domain": "darkwood",
       "description": "MCP application for article generation and publication workflows.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "active",
-        "support": "standard",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "ai",
         "mcp",
@@ -80,16 +70,12 @@
     },
     {
       "id": "darkwood-showreel",
-      "path": "library/darkwood-showreel",
+      "path": "library/content-darkwood-showreel",
       "domain": "matyo91",
       "description": "Web and terminal showreel built with Symfony and Symfony TUI.",
-      "kind": "product",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "kind": "content",
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "demo",
         "php",
@@ -104,12 +90,8 @@
       "domain": "matyo91",
       "description": "Archived PHP and FFI implementation inspired by the original Diablo engine.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "game",
@@ -122,12 +104,10 @@
       "domain": "matyo91",
       "description": "Symfony Console demonstration of streaming token pipelines with Darkwood Flow.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -141,12 +121,10 @@
       "domain": "matyo91",
       "description": "PHP 8.6 study of partial function application, token scanning and Darkwood Flow.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -160,12 +138,10 @@
       "domain": "matyo91",
       "description": "Parallel fictional-person image fetcher demonstrating Darkwood Flow.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -179,12 +155,10 @@
       "domain": "matyo91",
       "description": "Archived experimental Symfony Flow and JEV platform integration.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "archive",
         "demo",
@@ -199,12 +173,8 @@
       "domain": "darkwood",
       "description": "Archived Hearthstone collection helper preserved as a sanitized source snapshot.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "game",
@@ -218,12 +188,8 @@
       "domain": "matyo91",
       "description": "Evidence-backed Godot port of the classic Hellcats Over the Pacific game.",
       "kind": "product",
-      "lifecycle": {
-        "status": "active",
-        "support": "standard",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "game",
         "godot",
@@ -236,12 +202,10 @@
       "domain": "matyo91",
       "description": "Observable product-sync consumer combining Darkwood Flow with a Kiboko ETL pipeline.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "etl",
@@ -256,12 +220,8 @@
       "domain": "darkwood",
       "description": "The LGS game and its Godot implementation.",
       "kind": "product",
-      "lifecycle": {
-        "status": "active",
-        "support": "standard",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "game",
         "godot"
@@ -273,12 +233,10 @@
       "domain": "matyo91",
       "description": "Pedagogical PHP prototype exploring LLM concepts through Conway's Game of Life.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "ai",
         "demo",
@@ -293,12 +251,10 @@
       "domain": "matyo91",
       "description": "Symfony AI multi-agent demonstration generating platformer levels for Godot.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "ai",
         "demo",
@@ -314,12 +270,8 @@
       "domain": "matyo91",
       "description": "Assets and automation for the matyo91 GitHub profile.",
       "kind": "product",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "github-profile",
         "personal"
@@ -331,12 +283,8 @@
       "domain": "matyo91",
       "description": "Streaming scenes, overlays and editable media sources for matyo91 live sessions.",
       "kind": "content",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "media",
         "personal",
@@ -349,12 +297,10 @@
       "domain": "matyo91",
       "description": "Symfony CLI experiment measuring language and wording effects on LLM token cost.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "ai",
         "demo",
@@ -368,12 +314,10 @@
       "domain": "matyo91",
       "description": "Archived local AI and 3D experimentation application using Symfony and PHP FFI.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "ai",
         "archive",
@@ -387,12 +331,8 @@
       "domain": "matyo91",
       "description": "Local explorer and comparator for public AI model catalogs and Ollama runtimes.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "ai",
         "ollama",
@@ -406,12 +346,10 @@
       "domain": "matyo91",
       "description": "Symfony CLI experiments for token analysis and Darkwood Flow pipelines.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "ai",
         "demo",
@@ -426,12 +364,8 @@
       "domain": "matyo91",
       "description": "Terminal-first registry for AI provider accounts, subscriptions and entitlements.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "ai",
         "cli",
@@ -445,12 +379,10 @@
       "domain": "matyo91",
       "description": "Archived Symfony project for extracting and exploring quotations from source repositories.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "archive",
         "php",
@@ -463,12 +395,10 @@
       "domain": "matyo91",
       "description": "PHP profiling demonstration built on Darkwood Flow.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -482,12 +412,8 @@
       "domain": "matyo91",
       "description": "Archived PHP FFI study of the Quake III Arena engine.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "game",
@@ -500,12 +426,10 @@
       "domain": "matyo91",
       "description": "Study mapping RxJS streaming concepts onto Darkwood Flow.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -520,12 +444,10 @@
       "domain": "matyo91",
       "description": "Archived Symfony experiment for generating and validating SketchUp shape specifications.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "archive",
         "php",
@@ -538,12 +460,10 @@
       "domain": "matyo91",
       "description": "VibePHP profiling demonstration built on Darkwood Flow.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -557,12 +477,8 @@
       "domain": "darkwood",
       "description": "Public GitHub organization profile, community files and issue templates.",
       "kind": "infrastructure",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "github",
         "organization-profile"
@@ -574,12 +490,8 @@
       "domain": "darkwood",
       "description": "Experimental cryptocurrency trading and market-analysis application.",
       "kind": "product",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "finance",
         "php",
@@ -588,16 +500,14 @@
     },
     {
       "id": "darkwood-memory",
-      "path": "library/darkwood-memory",
+      "path": "library/content-darkwood-memory",
       "domain": "matyo91",
       "description": "Interactive demonstrations accompanying the Darkwood memory article.",
-      "kind": "product",
-      "lifecycle": {
-        "status": "active",
-        "support": "standard",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "kind": "content",
+      "status": "working",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "creative-coding",
         "memory",
@@ -610,12 +520,10 @@
       "domain": "matyo91",
       "description": "Live demonstration application built around Darkwood Flow.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -629,12 +537,8 @@
       "domain": "matyo91",
       "description": "MCP experiment for producing concise AI-assisted answers.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "ai",
         "mcp"
@@ -646,12 +550,8 @@
       "domain": "matyo91",
       "description": "PHP MCP and company-research experimentation project.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "mcp",
         "php",
@@ -664,12 +564,8 @@
       "domain": "matyo91",
       "description": "Replicate-backed MCP tool for generating thumbnail images.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "ai",
         "image-generation",
@@ -682,12 +578,10 @@
       "domain": "matyo91",
       "description": "Symfony API for extracting structured content from web pages.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "api",
         "automation",
@@ -701,12 +595,8 @@
       "domain": "darkwood",
       "description": "What You See Is What You Learn public experiment.",
       "kind": "product",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "experiment",
         "web"
@@ -718,12 +608,10 @@
       "domain": "darkwood",
       "description": "Symfony voice workflow with local and hosted transcription providers.",
       "kind": "product",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "audio",
         "php",
@@ -737,12 +625,8 @@
       "domain": "darkwood",
       "description": "Hotwire Native iOS shell for the Flowvox voice workflow.",
       "kind": "product",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "audio",
         "ios",
@@ -756,12 +640,8 @@
       "domain": "darkwood",
       "description": "Archived OBS scenes, overlays and media sources for a DJ stream setup.",
       "kind": "content",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "media",
@@ -775,12 +655,10 @@
       "domain": "matyo91",
       "description": "Framework X HTTP runtime experiment orchestrated with Darkwood Flow.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -794,12 +672,10 @@
       "domain": "matyo91",
       "description": "Comparison of a Laravel-inspired pipeline with Darkwood Flow.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -813,12 +689,10 @@
       "domain": "matyo91",
       "description": "Experimental agent workflow for generating and reviewing a client website.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "agents",
         "demo",
@@ -832,12 +706,10 @@
       "domain": "matyo91",
       "description": "Behavior-focused testing demonstration built around Darkwood Flow jobs.",
       "kind": "experiment",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "demo",
         "flow",
@@ -851,12 +723,10 @@
       "domain": "matyo91",
       "description": "Experimental ARM64 C compiler in PHP targeting the SQLite amalgamation.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "compiler",
         "php",
@@ -869,12 +739,10 @@
       "domain": "matyo91",
       "description": "Multi-agent experiment measuring useful output against consumed resources.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "agents",
         "demo",
@@ -888,12 +756,8 @@
       "domain": "darkwood",
       "description": "Complementary AI component ecosystem for Symfony AI.",
       "kind": "component",
-      "lifecycle": {
-        "status": "active",
-        "support": "standard",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "ai",
         "components",
@@ -907,12 +771,10 @@
       "domain": "matyo91",
       "description": "Experimental credential management interface for Navi AI connections.",
       "kind": "tool",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "credentials",
         "navi",
@@ -926,12 +788,8 @@
       "domain": "darkwood",
       "description": "Solitaire-style card puzzle for Godot with canonical editable design sources.",
       "kind": "product",
-      "lifecycle": {
-        "status": "maintenance",
-        "support": "best-effort",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "game",
         "gdscript",
@@ -944,12 +802,8 @@
       "domain": "matyo91",
       "description": "Archived Mateafox TypeScript API and Gatsby web application.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "gatsby",
@@ -963,12 +817,8 @@
       "domain": "darkwood",
       "description": "Presentation authoring and controlled publication platform.",
       "kind": "product",
-      "lifecycle": {
-        "status": "active",
-        "support": "standard",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "laravel",
         "presentation",
@@ -982,12 +832,8 @@
       "domain": "darkwood",
       "description": "Open-source workflow and commerce platform with project-scoped release history.",
       "kind": "product",
-      "lifecycle": {
-        "status": "active",
-        "support": "standard",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [],
       "topics": [
         "php",
         "platform",
@@ -1001,12 +847,10 @@
       "domain": "darkwood",
       "description": "Public Darkwood website and application source.",
       "kind": "product",
-      "lifecycle": {
-        "status": "active",
-        "support": "standard",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "working",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "php",
         "symfony",
@@ -1019,12 +863,8 @@
       "domain": "matyo91",
       "description": "Archived Rust solutions and inputs for Advent of Code 2020.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "rust"
@@ -1036,12 +876,8 @@
       "domain": "matyo91",
       "description": "Archived notes and experiment for Cursor and Slack integration.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "automation",
@@ -1054,12 +890,8 @@
       "domain": "darkwood",
       "description": "First historical Godot prototype for Darkwaar.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "game",
@@ -1072,12 +904,8 @@
       "domain": "darkwood",
       "description": "Second historical Godot prototype for Darkwaar.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "game",
@@ -1090,12 +918,8 @@
       "domain": "darkwood",
       "description": "Third historical Godot prototype for Darkwaar, including its web export evidence.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "game",
@@ -1108,12 +932,8 @@
       "domain": "darkwood",
       "description": "Fourth historical Godot prototype for Darkwaar.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "game",
@@ -1126,12 +946,8 @@
       "domain": "matyo91",
       "description": "Archived demonstration of a pipe-oriented PHP syntax experiment.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "demo",
@@ -1144,12 +960,8 @@
       "domain": "darkwood",
       "description": "Archived generated administration interface for Uniflow.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "react",
@@ -1162,12 +974,8 @@
       "domain": "matyo91",
       "description": "Archived Meteor experiment transforming recorded voice into blog content.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "audio",
@@ -1180,12 +988,8 @@
       "domain": "matyo91",
       "description": "Archived PHP implementation of a battleship-style game.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "game",
@@ -1194,16 +998,12 @@
     },
     {
       "id": "bleu-libellule",
-      "path": "library/bleu-libellule",
+      "path": "library/content-bleu-libellule",
       "domain": "matyo91",
       "description": "Archived static web presentation preserved from its original public source.",
-      "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "kind": "content",
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "css",
@@ -1217,12 +1017,10 @@
       "domain": "matyo91",
       "description": "Archived Symfony experiment integrating Cursor-generated workflows with Slack.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [
+        "darkwood-php"
+      ],
       "topics": [
         "archive",
         "automation",
@@ -1237,12 +1035,8 @@
       "domain": "matyo91",
       "description": "Archived Symfony API experiment for Joplin integration.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "api",
         "archive",
@@ -1257,12 +1051,8 @@
       "domain": "matyo91",
       "description": "Archived image background-removal experiment with provenance limitations retained.",
       "kind": "product",
-      "lifecycle": {
-        "status": "archived",
-        "support": "none",
-        "archivedAt": null,
-        "replacement": null
-      },
+      "status": "done",
+      "dependencies": [],
       "topics": [
         "archive",
         "image-processing",

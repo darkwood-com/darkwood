@@ -10,8 +10,8 @@ Public monorepo for Darkwood open-source projects.
 - [Crypto Trade](library/crypto-trade) — experimental cryptocurrency market-analysis application.
 - [Darkwood PHP](library/darkwood-php) — PHP libraries and Symfony bundles.
 - [Darkwood Publish Article MCP Apps](library/darkwood-publish-article-mcp-apps) — MCP application for article generation and publication workflows.
-- [Darkwood Showreel](library/darkwood-showreel) — web and terminal showreel built with Symfony TUI.
-- [Darkwood Memory](library/darkwood-memory) — interactive demonstrations about preserving creative memory.
+- [Darkwood Showreel](library/content-darkwood-showreel) — web and terminal showreel content built with Symfony TUI.
+- [Darkwood Memory](library/content-darkwood-memory) — interactive editorial demonstrations about preserving creative memory.
 - [Darkwood.com](library/darkwood-portal) — public website and application source.
 - [Diablo PHP](library/diablo-php) — archived PHP and FFI game-engine implementation.
 - [Flow Partial Function Application](library/flow-partial-function-application) — PHP 8.6 and Darkwood Flow study.
@@ -48,7 +48,8 @@ Public monorepo for Darkwood open-source projects.
 
 Projects live under [`library/`](library/). Public discovery metadata is available
 in [`tags.json`](tags.json). See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the
-public issue and code contribution policy.
+public issue and code contribution policy. Card status, dependencies and
+sparse load/unload commands are documented in [`CARDS.md`](CARDS.md).
 
 ## License
 
