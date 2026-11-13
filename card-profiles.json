@@ -23,18 +23,30 @@
         "lgs",
         "prime-ai-answer",
         "recherche-entreprise-mcp",
-        "slidewire",
+        "slides",
         "thumbnail-mcp",
         "url-scrapping-api",
         "wysiwyl"
       ],
-      "keepPaths": ["bin", "tests", "tools"]
+      "keepPaths": [
+        "bin",
+        "tests",
+        "tools"
+      ]
     },
     "grokbot": {
       "mode": "sparse",
       "description": "Automation-oriented public selection; load task-specific cards explicitly.",
-      "cards": ["darkwood-ai-php", "darkwood-php", "hellcats-over-the-pacific"],
-      "keepPaths": ["bin", "tests", "tools"]
+      "cards": [
+        "darkwood-ai-php",
+        "darkwood-php",
+        "hellcats-over-the-pacific"
+      ],
+      "keepPaths": [
+        "bin",
+        "tests",
+        "tools"
+      ]
     },
     "vps4-box": {
       "mode": "manual",
@@ -45,8 +57,15 @@
     "vps4-production": {
       "mode": "sparse",
       "description": "Public applications required by VPS-4 production.",
-      "cards": ["darkwood-portal", "slidewire", "uniflow"],
-      "keepPaths": ["bin", "tools"]
+      "cards": [
+        "darkwood-portal",
+        "slides",
+        "uniflow"
+      ],
+      "keepPaths": [
+        "bin",
+        "tools"
+      ]
     }
   }
 }

@@ -1,6 +1,6 @@
 # PDF et publications externes
 
-Slidewire est la source canonique. Speaker Deck et SlideShare sont des canaux de diffusion ; les exports, builds et consultations du lecteur ne déclenchent aucun upload.
+Slides est la source canonique. Speaker Deck et SlideShare sont des canaux de diffusion ; les exports, builds et consultations du lecteur ne déclenchent aucun upload.
 
 ## Mapping et persistance
 
@@ -10,7 +10,7 @@ La base Laravel est le journal opérationnel :
 - `external_publications` : `slide_id`, `provider`, `remote_id`, `remote_url`, `source_hash`, dates et état de synchronisation ;
 - `publication_attempts` : fichier exact, opération, réservation active et état de reprise.
 
-L'association est fondée sur **UUID Slidewire + provider → ID distant**. Les contraintes SQL garantissent l'unicité du couple `(slide_id, provider)` et de `(provider, remote_id)`. Une tentative active empêche une seconde réservation de la même destination.
+L'association est fondée sur **UUID Slides + provider → ID distant**. Les contraintes SQL garantissent l'unicité du couple `(slide_id, provider)` et de `(provider, remote_id)`. Une tentative active empêche une seconde réservation de la même destination.
 
 [resources/data/publications.json](../resources/data/publications.json) est la projection publique de la base : identifiants, URLs canoniques, SHA-256 et dates publiques. Les champs supplémentaires, doublons, UUID inconnus et URLs contenant des credentials ou paramètres sont refusés. Les titres et slugs ne sont jamais des clés primaires.
 
