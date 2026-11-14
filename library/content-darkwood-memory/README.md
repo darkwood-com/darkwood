@@ -71,9 +71,9 @@ Les tests couvrent les routes PHP, les sessions et leur isolation, la protection
 
 ## Publication
 
-`.github/workflows/pages.yml` installe les dépendances verrouillées dans Nix, exécute les tests, génère `dist/` et publie l’artefact officiel GitHub Pages. Les actions sont épinglées à leurs SHA. Seule la branche `main` publie automatiquement ; un lancement manuel est aussi disponible. Aucun secret de déploiement personnalisé n’est nécessaire : le job utilise les permissions GitHub Pages et OIDC prévues à cet effet.
+Le workflow canonique `.github/workflows/publish-github-pages.yml` du monorepo installe les dépendances verrouillées dans Nix, exécute les tests, génère `dist/` puis publie uniquement l’artefact dans le repository technique `darkwood-com/memory-pages`. Les sources, issues et contributions restent dans le monorepo ; le repository Pages n’est pas une source de développement.
 
-Le domaine se configure dans les paramètres GitHub Pages. Son CNAME pointe vers `matyo91.github.io`, sans nom de dépôt, en DNS uniquement. Le certificat HTTPS est géré par GitHub pour le nom exact. Le site n’utilise aucun serveur PHP permanent.
+Le domaine `memory.content.darkwood.com` pointe vers GitHub Pages en DNS uniquement. Son certificat HTTPS est géré par GitHub pour ce nom exact. Le site n’utilise aucun serveur PHP permanent.
 
 ## Licence et assets
 

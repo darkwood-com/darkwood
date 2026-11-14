@@ -1,0 +1,178 @@
+name: Publish static sites
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - library/content-darkwood-memory/**
+      - library/darkwood-php/src/Darkwood/Component/Flow/docs/**
+      - .github/workflows/publish-github-pages.yml
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Static site to publish
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - flow
+          - memory
+      dry_run:
+        description: Build and compare without pushing
+        required: true
+        default: true
+        type: boolean
+
+concurrency:
+  group: static-sites-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    name: ${{ matrix.id }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: flow
+            source: library/darkwood-php/src/Darkwood/Component/Flow/docs
+            artifact: library/darkwood-php/src/Darkwood/Component/Flow/docs/src/public
+            repository: darkwood-com/flow-pages
+            domain: flow.darkwood.com
+            secret: PAGES_FLOW_SSH_KEY
+          - id: memory
+            source: library/content-darkwood-memory
+            artifact: library/content-darkwood-memory/dist
+            repository: darkwood-com/memory-pages
+            domain: memory.content.darkwood.com
+            secret: PAGES_MEMORY_SSH_KEY
+
+    steps:
+      - name: Check out the canonical source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          filter: blob:none
+          sparse-checkout: |
+            ${{ matrix.source }}
+            .github/workflows/publish-github-pages.yml
+          sparse-checkout-cone-mode: false
+
+      - name: Select the changed site
+        id: select
+        env:
+          BEFORE: ${{ github.event.before }}
+          CURRENT: ${{ github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+          REQUESTED_TARGET: ${{ inputs.target }}
+          SOURCE: ${{ matrix.source }}
+          TARGET: ${{ matrix.id }}
+        run: |
+          selected=false
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            if [[ "$REQUESTED_TARGET" == "all" || "$REQUESTED_TARGET" == "$TARGET" ]]; then
+              selected=true
+            fi
+          elif [[ "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
+            selected=true
+          elif git diff --quiet "$BEFORE" "$CURRENT" -- "$SOURCE" .github/workflows/publish-github-pages.yml; then
+            selected=false
+          else
+            selected=true
+          fi
+          echo "selected=$selected" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Node.js for Flow
+        if: steps.select.outputs.selected == 'true' && matrix.id == 'flow'
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: ${{ matrix.source }}/package-lock.json
+
+      - name: Build Flow documentation
+        if: steps.select.outputs.selected == 'true' && matrix.id == 'flow'
+        working-directory: ${{ matrix.source }}
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+          test -s src/public/index.html
+          test "$(cat src/public/CNAME)" = "flow.darkwood.com"
+
+      - name: Set up Nix for Memory
+        if: steps.select.outputs.selected == 'true' && matrix.id == 'memory'
+        uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
+
+      - name: Test and export Memory
+        if: steps.select.outputs.selected == 'true' && matrix.id == 'memory'
+        working-directory: ${{ matrix.source }}
+        run: |
+          nix develop -c composer install --no-interaction --prefer-dist --no-progress
+          nix develop -c php bin/console lint:twig templates
+          nix develop -c php bin/phpunit
+          nix develop -c node --test tests/memory-model.test.mjs
+          nix develop -c php bin/console app:export-static
+          test -s dist/index.html
+
+      - name: Configure the destination deploy key
+        if: steps.select.outputs.selected == 'true'
+        env:
+          DEPLOY_KEY: ${{ secrets[matrix.secret] }}
+        run: |
+          test -n "$DEPLOY_KEY"
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_KEY" > "$HOME/.ssh/static-pages"
+          chmod 0600 "$HOME/.ssh/static-pages"
+          curl --fail --silent --show-error --proto '=https' --tlsv1.2 https://api.github.com/meta \
+            | jq -r '.ssh_keys[] | "github.com " + .' > "$HOME/.ssh/known_hosts"
+          chmod 0644 "$HOME/.ssh/known_hosts"
+
+      - name: Publish the generated site
+        if: steps.select.outputs.selected == 'true'
+        id: publish
+        env:
+          ARTIFACT: ${{ matrix.artifact }}
+          CANONICAL_SHA: ${{ github.sha }}
+          DOMAIN: ${{ matrix.domain }}
+          REPOSITORY: ${{ matrix.repository }}
+          TARGET: ${{ matrix.id }}
+        run: |
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/static-pages -o IdentitiesOnly=yes"
+          git clone "git@github.com:$REPOSITORY.git" pages
+          if git -C pages show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            git -C pages switch --create gh-pages --track origin/gh-pages
+          else
+            git -C pages switch --orphan gh-pages
+          fi
+
+          rsync -a --delete --exclude='.git/' "$ARTIFACT/" pages/
+          printf '%s\n' "$DOMAIN" > pages/CNAME
+          touch pages/.nojekyll
+          git -C pages add --all
+
+          if git -C pages diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git -C pages diff --cached --stat
+          git -C pages config user.name github-actions[bot]
+          git -C pages config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git -C pages commit -m "📚 Publish $TARGET from darkwood@${CANONICAL_SHA:0:12}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.dry_run }}" == "true" ]]; then
+            echo "Dry run requested; generated commit was not pushed."
+            exit 0
+          fi
+          git -C pages push origin HEAD:gh-pages

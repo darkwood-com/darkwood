@@ -1,0 +1,82 @@
+name: Update community blog posts
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: update-community-blog-posts
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    name: Refresh BLOG-POST-LIST
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      actions: write
+      contents: write
+    steps:
+      - name: Check out the canonical monorepo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          ref: main
+
+      - name: Record the canonical revision
+        id: before
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Update the three canonical README files
+        uses: gautamkrishnar/blog-post-workflow@f177491c77670f150ab4e9b9890254d8eba4164b # v1.9.7
+        with:
+          comment_tag_name: BLOG-POST-LIST
+          readme_path: library/.github/README.md,library/.github/profile/README.md,library/matyo91/README.md
+          feed_list: https://feeds.feedburner.com/darkwood-fr/blog,https://feeds.feedburner.com/uniflow-io/blog
+          max_post_count: 5
+          retry_count: 3
+          retry_wait_time: 10
+          commit_message: "📝 Refresh community blog posts"
+          committer_username: github-actions[bot]
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Detect a published README change
+        id: changed
+        env:
+          BEFORE: ${{ steps.before.outputs.sha }}
+        run: |
+          git fetch --quiet origin main
+          AFTER=$(git rev-parse origin/main)
+          echo "after=$AFTER" >> "$GITHUB_OUTPUT"
+          if [[ "$AFTER" == "$BEFORE" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Synchronize the organization profile mirror
+        if: steps.changed.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          gh workflow run sync-distribution-mirrors.yml
+          --repo "$GITHUB_REPOSITORY"
+          --ref main
+          -f target=organization-profile
+          -f dry_run=false
+
+      - name: Synchronize the personal profile mirror
+        if: steps.changed.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          gh workflow run sync-distribution-mirrors.yml
+          --repo "$GITHUB_REPOSITORY"
+          --ref main
+          -f target=personal-profile
+          -f dry_run=false

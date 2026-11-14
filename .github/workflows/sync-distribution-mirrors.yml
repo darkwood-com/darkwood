@@ -244,38 +244,3 @@ jobs:
           github.event_name == 'workflow_dispatch' && inputs.dry_run == true
         run: echo "Validated ${{ matrix.id }}; dry run requested, nothing was pushed."
 
-      - name: Set up Node.js for Flow documentation
-        if: steps.select.outputs.selected == 'true' && matrix.id == 'flow'
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
-        with:
-          node-version: "18"
-
-      - name: Build Flow documentation
-        if: steps.select.outputs.selected == 'true' && matrix.id == 'flow'
-        working-directory: library/darkwood-php/src/Darkwood/Component/Flow/docs
-        run: |
-          npm install --no-audit --no-fund
-          npm run build
-
-      - name: Publish Flow documentation
-        if: >-
-          steps.select.outputs.selected == 'true' &&
-          matrix.id == 'flow' &&
-          (github.event_name != 'workflow_dispatch' || inputs.dry_run == false)
-        env:
-          CANONICAL_SHA: ${{ github.sha }}
-        run: |
-          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/distribution-mirror -o IdentitiesOnly=yes"
-          git clone --branch gh-pages --single-branch git@github.com:darkwood-com/flow.git flow-pages
-          rsync -a --delete \
-            --exclude='.git/' \
-            library/darkwood-php/src/Darkwood/Component/Flow/docs/src/public/ \
-            flow-pages/
-          git -C flow-pages add --all
-          if git -C flow-pages diff --cached --quiet; then
-            exit 0
-          fi
-          git -C flow-pages config user.name github-actions[bot]
-          git -C flow-pages config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git -C flow-pages commit -m "📚 Publish Flow docs from darkwood@${CANONICAL_SHA:0:12}"
-          git -C flow-pages push origin HEAD:gh-pages

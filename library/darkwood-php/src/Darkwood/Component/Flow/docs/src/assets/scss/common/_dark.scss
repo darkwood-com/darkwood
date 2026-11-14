@@ -2,7 +2,7 @@
 
 // Source: https://material.io/design/color/dark-theme.html
 
-$body-bg-dark: #091A28;
+$body-bg-dark: #091a28;
 $body-overlay-dark: darken($body-bg-dark, 2.5%);
 
 /*
@@ -83,7 +83,7 @@ body.data-dark-mode .dropdown-menu {
 
 body.data-dark-mode .navbar,
 body.data-dark-mode .doks-subnavbar {
-  background-color: #091A28;
+  background-color: #091a28;
   border-bottom: 1px solid $border-dark;
 }
 
