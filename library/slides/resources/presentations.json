@@ -143,5 +143,10 @@
         "id": "c86fc5e5-c122-4b2c-859e-79770acfaad1",
         "source_slug": "memory",
         "title": "Mémoire : ce qui rend la suite possible"
+    },
+    {
+        "id": "0f5c8043-3959-47ae-8127-7bb9ea1256a6",
+        "source_slug": "intent",
+        "title": "De l’intention à l’exécution"
     }
 ]

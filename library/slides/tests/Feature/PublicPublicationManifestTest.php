@@ -48,7 +48,7 @@ class PublicPublicationManifestTest extends TestCase
         $id = $p->id;
         $p->update(['last_error' => 'fixture-private-detail']);
         $service->import($data);
-        $this->assertDatabaseCount('presentations', 29);
+        $this->assertDatabaseCount('presentations', 30);
         $this->assertDatabaseCount('external_publications', 1);
         $this->assertDatabaseCount('publication_attempts', 0);
         $this->assertSame($id, $p->fresh()->id);
@@ -175,7 +175,7 @@ class PublicPublicationManifestTest extends TestCase
         $data = json_decode($output, true);
         $this->assertSame(1, $data['active_attempt_count']);
         $this->assertSame(0, $data['orphan_count']);
-        $this->assertCount(57, $data['missing']);
+        $this->assertCount(59, $data['missing']);
     }
 
     public function test_import_preserves_known_dates_and_never_erases_a_published_hash(): void

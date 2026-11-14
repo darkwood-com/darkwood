@@ -5069,6 +5069,369 @@
                 }
             ]
         },
+        "intent": {
+            "count": 17,
+            "slides": [
+                {
+                    "id": "intent-0",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Comment un objectif devient-il une action, un résultat, puis une évaluation ?",
+                            "De l’intention à l’exécution"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "14-11-2026"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-1",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Comment un système transforme-t-il ce qui est recherché en effets observables ?",
+                            "Intention",
+                            "La question centrale",
+                            "Une intention oriente. Elle n’exécute rien par elle-même."
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "02 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-2",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Action",
+                            "Cadre",
+                            "Ce que l’action change réellement.",
+                            "Effet",
+                            "Intention",
+                            "Le résultat recherché.",
+                            "Une intention n’est pas une action",
+                            "Une opération autorisée dans un contexte donné."
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "03 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-3",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Cadre",
+                            "Contexte",
+                            "Décision",
+                            "Exécution",
+                            "Intention",
+                            "Le modèle rend visibles les moments où l’on interprète, choisit, agit et vérifie.",
+                            "Plan",
+                            "Résultat",
+                            "Une grille, pas une loi universelle",
+                            "Évaluation"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "04 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-4",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Contexte",
+                            "Explorer avant de transporter.",
+                            "Le contexte change la décision",
+                            "Même environnement, informations différentes, décisions différentes.",
+                            "Route inconnue",
+                            "Route reconnue",
+                            "Utiliser la connaissance acquise."
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "05 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-5",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Choisir une stratégie.",
+                            "Coordination",
+                            "Coordonner leur réalisation.",
+                            "Décider",
+                            "Décider, planifier, orchestrer",
+                            "Orchestrer",
+                            "Organiser les étapes.",
+                            "Planifier"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "06 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-6",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Aftertrace est la référence réelle ; l’atelier ne modifie pas son moteur.",
+                            "Darkwaar : deux intentions",
+                            "Livrer la braise par une route déjà comprise.",
+                            "Priorité business",
+                            "Reconnaître",
+                            "Réduire l’incertitude et noter les risques.",
+                            "Transporter"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "07 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-7",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Action autorisée",
+                            "Carte connue",
+                            "Darkwaar",
+                            "Le joueur décide ; les règles déterminent ce que cette décision peut produire.",
+                            "Objectif",
+                            "Pas consommé",
+                            "Règles, actions, conséquences",
+                            "Réussite ou échec"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "08 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-8",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Accélérer les choix et réduire les pauses.",
+                            "Faire converger deux trajectoires.",
+                            "Fuite",
+                            "Heroclip : orienter un récit",
+                            "Mystère",
+                            "Priorité business",
+                            "Retarder la réponse.",
+                            "Retrouvailles"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "09 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-9",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Aucune génération vidéo dans l’atelier.",
+                            "Exploration forte, raccords à réviser.",
+                            "Heroclip",
+                            "La continuité est une contrainte",
+                            "Libre",
+                            "Palette stable, autres repères variables.",
+                            "Personnage, palette et accessoire stables.",
+                            "Strict",
+                            "Visuel"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "10 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-10",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "DJ Matyo91 : guider l’énergie",
+                            "Ouverture, montée et pic orientent le tempo, la densité et la transition sans déterminer un résultat unique.",
+                            "Priorité business"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "11 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-11",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "DJ Matyo91",
+                            "Densifier sans saturer.",
+                            "Entrée",
+                            "Installer les repères.",
+                            "Progression",
+                            "Préparer la direction suivante.",
+                            "Synthèse Web Audio originale, sans morceau, set ou sample tiers.",
+                            "Transition",
+                            "Une démonstration originale"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "12 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-12",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Amp / Revolt",
+                            "Attentes I/O indépendantes.",
+                            "CPU, seulement après mesure.",
+                            "Flow : choisir, pas promettre",
+                            "PHP inline",
+                            "R&D secondaire",
+                            "Simplicité d’exploitation.",
+                            "Simulation pédagogique, pas benchmark ni nouveau driver.",
+                            "Workers / kernels"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "13 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-13",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Aucun moteur durable ni paiement n’est annoncé.",
+                            "Besoin métier",
+                            "Données",
+                            "Décision",
+                            "Définition",
+                            "R&D secondaire",
+                            "Règles",
+                            "Une information obligatoire absente suspend la séquence avant l’effet.",
+                            "Uniflow : du besoin à la définition"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "14 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-14",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Exécution réussie",
+                            "Intention manquée",
+                            "Le résultat ne répond pas au besoin initial.",
+                            "Les opérations prévues se terminent.",
+                            "Limites",
+                            "Réussir techniquement, échouer utilement"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "15 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-15",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Critères",
+                            "L’évaluation ne garantit pas la perfection ; elle rend l’écart explicite et prépare une nouvelle décision.",
+                            "Résultat",
+                            "Résultat observé",
+                            "Révision",
+                            "Écart",
+                            "Évaluer ferme la boucle"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "16 | 17 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "intent-16",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Conclusion",
+                            "Elle donne une direction. Le contexte, les règles, l’exécution et l’évaluation déterminent ce que cette direction devient.",
+                            "Explorer l’atelier →",
+                            "Une intention n’est pas une garantie"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://intent.content.darkwood.com/"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "17 | 17 · Darkwood"
+                        ]
+                    }
+                }
+            ]
+        },
         "laravel-pipeline-flow": {
             "count": 19,
             "slides": [

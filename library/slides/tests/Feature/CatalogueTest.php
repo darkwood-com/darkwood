@@ -12,7 +12,7 @@ class CatalogueTest extends TestCase
     public function test_home_lists_the_canonical_registry_once_and_keeps_all_direct_routes(): void
     {
         $registry = app(PresentationCatalog::class)->entries();
-        $this->assertCount(29, $registry);
+        $this->assertCount(30, $registry);
         $dom = new \DOMDocument;
         $dom->loadHTML($this->get('/')->assertOk()->getContent(), LIBXML_NOERROR | LIBXML_NOWARNING);
         $xp = new \DOMXPath($dom);

@@ -1,0 +1,14 @@
+.intent-slide { --intent-u:min(1vw,1.77777778dvh); --dw-blue:#007bff; --dw-content-font-size:calc(2.45 * var(--intent-u)); --darkwood-body:var(--dw-content-font-size); --darkwood-heading:calc(4.6 * var(--intent-u)); --darkwood-title:calc(6.8 * var(--intent-u)); --darkwood-subtitle:calc(2.45 * var(--intent-u)); --darkwood-context:calc(1.7 * var(--intent-u)); height:100dvh; min-height:0; display:flex; align-items:center; justify-content:center; }
+.intent-slide .sw-canvas { position:relative; width:calc(100 * var(--intent-u)); height:calc(56.25 * var(--intent-u)); min-height:0; padding:calc(3 * var(--intent-u)) calc(5 * var(--intent-u)) calc(6.7 * var(--intent-u)); margin:auto; }
+.intent-slide .sw-content { line-height:1.35; }
+.intent-slide .intent-chain { display:flex; align-items:stretch; gap:calc(.7 * var(--intent-u)); margin:calc(2 * var(--intent-u)) 0; }
+.intent-slide .intent-chain > * { flex:1; padding:calc(1.2 * var(--intent-u)); border-bottom:calc(.28 * var(--intent-u)) solid var(--dw-blue); background:#eff2f7; color:#000; font-size:calc(1.55 * var(--intent-u)); text-align:center; }
+.intent-slide .intent-columns { display:grid; grid-template-columns:repeat(auto-fit,minmax(0,1fr)); grid-auto-flow:column; gap:calc(2.5 * var(--intent-u)); }
+.intent-slide .intent-card { padding:calc(1.5 * var(--intent-u)); border:calc(.12 * var(--intent-u)) solid #d9dee8; }
+.intent-slide .intent-card h2,.intent-slide .intent-accent { color:var(--dw-blue); }
+.intent-slide .intent-note { font-size:calc(1.7 * var(--intent-u)); color:#576068; }
+.intent-slide .intent-curve { display:flex; align-items:end; gap:calc(.8 * var(--intent-u)); height:calc(19 * var(--intent-u)); }
+.intent-slide .intent-curve span { flex:1; height:var(--h); background:var(--dw-blue); }
+.intent-slide .sw-footer { font-size:calc(1.5 * var(--intent-u)); bottom:calc(1.5 * var(--intent-u)); left:calc(3 * var(--intent-u)); right:calc(3 * var(--intent-u)); }
+.intent-slide .sw-footer .sw-logo { width:calc(4 * var(--intent-u)); height:calc(4 * var(--intent-u)); }
+.slidewire-shell:has(.intent-slide) .slidewire-controls { bottom:calc((100dvh - min(100dvh,56.25vw)) / 2 + .75 * min(1vw,1.77777778dvh)); }

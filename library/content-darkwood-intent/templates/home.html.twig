@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<section class="hero">
+  <p class="eyebrow">CINQ DOMAINES · UNE GRILLE DE LECTURE</p>
+  <h1>Intention<span class="serif-line">De l’objectif<br>au résultat.</span></h1>
+  <div class="hero-bottom"><p>Comment une intention devient-elle une décision, une exécution puis un résultat observable ? Expérimentez sans compte, backend ni service externe.</p><span class="big-six" aria-hidden="true">05</span></div>
+</section>
+<section class="intent-chain" aria-labelledby="intent-model-title">
+  <div class="section-heading"><h2 id="intent-model-title">Une grille pédagogique</h2><span>INTENTION ≠ ACTION</span></div>
+  <ol><li>Intention</li><li>Contexte</li><li>Décision</li><li>Planification</li><li>Exécution</li><li>Résultat</li><li>Évaluation</li></ol>
+  <p>Cette chaîne n’est pas une théorie universelle. Elle aide à observer où un système interprète, choisit, agit et vérifie.</p>
+</section>
+<section class="experiences" aria-label="Les cinq démonstrations"><div class="section-heading"><h2>Choisissez un domaine</h2><span>MODIFIER / OBSERVER / ÉVALUER</span></div><div class="cards">
+{% for slug, demo in demos %}<a class="demo-card" href="{{ is_static ? prefix ~ '/demo/' ~ slug ~ '/' : path('demo', {slug: slug}) }}"><span class="card-top"><span>0{{ loop.index }} / {{ demo[3] }}</span><span class="arrow">↗</span></span><span class="service">{{ demo[0] }}</span><h3>{{ demo[1] }}</h3><p>{{ demo[2] }}</p><span class="card-bottom">Explorer la démonstration <span>→</span></span></a>{% endfor %}
+</div></section>
+<p class="scope">Ces expériences emploient des règles locales et déterministes. Elles distinguent les fonctions existantes des illustrations éditoriales et ne constituent ni benchmark, ni annonce de produit.</p>
+{% endblock %}

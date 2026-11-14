@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - library/content-darkwood-memory/**
+      - library/content-darkwood-intent/**
       - library/darkwood-php/src/Darkwood/Component/Flow/docs/**
       - .github/workflows/publish-github-pages.yml
   workflow_dispatch:
@@ -18,6 +19,7 @@ on:
           - all
           - flow
           - memory
+          - intent
       dry_run:
         description: Build and compare without pushing
         required: true
@@ -56,6 +58,14 @@ jobs:
             repository: darkwood-com/memory-pages
             domain: memory.content.darkwood.com
             secret: PAGES_MEMORY_SSH_KEY
+            node_test: memory-model
+          - id: intent
+            source: library/content-darkwood-intent
+            artifact: library/content-darkwood-intent/dist
+            repository: darkwood-com/intent-pages
+            domain: intent.content.darkwood.com
+            secret: PAGES_INTENT_SSH_KEY
+            node_test: intent-model
 
     steps:
       - name: Check out the canonical source
@@ -109,18 +119,18 @@ jobs:
           test -s src/public/index.html
           test "$(cat src/public/CNAME)" = "flow.darkwood.com"
 
-      - name: Set up Nix for Memory
-        if: steps.select.outputs.selected == 'true' && matrix.id == 'memory'
+      - name: Set up Nix for PHP static sites
+        if: steps.select.outputs.selected == 'true' && matrix.id != 'flow'
         uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
 
-      - name: Test and export Memory
-        if: steps.select.outputs.selected == 'true' && matrix.id == 'memory'
+      - name: Test and export the PHP static site
+        if: steps.select.outputs.selected == 'true' && matrix.id != 'flow'
         working-directory: ${{ matrix.source }}
         run: |
           nix develop -c composer install --no-interaction --prefer-dist --no-progress
           nix develop -c php bin/console lint:twig templates
           nix develop -c php bin/phpunit
-          nix develop -c node --test tests/memory-model.test.mjs
+          nix develop -c node --test "tests/${{ matrix.node_test }}.test.mjs"
           nix develop -c php bin/console app:export-static
           test -s dist/index.html
 

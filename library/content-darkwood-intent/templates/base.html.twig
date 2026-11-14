@@ -1,0 +1,45 @@
+{% import 'icons.html.twig' as icons %}
+{% set is_static = static_mode|default(false) %}
+{% set prefix = base_path|default('') %}
+{% set current = slug|default('') %}
+{% set home_href = is_static ? prefix ~ '/' : path('home') %}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Cinq expériences interactives pour comprendre comment une intention devient décision, exécution, résultat et évaluation.">
+  <meta property="og:title" content="De l’intention à l’exécution · Darkwood">
+  <meta property="og:description" content="Changez une intention ou son contexte et observez les conséquences dans cinq domaines Darkwood.">
+  <meta property="og:type" content="website"><meta property="og:url" content="https://intent.content.darkwood.com/">
+  <title>{% block title %}Intention · Darkwood{% endblock %}</title>
+  <link rel="icon" href="{{ prefix }}/logo-darkwood.png">
+  <link rel="stylesheet" href="{{ prefix }}/style.css">
+  <script src="{{ prefix }}/themes.js" defer></script>
+  {% if is_static %}<script src="{{ prefix }}/static.js" type="module"></script>{% endif %}
+</head>
+<body class="theme-light" data-mode="{{ is_static ? 'static' : 'php' }}">
+<script>try{var t=localStorage.getItem('theme');if(['light','dark','sepia'].includes(t))document.body.className='theme-'+t;}catch(e){}</script>
+<a class="skip-link" href="#main">Aller aux démonstrations</a>
+<header class="navbar-top">
+    <a class="header-brand" href="{{ home_href }}" aria-label="Darkwood Intention — accueil"><span class="logo-surface"><img src="{{ prefix }}/logo-darkwood.png" alt="Darkwood" width="36" height="36"></span><span>Atelier Intention</span></a>
+  <div class="top-actions">
+    <a href="https://github.com/darkwood-com/darkwood/tree/main/library/content-darkwood-intent" class="icon-control" aria-label="GitHub — code de Darkwood Intention" title="Voir le projet sur GitHub" target="_blank" rel="noopener noreferrer">{{ icons.icon('github') }}</a>
+    <button id="theme-switcher" class="icon-control" aria-label="Thème Clair : passer au thème Sombre" title="Thème Clair : passer au thème Sombre"><span id="theme-icon" aria-hidden="true">{{ icons.icon('light') }}</span></button>
+    <button id="menu-toggle" class="icon-control mobile-only" aria-expanded="false" aria-controls="sidebar" aria-label="Ouvrir le menu" title="Ouvrir le menu">{{ icons.icon('menu') }}</button>
+  </div>
+  <span id="theme-status" class="visually-hidden" role="status"></span>
+</header>
+<template id="theme-icons">{% for theme in ['light', 'dark', 'sepia'] %}<span data-theme-icon="{{ theme }}">{{ icons.icon(theme) }}</span>{% endfor %}</template>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar" aria-label="Navigation principale">
+    <div class="mobile-menu-heading mobile-only"><span>Explorer l’intention</span><button id="menu-close" class="icon-control" aria-label="Fermer le menu" title="Fermer le menu">{{ icons.icon('close') }}</button></div>
+    <nav class="sidebar-nav" aria-label="Les cinq démonstrations">
+      <a href="{{ home_href }}" {% if current == '' %}aria-current="page"{% endif %}>Vue d’ensemble</a>
+      <p class="nav-caption">Démonstrations</p>
+      {% for key, item in demos %}<a href="{{ is_static ? prefix ~ '/demo/' ~ key ~ '/' : path('demo', {slug: key}) }}" {% if key == current %}aria-current="page"{% endif %}><span>{{ item[0] }}</span><small>{{ item[3] }}</small></a>{% endfor %}
+    </nav>
+  </aside>
+  <div class="page-column"><main id="main" tabindex="-1">{% block body %}{% endblock %}</main><footer><span>Cinq expériences. Une grille pédagogique.</span><span>Sans compte, backend ni API externe.</span></footer></div>
+</div>
+</body>
+</html>

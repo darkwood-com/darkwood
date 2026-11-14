@@ -124,7 +124,7 @@ class PresentationContentTest extends TestCase
                 }
             }
         }
-        $this->assertSame(509, $total);
+        $this->assertSame(526, $total);
         $this->assertSame([], $failures);
     }
 }

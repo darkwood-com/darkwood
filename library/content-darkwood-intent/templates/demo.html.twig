@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ demo[0] }} — {{ demo[1] }} · Intention{% endblock %}
+{% block body %}
+<nav class="demo-nav" aria-label="Démonstrations"><a href="{{ home_href }}">← L’atelier</a>{% for key, item in demos %}<a href="{{ is_static ? prefix ~ '/demo/' ~ key ~ '/' : path('demo', {slug: key}) }}" {% if key == slug %}aria-current="page"{% endif %}>{{ item[0] }}</a>{% endfor %}</nav>
+<section class="demo-heading"><p class="eyebrow">{{ demo[0]|upper }} / {{ demo[3]|upper }}</p><h1>{{ demo[1] }}</h1><p>{{ demo[2] }}</p></section>
+<section class="workbench">{% include 'intent-demo.html.twig' %}</section>
+<aside class="scope">Simulation pédagogique locale. Une exécution techniquement réussie ne garantit pas que son résultat réponde à l’intention initiale.</aside>
+{% endblock %}
