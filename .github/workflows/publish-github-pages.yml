@@ -153,7 +153,9 @@ jobs:
         run: |
           export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/static-pages -o IdentitiesOnly=yes"
           git clone "git@github.com:$REPOSITORY.git" pages
-          if git -C pages show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+          if git -C pages show-ref --verify --quiet refs/heads/gh-pages; then
+            git -C pages switch gh-pages
+          elif git -C pages show-ref --verify --quiet refs/remotes/origin/gh-pages; then
             git -C pages switch --create gh-pages --track origin/gh-pages
           else
             git -C pages switch --orphan gh-pages
