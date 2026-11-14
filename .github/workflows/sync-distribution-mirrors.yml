@@ -1,0 +1,272 @@
+name: Sync distribution mirrors
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/sync-distribution-mirrors.yml
+      - library/.github/**
+      - library/matyo91/**
+      - library/darkwood-php/src/Darkwood/Component/Flow/**
+      - library/darkwood-php/src/Darkwood/Component/Navi/**
+      - library/darkwood-php/src/Darkwood/Bundle/MediaBundle/**
+      - library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle/**
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Distribution mirror to synchronize
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - organization-profile
+          - personal-profile
+          - flow
+          - navi
+          - media-bundle
+          - ia-exception-bundle
+      dry_run:
+        description: Validate and show the diff without pushing
+        required: true
+        default: true
+        type: boolean
+
+concurrency:
+  group: distribution-mirrors-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  sync:
+    name: ${{ matrix.id }}
+    runs-on: ubuntu-24.04
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3311:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: organization-profile
+            source: library/.github
+            repository: darkwood-com/.github
+            branch: main
+            secret: MIRROR_ORGANIZATION_PROFILE_SSH_KEY
+            composer: ""
+            php_extensions: ""
+          - id: personal-profile
+            source: library/matyo91
+            repository: matyo91/matyo91
+            branch: main
+            secret: MIRROR_PERSONAL_PROFILE_SSH_KEY
+            composer: ""
+            php_extensions: ""
+          - id: flow
+            source: library/darkwood-php/src/Darkwood/Component/Flow
+            repository: darkwood-com/flow
+            branch: "8.1"
+            secret: MIRROR_FLOW_SSH_KEY
+            composer: darkwood/flow
+            php_extensions: xsl, openswoole
+          - id: navi
+            source: library/darkwood-php/src/Darkwood/Component/Navi
+            repository: darkwood-com/navi
+            branch: "8.1"
+            secret: MIRROR_NAVI_SSH_KEY
+            composer: darkwood/navi
+            php_extensions: xsl, openswoole
+          - id: media-bundle
+            source: library/darkwood-php/src/Darkwood/Bundle/MediaBundle
+            repository: darkwood-com/media-bundle
+            branch: "8.1"
+            secret: MIRROR_MEDIA_BUNDLE_SSH_KEY
+            composer: darkwood/media-bundle
+            php_extensions: ctype, iconv
+          - id: ia-exception-bundle
+            source: library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle
+            repository: darkwood-com/ia-exception-bundle
+            branch: "8.1"
+            secret: MIRROR_IA_EXCEPTION_BUNDLE_SSH_KEY
+            composer: darkwood/ia-exception-bundle
+            php_extensions: ctype, iconv
+
+    steps:
+      - name: Check out the canonical monorepo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+
+      - name: Select changed mirror
+        id: select
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          CURRENT: ${{ github.sha }}
+          REQUESTED_TARGET: ${{ inputs.target }}
+          SOURCE: ${{ matrix.source }}
+          TARGET: ${{ matrix.id }}
+        run: |
+          selected=false
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            if [[ "$REQUESTED_TARGET" == "all" || "$REQUESTED_TARGET" == "$TARGET" ]]; then
+              selected=true
+            fi
+          elif git diff --name-only "$BEFORE" "$CURRENT" -- \
+            "$SOURCE" .github/workflows/sync-distribution-mirrors.yml | grep -q .; then
+            selected=true
+          fi
+          echo "selected=$selected" >> "$GITHUB_OUTPUT"
+
+      - name: Set up PHP
+        if: steps.select.outputs.selected == 'true' && matrix.composer != ''
+        uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
+        with:
+          php-version: "8.5"
+          extensions: ${{ matrix.php_extensions }}
+          tools: composer, symfony-cli
+          coverage: none
+
+      - name: Validate Composer package
+        if: steps.select.outputs.selected == 'true' && matrix.composer != ''
+        env:
+          SOURCE: ${{ matrix.source }}
+          EXPECTED_PACKAGE: ${{ matrix.composer }}
+          TARGET: ${{ matrix.id }}
+        run: |
+          # shellcheck disable=SC2016
+          actual_package=$(php -r 'echo json_decode(file_get_contents($argv[1]), true, 512, JSON_THROW_ON_ERROR)["name"];' "$SOURCE/composer.json")
+          test "$actual_package" = "$EXPECTED_PACKAGE"
+          composer validate --strict --no-check-publish "$SOURCE/composer.json"
+          library/darkwood-php/.github/ci-run-package.sh "$TARGET"
+
+      - name: Configure mirror deploy key
+        if: steps.select.outputs.selected == 'true'
+        env:
+          DEPLOY_KEY: ${{ secrets[matrix.secret] }}
+        run: |
+          test -n "$DEPLOY_KEY"
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_KEY" > "$HOME/.ssh/distribution-mirror"
+          chmod 0600 "$HOME/.ssh/distribution-mirror"
+          curl --fail --silent --show-error --proto '=https' --tlsv1.2 https://api.github.com/meta \
+            | jq -r '.ssh_keys[] | "github.com " + .' > "$HOME/.ssh/known_hosts"
+          chmod 0644 "$HOME/.ssh/known_hosts"
+
+      - name: Build mirror commit
+        if: steps.select.outputs.selected == 'true'
+        id: mirror
+        env:
+          SOURCE: ${{ matrix.source }}
+          REPOSITORY: ${{ matrix.repository }}
+          BRANCH: ${{ matrix.branch }}
+          TARGET: ${{ matrix.id }}
+          CANONICAL_SHA: ${{ github.sha }}
+        run: |
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/distribution-mirror -o IdentitiesOnly=yes"
+          git clone --branch "$BRANCH" --single-branch "git@github.com:$REPOSITORY.git" mirror
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='.github/workflows/' \
+            "$SOURCE/" mirror/
+
+          rm -rf mirror/.github/workflows
+          cat > mirror/DISTRIBUTION_MIRROR.md <<EOF
+          # Distribution mirror
+
+          This repository is a read-only distribution mirror. Development, issues, and pull requests belong in the [canonical Darkwood monorepo](https://github.com/darkwood-com/darkwood/tree/main/$SOURCE).
+
+          Canonical source: \`$SOURCE\`<br>
+          Canonical revision: \`$CANONICAL_SHA\`
+          EOF
+
+          cat > mirror/.darkwood-mirror.json <<EOF
+          {
+            "canonical_repository": "darkwood-com/darkwood",
+            "canonical_path": "$SOURCE",
+            "canonical_revision": "$CANONICAL_SHA",
+            "destination_repository": "$REPOSITORY",
+            "destination_branch": "$BRANCH"
+          }
+          EOF
+
+          git -C mirror add --all
+          if git -C mirror diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git -C mirror diff --cached --stat
+          git -C mirror config user.name github-actions[bot]
+          git -C mirror config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git -C mirror commit -m "🔄 Sync $TARGET from darkwood@${CANONICAL_SHA:0:12}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push mirror commit
+        if: >-
+          steps.select.outputs.selected == 'true' &&
+          steps.mirror.outputs.changed == 'true' &&
+          (github.event_name != 'workflow_dispatch' || inputs.dry_run == false)
+        env:
+          BRANCH: ${{ matrix.branch }}
+        run: |
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/distribution-mirror -o IdentitiesOnly=yes"
+          git -C mirror push origin "HEAD:$BRANCH"
+
+      - name: Report dry run
+        if: >-
+          steps.select.outputs.selected == 'true' &&
+          steps.mirror.outputs.changed == 'true' &&
+          github.event_name == 'workflow_dispatch' && inputs.dry_run == true
+        run: echo "Validated ${{ matrix.id }}; dry run requested, nothing was pushed."
+
+      - name: Set up Node.js for Flow documentation
+        if: steps.select.outputs.selected == 'true' && matrix.id == 'flow'
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version: "18"
+
+      - name: Build Flow documentation
+        if: steps.select.outputs.selected == 'true' && matrix.id == 'flow'
+        working-directory: library/darkwood-php/src/Darkwood/Component/Flow/docs
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+
+      - name: Publish Flow documentation
+        if: >-
+          steps.select.outputs.selected == 'true' &&
+          matrix.id == 'flow' &&
+          (github.event_name != 'workflow_dispatch' || inputs.dry_run == false)
+        env:
+          CANONICAL_SHA: ${{ github.sha }}
+        run: |
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/distribution-mirror -o IdentitiesOnly=yes"
+          git clone --branch gh-pages --single-branch git@github.com:darkwood-com/flow.git flow-pages
+          rsync -a --delete \
+            --exclude='.git/' \
+            library/darkwood-php/src/Darkwood/Component/Flow/docs/src/public/ \
+            flow-pages/
+          git -C flow-pages add --all
+          if git -C flow-pages diff --cached --quiet; then
+            exit 0
+          fi
+          git -C flow-pages config user.name github-actions[bot]
+          git -C flow-pages config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git -C flow-pages commit -m "📚 Publish Flow docs from darkwood@${CANONICAL_SHA:0:12}"
+          git -C flow-pages push origin HEAD:gh-pages
