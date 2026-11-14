@@ -186,10 +186,13 @@ jobs:
         run: |
           export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/distribution-mirror -o IdentitiesOnly=yes"
           git clone --branch "$BRANCH" --single-branch "git@github.com:$REPOSITORY.git" mirror
+          staging=$(mktemp -d)
+          git archive "$CANONICAL_SHA:$SOURCE" | tar -x -C "$staging"
           rsync -a --delete \
             --exclude='.git/' \
             --exclude='.github/workflows/' \
-            "$SOURCE/" mirror/
+            "$staging/" mirror/
+          rm -rf "$staging"
 
           rm -rf mirror/.github/workflows
           cat > mirror/DISTRIBUTION_MIRROR.md <<EOF
