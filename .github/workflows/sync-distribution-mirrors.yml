@@ -114,6 +114,7 @@ jobs:
           filter: blob:none
           sparse-checkout: |
             ${{ matrix.source }}
+            library/darkwood-php/.github
             .github/workflows/sync-distribution-mirrors.yml
           sparse-checkout-cone-mode: false
 
