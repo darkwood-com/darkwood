@@ -52,8 +52,13 @@ jobs:
 
       - name: Build the Pages matrix
         id: matrix
+        env:
+          REQUESTED_TARGET: ${{ inputs.target }}
         run: |
-          value=$(jq -c '{include: [.cards[] | select(.pages != null) | {
+          value=$(jq -c --arg requested "$REQUESTED_TARGET" '{include: [.cards[] | select(
+            .pages != null and
+            ($requested == "" or $requested == "all" or .id == $requested)
+          ) | {
             id,
             source: .pages.source,
             artifact: .pages.artifact,
