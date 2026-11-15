@@ -7,6 +7,7 @@ Public monorepo for Darkwood open-source projects.
 ## Projects
 
 - [Darkwood GitHub Profile](library/.github) — organization profile and public community templates.
+- [Darkwood Design](library/darkwood-design) — canonical visual conventions, tokens and integration guidance for the Darkwood ecosystem.
 - [Composio MCP](library/content-composio-mcp) — Symfony MCP server integrating Composio actions and workflows.
 - [Connect Flow](library/content-connect-flow) — Symfony prototype connecting natural-language capabilities to the Flow runtime.
 - [Crypto Trade](library/content-crypto-trade) — experimental cryptocurrency market-analysis application.

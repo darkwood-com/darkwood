@@ -39,6 +39,21 @@
       ]
     },
     {
+      "id": "darkwood-design",
+      "path": "library/darkwood-design",
+      "domain": "darkwood",
+      "description": "Canonical visual conventions, design tokens and integration guidance for Darkwood products.",
+      "kind": "component",
+      "status": "working",
+      "dependencies": [],
+      "topics": [
+        "accessibility",
+        "css",
+        "design-system",
+        "themes"
+      ]
+    },
+    {
       "id": "darkwood-php",
       "path": "library/darkwood-php",
       "domain": "darkwood",
