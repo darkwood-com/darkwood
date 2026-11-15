@@ -71,6 +71,10 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             jwt: true
 
+        blog_rss:
+            pattern: ^/blog/rss\.xml$
+            security: false
+
         shop:
             switch_user: { role: ROLE_ALLOWED_TO_SWITCH }
             context: shop
