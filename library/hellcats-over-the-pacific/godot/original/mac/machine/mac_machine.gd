@@ -103,14 +103,29 @@ func idle(msec: int) -> void:
 	else:
 		OS.delay_msec(msec)
 
+## A title profile (godot/original/leyte/machine/leyte_profile.gd sets it): an object with
+## below_a5, and setup(machine) / link(machine) called around the segments' creation. Null for
+## Hellcats, whose path below is unchanged.
+static var profile = null
+var below_a5: int = BELOW_A5
+
 func _init() -> void:
 	mmu_mode = 0 if addressing_24 else 1
 	memory = MacMemory.new()
+	if profile != null:
+		below_a5 = profile.below_a5
 	toolbox = Toolbox.new(self)
+	if profile != null:
+		profile.setup(self)
 	segments = SegmentLoader.new(self)
 	toolbox.install_glue(segments.stand_ins)
-	overlay_loader = OverlayLoader.new(self)
-	unexported = Unexported.new(self)
+	if profile != null:
+		# Leyte's own glue offsets, its overlay loaded by its CODE 8 (no 1.0.3 overlay loader), and none
+		# of 1.0.3's runtime-written routines (their slots are 1.0.3's).
+		profile.link(self)
+	else:
+		overlay_loader = OverlayLoader.new(self)
+		unexported = Unexported.new(self)
 	segments.register_address(NULL_VBL, func(_a: Array) -> int: return 0)
 	low_memory()
 	init_a5_world()
@@ -123,7 +138,7 @@ func _init() -> void:
 ## The overlay reads none (the same scan of its code). ScrnBase is written as well, though no game code
 ## reads it.
 func low_memory() -> void:
-	memory.write_u32(LM_CUR_STACK_BASE, A5 - BELOW_A5)
+	memory.write_u32(LM_CUR_STACK_BASE, A5 - below_a5)
 	memory.write_u32(LM_CURRENT_A5, A5)
 	memory.write_u32(LM_SOUND_BASE, SOUND_BASE)
 	memory.write_u32(LM_SOUND_HOOK, NULL_VBL)
@@ -158,7 +173,7 @@ func restore_low_memory(saved: Array) -> void:
 func init_a5_world() -> void:
 	var data: PackedByteArray = Files.load_bytes("DATA", 0)
 	var zero: PackedByteArray = Files.load_bytes("ZERO", 0)
-	var at: int = A5 - BELOW_A5
+	var at: int = A5 - below_a5
 	var d: int = 0
 	var z: int = 0
 	while at != A5:

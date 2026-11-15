@@ -17,6 +17,7 @@ var screen: Control
 var _version := -1
 var _items: Array = []
 var _controls: Array = []
+var _clip := Rect2i()       ## the dialog's portRect on the screen: items are clipped to it, as on the Mac
 
 func attach(owner_machine, mac_screen: Control) -> void:
 	machine = owner_machine
@@ -37,6 +38,7 @@ func _process(_delta: float) -> void:
 	var snap: Dictionary = machine.toolbox.dialogs.snapshot()
 	if int(snap["version"]) != _version:
 		_version = int(snap["version"])
+		_clip = snap.get("clip", Rect2i())
 		_rebuild(snap["items"])
 	_place()
 
@@ -67,10 +69,26 @@ static func build_control(e: Dictionary) -> Control:
 			b.add_theme_color_override("font_disabled_color", Color(0.5, 0.5, 0.5))
 			c = b
 		CHECKBOX, RADIO:
+			# Opaque and black on white, as the other items: the Mac's own drawing of the box and its
+			# title lies beneath, and a transparent control left it showing through, offset from
+			# Godot's text (the "doubled" labels of Select a Mission).
 			var b := CheckBox.new()
 			b.text = e["text"]
 			b.set_pressed_no_signal(int(e["value"]) != 0)
 			b.disabled = not e["active"]
+			for state in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
+				b.add_theme_stylebox_override(state, _box(Color.WHITE, 0))
+			for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
+				b.add_theme_color_override(state, Color.BLACK)
+			b.add_theme_color_override("font_disabled_color", Color(0.5, 0.5, 0.5))
+			# The Mac's marks (a CheckBox outside a ButtonGroup draws "checked" / "unchecked", radio or not).
+			var radio: bool = int(e["type"]) == RADIO
+			for checked in [false, true]:
+				var icon: Texture2D = _mac_mark(radio, checked)
+				var names: Array = ["checked", "checked_disabled", "radio_checked", "radio_checked_disabled"] if checked \
+						else ["unchecked", "unchecked_disabled", "radio_unchecked", "radio_unchecked_disabled"]
+				for icon_name in names:
+					b.add_theme_icon_override(icon_name, icon)
 			c = b
 		EDIT_TEXT:
 			var l := LineEdit.new()
@@ -99,6 +117,26 @@ static func build_control(e: Dictionary) -> Control:
 	c.set_meta("item", e)
 	return c
 
+## The Mac's radio button (a circle, a dot when on) or check box (a square, an X when on), black on
+## white, 12 x 12.
+static func _mac_mark(radio: bool, checked: bool) -> ImageTexture:
+	var n := 12
+	var img := Image.create(n, n, false, Image.FORMAT_RGBA8)
+	img.fill(Color.WHITE)
+	var c := Vector2(n - 1, n - 1) / 2.0
+	for y in n:
+		for x in n:
+			var p := Vector2(x, y)
+			var on := false
+			if radio:
+				var d: float = p.distance_to(c)
+				on = (d >= c.x - 1.0 and d <= c.x) or (checked and d <= c.x - 3.0)
+			else:
+				on = x == 0 or y == 0 or x == n - 1 or y == n - 1 or (checked and (x == y or x == n - 1 - y))
+			if on:
+				img.set_pixel(x, y, Color.BLACK)
+	return ImageTexture.create_from_image(img)
+
 ## An opaque box: `fill`, a black border `border` pixels wide, rounded as Mac buttons are when it has one.
 static func _box(fill: Color, border: int) -> StyleBoxFlat:
 	var s := StyleBoxFlat.new()
@@ -111,6 +149,8 @@ static func _box(fill: Color, border: int) -> StyleBoxFlat:
 func _place() -> void:
 	for i in _controls.size():
 		var r: Rect2i = _items[i]["rect"]
+		if _clip.has_area():
+			r = r.intersection(_clip)
 		var a: Vector2 = to_godot(Vector2(r.position))
 		var b: Vector2 = to_godot(Vector2(r.end))
 		var c: Control = _controls[i]

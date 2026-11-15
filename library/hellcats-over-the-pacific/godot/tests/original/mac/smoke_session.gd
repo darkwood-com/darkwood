@@ -98,8 +98,12 @@ const PORT_ORDER := ["ID01", "ID02", "ID03", "ID04", "ID05", "ID06", "ID07", "ID
 var MacMachine
 var GameThread
 var ResourceManager
-## The session's own save folder, emptied first: the player's pilots and settings are not touched.
-const SAVES := "user://smoke_session_resources"
+## The session's own save folder, emptied first and removed at the end: the player's pilots and
+## settings are not touched. One folder per process (SAVES_ROOT/<pid>): sessions run at the same
+## time once shared one folder, each emptying it and writing its pilots and settings into the
+## others' (PROJECT_STATUS, loop 18), so concurrent runs diverged from their references.
+const SAVES_ROOT := "user://smoke_session_resources"
+var SAVES := SAVES_ROOT.path_join(str(OS.get_process_id()))
 
 ## [seconds, action, Mac key code or x, character or y]
 const STEPS := [
@@ -353,6 +357,8 @@ func _initialize() -> void:
 			return
 		load("res://original/mac/machine/overlay_loader.gd").port_override = native_overlay
 	machine = MacMachine.new()
+	if args.has("--edition") and args[args.find("--edition") + 1] == "native":
+		load("res://native/display/screen_memory.gd").install(machine)   # the screen in Godot (no-op when off)
 	loader.overrides = {}
 	load("res://original/mac/toolbox/toolbox.gd").overrides = {}
 	if coverage_path != "":
@@ -457,6 +463,11 @@ func _process(delta: float) -> bool:
 				print("  trace diverges from %s: %s" % [expect_path, diverged])
 			else:
 				print("  trace matches %s (%d entries)" % [expect_path, trace.size()])
+	if machine.has_meta("native_screen"):
+		# The Native screen lives in Godot: the Mac memory's screen must still hold only the poison.
+		var clean: bool = machine.get_meta("native_screen").poisoned()
+		print("  Native screen: %s" % ("the Mac memory's screen untouched" if clean else "WRITTEN in the Mac memory"))
+		ok = ok and clean
 	print("%s smoke session: %d steps, %d missing, %d script errors" % ["PASS" if ok else "FAIL", step,
 			machine.missing.size(), error_log.errors.size()])
 	if ok and coverage_path != "":
@@ -475,6 +486,7 @@ func _process(delta: float) -> bool:
 	while not machine.parked and runner.is_running() and waited < 2000:
 		OS.delay_msec(10)
 		waited += 10
+	_clear(SAVES)
 	quit(0 if ok else 1)
 	return true
 
@@ -511,7 +523,7 @@ func _act(s: Array) -> void:
 
 func _shot(path: String) -> void:
 	var image := Image.create(machine.SCREEN_WIDTH, machine.SCREEN_HEIGHT, false, Image.FORMAT_RGBA8)
-	var bytes: PackedByteArray = machine.screen_bytes()
+	var bytes: PackedByteArray = machine.get_meta("native_screen").screen_bytes() if machine.has_meta("native_screen") else machine.screen_bytes()
 	var table: Array = machine.toolbox.palettes.colours()
 	for y in machine.SCREEN_HEIGHT:
 		for x in machine.SCREEN_WIDTH:

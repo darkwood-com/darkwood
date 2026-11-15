@@ -56,28 +56,32 @@ def stream(code: bytes) -> tuple[str, list]:
     return text, marks
 
 
-def match(functions: list, old: bytes, new: bytes, relocated_old: set, relocated_new: set, segment: str) -> list:
+def match(functions: list, old: bytes, new: bytes, relocated_old: set, relocated_new: set, segment: str,
+          header: int = 0) -> list:
+    """`header`: the bytes before the code in the files the addresses are offsets of (the overlay's
+    0x20-byte header: 1.0.3's overlay addresses and the Leyte offsets written are file offsets, `old`
+    / `new` and the relocations are the code after it)."""
     new_masked = bytes(0 if i in relocated_new else b for i, b in enumerate(new))
     text, marks = stream(new)
     index = {k: a for k, a in marks}
     rows = []
     for k, (addr, name) in enumerate(functions):
-        end = functions[k + 1][0] if k + 1 < len(functions) else len(old)
-        code = old[addr:end]
+        end = functions[k + 1][0] if k + 1 < len(functions) else len(old) + header
+        code = old[addr - header:end - header]
         row = {"segment": segment, "address": f"0x{addr:x}", "name": name, "match": "not_found", "leyte": None}
         if len(code) >= 6:
             at = new.find(code)
             if at >= 0:
-                row.update(match="identical", leyte=f"0x{at:x}")
+                row.update(match="identical", leyte=f"0x{at + header:x}")
             else:
-                m = masked_pattern(code, addr, relocated_old).search(new_masked)
+                m = masked_pattern(code, addr - header, relocated_old).search(new_masked)
                 if m:
-                    row.update(match="moved", leyte=f"0x{m.start():x}")
+                    row.update(match="moved", leyte=f"0x{m.start() + header:x}")
                 else:
                     seq = stream(code)[0]
                     at = text.find(seq) if seq else -1
                     if at >= 0 and at in index:
-                        row.update(match="same_instructions", leyte=f"0x{index[at]:x}")
+                        row.update(match="same_instructions", leyte=f"0x{index[at] + header:x}")
         rows.append(row)
     return rows
 
@@ -106,7 +110,7 @@ def build() -> dict:
     pcode, prel = overlay((ROOT / "sources" / "mac-os-9" / "Pacific Conflict").read_bytes())
     lcode, lrel = overlay(ley.data)
     fs = sorted((int(f["original_address"], 16), f["semantic_name"] or f["original_function"]) for f in inv if f["segment"] == "Pacific Conflict")
-    rows += match(fs, pcode, lcode, prel, lrel, "Pacific Conflict -> Leyte overlay")
+    rows += match(fs, pcode, lcode, prel, lrel, "Pacific Conflict -> Leyte overlay", header=0x20)
     counts = {}
     for r in rows:
         key = "host" if r["segment"].startswith("ID") else "overlay"

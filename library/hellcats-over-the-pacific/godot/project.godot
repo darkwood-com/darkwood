@@ -17,15 +17,18 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="Hellcats Sim"
 run/main_scene="res://launcher/Main.tscn"
 config/features=PackedStringArray("4.7")
+config/icon="res://assets/ici8/128.png"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/mode=2
-window/handheld/orientation=1
+window/handheld/orientation=4
 
 [rendering]
+
+textures/vram_compression/import_etc2_astc=true
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

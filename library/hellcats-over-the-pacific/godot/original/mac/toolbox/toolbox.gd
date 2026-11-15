@@ -136,6 +136,9 @@ func install(word: int, routine: Callable) -> void:
 
 ## SysEnvirons version 1: environsVersion 1, machineType (a Mac II class), systemVersion 7.0.1,
 ## processor 68020 (3), hasFPU, hasColorQD, keyBoardType, atDrvrVersNum, sysVRefNum.
+## sysVRefNum: the volume for Hellcats; a title profile's System Folder working directory (Leyte).
+var sys_vref: int = 0xffff
+
 func sys_environs(rec: int) -> int:
 	var m = machine.memory
 	m.write_u16(rec, 1)
@@ -146,7 +149,7 @@ func sys_environs(rec: int) -> int:
 	m.write_u8(rec + 9, 1)
 	m.write_u16(rec + 10, 2)
 	m.write_u16(rec + 12, 0)
-	m.write_u16(rec + 14, 0xffff)
+	m.write_u16(rec + 14, sys_vref)
 	return 0
 
 ## A C string made a Pascal string in place (its length first, the characters one on).

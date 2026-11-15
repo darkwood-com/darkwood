@@ -9,7 +9,7 @@ extends "res://original/mac/toolbox/dialog_manager.gd"
 const SHOWN := [BUTTON, CHECKBOX, RADIO, STATIC_TEXT, EDIT_TEXT]
 
 var _lock := Mutex.new()
-var _snapshot: Dictionary = {"version": 0, "items": []}
+var _snapshot: Dictionary = {"version": 0, "items": [], "clip": Rect2i()}
 
 ## The front dialog's standard items: [{index, type, enabled, active, rect (global, Mac screen),
 ## text, value, focused, selected}], with a version that changes with each new snapshot. `focused` is
@@ -23,9 +23,12 @@ func snapshot() -> Dictionary:
 
 func publish() -> void:
 	var items: Array = []
+	var clip := Rect2i()
 	var d: int = windows.front_window()
 	if dialogs.has(d) and windows.is_visible(d):
 		var origin: Vector2i = -qd.port_bits(d)[2].position
+		var port_rect: Rect2i = qd.read_rect(d + 0x10)          # the dialog's portRect: items are clipped to it
+		clip = Rect2i(port_rect.position + origin, port_rect.size)
 		var list: Array = dialogs[d]["items"]
 		for i in list.size():
 			var e: Dictionary = list[i]
@@ -49,7 +52,7 @@ func publish() -> void:
 				entry["text"] = _mac_string(_text(e["handle"]))
 			items.append(entry)
 	_lock.lock()
-	_snapshot = {"version": int(_snapshot["version"]) + 1, "items": items}
+	_snapshot = {"version": int(_snapshot["version"]) + 1, "items": items, "clip": clip}
 	_lock.unlock()
 
 ## Mac OS Roman text as a Godot string, Return as a line break.

@@ -1,0 +1,109 @@
+{
+ "schema": 1,
+ "generated_by": "tools/leyte/build_glue_slots.py",
+ "same": {
+  "0x202": "0x1f2",
+  "0x20a": "0x1fa",
+  "0x212": "0x202",
+  "0x21a": "0x20a",
+  "0x222": "0x212",
+  "0x22a": "0x21a",
+  "0x232": "0x222",
+  "0x23a": "0x22a",
+  "0x242": "0x232",
+  "0x24a": "0x23a",
+  "0x252": "0x242",
+  "0x25a": "0x24a",
+  "0x262": "0x252",
+  "0x26a": "0x25a",
+  "0x27a": "0x262",
+  "0x282": "0x26a",
+  "0x28a": "0x272",
+  "0x292": "0x27a",
+  "0x29a": "0x282",
+  "0x2a2": "0x28a",
+  "0x2aa": "0x292",
+  "0x2ba": "0x29a",
+  "0x2c2": "0x2a2",
+  "0x2ca": "0x2aa",
+  "0x2d2": "0x2b2",
+  "0x2da": "0x2ba",
+  "0x2ea": "0x2c2",
+  "0x2f2": "0x2ca",
+  "0x312": "0x2d2",
+  "0x31a": "0x2da",
+  "0x322": "0x2e2",
+  "0x32a": "0x2ea",
+  "0x332": "0x2f2",
+  "0x33a": "0x2fa",
+  "0x342": "0x302"
+ },
+ "new": {
+  "0x272": {
+   "target": "0x23c",
+   "traps": [
+    {
+     "trap": "a025"
+    }
+   ],
+   "why": "no 1.0.3 slot with these bytes"
+  },
+  "0x2b2": {
+   "target": "0x296",
+   "traps": [
+    {
+     "trap": "a02e"
+    }
+   ],
+   "why": "no 1.0.3 slot with these bytes"
+  },
+  "0x2e2": {
+   "target": "0x370",
+   "traps": [
+    {
+     "trap": "a015"
+    }
+   ],
+   "why": "no 1.0.3 slot with these bytes"
+  },
+  "0x2fa": {
+   "target": "0x3da",
+   "traps": [
+    {
+     "trap": "a260",
+     "selector": 1
+    },
+    {
+     "trap": "a660"
+    }
+   ],
+   "why": "no 1.0.3 slot with these bytes"
+  },
+  "0x302": {
+   "target": "0x3f0",
+   "traps": [
+    {
+     "trap": "a260",
+     "selector": 7
+    },
+    {
+     "trap": "a660"
+    }
+   ],
+   "why": "no 1.0.3 slot with these bytes"
+  },
+  "0x30a": {
+   "target": "0x406",
+   "traps": [
+    {
+     "trap": "a260",
+     "selector": 9
+    },
+    {
+     "trap": "a660"
+    }
+   ],
+   "why": "no 1.0.3 slot with these bytes"
+  }
+ }
+}

@@ -10,9 +10,9 @@
    "not_found": 33
   },
   "overlay": {
-   "same_instructions": 82,
-   "not_found": 262,
-   "moved": 63,
+   "not_found": 189,
+   "same_instructions": 145,
+   "moved": 73,
    "identical": 36
   }
  },
@@ -2100,15 +2100,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x20",
    "name": "overlay_patch_template_u16_pair",
-   "match": "same_instructions",
-   "leyte": "0x24"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x32",
    "name": "copy_block_return_dst",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x36"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2156,15 +2156,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x5fa",
    "name": "traverse_scene_tree",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x79e"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x6a6",
    "name": "for_each_mission_scene_object",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x84a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2227,14 +2227,14 @@
    "address": "0xe32",
    "name": "unlock_handle_purgeable",
    "match": "same_instructions",
-   "leyte": "0x14be"
+   "leyte": "0x1496"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xe5a",
    "name": "lock_overlay_buffers",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x14e6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2247,14 +2247,14 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xf92",
    "name": "lock_session_buffers",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x15fa"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1094",
    "name": "unlock_session_buffers",
-   "match": "same_instructions",
+   "match": "moved",
    "leyte": "0x16fc"
   },
   {
@@ -2282,8 +2282,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1294",
    "name": "reset_palette_owner_tables",
-   "match": "same_instructions",
-   "leyte": "0x18fc"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2303,8 +2303,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x147a",
    "name": "queue_face_palette_entry",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x1ae2"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2317,7 +2317,7 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x159e",
    "name": "assign_face_colour",
-   "match": "same_instructions",
+   "match": "moved",
    "leyte": "0x1c06"
   },
   {
@@ -2338,7 +2338,7 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1958",
    "name": "heap_sbrk",
-   "match": "identical",
+   "match": "same_instructions",
    "leyte": "0x1f90"
   },
   {
@@ -2352,7 +2352,7 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x199a",
    "name": "heap_add_large_block",
-   "match": "moved",
+   "match": "identical",
    "leyte": "0x1fd2"
   },
   {
@@ -2373,7 +2373,7 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1a48",
    "name": "heap_roving_cursor_store",
-   "match": "identical",
+   "match": "moved",
    "leyte": "0x2080"
   },
   {
@@ -2387,14 +2387,14 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1b38",
    "name": "heap_zero_payload",
-   "match": "same_instructions",
+   "match": "identical",
    "leyte": "0x2170"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1b4c",
    "name": "heap_zero_payload_tail",
-   "match": "identical",
+   "match": "same_instructions",
    "leyte": "0x2184"
   },
   {
@@ -2415,15 +2415,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1ba8",
    "name": "heap_realloc_grow_only",
-   "match": "same_instructions",
+   "match": "identical",
    "leyte": "0x21e0"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1be4",
    "name": "heap_realloc_grow_only_tail",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x221c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2457,8 +2457,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1d56",
    "name": "FUN_00001d56",
-   "match": "moved",
-   "leyte": "0x23a4"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2471,15 +2471,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1db8",
    "name": "FUN_00001db8",
-   "match": "moved",
-   "leyte": "0x23a4"
+   "match": "identical",
+   "leyte": "0x2406"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1dd8",
    "name": "cos_fixed14",
-   "match": "same_instructions",
-   "leyte": "0x2426"
+   "match": "moved",
+   "leyte": "0x23c4"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2548,8 +2548,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x229e",
    "name": "build_attitude_matrix_from_dir_roll",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x28f0"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2562,8 +2562,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x2464",
    "name": "build_attitude_matrix_3ang_alt",
-   "match": "moved",
-   "leyte": "0x2b74"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2576,8 +2576,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x24d6",
    "name": "build_attitude_matrix_x_alt",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x2be6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2625,8 +2625,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x2654",
    "name": "compose_attitude_matrix_6ang",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x2f8a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2640,14 +2640,14 @@
    "address": "0x2700",
    "name": "compose_attitude_matrix_6ang_alt",
    "match": "moved",
-   "leyte": "0x2f94"
+   "leyte": "0x3036"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x276e",
    "name": "build_attitude_matrix_6ang_alt",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x3002"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2660,22 +2660,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x27cc",
    "name": "invoke_tagged_attitude_compose_neg_sins6",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x3108"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x2802",
    "name": "transform_int3_vecs_asr_by_1d744",
-   "match": "moved",
-   "leyte": "0x3146"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x28a6",
    "name": "rotate_int3_vecs_by_3ang",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x31ea"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2688,8 +2688,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x2976",
    "name": "transform_vecs12_to_int3_by_matrix3",
-   "match": "moved",
-   "leyte": "0x32c6"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2702,8 +2702,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x2aba",
    "name": "FUN_00002aba",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x3418"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2730,8 +2730,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x2de8",
    "name": "FUN_00002de8",
-   "match": "identical",
-   "leyte": "0x38e8"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2793,8 +2793,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x3608",
    "name": "fill_span_rows_4bit_c",
-   "match": "moved",
-   "leyte": "0x4108"
+   "match": "identical",
+   "leyte": "0x3f66"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2814,8 +2814,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x37b4",
    "name": "fill_span_rows_8bit",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x42b4"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2835,14 +2835,14 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x3b98",
    "name": "update_object_camera_metric",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x47d6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x3be0",
    "name": "FUN_00003be0",
-   "match": "moved",
+   "match": "same_instructions",
    "leyte": "0x481e"
   },
   {
@@ -2856,14 +2856,14 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x3c48",
    "name": "FUN_00003c48",
-   "match": "moved",
+   "match": "identical",
    "leyte": "0x4886"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x3c68",
    "name": "approx_dist3_xyz",
-   "match": "identical",
+   "match": "moved",
    "leyte": "0x48a6"
   },
   {
@@ -2891,8 +2891,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x3e5c",
    "name": "snapshot_face_colours",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x4ac8"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2906,7 +2906,7 @@
    "address": "0x41ec",
    "name": "recolour_kind2_object",
    "match": "same_instructions",
-   "leyte": "0x4e64"
+   "leyte": "0x4e62"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2927,7 +2927,7 @@
    "address": "0x44a4",
    "name": "dispatch_entity_tick",
    "match": "same_instructions",
-   "leyte": "0x516e"
+   "leyte": "0x5172"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2940,15 +2940,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x45ba",
    "name": "alloc_object_from_desc",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x534e"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x4690",
    "name": "instantiate_object_from_desc",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x5428"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -2968,8 +2968,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x4916",
    "name": "set_object_faces_bw_pattern",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x5758"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3066,7 +3066,7 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x5df8",
    "name": "clear_pending_entity_slots",
-   "match": "same_instructions",
+   "match": "moved",
    "leyte": "0x6c8a"
   },
   {
@@ -3101,14 +3101,14 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x6ece",
    "name": "clear_flag_00020ae4",
-   "match": "identical",
+   "match": "moved",
    "leyte": "0x7f2a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x6ed6",
    "name": "update_view_clip_bounds",
-   "match": "moved",
+   "match": "same_instructions",
    "leyte": "0x7f32"
   },
   {
@@ -3122,22 +3122,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x6ff6",
    "name": "configure_renderer_for_display",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x8052"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x7310",
    "name": "begin_flight_for_rank",
-   "match": "same_instructions",
-   "leyte": "0x8374"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x739a",
    "name": "copy_player_pose_to_camera",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x83fe"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3157,15 +3157,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x8784",
    "name": "request_instant_replay",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x98c6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x879e",
    "name": "resolve_bailout_outcome",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x98e0"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3262,8 +3262,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x9ae0",
    "name": "face_is_back_facing",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xad50"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3276,15 +3276,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x9d34",
    "name": "emit_face_chain",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0xafaa"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x9da6",
    "name": "emit_faces_bsp",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xb01c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3297,8 +3297,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x9fc4",
    "name": "emit_faces_unnumbered",
-   "match": "moved",
-   "leyte": "0xb246"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3311,15 +3311,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xa16e",
    "name": "output_face_colour",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xb3f0"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xa220",
    "name": "output_face_bw",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xb4a2"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3388,15 +3388,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xb3aa",
    "name": "clip_polygon_y_max",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0xc692"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xb460",
    "name": "reset_background_rows",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xc748"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3437,15 +3437,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xc11e",
    "name": "begin_offscreen_drawing",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xd446"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xc17e",
    "name": "end_offscreen_drawing",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xd4a6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3458,22 +3458,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xc572",
    "name": "draw_gauge_needle",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xd8b2"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xc664",
    "name": "update_altimeter_needles",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xd9a4"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xc80c",
    "name": "update_airspeed_needle",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xdb4c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3486,22 +3486,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xc948",
    "name": "update_climb_needle",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xdc88"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xc9c2",
    "name": "update_tachometer_needle",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xdd02"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xca44",
    "name": "update_manifold_needle",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xdd84"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3514,22 +3514,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xcb62",
    "name": "update_throttle_gauge",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xdf40"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xcc12",
    "name": "update_flaps_needle",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xdff0"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xccca",
    "name": "update_gear_needles",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xe0a8"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3563,15 +3563,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xd298",
    "name": "present_spans_to_window",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xe680"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xd34c",
    "name": "present_bw_frame",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xe734"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3619,15 +3619,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xdfd2",
    "name": "fill_pose_history_flags",
-   "match": "not_found",
-   "leyte": null
+   "match": "identical",
+   "leyte": "0xf3ba"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xdff0",
    "name": "init_aircraft_controller",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xf3d8"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3647,8 +3647,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xe1e6",
    "name": "create_enemy_fighter",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xf636"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3689,36 +3689,36 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xe40c",
    "name": "fold_angle_pm_0x2000",
-   "match": "moved",
+   "match": "identical",
    "leyte": "0xf87c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xe42a",
    "name": "table_lerp_1b2c0",
-   "match": "identical",
+   "match": "moved",
    "leyte": "0xf89a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xe468",
    "name": "damp_short_if_below_0x200",
-   "match": "same_instructions",
+   "match": "identical",
    "leyte": "0xf8d8"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xe4a4",
    "name": "compute_template_force_from_626",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xf914"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0xe512",
    "name": "compute_template_force_from_626_tail",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0xf982"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3773,8 +3773,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x100bc",
    "name": "release_ai_target",
-   "match": "same_instructions",
-   "leyte": "0x11ec8"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3815,15 +3815,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x109ba",
    "name": "apply_relative_heading_steer",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x12840"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x10b2e",
    "name": "steer_entity_toward_point",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x129b4"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3850,7 +3850,7 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x10cd8",
    "name": "invert_ai_bias_67b_if_positive",
-   "match": "moved",
+   "match": "same_instructions",
    "leyte": "0x12b66"
   },
   {
@@ -3864,22 +3864,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x10d68",
    "name": "ensure_ai_script_1b2e0_tick",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x12bf6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x10da8",
    "name": "ensure_ai_script_1b310_tick",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x12bf6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x10de8",
    "name": "ensure_ai_script_1b340_tick",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x12bf6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3892,8 +3892,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x10ecc",
    "name": "tick_ai_1b310_approach_fire",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x12d5e"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3920,8 +3920,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x111ae",
    "name": "ai_fly_bomber",
-   "match": "same_instructions",
-   "leyte": "0x1314c"
+   "match": "moved",
+   "leyte": "0x13120"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3941,8 +3941,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x11486",
    "name": "create_spinner_controller",
-   "match": "identical",
-   "leyte": "0x1359a"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3955,8 +3955,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x114ca",
    "name": "overlay_rng_mul_mix",
-   "match": "not_found",
-   "leyte": null
+   "match": "identical",
+   "leyte": "0x135de"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -3969,21 +3969,21 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x11544",
    "name": "overlay_rng_warmup_epilogue",
-   "match": "moved",
-   "leyte": "0x13652"
-  },
-  {
-   "segment": "Pacific Conflict -> Leyte overlay",
-   "address": "0x11564",
-   "name": "overlay_rng_next",
    "match": "not_found",
    "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x11564",
+   "name": "overlay_rng_next",
+   "match": "moved",
+   "leyte": "0x13672"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x115b0",
    "name": "create_plume_controller",
-   "match": "moved",
+   "match": "same_instructions",
    "leyte": "0x136e2"
   },
   {
@@ -4011,15 +4011,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x116e8",
    "name": "destroy_plume_controller",
-   "match": "same_instructions",
-   "leyte": "0x13814"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x116fc",
    "name": "tick_smoke_plume",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x13828"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4032,29 +4032,29 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x11940",
    "name": "shape_trailing_plume",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x13a6a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x11a90",
    "name": "plume_pre_render",
-   "match": "same_instructions",
-   "leyte": "0x1b6ec"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x11aae",
    "name": "create_camera_facing_controller",
-   "match": "moved",
+   "match": "same_instructions",
    "leyte": "0x13bd6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x11ae6",
    "name": "face_camera_heading",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x13c0e"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4102,29 +4102,29 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x11efc",
    "name": "init_effect_kind2_burst",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x14048"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1203a",
    "name": "init_effect_kind0_flat_ring",
    "match": "same_instructions",
-   "leyte": "0x14182"
+   "leyte": "0x14184"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x120ca",
    "name": "init_effect_kind1_column",
    "match": "same_instructions",
-   "leyte": "0x14210"
+   "leyte": "0x14212"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1217e",
    "name": "init_effect_kind3_debris_explosion",
    "match": "same_instructions",
-   "leyte": "0x142c2"
+   "leyte": "0x142c4"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4144,15 +4144,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x12466",
    "name": "animate_effect_kind0_ring_tail",
-   "match": "same_instructions",
+   "match": "identical",
    "leyte": "0x145b2"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x12486",
    "name": "animate_effect_kind1_column",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x145d2"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4172,29 +4172,29 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x12768",
    "name": "tick_effect",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x148ba"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x127aa",
    "name": "effect_pre_render_hook",
-   "match": "same_instructions",
-   "leyte": "0x1d51a"
+   "match": "moved",
+   "leyte": "0x148fc"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x127c6",
    "name": "create_ordnance_controller",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1d536"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1281e",
    "name": "register_ordnance_template",
-   "match": "same_instructions",
-   "leyte": "0x149d8"
+   "match": "moved",
+   "leyte": "0x1370c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4214,8 +4214,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x12a2a",
    "name": "ordnance_tick",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x14eca"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4242,8 +4242,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x12f92",
    "name": "create_singleton_type10_controller",
-   "match": "same_instructions",
-   "leyte": "0x157fa"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4291,8 +4291,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x132c8",
    "name": "point_over_face_xz",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x15bce"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4305,7 +4305,7 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x13452",
    "name": "surface_type_under_object",
-   "match": "identical",
+   "match": "same_instructions",
    "leyte": "0x15d92"
   },
   {
@@ -4319,8 +4319,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1358c",
    "name": "contact_pair_hash",
-   "match": "not_found",
-   "leyte": null
+   "match": "identical",
+   "leyte": "0x15ecc"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4375,15 +4375,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x13e4e",
    "name": "test_proximity_collision",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x167a4"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x13eae",
    "name": "test_player_vs_type0e_proximity",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x16804"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4403,8 +4403,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1429c",
    "name": "handle_player_contact",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x16c02"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4466,8 +4466,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1530e",
    "name": "create_firing_ship_controller",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x180a8"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4501,8 +4501,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1562e",
    "name": "clip_polygon_y_nonneg",
-   "match": "not_found",
-   "leyte": null
+   "match": "identical",
+   "leyte": "0x195f6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4515,22 +4515,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x15b92",
    "name": "create_bullet_controller",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x19b8a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x15bd4",
    "name": "register_bullet_template",
-   "match": "identical",
-   "leyte": "0x19bcc"
+   "match": "moved",
+   "leyte": "0x1370c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x15bf6",
    "name": "spawn_ordnance_scattered",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x19bee"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4557,29 +4557,29 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x15e62",
    "name": "bullet_pre_render",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x19e50"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x15ebe",
    "name": "erase_dots_depth8",
-   "match": "moved",
-   "leyte": "0x19eb2"
-  },
-  {
-   "segment": "Pacific Conflict -> Leyte overlay",
-   "address": "0x15f3e",
-   "name": "plot_dot_depth8",
    "match": "not_found",
    "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x15f3e",
+   "name": "plot_dot_depth8",
+   "match": "moved",
+   "leyte": "0x19f32"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x15fb8",
    "name": "erase_dots_depth4",
-   "match": "moved",
-   "leyte": "0x19fb4"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4606,8 +4606,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1665a",
    "name": "bullet_hits_shape",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1a66a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4621,42 +4621,42 @@
    "address": "0x167f4",
    "name": "bullet_hits_aircraft",
    "match": "same_instructions",
-   "leyte": "0x1a7e4"
+   "leyte": "0x1a7e6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x168ae",
    "name": "impact_one_time_in_16",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1a89c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x168d2",
    "name": "alloc_transformed_vertex_block",
-   "match": "same_instructions",
-   "leyte": "0x1a8c2"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1691c",
    "name": "alloc_copied_vertex_block",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1a90c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x16966",
    "name": "advance_route_waypoint",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1aaa4"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x16a3a",
    "name": "create_trail_controller",
-   "match": "same_instructions",
-   "leyte": "0x1ab7a"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4677,7 +4677,7 @@
    "address": "0x16ad6",
    "name": "init_trail_kind1",
    "match": "identical",
-   "leyte": "0x1ac16"
+   "leyte": "0x1ac04"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4711,8 +4711,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x16c6a",
    "name": "animate_smoke_trail",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1adf4"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4732,22 +4732,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1706a",
    "name": "create_ground_fire_controller",
-   "match": "moved",
-   "leyte": "0x136de"
+   "match": "same_instructions",
+   "leyte": "0x1b20a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x17098",
    "name": "register_ground_fire_template",
    "match": "moved",
-   "leyte": "0x1b238"
+   "leyte": "0x1370c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x170ba",
    "name": "spawn_ground_fire_object",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1b25a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4760,78 +4760,78 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1713c",
    "name": "destroy_ground_fire_controller",
-   "match": "same_instructions",
-   "leyte": "0x1b2e2"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x17150",
    "name": "animate_ground_fire",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1b2f6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x17380",
    "name": "tick_ground_fire",
    "match": "same_instructions",
-   "leyte": "0x157d8"
+   "leyte": "0x1b524"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x173a2",
    "name": "create_debris_controller",
-   "match": "moved",
-   "leyte": "0x1b546"
+   "match": "same_instructions",
+   "leyte": "0x1db9a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x173dc",
    "name": "register_debris_template",
-   "match": "identical",
-   "leyte": "0x1b580"
+   "match": "moved",
+   "leyte": "0x1370c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x173fe",
    "name": "spawn_debris_fragment",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1b5a2"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x174c4",
    "name": "tick_debris_fragment",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1b666"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x17566",
    "name": "create_ground_mark_controller",
-   "match": "moved",
-   "leyte": "0x1b548"
+   "match": "same_instructions",
+   "leyte": "0x13bd6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1759e",
    "name": "register_ground_mark_template",
-   "match": "same_instructions",
-   "leyte": "0x1b742"
+   "match": "moved",
+   "leyte": "0x1370c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x175c0",
    "name": "tick_ground_mark",
-   "match": "identical",
+   "match": "same_instructions",
    "leyte": "0x1b764"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x175de",
    "name": "spawn_ground_mark",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1b782"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4858,15 +4858,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1776a",
    "name": "reset_radar_tracks",
-   "match": "identical",
+   "match": "moved",
    "leyte": "0x1b90c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x17780",
    "name": "erase_radar_blip_depth8",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1b922"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4879,22 +4879,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x17948",
    "name": "draw_radar_blip_depth4",
-   "match": "moved",
+   "match": "same_instructions",
    "leyte": "0x1baea"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x17a34",
    "name": "erase_radar_blip_bw",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1bbd6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x17a60",
    "name": "draw_radar_blip_bw",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1bbd6"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4963,22 +4963,22 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x188ba",
    "name": "create_shadow_controller",
-   "match": "moved",
-   "leyte": "0x1ab7e"
+   "match": "same_instructions",
+   "leyte": "0x1db9a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x188f4",
    "name": "register_shadow_templates",
-   "match": "not_found",
-   "leyte": null
+   "match": "moved",
+   "leyte": "0x13c70"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x18942",
    "name": "destroy_shadow_controller",
-   "match": "identical",
-   "leyte": "0x1ca90"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -4992,7 +4992,7 @@
    "address": "0x189d0",
    "name": "tick_shadow",
    "match": "same_instructions",
-   "leyte": "0x1cb22"
+   "leyte": "0x1cb24"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -5012,8 +5012,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x18b98",
    "name": "destroy_flak_controller",
-   "match": "same_instructions",
-   "leyte": "0x19094"
+   "match": "not_found",
+   "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -5040,8 +5040,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1910e",
    "name": "register_turret_template",
-   "match": "same_instructions",
-   "leyte": "0x1d296"
+   "match": "moved",
+   "leyte": "0x1370c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -5054,29 +5054,29 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1917c",
    "name": "tick_turret",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1d302"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x19394",
    "name": "turret_pre_render",
-   "match": "same_instructions",
-   "leyte": "0x148f8"
-  },
-  {
-   "segment": "Pacific Conflict -> Leyte overlay",
-   "address": "0x193b6",
-   "name": "create_parachute_controller",
    "match": "not_found",
    "leyte": null
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
+   "address": "0x193b6",
+   "name": "create_parachute_controller",
+   "match": "same_instructions",
+   "leyte": "0x1d536"
+  },
+  {
+   "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1940e",
    "name": "register_parachute_template",
-   "match": "identical",
-   "leyte": "0x1d58e"
+   "match": "moved",
+   "leyte": "0x1370c"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -5096,8 +5096,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1952e",
    "name": "parachute_descend",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1d6b0"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -5110,8 +5110,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x19a1a",
    "name": "create_cloud_controller",
-   "match": "moved",
-   "leyte": "0x1ab7e"
+   "match": "same_instructions",
+   "leyte": "0x1db9a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -5131,15 +5131,15 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x19b30",
    "name": "follow_camera_offset",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1dcae"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x19b82",
    "name": "create_view_attached_controller",
    "match": "same_instructions",
-   "leyte": "0x1dd02"
+   "leyte": "0x1db9a"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -5152,7 +5152,7 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x19c26",
    "name": "store_xyz_asr",
-   "match": "same_instructions",
+   "match": "identical",
    "leyte": "0x1dda6"
   },
   {
@@ -5173,8 +5173,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1a1a6",
    "name": "tick_landing_approach_glide",
-   "match": "not_found",
-   "leyte": null
+   "match": "same_instructions",
+   "leyte": "0x1e33e"
   },
   {
    "segment": "Pacific Conflict -> Leyte overlay",
@@ -5194,8 +5194,8 @@
    "segment": "Pacific Conflict -> Leyte overlay",
    "address": "0x1a75e",
    "name": "c_strlen",
-   "match": "not_found",
-   "leyte": null
+   "match": "identical",
+   "leyte": "0x1f75a"
   }
  ]
 }

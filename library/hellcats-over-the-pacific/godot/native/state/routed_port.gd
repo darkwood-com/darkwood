@@ -20,7 +20,6 @@ var _records = null
 var _camera_angles = null
 var _camera_position = null
 var _view_state = null
-var _routed_memory = null
 
 func camera_angles():
 	if _camera_angles == null:
@@ -44,19 +43,21 @@ func native_blocks() -> Array:
 ## The Godot-owned heap records (null when record_storage_godot is off: the Mac memory, reference).
 func records():
 	if _records == null and record_storage_godot:
-		_records = NativeRecords.new(memory)
+		_records = NativeRecords.new(memory, _routed)
 	return _records
 
 ## The latest Native overlay's routed view, for host code that reads the overlay in place
 ## (host_routed_memory.gd).
 static var active_router = null
 
-var _routed:
-	get:
-		if _routed_memory == null:
-			_routed_memory = RoutedMemory.new(memory, [camera_angles(), camera_position(), view_state()], records())
-			active_router = _routed_memory
-		return _routed_memory
+## The routed memory (a plain field: the generated code reads it on every access); it sets itself up
+## on its first access, once the storage switches above are final.
+var _routed = null
+
+func _init(param_memory = null) -> void:
+	super(param_memory)
+	_routed = RoutedMemory.new(self)
+	active_router = _routed
 
 
 # pacific_conflict.gd:545 compute_camera_abs_metric

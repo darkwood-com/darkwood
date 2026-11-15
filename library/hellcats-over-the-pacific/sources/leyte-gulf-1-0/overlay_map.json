@@ -1,0 +1,2845 @@
+{
+ "schema": 1,
+ "generated_by": "tools/leyte/overlay_map.py",
+ "images": {
+  "hellcats_1_0_3": {
+   "text": 108380,
+   "data": 3528,
+   "bss": 45732
+  },
+  "leyte": {
+   "text": 128856,
+   "data": 4084,
+   "bss": 50880
+  }
+ },
+ "counts": {
+  "pairs_from_functions": 87,
+  "functions_aligned_by_instruction": 217,
+  "collided_rows_left_out": 37,
+  "mapped": 308,
+  "conflicts": 0,
+  "by_kind": {
+   "text": 81,
+   "data": 9,
+   "bss": 218
+  }
+ },
+ "mapped": [
+  {
+   "hellcats_1_0_3": "0x3da",
+   "leyte": "0x52c",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x4b0",
+   "leyte": "0x64e",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x934",
+   "leyte": "0xae2",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xe80",
+   "leyte": "0x150c",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xf72",
+   "leyte": "0x15da",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1074",
+   "leyte": "0x16dc",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x121e",
+   "leyte": "0x1886",
+   "kind": "text",
+   "evidence": [
+    "widen_printf_format"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1ce2",
+   "leyte": "0x2326",
+   "kind": "text",
+   "evidence": [
+    "build_attitude_matrix_from_dir_roll",
+    "compose_attitude_matrix_6ang",
+    "compose_attitude_matrix_6ang_alt",
+    "compose_attitude_matrix_x",
+    "compose_attitude_matrix_x_alt"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d56",
+   "leyte": "0x23a4",
+   "kind": "text",
+   "evidence": [
+    "load_attitude_angle_sincos",
+    "load_attitude_angle_sincos_5_6",
+    "overlay_main_entry",
+    "update_altimeter_needles",
+    "update_fuel_needles",
+    "update_gear_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1db8",
+   "leyte": "0x2406",
+   "kind": "text",
+   "evidence": [
+    "load_attitude_angle_sincos",
+    "load_attitude_angle_sincos_5_6",
+    "overlay_main_entry",
+    "update_altimeter_needles",
+    "update_fuel_needles",
+    "update_gear_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1f02",
+   "leyte": "0x2554",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2468",
+   "leyte": "0x2b78",
+   "kind": "text",
+   "evidence": [
+    "compose_attitude_matrix_x"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26e0",
+   "leyte": "0x3016",
+   "kind": "text",
+   "evidence": [
+    "compose_attitude_matrix_6ang"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2886",
+   "leyte": "0x31ca",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x28bc",
+   "leyte": "0x3200",
+   "kind": "text",
+   "evidence": [
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2de8",
+   "leyte": "0x38e8",
+   "kind": "text",
+   "evidence": [
+    "animate_ground_fire",
+    "apply_relative_heading_steer",
+    "approx_dist3_xyz",
+    "atan2_fixed14",
+    "attitude_from_velocity",
+    "compute_camera_abs_metric",
+    "tick_landing_approach_glide",
+    "turn_camera_toward_point",
+    "update_object_camera_metric"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3222",
+   "leyte": "0x3d22",
+   "kind": "text",
+   "evidence": [
+    "fill_span_rows_4bit_a",
+    "init_span_table_32ba"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x329a",
+   "leyte": "0x3d9a",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3334",
+   "leyte": "0x3e34",
+   "kind": "text",
+   "evidence": [
+    "init_span_table_32ba"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x333a",
+   "leyte": "0x3e3a",
+   "kind": "text",
+   "evidence": [
+    "init_span_table_32ba"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x334c",
+   "leyte": "0x3e4c",
+   "kind": "text",
+   "evidence": [
+    "init_span_table_32ba"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3354",
+   "leyte": "0x3e54",
+   "kind": "text",
+   "evidence": [
+    "init_span_table_32ba"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3358",
+   "leyte": "0x3e58",
+   "kind": "text",
+   "evidence": [
+    "init_span_table_32ba"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3384",
+   "leyte": "0x3e84",
+   "kind": "text",
+   "evidence": [
+    "init_span_table_32ba"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3446",
+   "leyte": "0x3f46",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x35e8",
+   "leyte": "0x40e8",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3794",
+   "leyte": "0x4294",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3816",
+   "leyte": "0x4316",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x381e",
+   "leyte": "0x431e",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3820",
+   "leyte": "0x4320",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3822",
+   "leyte": "0x4322",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x382e",
+   "leyte": "0x432e",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3830",
+   "leyte": "0x4330",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3838",
+   "leyte": "0x4338",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3862",
+   "leyte": "0x4362",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x386c",
+   "leyte": "0x436c",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3878",
+   "leyte": "0x4378",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x387c",
+   "leyte": "0x437c",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3888",
+   "leyte": "0x4388",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3896",
+   "leyte": "0x4396",
+   "kind": "text",
+   "evidence": [
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x38d4",
+   "leyte": "0x43d4",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3aa4",
+   "leyte": "0x46e2",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x3c48",
+   "leyte": "0x4886",
+   "kind": "text",
+   "evidence": [
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x41f0",
+   "leyte": "0x4e68",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x44c8",
+   "leyte": "0x5192",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x63ec",
+   "leyte": "0x728c",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x6578",
+   "leyte": "0x741e",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x6eb6",
+   "leyte": "0x7f12",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x6fd6",
+   "leyte": "0x8032",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x72f0",
+   "leyte": "0x834c",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x73ea",
+   "leyte": "0x844e",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xa14e",
+   "leyte": "0xb3d0",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xa200",
+   "leyte": "0xb482",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xbde8",
+   "leyte": "0xd106",
+   "kind": "text",
+   "evidence": [
+    "copy_rect_depth4"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xc552",
+   "leyte": "0xd892",
+   "kind": "text",
+   "evidence": [
+    "update_fuel_needles",
+    "update_gear_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xd23a",
+   "leyte": "0xe61e",
+   "kind": "text",
+   "evidence": [
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xd39c",
+   "leyte": "0xe784",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xd590",
+   "leyte": "0xe978",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xd8fa",
+   "leyte": "0xece2",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xdb40",
+   "leyte": "0xef28",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xe352",
+   "leyte": "0xf7c0",
+   "kind": "text",
+   "evidence": [
+    "build_attitude_matrix_from_dir_roll",
+    "overlay_main_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0xe3ec",
+   "leyte": "0xf85c",
+   "kind": "text",
+   "evidence": [
+    "turn_camera_toward_point"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x110d4",
+   "leyte": "0x13038",
+   "kind": "text",
+   "evidence": [
+    "create_enemy_fighter"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1118e",
+   "leyte": "0x1312c",
+   "kind": "text",
+   "evidence": [
+    "create_friendly_bomber"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x11544",
+   "leyte": "0x13652",
+   "kind": "text",
+   "evidence": [
+    "shape_trailing_plume",
+    "spawn_debris_fragment",
+    "spawn_ordnance_scattered",
+    "tick_turret"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x15e9e",
+   "leyte": "0x19e8c",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x15f1e",
+   "leyte": "0x19f12",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x15f98",
+   "leyte": "0x19f8c",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x16108",
+   "leyte": "0x1a104",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x16208",
+   "leyte": "0x1a204",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x16210",
+   "leyte": "0x1a20c",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x16a1a",
+   "leyte": "0x1ab5a",
+   "kind": "text",
+   "evidence": [
+    "register_trail_templates"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x16cb8",
+   "leyte": "0x1ae40",
+   "kind": "text",
+   "evidence": [
+    "animate_smoke_trail"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x17760",
+   "leyte": "0x1b902",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x177f0",
+   "leyte": "0x1b992",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x17848",
+   "leyte": "0x1b9ea",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x17928",
+   "leyte": "0x1baca",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x17a14",
+   "leyte": "0x1bbb6",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x17a40",
+   "leyte": "0x1bbe2",
+   "kind": "text",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x199fa",
+   "leyte": "0x1db7a",
+   "kind": "text",
+   "evidence": [
+    "register_cloud_templates"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1a186",
+   "leyte": "0x1e31e",
+   "kind": "text",
+   "evidence": [
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b174",
+   "leyte": "0x2039c",
+   "kind": "data",
+   "evidence": [
+    "scan_convert_edge_rows"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b188",
+   "leyte": "0x203b0",
+   "kind": "data",
+   "evidence": [
+    "scan_convert_edge_rows"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b2c0",
+   "leyte": "0x204e8",
+   "kind": "data",
+   "evidence": [
+    "table_lerp_1b2c0"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b41c",
+   "leyte": "0x205cc",
+   "kind": "data",
+   "evidence": [
+    "tick_effect"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b42c",
+   "leyte": "0x205dc",
+   "kind": "data",
+   "evidence": [
+    "effect_pre_render_hook"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b48c",
+   "leyte": "0x206b4",
+   "kind": "data",
+   "evidence": [
+    "plot_dot_bw"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b4cc",
+   "leyte": "0x206f4",
+   "kind": "data",
+   "evidence": [
+    "plot_dot_bw"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b50c",
+   "leyte": "0x20734",
+   "kind": "data",
+   "evidence": [
+    "spawn_trail"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b514",
+   "leyte": "0x2073c",
+   "kind": "data",
+   "evidence": [
+    "tick_trail"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b524",
+   "leyte": "0x2074c",
+   "kind": "bss",
+   "evidence": [
+    "create_bullet_controller",
+    "create_effect_controller",
+    "create_firing_ship_controller",
+    "init_aircraft_controller",
+    "instantiate_object_from_desc",
+    "register_cloud_templates",
+    "register_trail_templates"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b540",
+   "leyte": "0x20774",
+   "kind": "bss",
+   "evidence": [
+    "create_plume_controller"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b550",
+   "leyte": "0x20784",
+   "kind": "bss",
+   "evidence": [
+    "create_ground_fire_controller"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b5a0",
+   "leyte": "0x207fc",
+   "kind": "bss",
+   "evidence": [
+    "apply_player_mouse_controls",
+    "assign_face_colour",
+    "begin_offscreen_drawing",
+    "begin_replay_view",
+    "configure_renderer_for_display",
+    "dispatch_entity_tick",
+    "draw_gauge_needle",
+    "draw_radar_blip_depth4",
+    "end_offscreen_drawing",
+    "ensure_handle_allocated",
+    "erase_radar_blip_depth4",
+    "erase_radar_blip_depth8",
+    "for_each_mission_scene_object",
+    "heap_sbrk",
+    "init_depth4_colour_state",
+    "init_depth8_colour_state",
+    "lock_overlay_buffers",
+    "lock_session_buffers",
+    "mark_view_overlays_drawn",
+    "output_face_bw",
+    "overlay_main_entry",
+    "overlay_printf",
+    "plot_dot_bw",
+    "plot_dot_depth4",
+    "plot_dot_depth8",
+    "present_bw_frame",
+    "present_spans_to_window",
+    "queue_face_palette_entry",
+    "reset_background_rows",
+    "resolve_bailout_outcome",
+    "set_object_faces_bw_pattern",
+    "stop_all_sound_channels",
+    "stop_game_sound",
+    "tick_ai_1b310_approach_fire",
+    "traverse_scene_tree",
+    "update_airspeed_needle",
+    "update_altimeter_needles",
+    "update_ammo_needle",
+    "update_climb_needle",
+    "update_direction_needle",
+    "update_flaps_needle",
+    "update_fuel_needles",
+    "update_gear_needles",
+    "update_manifold_needle",
+    "update_radar_range_buttons",
+    "update_tachometer_needle",
+    "update_throttle_gauge",
+    "update_tracking_camera",
+    "update_view_clip_bounds",
+    "widen_printf_format"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b738",
+   "leyte": "0x20b28",
+   "kind": "bss",
+   "evidence": [
+    "apply_player_mouse_controls",
+    "begin_replay_view",
+    "bullet_hits_aircraft",
+    "copy_player_pose_to_camera",
+    "handle_player_contact",
+    "resolve_bailout_outcome",
+    "start_mission_scene",
+    "test_player_vs_type0e_proximity",
+    "update_airspeed_needle",
+    "update_ammo_needle",
+    "update_bailout_view",
+    "update_flaps_needle",
+    "update_fuel_needles",
+    "update_gear_needles",
+    "update_manifold_needle",
+    "update_tachometer_needle",
+    "update_throttle_gauge",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b73c",
+   "leyte": "0x20b2c",
+   "kind": "bss",
+   "evidence": [
+    "start_mission_scene"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b73e",
+   "leyte": "0x20b2e",
+   "kind": "bss",
+   "evidence": [
+    "clip_polygon_y_max",
+    "configure_renderer_for_display",
+    "track_ground_plane_horizon",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b740",
+   "leyte": "0x20b30",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b744",
+   "leyte": "0x20f30",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers",
+    "unlock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b74c",
+   "leyte": "0x20f34",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers",
+    "unlock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b75c",
+   "leyte": "0x20f44",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers",
+    "unlock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b76c",
+   "leyte": "0x20f54",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers",
+    "unlock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b774",
+   "leyte": "0x20f5c",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers",
+    "unlock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b778",
+   "leyte": "0x20f60",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b784",
+   "leyte": "0x20f6c",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers",
+    "unlock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b788",
+   "leyte": "0x20f70",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b794",
+   "leyte": "0x20f7c",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers",
+    "scan_convert_edge_rows",
+    "unlock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b798",
+   "leyte": "0x20f80",
+   "kind": "bss",
+   "evidence": [
+    "lock_session_buffers",
+    "scan_convert_edge_rows",
+    "unlock_session_buffers"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b824",
+   "leyte": "0x2100c",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b826",
+   "leyte": "0x2100e",
+   "kind": "bss",
+   "evidence": [
+    "assign_face_colour",
+    "configure_renderer_for_display",
+    "present_bw_frame",
+    "present_spans_to_window"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b828",
+   "leyte": "0x21010",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b82a",
+   "leyte": "0x21012",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "present_bw_frame",
+    "present_spans_to_window",
+    "reset_background_rows",
+    "scan_convert_edge_rows"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b82c",
+   "leyte": "0x21014",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b82e",
+   "leyte": "0x21016",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b834",
+   "leyte": "0x2101c",
+   "kind": "bss",
+   "evidence": [
+    "scan_convert_edge_rows"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b838",
+   "leyte": "0x21020",
+   "kind": "bss",
+   "evidence": [
+    "alloc_object_from_desc",
+    "ordnance_tick",
+    "replay_logged_effects",
+    "shape_free_plume",
+    "spawn_debris_fragment",
+    "spawn_ground_mark",
+    "start_mission_scene",
+    "tick_ai_1b310_approach_fire",
+    "tick_debris_fragment",
+    "tick_ground_mark",
+    "tick_smoke_plume",
+    "update_bailout_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b83a",
+   "leyte": "0x21022",
+   "kind": "bss",
+   "evidence": [
+    "parachute_descend"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b83c",
+   "leyte": "0x21024",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b842",
+   "leyte": "0x2102a",
+   "kind": "bss",
+   "evidence": [
+    "bullet_hits_aircraft"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b858",
+   "leyte": "0x21042",
+   "kind": "bss",
+   "evidence": [
+    "apply_player_mouse_controls"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b86c",
+   "leyte": "0x21054",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "request_instant_replay"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b86e",
+   "leyte": "0x21056",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b870",
+   "leyte": "0x21058",
+   "kind": "bss",
+   "evidence": [
+    "animate_effect_kind0_ring",
+    "animate_effect_kind1_column",
+    "animate_ground_fire",
+    "animate_smoke_trail",
+    "begin_replay_view",
+    "handle_terrain_contact",
+    "init_effect_kind3_debris_explosion",
+    "ordnance_tick",
+    "parachute_descend",
+    "replay_logged_effects",
+    "test_terrain_collision",
+    "tick_debris_fragment",
+    "tick_smoke_plume",
+    "tick_turret",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b872",
+   "leyte": "0x2105a",
+   "kind": "bss",
+   "evidence": [
+    "apply_player_mouse_controls"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b87a",
+   "leyte": "0x21062",
+   "kind": "bss",
+   "evidence": [
+    "resolve_bailout_outcome"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b87c",
+   "leyte": "0x21064",
+   "kind": "bss",
+   "evidence": [
+    "destroy_parachute_controller",
+    "resolve_bailout_outcome",
+    "update_bailout_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b880",
+   "leyte": "0x21068",
+   "kind": "bss",
+   "evidence": [
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b884",
+   "leyte": "0x2106c",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1b888",
+   "leyte": "0x21070",
+   "kind": "bss",
+   "evidence": [
+    "apply_player_mouse_controls",
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bc64",
+   "leyte": "0x2144c",
+   "kind": "bss",
+   "evidence": [
+    "clear_pending_entity_slots"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bc80",
+   "leyte": "0x21468",
+   "kind": "bss",
+   "evidence": [
+    "update_climb_needle"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bd7c",
+   "leyte": "0x21564",
+   "kind": "bss",
+   "evidence": [
+    "draw_gauge_needle",
+    "erase_radar_blip_depth4",
+    "erase_radar_blip_depth8",
+    "update_altimeter_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bd80",
+   "leyte": "0x21568",
+   "kind": "bss",
+   "evidence": [
+    "assign_face_colour"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bd83",
+   "leyte": "0x2156b",
+   "kind": "bss",
+   "evidence": [
+    "assign_face_colour"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bd90",
+   "leyte": "0x21578",
+   "kind": "bss",
+   "evidence": [
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bd94",
+   "leyte": "0x2157c",
+   "kind": "bss",
+   "evidence": [
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bd98",
+   "leyte": "0x21580",
+   "kind": "bss",
+   "evidence": [
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bd9c",
+   "leyte": "0x21584",
+   "kind": "bss",
+   "evidence": [
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bda0",
+   "leyte": "0x21588",
+   "kind": "bss",
+   "evidence": [
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bda4",
+   "leyte": "0x2158c",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bda8",
+   "leyte": "0x21590",
+   "kind": "bss",
+   "evidence": [
+    "output_face_bw",
+    "output_face_colour"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1bdb4",
+   "leyte": "0x2159c",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1c1be",
+   "leyte": "0x219a8",
+   "kind": "bss",
+   "evidence": [
+    "emit_face_chain",
+    "emit_faces_bsp",
+    "plot_dot_bw"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d6fc",
+   "leyte": "0x23c2c",
+   "kind": "bss",
+   "evidence": [
+    "start_mission_scene"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d700",
+   "leyte": "0x23c30",
+   "kind": "bss",
+   "evidence": [
+    "start_mission_scene"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d710",
+   "leyte": "0x23c40",
+   "kind": "bss",
+   "evidence": [
+    "reset_distance_base_globals"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d714",
+   "leyte": "0x23c44",
+   "kind": "bss",
+   "evidence": [
+    "reset_distance_base_globals"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d718",
+   "leyte": "0x23c48",
+   "kind": "bss",
+   "evidence": [
+    "reset_distance_base_globals"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d71c",
+   "leyte": "0x23c4c",
+   "kind": "bss",
+   "evidence": [
+    "reset_distance_base_globals"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d720",
+   "leyte": "0x23c50",
+   "kind": "bss",
+   "evidence": [
+    "reset_distance_base_globals"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d724",
+   "leyte": "0x23c54",
+   "kind": "bss",
+   "evidence": [
+    "reset_distance_base_globals"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d75c",
+   "leyte": "0x23c8c",
+   "kind": "bss",
+   "evidence": [
+    "compose_attitude_matrix_6ang",
+    "compose_attitude_matrix_6ang_alt",
+    "fill_attitude_rotation_bases_5_6"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d774",
+   "leyte": "0x23ca4",
+   "kind": "bss",
+   "evidence": [
+    "compose_attitude_matrix_6ang",
+    "compose_attitude_matrix_6ang_alt",
+    "fill_attitude_rotation_bases_5_6"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d78c",
+   "leyte": "0x23cbc",
+   "kind": "bss",
+   "evidence": [
+    "compose_attitude_matrix_6ang",
+    "compose_attitude_matrix_6ang_alt",
+    "compose_attitude_matrix_x",
+    "compose_attitude_matrix_x_alt",
+    "fill_attitude_rotation_basis_4",
+    "fill_attitude_rotation_basis_4_rx"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7a4",
+   "leyte": "0x23cd4",
+   "kind": "bss",
+   "evidence": [
+    "compose_attitude_matrix_6ang",
+    "compose_attitude_matrix_6ang_alt",
+    "compose_attitude_matrix_x",
+    "compose_attitude_matrix_x_alt",
+    "fill_attitude_rotation_bases"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7bc",
+   "leyte": "0x23cec",
+   "kind": "bss",
+   "evidence": [
+    "compose_attitude_matrix_6ang",
+    "compose_attitude_matrix_6ang_alt",
+    "compose_attitude_matrix_x",
+    "compose_attitude_matrix_x_alt",
+    "fill_attitude_rotation_bases"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7d4",
+   "leyte": "0x23d04",
+   "kind": "bss",
+   "evidence": [
+    "compose_attitude_matrix_6ang",
+    "compose_attitude_matrix_6ang_alt",
+    "compose_attitude_matrix_x",
+    "compose_attitude_matrix_x_alt",
+    "fill_attitude_rotation_bases"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7e6",
+   "leyte": "0x23d16",
+   "kind": "bss",
+   "evidence": [
+    "fill_attitude_rotation_bases_5_6",
+    "load_attitude_angle_sincos_5_6"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7e8",
+   "leyte": "0x23d18",
+   "kind": "bss",
+   "evidence": [
+    "fill_attitude_rotation_bases_5_6",
+    "invoke_tagged_attitude_compose_neg_sins6",
+    "load_attitude_angle_sincos_5_6"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7ea",
+   "leyte": "0x23d1a",
+   "kind": "bss",
+   "evidence": [
+    "fill_attitude_rotation_bases_5_6",
+    "load_attitude_angle_sincos_5_6"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7ec",
+   "leyte": "0x23d1c",
+   "kind": "bss",
+   "evidence": [
+    "fill_attitude_rotation_bases_5_6",
+    "invoke_tagged_attitude_compose_neg_sins6",
+    "load_attitude_angle_sincos_5_6"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7ee",
+   "leyte": "0x23d1e",
+   "kind": "bss",
+   "evidence": [
+    "fill_attitude_rotation_basis_4",
+    "fill_attitude_rotation_basis_4_rx",
+    "load_attitude_angle_sincos"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7f0",
+   "leyte": "0x23d20",
+   "kind": "bss",
+   "evidence": [
+    "fill_attitude_rotation_basis_4",
+    "fill_attitude_rotation_basis_4_rx",
+    "invoke_tagged_attitude_compose_neg_sins6",
+    "load_attitude_angle_sincos"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7f2",
+   "leyte": "0x23d22",
+   "kind": "bss",
+   "evidence": [
+    "build_attitude_matrix_from_dir_roll",
+    "fill_attitude_rotation_bases",
+    "load_attitude_angle_sincos"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7f4",
+   "leyte": "0x23d24",
+   "kind": "bss",
+   "evidence": [
+    "build_attitude_matrix_from_dir_roll",
+    "fill_attitude_rotation_bases",
+    "invoke_tagged_attitude_compose_neg_sins6",
+    "load_attitude_angle_sincos"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7f6",
+   "leyte": "0x23d26",
+   "kind": "bss",
+   "evidence": [
+    "build_attitude_matrix_from_dir_roll",
+    "fill_attitude_rotation_bases",
+    "load_attitude_angle_sincos"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7f8",
+   "leyte": "0x23d28",
+   "kind": "bss",
+   "evidence": [
+    "build_attitude_matrix_from_dir_roll",
+    "fill_attitude_rotation_bases",
+    "invoke_tagged_attitude_compose_neg_sins6",
+    "load_attitude_angle_sincos"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7fa",
+   "leyte": "0x23d2a",
+   "kind": "bss",
+   "evidence": [
+    "build_attitude_matrix_from_dir_roll",
+    "fill_attitude_rotation_bases",
+    "load_attitude_angle_sincos"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d7fc",
+   "leyte": "0x23d2c",
+   "kind": "bss",
+   "evidence": [
+    "build_attitude_matrix_from_dir_roll",
+    "fill_attitude_rotation_bases",
+    "invoke_tagged_attitude_compose_neg_sins6",
+    "load_attitude_angle_sincos"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d808",
+   "leyte": "0x23d38",
+   "kind": "bss",
+   "evidence": [
+    "copy_player_pose_to_camera",
+    "turn_camera_toward_point"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d80c",
+   "leyte": "0x23d3c",
+   "kind": "bss",
+   "evidence": [
+    "copy_player_pose_to_camera",
+    "turn_camera_toward_point"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d80e",
+   "leyte": "0x23d3e",
+   "kind": "bss",
+   "evidence": [
+    "copy_player_pose_to_camera",
+    "face_camera_heading",
+    "face_object_to_camera",
+    "shape_free_plume",
+    "tick_view_attached_object",
+    "turn_camera_toward_point",
+    "update_direction_needle"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d810",
+   "leyte": "0x23d40",
+   "kind": "bss",
+   "evidence": [
+    "copy_player_pose_to_camera",
+    "face_object_to_camera",
+    "tick_view_attached_object",
+    "turn_camera_toward_point"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d814",
+   "leyte": "0x23d44",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d818",
+   "leyte": "0x23d48",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d81c",
+   "leyte": "0x23d4c",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d824",
+   "leyte": "0x23d54",
+   "kind": "bss",
+   "evidence": [
+    "start_mission_scene"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d830",
+   "leyte": "0x23d60",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "compute_camera_abs_metric",
+    "copy_player_pose_to_camera",
+    "follow_camera_offset",
+    "place_camera_behind_object",
+    "spawn_camera_relative_object",
+    "start_mission_scene",
+    "tick_view_attached_object",
+    "turn_camera_toward_point",
+    "update_bailout_view",
+    "update_object_camera_metric",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d834",
+   "leyte": "0x23d64",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "compute_camera_abs_metric",
+    "copy_player_pose_to_camera",
+    "follow_camera_offset",
+    "place_camera_behind_object",
+    "spawn_camera_relative_object",
+    "start_mission_scene",
+    "tick_view_attached_object",
+    "turn_camera_toward_point",
+    "update_altimeter_needles",
+    "update_bailout_view",
+    "update_object_camera_metric",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d838",
+   "leyte": "0x23d68",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "compute_camera_abs_metric",
+    "copy_player_pose_to_camera",
+    "follow_camera_offset",
+    "place_camera_behind_object",
+    "spawn_camera_relative_object",
+    "start_mission_scene",
+    "tick_view_attached_object",
+    "turn_camera_toward_point",
+    "update_bailout_view",
+    "update_object_camera_metric",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d83c",
+   "leyte": "0x23d6c",
+   "kind": "bss",
+   "evidence": [
+    "start_mission_scene"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d856",
+   "leyte": "0x23d86",
+   "kind": "bss",
+   "evidence": [
+    "start_mission_scene"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d858",
+   "leyte": "0x23d88",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "start_mission_scene",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d85a",
+   "leyte": "0x23d8a",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "queue_face_palette_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d85c",
+   "leyte": "0x23d8c",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "queue_face_palette_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d860",
+   "leyte": "0x23d90",
+   "kind": "bss",
+   "evidence": [
+    "assign_face_colour"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1d864",
+   "leyte": "0x23d94",
+   "kind": "bss",
+   "evidence": [
+    "assign_face_colour"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da6c",
+   "leyte": "0x23f9c",
+   "kind": "bss",
+   "evidence": [
+    "init_depth4_colour_state"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da70",
+   "leyte": "0x23fa0",
+   "kind": "bss",
+   "evidence": [
+    "init_depth4_colour_state"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da7c",
+   "leyte": "0x23fac",
+   "kind": "bss",
+   "evidence": [
+    "assign_face_colour",
+    "init_depth4_colour_state",
+    "queue_face_palette_entry"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da80",
+   "leyte": "0x23fb0",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da84",
+   "leyte": "0x23fb4",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da88",
+   "leyte": "0x23fb8",
+   "kind": "bss",
+   "evidence": [
+    "plot_dot_bw",
+    "plot_dot_depth4",
+    "plot_dot_depth8"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da8a",
+   "leyte": "0x23fba",
+   "kind": "bss",
+   "evidence": [
+    "init_depth4_colour_state",
+    "init_depth8_colour_state",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da8c",
+   "leyte": "0x23fbc",
+   "kind": "bss",
+   "evidence": [
+    "plot_dot_depth4",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da90",
+   "leyte": "0x23fc0",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da94",
+   "leyte": "0x23fc4",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da98",
+   "leyte": "0x23fc8",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "draw_gauge_needle",
+    "update_altimeter_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1da9c",
+   "leyte": "0x23fcc",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "draw_gauge_needle",
+    "update_altimeter_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1daa0",
+   "leyte": "0x23fd0",
+   "kind": "bss",
+   "evidence": [
+    "init_depth4_colour_state",
+    "init_depth8_colour_state",
+    "reset_background_rows",
+    "scan_convert_edge_rows"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1daa2",
+   "leyte": "0x23fd2",
+   "kind": "bss",
+   "evidence": [
+    "assign_face_colour",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1daa4",
+   "leyte": "0x23fd4",
+   "kind": "bss",
+   "evidence": [
+    "scan_convert_edge_rows"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x1eaac",
+   "leyte": "0x24fdc",
+   "kind": "bss",
+   "evidence": [
+    "scan_convert_edge_rows"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ab0",
+   "leyte": "0x26fe0",
+   "kind": "bss",
+   "evidence": [
+    "scan_convert_edge_rows"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ab4",
+   "leyte": "0x26fe4",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ab8",
+   "leyte": "0x26fe8",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20abc",
+   "leyte": "0x26fec",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ac0",
+   "leyte": "0x26ff0",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "present_spans_to_window"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ad4",
+   "leyte": "0x27004",
+   "kind": "bss",
+   "evidence": [
+    "reset_background_rows"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ae0",
+   "leyte": "0x2700c",
+   "kind": "bss",
+   "evidence": [
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ae2",
+   "leyte": "0x2700e",
+   "kind": "bss",
+   "evidence": [
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ae4",
+   "leyte": "0x27010",
+   "kind": "bss",
+   "evidence": [
+    "clear_flag_00020ae4",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ae6",
+   "leyte": "0x27012",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "scan_convert_edge_rows",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ae8",
+   "leyte": "0x27014",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20aea",
+   "leyte": "0x27016",
+   "kind": "bss",
+   "evidence": [
+    "clip_polygon_y_min",
+    "configure_renderer_for_display",
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20aec",
+   "leyte": "0x27018",
+   "kind": "bss",
+   "evidence": [
+    "clip_polygon_x_max",
+    "configure_renderer_for_display",
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20aee",
+   "leyte": "0x2701a",
+   "kind": "bss",
+   "evidence": [
+    "clip_polygon_x_min",
+    "configure_renderer_for_display",
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20af0",
+   "leyte": "0x2701c",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20af4",
+   "leyte": "0x27020",
+   "kind": "bss",
+   "evidence": [
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20afc",
+   "leyte": "0x27024",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20b14",
+   "leyte": "0x2703c",
+   "kind": "bss",
+   "evidence": [
+    "configure_renderer_for_display",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20b26",
+   "leyte": "0x2704e",
+   "kind": "bss",
+   "evidence": [
+    "clip_face_near_plane",
+    "configure_renderer_for_display",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20b28",
+   "leyte": "0x27050",
+   "kind": "bss",
+   "evidence": [
+    "clip_face_near_plane",
+    "configure_renderer_for_display",
+    "update_view_clip_bounds"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20b2a",
+   "leyte": "0x27052",
+   "kind": "bss",
+   "evidence": [
+    "apply_player_mouse_controls",
+    "configure_renderer_for_display",
+    "plot_dot_depth4",
+    "plot_dot_depth8"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20b2c",
+   "leyte": "0x27054",
+   "kind": "bss",
+   "evidence": [
+    "apply_player_mouse_controls",
+    "configure_renderer_for_display",
+    "plot_dot_depth4",
+    "plot_dot_depth8"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20b40",
+   "leyte": "0x27078",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20b4c",
+   "leyte": "0x27084",
+   "kind": "bss",
+   "evidence": [
+    "widen_printf_format"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20c50",
+   "leyte": "0x27188",
+   "kind": "bss",
+   "evidence": [
+    "heap_sbrk"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20c58",
+   "leyte": "0x27190",
+   "kind": "bss",
+   "evidence": [
+    "heap_alloc"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20c5c",
+   "leyte": "0x27194",
+   "kind": "bss",
+   "evidence": [
+    "heap_alloc"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20c60",
+   "leyte": "0x27198",
+   "kind": "bss",
+   "evidence": [
+    "heap_add_large_block_tail",
+    "heap_alloc",
+    "heap_free_coalesce",
+    "heap_roving_cursor_store"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20c64",
+   "leyte": "0x2719c",
+   "kind": "bss",
+   "evidence": [
+    "heap_alloc",
+    "heap_roving_cursor_store"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20ce4",
+   "leyte": "0x2721c",
+   "kind": "bss",
+   "evidence": [
+    "compose_attitude_matrix_6ang",
+    "compose_attitude_matrix_x",
+    "invoke_tagged_attitude_compose_neg_sins6"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x20cec",
+   "leyte": "0x27224",
+   "kind": "bss",
+   "evidence": [
+    "fill_span_rows_8bit",
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x22cec",
+   "leyte": "0x29224",
+   "kind": "bss",
+   "evidence": [
+    "fill_span_rows_8bit",
+    "init_code_pointer_tables"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d10",
+   "leyte": "0x2b24c",
+   "kind": "bss",
+   "evidence": [
+    "stop_game_sound"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d14",
+   "leyte": "0x2b250",
+   "kind": "bss",
+   "evidence": [
+    "stop_all_sound_channels"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d18",
+   "leyte": "0x2b254",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "turn_camera_toward_point"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d1a",
+   "leyte": "0x2b256",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "turn_camera_toward_point"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d1c",
+   "leyte": "0x2b258",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d20",
+   "leyte": "0x2b25c",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d24",
+   "leyte": "0x2b260",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d28",
+   "leyte": "0x2b264",
+   "kind": "bss",
+   "evidence": [
+    "begin_replay_view",
+    "update_tracking_camera"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d30",
+   "leyte": "0x2b26c",
+   "kind": "bss",
+   "evidence": [
+    "apply_player_mouse_controls"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d32",
+   "leyte": "0x2b26e",
+   "kind": "bss",
+   "evidence": [
+    "apply_player_mouse_controls"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d4a",
+   "leyte": "0x2b286",
+   "kind": "bss",
+   "evidence": [
+    "face_is_back_facing"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d4e",
+   "leyte": "0x2b28a",
+   "kind": "bss",
+   "evidence": [
+    "face_is_back_facing"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d50",
+   "leyte": "0x2b28c",
+   "kind": "bss",
+   "evidence": [
+    "face_is_back_facing"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d5a",
+   "leyte": "0x2b296",
+   "kind": "bss",
+   "evidence": [
+    "face_is_back_facing"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d5c",
+   "leyte": "0x2b298",
+   "kind": "bss",
+   "evidence": [
+    "face_is_back_facing"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d5e",
+   "leyte": "0x2b29a",
+   "kind": "bss",
+   "evidence": [
+    "face_is_back_facing"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24d60",
+   "leyte": "0x2b29c",
+   "kind": "bss",
+   "evidence": [
+    "face_is_back_facing"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24dea",
+   "leyte": "0x2b330",
+   "kind": "bss",
+   "evidence": [
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x24df2",
+   "leyte": "0x2b338",
+   "kind": "bss",
+   "evidence": [
+    "output_face_bw",
+    "output_face_colour",
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25252",
+   "leyte": "0x2b798",
+   "kind": "bss",
+   "evidence": [
+    "output_face_bw",
+    "output_face_colour",
+    "track_ground_plane_horizon"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25b16",
+   "leyte": "0x2c0ac",
+   "kind": "bss",
+   "evidence": [
+    "emit_faces_bsp"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25b1a",
+   "leyte": "0x2c0b0",
+   "kind": "bss",
+   "evidence": [
+    "output_face_bw",
+    "output_face_colour"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25b24",
+   "leyte": "0x2c0ba",
+   "kind": "bss",
+   "evidence": [
+    "emit_faces_bsp",
+    "face_is_back_facing"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25b28",
+   "leyte": "0x2c0be",
+   "kind": "bss",
+   "evidence": [
+    "emit_faces_bsp"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25d2c",
+   "leyte": "0x2c2c2",
+   "kind": "bss",
+   "evidence": [
+    "emit_face_chain",
+    "emit_faces_bsp"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25f30",
+   "leyte": "0x2c4c6",
+   "kind": "bss",
+   "evidence": [
+    "emit_face_chain",
+    "emit_faces_bsp"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25f4a",
+   "leyte": "0x2c4e2",
+   "kind": "bss",
+   "evidence": [
+    "draw_gauge_needle"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25f92",
+   "leyte": "0x2c52a",
+   "kind": "bss",
+   "evidence": [
+    "draw_gauge_needle"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25fda",
+   "leyte": "0x2c572",
+   "kind": "bss",
+   "evidence": [
+    "update_altimeter_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25fde",
+   "leyte": "0x2c576",
+   "kind": "bss",
+   "evidence": [
+    "update_altimeter_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25fe6",
+   "leyte": "0x2c580",
+   "kind": "bss",
+   "evidence": [
+    "update_throttle_gauge"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25fe8",
+   "leyte": "0x2c582",
+   "kind": "bss",
+   "evidence": [
+    "update_flaps_needle"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25fea",
+   "leyte": "0x2c584",
+   "kind": "bss",
+   "evidence": [
+    "update_gear_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25fec",
+   "leyte": "0x2c586",
+   "kind": "bss",
+   "evidence": [
+    "update_ammo_needle"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25fee",
+   "leyte": "0x2c588",
+   "kind": "bss",
+   "evidence": [
+    "update_fuel_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25ff0",
+   "leyte": "0x2c58a",
+   "kind": "bss",
+   "evidence": [
+    "update_fuel_needles"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25ffc",
+   "leyte": "0x2c596",
+   "kind": "bss",
+   "evidence": [
+    "draw_gauge_needle",
+    "mark_view_overlays_drawn",
+    "reset_overlay_display_state",
+    "update_altimeter_needles",
+    "update_ammo_needle",
+    "update_flaps_needle",
+    "update_fuel_needles",
+    "update_gear_needles",
+    "update_throttle_gauge"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x25ffe",
+   "leyte": "0x2c598",
+   "kind": "bss",
+   "evidence": [
+    "reset_overlay_display_state"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26000",
+   "leyte": "0x2c5ae",
+   "kind": "bss",
+   "evidence": [
+    "create_enemy_fighter"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26004",
+   "leyte": "0x27074",
+   "kind": "bss",
+   "evidence": [
+    "compute_template_force_from_626",
+    "compute_template_force_from_626_tail"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26008",
+   "leyte": "0x2c5b4",
+   "kind": "bss",
+   "evidence": [
+    "overlay_rng_next"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x260e8",
+   "leyte": "0x2c694",
+   "kind": "bss",
+   "evidence": [
+    "overlay_rng_next"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x260ec",
+   "leyte": "0x2c698",
+   "kind": "bss",
+   "evidence": [
+    "mark_effect_log_end",
+    "replay_logged_effects"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x260ee",
+   "leyte": "0x2c69a",
+   "kind": "bss",
+   "evidence": [
+    "mark_effect_log_end",
+    "replay_logged_effects"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2627a",
+   "leyte": "0x2c826",
+   "kind": "bss",
+   "evidence": [
+    "create_effect_controller"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x265d0",
+   "leyte": "0x2cb84",
+   "kind": "bss",
+   "evidence": [
+    "bullet_pre_render"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x265d2",
+   "leyte": "0x2cb86",
+   "kind": "bss",
+   "evidence": [
+    "bullet_pre_render"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2664a",
+   "leyte": "0x2cbfe",
+   "kind": "bss",
+   "evidence": [
+    "spawn_ordnance_scattered"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26650",
+   "leyte": "0x2cc04",
+   "kind": "bss",
+   "evidence": [
+    "register_trail_templates",
+    "spawn_trail"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26658",
+   "leyte": "0x2cc0c",
+   "kind": "bss",
+   "evidence": [
+    "spawn_ground_fire_object"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2665c",
+   "leyte": "0x2cc10",
+   "kind": "bss",
+   "evidence": [
+    "spawn_debris_fragment"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26660",
+   "leyte": "0x2cc14",
+   "kind": "bss",
+   "evidence": [
+    "spawn_ground_mark"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26664",
+   "leyte": "0x2cc18",
+   "kind": "bss",
+   "evidence": [
+    "update_radar_range_buttons"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26666",
+   "leyte": "0x2cc1a",
+   "kind": "bss",
+   "evidence": [
+    "set_view_distance"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2666a",
+   "leyte": "0x2cc1e",
+   "kind": "bss",
+   "evidence": [
+    "cycle_view_distance",
+    "set_view_distance",
+    "update_radar_range_buttons"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2666e",
+   "leyte": "0x2cc22",
+   "kind": "bss",
+   "evidence": [
+    "reset_radar_tracks",
+    "set_view_distance",
+    "update_radar_range_buttons"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26672",
+   "leyte": "0x2cc26",
+   "kind": "bss",
+   "evidence": [
+    "reset_radar_tracks"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26676",
+   "leyte": "0x2cc2a",
+   "kind": "bss",
+   "evidence": [
+    "reset_radar_tracks"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2677c",
+   "leyte": "0x2cd88",
+   "kind": "bss",
+   "evidence": [
+    "spawn_turret_on_object"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26784",
+   "leyte": "0x2cd90",
+   "kind": "bss",
+   "evidence": [
+    "register_cloud_templates",
+    "spawn_camera_relative_object"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x26798",
+   "leyte": "0x2cda4",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x2679c",
+   "leyte": "0x2cda8",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267a0",
+   "leyte": "0x2cdac",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267a4",
+   "leyte": "0x2cdb0",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267a8",
+   "leyte": "0x2cdb4",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267ac",
+   "leyte": "0x2cdb8",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267ae",
+   "leyte": "0x2cdba",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267b2",
+   "leyte": "0x2cdbe",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267b6",
+   "leyte": "0x2cdc2",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267ba",
+   "leyte": "0x2cdc6",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267bc",
+   "leyte": "0x2cdc8",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267c0",
+   "leyte": "0x2cdcc",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  },
+  {
+   "hellcats_1_0_3": "0x267c4",
+   "leyte": "0x2cdd0",
+   "kind": "bss",
+   "evidence": [
+    "tick_landing_approach_glide",
+    "try_begin_landing_approach"
+   ]
+  }
+ ],
+ "conflicts": []
+}

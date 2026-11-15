@@ -26,7 +26,8 @@ func run() -> bool:
 
 ## What a US keyboard types with the printable keys used here.
 const TYPED := {KEY_EQUAL: 0x3d, KEY_MINUS: 0x2d, KEY_G: 0x67, KEY_F: 0x66, KEY_B: 0x62, KEY_A: 0x61, KEY_J: 0x6a,
-	KEY_P: 0x70, KEY_V: 0x76, KEY_C: 0x63, KEY_T: 0x74, KEY_K: 0x6b, KEY_Q: 0x71}
+	KEY_P: 0x70, KEY_V: 0x76, KEY_C: 0x63, KEY_T: 0x74, KEY_K: 0x6b, KEY_Q: 0x71, KEY_8: 0x38, KEY_2: 0x32,
+	KEY_4: 0x34, KEY_6: 0x36, KEY_5: 0x35, KEY_SPACE: 0x20}
 
 func _key(keycode: Key) -> InputEventKey:
 	var e := InputEventKey.new()

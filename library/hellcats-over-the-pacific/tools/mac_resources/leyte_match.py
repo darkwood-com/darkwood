@@ -40,7 +40,8 @@ for seg in ['ID01','ID02','ID03','ID04','ID05','ID06','ID07','ID08','ID09']:
 for s,v in per.items(): print(s,v[0],'->',v[1],v[2],v[3])
 print('total',tot)
 print('data fork',len(ley.data), ley.data[:8].hex(), 'code size', hex(struct.unpack('>I',ley.data[4:8])[0]))
-# overlay: Pacific Conflict functions (runtime address R = file byte R + 0x20) in the Leyte data fork,
+# overlay: Pacific Conflict functions (inventory addresses are file offsets: code byte A - 0x20, after the
+# 0x20-byte header; 348 of the 443 start on a prologue there, 16 at A + 0x20) in the Leyte data fork,
 # every long the overlay's first relocation table names (offset, flags; flag bit 7 = not relocated)
 # masked in both images, and PC-relative displacements (BSR / JSR / LEA / PEA (d16,PC))
 def overlay(img):
@@ -69,10 +70,10 @@ def rpattern(start, code):
 fs = sorted((int(f['original_address'], 16), f['semantic_name'] or f['original_function']) for f in inv if f['segment'] == 'Pacific Conflict')
 c = {'exact': 0, 'relocation-masked': 0, 'missing': 0}
 for k, (ad, name) in enumerate(fs):
-    end = fs[k + 1][0] if k + 1 < len(fs) else len(pcode); code = pcode[ad:end]
+    end = fs[k + 1][0] if k + 1 < len(fs) else len(pcode) + 0x20; code = pcode[ad - 0x20:end - 0x20]
     if len(code) < 6: continue
     if lcode.find(code) >= 0: c['exact'] += 1
-    elif rpattern(ad, code).search(lmasked): c['relocation-masked'] += 1
+    elif rpattern(ad - 0x20, code).search(lmasked): c['relocation-masked'] += 1
     else: c['missing'] += 1
 print('overlay', len(pcode), '->', len(lcode), c, 'of', len(fs), 'relocations', len(prel) // 4, '->', len(lrel) // 4)
 
@@ -90,8 +91,8 @@ if capstone:
     leyte_stream = mnemonics(lcode)
     same_shape = rewritten = 0
     for k, (ad, name) in enumerate(fs):
-        end = fs[k + 1][0] if k + 1 < len(fs) else len(pcode); code = pcode[ad:end]
-        if len(code) < 6 or lcode.find(code) >= 0 or rpattern(ad, code).search(lmasked):
+        end = fs[k + 1][0] if k + 1 < len(fs) else len(pcode) + 0x20; code = pcode[ad - 0x20:end - 0x20]
+        if len(code) < 6 or lcode.find(code) >= 0 or rpattern(ad - 0x20, code).search(lmasked):
             continue
         if mnemonics(code) in leyte_stream: same_shape += 1
         else: rewritten += 1

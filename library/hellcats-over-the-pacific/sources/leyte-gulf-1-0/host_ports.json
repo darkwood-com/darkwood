@@ -1,0 +1,1299 @@
+{
+ "schema": 1,
+ "generated_by": "tools/leyte/gen_host_ports.py",
+ "segments": {
+  "ID01": {
+   "mode": "reuse",
+   "port": "original/port/ID01.gd",
+   "functions": [
+    "rt_udiv32",
+    "rt_umod32",
+    "rt_sdiv32",
+    "rt_smod32",
+    "rt_sdivmod32_core",
+    "rt_udivmod32_core"
+   ],
+   "evidence": "every ported function byte-identical in Leyte's CODE 1"
+  },
+  "ID07": {
+   "mode": "remap",
+   "port": "original/leyte/port/ID07.gd",
+   "functions": [
+    "load_str129_string_table",
+    "init_string_pointer_groups"
+   ],
+   "a5": {
+    "-0x221e": "-0x229e",
+    "-0xffe": "-0x103c",
+    "-0xfae": "-0xfec",
+    "-0xf86": "-0xfc4",
+    "-0xf46": "-0xf84",
+    "0x3a": "0x3a",
+    "0x272": "0x28a",
+    "0x4fa": "0x542"
+   },
+   "immediates": [
+    {
+     "1.0.3": "0x79",
+     "leyte": "0x7c",
+     "meaning": "STR# 129's strings: 1.0.3 loads 120, Leyte 123 (cmpi.w at +0x182)"
+    }
+   ],
+   "a5_local": {},
+   "elsewhere": [],
+   "jt_counterparts": {
+    "0x4fa": "ansi_memmove (identical)"
+   },
+   "a5_derived": {},
+   "evidence": "same instructions in Leyte's CODE 7, A5 operands only differing, each through the A5 map"
+  },
+  "ID05": {
+   "mode": "remap",
+   "port": "original/leyte/port/ID05.gd",
+   "functions": [
+    "center_template_rect_on_screen",
+    "get_machine_screen_fingerprint",
+    "read_DATA128_pair",
+    "write_DATA128_pair",
+    "read_TEXT128_pair",
+    "write_TEXT128_pair",
+    "code_dialog_filter",
+    "get_dialog_item_text_upper",
+    "run_protection_dialog",
+    "ansi_rand",
+    "ansi_srand",
+    "encode_base26_6chars",
+    "decode_base26_6chars",
+    "poison_overlay_bytes",
+    "restore_poisoned_overlay_bytes",
+    "init_protection_table",
+    "pick_random_protection_challenge",
+    "record_code_index_equals",
+    "validate_protection_response",
+    "random_28bit_value",
+    "pack_fields_to_code_buf68",
+    "unpack_fields_from_code",
+    "encode_code28_to_buf54",
+    "decode_code_to_long_a",
+    "encode_long_to_buf40",
+    "decode_code_to_long_b"
+   ],
+   "a5": {
+    "-0x1680": "-0x16fe",
+    "-0x167e": "-0x16fc",
+    "-0x167c": "-0x16fa",
+    "-0x167a": "-0x16f8",
+    "-0x1608": "-0x1686",
+    "-0x2ca": "-0x2ca",
+    "-0x1c9": "-0x1c9",
+    "-0xc0": "-0xc0",
+    "-0xbe": "-0xbe",
+    "-0xbc": "-0xbc",
+    "-0xba": "-0xba",
+    "-0xb6": "-0xb6",
+    "-0xb4": "-0xb4",
+    "-0x6c": "-0x6c",
+    "-0x68": "-0x68",
+    "-0x54": "-0x54",
+    "-0x40": "-0x40",
+    "-0x2c": "-0x2c",
+    "0x1f2": "0x202",
+    "0x20a": "0x21a",
+    "0x282": "0x29a",
+    "0x28a": "0x2a2",
+    "0x2f2": "0x332",
+    "0x2fa": "0x33a",
+    "0x302": "0x342",
+    "0x4e2": "0x52a",
+    "0x522": "0x56a",
+    "0x562": "0x5aa"
+   },
+   "immediates": [],
+   "a5_local": {
+    "-0x1680": [
+     "get_machine_screen_fingerprint"
+    ],
+    "-0x167e": [
+     "get_machine_screen_fingerprint"
+    ]
+   },
+   "elsewhere": [],
+   "jt_counterparts": {},
+   "a5_derived": {},
+   "evidence": "same instructions in Leyte's CODE 5, A5 operands only differing, each through the A5 map"
+  },
+  "ID06": {
+   "mode": "remap",
+   "port": "original/leyte/port/ID06.gd",
+   "functions": [
+    "init_pattern_tables",
+    "alloc_pattern_tables",
+    "get_pattern_table",
+    "rgb_to_bw_pattern",
+    "lookup_colour_map",
+    "reverse_lookup_colour_map",
+    "alloc_aligned_clear",
+    "free_aligned",
+    "init_row_table_fields",
+    "render_scanline_spans",
+    "free_row_table",
+    "alloc_row_table",
+    "init_edge_pool",
+    "init_raster_target",
+    "set_raster_target_base",
+    "set_active_row_count",
+    "get_raster_target_size",
+    "realloc_row_table",
+    "reset_edge_table",
+    "add_polygon_edges",
+    "add_rect_polygon",
+    "rebase_edge_rows_for_band",
+    "restore_edge_rows_after_band",
+    "rasterize_and_present"
+   ],
+   "a5": {
+    "-0x1ede": "-0x1f64",
+    "-0x1eda": "-0x1f60",
+    "-0x1ed6": "-0x1f5c",
+    "-0x1cd6": "-0x1d5c",
+    "-0x1cd2": "-0x1d58",
+    "-0x1cce": "-0x1d54",
+    "-0x1cca": "-0x1d50",
+    "-0x1cc8": "-0x1d4e",
+    "-0x1cc6": "-0x1d4c",
+    "-0x137a": "-0x13f8",
+    "-0x1372": "-0x13f0",
+    "-0x4": "-0x4",
+    "0x192": "0x1aa",
+    "0x212": "0x222",
+    "0x21a": "0x22a",
+    "0x232": "0x242",
+    "0x23a": "0x24a",
+    "0x322": "0x3ba"
+   },
+   "immediates": [],
+   "a5_local": {
+    "-0x137a": [
+     "rasterize_and_present"
+    ],
+    "-0x1372": [
+     "rasterize_and_present"
+    ]
+   },
+   "elsewhere": [],
+   "jt_counterparts": {
+    "0x322": "blit_offscreen_frame_to_window (same_instructions)"
+   },
+   "a5_derived": {},
+   "evidence": "same instructions in Leyte's CODE 6, A5 operands only differing, each through the A5 map"
+  },
+  "ID02": {
+   "mode": "partial",
+   "port": "original/leyte/port/ID02.gd",
+   "functions": [
+    "ansi_div",
+    "ansi_ldiv",
+    "ansi_isalnum",
+    "ansi_isalpha",
+    "ansi_iscntrl",
+    "ansi_isdigit",
+    "ansi_isgraph",
+    "ansi_islower",
+    "ansi_isprint",
+    "ansi_ispunct",
+    "ansi_isspace",
+    "ansi_isupper",
+    "ansi_isxdigit",
+    "ansi_toupper",
+    "ansi_tolower",
+    "ansi_memcpy",
+    "ansi_memmove",
+    "ansi_memset",
+    "ansi_strcpy",
+    "ansi_strcat",
+    "ansi_strcmp",
+    "ansi_strchr",
+    "ansi_strcspn",
+    "ansi_strpbrk",
+    "ansi_strrchr",
+    "ansi_strspn",
+    "ansi_strstr",
+    "ansi_strtok",
+    "ansi_strncpy",
+    "ansi_strncat",
+    "ensure_free_memory_and_init_sound",
+    "call_overlay_session_hooks",
+    "draw_thick_line_pixel_index_a5safe",
+    "draw_thick_xor_line_a5safe",
+    "paint_view_horizon_bands_a5safe",
+    "apply_pending_color_entries_a5safe",
+    "new_offscreen_cport",
+    "close_and_dispose_port",
+    "blit_offscreen_frame_to_window",
+    "blit_pixels_via_port_a5safe",
+    "open_offscreen_cport_a5safe",
+    "close_port_a5safe",
+    "swap_port_a5safe",
+    "paint_rect_color_index_a5safe",
+    "paint_polygon_rgb_a5safe",
+    "build_notched_frame_poly",
+    "draw_text_in_columns_a5safe",
+    "swap_mmu_mode_a5safe",
+    "get_blended_fill_pattern",
+    "set_draw_color_index",
+    "set_back_color_index",
+    "design_x_to_screen",
+    "design_y_to_screen",
+    "run_segment3_entry_and_unload_a5safe",
+    "new_handle_clear_or_die_a5safe",
+    "fatal_memory_error_exit",
+    "dispose_handle_a5safe",
+    "realloc_and_clear_handle_a5safe",
+    "hlock_a5safe",
+    "hunlock_a5safe",
+    "hpurge_a5safe",
+    "hnopurge_a5safe",
+    "freemem_a5safe",
+    "format_int_decimal_pstring",
+    "show_caution_alert_with_number",
+    "show_sound_error_dialog_once",
+    "show_creating_panel_dialog",
+    "release_sound_slots",
+    "load_named_sound_into_slot",
+    "lock_sound_slots",
+    "show_resource_file_error_box",
+    "copy_pascal_string",
+    "handle_activate_event",
+    "install_menus",
+    "set_menu_item_enabled",
+    "vbl_sound_handler_ch0_unrolled",
+    "vbl_sound_handler_ch0_variant",
+    "vbl_sound_handler_two_channel",
+    "clear_sound_buffer_to_silence",
+    "alloc_sound_buffer_node",
+    "select_two_channel_sound_handler",
+    "init_sound_system",
+    "play_sample_on_channel",
+    "enqueue_sample_on_channel",
+    "set_sound_playback_rate",
+    "release_channel_loop",
+    "silence_sound_channel",
+    "is_channel_playing",
+    "shutdown_sound",
+    "position_window_on_screen",
+    "position_alert_template",
+    "centre_window_on_screen",
+    "detach_window_palette",
+    "select_palette_for_depth",
+    "configure_palette_entries",
+    "clear_ctab_size_callback",
+    "lookup_palette_index_for_rgb_level",
+    "init_standard_colour_indices"
+   ],
+   "a5": {
+    "-0x1680": "-0x16fe",
+    "-0x167e": "-0x16fc",
+    "-0x167c": "-0x16fa",
+    "-0x167a": "-0x16f8",
+    "-0x1624": "-0x16a2",
+    "-0x161c": "-0x169a",
+    "-0x1614": "-0x1692",
+    "-0x160c": "-0x168a",
+    "-0x1608": "-0x1686",
+    "-0x1508": "-0x1586",
+    "-0x14f2": "-0x1570",
+    "-0x14f0": "-0x156e",
+    "-0x14ee": "-0x156c",
+    "-0x14ec": "-0x156a",
+    "-0x14ea": "-0x1568",
+    "-0x14e8": "-0x1566",
+    "-0x14e6": "-0x1564",
+    "-0x14e4": "-0x1562",
+    "-0x14da": "-0x1558",
+    "-0x14d8": "-0x1556",
+    "-0x14d6": "-0x1554",
+    "-0x14d4": "-0x1552",
+    "-0x14d2": "-0x1550",
+    "-0x14d0": "-0x154e",
+    "-0x14ce": "-0x154c",
+    "-0x14cc": "-0x154a",
+    "-0x14ca": "-0x1548",
+    "-0x14c6": "-0x1544",
+    "-0x14b2": "-0x1530",
+    "-0x14ae": "-0x152c",
+    "-0x14aa": "-0x1528",
+    "-0x14a6": "-0x1524",
+    "-0x14a2": "-0x1520",
+    "-0x149e": "-0x151c",
+    "-0x13ba": "-0x1438",
+    "-0x13b8": "-0x1436",
+    "-0x13b6": "-0x1434",
+    "-0x137e": "-0x13fc",
+    "-0x137a": "-0x13f8",
+    "-0x1372": "-0x13f0",
+    "-0x1370": "-0x13ee",
+    "-0x12ee": "-0x136c",
+    "-0x1202": "-0x127c",
+    "-0x1200": "-0x127a",
+    "-0x11fe": "-0x1278",
+    "-0x11fc": "-0x1276",
+    "-0x11fa": "-0x1274",
+    "-0x11f8": "-0x1272",
+    "-0x11ae": "-0x1228",
+    "-0x11ac": "-0x1226",
+    "-0x118c": "-0x1206",
+    "-0x118a": "-0x1204",
+    "-0x1188": "-0x1202",
+    "-0x117e": "-0x11c4",
+    "-0x117c": "-0x11c2",
+    "-0x1082": "-0x10c4",
+    "-0x107e": "-0x10c0",
+    "-0x107a": "-0x10bc",
+    "-0x1076": "-0x10b8",
+    "-0x103a": "-0x107c",
+    "-0x1006": "-0x1048",
+    "-0x1000": "-0x103e",
+    "-0xde2": "-0xe20",
+    "-0xdde": "-0xe1c",
+    "-0xdda": "-0xe18",
+    "-0xdd6": "-0xe14",
+    "-0xdd2": "-0xe10",
+    "-0xd72": "-0xdb0",
+    "-0xd6e": "-0xdac",
+    "-0xd62": "-0xd94",
+    "-0xd12": "-0xd44",
+    "-0xd0e": "-0xd3c",
+    "-0xd0c": "-0xd3a",
+    "-0xd0a": "-0xd38",
+    "-0xd08": "-0xd36",
+    "-0xd06": "-0xd34",
+    "-0xd04": "-0xd32",
+    "-0xd02": "-0xd30",
+    "-0xc50": "-0xc50",
+    "-0xc4e": "-0xc4e",
+    "-0xc4a": "-0xc4a",
+    "-0xc46": "-0xc46",
+    "-0xc42": "-0xc42",
+    "-0xc3e": "-0xc3e",
+    "-0xc38": "-0xc38",
+    "-0xc36": "-0xc36",
+    "-0xc32": "-0xc32",
+    "-0xc2e": "-0xc2e",
+    "-0xc2a": "-0xc2a",
+    "-0xc26": "-0xc26",
+    "-0x7d0": "-0x7d0",
+    "-0x598": "-0x598",
+    "-0x360": "-0x360",
+    "-0x35c": "-0x35c",
+    "-0x356": "-0x356",
+    "-0x352": "-0x352",
+    "-0x350": "-0x350",
+    "-0x320": "-0x320",
+    "-0x302": "-0x302",
+    "-0x2cc": "-0x2cc",
+    "0x5a": "0x5a",
+    "0x62": "0x62",
+    "0x17a": "0x192",
+    "0x18a": "0x19a",
+    "0x1ca": "0x1e2",
+    "0x212": "0x222",
+    "0x21a": "0x22a",
+    "0x232": "0x242",
+    "0x23a": "0x24a",
+    "0x252": "0x262",
+    "0x25a": "0x26a",
+    "0x262": "0x27a",
+    "0x26a": "0x282",
+    "0x272": "0x28a",
+    "0x27a": "0x292",
+    "0x282": "0x29a",
+    "0x28a": "0x2a2",
+    "0x29a": "0x2ba",
+    "0x2e2": "0x322",
+    "0x2fa": "0x33a",
+    "0x302": "0x342",
+    "0x412": "0x452",
+    "0x41a": "0x45a",
+    "0x422": "0x462"
+   },
+   "immediates": [],
+   "a5_local": {
+    "-0x1680": [
+     "centre_window_on_screen",
+     "position_alert_template",
+     "position_window_on_screen"
+    ],
+    "-0x167e": [
+     "centre_window_on_screen",
+     "position_alert_template",
+     "position_window_on_screen"
+    ],
+    "-0x1614": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x1508": [
+     "ansi_strtok"
+    ],
+    "-0x14f2": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0x14f0": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0x14ee": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0x14ec": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0x14ea": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0x14e8": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0x14e6": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0x14e4": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0x14da": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x14d8": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x14d6": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x14d4": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x14d2": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x14d0": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x14ce": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x14cc": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x14a6": [
+     "get_blended_fill_pattern",
+     "lookup_palette_index_for_rgb_level",
+     "select_palette_for_depth",
+     "set_draw_color_index"
+    ],
+    "-0x14a2": [
+     "lookup_palette_index_for_rgb_level",
+     "select_palette_for_depth"
+    ],
+    "-0x149e": [
+     "design_x_to_screen",
+     "design_y_to_screen"
+    ],
+    "-0x13ba": [
+     "get_blended_fill_pattern",
+     "set_draw_color_index"
+    ],
+    "-0x13b8": [
+     "get_blended_fill_pattern",
+     "set_back_color_index"
+    ],
+    "-0x13b6": [
+     "paint_view_horizon_bands_a5safe"
+    ],
+    "-0x137e": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0x137a": [
+     "blit_offscreen_frame_to_window",
+     "get_blended_fill_pattern",
+     "lookup_palette_index_for_rgb_level",
+     "paint_polygon_rgb_a5safe",
+     "select_palette_for_depth",
+     "set_back_color_index",
+     "set_draw_color_index"
+    ],
+    "-0x1372": [
+     "blit_offscreen_frame_to_window",
+     "design_x_to_screen",
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x1370": [
+     "blit_offscreen_frame_to_window",
+     "design_y_to_screen",
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0x1202": [
+     "paint_view_horizon_bands_a5safe"
+    ],
+    "-0x1200": [
+     "paint_view_horizon_bands_a5safe"
+    ],
+    "-0x11fe": [
+     "paint_view_horizon_bands_a5safe"
+    ],
+    "-0x11fc": [
+     "paint_view_horizon_bands_a5safe"
+    ],
+    "-0x107a": [
+     "call_overlay_session_hooks"
+    ],
+    "-0x103a": [
+     "blit_offscreen_frame_to_window"
+    ],
+    "-0xde2": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0xdde": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0xdda": [
+     "draw_text_in_columns_a5safe"
+    ],
+    "-0xdd6": [
+     "draw_text_in_columns_a5safe"
+    ]
+   },
+   "elsewhere": [
+    "abs_long"
+   ],
+   "jt_counterparts": {
+    "0x1ca": "rgb_to_bw_pattern (moved)"
+   },
+   "a5_derived": {
+    "-0x14f0": "from -0x14f2",
+    "-0x14ee": "from -0x14f2",
+    "-0x14ec": "from -0x14ea",
+    "-0x14e8": "from -0x14ea",
+    "-0x14e6": "from -0x14ea",
+    "-0x14e4": "from -0x14ea",
+    "-0x14d8": "from -0x14da",
+    "-0x14d6": "from -0x14da",
+    "-0x14d4": "from -0x14d2",
+    "-0x14d0": "from -0x14d2",
+    "-0x14ce": "from -0x14d2",
+    "-0x14cc": "from -0x14ca"
+   },
+   "evidence": "per function: the listed functions are the same instructions in Leyte's CODE 2, A5 operands only differing, each through the A5 map; the unverified ones refuse",
+   "unverified": {
+    "apply_settings_to_live_options": "ID02 apply_settings_to_live_options: not found in Leyte",
+    "begin_overlay_session": "ID02 begin_overlay_session: its port reaches refused load_game_sounds; A5 globals not paired: -0x112a, -0xd00, -0xcf8, -0xcea, -0xce6, -0xce2, -0xcd0, -0xcca, -0xcc4, -0xcc0, -0xcba, -0xcb4, -0xcae, -0xca4",
+    "blit_image_clipped_to_region": "ID02 blit_image_clipped_to_region: its port reaches refused draw_view_frame_outline; A5 globals not paired: -0xc80, -0x424",
+    "blit_image_clipped_to_region_a5safe": "ID02 blit_image_clipped_to_region_a5safe: its port reaches refused blit_image_clipped_to_region, draw_view_frame_outline; A5 globals not paired: -0xc80, -0x424",
+    "build_palette_index_map": "ID02 build_palette_index_map: not found in Leyte",
+    "check_device_color_state_changed": "ID02 check_device_color_state_changed: jump-table slot 0x182 (Leyte 0x1a2) does not reach the same routine",
+    "configure_display_from_main_device": "ID02 configure_display_from_main_device: not found in Leyte",
+    "do_menu_command": "ID02 do_menu_command: not found in Leyte",
+    "draw_notched_frame_pair_a5safe": "ID02 draw_notched_frame_pair_a5safe: not found in Leyte",
+    "draw_view_frame_outline": "ID02 draw_view_frame_outline: its port reaches A5 globals not paired: -0xc80, -0x424",
+    "handle_mouse_down": "ID02 handle_mouse_down: its port reaches refused apply_settings_to_live_options, begin_overlay_session, build_palette_index_map, check_device_color_state_changed, configure_display_from_main_device, do_menu_command, layout_game_window_and_view, load_game_sounds, redraw_main_window, run_flight_session, scan_display_devices, start_new_mission; A5 globals not paired: -0x1504, -0x1500, -0x14fc, -0x14f8, -0x14f6, -0x14c4, -0x14c2, -0x14c0, -0x13a2, -0x1386, -0x1382, -0x137c, -0x1378, -0x1358, -0x134a, -0x1348, -0x1346, -0x1342, -0x132c, -0x1312, -0x1300, -0x12f8, -0x12f0, -0x12ec, -0x12ea, -0x12e8, -0x12e6, -0x12e4, -0x12e0, -0x12de, -0x12dc, -0x12da, -0x12d8, -0x12d6, -0x12d4, -0x12d2, -0x12d0, -0x12ce, -0x12b6, -0x12b4, -0x12b2, -0x112a, -0x1122, -0x10a2, -0x109e, -0x109a, -0x1092, -0x108e, -0x108a, -0x1086, -0x106e, -0x106a, -0x104e, -0x104a, -0x1048, -0x1046, -0x1044, -0x103c, -0x1032, -0x1030, -0x102f, -0x1002, -0xde6, -0xd76, -0xd6a, -0xd10, -0xd00, -0xcf8, -0xcea, -0xce6, -0xce2, -0xcd0, -0xcca, -0xcc4, -0xcc0, -0xcba, -0xcb4, -0xcae, -0xca4, -0xc92",
+    "handle_update_event": "ID02 handle_update_event: its port reaches refused build_palette_index_map, check_device_color_state_changed, redraw_main_window; A5 globals not paired: -0x12f8, -0x12ea, -0x12d4, -0x1122, -0x109e, -0x103c, -0x1032",
+    "initialize_application": "ID02 initialize_application: not found in Leyte",
+    "layout_game_window_and_view": "ID02 layout_game_window_and_view: not found in Leyte",
+    "load_game_sounds": "ID02 load_game_sounds: not found in Leyte",
+    "main": "ID02 main: not found in Leyte",
+    "poll_and_dispatch_event": "ID02 poll_and_dispatch_event: jump-table slot 0x172 (Leyte 0xaa) does not reach the same routine",
+    "process_pending_update_events": "ID02 process_pending_update_events: its port reaches refused build_palette_index_map, check_device_color_state_changed, redraw_main_window; A5 globals not paired: -0x12f8, -0x12ea, -0x12d4, -0x1122, -0x109e, -0x103c, -0x1032",
+    "rebuild_all_palette_index_maps": "ID02 rebuild_all_palette_index_maps: its port reaches refused build_palette_index_map; A5 globals not paired: -0x1122",
+    "redraw_main_window": "ID02 redraw_main_window: not found in Leyte",
+    "refresh_display_if_changed": "ID02 refresh_display_if_changed: its port reaches refused apply_settings_to_live_options, build_palette_index_map, check_device_color_state_changed, configure_display_from_main_device, layout_game_window_and_view, redraw_main_window, scan_display_devices; A5 globals not paired: -0x1386, -0x137c, -0x1378, -0x1358, -0x134a, -0x1346, -0x1342, -0x132c, -0x1312, -0x1300, -0x12f8, -0x12ec, -0x12ea, -0x12e8, -0x12e6, -0x12e4, -0x12e0, -0x12de, -0x12dc, -0x12da, -0x12d8, -0x12d6, -0x12d4, -0x12d2, -0x12d0, -0x1122, -0x10a2, -0x109e, -0x1092, -0x104e, -0x103c, -0x1032, -0xd76, -0xd10, -0xc92",
+    "reset_overlay_state": "ID02 reset_overlay_state: not found in Leyte",
+    "run_flight_session": "ID02 run_flight_session: not found in Leyte",
+    "scan_display_devices": "ID02 scan_display_devices: not found in Leyte",
+    "set_view_size_option": "ID02 set_view_size_option: its port reaches refused configure_display_from_main_device, layout_game_window_and_view, scan_display_devices; A5 globals not paired: -0x1386, -0x137c, -0x1378, -0x1358, -0x134a, -0x1346, -0x1342, -0x132c, -0x1312, -0x1300, -0x12f8, -0x12d4, -0x10a2, -0x1032, -0xd76, -0xd10, -0xc92",
+    "start_new_mission": "ID02 start_new_mission: not found in Leyte",
+    "update_menu_items": "ID02 update_menu_items: not found in Leyte",
+    "wait_for_click_or_key": "ID02 wait_for_click_or_key: not found in Leyte"
+   },
+   "a5_from_map": [],
+   "relocated": {
+    "design_y_to_screen": "0x1996",
+    "freemem_a5safe": "0x1e2a",
+    "hlock_a5safe": "0x1d9a",
+    "hnopurge_a5safe": "0x1e06",
+    "hpurge_a5safe": "0x1de2",
+    "hunlock_a5safe": "0x1dbe"
+   }
+  },
+  "ID03": {
+   "mode": "partial",
+   "port": "original/leyte/port/ID03.gd",
+   "functions": [
+    "set_scaled_text_style",
+    "scale_design_480_min10",
+    "scale_design_4800",
+    "scale_design_4800_pen_centred",
+    "max3_int",
+    "nearest_palette_index_rgb",
+    "new_offscreen_bw_port",
+    "dispose_offscreen_bw_port",
+    "draw_spinning_disc_indicator",
+    "draw_ring_with_status_indicators",
+    "draw_vector_glyph_string_centred",
+    "draw_vector_number",
+    "antialias_downsample_bw_3x",
+    "composite_instrument_bitmap",
+    "begin_instrument_supersample",
+    "finish_instrument_supersample",
+    "draw_altimeter",
+    "draw_airspeed_indicator",
+    "draw_climb_indicator",
+    "draw_tachometer",
+    "draw_manifold_pressure_gauge",
+    "draw_direction_indicator",
+    "draw_turn_and_bank_indicator",
+    "draw_gyro_instrument",
+    "make_inset_face_oval_region",
+    "draw_artificial_horizon",
+    "draw_instrument",
+    "draw_bevelled_frame",
+    "draw_numbered_bevel_box",
+    "draw_flaps_indicator",
+    "draw_ammo_counter",
+    "draw_arc_scale_ticks",
+    "draw_fuel_gauge",
+    "draw_landing_gear_indicator",
+    "dial_point_at_angle",
+    "compute_panel_screen_addresses",
+    "open_cport_on_buffer",
+    "close_port_glue"
+   ],
+   "a5": {
+    "-0x211c": "-0x21a2",
+    "-0x2118": "-0x219e",
+    "-0x2114": "-0x219a",
+    "-0x2112": "-0x2198",
+    "-0x20b0": "-0x2136",
+    "-0x1fde": "-0x2064",
+    "-0x1fb6": "-0x203c",
+    "-0x1fa0": "-0x2026",
+    "-0x1f9a": "-0x2020",
+    "-0x1f80": "-0x2006",
+    "-0x1ee6": "-0x1f6c",
+    "-0x1ee4": "-0x1f6a",
+    "-0x1ee2": "-0x1f68",
+    "-0x1ee0": "-0x1f66",
+    "-0x161c": "-0x169a",
+    "-0x160c": "-0x168a",
+    "-0x14a6": "-0x1524",
+    "-0x14a2": "-0x1520",
+    "-0x149e": "-0x151c",
+    "-0x149c": "-0x151a",
+    "-0x1496": "-0x1514",
+    "-0x1382": "-0x1400",
+    "-0x137a": "-0x13f8",
+    "-0x1378": "-0x13f6",
+    "-0x12a2": "-0x131c",
+    "-0x1202": "-0x127c",
+    "-0x1200": "-0x127a",
+    "-0x11fe": "-0x1278",
+    "-0x11fc": "-0x1276",
+    "-0x11f6": "-0x1270",
+    "-0x11ee": "-0x1268",
+    "-0x11ec": "-0x1266",
+    "-0x11ea": "-0x1264",
+    "-0x11e8": "-0x1262",
+    "-0x11e6": "-0x1260",
+    "-0x11e4": "-0x125e",
+    "-0x11e2": "-0x125c",
+    "-0x11e0": "-0x125a",
+    "-0x11de": "-0x1258",
+    "-0x11dc": "-0x1256",
+    "-0x11d4": "-0x124e",
+    "-0x117a": "-0x11c0",
+    "-0x1178": "-0x11be",
+    "-0x1176": "-0x11bc",
+    "-0x1174": "-0x11ba",
+    "-0x1172": "-0x11b8",
+    "-0x1170": "-0x11b6",
+    "-0x116e": "-0x11b4",
+    "-0x116c": "-0x11b2",
+    "-0x116a": "-0x11b0",
+    "-0x1168": "-0x11ae",
+    "-0x1166": "-0x11ac",
+    "-0x1164": "-0x11aa",
+    "-0x1162": "-0x11a8",
+    "-0x1160": "-0x11a6",
+    "-0x115e": "-0x11a4",
+    "-0x115c": "-0x11a2",
+    "-0x115a": "-0x11a0",
+    "-0x1158": "-0x119e",
+    "-0x1156": "-0x119c",
+    "-0x1154": "-0x119a",
+    "-0x1152": "-0x1198",
+    "-0x1150": "-0x1196",
+    "-0x114e": "-0x1194",
+    "-0x114c": "-0x1192",
+    "-0x114a": "-0x1190",
+    "-0x1148": "-0x118e",
+    "-0x1146": "-0x118c",
+    "-0x1144": "-0x118a",
+    "-0x1142": "-0x1188",
+    "-0x1140": "-0x1186",
+    "-0x113e": "-0x1184",
+    "-0x113c": "-0x1182",
+    "-0x1138": "-0x117e",
+    "-0x1134": "-0x117a",
+    "-0x1130": "-0x1176",
+    "-0x105e": "-0x10a0",
+    "-0xe42": "-0xe80",
+    "-0xe3e": "-0xe7c",
+    "-0xe3a": "-0xe78",
+    "-0xe36": "-0xe74",
+    "-0xe32": "-0xe70",
+    "-0xe2e": "-0xe6c",
+    "-0xe2a": "-0xe68",
+    "-0xe26": "-0xe64",
+    "-0xe22": "-0xe60",
+    "-0xe1e": "-0xe5c",
+    "-0xe1a": "-0xe58",
+    "-0xe16": "-0xe54",
+    "-0xe12": "-0xe50",
+    "-0xe0e": "-0xe4c",
+    "-0x350": "-0x350",
+    "0x3a": "0x3a",
+    "0x232": "0x242",
+    "0x23a": "0x24a",
+    "0x26a": "0x282",
+    "0x272": "0x28a",
+    "0x27a": "0x292",
+    "0x36a": "0x3b2",
+    "0x382": "0x372",
+    "0x392": "0x44a",
+    "0x3a2": "0x402",
+    "0x3ca": "0x3a2",
+    "0x3e2": "0x42a",
+    "0x402": "0x34a",
+    "0x45a": "0x4b2",
+    "0x4da": "0x522",
+    "0x4f2": "0x53a"
+   },
+   "immediates": [],
+   "a5_local": {
+    "-0x2114": [
+     "draw_spinning_disc_indicator"
+    ],
+    "-0x2112": [
+     "draw_spinning_disc_indicator"
+    ],
+    "-0x1fa0": [
+     "composite_instrument_bitmap",
+     "draw_turn_and_bank_indicator"
+    ],
+    "-0x1f9a": [
+     "draw_turn_and_bank_indicator"
+    ],
+    "-0x1f80": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x1ee6": [
+     "draw_direction_indicator"
+    ],
+    "-0x1ee4": [
+     "draw_direction_indicator"
+    ],
+    "-0x1ee2": [
+     "draw_direction_indicator"
+    ],
+    "-0x1ee0": [
+     "draw_direction_indicator"
+    ],
+    "-0x14a6": [
+     "nearest_palette_index_rgb"
+    ],
+    "-0x14a2": [
+     "nearest_palette_index_rgb"
+    ],
+    "-0x149e": [
+     "begin_instrument_supersample",
+     "draw_gyro_instrument",
+     "draw_numbered_bevel_box",
+     "scale_design_4800",
+     "scale_design_480_min10"
+    ],
+    "-0x149c": [
+     "begin_instrument_supersample",
+     "draw_gyro_instrument"
+    ],
+    "-0x1382": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x137a": [
+     "begin_instrument_supersample",
+     "composite_instrument_bitmap",
+     "compute_panel_screen_addresses",
+     "draw_gyro_instrument",
+     "draw_instrument",
+     "draw_numbered_bevel_box",
+     "nearest_palette_index_rgb",
+     "set_scaled_text_style"
+    ],
+    "-0x1378": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x12a2": [
+     "draw_instrument"
+    ],
+    "-0x1202": [
+     "draw_artificial_horizon"
+    ],
+    "-0x1200": [
+     "draw_artificial_horizon"
+    ],
+    "-0x11fe": [
+     "draw_artificial_horizon"
+    ],
+    "-0x11fc": [
+     "draw_artificial_horizon"
+    ],
+    "-0x11f6": [
+     "draw_artificial_horizon"
+    ],
+    "-0x11ee": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11ec": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11ea": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11e8": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11e6": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11e4": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11e2": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11e0": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11de": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11dc": [
+     "draw_gyro_instrument"
+    ],
+    "-0x11d4": [
+     "draw_gyro_instrument"
+    ],
+    "-0x117a": [
+     "draw_flaps_indicator"
+    ],
+    "-0x1178": [
+     "draw_flaps_indicator"
+    ],
+    "-0x1176": [
+     "draw_flaps_indicator"
+    ],
+    "-0x1174": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x1172": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x1170": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x116e": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x116c": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x116a": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x1168": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x1166": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x1164": [
+     "draw_landing_gear_indicator"
+    ],
+    "-0x1162": [
+     "draw_fuel_gauge"
+    ],
+    "-0x1160": [
+     "draw_fuel_gauge"
+    ],
+    "-0x115e": [
+     "draw_fuel_gauge"
+    ],
+    "-0x115c": [
+     "draw_fuel_gauge"
+    ],
+    "-0x115a": [
+     "draw_fuel_gauge"
+    ],
+    "-0x1158": [
+     "draw_fuel_gauge"
+    ],
+    "-0x1156": [
+     "draw_ammo_counter"
+    ],
+    "-0x1154": [
+     "draw_ammo_counter"
+    ],
+    "-0x1152": [
+     "draw_ammo_counter"
+    ],
+    "-0x1150": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x114e": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x114c": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x114a": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x1148": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x1146": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x1144": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x1142": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x1140": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x113e": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x113c": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x1138": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x1134": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x1130": [
+     "compute_panel_screen_addresses"
+    ],
+    "-0x105e": [
+     "draw_turn_and_bank_indicator"
+    ],
+    "-0xe42": [
+     "draw_altimeter"
+    ],
+    "-0xe3e": [
+     "draw_airspeed_indicator"
+    ],
+    "-0xe3a": [
+     "draw_airspeed_indicator"
+    ],
+    "-0xe36": [
+     "draw_climb_indicator"
+    ],
+    "-0xe32": [
+     "draw_tachometer"
+    ],
+    "-0xe2e": [
+     "draw_manifold_pressure_gauge"
+    ],
+    "-0xe2a": [
+     "draw_manifold_pressure_gauge"
+    ],
+    "-0xe26": [
+     "draw_direction_indicator"
+    ],
+    "-0xe22": [
+     "draw_turn_and_bank_indicator"
+    ],
+    "-0xe1e": [
+     "draw_turn_and_bank_indicator"
+    ],
+    "-0xe1a": [
+     "draw_flaps_indicator"
+    ],
+    "-0xe16": [
+     "draw_ammo_counter"
+    ],
+    "-0xe12": [
+     "draw_fuel_gauge"
+    ],
+    "-0xe0e": [
+     "draw_landing_gear_indicator"
+    ]
+   },
+   "elsewhere": [],
+   "jt_counterparts": {
+    "0x392": "close_and_dispose_port (moved)",
+    "0x402": "new_offscreen_cport (same_instructions)",
+    "0x4da": "abs_long (identical)",
+    "0x4f2": "ansi_memset (identical)"
+   },
+   "a5_derived": {
+    "-0x1ee4": "from -0x1ee6",
+    "-0x1ee2": "from -0x1ee6",
+    "-0x1ee0": "from -0x1ee6"
+   },
+   "evidence": "per function: the listed functions are the same instructions in Leyte's CODE 3, A5 operands only differing, each through the A5 map; the unverified ones refuse",
+   "unverified": {
+    "draw_panel_section_with_numbered_boxes": "ID03 draw_panel_section_with_numbered_boxes: its port reaches A5 globals not paired: -0x11a6",
+    "draw_percent_scale_gauge": "ID03 draw_percent_scale_gauge: its port reaches A5 globals not paired: -0x1182",
+    "draw_split_display_box": "ID03 draw_split_display_box: its port reaches A5 globals not paired: -0x1198, -0x1190",
+    "prepare_instrument_panel": "ID03 prepare_instrument_panel: not found in Leyte",
+    "remap_cached_panel_colours": "ID03 remap_cached_panel_colours: not found in Leyte",
+    "remap_panel_colours_identity": "ID03 remap_panel_colours_identity: its port reaches refused remap_cached_panel_colours; A5 globals not paired: -0x13b2, -0x13ae, -0x137e, -0x137c, -0x1372, -0x1370, -0x12b0, -0x12a4, -0x11a2, -0x112c",
+    "store_panel_bitmaps_as_resources": "ID03 store_panel_bitmaps_as_resources +0x5bfc: muls.w #$160, d0 | #$194, d0"
+   },
+   "a5_from_map": [],
+   "relocated": {}
+  },
+  "ID04": {
+   "mode": "partial",
+   "port": "original/leyte/port/ID04.gd",
+   "functions": [
+    "disable_dialog_control",
+    "enable_dialog_control",
+    "hide_dialog_control",
+    "show_dialog_control",
+    "set_dialog_item_text",
+    "set_dialog_control_title",
+    "set_dialog_user_item_proc",
+    "frame_dialog_item_box",
+    "draw_default_button_outline",
+    "draw_grey_user_item",
+    "draw_percent_bar_item",
+    "percent_bar_user_item_proc",
+    "get_radio_group_selection",
+    "show_scenery_open_error_alert",
+    "show_paused_dialog",
+    "ask_save_changes",
+    "confirm_erase_high_scores",
+    "compute_pilot_score",
+    "draw_select_mission_title",
+    "rank_pilots_by_score",
+    "reset_pilot_record",
+    "prune_inactive_pilots_beyond_ten",
+    "draw_high_scores_table",
+    "draw_scrolling_text_item",
+    "scrolling_text_user_item_proc",
+    "sync_text_scroll_to_control",
+    "update_scroll_bar_maximum",
+    "scroll_text_to_show_selection",
+    "fit_text_view_to_box",
+    "scroll_bar_action_proc",
+    "create_scrolling_text_item",
+    "dispose_scrolling_text_item",
+    "append_line_to_scrolling_text",
+    "update_summary_dialog_buttons",
+    "build_rank_and_name_string",
+    "set_score_item_text",
+    "play_named_sound_async",
+    "stop_named_sound",
+    "draw_map_grid_and_centre_mark",
+    "plot_map_symbol_callback",
+    "poll_click_or_key_event",
+    "show_about_dialog",
+    "check_system_requirements"
+   ],
+   "a5": {
+    "-0x225e": "-0x2322",
+    "-0x225c": "-0x2310",
+    "-0x223a": "-0x22e6",
+    "-0x2236": "-0x22e2",
+    "-0x2232": "-0x22de",
+    "-0x2230": "-0x2318",
+    "-0x2228": "-0x22dc",
+    "-0x2174": "-0x21f4",
+    "-0x2160": "-0x21e0",
+    "-0x2156": "-0x2320",
+    "-0x2152": "-0x231c",
+    "-0x214e": "-0x21d6",
+    "-0x214c": "-0x21d4",
+    "-0x214a": "-0x21d2",
+    "-0x2148": "-0x21d0",
+    "-0x2146": "-0x21ce",
+    "-0x2144": "-0x21cc",
+    "-0x213c": "-0x21c4",
+    "-0x213a": "-0x21c2",
+    "-0x2138": "-0x21c0",
+    "-0x2128": "-0x21ae",
+    "-0x1634": "-0x16b2",
+    "-0x1624": "-0x16a2",
+    "-0x1614": "-0x1692",
+    "-0x160c": "-0x168a",
+    "-0x14c4": "-0x1542",
+    "-0x13a8": "-0x1426",
+    "-0x13a4": "-0x1422",
+    "-0x137a": "-0x13f8",
+    "-0x12f0": "-0x136e",
+    "-0xffe": "-0x103c",
+    "-0xfae": "-0xfec",
+    "-0xf5e": "-0xf9c",
+    "-0xe5e": "-0xe9c",
+    "-0xe52": "-0xe90",
+    "-0xe46": "-0xe84",
+    "0x3a": "0x3a",
+    "0x92": "0xba",
+    "0x1f2": "0x202",
+    "0x272": "0x28a",
+    "0x27a": "0x292",
+    "0x282": "0x29a",
+    "0x28a": "0x2a2",
+    "0x2ea": "0x32a",
+    "0x2fa": "0x33a",
+    "0x302": "0x342",
+    "0x472": "0x4aa",
+    "0x47a": "0x4c2",
+    "0x48a": "0x4d2",
+    "0x4a2": "0x512",
+    "0x4ba": "0x4da",
+    "0x512": "0x55a",
+    "0x522": "0x56a",
+    "0x52a": "0x572"
+   },
+   "immediates": [],
+   "a5_local": {
+    "-0x225e": [
+     "draw_default_button_outline",
+     "update_summary_dialog_buttons"
+    ],
+    "-0x225c": [
+     "draw_percent_bar_item"
+    ],
+    "-0x2232": [
+     "fit_text_view_to_box",
+     "scroll_text_to_show_selection",
+     "update_scroll_bar_maximum"
+    ],
+    "-0x2230": [
+     "update_summary_dialog_buttons"
+    ],
+    "-0x2228": [
+     "update_summary_dialog_buttons"
+    ],
+    "-0x214e": [
+     "draw_map_grid_and_centre_mark",
+     "plot_map_symbol_callback"
+    ],
+    "-0x214c": [
+     "draw_map_grid_and_centre_mark",
+     "plot_map_symbol_callback"
+    ],
+    "-0x214a": [
+     "draw_map_grid_and_centre_mark",
+     "plot_map_symbol_callback"
+    ],
+    "-0x2148": [
+     "draw_map_grid_and_centre_mark",
+     "plot_map_symbol_callback"
+    ],
+    "-0x2146": [
+     "draw_map_grid_and_centre_mark",
+     "plot_map_symbol_callback"
+    ],
+    "-0x2144": [
+     "draw_map_grid_and_centre_mark"
+    ],
+    "-0x213c": [
+     "create_scrolling_text_item"
+    ],
+    "-0x2138": [
+     "build_rank_and_name_string"
+    ],
+    "-0x2128": [
+     "play_named_sound_async"
+    ],
+    "-0x1634": [
+     "draw_percent_bar_item"
+    ],
+    "-0x1614": [
+     "draw_percent_bar_item"
+    ],
+    "-0x14c4": [
+     "update_summary_dialog_buttons"
+    ],
+    "-0x137a": [
+     "draw_map_grid_and_centre_mark",
+     "show_about_dialog"
+    ],
+    "-0x12f0": [
+     "update_summary_dialog_buttons"
+    ],
+    "-0xe46": [
+     "draw_select_mission_title"
+    ]
+   },
+   "elsewhere": [],
+   "jt_counterparts": {
+    "0x92": "scrolling_text_user_item_proc (identical)",
+    "0x472": "centre_window_on_screen (same_instructions)"
+   },
+   "a5_derived": {},
+   "evidence": "per function: the listed functions are the same instructions in Leyte's CODE 4, A5 operands only differing, each through the A5 map; the unverified ones refuse",
+   "unverified": {
+    "aircraft_kill_markers_user_item_proc": "ID04 aircraft_kill_markers_user_item_proc: not found in Leyte (and 2 other Leyte routines pass: 0x23fe, 0x241a)",
+    "conclude_mission": "ID04 conclude_mission: not found in Leyte",
+    "confirm_end_mission": "ID04 confirm_end_mission +0x51a: cmpi.w #$3, -$12f8(a5) | #$2, -$1376(a5)",
+    "draw_aircraft_kill_markers": "ID04 draw_aircraft_kill_markers: not found in Leyte",
+    "draw_map_view_item": "ID04 draw_map_view_item +0x34dc: move.w $26(a0), d0 | $2a(a0), d0",
+    "draw_targets_destroyed_list": "ID04 draw_targets_destroyed_list: its port reaches refused draw_targets_destroyed_row; A5 globals not paired: -0x2226, -0x2136",
+    "draw_targets_destroyed_row": "ID04 draw_targets_destroyed_row: not found in Leyte",
+    "duty_roster_filter_proc": "ID04 duty_roster_filter_proc: jump-table slot 0x2a (Leyte 0x2a) does not reach the same routine",
+    "fuel_slider_dialog_filter": "ID04 fuel_slider_dialog_filter: jump-table slot 0x2a (Leyte 0x2a) does not reach the same routine",
+    "get_mission_kill_report_state": "ID04 get_mission_kill_report_state: not found in Leyte",
+    "map_dialog_filter_proc": "ID04 map_dialog_filter_proc: not found in Leyte",
+    "map_view_user_item_proc": "ID04 map_view_user_item_proc: its port reaches refused draw_map_view_item; A5 globals not paired: -0x2142, -0x2140, -0x213e, -0x1052, -0xe5a",
+    "refuel_dialog_filter_proc": "ID04 refuel_dialog_filter_proc: its port reaches refused fuel_slider_dialog_filter",
+    "run_with_temporary_window": "ID04 run_with_temporary_window: jump-table slot 0x4aa (Leyte 0x502) does not reach the same routine",
+    "scenario_selection_filter_proc": "ID04 scenario_selection_filter_proc: its port reaches refused fuel_slider_dialog_filter",
+    "show_mission_summary_dialog": "ID04 show_mission_summary_dialog: not found in Leyte"
+   },
+   "a5_from_map": [],
+   "relocated": {
+    "draw_targets_destroyed_list": "0x1fb8",
+    "refuel_dialog_filter_proc": "0xfd4",
+    "scenario_selection_filter_proc": "0xc2a"
+   }
+  },
+  "ID09": {
+   "mode": "partial",
+   "port": "original/leyte/port/ID09.gd",
+   "functions": [
+    "fsopen_glue",
+    "swapmmumode_glue",
+    "length_prefixed_bytes_to_c_string_in_place"
+   ],
+   "a5": {},
+   "immediates": [],
+   "a5_local": {},
+   "elsewhere": [],
+   "jt_counterparts": {},
+   "a5_derived": {},
+   "evidence": "per function: the listed functions are the same instructions in Leyte's CODE 9, A5 operands only differing, each through the A5 map; the unverified ones refuse",
+   "unverified": {
+    "sysenvirons_glue_fallback": "ID09 sysenvirons_glue_fallback: not found in Leyte"
+   },
+   "a5_from_map": [],
+   "relocated": {
+    "fsopen_glue": "0x2ae"
+   }
+  }
+ }
+}

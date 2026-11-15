@@ -1,0 +1,1481 @@
+{
+ "source": "sources/leyte-gulf-1-0/CODE/ID00.bin",
+ "above_a5": 1504,
+ "below_a5": 8994,
+ "jump_table_offset": 32,
+ "named": 98,
+ "entries": [
+  {
+   "a5_offset": 34,
+   "segment": 1,
+   "target": 8,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 42,
+   "segment": 1,
+   "target": 150,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 50,
+   "segment": 1,
+   "target": 170,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 58,
+   "segment": 1,
+   "target": 190,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 66,
+   "segment": 1,
+   "target": 218,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 74,
+   "segment": 1,
+   "target": 272,
+   "port": "original/port/ID01.gd",
+   "method": "rt_udiv32",
+   "pascal": false
+  },
+  {
+   "a5_offset": 82,
+   "segment": 1,
+   "target": 304,
+   "port": "original/port/ID01.gd",
+   "method": "rt_umod32",
+   "pascal": false
+  },
+  {
+   "a5_offset": 90,
+   "segment": 1,
+   "target": 338,
+   "port": "original/port/ID01.gd",
+   "method": "rt_sdiv32",
+   "pascal": false
+  },
+  {
+   "a5_offset": 98,
+   "segment": 1,
+   "target": 370,
+   "port": "original/port/ID01.gd",
+   "method": "rt_smod32",
+   "pascal": false
+  },
+  {
+   "a5_offset": 106,
+   "segment": 1,
+   "target": 556,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 114,
+   "segment": 4,
+   "target": 8184,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 122,
+   "segment": 4,
+   "target": 8646,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 130,
+   "segment": 4,
+   "target": 15310,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "plot_map_symbol_callback",
+   "pascal": false
+  },
+  {
+   "a5_offset": 138,
+   "segment": 4,
+   "target": 1224,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "show_paused_dialog",
+   "pascal": false
+  },
+  {
+   "a5_offset": 146,
+   "segment": 4,
+   "target": 3154,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 154,
+   "segment": 4,
+   "target": 1382,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 162,
+   "segment": 4,
+   "target": 6448,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "scroll_bar_action_proc",
+   "pascal": false
+  },
+  {
+   "a5_offset": 170,
+   "segment": 4,
+   "target": 1154,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 178,
+   "segment": 4,
+   "target": 9214,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 186,
+   "segment": 4,
+   "target": 5982,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "scrolling_text_user_item_proc",
+   "pascal": false
+  },
+  {
+   "a5_offset": 194,
+   "segment": 4,
+   "target": 17844,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "check_system_requirements",
+   "pascal": false
+  },
+  {
+   "a5_offset": 202,
+   "segment": 4,
+   "target": 7582,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 210,
+   "segment": 4,
+   "target": 5228,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "draw_high_scores_table",
+   "pascal": false
+  },
+  {
+   "a5_offset": 218,
+   "segment": 4,
+   "target": 4,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 226,
+   "segment": 4,
+   "target": 1588,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 234,
+   "segment": 4,
+   "target": 446,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "draw_default_button_outline",
+   "pascal": false
+  },
+  {
+   "a5_offset": 242,
+   "segment": 4,
+   "target": 7278,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "build_rank_and_name_string",
+   "pascal": false
+  },
+  {
+   "a5_offset": 250,
+   "segment": 4,
+   "target": 9242,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 258,
+   "segment": 4,
+   "target": 578,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "draw_grey_user_item",
+   "pascal": false
+  },
+  {
+   "a5_offset": 266,
+   "segment": 4,
+   "target": 14894,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 274,
+   "segment": 4,
+   "target": 5606,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 282,
+   "segment": 4,
+   "target": 15988,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 290,
+   "segment": 4,
+   "target": 9862,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 298,
+   "segment": 4,
+   "target": 8120,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 306,
+   "segment": 4,
+   "target": 1344,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "ask_save_changes",
+   "pascal": false
+  },
+  {
+   "a5_offset": 314,
+   "segment": 4,
+   "target": 4052,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 322,
+   "segment": 4,
+   "target": 784,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "percent_bar_user_item_proc",
+   "pascal": false
+  },
+  {
+   "a5_offset": 330,
+   "segment": 4,
+   "target": 16766,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 338,
+   "segment": 4,
+   "target": 17150,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "show_about_dialog",
+   "pascal": false
+  },
+  {
+   "a5_offset": 346,
+   "segment": 4,
+   "target": 1684,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 354,
+   "segment": 4,
+   "target": 3114,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 362,
+   "segment": 4,
+   "target": 4092,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 370,
+   "segment": 4,
+   "target": 2622,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "draw_select_mission_title",
+   "pascal": false
+  },
+  {
+   "a5_offset": 378,
+   "segment": 4,
+   "target": 1182,
+   "port": "original/leyte/port/ID04.gd",
+   "method": "show_scenery_open_error_alert",
+   "pascal": false
+  },
+  {
+   "a5_offset": 386,
+   "segment": 4,
+   "target": 16882,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 394,
+   "segment": 4,
+   "target": 10480,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 402,
+   "segment": 3,
+   "target": 24244,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 410,
+   "segment": 3,
+   "target": 4,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 418,
+   "segment": 3,
+   "target": 28254,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 426,
+   "segment": 6,
+   "target": 792,
+   "port": "original/leyte/port/ID06.gd",
+   "method": "render_scanline_spans",
+   "pascal": false
+  },
+  {
+   "a5_offset": 434,
+   "segment": 6,
+   "target": 2414,
+   "port": "original/leyte/port/ID06.gd",
+   "method": "reset_edge_table",
+   "pascal": false
+  },
+  {
+   "a5_offset": 442,
+   "segment": 6,
+   "target": 2520,
+   "port": "original/leyte/port/ID06.gd",
+   "method": "add_polygon_edges",
+   "pascal": false
+  },
+  {
+   "a5_offset": 450,
+   "segment": 6,
+   "target": 3600,
+   "port": "original/leyte/port/ID06.gd",
+   "method": "rasterize_and_present",
+   "pascal": false
+  },
+  {
+   "a5_offset": 458,
+   "segment": 6,
+   "target": 2210,
+   "port": "original/leyte/port/ID06.gd",
+   "method": "set_active_row_count",
+   "pascal": false
+  },
+  {
+   "a5_offset": 466,
+   "segment": 6,
+   "target": 1968,
+   "port": "original/leyte/port/ID06.gd",
+   "method": "init_raster_target",
+   "pascal": false
+  },
+  {
+   "a5_offset": 474,
+   "segment": 6,
+   "target": 2136,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 482,
+   "segment": 6,
+   "target": 278,
+   "port": "original/leyte/port/ID06.gd",
+   "method": "rgb_to_bw_pattern",
+   "pascal": false
+  },
+  {
+   "a5_offset": 490,
+   "segment": 6,
+   "target": 238,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 498,
+   "segment": 8,
+   "target": 4,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 506,
+   "segment": 8,
+   "target": 6,
+   "port": "original/leyte/port/ID08.gd",
+   "method": "load_overlay_from_data_fork",
+   "pascal": false
+  },
+  {
+   "a5_offset": 514,
+   "segment": 9,
+   "target": 4,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 522,
+   "segment": 9,
+   "target": 366,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 530,
+   "segment": 9,
+   "target": 374,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 538,
+   "segment": 9,
+   "target": 384,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 546,
+   "segment": 9,
+   "target": 406,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 554,
+   "segment": 9,
+   "target": 416,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 562,
+   "segment": 9,
+   "target": 432,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 570,
+   "segment": 9,
+   "target": 484,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 578,
+   "segment": 9,
+   "target": 496,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 586,
+   "segment": 9,
+   "target": 508,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 594,
+   "segment": 9,
+   "target": 518,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 602,
+   "segment": 9,
+   "target": 538,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 610,
+   "segment": 9,
+   "target": 550,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 618,
+   "segment": 9,
+   "target": 562,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 626,
+   "segment": 9,
+   "target": 572,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 634,
+   "segment": 9,
+   "target": 592,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 642,
+   "segment": 9,
+   "target": 604,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 650,
+   "segment": 9,
+   "target": 616,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 658,
+   "segment": 9,
+   "target": 626,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 666,
+   "segment": 9,
+   "target": 636,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 674,
+   "segment": 9,
+   "target": 646,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 682,
+   "segment": 9,
+   "target": 656,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 690,
+   "segment": 9,
+   "target": 662,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 698,
+   "segment": 9,
+   "target": 678,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 706,
+   "segment": 9,
+   "target": 686,
+   "port": "original/leyte/port/ID09.gd",
+   "method": "fsopen_glue",
+   "pascal": true
+  },
+  {
+   "a5_offset": 714,
+   "segment": 9,
+   "target": 742,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 722,
+   "segment": 9,
+   "target": 770,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 730,
+   "segment": 9,
+   "target": 844,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 738,
+   "segment": 9,
+   "target": 880,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 746,
+   "segment": 9,
+   "target": 914,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 754,
+   "segment": 9,
+   "target": 950,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 762,
+   "segment": 9,
+   "target": 986,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 770,
+   "segment": 9,
+   "target": 1008,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 778,
+   "segment": 9,
+   "target": 1030,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 786,
+   "segment": 9,
+   "target": 1060,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 794,
+   "segment": 9,
+   "target": 1070,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 802,
+   "segment": 9,
+   "target": 1078,
+   "port": "original/leyte/port/ID09.gd",
+   "method": "swapmmumode_glue",
+   "pascal": true
+  },
+  {
+   "a5_offset": 810,
+   "segment": 9,
+   "target": 1098,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 818,
+   "segment": 9,
+   "target": 1144,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 826,
+   "segment": 9,
+   "target": 1190,
+   "port": "original/leyte/port/ID09.gd",
+   "method": "length_prefixed_bytes_to_c_string_in_place",
+   "pascal": true
+  },
+  {
+   "a5_offset": 834,
+   "segment": 9,
+   "target": 1162,
+   "port": null,
+   "method": null,
+   "pascal": true
+  },
+  {
+   "a5_offset": 842,
+   "segment": 2,
+   "target": 3380,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "new_offscreen_cport",
+   "pascal": false
+  },
+  {
+   "a5_offset": 850,
+   "segment": 2,
+   "target": 7614,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "hunlock_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 858,
+   "segment": 2,
+   "target": 7722,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "freemem_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 866,
+   "segment": 2,
+   "target": 7686,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "hnopurge_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 874,
+   "segment": 2,
+   "target": 6592,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 882,
+   "segment": 2,
+   "target": 6550,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "design_y_to_screen",
+   "pascal": false
+  },
+  {
+   "a5_offset": 890,
+   "segment": 2,
+   "target": 4192,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "paint_polygon_rgb_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 898,
+   "segment": 2,
+   "target": 3884,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "open_offscreen_cport_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 906,
+   "segment": 2,
+   "target": 2768,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "draw_thick_line_pixel_index_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 914,
+   "segment": 2,
+   "target": 2910,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "paint_view_horizon_bands_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 922,
+   "segment": 2,
+   "target": 7650,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "hpurge_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 930,
+   "segment": 2,
+   "target": 6508,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "design_x_to_screen",
+   "pascal": false
+  },
+  {
+   "a5_offset": 938,
+   "segment": 2,
+   "target": 4064,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "close_port_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 946,
+   "segment": 2,
+   "target": 6370,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "set_draw_color_index",
+   "pascal": false
+  },
+  {
+   "a5_offset": 954,
+   "segment": 2,
+   "target": 3528,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "blit_offscreen_frame_to_window",
+   "pascal": false
+  },
+  {
+   "a5_offset": 962,
+   "segment": 2,
+   "target": 2836,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "draw_thick_xor_line_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 970,
+   "segment": 2,
+   "target": 7486,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "realloc_and_clear_handle_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 978,
+   "segment": 2,
+   "target": 3318,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "apply_pending_color_entries_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 986,
+   "segment": 2,
+   "target": 7352,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "new_handle_clear_or_die_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 994,
+   "segment": 2,
+   "target": 4730,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1002,
+   "segment": 2,
+   "target": 5662,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "draw_text_in_columns_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1010,
+   "segment": 2,
+   "target": 3788,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "blit_pixels_via_port_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1018,
+   "segment": 2,
+   "target": 6140,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "swap_mmu_mode_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1026,
+   "segment": 2,
+   "target": 6472,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "set_back_color_index",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1034,
+   "segment": 2,
+   "target": 7450,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "dispose_handle_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1042,
+   "segment": 2,
+   "target": 4098,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "swap_port_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1050,
+   "segment": 2,
+   "target": 7578,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "hlock_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1058,
+   "segment": 2,
+   "target": 7314,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "run_segment3_entry_and_unload_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1066,
+   "segment": 2,
+   "target": 6176,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "get_blended_fill_pattern",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1074,
+   "segment": 2,
+   "target": 5398,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1082,
+   "segment": 2,
+   "target": 4142,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "paint_rect_color_index_a5safe",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1090,
+   "segment": 2,
+   "target": 7282,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1098,
+   "segment": 2,
+   "target": 3506,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "close_and_dispose_port",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1106,
+   "segment": 2,
+   "target": 16940,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "vbl_sound_handler_ch0_variant",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1114,
+   "segment": 2,
+   "target": 16678,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "vbl_sound_handler_ch0_unrolled",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1122,
+   "segment": 2,
+   "target": 17218,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "vbl_sound_handler_two_channel",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1130,
+   "segment": 2,
+   "target": 18382,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "enqueue_sample_on_channel",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1138,
+   "segment": 2,
+   "target": 18880,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "silence_sound_channel",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1146,
+   "segment": 2,
+   "target": 18990,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "is_channel_playing",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1154,
+   "segment": 2,
+   "target": 18130,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "play_sample_on_channel",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1162,
+   "segment": 2,
+   "target": 18724,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "release_channel_loop",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1170,
+   "segment": 2,
+   "target": 18604,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "set_sound_playback_rate",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1178,
+   "segment": 2,
+   "target": 21238,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "init_standard_colour_indices",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1186,
+   "segment": 2,
+   "target": 21758,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1194,
+   "segment": 2,
+   "target": 19712,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "centre_window_on_screen",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1202,
+   "segment": 2,
+   "target": 20882,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "lookup_palette_index_for_rgb_level",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1210,
+   "segment": 2,
+   "target": 21704,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1218,
+   "segment": 2,
+   "target": 19372,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "position_alert_template",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1226,
+   "segment": 2,
+   "target": 20488,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "clear_ctab_size_callback",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1234,
+   "segment": 2,
+   "target": 19164,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "position_window_on_screen",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1242,
+   "segment": 2,
+   "target": 8294,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "show_caution_alert_with_number",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1250,
+   "segment": 2,
+   "target": 13852,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "copy_pascal_string",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1258,
+   "segment": 2,
+   "target": 13528,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1266,
+   "segment": 2,
+   "target": 8528,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "show_creating_panel_dialog",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1274,
+   "segment": 2,
+   "target": 11698,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "apply_settings_to_live_options",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1282,
+   "segment": 2,
+   "target": 13552,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1290,
+   "segment": 2,
+   "target": 14290,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "main",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1298,
+   "segment": 2,
+   "target": 8104,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "format_int_decimal_pstring",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1306,
+   "segment": 2,
+   "target": 9306,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "reset_overlay_state",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1314,
+   "segment": 2,
+   "target": 30,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1322,
+   "segment": 2,
+   "target": 462,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "ansi_toupper",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1330,
+   "segment": 2,
+   "target": 562,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "ansi_memcpy",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1338,
+   "segment": 2,
+   "target": 688,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "ansi_memset",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1346,
+   "segment": 2,
+   "target": 586,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "ansi_memmove",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1354,
+   "segment": 2,
+   "target": 1076,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1362,
+   "segment": 2,
+   "target": 1014,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "ansi_strncpy",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1370,
+   "segment": 2,
+   "target": 728,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "ansi_strcat",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1378,
+   "segment": 2,
+   "target": 750,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "ansi_strcmp",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1386,
+   "segment": 2,
+   "target": 1000,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1394,
+   "segment": 2,
+   "target": 712,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "ansi_strcpy",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1402,
+   "segment": 5,
+   "target": 2948,
+   "port": "original/leyte/port/ID05.gd",
+   "method": "encode_code28_to_buf54",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1410,
+   "segment": 5,
+   "target": 2142,
+   "port": "original/leyte/port/ID05.gd",
+   "method": "restore_poisoned_overlay_bytes",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1418,
+   "segment": 5,
+   "target": 2226,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1426,
+   "segment": 5,
+   "target": 2038,
+   "port": "original/leyte/port/ID05.gd",
+   "method": "poison_overlay_bytes",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1434,
+   "segment": 5,
+   "target": 2232,
+   "port": "original/leyte/port/ID05.gd",
+   "method": "init_protection_table",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1442,
+   "segment": 5,
+   "target": 2356,
+   "port": "original/leyte/port/ID05.gd",
+   "method": "record_code_index_equals",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1450,
+   "segment": 5,
+   "target": 712,
+   "port": "original/leyte/port/ID05.gd",
+   "method": "code_dialog_filter",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1458,
+   "segment": 5,
+   "target": 444,
+   "port": "original/leyte/port/ID05.gd",
+   "method": "write_DATA128_pair",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1466,
+   "segment": 5,
+   "target": 4,
+   "port": null,
+   "method": null,
+   "pascal": false
+  },
+  {
+   "a5_offset": 1474,
+   "segment": 5,
+   "target": 352,
+   "port": "original/leyte/port/ID05.gd",
+   "method": "read_DATA128_pair",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1482,
+   "segment": 5,
+   "target": 1376,
+   "port": "original/leyte/port/ID05.gd",
+   "method": "run_protection_dialog",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1490,
+   "segment": 7,
+   "target": 400,
+   "port": "original/leyte/port/ID07.gd",
+   "method": "init_string_pointer_groups",
+   "pascal": false
+  },
+  {
+   "a5_offset": 1498,
+   "segment": 7,
+   "target": 4,
+   "port": null,
+   "method": null,
+   "pascal": false
+  }
+ ]
+}

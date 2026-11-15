@@ -23,6 +23,10 @@ const Files := preload("res://assets/ui/resource_files.gd")
 ## Segment scripts an edition puts in place of the Original port's (segment -> script, set before a
 ## machine is made): the Native edition's CODE 2 with its own sound driver. Empty for Original.
 static var overrides: Dictionary = {}
+## A title profile (set before a machine is made): Leyte Gulf's ports ("ports": segment -> script), its
+## jump table and segment methods (paths; the methods file as {"segments": {...}}), written by
+## tools/leyte/build_jump_table.py / build_segment_methods.py. Empty for Hellcats: 1.0.3 / 1.0.4 as above.
+static var profile: Dictionary = {}
 ## The stack a callee gets below its caller's entry pointer (the caller's frame is smaller).
 const CALL_FRAME := 0x400
 
@@ -43,10 +47,11 @@ var before_slot: Dictionary = {}
 
 func _init(owner) -> void:
 	machine = owner
-	var doc: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(JUMP_TABLE))
+	var doc: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(profile.get("jump_table", JUMP_TABLE)))
 	entries = doc["entries"]
-	for segment in PORTS:
-		var script = PORT_2_V104 if segment == 2 and Files.version == "1.0.4" else PORTS[segment]
+	var ports: Dictionary = profile.get("ports", PORTS)
+	for segment in ports:
+		var script = PORT_2_V104 if segment == 2 and Files.version == "1.0.4" and profile.is_empty() else ports[segment]
 		script = overrides.get(segment, script)
 		var port = script.new(machine.memory, machine.A5)
 		instances[segment] = port
@@ -62,7 +67,7 @@ func _init(owner) -> void:
 		for offset in port.jt_routines:
 			code_routines[segment][machine.A5 + offset] = port.jt_routines[offset]
 	instances[2].code_base = machine.CODE2_BASE
-	if Files.version == "1.0.4":
+	if Files.version == "1.0.4" and profile.is_empty():
 		# The Sound Manager calls the 1.0.4 driver's double-back procedure (CODE 2 0x4e1a) by address.
 		var program = instances[2]
 		register_address(machine.CODE2_BASE + 0x4e1a, func(args: Array) -> int:
@@ -73,7 +78,9 @@ func _init(owner) -> void:
 		machine.memory.write_u8(machine.CODE6_BASE + k, code6[k])
 	instances[6].code_base = machine.CODE6_BASE
 	# Ported routines a port calls by their offset in its segment (`_local`).
-	var methods: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(SEGMENT_METHODS))
+	var methods: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(profile.get("segment_methods", SEGMENT_METHODS)))
+	if methods.has("segments"):
+		methods = methods["segments"]
 	for segment_key in methods:
 		var segment: int = int(segment_key)
 		if not instances.has(segment):

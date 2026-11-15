@@ -317,6 +317,27 @@ def check_routed_port() -> None:
         fail(result.stdout)
 
 
+def check_leyte_overlay() -> None:
+    """Leyte Gulf's overlay extracted verbatim (the Ghidra input), its evidence-based names and the
+    semantic C generated from them."""
+    import subprocess
+    for tool in ("extract_overlay.py", "names_from_correspondence.py", "semantic_overlay.py", "a5_map.py", "gen_host_ports.py", "extract_resources.py", "build_jump_table.py", "gen_loader_fixture.py", "gen_leyte_id02_reconstructed_cases.py", "build_segment_methods.py", "build_glue_slots.py", "overlay_map.py", "gen_overlay_port.py", "gen_leyte_overlay_cases.py", "gen_leyte_overlay_reconstructed_cases.py"):
+        result = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "leyte" / tool), "--check"],
+                                capture_output=True, text=True)
+        if result.returncode != 0:
+            fail(result.stdout)
+
+
+def check_leyte_loader() -> None:
+    """Leyte's CODE 8 loader run on the emulator with its data fork: the relocated image equals the
+    a.out decode byte for byte, and every corruption the check makes is detected."""
+    import subprocess
+    result = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "leyte" / "loader_check.py")],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("tools/leyte/loader_check.py:\n" + result.stdout + result.stderr)
+
+
 def check_1_0_4_rebuild() -> None:
     """The 1.0.4 fork rebuilt from the 1.0.3 disk and the updater equals the AppleDouble 1.0.4 copy,
     the resources the game writes as it is played (HEL1 127 / 128, the HEL2 caches) aside."""
@@ -737,6 +758,8 @@ def main() -> int:
         ("symbol-function-names", check_symbol_function_names),
         ("resedit-mirror", check_resedit_mirror),
         ("routed-port", check_routed_port),
+        ("leyte-overlay", check_leyte_overlay),
+        ("leyte-loader", check_leyte_loader),
         ("1.0.4-rebuild", check_1_0_4_rebuild),
         ("1.0.4-sound", check_1_0_4_sound),
         ("runtime-coverage", check_runtime_coverage),

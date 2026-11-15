@@ -1,0 +1,3036 @@
+{
+ "schema": 2,
+ "generated_by": "tools/leyte/names_from_correspondence.py",
+ "counts": {
+  "functions": 511,
+  "named": 183,
+  "called": 10,
+  "candidates": 32,
+  "ambiguous": 12,
+  "leyte_own": 274
+ },
+ "named": [
+  {
+   "leyte": "0x36",
+   "ghidra": "FUN_00000036",
+   "hellcats_1_0_3": "0x32",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "copy_block_return_dst"
+  },
+  {
+   "leyte": "0x79e",
+   "ghidra": "FUN_0000079e",
+   "name": "traverse_scene_tree",
+   "hellcats_1_0_3": "0x5fa",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x143c",
+   "ghidra": "FUN_0000143c",
+   "hellcats_1_0_3": "0xdb0",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "ensure_handle_allocated"
+  },
+  {
+   "leyte": "0x1496",
+   "ghidra": "FUN_00001496",
+   "hellcats_1_0_3": "0xe0a",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "lock_handle_nopurge"
+  },
+  {
+   "leyte": "0x14e6",
+   "ghidra": "FUN_000014e6",
+   "hellcats_1_0_3": "0xe5a",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "lock_overlay_buffers"
+  },
+  {
+   "leyte": "0x15fa",
+   "ghidra": "FUN_000015fa",
+   "hellcats_1_0_3": "0xf92",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "lock_session_buffers"
+  },
+  {
+   "leyte": "0x16fc",
+   "ghidra": "FUN_000016fc",
+   "name": "unlock_session_buffers",
+   "hellcats_1_0_3": "0x1094",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x177a",
+   "ghidra": "FUN_0000177a",
+   "hellcats_1_0_3": "0x1112",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "overlay_main_entry"
+  },
+  {
+   "leyte": "0x1968",
+   "ghidra": "FUN_00001968",
+   "name": "init_depth8_colour_state",
+   "hellcats_1_0_3": "0x1300",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1984",
+   "ghidra": "FUN_00001984",
+   "name": "init_depth4_colour_state",
+   "hellcats_1_0_3": "0x131c",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1ae2",
+   "ghidra": "FUN_00001ae2",
+   "name": "queue_face_palette_entry",
+   "hellcats_1_0_3": "0x147a",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1c06",
+   "ghidra": "FUN_00001c06",
+   "name": "assign_face_colour",
+   "hellcats_1_0_3": "0x159e",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1f90",
+   "ghidra": "FUN_00001f90",
+   "hellcats_1_0_3": "0x1958",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "heap_sbrk"
+  },
+  {
+   "leyte": "0x1fac",
+   "ghidra": "FUN_00001fac",
+   "name": "heap_new_size_class_block",
+   "hellcats_1_0_3": "0x1974",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x1fd2",
+   "ghidra": "FUN_00001fd2",
+   "name": "heap_add_large_block",
+   "hellcats_1_0_3": "0x199a",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x1fe8",
+   "ghidra": "FUN_00001fe8",
+   "name": "heap_add_large_block_tail",
+   "hellcats_1_0_3": "0x19b0",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2008",
+   "ghidra": "FUN_00002008",
+   "name": "heap_free_coalesce",
+   "hellcats_1_0_3": "0x19d0",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2080",
+   "ghidra": "FUN_00002080",
+   "name": "heap_roving_cursor_store",
+   "hellcats_1_0_3": "0x1a48",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x20a0",
+   "ghidra": "FUN_000020a0",
+   "name": "heap_alloc",
+   "hellcats_1_0_3": "0x1a68",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2170",
+   "ghidra": "FUN_00002170",
+   "name": "heap_zero_payload",
+   "hellcats_1_0_3": "0x1b38",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x21a4",
+   "ghidra": "FUN_000021a4",
+   "name": "heap_alloc_cleared",
+   "hellcats_1_0_3": "0x1b6c",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x21bc",
+   "ghidra": "FUN_000021bc",
+   "name": "heap_calloc",
+   "hellcats_1_0_3": "0x1b84",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x21e0",
+   "ghidra": "FUN_000021e0",
+   "name": "heap_realloc_grow_only",
+   "hellcats_1_0_3": "0x1ba8",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x23c4",
+   "ghidra": "FUN_000023c4",
+   "name": "sin_fixed14",
+   "hellcats_1_0_3": "0x1d76",
+   "evidence": "moved; call site in build_attitude_matrix_from_dir_roll, load_attitude_angle_sincos, load_attitude_angle_sincos_5_6"
+  },
+  {
+   "leyte": "0x2406",
+   "ghidra": "FUN_00002406",
+   "name": "FUN_00001db8",
+   "hellcats_1_0_3": "0x1db8",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x2426",
+   "ghidra": "FUN_00002426",
+   "name": "cos_fixed14",
+   "hellcats_1_0_3": "0x1dd8",
+   "evidence": "moved; call site in build_attitude_matrix_from_dir_roll, load_attitude_angle_sincos, load_attitude_angle_sincos_5_6"
+  },
+  {
+   "leyte": "0x2574",
+   "ghidra": "FUN_00002574",
+   "hellcats_1_0_3": "0x1f22",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "attitude_from_velocity"
+  },
+  {
+   "leyte": "0x267c",
+   "ghidra": "FUN_0000267c",
+   "name": "load_attitude_angle_sincos",
+   "hellcats_1_0_3": "0x202a",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x26f2",
+   "ghidra": "FUN_000026f2",
+   "name": "load_attitude_angle_sincos_5_6",
+   "hellcats_1_0_3": "0x20a0",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2738",
+   "ghidra": "FUN_00002738",
+   "name": "fill_attitude_rotation_bases",
+   "hellcats_1_0_3": "0x20e6",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x27f2",
+   "ghidra": "FUN_000027f2",
+   "name": "fill_attitude_rotation_basis_4",
+   "hellcats_1_0_3": "0x21a0",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2832",
+   "ghidra": "FUN_00002832",
+   "name": "fill_attitude_rotation_basis_4_rx",
+   "hellcats_1_0_3": "0x21e0",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2872",
+   "ghidra": "FUN_00002872",
+   "name": "fill_attitude_rotation_bases_5_6",
+   "hellcats_1_0_3": "0x2220",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x28f0",
+   "ghidra": "FUN_000028f0",
+   "name": "build_attitude_matrix_from_dir_roll",
+   "hellcats_1_0_3": "0x229e",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2b98",
+   "ghidra": "FUN_00002b98",
+   "name": "compose_attitude_matrix_x_alt",
+   "hellcats_1_0_3": "0x2488",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2be6",
+   "ghidra": "FUN_00002be6",
+   "name": "build_attitude_matrix_x_alt",
+   "hellcats_1_0_3": "0x24d6",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2f0c",
+   "ghidra": "FUN_00002f0c",
+   "name": "compose_attitude_matrix_x",
+   "hellcats_1_0_3": "0x25d6",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2f64",
+   "ghidra": "FUN_00002f64",
+   "name": "build_attitude_matrix_x",
+   "hellcats_1_0_3": "0x262e",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x2f8a",
+   "ghidra": "FUN_00002f8a",
+   "name": "compose_attitude_matrix_6ang",
+   "hellcats_1_0_3": "0x2654",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x3036",
+   "ghidra": "FUN_00003036",
+   "name": "compose_attitude_matrix_6ang_alt",
+   "hellcats_1_0_3": "0x2700",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x3108",
+   "ghidra": "FUN_00003108",
+   "name": "invoke_tagged_attitude_compose_neg_sins6",
+   "hellcats_1_0_3": "0x27cc",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x31ea",
+   "ghidra": "FUN_000031ea",
+   "name": "rotate_int3_vecs_by_3ang",
+   "hellcats_1_0_3": "0x28a6",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x3908",
+   "ghidra": "FUN_00003908",
+   "name": "abs_int",
+   "hellcats_1_0_3": "0x2e08",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x3914",
+   "ghidra": "FUN_00003914",
+   "name": "scan_convert_edge_rows",
+   "hellcats_1_0_3": "0x2e14",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x3d66",
+   "ghidra": "FUN_00003d66",
+   "name": "init_span_table_32ba",
+   "hellcats_1_0_3": "0x3266",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x3dba",
+   "ghidra": "FUN_00003dba",
+   "name": "fill_span_rows_4bit_a",
+   "hellcats_1_0_3": "0x32ba",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x4234",
+   "ghidra": "FUN_00004234",
+   "name": "init_code_pointer_tables",
+   "hellcats_1_0_3": "0x3734",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x42b4",
+   "ghidra": "FUN_000042b4",
+   "name": "fill_span_rows_8bit",
+   "hellcats_1_0_3": "0x37b4",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x4702",
+   "ghidra": "FUN_00004702",
+   "hellcats_1_0_3": "0x3ac4",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "start_mission_scene"
+  },
+  {
+   "leyte": "0x483e",
+   "ghidra": "FUN_0000483e",
+   "name": "compute_camera_abs_metric",
+   "hellcats_1_0_3": "0x3c00",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x4886",
+   "ghidra": "FUN_00004886",
+   "name": "FUN_00003c48",
+   "hellcats_1_0_3": "0x3c48",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x48a6",
+   "ghidra": "FUN_000048a6",
+   "name": "approx_dist3_xyz",
+   "hellcats_1_0_3": "0x3c68",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x4ac8",
+   "ghidra": "FUN_00004ac8",
+   "hellcats_1_0_3": "0x3e5c",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "snapshot_face_colours"
+  },
+  {
+   "leyte": "0x4e62",
+   "ghidra": "FUN_00004e62",
+   "hellcats_1_0_3": "0x41ec",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "recolour_kind2_object"
+  },
+  {
+   "leyte": "0x5428",
+   "ghidra": "FUN_00005428",
+   "hellcats_1_0_3": "0x4690",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "instantiate_object_from_desc"
+  },
+  {
+   "leyte": "0x5758",
+   "ghidra": "FUN_00005758",
+   "hellcats_1_0_3": "0x4916",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "set_object_faces_bw_pattern"
+  },
+  {
+   "leyte": "0x5c98",
+   "ghidra": "FUN_00005c98",
+   "hellcats_1_0_3": "0x4e4e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "reset_object_to_template_pose_tail"
+  },
+  {
+   "leyte": "0x6c8a",
+   "ghidra": "FUN_00006c8a",
+   "name": "clear_pending_entity_slots",
+   "hellcats_1_0_3": "0x5df8",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x7f2a",
+   "ghidra": "FUN_00007f2a",
+   "name": "clear_flag_00020ae4",
+   "hellcats_1_0_3": "0x6ece",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x7f32",
+   "ghidra": "FUN_00007f32",
+   "hellcats_1_0_3": "0x6ed6",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_view_clip_bounds"
+  },
+  {
+   "leyte": "0x8014",
+   "ghidra": "FUN_00008014",
+   "name": "reset_distance_base_globals",
+   "hellcats_1_0_3": "0x6fb8",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x8052",
+   "ghidra": "FUN_00008052",
+   "hellcats_1_0_3": "0x6ff6",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "configure_renderer_for_display"
+  },
+  {
+   "leyte": "0x83fe",
+   "ghidra": "FUN_000083fe",
+   "hellcats_1_0_3": "0x739a",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "copy_player_pose_to_camera"
+  },
+  {
+   "leyte": "0x98c6",
+   "ghidra": "FUN_000098c6",
+   "name": "request_instant_replay",
+   "hellcats_1_0_3": "0x8784",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x98e0",
+   "ghidra": "FUN_000098e0",
+   "hellcats_1_0_3": "0x879e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "resolve_bailout_outcome"
+  },
+  {
+   "leyte": "0x99e2",
+   "ghidra": "FUN_000099e2",
+   "hellcats_1_0_3": "0x88a0",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "place_camera_behind_object"
+  },
+  {
+   "leyte": "0x9ab4",
+   "ghidra": "FUN_00009ab4",
+   "hellcats_1_0_3": "0x8972",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_bailout_view"
+  },
+  {
+   "leyte": "0x9c00",
+   "ghidra": "FUN_00009c00",
+   "hellcats_1_0_3": "0x8abe",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "turn_camera_toward_point"
+  },
+  {
+   "leyte": "0x9d72",
+   "ghidra": "FUN_00009d72",
+   "hellcats_1_0_3": "0x8c30",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_tracking_camera"
+  },
+  {
+   "leyte": "0xa136",
+   "ghidra": "FUN_0000a136",
+   "hellcats_1_0_3": "0x8ff4",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "begin_replay_view"
+  },
+  {
+   "leyte": "0xa380",
+   "ghidra": "FUN_0000a380",
+   "hellcats_1_0_3": "0x923e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "apply_player_mouse_controls"
+  },
+  {
+   "leyte": "0xa6c4",
+   "ghidra": "FUN_0000a6c4",
+   "hellcats_1_0_3": "0x9550",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "stop_all_sound_channels"
+  },
+  {
+   "leyte": "0xafaa",
+   "ghidra": "FUN_0000afaa",
+   "name": "emit_face_chain",
+   "hellcats_1_0_3": "0x9d34",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0xb01c",
+   "ghidra": "FUN_0000b01c",
+   "hellcats_1_0_3": "0x9da6",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "emit_faces_bsp"
+  },
+  {
+   "leyte": "0xb300",
+   "ghidra": "FUN_0000b300",
+   "hellcats_1_0_3": "0xa07e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "track_ground_plane_horizon"
+  },
+  {
+   "leyte": "0xb3f0",
+   "ghidra": "FUN_0000b3f0",
+   "hellcats_1_0_3": "0xa16e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "output_face_colour"
+  },
+  {
+   "leyte": "0xb4a2",
+   "ghidra": "FUN_0000b4a2",
+   "hellcats_1_0_3": "0xa220",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "output_face_bw"
+  },
+  {
+   "leyte": "0xc310",
+   "ghidra": "FUN_0000c310",
+   "name": "clip_face_near_plane",
+   "hellcats_1_0_3": "0xb028",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0xc478",
+   "ghidra": "FUN_0000c478",
+   "name": "clip_polygon_x_min",
+   "hellcats_1_0_3": "0xb190",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0xc52a",
+   "ghidra": "FUN_0000c52a",
+   "name": "clip_polygon_x_max",
+   "hellcats_1_0_3": "0xb242",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0xc5dc",
+   "ghidra": "FUN_0000c5dc",
+   "name": "clip_polygon_y_min",
+   "hellcats_1_0_3": "0xb2f4",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0xc692",
+   "ghidra": "FUN_0000c692",
+   "name": "clip_polygon_y_max",
+   "hellcats_1_0_3": "0xb3aa",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0xc786",
+   "ghidra": "FUN_0000c786",
+   "hellcats_1_0_3": "0xb49e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "reset_overlay_display_state"
+  },
+  {
+   "leyte": "0xcfc6",
+   "ghidra": "FUN_0000cfc6",
+   "name": "copy_rect_depth4",
+   "hellcats_1_0_3": "0xbca8",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0xd446",
+   "ghidra": "FUN_0000d446",
+   "hellcats_1_0_3": "0xc11e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "begin_offscreen_drawing"
+  },
+  {
+   "leyte": "0xd8b2",
+   "ghidra": "FUN_0000d8b2",
+   "hellcats_1_0_3": "0xc572",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "draw_gauge_needle"
+  },
+  {
+   "leyte": "0xd9a4",
+   "ghidra": "FUN_0000d9a4",
+   "hellcats_1_0_3": "0xc664",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_altimeter_needles"
+  },
+  {
+   "leyte": "0xdb4c",
+   "ghidra": "FUN_0000db4c",
+   "hellcats_1_0_3": "0xc80c",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_airspeed_needle"
+  },
+  {
+   "leyte": "0xdc16",
+   "ghidra": "FUN_0000dc16",
+   "hellcats_1_0_3": "0xc8d6",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_direction_needle"
+  },
+  {
+   "leyte": "0xdc88",
+   "ghidra": "FUN_0000dc88",
+   "hellcats_1_0_3": "0xc948",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_climb_needle"
+  },
+  {
+   "leyte": "0xdd02",
+   "ghidra": "FUN_0000dd02",
+   "hellcats_1_0_3": "0xc9c2",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_tachometer_needle"
+  },
+  {
+   "leyte": "0xdd84",
+   "ghidra": "FUN_0000dd84",
+   "hellcats_1_0_3": "0xca44",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_manifold_needle"
+  },
+  {
+   "leyte": "0xdf40",
+   "ghidra": "FUN_0000df40",
+   "hellcats_1_0_3": "0xcb62",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_throttle_gauge"
+  },
+  {
+   "leyte": "0xdff0",
+   "ghidra": "FUN_0000dff0",
+   "hellcats_1_0_3": "0xcc12",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_flaps_needle"
+  },
+  {
+   "leyte": "0xe0a8",
+   "ghidra": "FUN_0000e0a8",
+   "hellcats_1_0_3": "0xccca",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_gear_needles"
+  },
+  {
+   "leyte": "0xe1fa",
+   "ghidra": "FUN_0000e1fa",
+   "hellcats_1_0_3": "0xce1c",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_ammo_needle"
+  },
+  {
+   "leyte": "0xe2a2",
+   "ghidra": "FUN_0000e2a2",
+   "hellcats_1_0_3": "0xcec4",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "update_fuel_needles"
+  },
+  {
+   "leyte": "0xe664",
+   "ghidra": "FUN_0000e664",
+   "hellcats_1_0_3": "0xd27c",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "mark_view_overlays_drawn"
+  },
+  {
+   "leyte": "0xe680",
+   "ghidra": "FUN_0000e680",
+   "hellcats_1_0_3": "0xd298",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "present_spans_to_window"
+  },
+  {
+   "leyte": "0xe734",
+   "ghidra": "FUN_0000e734",
+   "hellcats_1_0_3": "0xd34c",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "present_bw_frame"
+  },
+  {
+   "leyte": "0xe7a4",
+   "ghidra": "FUN_0000e7a4",
+   "name": "draw_line_depth8",
+   "hellcats_1_0_3": "0xd3bc",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0xe998",
+   "ghidra": "FUN_0000e998",
+   "name": "draw_line_depth4",
+   "hellcats_1_0_3": "0xd5b0",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0xed02",
+   "ghidra": "FUN_0000ed02",
+   "name": "restore_line_depth8",
+   "hellcats_1_0_3": "0xd91a",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0xef48",
+   "ghidra": "FUN_0000ef48",
+   "name": "restore_line_depth4",
+   "hellcats_1_0_3": "0xdb60",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0xf346",
+   "ghidra": "FUN_0000f346",
+   "name": "fill_pose_history",
+   "hellcats_1_0_3": "0xdf5e",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0xf380",
+   "ghidra": "FUN_0000f380",
+   "name": "fill_pose_history_angles",
+   "hellcats_1_0_3": "0xdf98",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0xf3ba",
+   "ghidra": "FUN_0000f3ba",
+   "name": "fill_pose_history_flags",
+   "hellcats_1_0_3": "0xdfd2",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0xf714",
+   "ghidra": "FUN_0000f714",
+   "hellcats_1_0_3": "0xe2a4",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "create_friendly_bomber"
+  },
+  {
+   "leyte": "0xf87c",
+   "ghidra": "FUN_0000f87c",
+   "name": "fold_angle_pm_0x2000",
+   "hellcats_1_0_3": "0xe40c",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0xf89a",
+   "ghidra": "FUN_0000f89a",
+   "name": "table_lerp_1b2c0",
+   "hellcats_1_0_3": "0xe42a",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0xf8d8",
+   "ghidra": "FUN_0000f8d8",
+   "name": "damp_short_if_below_0x200",
+   "hellcats_1_0_3": "0xe468",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x1215a",
+   "ghidra": "FUN_0001215a",
+   "hellcats_1_0_3": "0x102d6",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "atan2_fixed14"
+  },
+  {
+   "leyte": "0x129b4",
+   "ghidra": "FUN_000129b4",
+   "name": "steer_entity_toward_point",
+   "hellcats_1_0_3": "0x10b2e",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x12aba",
+   "ghidra": "FUN_00012aba",
+   "hellcats_1_0_3": "0x10c2c",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "adjust_ai_throttle_vs_speed"
+  },
+  {
+   "leyte": "0x12b40",
+   "ghidra": "FUN_00012b40",
+   "hellcats_1_0_3": "0x10cb2",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "max_ai_throttle_maybe_invert_679"
+  },
+  {
+   "leyte": "0x12b66",
+   "ghidra": "FUN_00012b66",
+   "hellcats_1_0_3": "0x10cd8",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "invert_ai_bias_67b_if_positive"
+  },
+  {
+   "leyte": "0x12b76",
+   "ghidra": "FUN_00012b76",
+   "hellcats_1_0_3": "0x10ce8",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "tick_ai_climb_then_waypoint"
+  },
+  {
+   "leyte": "0x135c8",
+   "ghidra": "FUN_000135c8",
+   "name": "spin_object_heading",
+   "hellcats_1_0_3": "0x114b4",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x135de",
+   "ghidra": "FUN_000135de",
+   "name": "overlay_rng_mul_mix",
+   "hellcats_1_0_3": "0x114ca",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x13672",
+   "ghidra": "FUN_00013672",
+   "name": "overlay_rng_next",
+   "hellcats_1_0_3": "0x11564",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x136e2",
+   "ghidra": "FUN_000136e2",
+   "hellcats_1_0_3": "0x115b0",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "create_plume_controller"
+  },
+  {
+   "leyte": "0x13828",
+   "ghidra": "FUN_00013828",
+   "hellcats_1_0_3": "0x116fc",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "tick_smoke_plume"
+  },
+  {
+   "leyte": "0x138c0",
+   "ghidra": "FUN_000138c0",
+   "hellcats_1_0_3": "0x11796",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "shape_free_plume"
+  },
+  {
+   "leyte": "0x13a6a",
+   "ghidra": "FUN_00013a6a",
+   "hellcats_1_0_3": "0x11940",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "shape_trailing_plume"
+  },
+  {
+   "leyte": "0x13c0e",
+   "ghidra": "FUN_00013c0e",
+   "name": "face_camera_heading",
+   "hellcats_1_0_3": "0x11ae6",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x13c26",
+   "ghidra": "FUN_00013c26",
+   "hellcats_1_0_3": "0x11afe",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "create_effect_controller"
+  },
+  {
+   "leyte": "0x13cbe",
+   "ghidra": "FUN_00013cbe",
+   "name": "replay_logged_effects",
+   "hellcats_1_0_3": "0x11b96",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x13d54",
+   "ghidra": "FUN_00013d54",
+   "name": "mark_effect_log_end",
+   "hellcats_1_0_3": "0x11c2c",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x14048",
+   "ghidra": "FUN_00014048",
+   "hellcats_1_0_3": "0x11efc",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "init_effect_kind2_burst"
+  },
+  {
+   "leyte": "0x14184",
+   "ghidra": "FUN_00014184",
+   "hellcats_1_0_3": "0x1203a",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "init_effect_kind0_flat_ring"
+  },
+  {
+   "leyte": "0x14212",
+   "ghidra": "FUN_00014212",
+   "hellcats_1_0_3": "0x120ca",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "init_effect_kind1_column"
+  },
+  {
+   "leyte": "0x142c4",
+   "ghidra": "FUN_000142c4",
+   "hellcats_1_0_3": "0x1217e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "init_effect_kind3_debris_explosion"
+  },
+  {
+   "leyte": "0x1451a",
+   "ghidra": "FUN_0001451a",
+   "hellcats_1_0_3": "0x123ce",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "animate_effect_kind0_ring"
+  },
+  {
+   "leyte": "0x145b2",
+   "ghidra": "FUN_000145b2",
+   "name": "animate_effect_kind0_ring_tail",
+   "hellcats_1_0_3": "0x12466",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x1488a",
+   "ghidra": "FUN_0001488a",
+   "name": "face_object_to_camera",
+   "hellcats_1_0_3": "0x12738",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x148ba",
+   "ghidra": "FUN_000148ba",
+   "hellcats_1_0_3": "0x12768",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "tick_effect"
+  },
+  {
+   "leyte": "0x148fc",
+   "ghidra": "FUN_000148fc",
+   "name": "effect_pre_render_hook",
+   "hellcats_1_0_3": "0x127aa",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x15d92",
+   "ghidra": "FUN_00015d92",
+   "hellcats_1_0_3": "0x13452",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "surface_type_under_object"
+  },
+  {
+   "leyte": "0x15ecc",
+   "ghidra": "FUN_00015ecc",
+   "name": "contact_pair_hash",
+   "hellcats_1_0_3": "0x1358c",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x1663a",
+   "ghidra": "FUN_0001663a",
+   "hellcats_1_0_3": "0x13cdc",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "test_terrain_collision"
+  },
+  {
+   "leyte": "0x167a4",
+   "ghidra": "FUN_000167a4",
+   "hellcats_1_0_3": "0x13e4e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "test_proximity_collision"
+  },
+  {
+   "leyte": "0x16b06",
+   "ghidra": "FUN_00016b06",
+   "hellcats_1_0_3": "0x14198",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "handle_terrain_contact"
+  },
+  {
+   "leyte": "0x195f6",
+   "ghidra": "FUN_000195f6",
+   "name": "clip_polygon_y_nonneg",
+   "hellcats_1_0_3": "0x1562e",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x19b8a",
+   "ghidra": "FUN_00019b8a",
+   "hellcats_1_0_3": "0x15b92",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "create_bullet_controller"
+  },
+  {
+   "leyte": "0x19bee",
+   "ghidra": "FUN_00019bee",
+   "hellcats_1_0_3": "0x15bf6",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "spawn_ordnance_scattered"
+  },
+  {
+   "leyte": "0x19d16",
+   "ghidra": "FUN_00019d16",
+   "hellcats_1_0_3": "0x15d20",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "spawn_ordnance_oriented"
+  },
+  {
+   "leyte": "0x19d6e",
+   "ghidra": "FUN_00019d6e",
+   "hellcats_1_0_3": "0x15d78",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "spawn_ordnance_oriented_3ang"
+  },
+  {
+   "leyte": "0x19e50",
+   "ghidra": "FUN_00019e50",
+   "hellcats_1_0_3": "0x15e62",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "bullet_pre_render"
+  },
+  {
+   "leyte": "0x19f32",
+   "ghidra": "FUN_00019f32",
+   "name": "plot_dot_depth8",
+   "hellcats_1_0_3": "0x15f3e",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1a124",
+   "ghidra": "FUN_0001a124",
+   "name": "plot_dot_depth4",
+   "hellcats_1_0_3": "0x16128",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1a22c",
+   "ghidra": "FUN_0001a22c",
+   "name": "plot_dot_bw",
+   "hellcats_1_0_3": "0x16230",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1a7e6",
+   "ghidra": "FUN_0001a7e6",
+   "hellcats_1_0_3": "0x167f4",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "bullet_hits_aircraft"
+  },
+  {
+   "leyte": "0x1a90c",
+   "ghidra": "FUN_0001a90c",
+   "hellcats_1_0_3": "0x1691c",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "alloc_copied_vertex_block"
+  },
+  {
+   "leyte": "0x1aaa4",
+   "ghidra": "FUN_0001aaa4",
+   "hellcats_1_0_3": "0x16966",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "advance_route_waypoint"
+  },
+  {
+   "leyte": "0x1abb8",
+   "ghidra": "FUN_0001abb8",
+   "name": "register_trail_templates",
+   "hellcats_1_0_3": "0x16a78",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1ac28",
+   "ghidra": "FUN_0001ac28",
+   "hellcats_1_0_3": "0x16ae8",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "spawn_trail"
+  },
+  {
+   "leyte": "0x1b1ca",
+   "ghidra": "FUN_0001b1ca",
+   "hellcats_1_0_3": "0x1702a",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "tick_trail"
+  },
+  {
+   "leyte": "0x1b20a",
+   "ghidra": "FUN_0001b20a",
+   "hellcats_1_0_3": "0x1706a",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "create_ground_fire_controller"
+  },
+  {
+   "leyte": "0x1b25a",
+   "ghidra": "FUN_0001b25a",
+   "hellcats_1_0_3": "0x170ba",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "spawn_ground_fire_object"
+  },
+  {
+   "leyte": "0x1b2f6",
+   "ghidra": "FUN_0001b2f6",
+   "hellcats_1_0_3": "0x17150",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "animate_ground_fire"
+  },
+  {
+   "leyte": "0x1b5a2",
+   "ghidra": "FUN_0001b5a2",
+   "hellcats_1_0_3": "0x173fe",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "spawn_debris_fragment"
+  },
+  {
+   "leyte": "0x1b666",
+   "ghidra": "FUN_0001b666",
+   "hellcats_1_0_3": "0x174c4",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "tick_debris_fragment"
+  },
+  {
+   "leyte": "0x1b764",
+   "ghidra": "FUN_0001b764",
+   "hellcats_1_0_3": "0x175c0",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "tick_ground_mark"
+  },
+  {
+   "leyte": "0x1b8bc",
+   "ghidra": "FUN_0001b8bc",
+   "name": "set_view_distance",
+   "hellcats_1_0_3": "0x1771a",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1b8d8",
+   "ghidra": "FUN_0001b8d8",
+   "name": "cycle_view_distance",
+   "hellcats_1_0_3": "0x17736",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1b90c",
+   "ghidra": "FUN_0001b90c",
+   "name": "reset_radar_tracks",
+   "hellcats_1_0_3": "0x1776a",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1ba0a",
+   "ghidra": "FUN_0001ba0a",
+   "hellcats_1_0_3": "0x17868",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "erase_radar_blip_depth4"
+  },
+  {
+   "leyte": "0x1baea",
+   "ghidra": "FUN_0001baea",
+   "hellcats_1_0_3": "0x17948",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "draw_radar_blip_depth4"
+  },
+  {
+   "leyte": "0x1bf68",
+   "ghidra": "FUN_0001bf68",
+   "hellcats_1_0_3": "0x17db8",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "destroy_aircraft_spawner_controller"
+  },
+  {
+   "leyte": "0x1cb24",
+   "ghidra": "FUN_0001cb24",
+   "hellcats_1_0_3": "0x189d0",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "tick_shadow"
+  },
+  {
+   "leyte": "0x1d2b8",
+   "ghidra": "FUN_0001d2b8",
+   "hellcats_1_0_3": "0x19130",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "spawn_turret_on_object"
+  },
+  {
+   "leyte": "0x1d302",
+   "ghidra": "FUN_0001d302",
+   "hellcats_1_0_3": "0x1917c",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "tick_turret"
+  },
+  {
+   "leyte": "0x1d69c",
+   "ghidra": "FUN_0001d69c",
+   "name": "destroy_parachute_controller",
+   "hellcats_1_0_3": "0x1951a",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1d6b0",
+   "ghidra": "FUN_0001d6b0",
+   "hellcats_1_0_3": "0x1952e",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "parachute_descend"
+  },
+  {
+   "leyte": "0x1dbd4",
+   "ghidra": "FUN_0001dbd4",
+   "name": "register_cloud_templates",
+   "hellcats_1_0_3": "0x19a54",
+   "evidence": "moved"
+  },
+  {
+   "leyte": "0x1dc22",
+   "ghidra": "FUN_0001dc22",
+   "hellcats_1_0_3": "0x19aa2",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "spawn_camera_relative_object"
+  },
+  {
+   "leyte": "0x1dcae",
+   "ghidra": "FUN_0001dcae",
+   "hellcats_1_0_3": "0x19b30",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "follow_camera_offset"
+  },
+  {
+   "leyte": "0x1dd3c",
+   "ghidra": "FUN_0001dd3c",
+   "hellcats_1_0_3": "0x19bbc",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "tick_view_attached_object"
+  },
+  {
+   "leyte": "0x1dda6",
+   "ghidra": "FUN_0001dda6",
+   "name": "store_xyz_asr",
+   "hellcats_1_0_3": "0x19c26",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x1e152",
+   "ghidra": "FUN_0001e152",
+   "hellcats_1_0_3": "0x19fba",
+   "evidence": "layout: same instructions, structure offsets / addresses moved",
+   "name": "try_begin_landing_approach"
+  },
+  {
+   "leyte": "0x1f63a",
+   "ghidra": "FUN_0001f63a",
+   "name": "memmove_block",
+   "hellcats_1_0_3": "0x1a63e",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x1f712",
+   "ghidra": "FUN_0001f712",
+   "name": "memzero",
+   "hellcats_1_0_3": "0x1a716",
+   "evidence": "identical"
+  },
+  {
+   "leyte": "0x1f75a",
+   "ghidra": "FUN_0001f75a",
+   "name": "c_strlen",
+   "hellcats_1_0_3": "0x1a75e",
+   "evidence": "identical"
+  }
+ ],
+ "called": [
+  {
+   "leyte": "0x14be",
+   "ghidra": "FUN_000014be",
+   "name": "unlock_handle_purgeable",
+   "hellcats_1_0_3": "0xe32",
+   "evidence": "call site in unlock_session_buffers"
+  },
+  {
+   "leyte": "0x18fc",
+   "ghidra": "FUN_000018fc",
+   "name": "reset_palette_owner_tables",
+   "hellcats_1_0_3": "0x1294",
+   "evidence": "call site in init_depth4_colour_state"
+  },
+  {
+   "leyte": "0x1bb0",
+   "ghidra": "FUN_00001bb0",
+   "name": "write_face_palette_slot",
+   "hellcats_1_0_3": "0x1548",
+   "evidence": "call site in assign_face_colour"
+  },
+  {
+   "leyte": "0x2346",
+   "ghidra": "FUN_00002346",
+   "name": "matmul3x3_s16",
+   "hellcats_1_0_3": "0x1d02",
+   "evidence": "call site in build_attitude_matrix_from_dir_roll, compose_attitude_matrix_6ang, compose_attitude_matrix_6ang_alt, compose_attitude_matrix_x, compose_attitude_matrix_x_alt"
+  },
+  {
+   "leyte": "0x2d02",
+   "ghidra": "FUN_00002d02",
+   "name": "build_attitude_matrix_3ang",
+   "hellcats_1_0_3": "0x253e",
+   "evidence": "call site in rotate_int3_vecs_by_3ang"
+  },
+  {
+   "leyte": "0x3438",
+   "ghidra": "FUN_00003438",
+   "name": "transform_int3_vecs_by_matrix3",
+   "hellcats_1_0_3": "0x2ada",
+   "evidence": "call site in rotate_int3_vecs_by_3ang"
+  },
+  {
+   "leyte": "0x60fc",
+   "ghidra": "FUN_000060fc",
+   "name": "dispatch_entity_cleanup",
+   "hellcats_1_0_3": "0x528a",
+   "evidence": "call site in clear_pending_entity_slots"
+  },
+  {
+   "leyte": "0xad50",
+   "ghidra": "FUN_0000ad50",
+   "name": "face_is_back_facing",
+   "hellcats_1_0_3": "0x9ae0",
+   "evidence": "call site in emit_face_chain"
+  },
+  {
+   "leyte": "0x121e4",
+   "ghidra": "FUN_000121e4",
+   "name": "build_relative_steer_sample",
+   "hellcats_1_0_3": "0x10360",
+   "evidence": "call site in steer_entity_toward_point"
+  },
+  {
+   "leyte": "0x12840",
+   "ghidra": "FUN_00012840",
+   "name": "apply_relative_heading_steer",
+   "hellcats_1_0_3": "0x109ba",
+   "evidence": "call site in steer_entity_toward_point"
+  }
+ ],
+ "candidates": [
+  {
+   "leyte": "0x84a",
+   "ghidra": "FUN_0000084a",
+   "candidate": "for_each_mission_scene_object",
+   "hellcats_1_0_3": "0x6a6",
+   "evidence": "same_instructions",
+   "differences": [
+    "link.w a6, #$f948 | a6, #$f8d0"
+   ]
+  },
+  {
+   "leyte": "0x184e",
+   "ghidra": "FUN_0000184e",
+   "candidate": "widen_printf_format",
+   "hellcats_1_0_3": "0x11e6",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x18bc",
+   "ghidra": "FUN_000018bc",
+   "candidate": "overlay_printf",
+   "hellcats_1_0_3": "0x1254",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x221c",
+   "ghidra": "FUN_0000221c",
+   "candidate": "heap_realloc_grow_only_tail",
+   "hellcats_1_0_3": "0x1be4",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x3418",
+   "ghidra": "FUN_00003418",
+   "candidate": "FUN_00002aba",
+   "hellcats_1_0_3": "0x2aba",
+   "evidence": "same_instructions",
+   "differences": [
+    "dbra d6, $2a50 | d5, $33ae"
+   ]
+  },
+  {
+   "leyte": "0x47d6",
+   "ghidra": "FUN_000047d6",
+   "candidate": "update_object_camera_metric",
+   "hellcats_1_0_3": "0x3b98",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x5172",
+   "ghidra": "FUN_00005172",
+   "candidate": "dispatch_entity_tick",
+   "hellcats_1_0_3": "0x44a4",
+   "evidence": "same_instructions",
+   "differences": [
+    "cmpi.w #$5, (a0) | #$8, (a0)"
+   ]
+  },
+  {
+   "leyte": "0x534e",
+   "ghidra": "FUN_0000534e",
+   "candidate": "alloc_object_from_desc",
+   "hellcats_1_0_3": "0x45ba",
+   "evidence": "same_instructions",
+   "differences": [
+    "pea.l $52.w | $54.w",
+    "pea.l $34.w | $36.w"
+   ]
+  },
+  {
+   "leyte": "0xa8c4",
+   "ghidra": "FUN_0000a8c4",
+   "candidate": "stop_game_sound",
+   "hellcats_1_0_3": "0x96ae",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0xc748",
+   "ghidra": "FUN_0000c748",
+   "candidate": "reset_background_rows",
+   "hellcats_1_0_3": "0xb460",
+   "evidence": "same_instructions",
+   "differences": [
+    "movea.l $20ad4.l, a1 | $27004.l, a0",
+    "clr.w (a1) | (a0)",
+    "move.w #$1, $2(a1) | #$1, $2(a0)"
+   ]
+  },
+  {
+   "leyte": "0xd4a6",
+   "ghidra": "FUN_0000d4a6",
+   "candidate": "end_offscreen_drawing",
+   "hellcats_1_0_3": "0xc17e",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0xf3d8",
+   "ghidra": "FUN_0000f3d8",
+   "candidate": "init_aircraft_controller",
+   "hellcats_1_0_3": "0xdff0",
+   "evidence": "same_instructions",
+   "differences": [
+    "pea.l $6b0.w | $6c8.w"
+   ]
+  },
+  {
+   "leyte": "0xf636",
+   "ghidra": "FUN_0000f636",
+   "candidate": "create_enemy_fighter",
+   "hellcats_1_0_3": "0xe1e6",
+   "evidence": "same_instructions",
+   "differences": [
+    "moveq #$4, d2 | #$7, d2"
+   ]
+  },
+  {
+   "leyte": "0xf7b0",
+   "ghidra": "FUN_0000f7b0",
+   "candidate": "create_enemy_bomber",
+   "hellcats_1_0_3": "0xe340",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0xf822",
+   "ghidra": "FUN_0000f822",
+   "candidate": "acos_scaled_dot3",
+   "hellcats_1_0_3": "0xe3b2",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0xf914",
+   "ghidra": "FUN_0000f914",
+   "candidate": "compute_template_force_from_626",
+   "hellcats_1_0_3": "0xe4a4",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x12d5e",
+   "ghidra": "FUN_00012d5e",
+   "candidate": "tick_ai_1b310_approach_fire",
+   "hellcats_1_0_3": "0x10ecc",
+   "evidence": "same_instructions",
+   "differences": [
+    "move.l #$2b246a, -(a7) | #$ffd634ea, -(a7)",
+    "move.l #$fffbf50d, -(a7) | #$5bc72d, -(a7)"
+   ]
+  },
+  {
+   "leyte": "0x145d2",
+   "ghidra": "FUN_000145d2",
+   "candidate": "animate_effect_kind1_column",
+   "hellcats_1_0_3": "0x12486",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x14eca",
+   "ghidra": "FUN_00014eca",
+   "candidate": "ordnance_tick",
+   "hellcats_1_0_3": "0x12a2a",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x15bce",
+   "ghidra": "FUN_00015bce",
+   "candidate": "point_over_face_xz",
+   "hellcats_1_0_3": "0x132c8",
+   "evidence": "same_instructions",
+   "differences": [
+    "link.w a6, #$f970 | a6, #$f8f8",
+    "addi.l #$fffff970, d2 | #$fffff8f8, d2"
+   ]
+  },
+  {
+   "leyte": "0x15dac",
+   "ghidra": "FUN_00015dac",
+   "candidate": "point_in_face_by_axis",
+   "hellcats_1_0_3": "0x1346c",
+   "evidence": "same_instructions",
+   "differences": [
+    "link.w a6, #$f970 | a6, #$f8f8",
+    "addi.l #$fffff970, d2 | #$fffff8f8, d2",
+    "addi.l #$fffff970, d2 | #$fffff8f8, d2"
+   ]
+  },
+  {
+   "leyte": "0x16804",
+   "ghidra": "FUN_00016804",
+   "candidate": "test_player_vs_type0e_proximity",
+   "hellcats_1_0_3": "0x13eae",
+   "evidence": "same_instructions",
+   "differences": [
+    "cmpi.w #$e, (a0) | #$14, (a0)"
+   ]
+  },
+  {
+   "leyte": "0x16c02",
+   "ghidra": "FUN_00016c02",
+   "candidate": "handle_player_contact",
+   "hellcats_1_0_3": "0x1429c",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x180a8",
+   "ghidra": "FUN_000180a8",
+   "candidate": "create_firing_ship_controller",
+   "hellcats_1_0_3": "0x1530e",
+   "evidence": "same_instructions",
+   "differences": [
+    "pea.l $12c.w | $772.w"
+   ]
+  },
+  {
+   "leyte": "0x1a66a",
+   "ghidra": "FUN_0001a66a",
+   "candidate": "bullet_hits_shape",
+   "hellcats_1_0_3": "0x1665a",
+   "evidence": "same_instructions",
+   "differences": [
+    "cmpi.w #$e, d0 | #$14, d0",
+    "cmpi.w #$1b, d0 | #$24, d0"
+   ]
+  },
+  {
+   "leyte": "0x1a89c",
+   "ghidra": "FUN_0001a89c",
+   "candidate": "impact_one_time_in_16",
+   "hellcats_1_0_3": "0x168ae",
+   "evidence": "same_instructions",
+   "differences": [
+    "andi.w #$f, d0 | #$1f, d0"
+   ]
+  },
+  {
+   "leyte": "0x1adf4",
+   "ghidra": "FUN_0001adf4",
+   "candidate": "animate_smoke_trail",
+   "hellcats_1_0_3": "0x16c6a",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x1b524",
+   "ghidra": "FUN_0001b524",
+   "candidate": "tick_ground_fire",
+   "hellcats_1_0_3": "0x17380",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x1b782",
+   "ghidra": "FUN_0001b782",
+   "candidate": "spawn_ground_mark",
+   "hellcats_1_0_3": "0x175de",
+   "evidence": "same_instructions",
+   "differences": [
+    "addi.l #$a8c, d7 | #$384, d7"
+   ]
+  },
+  {
+   "leyte": "0x1b922",
+   "ghidra": "FUN_0001b922",
+   "candidate": "erase_radar_blip_depth8",
+   "hellcats_1_0_3": "0x17780",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  },
+  {
+   "leyte": "0x1bc2e",
+   "ghidra": "FUN_0001bc2e",
+   "candidate": "update_radar_range_buttons",
+   "hellcats_1_0_3": "0x17a8c",
+   "evidence": "same_instructions",
+   "differences": [
+    "addi.l #$1c2, d1 | #$1c6, d1",
+    "addi.l #$1ca, d1 | #$1ce, d1",
+    "addi.l #$1d2, d1 | #$1d6, d1"
+   ]
+  },
+  {
+   "leyte": "0x1e33e",
+   "ghidra": "FUN_0001e33e",
+   "candidate": "tick_landing_approach_glide",
+   "hellcats_1_0_3": "0x1a1a6",
+   "evidence": "same_instructions",
+   "differences": [
+    "instruction count differs"
+   ]
+  }
+ ],
+ "ambiguous": [
+  {
+   "leyte": "0x3002",
+   "ghidra": "FUN_00003002",
+   "claims": [
+    {
+     "name": "build_attitude_matrix_6ang",
+     "hellcats_1_0_3": "0x26cc",
+     "evidence": "moved"
+    },
+    {
+     "name": "build_attitude_matrix_6ang_alt",
+     "hellcats_1_0_3": "0x276e",
+     "evidence": "moved"
+    }
+   ]
+  },
+  {
+   "leyte": "0x3f12",
+   "ghidra": "FUN_00003f12",
+   "claims": [
+    {
+     "name": "init_span_table_3466",
+     "hellcats_1_0_3": "0x3412",
+     "evidence": "identical"
+    },
+    {
+     "name": "init_span_table_3608",
+     "hellcats_1_0_3": "0x35b4",
+     "evidence": "identical"
+    }
+   ]
+  },
+  {
+   "leyte": "0x3f66",
+   "ghidra": "FUN_00003f66",
+   "claims": [
+    {
+     "name": "fill_span_rows_4bit_b",
+     "hellcats_1_0_3": "0x3466",
+     "evidence": "identical"
+    },
+    {
+     "name": "fill_span_rows_4bit_c",
+     "hellcats_1_0_3": "0x3608",
+     "evidence": "identical"
+    }
+   ]
+  },
+  {
+   "leyte": "0x12bf6",
+   "ghidra": "FUN_00012bf6",
+   "claims": [
+    {
+     "name": "ensure_ai_script_1b2e0_tick",
+     "hellcats_1_0_3": "0x10d68",
+     "evidence": "same_instructions"
+    },
+    {
+     "name": "ensure_ai_script_1b310_tick",
+     "hellcats_1_0_3": "0x10da8",
+     "evidence": "same_instructions"
+    },
+    {
+     "name": "ensure_ai_script_1b340_tick",
+     "hellcats_1_0_3": "0x10de8",
+     "evidence": "same_instructions"
+    }
+   ]
+  },
+  {
+   "leyte": "0x13120",
+   "ghidra": "FUN_00013120",
+   "claims": [
+    {
+     "name": "ai_fly",
+     "hellcats_1_0_3": "0x11182",
+     "evidence": "moved"
+    },
+    {
+     "name": "ai_fly_bomber",
+     "hellcats_1_0_3": "0x111ae",
+     "evidence": "moved"
+    }
+   ]
+  },
+  {
+   "leyte": "0x1370c",
+   "ghidra": "FUN_0001370c",
+   "claims": [
+    {
+     "name": "register_smoke_template",
+     "hellcats_1_0_3": "0x115da",
+     "evidence": "moved"
+    },
+    {
+     "name": "register_ordnance_template",
+     "hellcats_1_0_3": "0x1281e",
+     "evidence": "moved"
+    },
+    {
+     "name": "register_bullet_template",
+     "hellcats_1_0_3": "0x15bd4",
+     "evidence": "moved"
+    },
+    {
+     "name": "register_ground_fire_template",
+     "hellcats_1_0_3": "0x17098",
+     "evidence": "moved"
+    },
+    {
+     "name": "register_debris_template",
+     "hellcats_1_0_3": "0x173dc",
+     "evidence": "moved"
+    },
+    {
+     "name": "register_ground_mark_template",
+     "hellcats_1_0_3": "0x1759e",
+     "evidence": "moved"
+    },
+    {
+     "name": "register_turret_template",
+     "hellcats_1_0_3": "0x1910e",
+     "evidence": "moved"
+    },
+    {
+     "name": "register_parachute_template",
+     "hellcats_1_0_3": "0x1940e",
+     "evidence": "moved"
+    }
+   ]
+  },
+  {
+   "leyte": "0x13bd6",
+   "ghidra": "FUN_00013bd6",
+   "claims": [
+    {
+     "name": "create_camera_facing_controller",
+     "hellcats_1_0_3": "0x11aae",
+     "evidence": "same_instructions"
+    },
+    {
+     "name": "create_ground_mark_controller",
+     "hellcats_1_0_3": "0x17566",
+     "evidence": "same_instructions"
+    }
+   ]
+  },
+  {
+   "leyte": "0x13c70",
+   "ghidra": "FUN_00013c70",
+   "claims": [
+    {
+     "name": "register_effect_template",
+     "hellcats_1_0_3": "0x11b48",
+     "evidence": "moved"
+    },
+    {
+     "name": "register_shadow_templates",
+     "hellcats_1_0_3": "0x188f4",
+     "evidence": "moved"
+    }
+   ]
+  },
+  {
+   "leyte": "0x1ac04",
+   "ghidra": "FUN_0001ac04",
+   "claims": [
+    {
+     "name": "init_trail_kind0",
+     "hellcats_1_0_3": "0x16ac4",
+     "evidence": "identical"
+    },
+    {
+     "name": "init_trail_kind1",
+     "hellcats_1_0_3": "0x16ad6",
+     "evidence": "identical"
+    }
+   ]
+  },
+  {
+   "leyte": "0x1bbd6",
+   "ghidra": "FUN_0001bbd6",
+   "claims": [
+    {
+     "name": "erase_radar_blip_bw",
+     "hellcats_1_0_3": "0x17a34",
+     "evidence": "same_instructions"
+    },
+    {
+     "name": "draw_radar_blip_bw",
+     "hellcats_1_0_3": "0x17a60",
+     "evidence": "same_instructions"
+    }
+   ]
+  },
+  {
+   "leyte": "0x1d536",
+   "ghidra": "FUN_0001d536",
+   "claims": [
+    {
+     "name": "create_ordnance_controller",
+     "hellcats_1_0_3": "0x127c6",
+     "evidence": "same_instructions"
+    },
+    {
+     "name": "create_parachute_controller",
+     "hellcats_1_0_3": "0x193b6",
+     "evidence": "same_instructions"
+    }
+   ]
+  },
+  {
+   "leyte": "0x1db9a",
+   "ghidra": "FUN_0001db9a",
+   "claims": [
+    {
+     "name": "create_debris_controller",
+     "hellcats_1_0_3": "0x173a2",
+     "evidence": "same_instructions"
+    },
+    {
+     "name": "create_shadow_controller",
+     "hellcats_1_0_3": "0x188ba",
+     "evidence": "same_instructions"
+    },
+    {
+     "name": "create_cloud_controller",
+     "hellcats_1_0_3": "0x19a1a",
+     "evidence": "same_instructions"
+    },
+    {
+     "name": "create_view_attached_controller",
+     "hellcats_1_0_3": "0x19b82",
+     "evidence": "same_instructions"
+    }
+   ]
+  }
+ ],
+ "leyte_own": [
+  {
+   "leyte": "0x20",
+   "ghidra": "FUN_00000020"
+  },
+  {
+   "leyte": "0x58",
+   "ghidra": "FUN_00000058"
+  },
+  {
+   "leyte": "0x408",
+   "ghidra": "FUN_00000408"
+  },
+  {
+   "leyte": "0x42c",
+   "ghidra": "FUN_0000042c"
+  },
+  {
+   "leyte": "0x54c",
+   "ghidra": "FUN_0000054c"
+  },
+  {
+   "leyte": "0x602",
+   "ghidra": "FUN_00000602"
+  },
+  {
+   "leyte": "0x696",
+   "ghidra": "FUN_00000696"
+  },
+  {
+   "leyte": "0x848",
+   "ghidra": "FUN_00000848"
+  },
+  {
+   "leyte": "0x890",
+   "ghidra": "FUN_00000890"
+  },
+  {
+   "leyte": "0xb02",
+   "ghidra": "FUN_00000b02"
+  },
+  {
+   "leyte": "0xd00",
+   "ghidra": "FUN_00000d00"
+  },
+  {
+   "leyte": "0xe72",
+   "ghidra": "FUN_00000e72"
+  },
+  {
+   "leyte": "0xf9c",
+   "ghidra": "FUN_00000f9c"
+  },
+  {
+   "leyte": "0x10ae",
+   "ghidra": "FUN_000010ae"
+  },
+  {
+   "leyte": "0x121a",
+   "ghidra": "FUN_0000121a"
+  },
+  {
+   "leyte": "0x1350",
+   "ghidra": "FUN_00001350"
+  },
+  {
+   "leyte": "0x13e8",
+   "ghidra": "FUN_000013e8"
+  },
+  {
+   "leyte": "0x152c",
+   "ghidra": "FUN_0000152c"
+  },
+  {
+   "leyte": "0x1d4a",
+   "ghidra": "FUN_00001d4a"
+  },
+  {
+   "leyte": "0x1f10",
+   "ghidra": "FUN_00001f10"
+  },
+  {
+   "leyte": "0x223c",
+   "ghidra": "FUN_0000223c"
+  },
+  {
+   "leyte": "0x2294",
+   "ghidra": "FUN_00002294"
+  },
+  {
+   "leyte": "0x22ea",
+   "ghidra": "FUN_000022ea"
+  },
+  {
+   "leyte": "0x23a4",
+   "ghidra": "FUN_000023a4"
+  },
+  {
+   "leyte": "0x2488",
+   "ghidra": "FUN_00002488"
+  },
+  {
+   "leyte": "0x250c",
+   "ghidra": "FUN_0000250c"
+  },
+  {
+   "leyte": "0x2a7a",
+   "ghidra": "FUN_00002a7a"
+  },
+  {
+   "leyte": "0x2b52",
+   "ghidra": "FUN_00002b52"
+  },
+  {
+   "leyte": "0x2b72",
+   "ghidra": "FUN_00002b72"
+  },
+  {
+   "leyte": "0x2c08",
+   "ghidra": "FUN_00002c08"
+  },
+  {
+   "leyte": "0x2d28",
+   "ghidra": "FUN_00002d28"
+  },
+  {
+   "leyte": "0x2ee4",
+   "ghidra": "FUN_00002ee4"
+  },
+  {
+   "leyte": "0x30a4",
+   "ghidra": "FUN_000030a4"
+  },
+  {
+   "leyte": "0x30d8",
+   "ghidra": "FUN_000030d8"
+  },
+  {
+   "leyte": "0x313e",
+   "ghidra": "FUN_0000313e"
+  },
+  {
+   "leyte": "0x3220",
+   "ghidra": "FUN_00003220"
+  },
+  {
+   "leyte": "0x32c0",
+   "ghidra": "FUN_000032c0"
+  },
+  {
+   "leyte": "0x335e",
+   "ghidra": "FUN_0000335e"
+  },
+  {
+   "leyte": "0x3524",
+   "ghidra": "FUN_00003524"
+  },
+  {
+   "leyte": "0x3544",
+   "ghidra": "FUN_00003544"
+  },
+  {
+   "leyte": "0x3624",
+   "ghidra": "FUN_00003624"
+  },
+  {
+   "leyte": "0x371a",
+   "ghidra": "FUN_0000371a"
+  },
+  {
+   "leyte": "0x38e8",
+   "ghidra": "FUN_000038e8"
+  },
+  {
+   "leyte": "0x3912",
+   "ghidra": "FUN_00003912"
+  },
+  {
+   "leyte": "0x40b4",
+   "ghidra": "FUN_000040b4"
+  },
+  {
+   "leyte": "0x4108",
+   "ghidra": "FUN_00004108"
+  },
+  {
+   "leyte": "0x4232",
+   "ghidra": "FUN_00004232"
+  },
+  {
+   "leyte": "0x43f4",
+   "ghidra": "FUN_000043f4"
+  },
+  {
+   "leyte": "0x4908",
+   "ghidra": "FUN_00004908"
+  },
+  {
+   "leyte": "0x49ec",
+   "ghidra": "FUN_000049ec"
+  },
+  {
+   "leyte": "0x4a5a",
+   "ghidra": "FUN_00004a5a"
+  },
+  {
+   "leyte": "0x4b0c",
+   "ghidra": "FUN_00004b0c"
+  },
+  {
+   "leyte": "0x4e88",
+   "ghidra": "FUN_00004e88"
+  },
+  {
+   "leyte": "0x4fee",
+   "ghidra": "FUN_00004fee"
+  },
+  {
+   "leyte": "0x51b2",
+   "ghidra": "FUN_000051b2"
+  },
+  {
+   "leyte": "0x527c",
+   "ghidra": "FUN_0000527c"
+  },
+  {
+   "leyte": "0x52d6",
+   "ghidra": "FUN_000052d6"
+  },
+  {
+   "leyte": "0x5470",
+   "ghidra": "FUN_00005470"
+  },
+  {
+   "leyte": "0x563c",
+   "ghidra": "FUN_0000563c"
+  },
+  {
+   "leyte": "0x579a",
+   "ghidra": "FUN_0000579a"
+  },
+  {
+   "leyte": "0x5c50",
+   "ghidra": "FUN_00005c50"
+  },
+  {
+   "leyte": "0x5cb8",
+   "ghidra": "FUN_00005cb8"
+  },
+  {
+   "leyte": "0x5f84",
+   "ghidra": "FUN_00005f84"
+  },
+  {
+   "leyte": "0x605a",
+   "ghidra": "FUN_0000605a"
+  },
+  {
+   "leyte": "0x6150",
+   "ghidra": "FUN_00006150"
+  },
+  {
+   "leyte": "0x6270",
+   "ghidra": "FUN_00006270"
+  },
+  {
+   "leyte": "0x63da",
+   "ghidra": "FUN_000063da"
+  },
+  {
+   "leyte": "0x66c6",
+   "ghidra": "FUN_000066c6"
+  },
+  {
+   "leyte": "0x6774",
+   "ghidra": "FUN_00006774"
+  },
+  {
+   "leyte": "0x68a2",
+   "ghidra": "FUN_000068a2"
+  },
+  {
+   "leyte": "0x6cba",
+   "ghidra": "FUN_00006cba"
+  },
+  {
+   "leyte": "0x72ac",
+   "ghidra": "FUN_000072ac"
+  },
+  {
+   "leyte": "0x743e",
+   "ghidra": "FUN_0000743e"
+  },
+  {
+   "leyte": "0x7ecc",
+   "ghidra": "FUN_00007ecc"
+  },
+  {
+   "leyte": "0x836c",
+   "ghidra": "FUN_0000836c"
+  },
+  {
+   "leyte": "0x846e",
+   "ghidra": "FUN_0000846e"
+  },
+  {
+   "leyte": "0x9090",
+   "ghidra": "FUN_00009090"
+  },
+  {
+   "leyte": "0x90a2",
+   "ghidra": "FUN_000090a2"
+  },
+  {
+   "leyte": "0xa426",
+   "ghidra": "FUN_0000a426"
+  },
+  {
+   "leyte": "0xa5de",
+   "ghidra": "FUN_0000a5de"
+  },
+  {
+   "leyte": "0xa63a",
+   "ghidra": "FUN_0000a63a"
+  },
+  {
+   "leyte": "0xa720",
+   "ghidra": "FUN_0000a720"
+  },
+  {
+   "leyte": "0xa90a",
+   "ghidra": "FUN_0000a90a"
+  },
+  {
+   "leyte": "0xadfc",
+   "ghidra": "FUN_0000adfc"
+  },
+  {
+   "leyte": "0xb16e",
+   "ghidra": "FUN_0000b16e"
+  },
+  {
+   "leyte": "0xb240",
+   "ghidra": "FUN_0000b240"
+  },
+  {
+   "leyte": "0xb574",
+   "ghidra": "FUN_0000b574"
+  },
+  {
+   "leyte": "0xb7b6",
+   "ghidra": "FUN_0000b7b6"
+  },
+  {
+   "leyte": "0xb922",
+   "ghidra": "FUN_0000b922"
+  },
+  {
+   "leyte": "0xba18",
+   "ghidra": "FUN_0000ba18"
+  },
+  {
+   "leyte": "0xbf3e",
+   "ghidra": "FUN_0000bf3e"
+  },
+  {
+   "leyte": "0xc79e",
+   "ghidra": "FUN_0000c79e"
+  },
+  {
+   "leyte": "0xcd16",
+   "ghidra": "FUN_0000cd16"
+  },
+  {
+   "leyte": "0xd2ce",
+   "ghidra": "FUN_0000d2ce"
+  },
+  {
+   "leyte": "0xd4d2",
+   "ghidra": "FUN_0000d4d2"
+  },
+  {
+   "leyte": "0xde06",
+   "ghidra": "FUN_0000de06"
+  },
+  {
+   "leyte": "0xdea6",
+   "ghidra": "FUN_0000dea6"
+  },
+  {
+   "leyte": "0xe3ea",
+   "ghidra": "FUN_0000e3ea"
+  },
+  {
+   "leyte": "0xf48c",
+   "ghidra": "FUN_0000f48c"
+  },
+  {
+   "leyte": "0xf4c8",
+   "ghidra": "FUN_0000f4c8"
+  },
+  {
+   "leyte": "0xf6b2",
+   "ghidra": "FUN_0000f6b2"
+  },
+  {
+   "leyte": "0xf7c0",
+   "ghidra": "FUN_0000f7c0"
+  },
+  {
+   "leyte": "0xf7e0",
+   "ghidra": "FUN_0000f7e0"
+  },
+  {
+   "leyte": "0xf9e0",
+   "ghidra": "FUN_0000f9e0"
+  },
+  {
+   "leyte": "0xfa16",
+   "ghidra": "FUN_0000fa16"
+  },
+  {
+   "leyte": "0xfc7c",
+   "ghidra": "FUN_0000fc7c"
+  },
+  {
+   "leyte": "0xfd16",
+   "ghidra": "FUN_0000fd16"
+  },
+  {
+   "leyte": "0x112c4",
+   "ghidra": "FUN_000112c4"
+  },
+  {
+   "leyte": "0x11902",
+   "ghidra": "FUN_00011902"
+  },
+  {
+   "leyte": "0x11bf0",
+   "ghidra": "FUN_00011bf0"
+  },
+  {
+   "leyte": "0x11c96",
+   "ghidra": "FUN_00011c96"
+  },
+  {
+   "leyte": "0x11ec6",
+   "ghidra": "FUN_00011ec6"
+  },
+  {
+   "leyte": "0x11ee0",
+   "ghidra": "FUN_00011ee0"
+  },
+  {
+   "leyte": "0x123de",
+   "ghidra": "FUN_000123de"
+  },
+  {
+   "leyte": "0x124e0",
+   "ghidra": "FUN_000124e0"
+  },
+  {
+   "leyte": "0x12a0a",
+   "ghidra": "FUN_00012a0a"
+  },
+  {
+   "leyte": "0x12c36",
+   "ghidra": "FUN_00012c36"
+  },
+  {
+   "leyte": "0x12c76",
+   "ghidra": "FUN_00012c76"
+  },
+  {
+   "leyte": "0x12cb6",
+   "ghidra": "FUN_00012cb6"
+  },
+  {
+   "leyte": "0x12dfa",
+   "ghidra": "FUN_00012dfa"
+  },
+  {
+   "leyte": "0x12e96",
+   "ghidra": "FUN_00012e96"
+  },
+  {
+   "leyte": "0x13058",
+   "ghidra": "FUN_00013058"
+  },
+  {
+   "leyte": "0x1314c",
+   "ghidra": "FUN_0001314c"
+  },
+  {
+   "leyte": "0x13178",
+   "ghidra": "FUN_00013178"
+  },
+  {
+   "leyte": "0x1327c",
+   "ghidra": "FUN_0001327c"
+  },
+  {
+   "leyte": "0x1359a",
+   "ghidra": "FUN_0001359a"
+  },
+  {
+   "leyte": "0x1361e",
+   "ghidra": "FUN_0001361e"
+  },
+  {
+   "leyte": "0x13652",
+   "ghidra": "FUN_00013652"
+  },
+  {
+   "leyte": "0x1369e",
+   "ghidra": "FUN_0001369e"
+  },
+  {
+   "leyte": "0x136be",
+   "ghidra": "FUN_000136be"
+  },
+  {
+   "leyte": "0x1372e",
+   "ghidra": "FUN_0001372e"
+  },
+  {
+   "leyte": "0x13798",
+   "ghidra": "FUN_00013798"
+  },
+  {
+   "leyte": "0x13812",
+   "ghidra": "FUN_00013812"
+  },
+  {
+   "leyte": "0x13bba",
+   "ghidra": "FUN_00013bba"
+  },
+  {
+   "leyte": "0x13d80",
+   "ghidra": "FUN_00013d80"
+  },
+  {
+   "leyte": "0x13ee0",
+   "ghidra": "FUN_00013ee0"
+  },
+  {
+   "leyte": "0x143da",
+   "ghidra": "FUN_000143da"
+  },
+  {
+   "leyte": "0x14654",
+   "ghidra": "FUN_00014654"
+  },
+  {
+   "leyte": "0x14674",
+   "ghidra": "FUN_00014674"
+  },
+  {
+   "leyte": "0x1491a",
+   "ghidra": "FUN_0001491a"
+  },
+  {
+   "leyte": "0x14972",
+   "ghidra": "FUN_00014972"
+  },
+  {
+   "leyte": "0x14994",
+   "ghidra": "FUN_00014994"
+  },
+  {
+   "leyte": "0x149b6",
+   "ghidra": "FUN_000149b6"
+  },
+  {
+   "leyte": "0x149d8",
+   "ghidra": "FUN_000149d8"
+  },
+  {
+   "leyte": "0x149fa",
+   "ghidra": "FUN_000149fa"
+  },
+  {
+   "leyte": "0x14a78",
+   "ghidra": "FUN_00014a78"
+  },
+  {
+   "leyte": "0x14b1e",
+   "ghidra": "FUN_00014b1e"
+  },
+  {
+   "leyte": "0x14b92",
+   "ghidra": "FUN_00014b92"
+  },
+  {
+   "leyte": "0x15006",
+   "ghidra": "FUN_00015006"
+  },
+  {
+   "leyte": "0x151b2",
+   "ghidra": "FUN_000151b2"
+  },
+  {
+   "leyte": "0x15412",
+   "ghidra": "FUN_00015412"
+  },
+  {
+   "leyte": "0x15440",
+   "ghidra": "FUN_00015440"
+  },
+  {
+   "leyte": "0x1546e",
+   "ghidra": "FUN_0001546e"
+  },
+  {
+   "leyte": "0x157aa",
+   "ghidra": "FUN_000157aa"
+  },
+  {
+   "leyte": "0x157fa",
+   "ghidra": "FUN_000157fa"
+  },
+  {
+   "leyte": "0x1583a",
+   "ghidra": "FUN_0001583a"
+  },
+  {
+   "leyte": "0x158de",
+   "ghidra": "FUN_000158de"
+  },
+  {
+   "leyte": "0x15982",
+   "ghidra": "FUN_00015982"
+  },
+  {
+   "leyte": "0x15a26",
+   "ghidra": "FUN_00015a26"
+  },
+  {
+   "leyte": "0x15a8c",
+   "ghidra": "FUN_00015a8c"
+  },
+  {
+   "leyte": "0x15af2",
+   "ghidra": "FUN_00015af2"
+  },
+  {
+   "leyte": "0x15b5a",
+   "ghidra": "FUN_00015b5a"
+  },
+  {
+   "leyte": "0x15c4c",
+   "ghidra": "FUN_00015c4c"
+  },
+  {
+   "leyte": "0x15ee0",
+   "ghidra": "FUN_00015ee0"
+  },
+  {
+   "leyte": "0x15f2e",
+   "ghidra": "FUN_00015f2e"
+  },
+  {
+   "leyte": "0x160d0",
+   "ghidra": "FUN_000160d0"
+  },
+  {
+   "leyte": "0x16136",
+   "ghidra": "FUN_00016136"
+  },
+  {
+   "leyte": "0x1619e",
+   "ghidra": "FUN_0001619e"
+  },
+  {
+   "leyte": "0x162d8",
+   "ghidra": "FUN_000162d8"
+  },
+  {
+   "leyte": "0x16832",
+   "ghidra": "FUN_00016832"
+  },
+  {
+   "leyte": "0x16caa",
+   "ghidra": "FUN_00016caa"
+  },
+  {
+   "leyte": "0x16d9a",
+   "ghidra": "FUN_00016d9a"
+  },
+  {
+   "leyte": "0x171da",
+   "ghidra": "FUN_000171da"
+  },
+  {
+   "leyte": "0x1748c",
+   "ghidra": "FUN_0001748c"
+  },
+  {
+   "leyte": "0x1758a",
+   "ghidra": "FUN_0001758a"
+  },
+  {
+   "leyte": "0x177f0",
+   "ghidra": "FUN_000177f0"
+  },
+  {
+   "leyte": "0x17870",
+   "ghidra": "FUN_00017870"
+  },
+  {
+   "leyte": "0x17a4a",
+   "ghidra": "FUN_00017a4a"
+  },
+  {
+   "leyte": "0x17bc2",
+   "ghidra": "FUN_00017bc2"
+  },
+  {
+   "leyte": "0x17c86",
+   "ghidra": "FUN_00017c86"
+  },
+  {
+   "leyte": "0x17d0e",
+   "ghidra": "FUN_00017d0e"
+  },
+  {
+   "leyte": "0x17d4a",
+   "ghidra": "FUN_00017d4a"
+  },
+  {
+   "leyte": "0x17dac",
+   "ghidra": "FUN_00017dac"
+  },
+  {
+   "leyte": "0x17e1a",
+   "ghidra": "FUN_00017e1a"
+  },
+  {
+   "leyte": "0x17e2e",
+   "ghidra": "FUN_00017e2e"
+  },
+  {
+   "leyte": "0x180f0",
+   "ghidra": "FUN_000180f0"
+  },
+  {
+   "leyte": "0x18230",
+   "ghidra": "FUN_00018230"
+  },
+  {
+   "leyte": "0x18396",
+   "ghidra": "FUN_00018396"
+  },
+  {
+   "leyte": "0x18564",
+   "ghidra": "FUN_00018564"
+  },
+  {
+   "leyte": "0x185da",
+   "ghidra": "FUN_000185da"
+  },
+  {
+   "leyte": "0x1864a",
+   "ghidra": "FUN_0001864a"
+  },
+  {
+   "leyte": "0x186bc",
+   "ghidra": "FUN_000186bc"
+  },
+  {
+   "leyte": "0x18732",
+   "ghidra": "FUN_00018732"
+  },
+  {
+   "leyte": "0x187a4",
+   "ghidra": "FUN_000187a4"
+  },
+  {
+   "leyte": "0x18928",
+   "ghidra": "FUN_00018928"
+  },
+  {
+   "leyte": "0x18b54",
+   "ghidra": "FUN_00018b54"
+  },
+  {
+   "leyte": "0x18d3c",
+   "ghidra": "FUN_00018d3c"
+  },
+  {
+   "leyte": "0x18d74",
+   "ghidra": "FUN_00018d74"
+  },
+  {
+   "leyte": "0x18e40",
+   "ghidra": "FUN_00018e40"
+  },
+  {
+   "leyte": "0x18f28",
+   "ghidra": "FUN_00018f28"
+  },
+  {
+   "leyte": "0x18fb4",
+   "ghidra": "FUN_00018fb4"
+  },
+  {
+   "leyte": "0x190b6",
+   "ghidra": "FUN_000190b6"
+  },
+  {
+   "leyte": "0x191b6",
+   "ghidra": "FUN_000191b6"
+  },
+  {
+   "leyte": "0x193b6",
+   "ghidra": "FUN_000193b6"
+  },
+  {
+   "leyte": "0x194ca",
+   "ghidra": "FUN_000194ca"
+  },
+  {
+   "leyte": "0x1972a",
+   "ghidra": "FUN_0001972a"
+  },
+  {
+   "leyte": "0x19b52",
+   "ghidra": "FUN_00019b52"
+  },
+  {
+   "leyte": "0x19bcc",
+   "ghidra": "FUN_00019bcc"
+  },
+  {
+   "leyte": "0x19dbe",
+   "ghidra": "FUN_00019dbe"
+  },
+  {
+   "leyte": "0x19eac",
+   "ghidra": "FUN_00019eac"
+  },
+  {
+   "leyte": "0x19fac",
+   "ghidra": "FUN_00019fac"
+  },
+  {
+   "leyte": "0x1a2b6",
+   "ghidra": "FUN_0001a2b6"
+  },
+  {
+   "leyte": "0x1a72c",
+   "ghidra": "FUN_0001a72c"
+  },
+  {
+   "leyte": "0x1a8c2",
+   "ghidra": "FUN_0001a8c2"
+  },
+  {
+   "leyte": "0x1a956",
+   "ghidra": "FUN_0001a956"
+  },
+  {
+   "leyte": "0x1ab7a",
+   "ghidra": "FUN_0001ab7a"
+  },
+  {
+   "leyte": "0x1ac16",
+   "ghidra": "FUN_0001ac16"
+  },
+  {
+   "leyte": "0x1ac8a",
+   "ghidra": "FUN_0001ac8a"
+  },
+  {
+   "leyte": "0x1acde",
+   "ghidra": "FUN_0001acde"
+  },
+  {
+   "leyte": "0x1adac",
+   "ghidra": "FUN_0001adac"
+  },
+  {
+   "leyte": "0x1af8e",
+   "ghidra": "FUN_0001af8e"
+  },
+  {
+   "leyte": "0x1b238",
+   "ghidra": "FUN_0001b238"
+  },
+  {
+   "leyte": "0x1b2a0",
+   "ghidra": "FUN_0001b2a0"
+  },
+  {
+   "leyte": "0x1b2e0",
+   "ghidra": "FUN_0001b2e0"
+  },
+  {
+   "leyte": "0x1b546",
+   "ghidra": "FUN_0001b546"
+  },
+  {
+   "leyte": "0x1b580",
+   "ghidra": "FUN_0001b580"
+  },
+  {
+   "leyte": "0x1b70a",
+   "ghidra": "FUN_0001b70a"
+  },
+  {
+   "leyte": "0x1b742",
+   "ghidra": "FUN_0001b742"
+  },
+  {
+   "leyte": "0x1b856",
+   "ghidra": "FUN_0001b856"
+  },
+  {
+   "leyte": "0x1bc02",
+   "ghidra": "FUN_0001bc02"
+  },
+  {
+   "leyte": "0x1bd0a",
+   "ghidra": "FUN_0001bd0a"
+  },
+  {
+   "leyte": "0x1bec6",
+   "ghidra": "FUN_0001bec6"
+  },
+  {
+   "leyte": "0x1bf84",
+   "ghidra": "FUN_0001bf84"
+  },
+  {
+   "leyte": "0x1c1a2",
+   "ghidra": "FUN_0001c1a2"
+  },
+  {
+   "leyte": "0x1c1f2",
+   "ghidra": "FUN_0001c1f2"
+  },
+  {
+   "leyte": "0x1c2ae",
+   "ghidra": "FUN_0001c2ae"
+  },
+  {
+   "leyte": "0x1c9fa",
+   "ghidra": "FUN_0001c9fa"
+  },
+  {
+   "leyte": "0x1ca40",
+   "ghidra": "FUN_0001ca40"
+  },
+  {
+   "leyte": "0x1ca8e",
+   "ghidra": "FUN_0001ca8e"
+  },
+  {
+   "leyte": "0x1caa4",
+   "ghidra": "FUN_0001caa4"
+  },
+  {
+   "leyte": "0x1cb86",
+   "ghidra": "FUN_0001cb86"
+  },
+  {
+   "leyte": "0x1cc92",
+   "ghidra": "FUN_0001cc92"
+  },
+  {
+   "leyte": "0x1ccee",
+   "ghidra": "FUN_0001ccee"
+  },
+  {
+   "leyte": "0x1cd14",
+   "ghidra": "FUN_0001cd14"
+  },
+  {
+   "leyte": "0x1cdee",
+   "ghidra": "FUN_0001cdee"
+  },
+  {
+   "leyte": "0x1d23a",
+   "ghidra": "FUN_0001d23a"
+  },
+  {
+   "leyte": "0x1d296",
+   "ghidra": "FUN_0001d296"
+  },
+  {
+   "leyte": "0x1d516",
+   "ghidra": "FUN_0001d516"
+  },
+  {
+   "leyte": "0x1d58e",
+   "ghidra": "FUN_0001d58e"
+  },
+  {
+   "leyte": "0x1d5b0",
+   "ghidra": "FUN_0001d5b0"
+  },
+  {
+   "leyte": "0x1daba",
+   "ghidra": "FUN_0001daba"
+  },
+  {
+   "leyte": "0x1dd02",
+   "ghidra": "FUN_0001dd02"
+  },
+  {
+   "leyte": "0x1ddde",
+   "ghidra": "FUN_0001ddde"
+  },
+  {
+   "leyte": "0x1e7d6",
+   "ghidra": "FUN_0001e7d6"
+  },
+  {
+   "leyte": "0x1e8a8",
+   "ghidra": "FUN_0001e8a8"
+  },
+  {
+   "leyte": "0x1e8c0",
+   "ghidra": "FUN_0001e8c0"
+  },
+  {
+   "leyte": "0x1e932",
+   "ghidra": "FUN_0001e932"
+  },
+  {
+   "leyte": "0x1eace",
+   "ghidra": "FUN_0001eace"
+  },
+  {
+   "leyte": "0x1eae4",
+   "ghidra": "FUN_0001eae4"
+  },
+  {
+   "leyte": "0x1ebd6",
+   "ghidra": "FUN_0001ebd6"
+  },
+  {
+   "leyte": "0x1ec00",
+   "ghidra": "FUN_0001ec00"
+  },
+  {
+   "leyte": "0x1ec4e",
+   "ghidra": "FUN_0001ec4e"
+  },
+  {
+   "leyte": "0x1ec9e",
+   "ghidra": "FUN_0001ec9e"
+  },
+  {
+   "leyte": "0x1ed7c",
+   "ghidra": "FUN_0001ed7c"
+  },
+  {
+   "leyte": "0x1edc0",
+   "ghidra": "FUN_0001edc0"
+  },
+  {
+   "leyte": "0x1ee0e",
+   "ghidra": "FUN_0001ee0e"
+  },
+  {
+   "leyte": "0x1ee3e",
+   "ghidra": "FUN_0001ee3e"
+  },
+  {
+   "leyte": "0x1ef0e",
+   "ghidra": "FUN_0001ef0e"
+  },
+  {
+   "leyte": "0x1efe0",
+   "ghidra": "FUN_0001efe0"
+  },
+  {
+   "leyte": "0x1f034",
+   "ghidra": "FUN_0001f034"
+  },
+  {
+   "leyte": "0x1f0f8",
+   "ghidra": "FUN_0001f0f8"
+  },
+  {
+   "leyte": "0x1f184",
+   "ghidra": "FUN_0001f184"
+  },
+  {
+   "leyte": "0x1f51c",
+   "ghidra": "FUN_0001f51c"
+  },
+  {
+   "leyte": "0x1f60e",
+   "ghidra": "FUN_0001f60e"
+  }
+ ]
+}

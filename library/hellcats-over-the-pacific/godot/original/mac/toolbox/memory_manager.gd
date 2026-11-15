@@ -7,6 +7,7 @@ extends RefCounted
 ## Installed both as the OS traps and as the ID09 glue slots the ports call (the glue pops the
 ## arguments into registers and pushes the result back).
 
+const C68kScript := preload("res://original/compat/c68k.gd")
 const MASTER_POINTERS := 0x10000   ## bytes of master pointers at the heap's start
 
 var machine
@@ -119,6 +120,22 @@ func handle_with(bytes: PackedByteArray) -> int:
 	for k in bytes.size():
 		memory.write_u8(block + k, bytes[k])
 	return h
+
+## BlockMove(src, dst, count): count bytes copied as the Memory Manager does, correct when the areas
+## overlap (the direction chosen so the source is read before it is overwritten); noErr.
+func block_move(src: int, dst: int, count: int) -> int:
+	src &= 0xffffffff
+	dst &= 0xffffffff
+	count = C68kScript.s32(count) if count & 0x80000000 else count
+	if count <= 0 or src == dst:
+		return 0
+	if dst < src:
+		for k in count:
+			memory.write_u8(dst + k, memory.read_u8(src + k))
+	else:
+		for k in range(count - 1, -1, -1):
+			memory.write_u8(dst + k, memory.read_u8(src + k))
+	return 0
 
 func handle_size(h: int) -> int:
 	return _sizes.get(memory.read_u32(h & 0xffffffff), 0)

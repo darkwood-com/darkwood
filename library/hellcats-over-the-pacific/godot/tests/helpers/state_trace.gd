@@ -4,7 +4,9 @@ extends RefCounted
 ## differential check Native will be held to against Original. A trace is one entry per traced tick:
 ## the stepped tick, MD5s of the A5 world and of the overlay's image (its data: the world's objects,
 ## at base 0), and the overlay's random-number state exactly (overlay_rng_next's slot pointer at
-## 0x26008 and its table up to 0x260e8). The screen is left out: its text comes from the host's fonts.
+## 0x26008 and its table up to 0x260e8). The screen is not in FIELDS (its text comes from the host's
+## fonts, Native's menus and dialogs are Godot's): "screen" / "palette" hash the screen's bytes and
+## the screen device's colour table, for rendering comparisons (PROJECT_STATUS, loop 19).
 ## Two fields leave out what an edition may keep elsewhere: "game_globals" is the A5 world with the
 ## sound driver's block (A5 - 0xc38 .. A5 - 0x34e) zeroed, "world" the overlay's image above the
 ## low-memory globals (from 0x2800) without the RNG; the Native edition is compared on those and
@@ -16,6 +18,8 @@ const RNG_END := 0x260ec
 const OVERLAY_END := 0x03e700
 const FIELDS := ["globals", "overlay", "rng", "game_globals", "world"]
 const NATIVE_FIELDS := ["game_globals", "world", "rng"]
+## The screen's bytes and colour table: compared whenever both traces have them (older fixtures do not).
+const RENDER_FIELDS := ["screen", "palette"]
 const SOUND_BLOCK := [-0xc38, -0x34e]
 const LOW_MEMORY_END := 0x2800
 
@@ -27,7 +31,9 @@ static func capture(m) -> Dictionary:
 		"rng": _rng(m, bytes),
 		"game_globals": _without_sound(bytes.slice(m.A5 - m.BELOW_A5, m.A5), m.BELOW_A5).hex_encode().md5_text(),
 		"world": _without_rng(_with_native_state(m, bytes.slice(LOW_MEMORY_END, OVERLAY_END), LOW_MEMORY_END)).hex_encode().md5_text(),
-		"heap": _heap(m, bytes)}
+		"heap": _heap(m, bytes),
+		"screen": (m.get_meta("native_screen").screen_bytes() if m.has_meta("native_screen") else m.screen_bytes()).hex_encode().md5_text(),
+		"palette": str(m.toolbox.palettes.colours()).md5_text()}
 
 ## The overlay's heap arena (host world +0x348, up to heap_break 0x20c50: heap_sbrk's arena) with
 ## the records an edition keeps in Godot in place of the memory's bytes; "" before the overlay has
@@ -93,7 +99,8 @@ static func first_divergence(expected: Array, actual: Array, fields: Array = FIE
 			return {"tick": int(have["tick"]), "field": "tick",
 				"expected": expected[i]["tick"] if i < expected.size() else null,
 				"actual": actual[i]["tick"] if i < actual.size() else null}
-		for field in ["tick"] + fields:
+		var present: Array = RENDER_FIELDS.filter(func(f: String) -> bool: return expected[i].has(f) and actual[i].has(f))
+		for field in ["tick"] + fields + present:
 			var want = int(expected[i][field]) if field == "tick" else str(expected[i][field])
 			var got = int(actual[i][field]) if field == "tick" else str(actual[i][field])
 			if want != got:

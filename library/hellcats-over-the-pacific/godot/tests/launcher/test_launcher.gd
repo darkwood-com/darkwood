@@ -6,7 +6,9 @@ const Launcher := preload("res://launcher/launcher.gd")
 ## Edition selection: Original by default, the three names accepted, anything else refused; the
 ## main scene carries the Original edition's scene.
 func run() -> bool:
-	var ok := Assertions.assert_equal(Launcher.edition_from(PackedStringArray()), "original", "default edition")
+	var ok := Assertions.assert_equal(Launcher.edition_from(PackedStringArray(), false), "original", "default edition")
+	ok = Assertions.assert_equal(Launcher.edition_from(PackedStringArray(), true), "enhanced", "default edition on a mobile device") and ok
+	ok = Assertions.assert_equal(Launcher.edition_from(PackedStringArray(["--edition=native"]), true), "native", "an explicit edition on mobile") and ok
 	for name in ["original", "native", "enhanced"]:
 		ok = Assertions.assert_equal(Launcher.edition_from(PackedStringArray(["--edition=" + name])), name, name) and ok
 	ok = Assertions.assert_equal(Launcher.edition_from(PackedStringArray(["--edition=strict"])), "", "unknown edition") and ok

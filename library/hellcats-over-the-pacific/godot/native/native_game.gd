@@ -25,7 +25,7 @@ func _ready() -> void:
 	SegmentLoader.overrides = {6: NativeID06}
 	if Files.version == "1.0.3":
 		SegmentLoader.overrides[2] = NativeID02
-	Toolbox.overrides = {"dialogs": NativeDialogs, "resources": NativeResources, "menus": NativeMenus}
+	Toolbox.overrides = {"dialogs": NativeDialogs, "resources": NativeResources, "menus": menu_manager()}
 	OverlayLoader.port_override = NativeOverlay      # stays: the overlay loads later, on the program's thread
 	super()
 	SegmentLoader.overrides = {}
@@ -36,6 +36,11 @@ func _ready() -> void:
 	var menus := MenuOverlay.new()
 	add_child(menus)
 	menus.attach(machine, screen)
+
+## The Menu Manager class the Toolbox builds (an edition extending Native may extend it: its install
+## runs after the Event Manager's and before the program's thread starts).
+func menu_manager():
+	return NativeMenus
 
 func _input(event: InputEvent) -> void:
 	if machine != null and event is InputEventKey:

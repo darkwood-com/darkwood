@@ -26,7 +26,9 @@ extends SceneTree
 ##   load_overlay_from_resource refuses the master disk (stop alert 0x105, answered Return) and
 ##   quits. It passes when the program has quit by itself (ExitToShell).
 
-const SAVES := "user://protection_session_resources"
+## The session's own save folder, one per process (as smoke_session.gd's), removed at the end.
+const SAVES_ROOT := "user://protection_session_resources"
+var SAVES := SAVES_ROOT.path_join(str(OS.get_process_id()))
 const PORT_ORDER := ["ID01", "ID02", "ID03", "ID04", "ID05", "ID06", "ID07", "ID08", "ID09",
 		"pacific_conflict"]
 const END := 60.0
@@ -95,6 +97,7 @@ func _process(delta: float) -> bool:
 		out.close()
 		print("  %d routines, written to %s" % [keys.size(), coverage_path])
 	machine.halting = true
+	_clear(SAVES)
 	quit(0 if ok else 1)
 	return true
 

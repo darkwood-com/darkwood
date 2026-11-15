@@ -64,9 +64,13 @@ func _pstring(at: int) -> String:
 		out += String.chr(memory.read_u8(at + 1 + k))
 	return out
 
+## A title's own files by name (lower-cased) -> their read-only bytes' path: Leyte Gulf's data fork,
+## opened by the application's name (godot/original/leyte/machine/leyte_profile.gd). Empty for Hellcats.
+var title_files: Dictionary = {}
+
 func fs_open(name_ptr: int, ref_ptr: int) -> int:
 	var name: String = _pstring(name_ptr)
-	var path: String = "%s/%s" % [VOLUME, name]
+	var path: String = title_files.get(name.to_lower(), "%s/%s" % [VOLUME, name])
 	if not FileAccess.file_exists(path):
 		machine.log_line("FSOpen: no file %s" % name)
 		return FNF_ERR & 0xffff
@@ -131,6 +135,20 @@ func get_vol(name_ptr: int, vref_ptr: int) -> int:
 		memory.write_u8(name_ptr + 1 + k, machine.volume_name.unicode_at(k))
 	memory.write_u16(vref_ptr, VREF)
 	return NO_ERR
+
+## SetVol(name, vRefNum): the default volume set; this machine has one volume (VREF) and the working
+## directories opened on it (wd_refs, added by an HFS layer when present), so any other reference
+## number is nsvErr (no such volume, -35). The name is not consulted.
+var wd_refs: Dictionary = {}
+const NSV_ERR := -35
+var default_vref: int = VREF
+
+func set_vol(_name_ptr: int, vref: int) -> int:
+	vref &= 0xffff
+	if vref == VREF or vref == 0 or wd_refs.has(vref):
+		default_vref = VREF if vref == 0 else vref
+		return NO_ERR
+	return NSV_ERR & 0xffff
 
 ## The volume's files by name (the scenery files Standard File offers), sorted.
 func volume_files() -> Array:

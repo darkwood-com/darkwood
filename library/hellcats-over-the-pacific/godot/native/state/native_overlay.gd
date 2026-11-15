@@ -186,8 +186,14 @@ const ControllerView := preload("res://native/state/controller_view.gd")
 const SceneView := preload("res://native/state/scene_view.gd")
 
 ## The scene view on this overlay's camera angle storage.
+var _scene_view: SceneView = null
+
+## The scene view: one per overlay (it holds no state of its own, only the routed memory and the
+## camera / view blocks), made on first use, once the storage switches are final.
 func _scene() -> SceneView:
-	return SceneView.new(_routed, camera_angles(), camera_position(), view_state())
+	if _scene_view == null:
+		_scene_view = SceneView.new(_routed, camera_angles(), camera_position(), view_state())
+	return _scene_view
 
 ## 0x3b98 on the object and scene views: |position - camera| per axis (32-bit), metric = max +
 ## (mid + min) / 4 at +0x10, returned as the long read back.
@@ -1261,6 +1267,7 @@ func _take_over_written_routines() -> void:
 						var r: int = routine.call()
 						a7 = saved
 						return r
+				_install_band_copy(machine)
 				machine.segments.register_address(0x4b0, hook.call(_04b0))
 				machine.segments.register_address(0xd23a, hook.call(_d23a))
 				code_table[0x16208] = func(..._args: Array) -> int: return _16208()
@@ -1323,11 +1330,91 @@ func heap_alloc(nbytes: int) -> int:
 		records().open_hole(block, block + size)
 	return block
 
-## present_spans_to_window (routed copy, routed_port.gd): its heap buffer goes to QuickDraw's CopyBits.
+## present_spans_to_window (routed copy, routed_port.gd): each band of its heap buffer goes to the
+## host's blit (JT $322, ID02 blit_offscreen_frame_to_window), whose CopyBits is this edition's band
+## copy (_copy_band): the buffer stays a Godot record (no hole), QuickDraw never reads it.
 func present_spans_to_window(new_rows: int, old_rows: int, rows: int, arg4: int, arg5: int, slot: int) -> void:
-	_toolbox_shared += 1
+	if not _band_copy_installed:
+		_toolbox_shared += 1          # no band copy (no machine found): the buffer is QuickDraw's
+	_band_copy += 1
 	routed_present_spans_to_window(new_rows, old_rows, rows, arg4, arg5, slot)
-	_toolbox_shared -= 1
+	_band_copy -= 1
+	if not _band_copy_installed:
+		_toolbox_shared -= 1
+
+# ---- The frame band copy (the first QuickDraw step on the frame path made Native) --------------------
+
+## Inside present_spans_to_window: the host blit's CopyBits is _copy_band.
+var _band_copy: int = 0
+var _band_copy_installed := false
+var _quickdraw = null
+
+## Installs the band copy over the Toolbox's CopyBits (always wrapping the runtime's own, kept in the
+## machine's meta, so each overlay entry's port replaces the previous one's): outside a band copy, or
+## for any other copy, the runtime's CopyBits runs as before.
+func _install_band_copy(machine) -> void:
+	var toolbox = machine.toolbox
+	if not machine.has_meta("runtime_copy_bits"):
+		machine.set_meta("runtime_copy_bits", toolbox.traps[0xa8ec])
+	var runtime: Callable = machine.get_meta("runtime_copy_bits")
+	_quickdraw = toolbox.quickdraw
+	toolbox.install(0xa8ec, func(a: Array) -> int:
+		return _copy_band(a) if _band_copy > 0 else runtime.call(a))
+	_band_copy_installed = true
+
+## CopyBits(src, dst, srcRect, dstRect, mode, mask) for one band (the trap's arguments reversed, as
+## the runtime's): the same pixels as the runtime's CopyBits for this case, which is the only one the
+## host blit makes (asserted): the offscreen band and the window at the same depth (4 or 8), srcCopy,
+## no mask, equal rects. The destination is clipped as the runtime clips it (to the current port's
+## clip when it is that port's bitmap, clip_of keeping its state), and to the source's bounds (pixels
+## outside them are not drawn). The band's bytes are read from the Godot record (the routed memory),
+## the window's written to the Mac memory.
+func _copy_band(a: Array) -> int:
+	var qd = _quickdraw
+	var src: Array = qd.bitmap_at(a[5])
+	var dst: Array = qd.bitmap_at(a[4])
+	var sr: Rect2i = qd.rect_arg(a[3])
+	var dr: Rect2i = qd.rect_arg(a[2])
+	assert(a[0] == 0 and (a[1] & 3) == 0 and src[3] == dst[3] and (src[3] == 8 or src[3] == 4) and sr.size == dr.size,
+			"band copy: not the host blit's CopyBits")
+	if sr.size.x <= 0 or sr.size.y <= 0:
+		return 0
+	var clip := Rect2i(-32768, -32768, 65535, 65535)
+	var port: int = qd.the_port()
+	if qd.port_bits(port)[0] == dst[0]:
+		clip = qd.clip_of(port)
+	copy_band_pixels(_routed, src, dst, sr, dr, clip)
+	return 0
+
+## The band's pixels (src / dst: [base, rowBytes, bounds, depth] as quickdraw.gd's bitmap_at gives
+## them; equal rects, same depth 4 or 8) through `mem` (read_u8 / write_u8): the destination rect
+## clipped to `clip`, the destination's bounds and the source's bounds moved onto it; srcCopy, a
+## 4-bit pixel into its nibble. tests/native/test_native_band_copy.gd holds it to the runtime's
+## CopyBits (quickdraw.gd copy_bits).
+static func copy_band_pixels(mem, src: Array, dst: Array, sr: Rect2i, dr: Rect2i, clip: Rect2i) -> void:
+	var offset: Vector2i = dr.position - sr.position
+	var src_bounds: Rect2i = src[2]
+	var area: Rect2i = dr.intersection(clip).intersection(dst[2]).intersection(Rect2i(src_bounds.position + offset, src_bounds.size))
+	if area.size.x <= 0 or area.size.y <= 0:
+		return
+	var dst_bounds: Rect2i = dst[2]
+	var depth: int = dst[3]
+	for y in range(area.position.y, area.end.y):
+		var from: int = src[0] + (y - offset.y - src_bounds.position.y) * src[1]
+		var to: int = dst[0] + (y - dst_bounds.position.y) * dst[1]
+		if depth == 8:
+			from += area.position.x - offset.x - src_bounds.position.x
+			to += area.position.x - dst_bounds.position.x
+			for i in area.size.x:
+				mem.write_u8(to + i, mem.read_u8(from + i))
+		else:
+			for x in range(area.position.x, area.end.x):
+				var sbit: int = (x - offset.x - src_bounds.position.x) * 4
+				var v: int = (mem.read_u8(from + (sbit >> 3)) >> (4 - (sbit & 7))) & 0xf
+				var dbit: int = (x - dst_bounds.position.x) * 4
+				var at: int = to + (dbit >> 3)
+				var shift: int = 4 - (dbit & 7)
+				mem.write_u8(at, (mem.read_u8(at) & ~(0xf << shift)) | (v << shift))
 
 ## present_bw_frame (routed copy): its heap buffer goes to the host's 1-bit frame routine (host +0x80).
 func present_bw_frame(arg: int) -> void:

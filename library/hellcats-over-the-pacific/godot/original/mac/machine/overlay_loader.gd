@@ -33,13 +33,17 @@ var _pending: PackedByteArray
 var _pending_name := ""
 var _low_memory: Array = []
 
-func _init(owner) -> void:
+## A title with an overlay of its own (godot/original/leyte/machine/leyte_overlay_loader.gd) passes
+## its method map ("" for none) and the jump-table slot its loader calls once the image is read; the
+## defaults are Pacific Conflict's.
+func _init(owner, methods_path: String = METHODS, after_load: int = AFTER_LOAD) -> void:
 	machine = owner
-	var doc: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(METHODS))
-	for key in doc:
-		methods[key.hex_to_int()] = doc[key]
+	if methods_path != "":
+		var doc: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(methods_path))
+		for key in doc:
+			methods[key.hex_to_int()] = doc[key]
 	owner.toolbox.files.on_open = _on_open
-	owner.segments.before_slot[AFTER_LOAD] = _link_pending
+	owner.segments.before_slot[after_load] = _link_pending
 
 static func _u32(b: PackedByteArray, at: int) -> int:
 	return (b[at] << 24) | (b[at + 1] << 16) | (b[at + 2] << 8) | b[at + 3]

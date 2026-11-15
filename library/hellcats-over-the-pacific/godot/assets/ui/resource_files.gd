@@ -31,8 +31,17 @@ static func folder(type_name: String) -> String:
 const VERSIONS := ["1.0.3", "1.0.4"]
 static var version: String = "1.0.3"
 
-## The resource's file for the selected version.
+## The title whose resources are read: "hellcats" (the version's, above) or "leyte-gulf" (Leyte Gulf
+## 1.0's own fork, godot/assets/leyte-gulf-1.0/, written by tools/leyte/extract_resources.py; never
+## falls back to Hellcats': a resource Leyte lacks is absent).
+const TITLES := ["hellcats", "leyte-gulf"]
+static var title: String = "hellcats"
+const LEYTE_ROOT := "res://assets/leyte-gulf-1.0"
+
+## The resource's file for the selected title and version.
 static func path(type_name: String, id: int, extension: String = "bin") -> String:
+	if title == "leyte-gulf":
+		return "%s/%s/%d.%s" % [LEYTE_ROOT, type_name.to_lower(), id, extension]
 	if version != "1.0.3":
 		var changed: String = "%s/hellcats-%s/%s/%d.%s" % [ROOT, version, type_name.to_lower(), id, extension]
 		if FileAccess.file_exists(changed):

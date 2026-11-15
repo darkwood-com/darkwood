@@ -166,7 +166,8 @@ An end-to-end session is `tests/original/mac/smoke_session.gd`, kept out of `run
 for minutes of real time: `Godot --headless --path godot --script res://tests/original/mac/smoke_session.gd`.
 Its header lists the phases (the missions played, the menus by key and by mouse, the dialogs) and
 the options, among them the runs the evidence merges. It fails when the program's thread dies, the runtime notes anything missing or a script error happens, and it saves
-into `user://smoke_session_resources`, never the player's `user://resources`. Its `--coverage` runs
+into its own folder, `user://smoke_session_resources/<process id>` (emptied first, removed at the end,
+so sessions can run at the same time), never the player's `user://resources`. Its `--coverage` runs
 are the evidence behind the mappings' `runtime_verified`, with `tests/original/mac/protection_session.gd`'s for
 the copy-protection challenge the smoke session never meets (`tests/original/mac/fixtures/smoke_coverage.json`,
 read by `tools/original/check_sync.py`); what did not run, and why (unreachable

@@ -103,5 +103,14 @@ func _check_snapshot(m, d: int, id: int) -> bool:
 		ok = Assertions.assert_equal(c.get_class(), CLASSES[int(e["type"])], "DLOG %d item %d control" % [id, e["index"]]) and ok
 		if e["type"] == 8 and not String(e["text"]).contains("^"):
 			ok = Assertions.assert_true(String(e["text"]).length() > 0 or c is Label, "DLOG %d item %d text" % [id, e["index"]]) and ok
+		# Opaque: the Mac's own drawing of the item lies beneath and must not show through (a
+		# transparent radio button doubled Select a Mission's labels).
+		var box_name: String = "read_only" if c is LineEdit else "normal"
+		var box = c.get_theme_stylebox(box_name)
+		ok = Assertions.assert_true(box is StyleBoxFlat and (box as StyleBoxFlat).bg_color.a == 1.0,
+				"DLOG %d item %d: an opaque control" % [id, e["index"]]) and ok
+		if c is CheckBox:
+			ok = Assertions.assert_true(c.get_theme_color("font_color") == Color.BLACK and c.has_theme_icon_override("unchecked") and c.has_theme_icon_override("checked"),
+					"DLOG %d item %d: black on white, the Mac's marks" % [id, e["index"]]) and ok
 		c.free()
 	return Assertions.assert_equal(got, want, "DLOG %d: the snapshot's items" % id) and ok

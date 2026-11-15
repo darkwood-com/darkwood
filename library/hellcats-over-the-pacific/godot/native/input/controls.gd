@@ -28,6 +28,14 @@ const ACTIONS := {
 	"hellcats_look_down": [0x7d, 0x1f, KEY_DOWN],
 	"hellcats_interrupt": [0x35, 0x1b, KEY_ESCAPE],
 	"hellcats_confirm": [0x24, 0x0d, KEY_ENTER],
+	# Keyboard flying (process_flight_input_and_outcome): '8' / '2' the keyboard elevator, '4' / '6'
+	# the aileron, '5' back to the centre, the space bar the trigger while flying by keyboard.
+	"hellcats_stick_forward": [0x1c, 0x38, KEY_8],
+	"hellcats_stick_back": [0x13, 0x32, KEY_2],
+	"hellcats_stick_left": [0x15, 0x34, KEY_4],
+	"hellcats_stick_right": [0x16, 0x36, KEY_6],
+	"hellcats_stick_centre": [0x17, 0x35, KEY_5],
+	"hellcats_fire": [0x31, 0x20, KEY_SPACE],
 }
 
 ## Adds every action not defined yet, bound to its default key (a project or player binding stays).
