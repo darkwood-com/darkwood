@@ -84,7 +84,7 @@ class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/blog/rss.xml', name: 'blog_rss', methods: ['GET'])]
+    #[Route('/blog/rss.xml', name: 'blog_rss', methods: ['GET'], stateless: true)]
     public function rss(Request $request): Response
     {
         $articles = array_slice($this->getBlogArticles(), 0, 5);
