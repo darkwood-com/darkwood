@@ -10,8 +10,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Tests\TestCase;
 
+// Manifest imports render the complete catalogue; isolate that engine state under the 128M budget.
+#[RunTestsInSeparateProcesses]
 class PublicPublicationManifestTest extends TestCase
 {
     use RefreshDatabase;

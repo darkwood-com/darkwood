@@ -5,9 +5,12 @@ namespace Tests\Feature;
 use DOMDocument;
 use DOMXPath;
 use Illuminate\Support\Facades\Blade;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Tests\TestCase;
 use WendellAdriel\SlideWire\Support\PresentationCompiler;
 
+// Rendered Blade templates cannot be unloaded from a PHP process; keep the 128M budget per test.
+#[RunTestsInSeparateProcesses]
 class PresentationContentTest extends TestCase
 {
     public function test_heading_icons_keep_their_text_and_do_not_bypass_html_escaping(): void

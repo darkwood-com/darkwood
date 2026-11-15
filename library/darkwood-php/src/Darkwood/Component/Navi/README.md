@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/darkwood-com/navi">
+  <a href="https://github.com/darkwood-com/darkwood-php-component-navi">
     <img src="docs/logo.svg" width="auto" height="128px" alt="Navi">
   </a>
 </p>

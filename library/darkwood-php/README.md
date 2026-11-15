@@ -16,10 +16,10 @@ repository published on Packagist.
 
 | Path | Composer name | Public repository |
 |------|---------------|-------------------|
-| `src/Darkwood/Component/Navi` | `darkwood/navi` | [darkwood-com/navi](https://github.com/darkwood-com/navi) |
-| `src/Darkwood/Component/Flow` | `darkwood/flow` | [darkwood-com/flow](https://github.com/darkwood-com/flow) |
-| `src/Darkwood/Bundle/MediaBundle` | `darkwood/media-bundle` | [darkwood-com/media-bundle](https://github.com/darkwood-com/media-bundle) |
-| `src/Darkwood/Bundle/IaExceptionBundle` | `darkwood/ia-exception-bundle` | [darkwood-com/ia-exception-bundle](https://github.com/darkwood-com/ia-exception-bundle) |
+| `src/Darkwood/Component/Navi` | `darkwood/navi` | [darkwood-com/darkwood-php-component-navi](https://github.com/darkwood-com/darkwood-php-component-navi) |
+| `src/Darkwood/Component/Flow` | `darkwood/flow` | [darkwood-com/darkwood-php-component-flow](https://github.com/darkwood-com/darkwood-php-component-flow) |
+| `src/Darkwood/Bundle/MediaBundle` | `darkwood/media-bundle` | [darkwood-com/darkwood-php-bundle-media](https://github.com/darkwood-com/darkwood-php-bundle-media) |
+| `src/Darkwood/Bundle/IaExceptionBundle` | `darkwood/ia-exception-bundle` | [darkwood-com/darkwood-php-bundle-ia-exception](https://github.com/darkwood-com/darkwood-php-bundle-ia-exception) |
 
 Package-specific documentation, installation, and usage live in each package `README.md`.
 

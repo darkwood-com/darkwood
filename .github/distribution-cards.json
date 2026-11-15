@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "authentication": "deploy-keys-pending-github-app",
+  "authentication": "github-app:darkwood-distribution",
   "cards": [
     {
       "id": "organization-profile",
@@ -23,8 +23,7 @@
     {
       "id": "darkwood-php-component-flow",
       "source": "library/darkwood-php/src/Darkwood/Component/Flow",
-      "repository": "darkwood-com/flow",
-      "targetRepository": "darkwood-com/darkwood-php-component-flow",
+      "repository": "darkwood-com/darkwood-php-component-flow",
       "git": {
         "branch": "8.1",
         "composer": "darkwood/flow",
@@ -43,8 +42,7 @@
     {
       "id": "darkwood-php-component-navi",
       "source": "library/darkwood-php/src/Darkwood/Component/Navi",
-      "repository": "darkwood-com/navi",
-      "targetRepository": "darkwood-com/darkwood-php-component-navi",
+      "repository": "darkwood-com/darkwood-php-component-navi",
       "git": {
         "branch": "8.1",
         "composer": "darkwood/navi",
@@ -56,8 +54,7 @@
     {
       "id": "darkwood-php-bundle-media",
       "source": "library/darkwood-php/src/Darkwood/Bundle/MediaBundle",
-      "repository": "darkwood-com/media-bundle",
-      "targetRepository": "darkwood-com/darkwood-php-bundle-media",
+      "repository": "darkwood-com/darkwood-php-bundle-media",
       "git": {
         "branch": "8.1",
         "composer": "darkwood/media-bundle",
@@ -69,8 +66,7 @@
     {
       "id": "darkwood-php-bundle-ia-exception",
       "source": "library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle",
-      "repository": "darkwood-com/ia-exception-bundle",
-      "targetRepository": "darkwood-com/darkwood-php-bundle-ia-exception",
+      "repository": "darkwood-com/darkwood-php-bundle-ia-exception",
       "git": {
         "branch": "8.1",
         "composer": "darkwood/ia-exception-bundle",
