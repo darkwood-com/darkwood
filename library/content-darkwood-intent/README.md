@@ -57,14 +57,14 @@ nix --extra-experimental-features 'nix-command flakes' develop -c node bin/serve
 nix --extra-experimental-features 'nix-command flakes' develop -c php bin/console lint:container
 nix --extra-experimental-features 'nix-command flakes' develop -c php bin/console lint:twig templates
 nix --extra-experimental-features 'nix-command flakes' develop -c php bin/phpunit
-nix --extra-experimental-features 'nix-command flakes' develop -c node --test tests/intent-model.test.mjs
+nix --extra-experimental-features 'nix-command flakes' develop -c node --test tests/content-darkwood-intent.test.mjs
 ```
 
 Les tests couvrent les routes, les limites éditoriales, les décisions déterministes, les préfixes d’URL et la composition de l’artefact statique. Le responsive, le clavier, les thèmes et Web Audio demandent également une vérification navigateur.
 
 ## Publication
 
-Le workflow canonique `.github/workflows/publish-github-pages.yml` construit et teste ce dossier dans Nix, puis synchronise exclusivement `dist/` vers `darkwood-com/intent-pages`. Le domaine exact `intent.content.darkwood.com` est écrit dans `CNAME`. Les sources restent dans le monorepo.
+Le workflow canonique `.github/workflows/publish-github-pages.yml` construit et teste ce dossier dans Nix, puis synchronise exclusivement `dist/` vers `darkwood-com/content-darkwood-intent`. Le domaine exact `intent.content.darkwood.com` est écrit dans `CNAME`. Les sources restent dans le monorepo.
 
 ## Sources et limites
 

@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - .github/distribution-cards.json
       - .github/workflows/sync-distribution-mirrors.yml
       - library/.github/**
       - library/matyo91/**
@@ -22,10 +23,10 @@ on:
           - all
           - organization-profile
           - personal-profile
-          - flow
-          - navi
-          - media-bundle
-          - ia-exception-bundle
+          - darkwood-php-component-flow
+          - darkwood-php-component-navi
+          - darkwood-php-bundle-media
+          - darkwood-php-bundle-ia-exception
       dry_run:
         description: Validate and show the diff without pushing
         required: true
@@ -44,12 +45,40 @@ defaults:
     shell: bash
 
 jobs:
+  prepare:
+    name: Read the canonical distribution manifest
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    steps:
+      - name: Check out the publication manifest
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: .github/distribution-cards.json
+
+      - name: Build the Git distribution matrix
+        id: matrix
+        run: |
+          value=$(jq -c '{include: [.cards[] | select(.git != null) | {
+            id,
+            source,
+            repository,
+            credential,
+            branch: .git.branch,
+            composer: (.git.composer // ""),
+            package_id: (.git.packageId // ""),
+            php_extensions: (.git.phpExtensions // ""),
+            mysql: (.git.mysql // false)
+          }]}' .github/distribution-cards.json)
+          echo "value=$value" >> "$GITHUB_OUTPUT"
+
   sync:
     name: ${{ matrix.id }}
+    needs: prepare
     runs-on: ubuntu-24.04
     services:
       mysql:
-        image: ${{ matrix.composer != '' && 'mysql:5.7' || '' }}
+        image: ${{ matrix.mysql && 'mysql:5.7' || '' }}
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
@@ -61,50 +90,7 @@ jobs:
           --health-retries=3
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - id: organization-profile
-            source: library/.github
-            repository: darkwood-com/.github
-            branch: main
-            secret: MIRROR_ORGANIZATION_PROFILE_SSH_KEY
-            composer: ""
-            php_extensions: ""
-          - id: personal-profile
-            source: library/matyo91
-            repository: matyo91/matyo91
-            branch: main
-            secret: MIRROR_PERSONAL_PROFILE_SSH_KEY
-            composer: ""
-            php_extensions: ""
-          - id: flow
-            source: library/darkwood-php/src/Darkwood/Component/Flow
-            repository: darkwood-com/flow
-            branch: "8.1"
-            secret: MIRROR_FLOW_SSH_KEY
-            composer: darkwood/flow
-            php_extensions: xsl, openswoole
-          - id: navi
-            source: library/darkwood-php/src/Darkwood/Component/Navi
-            repository: darkwood-com/navi
-            branch: "8.1"
-            secret: MIRROR_NAVI_SSH_KEY
-            composer: darkwood/navi
-            php_extensions: xsl, openswoole
-          - id: media-bundle
-            source: library/darkwood-php/src/Darkwood/Bundle/MediaBundle
-            repository: darkwood-com/media-bundle
-            branch: "8.1"
-            secret: MIRROR_MEDIA_BUNDLE_SSH_KEY
-            composer: darkwood/media-bundle
-            php_extensions: ctype, iconv
-          - id: ia-exception-bundle
-            source: library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle
-            repository: darkwood-com/ia-exception-bundle
-            branch: "8.1"
-            secret: MIRROR_IA_EXCEPTION_BUNDLE_SSH_KEY
-            composer: darkwood/ia-exception-bundle
-            php_extensions: ctype, iconv
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     steps:
       - name: Check out the canonical monorepo
@@ -115,6 +101,7 @@ jobs:
           sparse-checkout: |
             ${{ matrix.source }}
             library/darkwood-php/.github
+            .github/distribution-cards.json
             .github/workflows/sync-distribution-mirrors.yml
           sparse-checkout-cone-mode: false
 
@@ -134,7 +121,7 @@ jobs:
               selected=true
             fi
           elif git diff --name-only "$BEFORE" "$CURRENT" -- \
-            "$SOURCE" .github/workflows/sync-distribution-mirrors.yml | grep -q .; then
+            "$SOURCE" .github/distribution-cards.json .github/workflows/sync-distribution-mirrors.yml | grep -q .; then
             selected=true
           fi
           echo "selected=$selected" >> "$GITHUB_OUTPUT"
@@ -153,19 +140,19 @@ jobs:
         env:
           SOURCE: ${{ matrix.source }}
           EXPECTED_PACKAGE: ${{ matrix.composer }}
-          TARGET: ${{ matrix.id }}
+          PACKAGE_ID: ${{ matrix.package_id }}
         run: |
           # shellcheck disable=SC2016
           actual_package=$(php -r 'echo json_decode(file_get_contents($argv[1]), true, 512, JSON_THROW_ON_ERROR)["name"];' "$SOURCE/composer.json")
           test "$actual_package" = "$EXPECTED_PACKAGE"
           composer validate --strict --no-check-publish "$SOURCE/composer.json"
-          library/darkwood-php/.github/ci-run-package.sh "$TARGET"
+          library/darkwood-php/.github/ci-run-package.sh "$PACKAGE_ID"
 
       - name: Configure mirror deploy key
         if: steps.select.outputs.selected == 'true'
         env:
           API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEPLOY_KEY: ${{ secrets[matrix.secret] }}
+          DEPLOY_KEY: ${{ secrets[matrix.credential] }}
         run: |
           test -n "$DEPLOY_KEY"
           install -d -m 0700 "$HOME/.ssh"

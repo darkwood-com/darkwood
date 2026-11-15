@@ -64,14 +64,14 @@ Les classes `theme-light`, `theme-dark` et `theme-sepia`, la clé locale `theme`
 nix develop -c php bin/console lint:container
 nix develop -c php bin/console lint:twig templates
 nix develop -c php bin/phpunit
-nix develop -c node --test tests/memory-model.test.mjs
+nix develop -c node --test tests/content-darkwood-memory.test.mjs
 ```
 
 Les tests couvrent les routes PHP, les sessions et leur isolation, la protection CSRF, la reprise d’exécution, le carnet, le storyboard, les modèles navigateur et l’export avec et sans préfixe. Les thèmes, le responsive et la synthèse audio nécessitent aussi une vérification navigateur.
 
 ## Publication
 
-Le workflow canonique `.github/workflows/publish-github-pages.yml` du monorepo installe les dépendances verrouillées dans Nix, exécute les tests, génère `dist/` puis publie uniquement l’artefact dans le repository technique `darkwood-com/memory-pages`. Les sources, issues et contributions restent dans le monorepo ; le repository Pages n’est pas une source de développement.
+Le workflow canonique `.github/workflows/publish-github-pages.yml` du monorepo installe les dépendances verrouillées dans Nix, exécute les tests, génère `dist/` puis publie uniquement l’artefact dans le satellite `darkwood-com/content-darkwood-memory`. Les sources, issues et contributions restent dans le monorepo ; le satellite Pages n’est pas une source de développement.
 
 Le domaine `memory.content.darkwood.com` pointe vers GitHub Pages en DNS uniquement. Son certificat HTTPS est géré par GitHub pour ce nom exact. Le site n’utilise aucun serveur PHP permanent.
 

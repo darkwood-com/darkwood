@@ -15,6 +15,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
+use function array_slice;
 use function in_array;
 
 class SiteService
@@ -228,7 +229,7 @@ class SiteService
         // Newest first for feed readers and channel pubDate.
         usort($feed, static fn ($item1, $item2) => $item2['date'] <=> $item1['date']);
 
-        return $feed;
+        return array_slice($feed, 0, 5);
     }
 
     public function getRssXml($host, $locale)

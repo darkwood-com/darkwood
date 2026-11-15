@@ -36,7 +36,7 @@ jobs:
         with:
           comment_tag_name: BLOG-POST-LIST
           readme_path: library/.github/README.md,library/.github/profile/README.md,library/matyo91/README.md
-          feed_list: https://feeds.feedburner.com/darkwood-fr/blog,https://feeds.feedburner.com/uniflow-io/blog
+          feed_list: https://blog.darkwood.com/rss,https://uniflow.io/blog/rss.xml
           max_post_count: 5
           retry_count: 3
           retry_wait_time: 10

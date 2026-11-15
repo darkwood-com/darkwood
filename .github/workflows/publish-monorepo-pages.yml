@@ -1,0 +1,60 @@
+name: Publish the Darkwood catalog
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: monorepo-pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build the public catalog
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out the canonical monorepo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: |
+            .github/distribution-cards.json
+            .github/scripts/build-catalog-pages.mjs
+            README.md
+            tags.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version: "22"
+
+      - name: Build the catalog
+        run: |
+          node .github/scripts/build-catalog-pages.mjs
+          test -s dist/github-pages/index.html
+          test "$(grep -c 'class=\"card\"' dist/github-pages/index.html)" -eq "$(jq '.projects | length' tags.json)"
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        with:
+          path: dist/github-pages
+
+  deploy:
+    name: Deploy the public catalog
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - .github/distribution-cards.json
       - library/content-darkwood-memory/**
       - library/content-darkwood-intent/**
       - library/darkwood-php/src/Darkwood/Component/Flow/docs/**
@@ -17,9 +18,9 @@ on:
         type: choice
         options:
           - all
-          - flow
-          - memory
-          - intent
+          - darkwood-php-component-flow
+          - content-darkwood-memory
+          - content-darkwood-intent
       dry_run:
         description: Build and compare without pushing
         required: true
@@ -38,34 +39,40 @@ defaults:
     shell: bash
 
 jobs:
+  prepare:
+    name: Read the canonical distribution manifest
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    steps:
+      - name: Check out the publication manifest
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: .github/distribution-cards.json
+
+      - name: Build the Pages matrix
+        id: matrix
+        run: |
+          value=$(jq -c '{include: [.cards[] | select(.pages != null) | {
+            id,
+            source: .pages.source,
+            artifact: .pages.artifact,
+            repository: .pages.repository,
+            credential: .pages.credential,
+            domain: .pages.domain,
+            builder: .pages.builder,
+            node_test: (.pages.nodeTest // "")
+          }]}' .github/distribution-cards.json)
+          echo "value=$value" >> "$GITHUB_OUTPUT"
+
   publish:
     name: ${{ matrix.id }}
+    needs: prepare
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - id: flow
-            source: library/darkwood-php/src/Darkwood/Component/Flow/docs
-            artifact: library/darkwood-php/src/Darkwood/Component/Flow/docs/src/public
-            repository: darkwood-com/flow-pages
-            domain: flow.darkwood.com
-            secret: PAGES_FLOW_SSH_KEY
-          - id: memory
-            source: library/content-darkwood-memory
-            artifact: library/content-darkwood-memory/dist
-            repository: darkwood-com/memory-pages
-            domain: memory.content.darkwood.com
-            secret: PAGES_MEMORY_SSH_KEY
-            node_test: memory-model
-          - id: intent
-            source: library/content-darkwood-intent
-            artifact: library/content-darkwood-intent/dist
-            repository: darkwood-com/intent-pages
-            domain: intent.content.darkwood.com
-            secret: PAGES_INTENT_SSH_KEY
-            node_test: intent-model
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     steps:
       - name: Check out the canonical source
@@ -75,6 +82,7 @@ jobs:
           filter: blob:none
           sparse-checkout: |
             ${{ matrix.source }}
+            .github/distribution-cards.json
             .github/workflows/publish-github-pages.yml
           sparse-checkout-cone-mode: false
 
@@ -95,7 +103,7 @@ jobs:
             fi
           elif [[ "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
             selected=true
-          elif git diff --quiet "$BEFORE" "$CURRENT" -- "$SOURCE" .github/workflows/publish-github-pages.yml; then
+          elif git diff --quiet "$BEFORE" "$CURRENT" -- "$SOURCE" .github/distribution-cards.json .github/workflows/publish-github-pages.yml; then
             selected=false
           else
             selected=true
@@ -103,7 +111,7 @@ jobs:
           echo "selected=$selected" >> "$GITHUB_OUTPUT"
 
       - name: Set up Node.js for Flow
-        if: steps.select.outputs.selected == 'true' && matrix.id == 'flow'
+        if: steps.select.outputs.selected == 'true' && matrix.builder == 'node'
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: "22"
@@ -111,7 +119,7 @@ jobs:
           cache-dependency-path: ${{ matrix.source }}/package-lock.json
 
       - name: Build Flow documentation
-        if: steps.select.outputs.selected == 'true' && matrix.id == 'flow'
+        if: steps.select.outputs.selected == 'true' && matrix.builder == 'node'
         working-directory: ${{ matrix.source }}
         run: |
           npm ci --no-audit --no-fund
@@ -120,11 +128,11 @@ jobs:
           test "$(cat src/public/CNAME)" = "flow.darkwood.com"
 
       - name: Set up Nix for PHP static sites
-        if: steps.select.outputs.selected == 'true' && matrix.id != 'flow'
+        if: steps.select.outputs.selected == 'true' && matrix.builder == 'nix'
         uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
 
       - name: Test and export the PHP static site
-        if: steps.select.outputs.selected == 'true' && matrix.id != 'flow'
+        if: steps.select.outputs.selected == 'true' && matrix.builder == 'nix'
         working-directory: ${{ matrix.source }}
         run: |
           nix develop -c composer install --no-interaction --prefer-dist --no-progress
@@ -138,7 +146,7 @@ jobs:
         if: steps.select.outputs.selected == 'true'
         env:
           API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEPLOY_KEY: ${{ secrets[matrix.secret] }}
+          DEPLOY_KEY: ${{ secrets[matrix.credential] }}
         run: |
           test -n "$DEPLOY_KEY"
           install -d -m 0700 "$HOME/.ssh"

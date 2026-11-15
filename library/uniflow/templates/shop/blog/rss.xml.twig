@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Uniflow Blog</title>
+    <link>{{ url('app_shop_blog') }}</link>
+    <description>Latest Uniflow publications</description>
+    <language>en</language>
+    <atom:link href="{{ url('app_shop_blog_rss') }}" rel="self" type="application/rss+xml"/>
+    {% if articles is not empty %}<lastBuildDate>{{ articles|first.data.date|date('r') }}</lastBuildDate>{% endif %}
+    {% for article in articles %}
+      <item>
+        <title>{{ article.data.title }}</title>
+        <link>{{ url('app_shop_article', {slug: article.data.slug}) }}</link>
+        <guid isPermaLink="true">{{ url('app_shop_article', {slug: article.data.slug}) }}</guid>
+        <pubDate>{{ article.data.date|date('r') }}</pubDate>
+        {% if article.data.author.name is defined %}<dc:creator>{{ article.data.author.name }}</dc:creator>{% endif %}
+        <description><![CDATA[{{ article.data.short_description|raw }}]]></description>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>

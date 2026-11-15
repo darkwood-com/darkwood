@@ -29,7 +29,7 @@
 
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ path(page.page.site.ref ~ '_sitemap_xml') }}" />
-    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://feeds.feedburner.com/darkwood-com/blog" />
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="{{ url(page.page.site.ref ~ '_rss') }}" />
 
     {% set hreflang = hreflang_data(page.page.ref, entity|default(null)) %}
     {{ include('common/partials/hreflangs.html.twig', hreflang) }}

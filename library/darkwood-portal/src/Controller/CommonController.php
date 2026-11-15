@@ -31,6 +31,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 use Twig\Environment;
 
+use function hash;
+
 class CommonController extends AbstractController
 {
     public function __construct(
@@ -183,6 +185,11 @@ class CommonController extends AbstractController
         $rssXml = $this->siteService->getRssXml($request->getHost(), $request->getLocale());
         $response = new Response($rssXml);
         $response->headers->set('Content-Type', 'application/xml; charset=UTF-8');
+        $response->setPublic();
+        $response->setMaxAge(900);
+        $response->setSharedMaxAge(3600);
+        $response->setEtag(hash('sha256', $rssXml));
+        $response->isNotModified($request);
 
         return $response;
     }

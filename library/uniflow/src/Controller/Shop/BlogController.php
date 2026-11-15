@@ -8,13 +8,16 @@ use App\Model\Page;
 use App\Service\AppService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Extra\Markdown\DefaultMarkdown as Markdown;
 
+use function array_slice;
 use function count;
+use function hash;
 use function in_array;
 
 #[Route('/', name: 'app_shop_')]
@@ -79,6 +82,24 @@ class BlogController extends AbstractController
             ),
             'articles' => $articles,
         ]);
+    }
+
+    #[Route('/blog/rss.xml', name: 'blog_rss', methods: ['GET'])]
+    public function rss(Request $request): Response
+    {
+        $articles = array_slice($this->getBlogArticles(), 0, 5);
+        $content = $this->renderView('shop/blog/rss.xml.twig', [
+            'articles' => $articles,
+        ]);
+        $response = new Response($content);
+        $response->headers->set('Content-Type', 'application/rss+xml; charset=UTF-8');
+        $response->setPublic();
+        $response->setMaxAge(900);
+        $response->setSharedMaxAge(3600);
+        $response->setEtag(hash('sha256', $content));
+        $response->isNotModified($request);
+
+        return $response;
     }
 
     #[Route('/blog/{slug}', name: 'article', methods: ['GET'])]
