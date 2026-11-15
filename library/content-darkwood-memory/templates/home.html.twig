@@ -4,5 +4,10 @@
 <section class="experiences" aria-label="Les six démonstrations"><div class="section-heading"><h2>Entrez dans l’atelier</h2><span>OBSERVER / ESSAYER / COMPRENDRE</span></div><div class="cards">
 {% for slug, demo in demos %}<a class="demo-card" href="{{ is_static ? prefix ~ '/demo/' ~ slug ~ '/' : path('demo', {slug: slug}) }}"><span class="card-top"><span>0{{ loop.index }} / {{ demo[3] }}</span><span class="arrow">↗</span></span><span class="service">{{ demo[0] }}</span><h3>{{ demo[1] }}</h3><p>{{ demo[2] }}</p><span class="card-bottom">Explorer la démonstration <span>→</span></span></a>{% endfor %}
 </div></section>
+<section class="intent-chain" aria-labelledby="memory-intent-title">
+  <div class="section-heading"><h2 id="memory-intent-title">La mémoire donne une suite à l’intention</h2><span>CONSERVER / INTERPRÉTER / ÉVALUER</span></div>
+  <p>La mémoire conserve un état ou une information. L’intention oriente les décisions, tandis que le contexte permet de l’interpréter. Après l’exécution, les résultats peuvent devenir de nouvelles informations mémorisées et nourrir l’évaluation suivante.</p>
+  <p><a class="button" href="https://intent.content.darkwood.com/">Poursuivre avec l’atelier Intention →</a></p>
+</section>
 <p class="scope">Ces expériences ont été créées pour l’article. Elles illustrent des concepts ; elles ne constituent pas des annonces de fonctionnalités des services Darkwood.</p>
 {% endblock %}

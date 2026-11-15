@@ -37,6 +37,9 @@ final class StaticExportTest extends KernelTestCase
             }
             self::assertFileExists(self::$kernel->getProjectDir().'/dist/intent-model.js');
             self::assertFileExists(self::$kernel->getProjectDir().'/dist/aftertrace/teaser.mp4');
+            $home = file_get_contents(self::$kernel->getProjectDir().'/dist/index.html');
+            self::assertStringContainsString('https://memory.content.darkwood.com/', $home);
+            self::assertStringContainsString('Darkwood, un écosystème de services', $home);
         }
         self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/index.php');
         self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/.env');

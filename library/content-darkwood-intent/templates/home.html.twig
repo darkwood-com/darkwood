@@ -13,5 +13,10 @@
 <section class="experiences" aria-label="Les cinq démonstrations"><div class="section-heading"><h2>Choisissez un domaine</h2><span>MODIFIER / OBSERVER / ÉVALUER</span></div><div class="cards">
 {% for slug, demo in demos %}<a class="demo-card" href="{{ is_static ? prefix ~ '/demo/' ~ slug ~ '/' : path('demo', {slug: slug}) }}"><span class="card-top"><span>0{{ loop.index }} / {{ demo[3] }}</span><span class="arrow">↗</span></span><span class="service">{{ demo[0] }}</span><h3>{{ demo[1] }}</h3><p>{{ demo[2] }}</p><span class="card-bottom">Explorer la démonstration <span>→</span></span></a>{% endfor %}
 </div></section>
+<section class="intent-chain" aria-labelledby="darkwood-ecosystem-title">
+  <div class="section-heading"><h2 id="darkwood-ecosystem-title">Darkwood, un écosystème de services</h2><span>CRÉATION / OPÉRATION / EXPÉRIENCE</span></div>
+  <p>Dans Darkwood, une intention peut devenir une création, une opération ou une expérience : un jeu publié par Darkwaar, un clip Heroclip, un set DJ Matyo91, une composition de traitements Flow ou une définition applicative Uniflow. Chaque service conserve ses propres règles, ses sources et ses limites ; l’écosystème relie les résultats sans prétendre qu’une intention garantit leur réussite.</p>
+  <p><a href="https://darkwaar.com/">Darkwaar</a> · <a href="https://heroclip.darkwood.com/clips">Heroclip</a> · <a href="https://djmatyo91.darkwood.com/sets">DJ Matyo91</a></p>
+</section>
 <p class="scope">Ces expériences emploient des règles locales et déterministes. Elles distinguent les fonctions existantes des illustrations éditoriales et ne constituent ni benchmark, ni annonce de produit.</p>
 {% endblock %}

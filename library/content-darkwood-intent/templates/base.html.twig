@@ -37,6 +37,8 @@
       <a href="{{ home_href }}" {% if current == '' %}aria-current="page"{% endif %}>Vue d’ensemble</a>
       <p class="nav-caption">Démonstrations</p>
       {% for key, item in demos %}<a href="{{ is_static ? prefix ~ '/demo/' ~ key ~ '/' : path('demo', {slug: key}) }}" {% if key == current %}aria-current="page"{% endif %}><span>{{ item[0] }}</span><small>{{ item[3] }}</small></a>{% endfor %}
+      <p class="nav-caption">Atelier associé</p>
+      <a href="https://memory.content.darkwood.com/"><span>Mémoire</span><small>Ce qui rend la suite possible</small></a>
     </nav>
   </aside>
   <div class="page-column"><main id="main" tabindex="-1">{% block body %}{% endblock %}</main><footer><span>Cinq expériences. Une grille pédagogique.</span><span>Sans compte, backend ni API externe.</span></footer></div>

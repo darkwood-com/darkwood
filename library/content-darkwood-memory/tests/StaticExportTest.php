@@ -49,7 +49,7 @@ final class StaticExportTest extends KernelTestCase
                             'https://github.com/darkwood-com/flow',
                         ], true);
                         self::assertTrue(
-                            str_starts_with($url, 'https://') && ($officialRepository || in_array($host, ['darkwaar.com', 'flow.darkwood.com'], true)),
+                            str_starts_with($url, 'https://') && ($officialRepository || in_array($host, ['darkwaar.com', 'flow.darkwood.com', 'intent.content.darkwood.com'], true)),
                             'Unexpected external destination in '.$file.': '.$url,
                         );
                     }
