@@ -24,9 +24,11 @@ jobs:
         with:
           sparse-checkout: |
             .github/distribution-cards.json
+            .github/pages
             .github/scripts/build-catalog-pages.mjs
             README.md
             tags.json
+            tags.schema.json
 
       - name: Set up Node.js
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
@@ -37,7 +39,11 @@ jobs:
         run: |
           node .github/scripts/build-catalog-pages.mjs
           test -s dist/github-pages/index.html
-          test "$(grep -c 'class=\"card\"' dist/github-pages/index.html)" -eq "$(jq '.projects | length' tags.json)"
+          test "$(grep -o 'data-card' dist/github-pages/index.html | wc -l)" -ge "$(jq '.projects | length' tags.json)"
+          test "$(find dist/github-pages/cards -name index.html | wc -l)" -eq "$(jq '.projects | length' tags.json)"
+          test "$(jq 'length' dist/github-pages/data/cards.json)" -eq "$(jq '.projects | length' tags.json)"
+          test -s dist/github-pages/sitemap.xml
+          test -s dist/github-pages/robots.txt
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5

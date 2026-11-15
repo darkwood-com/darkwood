@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -6,78 +6,174 @@ const output = resolve(root, process.argv[2] ?? "dist/github-pages");
 const catalog = JSON.parse(await readFile(resolve(root, "tags.json"), "utf8"));
 const distribution = JSON.parse(await readFile(resolve(root, ".github/distribution-cards.json"), "utf8"));
 
+const siteUrl = new URL(process.argv[3] ?? "https://darkwood-com.github.io/darkwood/").href;
+const repositoryUrl = "https://github.com/darkwood-com/darkwood";
+const sourceBaseUrl = `${repositoryUrl}/tree/main/`;
+const sourceAssets = resolve(root, ".github/pages");
+
 const escape = (value) => String(value ?? "")
   .replaceAll("&", "&amp;")
   .replaceAll("<", "&lt;")
   .replaceAll(">", "&gt;")
   .replaceAll('"', "&quot;")
   .replaceAll("'", "&#39;");
+const titleCase = (value) => String(value).split("-").map((part) => ({
+  ai: "AI", api: "API", github: "GitHub", ios: "iOS", mcp: "MCP", php: "PHP", rxjs: "RxJS", url: "URL",
+}[part] ?? `${part.charAt(0).toUpperCase()}${part.slice(1)}`)).join(" ");
+const plural = (count, word) => `${count} ${word}${count === 1 ? "" : "s"}`;
 
-const repositories = new Map(distribution.cards.map((card) => [card.id, card.repository]));
+if (catalog.schemaVersion !== 3 || !Array.isArray(catalog.projects)) {
+  throw new Error("tags.json must be a schema v3 catalog with a projects array");
+}
+
+const ids = new Set();
+for (const project of catalog.projects) {
+  if (!project.id || !project.path || !project.description || !project.kind || !project.status) {
+    throw new Error(`Incomplete public card: ${project.id ?? "<unknown>"}`);
+  }
+  if (ids.has(project.id)) throw new Error(`Duplicate public card id: ${project.id}`);
+  if (!project.path.startsWith("library/")) throw new Error(`Card path is outside library/: ${project.id}`);
+  ids.add(project.id);
+}
+
 const projects = [...catalog.projects].sort((left, right) => left.id.localeCompare(right.id));
+const projectById = new Map(projects.map((project) => [project.id, project]));
+const publicationsFor = (project) => distribution.cards.filter((card) =>
+  card.source === project.path || card.source?.startsWith(`${project.path}/`));
+const publicLinksFor = (project) => {
+  const links = [];
+  for (const publication of publicationsFor(project)) {
+    if (publication.repository && publication.repository !== "darkwood-com/darkwood") {
+      links.push({ label: "Distribution repository", url: `https://github.com/${publication.repository}` });
+    }
+    if (publication.pages?.domain) links.push({ label: "Public website", url: `https://${publication.pages.domain}/` });
+  }
+  return links.filter((link, index, all) => all.findIndex((candidate) => candidate.url === link.url) === index);
+};
+
 const counts = projects.reduce((result, project) => {
-  result[project.kind] = (result[project.kind] ?? 0) + 1;
+  result.kinds[project.kind] = (result.kinds[project.kind] ?? 0) + 1;
+  result.statuses[project.status] = (result.statuses[project.status] ?? 0) + 1;
   return result;
-}, {});
+}, { kinds: {}, statuses: {} });
 
-const cards = projects.map((project) => {
-  const repository = repositories.get(project.id);
-  const link = repository
-    ? `https://github.com/${repository}`
-    : `https://github.com/darkwood-com/darkwood/tree/main/${project.path}`;
-  return `<article class="card" data-kind="${escape(project.kind)}" data-status="${escape(project.status)}">
-    <div class="labels"><span>${escape(project.kind)}</span><span>${escape(project.status)}</span></div>
-    <h2><a href="${escape(link)}">${escape(project.id)}</a></h2>
+const icon = (name) => ({
+  arrow: '<svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11m-4-4 4 4-4 4"/></svg>',
+  code: '<svg aria-hidden="true" viewBox="0 0 20 20"><path d="m7 5-5 5 5 5m6-10 5 5-5 5"/></svg>',
+  external: '<svg aria-hidden="true" viewBox="0 0 20 20"><path d="M11 3h6v6m0-6-8 8M8 5H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4"/></svg>',
+}[name]);
+
+const cardMarkup = (project, { compact = false } = {}) => {
+  const detailUrl = `${siteUrl}cards/${encodeURIComponent(project.id)}/`;
+  const topics = (project.topics ?? []).slice(0, compact ? 2 : 3);
+  return `<article class="card${compact ? " card--compact" : ""}" data-card data-kind="${escape(project.kind)}" data-status="${escape(project.status)}" data-name="${escape(project.id)}" data-search="${escape([project.id, project.description, ...(project.topics ?? []), ...(project.dependencies ?? [])].join(" ").toLowerCase())}">
+    <div class="card__meta"><span class="eyebrow">${escape(project.kind)}</span><span class="status status--${escape(project.status)}"><i></i>${escape(project.status)}</span></div>
+    <h3><a href="${detailUrl}">${escape(titleCase(project.id))}</a></h3>
     <p>${escape(project.description)}</p>
-    <small>${escape(project.path)}</small>
+    ${topics.length ? `<ul class="topic-list" aria-label="Topics">${topics.map((topic) => `<li>${escape(topic)}</li>`).join("")}</ul>` : ""}
+    <a class="card__link" href="${detailUrl}" aria-label="Explore ${escape(titleCase(project.id))}">Explore card ${icon("arrow")}</a>
   </article>`;
-}).join("\n");
+};
 
-const kindSummary = Object.entries(counts)
-  .sort(([left], [right]) => left.localeCompare(right))
-  .map(([kind, count]) => `<li><strong>${count}</strong> ${escape(kind)}</li>`)
-  .join("");
-
-const html = `<!doctype html>
+const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Darkwood public projects, components and content.">
-  <title>Darkwood</title>
-  <style>
-    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: #090b10; color: #f6f7fb; }
-    body { margin: 0; }
-    header, main, footer { max-width: 1180px; margin: auto; padding: 2rem; }
-    header { padding-top: 5rem; }
-    h1 { font-size: clamp(3rem, 9vw, 7rem); line-height: .9; margin: 0; color: #3579f6; }
-    header p { max-width: 720px; font-size: 1.2rem; color: #b8c0d4; }
-    ul { display: flex; flex-wrap: wrap; gap: .75rem; padding: 0; list-style: none; }
-    li, .labels span { border: 1px solid #293047; border-radius: 999px; padding: .4rem .75rem; color: #b8c0d4; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
-    .card { border: 1px solid #20263a; border-radius: 14px; padding: 1.1rem; background: #10131d; }
-    .card h2 { margin: 1rem 0 .5rem; font-size: 1.15rem; }
-    .card p { min-height: 3.4rem; color: #b8c0d4; }
-    .card small { color: #77819a; overflow-wrap: anywhere; }
-    .labels { display: flex; gap: .4rem; }
-    .labels span { font-size: .72rem; padding: .2rem .5rem; }
-    a { color: #77a6ff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    footer { color: #77819a; }
-  </style>
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#080a0f">
+  <meta name="description" content="${escape(description)}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Darkwood">
+  <meta property="og:title" content="${escape(title)}">
+  <meta property="og:description" content="${escape(description)}">
+  <meta property="og:url" content="${escape(canonical)}">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="${escape(canonical)}">
+  <link rel="icon" href="${siteUrl}assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="${siteUrl}assets/catalog.css">
+  <script type="module" src="${siteUrl}assets/catalog.js"></script>
+  <title>${escape(title)}</title>
 </head>
-<body>
-  <header>
-    <h1>Darkwood</h1>
-    <p>A public ecosystem of ${projects.length} projects, components, experiments and published content. Development happens in the canonical monorepo.</p>
-    <ul>${kindSummary}</ul>
+<body class="${escape(pageClass)}">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="${siteUrl}" aria-label="Darkwood home"><span class="brand__mark">D</span><span>Darkwood</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="${siteUrl}#projects">Projects</a>
+      <a href="${siteUrl}#catalogue">Catalogue</a>
+      <a href="${repositoryUrl}">GitHub ${icon("external")}</a>
+    </nav>
   </header>
-  <main><section class="grid">${cards}</section></main>
-  <footer><a href="https://github.com/darkwood-com/darkwood">Source and contributions</a> · generated from tags.json schema v${escape(catalog.schemaVersion)}</footer>
+  ${body}
+  <footer class="site-footer">
+    <div><span class="brand__mark">D</span><p>Built from the public Darkwood catalogue.<br><span>Schema v${escape(catalog.schemaVersion)} · ${plural(projects.length, "card")}</span></p></div>
+    <div class="footer__links"><a href="${repositoryUrl}">Source</a><a href="${repositoryUrl}/blob/main/CONTRIBUTING.md">Contribute</a><a href="${repositoryUrl}/blob/main/tags.json">Catalogue JSON</a></div>
+  </footer>
 </body>
 </html>`;
 
-await mkdir(output, { recursive: true });
-await writeFile(resolve(output, "index.html"), html);
+const kindOptions = Object.keys(counts.kinds).sort().map((kind) => `<option value="${escape(kind)}">${escape(titleCase(kind))} (${counts.kinds[kind]})</option>`).join("");
+const statusOptions = ["working", "backlog", "done"].filter((status) => counts.statuses[status]).map((status) => `<option value="${escape(status)}">${escape(titleCase(status))} (${counts.statuses[status]})</option>`).join("");
+const kindGroups = Object.keys(counts.kinds).sort().map((kind) => {
+  const cards = projects.filter((project) => project.kind === kind).map((project) => cardMarkup(project)).join("\n");
+  return `<section class="catalogue-group" data-group="${escape(kind)}" aria-labelledby="group-${escape(kind)}">
+    <div class="section-heading section-heading--group"><div><span class="eyebrow">Category</span><h3 id="group-${escape(kind)}">${escape(titleCase(kind))}</h3></div><span class="group-count" data-group-count>${counts.kinds[kind]}</span></div>
+    <div class="card-grid">${cards}</div>
+  </section>`;
+}).join("\n");
+const working = projects.filter((project) => project.status === "working").slice(0, 6);
+
+const home = pageShell({
+  title: "Darkwood — Public projects, components and creative work",
+  description: `Explore ${projects.length} public Darkwood projects, open-source components, experiments and published work.`,
+  canonical: siteUrl,
+  pageClass: "home",
+  body: `<main id="main">
+    <section class="hero">
+      <div class="hero__copy"><span class="eyebrow">Public monorepo · Open ecosystem</span><h1>Ideas become<br><em>working systems.</em></h1><p>Darkwood is a living collection of open-source components, products, experiments and creative work — developed together in one public monorepo.</p><div class="hero__actions"><a class="button button--primary" href="#catalogue">Explore the catalogue ${icon("arrow")}</a><a class="button" href="${repositoryUrl}">${icon("code")} View source</a></div></div>
+      <aside class="hero__panel" aria-label="Catalogue overview"><div class="signal"><span>Catalogue status</span><strong><i></i> Live</strong></div><div class="metric"><strong>${projects.length}</strong><span>public cards</span></div><div class="metric-row"><div><strong>${counts.statuses.working ?? 0}</strong><span>in progress</span></div><div><strong>${counts.kinds.content ?? 0}</strong><span>published works</span></div></div><div class="kind-bars">${Object.entries(counts.kinds).sort(([, a], [, b]) => b - a).map(([kind, count]) => `<div><span>${escape(kind)}</span><i style="--size:${Math.max(8, Math.round(count / projects.length * 100))}%"></i><b>${count}</b></div>`).join("")}</div></aside>
+    </section>
+    <section class="manifesto" id="projects"><div><span class="eyebrow">One source, many outcomes</span><h2>A monorepo built for discovery.</h2></div><div class="manifesto__copy"><p>Every public card has a stable identity, a clear purpose and a place in the ecosystem. Products stay active, components remain reusable, and completed work keeps its provenance.</p><a href="${repositoryUrl}/blob/main/README.md">How the monorepo works ${icon("arrow")}</a></div></section>
+    <section class="featured" aria-labelledby="featured-title"><div class="section-heading"><div><span class="eyebrow">Currently moving</span><h2 id="featured-title">Projects in progress</h2></div><a href="?status=working#catalogue">View all ${counts.statuses.working ?? 0} working cards ${icon("arrow")}</a></div><div class="card-grid card-grid--featured">${working.map((project) => cardMarkup(project, { compact: true })).join("\n")}</div></section>
+    <section class="catalogue" id="catalogue" aria-labelledby="catalogue-title">
+      <div class="section-heading"><div><span class="eyebrow">Browse everything</span><h2 id="catalogue-title">Public catalogue</h2><p>Search descriptions, filter the collection and open any card for its canonical details.</p></div><span class="catalogue-total">${projects.length}<small>cards</small></span></div>
+      <form class="filters" data-filters role="search"><label class="search-field"><span>Search cards</span><div><svg aria-hidden="true" viewBox="0 0 20 20"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 4 4"/></svg><input type="search" name="query" placeholder="Name, description, topic…" autocomplete="off"></div></label><label><span>Kind</span><select name="kind"><option value="">All kinds</option>${kindOptions}</select></label><label><span>Status</span><select name="status"><option value="">All statuses</option>${statusOptions}</select></label><label><span>Sort</span><select name="sort"><option value="name-asc">A → Z</option><option value="name-desc">Z → A</option></select></label><button class="button button--reset" type="reset">Reset</button></form>
+      <div class="results-bar"><p aria-live="polite"><strong data-result-count>${projects.length}</strong> results</p><p>Grouped by category</p></div><div data-catalogue-groups>${kindGroups}</div><div class="empty-state" data-empty hidden><span>∅</span><h3>No cards found</h3><p>Try another term or reset the filters.</p></div>
+    </section>
+  </main>`,
+});
+
+const detailPages = projects.map((project) => {
+  const title = titleCase(project.id);
+  const sourceUrl = `${sourceBaseUrl}${project.path}`;
+  const links = publicLinksFor(project);
+  const dependencies = (project.dependencies ?? []).map((dependency) => projectById.has(dependency) ? `<a href="${siteUrl}cards/${encodeURIComponent(dependency)}/">${escape(dependency)}</a>` : `<span>${escape(dependency)}</span>`).join("");
+  const related = projects.filter((candidate) => candidate.id !== project.id && (candidate.topics ?? []).some((topic) => (project.topics ?? []).includes(topic))).slice(0, 3);
+  return { project, html: pageShell({
+    title: `${title} — Darkwood`, description: project.description, canonical: `${siteUrl}cards/${encodeURIComponent(project.id)}/`, pageClass: "detail",
+    body: `<main id="main"><section class="detail-hero"><a class="back-link" href="${siteUrl}#catalogue">${icon("arrow")} Back to catalogue</a><div class="detail-hero__grid"><div><div class="card__meta"><span class="eyebrow">${escape(project.kind)}</span><span class="status status--${escape(project.status)}"><i></i>${escape(project.status)}</span></div><h1>${escape(title)}</h1><p>${escape(project.description)}</p><div class="hero__actions"><a class="button button--primary" href="${sourceUrl}">${icon("code")} Browse source</a>${links.map((link) => `<a class="button" href="${escape(link.url)}">${escape(link.label)} ${icon("external")}</a>`).join("")}</div></div><aside class="identity-panel"><span>Canonical identity</span><strong>${escape(project.id)}</strong><dl><div><dt>Path</dt><dd>${escape(project.path)}</dd></div><div><dt>Domain</dt><dd>${escape(project.domain)}</dd></div><div><dt>Lifecycle</dt><dd>${escape(project.status)}</dd></div></dl></aside></div></section><section class="detail-content"><div><span class="eyebrow">Metadata</span><h2>About this card</h2><p>The public catalogue describes this card as a <strong>${escape(project.kind)}</strong> in the <strong>${escape(project.domain)}</strong> domain. Its lifecycle status is <strong>${escape(project.status)}</strong>.</p></div><div class="metadata-grid"><section><h3>Topics</h3>${project.topics?.length ? `<ul class="topic-list">${project.topics.map((topic) => `<li>${escape(topic)}</li>`).join("")}</ul>` : "<p>No topics are recorded.</p>"}</section><section><h3>Public dependencies</h3>${dependencies ? `<div class="dependency-list">${dependencies}</div>` : "<p>No public dependencies are recorded.</p>"}</section><section><h3>Canonical source</h3><p><a href="${sourceUrl}">${escape(project.path)} ${icon("external")}</a></p></section></div></section>${related.length ? `<section class="related"><div class="section-heading"><div><span class="eyebrow">Keep exploring</span><h2>Related cards</h2></div></div><div class="card-grid">${related.map((candidate) => cardMarkup(candidate, { compact: true })).join("")}</div></section>` : ""}</main>`,
+  }) };
+});
+
+const cardsJson = projects.map((project) => ({ ...project, title: titleCase(project.id), source: `${sourceBaseUrl}${project.path}`, publicLinks: publicLinksFor(project), detail: `${siteUrl}cards/${encodeURIComponent(project.id)}/` }));
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${siteUrl}</loc></url>\n${projects.map((project) => `  <url><loc>${siteUrl}cards/${encodeURIComponent(project.id)}/</loc></url>`).join("\n")}\n</urlset>\n`;
+const notFound = pageShell({ title: "Page not found — Darkwood", description: "The requested Darkwood page could not be found.", canonical: `${siteUrl}404.html`, pageClass: "not-found", body: `<main id="main"><section class="error-page"><span>404</span><h1>Lost in the woods.</h1><p>This path does not match a public Darkwood card.</p><a class="button button--primary" href="${siteUrl}">Return to the catalogue ${icon("arrow")}</a></section></main>` });
+
+await mkdir(resolve(output, "assets"), { recursive: true });
+await mkdir(resolve(output, "data"), { recursive: true });
+await writeFile(resolve(output, "index.html"), home);
+await writeFile(resolve(output, "404.html"), notFound);
+await writeFile(resolve(output, "data/cards.json"), `${JSON.stringify(cardsJson)}\n`);
+await writeFile(resolve(output, "sitemap.xml"), sitemap);
+await writeFile(resolve(output, "robots.txt"), `User-agent: *\nAllow: /darkwood/\nSitemap: ${siteUrl}sitemap.xml\n`);
 await writeFile(resolve(output, ".nojekyll"), "");
-console.log(`Generated ${projects.length} cards in ${output}`);
+await copyFile(resolve(sourceAssets, "catalog.css"), resolve(output, "assets/catalog.css"));
+await copyFile(resolve(sourceAssets, "catalog.js"), resolve(output, "assets/catalog.js"));
+await copyFile(resolve(sourceAssets, "mark.svg"), resolve(output, "assets/mark.svg"));
+for (const { project, html } of detailPages) {
+  const directory = resolve(output, "cards", project.id);
+  await mkdir(directory, { recursive: true });
+  await writeFile(resolve(directory, "index.html"), html);
+}
+console.log(`Generated ${projects.length} public cards and ${detailPages.length} detail pages in ${output}`);
