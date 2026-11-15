@@ -6,7 +6,6 @@
       "id": "organization-profile",
       "source": "library/.github",
       "repository": "darkwood-com/.github",
-      "credential": "MIRROR_ORGANIZATION_PROFILE_SSH_KEY",
       "git": {
         "branch": "main"
       },
@@ -16,7 +15,6 @@
       "id": "personal-profile",
       "source": "library/matyo91",
       "repository": "matyo91/matyo91",
-      "credential": "MIRROR_PERSONAL_PROFILE_SSH_KEY",
       "git": {
         "branch": "main"
       },
@@ -26,7 +24,6 @@
       "id": "darkwood-php-component-flow",
       "source": "library/darkwood-php/src/Darkwood/Component/Flow",
       "repository": "darkwood-com/flow",
-      "credential": "MIRROR_FLOW_SSH_KEY",
       "targetRepository": "darkwood-com/darkwood-php-component-flow",
       "git": {
         "branch": "8.1",
@@ -39,7 +36,6 @@
         "source": "library/darkwood-php/src/Darkwood/Component/Flow/docs",
         "artifact": "library/darkwood-php/src/Darkwood/Component/Flow/docs/src/public",
         "repository": "darkwood-com/flow-pages",
-        "credential": "PAGES_FLOW_SSH_KEY",
         "domain": "flow.darkwood.com",
         "builder": "node"
       }
@@ -48,7 +44,6 @@
       "id": "darkwood-php-component-navi",
       "source": "library/darkwood-php/src/Darkwood/Component/Navi",
       "repository": "darkwood-com/navi",
-      "credential": "MIRROR_NAVI_SSH_KEY",
       "targetRepository": "darkwood-com/darkwood-php-component-navi",
       "git": {
         "branch": "8.1",
@@ -62,7 +57,6 @@
       "id": "darkwood-php-bundle-media",
       "source": "library/darkwood-php/src/Darkwood/Bundle/MediaBundle",
       "repository": "darkwood-com/media-bundle",
-      "credential": "MIRROR_MEDIA_BUNDLE_SSH_KEY",
       "targetRepository": "darkwood-com/darkwood-php-bundle-media",
       "git": {
         "branch": "8.1",
@@ -76,7 +70,6 @@
       "id": "darkwood-php-bundle-ia-exception",
       "source": "library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle",
       "repository": "darkwood-com/ia-exception-bundle",
-      "credential": "MIRROR_IA_EXCEPTION_BUNDLE_SSH_KEY",
       "targetRepository": "darkwood-com/darkwood-php-bundle-ia-exception",
       "git": {
         "branch": "8.1",
@@ -90,12 +83,10 @@
       "id": "content-darkwood-memory",
       "source": "library/content-darkwood-memory",
       "repository": "darkwood-com/content-darkwood-memory",
-      "credential": "PAGES_MEMORY_SSH_KEY",
       "pages": {
         "source": "library/content-darkwood-memory",
         "artifact": "library/content-darkwood-memory/dist",
         "repository": "darkwood-com/content-darkwood-memory",
-        "credential": "PAGES_MEMORY_SSH_KEY",
         "domain": "memory.content.darkwood.com",
         "builder": "nix",
         "nodeTest": "content-darkwood-memory"
@@ -105,12 +96,10 @@
       "id": "content-darkwood-intent",
       "source": "library/content-darkwood-intent",
       "repository": "darkwood-com/content-darkwood-intent",
-      "credential": "PAGES_INTENT_SSH_KEY",
       "pages": {
         "source": "library/content-darkwood-intent",
         "artifact": "library/content-darkwood-intent/dist",
         "repository": "darkwood-com/content-darkwood-intent",
-        "credential": "PAGES_INTENT_SSH_KEY",
         "domain": "intent.content.darkwood.com",
         "builder": "nix",
         "nodeTest": "content-darkwood-intent"

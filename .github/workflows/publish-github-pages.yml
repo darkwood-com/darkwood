@@ -63,7 +63,8 @@ jobs:
             source: .pages.source,
             artifact: .pages.artifact,
             repository: .pages.repository,
-            credential: .pages.credential,
+            owner: (.pages.repository | split("/")[0]),
+            repository_name: (.pages.repository | split("/")[1]),
             domain: .pages.domain,
             builder: .pages.builder,
             node_test: (.pages.nodeTest // "")
@@ -147,22 +148,16 @@ jobs:
           nix develop -c php bin/console app:export-static
           test -s dist/index.html
 
-      - name: Configure the destination deploy key
+      - name: Create a repository-scoped publication token
         if: steps.select.outputs.selected == 'true'
-        env:
-          API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEPLOY_KEY: ${{ secrets[matrix.credential] }}
-        run: |
-          test -n "$DEPLOY_KEY"
-          install -d -m 0700 "$HOME/.ssh"
-          printf '%s\n' "$DEPLOY_KEY" > "$HOME/.ssh/static-pages"
-          chmod 0600 "$HOME/.ssh/static-pages"
-          curl --fail --silent --show-error --proto '=https' --tlsv1.2 \
-            --header "Authorization: Bearer $API_TOKEN" \
-            --header "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/meta \
-            | jq -r '.ssh_keys[] | "github.com " + .' > "$HOME/.ssh/known_hosts"
-          chmod 0644 "$HOME/.ssh/known_hosts"
+        id: publication-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        with:
+          app-id: ${{ vars.DARKWOOD_DISTRIBUTION_APP_ID }}
+          private-key: ${{ secrets.DARKWOOD_DISTRIBUTION_APP_PRIVATE_KEY }}
+          owner: ${{ matrix.owner }}
+          repositories: ${{ matrix.repository_name }}
+          permission-contents: write
 
       - name: Publish the generated site
         if: steps.select.outputs.selected == 'true'
@@ -173,9 +168,10 @@ jobs:
           DOMAIN: ${{ matrix.domain }}
           REPOSITORY: ${{ matrix.repository }}
           TARGET: ${{ matrix.id }}
+          APP_TOKEN: ${{ steps.publication-token.outputs.token }}
         run: |
-          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/static-pages -o IdentitiesOnly=yes"
-          git clone "git@github.com:$REPOSITORY.git" pages
+          git config --global url."https://x-access-token:${APP_TOKEN}@github.com/".insteadOf "https://github.com/"
+          git clone "https://github.com/$REPOSITORY.git" pages
           if git -C pages show-ref --verify --quiet refs/heads/gh-pages; then
             git -C pages switch gh-pages
           elif git -C pages show-ref --verify --quiet refs/remotes/origin/gh-pages; then
