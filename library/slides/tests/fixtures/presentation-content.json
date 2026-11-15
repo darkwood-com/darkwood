@@ -5084,7 +5084,7 @@
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "14-11-2026"
+                            "15-11-2026"
                         ]
                     }
                 },
@@ -5206,10 +5206,13 @@
                             "Priorité business",
                             "Reconnaître",
                             "Réduire l’incertitude et noter les risques.",
-                            "Transporter"
+                            "Transporter",
+                            "Voir le jeu"
                         ],
                         "code": [],
-                        "links": [],
+                        "links": [
+                            "https://darkwaar.com/games/aftertrace"
+                        ],
                         "hooks": [],
                         "footer": [
                             "07 | 17 · Darkwood"
@@ -5250,10 +5253,13 @@
                             "Mystère",
                             "Priorité business",
                             "Retarder la réponse.",
-                            "Retrouvailles"
+                            "Retrouvailles",
+                            "Voir le clip Intention publié"
                         ],
                         "code": [],
-                        "links": [],
+                        "links": [
+                            "https://heroclip.darkwood.com/clips/6e42bdb6-7ba2-42cf-91a1-cdb3b40b4fdc"
+                        ],
                         "hooks": [],
                         "footer": [
                             "09 | 17 · Darkwood"
@@ -5289,11 +5295,16 @@
                     "payload": {
                         "text": [
                             "DJ Matyo91 : guider l’énergie",
+                            "Explorer les sets",
                             "Ouverture, montée et pic orientent le tempo, la densité et la transition sans déterminer un résultat unique.",
+                            "Ouvrir le Studio",
                             "Priorité business"
                         ],
                         "code": [],
-                        "links": [],
+                        "links": [
+                            "https://djmatyo91.darkwood.com/sets",
+                            "https://djmatyo91.darkwood.com/studio"
+                        ],
                         "hooks": [],
                         "footer": [
                             "11 | 17 · Darkwood"

@@ -39,7 +39,13 @@ final class StaticExportTest extends KernelTestCase
             self::assertFileExists(self::$kernel->getProjectDir().'/dist/aftertrace/teaser.mp4');
             $home = file_get_contents(self::$kernel->getProjectDir().'/dist/index.html');
             self::assertStringContainsString('https://memory.content.darkwood.com/', $home);
+            self::assertStringContainsString('https://darkwood-com.github.io/darkwood/cards/darkwood-design/', $home);
             self::assertStringContainsString('Darkwood, un écosystème de services', $home);
+            $heroclip = file_get_contents(self::$kernel->getProjectDir().'/dist/demo/heroclip/index.html');
+            self::assertStringContainsString('https://heroclip.darkwood.com/clips/6e42bdb6-7ba2-42cf-91a1-cdb3b40b4fdc', $heroclip);
+            $djmatyo = file_get_contents(self::$kernel->getProjectDir().'/dist/demo/djmatyo/index.html');
+            self::assertStringContainsString('https://djmatyo91.darkwood.com/sets', $djmatyo);
+            self::assertStringContainsString('https://djmatyo91.darkwood.com/studio', $djmatyo);
         }
         self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/index.php');
         self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/.env');
