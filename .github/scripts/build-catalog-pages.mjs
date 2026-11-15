@@ -11,6 +11,11 @@ const repositoryUrl = "https://github.com/darkwood-com/darkwood";
 const sourceBaseUrl = `${repositoryUrl}/tree/main/`;
 const sourceAssets = resolve(root, ".github/pages");
 const sourceFonts = resolve(root, "library/uniflow/assets/fonts");
+const cardRedirects = new Map([
+  ["adventofcode", "content-adventofcode"],
+  ["php-pipe-operator", "content-php-pipe-operator"],
+  ["flowvox-ios", "flowvox"],
+]);
 
 const escape = (value) => String(value ?? "")
   .replaceAll("&", "&amp;")
@@ -188,5 +193,12 @@ for (const { project, html } of detailPages) {
   const directory = resolve(output, "cards", project.id);
   await mkdir(directory, { recursive: true });
   await writeFile(resolve(directory, "index.html"), html);
+}
+for (const [legacyId, canonicalId] of cardRedirects) {
+  if (!projectById.has(canonicalId)) throw new Error(`Unknown redirect target: ${canonicalId}`);
+  const target = `${siteUrl}cards/${encodeURIComponent(canonicalId)}/`;
+  const directory = resolve(output, "cards", legacyId);
+  await mkdir(directory, { recursive: true });
+  await writeFile(resolve(directory, "index.html"), `<!doctype html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <meta name="robots" content="noindex">\n  <link rel="canonical" href="${escape(target)}">\n  <meta http-equiv="refresh" content="0; url=${escape(target)}">\n  <title>Card moved — Darkwood</title>\n</head>\n<body><p>This card moved to <a href="${escape(target)}">${escape(canonicalId)}</a>.</p></body>\n</html>\n`);
 }
 console.log(`Generated ${projects.length} public cards and ${detailPages.length} detail pages in ${output}`);

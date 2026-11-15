@@ -620,21 +620,6 @@
       ]
     },
     {
-      "id": "flowvox-ios",
-      "path": "library/flowvox-ios",
-      "domain": "darkwood",
-      "description": "Hotwire Native iOS shell for the Flowvox voice workflow.",
-      "kind": "product",
-      "status": "done",
-      "dependencies": [],
-      "topics": [
-        "audio",
-        "ios",
-        "mobile",
-        "swift"
-      ]
-    },
-    {
       "id": "content-dj-stream",
       "path": "library/content-dj-stream",
       "domain": "darkwood",
@@ -858,11 +843,11 @@
       ]
     },
     {
-      "id": "adventofcode",
-      "path": "library/adventofcode",
+      "id": "content-adventofcode",
+      "path": "library/content-adventofcode",
       "domain": "matyo91",
       "description": "Archived Rust solutions and inputs for Advent of Code 2020.",
-      "kind": "product",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [
@@ -941,11 +926,11 @@
       ]
     },
     {
-      "id": "php-pipe-operator",
-      "path": "library/php-pipe-operator",
+      "id": "content-php-pipe-operator",
+      "path": "library/content-php-pipe-operator",
       "domain": "matyo91",
       "description": "Archived demonstration of a pipe-oriented PHP syntax experiment.",
-      "kind": "experiment",
+      "kind": "content",
       "status": "done",
       "dependencies": [],
       "topics": [

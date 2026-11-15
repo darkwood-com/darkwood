@@ -10,6 +10,7 @@ Public monorepo for Darkwood open-source projects.
 - [Composio MCP](library/content-composio-mcp) — Symfony MCP server integrating Composio actions and workflows.
 - [Connect Flow](library/content-connect-flow) — Symfony prototype connecting natural-language capabilities to the Flow runtime.
 - [Crypto Trade](library/content-crypto-trade) — experimental cryptocurrency market-analysis application.
+- [Advent of Code](library/content-adventofcode) — archived Rust solutions for Advent of Code 2020.
 - [Darkwood PHP](library/darkwood-php) — PHP libraries and Symfony bundles.
 - [Darkwood Publish Article MCP Apps](library/darkwood-publish-article-mcp-apps) — MCP application for article generation and publication workflows.
 - [Darkwood Showreel](library/content-darkwood-showreel) — web and terminal showreel content built with Symfony TUI.
@@ -21,6 +22,7 @@ Public monorepo for Darkwood open-source projects.
 - [Flow This Person Does Not Exist](library/content-flow-thispersondoesnotexist) — parallel fictional-person image fetcher.
 - [Flow JEV](library/content-flow-jev) — archived experimental Flow and JEV platform integration.
 - [Flow Live](library/content-flow-live) — live Darkwood Flow demonstration application.
+- [Flowvox](library/flowvox) — voice workflow and its integrated Hotwire Native iOS client.
 - [Hearthbreaker](library/content-hearthbreaker) — archived Hearthstone helper preserved as a sanitized source snapshot.
 - [Hellcats Over the Pacific](library/hellcats-over-the-pacific) — evidence-backed Godot port of the classic Macintosh flight simulator.
 - [Kibono Flow](library/content-kibono-flow) — observable product-sync and ETL demonstration.
@@ -36,6 +38,7 @@ Public monorepo for Darkwood open-source projects.
 - [Nolife Tracker](library/content-nolife-tracker) — terminal registry for AI accounts and subscriptions.
 - [Omer Quotes](library/content-omer-quotes) — archived quotation extraction and exploration project.
 - [PHP Flow](library/content-php-flow) — PHP profiling demonstration using Darkwood Flow.
+- [PHP Pipe Operator](library/content-php-pipe-operator) — archived pipe-oriented PHP syntax experiment.
 - [Prime AI Answer](library/content-prime-ai-answer) — MCP experiment for concise AI-assisted answers.
 - [Quake III Arena PHP](library/content-quake-3-arena-php) — archived PHP FFI engine study.
 - [Recherche Entreprise MCP](library/content-recherche-entreprise-mcp) — PHP MCP and company-research experiment.

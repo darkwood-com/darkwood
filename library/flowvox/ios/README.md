@@ -1,5 +1,10 @@
 # Flowvox — Hotwire Native (iOS)
 
+This directory is the canonical home of the former `flowvox-ios` card. Its
+Xcode project, native sources, license and operational notes were merged here
+so the iOS implementation remains versioned with the Flowvox service while
+retaining its provenance.
+
 Wrap the Symfony web app in a native shell. The server must be running (`symfony server:start` or Docker).
 
 ## Prerequisites
