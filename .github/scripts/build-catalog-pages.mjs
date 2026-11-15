@@ -10,6 +10,7 @@ const siteUrl = new URL(process.argv[3] ?? "https://darkwood-com.github.io/darkw
 const repositoryUrl = "https://github.com/darkwood-com/darkwood";
 const sourceBaseUrl = `${repositoryUrl}/tree/main/`;
 const sourceAssets = resolve(root, ".github/pages");
+const sourceFonts = resolve(root, "library/uniflow/assets/fonts");
 
 const escape = (value) => String(value ?? "")
   .replaceAll("&", "&amp;")
@@ -91,6 +92,7 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="${escape(canonical)}">
   <link rel="icon" href="${siteUrl}assets/mark.svg" type="image/svg+xml">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("darkwood-theme")||"light"}catch(e){document.documentElement.dataset.theme="light"}</script>
   <link rel="stylesheet" href="${siteUrl}assets/catalog.css">
   <script type="module" src="${siteUrl}assets/catalog.js"></script>
   <title>${escape(title)}</title>
@@ -103,9 +105,16 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
       <a href="${siteUrl}#projects">Projects</a>
       <a href="${siteUrl}#catalogue">Catalogue</a>
       <a href="${repositoryUrl}">GitHub ${icon("external")}</a>
+      <button class="theme-switcher" type="button" data-theme-switcher aria-label="Change color theme"><span data-theme-icon aria-hidden="true">◐</span></button>
     </nav>
   </header>
   ${body}
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <a href="${siteUrl}">Home</a>
+    <a href="${siteUrl}#catalogue">Catalogue</a>
+    <a href="${repositoryUrl}">GitHub</a>
+    <button class="theme-switcher" type="button" data-theme-switcher aria-label="Change color theme"><span data-theme-icon aria-hidden="true">◐</span></button>
+  </nav>
   <footer class="site-footer">
     <div><span class="brand__mark">D</span><p>Built from the public Darkwood catalogue.<br><span>Schema v${escape(catalog.schemaVersion)} · ${plural(projects.length, "card")}</span></p></div>
     <div class="footer__links"><a href="${repositoryUrl}">Source</a><a href="${repositoryUrl}/blob/main/CONTRIBUTING.md">Contribute</a><a href="${repositoryUrl}/blob/main/tags.json">Catalogue JSON</a></div>
@@ -161,6 +170,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://w
 const notFound = pageShell({ title: "Page not found — Darkwood", description: "The requested Darkwood page could not be found.", canonical: `${siteUrl}404.html`, pageClass: "not-found", body: `<main id="main"><section class="error-page"><span>404</span><h1>Lost in the woods.</h1><p>This path does not match a public Darkwood card.</p><a class="button button--primary" href="${siteUrl}">Return to the catalogue ${icon("arrow")}</a></section></main>` });
 
 await mkdir(resolve(output, "assets"), { recursive: true });
+await mkdir(resolve(output, "assets/fonts"), { recursive: true });
 await mkdir(resolve(output, "data"), { recursive: true });
 await writeFile(resolve(output, "index.html"), home);
 await writeFile(resolve(output, "404.html"), notFound);
@@ -171,6 +181,9 @@ await writeFile(resolve(output, ".nojekyll"), "");
 await copyFile(resolve(sourceAssets, "catalog.css"), resolve(output, "assets/catalog.css"));
 await copyFile(resolve(sourceAssets, "catalog.js"), resolve(output, "assets/catalog.js"));
 await copyFile(resolve(sourceAssets, "mark.svg"), resolve(output, "assets/mark.svg"));
+for (const font of ["Jost-400-Book.otf", "Jost-500-Medium.otf", "Jost-600-Semi.otf", "Jost-700-Bold.otf"]) {
+  await copyFile(resolve(sourceFonts, font), resolve(output, "assets/fonts", font));
+}
 for (const { project, html } of detailPages) {
   const directory = resolve(output, "cards", project.id);
   await mkdir(directory, { recursive: true });

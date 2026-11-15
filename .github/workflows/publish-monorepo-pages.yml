@@ -27,6 +27,10 @@ jobs:
             .github/pages
             .github/scripts/build-catalog-pages.mjs
             README.md
+            library/uniflow/assets/fonts/Jost-400-Book.otf
+            library/uniflow/assets/fonts/Jost-500-Medium.otf
+            library/uniflow/assets/fonts/Jost-600-Semi.otf
+            library/uniflow/assets/fonts/Jost-700-Bold.otf
             tags.json
             tags.schema.json
 

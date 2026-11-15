@@ -1,3 +1,27 @@
+const themes = ["light", "dark", "sepia"];
+const themeLabels = { light: "Light", dark: "Dark", sepia: "Sepia" };
+const themeIcons = { light: "☼", dark: "☾", sepia: "◐" };
+
+const updateThemeControls = () => {
+  const theme = themes.includes(document.documentElement.dataset.theme) ? document.documentElement.dataset.theme : "light";
+  for (const control of document.querySelectorAll("[data-theme-switcher]")) {
+    control.setAttribute("aria-label", `Color theme: ${themeLabels[theme]}. Activate for next theme.`);
+    control.title = `${themeLabels[theme]} theme`;
+    control.querySelector("[data-theme-icon]").textContent = themeIcons[theme];
+  }
+};
+
+for (const control of document.querySelectorAll("[data-theme-switcher]")) {
+  control.addEventListener("click", () => {
+    const current = themes.includes(document.documentElement.dataset.theme) ? document.documentElement.dataset.theme : "light";
+    const next = themes[(themes.indexOf(current) + 1) % themes.length];
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("darkwood-theme", next); } catch {}
+    updateThemeControls();
+  });
+}
+updateThemeControls();
+
 const form = document.querySelector("[data-filters]");
 
 if (form) {
@@ -52,6 +76,10 @@ if (form) {
   form.addEventListener("change", apply);
   form.addEventListener("reset", () => requestAnimationFrame(apply));
   apply();
+
+  if (location.hash) {
+    requestAnimationFrame(() => document.querySelector(location.hash)?.scrollIntoView());
+  }
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "/" && document.activeElement?.tagName !== "INPUT") {
