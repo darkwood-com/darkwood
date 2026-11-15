@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 
-#[AsCommand(name: 'app:export-static', description: 'Export the six public pages and a strict whitelist of assets.')]
+#[AsCommand(name: 'app:export-static', description: 'Export the seven public pages and a strict whitelist of assets.')]
 final class ExportStaticCommand extends Command
 {
     public function __construct(private readonly Environment $twig, #[Autowire('%kernel.project_dir%')] private readonly string $projectDir)
@@ -71,7 +71,7 @@ final class ExportStaticCommand extends Command
             }
         }
         file_put_contents($directory.'/.nojekyll', '');
-        $output->writeln('Exported six pages and '.count($assets).' assets to dist/ (base path: '.('' === $prefix ? '/' : $prefix).').');
+        $output->writeln('Exported seven pages and '.count($assets).' assets to dist/ (base path: '.('' === $prefix ? '/' : $prefix).').');
         return Command::SUCCESS;
     }
 }

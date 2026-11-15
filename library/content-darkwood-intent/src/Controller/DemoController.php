@@ -17,7 +17,7 @@ final class DemoController extends AbstractController
         return $this->render('home.html.twig', ['demos' => IntentExamples::DEMOS]);
     }
 
-    #[Route('/demo/{slug}', name: 'demo', requirements: ['slug' => 'darkwaar|heroclip|djmatyo|flow|uniflow'], methods: ['GET'])]
+    #[Route('/demo/{slug}', name: 'demo', requirements: ['slug' => 'darkwood|flow|uniflow|darkwaar|heroclip|djmatyo'], methods: ['GET'])]
     public function demo(string $slug): Response
     {
         return $this->render('demo.html.twig', [

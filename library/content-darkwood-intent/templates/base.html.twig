@@ -7,9 +7,9 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Cinq expériences interactives pour comprendre comment une intention devient décision, exécution, résultat et évaluation.">
+  <meta name="description" content="Six expériences interactives pour comprendre comment une intention devient décision, exécution, résultat et évaluation.">
   <meta property="og:title" content="De l’intention à l’exécution · Darkwood">
-  <meta property="og:description" content="Changez une intention ou son contexte et observez les conséquences dans cinq domaines Darkwood.">
+  <meta property="og:description" content="Changez une intention ou son contexte et observez les conséquences dans six domaines Darkwood.">
   <meta property="og:type" content="website"><meta property="og:url" content="https://intent.content.darkwood.com/">
   <title>{% block title %}Intention · Darkwood{% endblock %}</title>
   <link rel="icon" href="{{ prefix }}/logo-darkwood.png">
@@ -33,17 +33,13 @@
 <div class="app-layout">
   <aside class="sidebar" id="sidebar" aria-label="Navigation principale">
     <div class="mobile-menu-heading mobile-only"><span>Explorer l’intention</span><button id="menu-close" class="icon-control" aria-label="Fermer le menu" title="Fermer le menu">{{ icons.icon('close') }}</button></div>
-    <nav class="sidebar-nav" aria-label="Les cinq démonstrations">
+    <nav class="sidebar-nav" aria-label="Les six démonstrations">
       <a href="{{ home_href }}" {% if current == '' %}aria-current="page"{% endif %}>Vue d’ensemble</a>
       <p class="nav-caption">Démonstrations</p>
       {% for key, item in demos %}<a href="{{ is_static ? prefix ~ '/demo/' ~ key ~ '/' : path('demo', {slug: key}) }}" {% if key == current %}aria-current="page"{% endif %}><span>{{ item[0] }}</span><small>{{ item[3] }}</small></a>{% endfor %}
-      <p class="nav-caption">Atelier associé</p>
-      <a href="https://memory.content.darkwood.com/"><span>Mémoire</span><small>Ce qui rend la suite possible</small></a>
-      <p class="nav-caption">Référentiel</p>
-      <a href="https://darkwood-com.github.io/darkwood/cards/darkwood-design/"><span>Darkwood Design</span><small>Identité et conventions visuelles</small></a>
     </nav>
   </aside>
-  <div class="page-column"><main id="main" tabindex="-1">{% block body %}{% endblock %}</main><footer><span>Cinq expériences. Une grille pédagogique.</span><span>Sans compte, backend ni API externe.</span></footer></div>
+  <div class="page-column"><main id="main" tabindex="-1">{% block body %}{% endblock %}</main><footer><span>Six expériences. Une grille pédagogique.</span><span>Sans compte, backend ni API externe.</span></footer></div>
 </div>
 </body>
 </html>

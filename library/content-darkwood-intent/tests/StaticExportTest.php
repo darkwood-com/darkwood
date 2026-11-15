@@ -13,7 +13,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 final class StaticExportTest extends KernelTestCase
 {
-    public function testExportHasSixPagesAndWorksAtBothBasePaths(): void
+    public function testExportHasSevenPagesAndWorksAtBothBasePaths(): void
     {
         self::bootKernel();
         $tester = new CommandTester((new Application(self::$kernel))->find('app:export-static'));
@@ -38,9 +38,13 @@ final class StaticExportTest extends KernelTestCase
             self::assertFileExists(self::$kernel->getProjectDir().'/dist/intent-model.js');
             self::assertFileExists(self::$kernel->getProjectDir().'/dist/aftertrace/teaser.mp4');
             $home = file_get_contents(self::$kernel->getProjectDir().'/dist/index.html');
-            self::assertStringContainsString('https://memory.content.darkwood.com/', $home);
-            self::assertStringContainsString('https://darkwood-com.github.io/darkwood/cards/darkwood-design/', $home);
-            self::assertStringContainsString('Darkwood, un écosystème de services', $home);
+            self::assertStringContainsString('Les six démonstrations', $home);
+            self::assertStringContainsString('De l’intention à l’écosystème', $home);
+            self::assertStringNotContainsString('Atelier associé', $home);
+            self::assertStringNotContainsString('Référentiel', $home);
+            self::assertStringNotContainsString('R&amp;D', $home);
+            $darkwood = file_get_contents(self::$kernel->getProjectDir().'/dist/demo/darkwood/index.html');
+            self::assertStringContainsString('Orienter l’intention', $darkwood);
             $heroclip = file_get_contents(self::$kernel->getProjectDir().'/dist/demo/heroclip/index.html');
             self::assertStringContainsString('https://heroclip.darkwood.com/clips/6e42bdb6-7ba2-42cf-91a1-cdb3b40b4fdc', $heroclip);
             $djmatyo = file_get_contents(self::$kernel->getProjectDir().'/dist/demo/djmatyo/index.html');

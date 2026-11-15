@@ -1,3 +1,21 @@
+export const darkwoodDecision = (intention, context) => {
+  const choices = {
+    game: { service: 'Darkwaar', execution: 'Définir la mécanique, construire le jeu et vérifier son artefact.', result: 'Un jeu testable avec ses sources indépendantes.' },
+    clip: { service: 'Heroclip', execution: 'Composer les scènes et la timeline, puis rendre la vidéo.', result: 'Un clip reconstructible et exportable.' },
+    set: { service: 'DJ Matyo91', execution: 'Décrire la progression et les transitions, puis rejouer la timeline.', result: 'Un set versionné utilisant des sources autorisées.' },
+    treatment: { service: 'Flow', execution: 'Composer les traitements et choisir une stratégie compatible avec le travail.', result: 'Un résultat d’exécution dont les limites restent explicites.' },
+    process: { service: 'Uniflow', execution: 'Transformer le besoin en définition, règles et opérations.', result: 'Un processus explicite, sans prétendre exécuter un effet absent.' },
+  };
+  const choice = choices[intention];
+  return {
+    decision: `Orienter vers ${choice.service}`,
+    context: context === 'clarify' ? 'Le besoin doit d’abord être précisé avant toute exécution.' : 'Le résultat attendu doit être construit et vérifié dans le service choisi.',
+    execution: choice.execution,
+    result: choice.result,
+    evaluation: `Réussite si le résultat produit par ${choice.service} répond à l’intention initiale.`,
+  };
+};
+
 export const darkwaarDecision = (intention, context) => {
   if (intention === 'explore') return { decision: 'Observer avant de transporter', plan: context === 'known' ? 'Confirmer la route sûre et les embranchements.' : 'Tester les cases, révéler les risques et noter le signal.', result: 'Une carte utile pour la prochaine tentative.', evaluation: 'Réussite si la connaissance acquise réduit l’incertitude.' };
   return context === 'known'

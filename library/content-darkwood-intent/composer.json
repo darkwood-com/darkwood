@@ -77,5 +77,5 @@
         "symfony/css-selector": "8.1.*"
     },
     "name": "darkwood-com/darkwood-intent",
-    "description": "Five deterministic demonstrations showing how intention becomes execution and evaluation."
+    "description": "Six deterministic demonstrations showing how intention becomes execution and evaluation."
 }

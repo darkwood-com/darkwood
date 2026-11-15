@@ -1,6 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { darkwaarDecision, heroclipDecision, djDecision, flowDecision, uniflowDecision } from '../public/intent-model.js';
+import { darkwoodDecision, darkwaarDecision, heroclipDecision, djDecision, flowDecision, uniflowDecision } from '../public/intent-model.js';
+
+test('Darkwood orients each intention without merging service responsibilities', () => {
+  assert.equal(darkwoodDecision('game', 'clarify').decision, 'Orienter vers Darkwaar');
+  assert.equal(darkwoodDecision('clip', 'deliver').decision, 'Orienter vers Heroclip');
+  assert.equal(darkwoodDecision('set', 'deliver').decision, 'Orienter vers DJ Matyo91');
+  assert.equal(darkwoodDecision('treatment', 'deliver').decision, 'Orienter vers Flow');
+  assert.equal(darkwoodDecision('process', 'deliver').decision, 'Orienter vers Uniflow');
+  assert.notEqual(darkwoodDecision('game', 'clarify').context, darkwoodDecision('game', 'deliver').context);
+});
 
 test('Darkwaar changes its decision when the route is known', () => {
   assert.equal(darkwaarDecision('carry', 'unknown').decision, 'Reconnaître la rive d’abord');

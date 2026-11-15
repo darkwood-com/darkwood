@@ -1,4 +1,4 @@
-import { darkwaarDecision, heroclipDecision, djDecision, flowDecision, uniflowDecision } from './intent-model.js';
+import { darkwoodDecision, darkwaarDecision, heroclipDecision, djDecision, flowDecision, uniflowDecision } from './intent-model.js';
 
 const dataElement = document.getElementById('demo-data');
 if (dataElement) initialize(JSON.parse(dataElement.textContent));
@@ -11,6 +11,11 @@ function initialize({ slug }) {
   const options = ids => Object.fromEntries(ids.map(id => [id, $(id).value]));
   const setOptions = values => Object.entries(values).forEach(([id, value]) => { if ($(id)) $(id).value = value; });
 
+  if (slug === 'darkwood') {
+    const ids = ['darkwood-intent', 'darkwood-context']; setOptions(restore(options(ids)));
+    const render = () => { const choice = options(ids), result = darkwoodDecision(choice[ids[0]], choice[ids[1]]); $('darkwood-decision').textContent = result.decision; $('darkwood-result').innerHTML = `<dt>Contexte</dt><dd>${result.context}</dd><dt>Exécution</dt><dd>${result.execution}</dd><dt>Résultat attendu</dt><dd>${result.result}</dd><dt>Évaluation</dt><dd>${result.evaluation}</dd>`; remember(choice); };
+    $('darkwood-run').addEventListener('click', render); render();
+  }
   if (slug === 'darkwaar') {
     const ids = ['darkwaar-intent', 'darkwaar-context']; setOptions(restore(options(ids)));
     const render = () => { const choice = options(ids), result = darkwaarDecision(choice[ids[0]], choice[ids[1]]); $('darkwaar-decision').textContent = result.decision; $('darkwaar-result').innerHTML = `<dt>Planification</dt><dd>${result.plan}</dd><dt>Résultat attendu</dt><dd>${result.result}</dd><dt>Évaluation</dt><dd>${result.evaluation}</dd>`; remember(choice); };
