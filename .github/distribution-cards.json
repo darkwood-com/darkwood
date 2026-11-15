@@ -34,7 +34,7 @@
       "pages": {
         "source": "library/darkwood-php/src/Darkwood/Component/Flow/docs",
         "artifact": "library/darkwood-php/src/Darkwood/Component/Flow/docs/src/public",
-        "repository": "darkwood-com/flow-pages",
+        "repository": "darkwood-com/darkwood-php-component-flow",
         "domain": "flow.darkwood.com",
         "builder": "node"
       }
