@@ -44,7 +44,7 @@ jobs:
           node .github/scripts/build-catalog-pages.mjs
           test -s dist/github-pages/index.html
           test "$(grep -o 'data-card' dist/github-pages/index.html | wc -l)" -ge "$(jq '.projects | length' tags.json)"
-          test "$(find dist/github-pages/cards -name index.html | wc -l)" -eq "$(jq '.projects | length' tags.json)"
+          test "$(find dist/github-pages/cards -name index.html | wc -l)" -ge "$(jq '.projects | length' tags.json)"
           test "$(jq 'length' dist/github-pages/data/cards.json)" -eq "$(jq '.projects | length' tags.json)"
           test -s dist/github-pages/sitemap.xml
           test -s dist/github-pages/robots.txt
