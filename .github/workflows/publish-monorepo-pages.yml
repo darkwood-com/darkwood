@@ -26,6 +26,7 @@ jobs:
             .github/distribution-cards.json
             .github/pages
             .github/scripts/build-catalog-pages.mjs
+            .github/scripts/validate-catalog-pages.mjs
             README.md
             library/uniflow/assets/fonts/Jost-400-Book.otf
             library/uniflow/assets/fonts/Jost-500-Medium.otf
@@ -48,6 +49,7 @@ jobs:
           test "$(jq 'length' dist/github-pages/data/cards.json)" -eq "$(jq '.projects | length' tags.json)"
           test -s dist/github-pages/sitemap.xml
           test -s dist/github-pages/robots.txt
+          node .github/scripts/validate-catalog-pages.mjs
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5

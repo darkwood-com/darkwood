@@ -2,7 +2,7 @@
 
 Public monorepo for Darkwood open-source projects.
 
-[Explore the public card portal](https://darkwood-com.github.io/darkwood/) generated from the canonical catalogue.
+[Explore the public card portal](https://pages.darkwood.com/) generated from the canonical catalogue.
 
 ## Projects
 
