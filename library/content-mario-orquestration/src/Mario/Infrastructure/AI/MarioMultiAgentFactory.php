@@ -13,6 +13,19 @@ use Symfony\Component\HttpClient\HttpClient;
 
 final class MarioMultiAgentFactory
 {
+    public function createLevelAgent(string $apiKey): Agent
+    {
+        $platform = Factory::createPlatform($apiKey, HttpClient::create(['timeout' => 90, 'max_duration' => 120]));
+
+        return new Agent(
+            $platform,
+            'gpt-5-mini',
+            [new SystemPromptInputProcessor('Generate one small original platformer level as a JSON object. Use name, tile_size (16), width (32 to 64), height (15), player_start and goal (integer x/y), terrain (nonempty array of type/x/y/w/h), objects (array of type/x/y), metadata (object). Keep every position inside the level. Ground pieces must have positive w/h and remain inside it. Use at most 12 terrain pieces and 8 objects. Do not reproduce Nintendo characters or levels. Return JSON only. Geometry validation does not prove playability.')],
+            name: 'level_generator',
+            maxToolCalls: 0,
+        );
+    }
+
     public const ORCHESTRATOR = 'orchestrator';
     public const LAYOUT = 'layout';
     public const GAMEPLAY = 'gameplay';

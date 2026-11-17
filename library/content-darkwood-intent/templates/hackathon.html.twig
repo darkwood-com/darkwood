@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<section class="hero">
+  <p class="eyebrow">DARKWOOD · ATELIER PHP · NOVEMBRE 2026</p>
+  <h1>Darkwood Symfony AI MCP Hackathon</h1>
+  <div class="hero-bottom"><p>Transformer une intention en résultat vérifiable : un agent Symfony AI génère un niveau JSON original, accessible par le SDK PHP MCP officiel. Cet atelier présente le parcours retenu et situe les autres expériences Darkwood.</p></div>
+  <p><a href="#preuve">Examiner la preuve ↓</a> · <a href="https://github.com/darkwood-com/darkwood/tree/main/library/content-mario-orquestration">Code et instructions ↗</a></p>
+</section>
+<section id="parcours" class="intent-chain">
+  <div class="section-heading"><h2>Un parcours, une candidature</h2><span>MARIO ORCHESTRATION</span></div>
+  <ol><li>Intention</li><li>Outil MCP</li><li>Agent Symfony AI</li><li>OpenAI</li><li>JSON validé</li></ol>
+  <p>La card existante <strong>Mario Orchestration</strong> est retenue pour une génération structurée de niveau de plateforme. Le serveur stdio utilise <code>Mcp\Server\Server</code> et expose <code>generate_original_level</code>. L’agent <code>level_generator</code> appelle réellement le fournisseur ; le résultat est décodé et contrôlé avant d’être retourné.</p>
+  <p><strong>Socle testé localement :</strong> Symfony AI 1.0.0-BETA1, SDK <code>mcp/sdk</code> 0.10.0, Symfony 8.1.11, PHP 8.5. Licence MIT. Flow et Navi restent des dépendances du projet ; le parcours retenu ne prétend pas démontrer leur orchestration multi-agent.</p>
+</section>
+<section id="preuve" class="experiences">
+  <div class="section-heading"><h2>Ce qui a réellement tourné</h2><span>ESSAI DU 17 NOVEMBRE 2026</span></div>
+  <div class="cards">
+    <article class="demo-card"><span class="service">01 · INITIALISER</span><h3>Connexion MCP stdio</h3><p>Échange initialize réussi, puis découverte de l’outil par tools/list. Un prompt vide est refusé par le schéma du SDK avec le code −32602.</p></article>
+    <article class="demo-card"><span class="service">02 · GÉNÉRER</span><h3>Whispering Grove</h3><p>Un appel tools/call a retourné un résultat <code>real_ai</code> : niveau de 48 × 15 cases, six rectangles de terrain et sept objets. La réponse vient du fournisseur OpenAI via Symfony AI.</p></article>
+    <article class="demo-card"><span class="service">03 · VÉRIFIER</span><h3>Contrôles de structure</h3><p>Le programme vérifie les dimensions, les types et les limites des coordonnées. Les essais de régression et une installation propre ont été exécutés localement.</p></article>
+  </div>
+  <p><a href="{{ prefix }}/hackathon/mcp-proof.json">Consulter la trace JSON publique de l’essai</a>. Cette trace est un enregistrement d’exécution ; ouvrir cette page ne lance aucun modèle et ne facture aucun appel API.</p>
+</section>
+<section id="selection" class="experiences">
+  <div class="section-heading"><h2>Les expériences qualifiées</h2><span>PÉRIMÈTRE PUBLIC</span></div>
+  <div class="cards">
+    {% set cards = [
+      ['content-mario-orquestration', 'Mario Orchestration', 'Sélectionnée et démontrée localement', 'Génération réelle Symfony AI + SDK officiel. Installation et code disponibles dans le monorepo ; vidéo finale à valider.'],
+      ['darkwood-publish-article-mcp-apps', 'Publish Article MCP Apps', 'Contexte · non soumissible en l’état', 'Protocole personnalisé, génération de brouillon et URL de publication simulées. Pas de Symfony AI ni de SDK officiel dans ce parcours.'],
+      ['content-composio-mcp', 'Composio MCP', 'Contexte · correctif requis', 'Anciennes API Symfony AI MCP et services Composio externes. Compatibilité actuelle et exécution de bout en bout non établies.'],
+      ['content-connect-flow', 'Connect Flow', 'Contexte · tests locaux validés', 'Parcours langage vers Flow avec Ollama et Composio. Douze tests locaux passent ; pas de preuve d’appel externe ni de SDK MCP officiel.'],
+      ['content-recherche-entreprise-mcp', 'Recherche Entreprise MCP', 'Contexte · non soumissible en l’état', 'Recherche d’entreprises et protocole personnalisé. Symfony 8.1 validé localement ; absence de Symfony AI et de SDK officiel dans le manifeste.'],
+      ['flowvox', 'Flowvox', 'Contexte · exécution complète à qualifier', 'Pipeline vocal avec dépendances micro, modèle et services locaux. Dépendances AI bêta installées ; démonstration vocale de bout en bout non vérifiée.']
+    ] %}
+    {% for card in cards %}<article class="demo-card"><span class="service">{{ card[2] }}</span><h3>{{ card[1] }}</h3><p>{{ card[3] }}</p><a class="card-bottom" href="https://github.com/darkwood-com/darkwood/tree/main/library/{{ card[0] }}">Examiner le code <span>↗</span></a></article>{% endfor %}
+  </div>
+  <p>Les composants RUN et les réalisations privées participent au savoir-faire de Darkwood. Aucun code privé ni accès de production n’est nécessaire à la démonstration retenue. Les statuts de cet atelier décrivent les vérifications et ne modifient pas les statuts canoniques des cards.</p>
+</section>
+<section id="installation" class="intent-chain">
+  <div class="section-heading"><h2>Reproduire la démonstration</h2><span>PHP · COMPOSER · CLÉ FOURNISSEUR</span></div>
+  <p>Le code appartient au monorepo public existant. Depuis la card Mario, le README détaille l’installation Composer, le mode de simulation explicite et le transport MCP stdio. Utiliser sa propre clé OpenAI en variable d’environnement ; aucune clé n’est fournie par l’atelier.</p>
+  <p><a href="https://github.com/darkwood-com/darkwood/tree/main/library/content-mario-orquestration#readme">Instructions d’installation et script de 90 secondes ↗</a></p>
+  <p><strong>État de livraison :</strong> les adaptations AI bêta et MCP, l’installation depuis le lock et la trace de cet atelier ont été vérifiées localement. Le README du monorepo permet de reproduire ce parcours. La vidéo et la soumission définitive restent à valider.</p>
+</section>
+<section id="limites" class="intent-chain">
+  <div class="section-heading"><h2>Limites connues</h2><span>PORTÉE DES PREUVES</span></div>
+  <p>Le JSON ne constitue pas une preuve de jouabilité. L’importeur Godot demande encore une adaptation ; aucun jeu complet n’est annoncé. Les contrôles géométriques ne prouvent ni qu’un parcours est franchissable, ni l’originalité juridique de tous les contenus générés.</p>
+  <p>Le mode fake reste une fixture de test explicite, distincte de l’appel réel enregistré. Le parcours retenu utilise un agent ; les autres composants multi-agents du dépôt restent expérimentaux. Une clé fournisseur, un accès réseau et un crédit API sont nécessaires pour reproduire la génération réelle.</p>
+</section>
+<section id="concours" class="intent-chain">
+  <div class="section-heading"><h2>Pourquoi Darkwood participe</h2><span>CONTENT FACTORY</span></div>
+  <p>Darkwood relie PHP, outils, agents et automatisation pour rendre l’exécution observable et reproductible. Le hackathon permet de confronter ce travail aux préversions Symfony AI et MCP et de documenter leurs limites à partir d’un cas réel.</p>
+  <p>Le <a href="https://symfony.com/hackathon">site officiel du hackathon</a>, consulté le 18 novembre 2026, demande un dépôt public exécutable et une vidéo réelle de 90 secondes, à remettre avant le 22 novembre à 18 h CET. La décision d’acceptation appartient aux organisateurs.</p>
+  <p><a href="https://pages.darkwood.com/">Explorer le catalogue Darkwood</a> · <a href="https://flow.darkwood.com/">Découvrir Flow</a> · <a href="https://darkwood.com/">Darkwood</a></p>
+</section>
+{% endblock %}

@@ -64,4 +64,33 @@ final class StaticExportTest extends KernelTestCase
             self::assertSame(Command::INVALID, $tester->getStatusCode());
         }
     }
+
+    public function testHackathonExportKeepsOnlyItsPublicAssets(): void
+    {
+        self::bootKernel();
+        $tester = new CommandTester((new Application(self::$kernel))->find('app:export-static'));
+        $tester->execute(['--workshop' => 'hackathon']);
+        self::assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $directory = self::$kernel->getProjectDir().'/dist-hackathon';
+        $crawler = new Crawler(file_get_contents($directory.'/index.html'));
+        self::assertSame('Darkwood Symfony AI MCP Hackathon', $crawler->filter('h1')->text());
+        self::assertSame('https://ai-mcp-symfony-hackathon.content.darkwood.com/', $crawler->filter('link[rel="canonical"]')->attr('href'));
+        self::assertCount(6, $crawler->filter('#selection article'));
+        foreach ($crawler->filter('nav a[href^="#"]') as $anchor) {
+            self::assertCount(1, $crawler->filter($anchor->getAttribute('href')));
+        }
+        foreach (['script[src]', 'link[rel="stylesheet"]', 'img[src]'] as $selector) {
+            foreach ($crawler->filter($selector) as $element) {
+                $path = $element->getAttribute('src') ?: $element->getAttribute('href');
+                self::assertFileExists($directory.$path);
+            }
+        }
+        $proof = json_decode(file_get_contents($directory.'/hackathon/mcp-proof.json'), true, flags: JSON_THROW_ON_ERROR);
+        self::assertSame('real_ai', $proof[3]['result']['structuredContent']['mode']);
+        self::assertFalse($proof[3]['result']['isError']);
+        self::assertFileDoesNotExist($directory.'/aftertrace/teaser.mp4');
+        self::assertFileDoesNotExist($directory.'/static.js');
+        $tester->execute(['--workshop' => '../unsafe']);
+        self::assertSame(Command::INVALID, $tester->getStatusCode());
+    }
 }
