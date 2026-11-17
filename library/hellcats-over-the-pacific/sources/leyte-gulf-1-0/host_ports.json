@@ -244,6 +244,9 @@
     "set_back_color_index",
     "design_x_to_screen",
     "design_y_to_screen",
+    "draw_view_frame_outline",
+    "blit_image_clipped_to_region",
+    "blit_image_clipped_to_region_a5safe",
     "run_segment3_entry_and_unload_a5safe",
     "new_handle_clear_or_die_a5safe",
     "fatal_memory_error_exit",
@@ -325,14 +328,18 @@
     "-0x14a6": "-0x1524",
     "-0x14a2": "-0x1520",
     "-0x149e": "-0x151c",
+    "-0x1496": "-0x1514",
     "-0x13ba": "-0x1438",
     "-0x13b8": "-0x1436",
     "-0x13b6": "-0x1434",
+    "-0x13b2": "-0x1430",
+    "-0x13ae": "-0x142c",
     "-0x137e": "-0x13fc",
     "-0x137a": "-0x13f8",
     "-0x1372": "-0x13f0",
     "-0x1370": "-0x13ee",
     "-0x12ee": "-0x136c",
+    "-0x12b0": "-0x132a",
     "-0x1202": "-0x127c",
     "-0x1200": "-0x127a",
     "-0x11fe": "-0x1278",
@@ -409,6 +416,7 @@
     "0x282": "0x29a",
     "0x28a": "0x2a2",
     "0x29a": "0x2ba",
+    "0x2d2": "0x312",
     "0x2e2": "0x322",
     "0x2fa": "0x33a",
     "0x302": "0x342",
@@ -416,7 +424,13 @@
     "0x41a": "0x45a",
     "0x422": "0x462"
    },
-   "immediates": [],
+   "immediates": [
+    {
+     "1.0.3": "0x160",
+     "leyte": "0x194",
+     "meaning": "the image table's record size (*(A5 - 0x13b2), indexed by A5 - 0x13ae; ID02.decomp.c: records 0x160 bytes): 1.0.3 0x160, Leyte 0x194 (muls.w in blit_image_clipped_to_region +0x1902)"
+    }
+   ],
    "a5_local": {
     "-0x1680": [
      "centre_window_on_screen",
@@ -507,11 +521,18 @@
     "-0x13b6": [
      "paint_view_horizon_bands_a5safe"
     ],
+    "-0x13b2": [
+     "blit_image_clipped_to_region"
+    ],
+    "-0x13ae": [
+     "blit_image_clipped_to_region"
+    ],
     "-0x137e": [
      "blit_offscreen_frame_to_window"
     ],
     "-0x137a": [
      "blit_offscreen_frame_to_window",
+     "draw_view_frame_outline",
      "get_blended_fill_pattern",
      "lookup_palette_index_for_rgb_level",
      "paint_polygon_rgb_a5safe",
@@ -528,6 +549,9 @@
      "blit_offscreen_frame_to_window",
      "design_y_to_screen",
      "draw_text_in_columns_a5safe"
+    ],
+    "-0x12b0": [
+     "blit_image_clipped_to_region"
     ],
     "-0x1202": [
      "paint_view_horizon_bands_a5safe"
@@ -584,14 +608,11 @@
    "unverified": {
     "apply_settings_to_live_options": "ID02 apply_settings_to_live_options: not found in Leyte",
     "begin_overlay_session": "ID02 begin_overlay_session: its port reaches refused load_game_sounds; A5 globals not paired: -0x112a, -0xd00, -0xcf8, -0xcea, -0xce6, -0xce2, -0xcd0, -0xcca, -0xcc4, -0xcc0, -0xcba, -0xcb4, -0xcae, -0xca4",
-    "blit_image_clipped_to_region": "ID02 blit_image_clipped_to_region: its port reaches refused draw_view_frame_outline; A5 globals not paired: -0xc80, -0x424",
-    "blit_image_clipped_to_region_a5safe": "ID02 blit_image_clipped_to_region_a5safe: its port reaches refused blit_image_clipped_to_region, draw_view_frame_outline; A5 globals not paired: -0xc80, -0x424",
     "build_palette_index_map": "ID02 build_palette_index_map: not found in Leyte",
     "check_device_color_state_changed": "ID02 check_device_color_state_changed: jump-table slot 0x182 (Leyte 0x1a2) does not reach the same routine",
     "configure_display_from_main_device": "ID02 configure_display_from_main_device: not found in Leyte",
     "do_menu_command": "ID02 do_menu_command: not found in Leyte",
     "draw_notched_frame_pair_a5safe": "ID02 draw_notched_frame_pair_a5safe: not found in Leyte",
-    "draw_view_frame_outline": "ID02 draw_view_frame_outline: its port reaches A5 globals not paired: -0xc80, -0x424",
     "handle_mouse_down": "ID02 handle_mouse_down: its port reaches refused apply_settings_to_live_options, begin_overlay_session, build_palette_index_map, check_device_color_state_changed, configure_display_from_main_device, do_menu_command, layout_game_window_and_view, load_game_sounds, redraw_main_window, run_flight_session, scan_display_devices, start_new_mission; A5 globals not paired: -0x1504, -0x1500, -0x14fc, -0x14f8, -0x14f6, -0x14c4, -0x14c2, -0x14c0, -0x13a2, -0x1386, -0x1382, -0x137c, -0x1378, -0x1358, -0x134a, -0x1348, -0x1346, -0x1342, -0x132c, -0x1312, -0x1300, -0x12f8, -0x12f0, -0x12ec, -0x12ea, -0x12e8, -0x12e6, -0x12e4, -0x12e0, -0x12de, -0x12dc, -0x12da, -0x12d8, -0x12d6, -0x12d4, -0x12d2, -0x12d0, -0x12ce, -0x12b6, -0x12b4, -0x12b2, -0x112a, -0x1122, -0x10a2, -0x109e, -0x109a, -0x1092, -0x108e, -0x108a, -0x1086, -0x106e, -0x106a, -0x104e, -0x104a, -0x1048, -0x1046, -0x1044, -0x103c, -0x1032, -0x1030, -0x102f, -0x1002, -0xde6, -0xd76, -0xd6a, -0xd10, -0xd00, -0xcf8, -0xcea, -0xce6, -0xce2, -0xcd0, -0xcca, -0xcc4, -0xcc0, -0xcba, -0xcb4, -0xcae, -0xca4, -0xc92",
     "handle_update_event": "ID02 handle_update_event: its port reaches refused build_palette_index_map, check_device_color_state_changed, redraw_main_window; A5 globals not paired: -0x12f8, -0x12ea, -0x12d4, -0x1122, -0x109e, -0x103c, -0x1032",
     "initialize_application": "ID02 initialize_application: not found in Leyte",
@@ -1086,7 +1107,11 @@
     "ask_save_changes",
     "confirm_erase_high_scores",
     "compute_pilot_score",
+    "duty_roster_filter_proc",
     "draw_select_mission_title",
+    "fuel_slider_dialog_filter",
+    "scenario_selection_filter_proc",
+    "refuel_dialog_filter_proc",
     "rank_pilots_by_score",
     "reset_pilot_record",
     "prune_inactive_pilots_beyond_ten",
@@ -1108,6 +1133,7 @@
     "stop_named_sound",
     "draw_map_grid_and_centre_mark",
     "plot_map_symbol_callback",
+    "map_dialog_filter_proc",
     "poll_click_or_key_event",
     "show_about_dialog",
     "check_system_requirements"
@@ -1149,6 +1175,8 @@
     "-0xe5e": "-0xe9c",
     "-0xe52": "-0xe90",
     "-0xe46": "-0xe84",
+    "0x2a": "0x2a",
+    "0x32": "0x32",
     "0x3a": "0x3a",
     "0x92": "0xba",
     "0x1f2": "0x202",
@@ -1162,6 +1190,7 @@
     "0x472": "0x4aa",
     "0x47a": "0x4c2",
     "0x48a": "0x4d2",
+    "0x492": "0x4a2",
     "0x4a2": "0x512",
     "0x4ba": "0x4da",
     "0x512": "0x55a",
@@ -1172,10 +1201,12 @@
    "a5_local": {
     "-0x225e": [
      "draw_default_button_outline",
+     "map_dialog_filter_proc",
      "update_summary_dialog_buttons"
     ],
     "-0x225c": [
-     "draw_percent_bar_item"
+     "draw_percent_bar_item",
+     "fuel_slider_dialog_filter"
     ],
     "-0x2232": [
      "fit_text_view_to_box",
@@ -1243,7 +1274,8 @@
    "elsewhere": [],
    "jt_counterparts": {
     "0x92": "scrolling_text_user_item_proc (identical)",
-    "0x472": "centre_window_on_screen (same_instructions)"
+    "0x472": "centre_window_on_screen (same_instructions)",
+    "0x492": "handle_update_event (same_instructions)"
    },
    "a5_derived": {},
    "evidence": "per function: the listed functions are the same instructions in Leyte's CODE 4, A5 operands only differing, each through the A5 map; the unverified ones refuse",
@@ -1255,19 +1287,15 @@
     "draw_map_view_item": "ID04 draw_map_view_item +0x34dc: move.w $26(a0), d0 | $2a(a0), d0",
     "draw_targets_destroyed_list": "ID04 draw_targets_destroyed_list: its port reaches refused draw_targets_destroyed_row; A5 globals not paired: -0x2226, -0x2136",
     "draw_targets_destroyed_row": "ID04 draw_targets_destroyed_row: not found in Leyte",
-    "duty_roster_filter_proc": "ID04 duty_roster_filter_proc: jump-table slot 0x2a (Leyte 0x2a) does not reach the same routine",
-    "fuel_slider_dialog_filter": "ID04 fuel_slider_dialog_filter: jump-table slot 0x2a (Leyte 0x2a) does not reach the same routine",
     "get_mission_kill_report_state": "ID04 get_mission_kill_report_state: not found in Leyte",
-    "map_dialog_filter_proc": "ID04 map_dialog_filter_proc: not found in Leyte",
     "map_view_user_item_proc": "ID04 map_view_user_item_proc: its port reaches refused draw_map_view_item; A5 globals not paired: -0x2142, -0x2140, -0x213e, -0x1052, -0xe5a",
-    "refuel_dialog_filter_proc": "ID04 refuel_dialog_filter_proc: its port reaches refused fuel_slider_dialog_filter",
     "run_with_temporary_window": "ID04 run_with_temporary_window: jump-table slot 0x4aa (Leyte 0x502) does not reach the same routine",
-    "scenario_selection_filter_proc": "ID04 scenario_selection_filter_proc: its port reaches refused fuel_slider_dialog_filter",
     "show_mission_summary_dialog": "ID04 show_mission_summary_dialog: not found in Leyte"
    },
    "a5_from_map": [],
    "relocated": {
     "draw_targets_destroyed_list": "0x1fb8",
+    "map_dialog_filter_proc": "0x417e",
     "refuel_dialog_filter_proc": "0xfd4",
     "scenario_selection_filter_proc": "0xc2a"
    }

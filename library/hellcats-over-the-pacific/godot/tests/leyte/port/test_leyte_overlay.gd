@@ -2,10 +2,12 @@ extends RefCounted
 
 const Assertions := preload("res://tests/helpers/assertions.gd")
 const Memory68kScript := preload("res://original/compat/memory_68k.gd")
-const LeyteOverlayPort := preload("res://tests/leyte/port/helpers/leyte_overlay_port.gd")
+const LeyteOverlayPort := preload("res://tests/leyte/port/helpers/leyte_overlay_reconstructed_port.gd")
 
 ## Leyte Gulf's overlay port (original/leyte/port/pacific_conflict.gd, the functions
-## tools/leyte/gen_overlay_port.py keeps) against Leyte's own overlay on the 68000 emulator:
+## tools/leyte/gen_overlay_port.py keeps, run as the game runs them: on the port
+## pacific_conflict_reconstructed.gd extends, which supplies the routines written from Leyte's bytes
+## that the kept ones call) against Leyte's own overlay on the 68000 emulator:
 ## fixtures/overlay_cases.json (tools/leyte/gen_leyte_overlay_cases.py, 1.0.3's overlay cases
 ## translated through overlay_map.json). Each case starts from Leyte's image (the data fork, runtime =
 ## file - 0x20; neither side seeds the overlay RNG), clears its zero ranges, applies its writes, runs the

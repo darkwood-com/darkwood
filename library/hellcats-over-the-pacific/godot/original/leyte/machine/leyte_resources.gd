@@ -45,8 +45,17 @@ var chain: Array = []           ## reference numbers, oldest first (the applicat
 var current: int = APPLICATION_FILE
 var _next_ref: int = FIRST_FILE
 
+## Leyte's own resources and their names (tools/leyte/extract_resources.py's mirror).
+const LEYTE_RESOURCES := "res://assets/leyte-gulf-1.0/resources.json"
+
 func _init(owner, memory_manager, leyte_volume = null, files_manager = null) -> void:
 	super(owner, memory_manager)
+	# GetNamedResource resolves the application's names from Leyte's resources, not 1.0.3's
+	# (resource_names.json): a Leyte-only name (its 'snd ' "Missle") is found, as on the Mac, without case.
+	_names.clear()
+	for e in JSON.parse_string(FileAccess.get_file_as_string(LEYTE_RESOURCES))["resources"]:
+		if e.has("name"):
+			_names["%s:%s" % [e["type"], String(e["name"]).to_lower()]] = int(e["id"])
 	volume = leyte_volume
 	file_manager = files_manager
 	files[APPLICATION_FILE] = {"name": LeyteVolume.APPLICATION, "dir": LeyteVolume.ROOT_ID, "kind": "application",

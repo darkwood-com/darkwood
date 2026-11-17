@@ -31,7 +31,7 @@ static func apply(with_hellcats: bool = true):
 		# CODE 1 (the C runtime: byte-identical to 1.0.3's) is not a segment port, as in 1.0.3's loader.
 		"ports": {
 			2: preload("res://original/leyte/port/ID02_reconstructed.gd"),
-			3: preload("res://original/leyte/port/ID03.gd"), 4: preload("res://original/leyte/port/ID04.gd"),
+			3: preload("res://original/leyte/port/ID03_reconstructed.gd"), 4: preload("res://original/leyte/port/ID04.gd"),
 			5: preload("res://original/leyte/port/ID05.gd"), 6: preload("res://original/leyte/port/ID06.gd"),
 			7: preload("res://original/leyte/port/ID07.gd"), 8: preload("res://original/leyte/port/ID08.gd"),
 			9: preload("res://original/leyte/port/ID09.gd")}}

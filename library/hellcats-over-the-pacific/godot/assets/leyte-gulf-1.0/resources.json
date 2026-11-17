@@ -6,37 +6,43 @@
    "folder": "alrt",
    "type": "ALRT",
    "id": 256,
-   "sha256": "faa7e1ba523f855ee7eae4865be8922c4f4705325538e8355cbf72c86e5a1ea8"
+   "sha256": "faa7e1ba523f855ee7eae4865be8922c4f4705325538e8355cbf72c86e5a1ea8",
+   "name": "Unable to Open Scenery"
   },
   {
    "folder": "alrt",
    "type": "ALRT",
    "id": 257,
-   "sha256": "3b2322e6f7a336b895be0eb31e876d858980150272433837cded4db971ac587c"
+   "sha256": "3b2322e6f7a336b895be0eb31e876d858980150272433837cded4db971ac587c",
+   "name": "Save Changes"
   },
   {
    "folder": "alrt",
    "type": "ALRT",
    "id": 258,
-   "sha256": "f01fb35c3f45fc906bdde6dc121a50f8958895b67056cda1a3eb8037781d7ad9"
+   "sha256": "f01fb35c3f45fc906bdde6dc121a50f8958895b67056cda1a3eb8037781d7ad9",
+   "name": "Error"
   },
   {
    "folder": "alrt",
    "type": "ALRT",
    "id": 259,
-   "sha256": "73f6bbb22255124f0e15708b5170d694771cd2d0b6a5b0752f005180b4872865"
+   "sha256": "73f6bbb22255124f0e15708b5170d694771cd2d0b6a5b0752f005180b4872865",
+   "name": "Really End Mission"
   },
   {
    "folder": "alrt",
    "type": "ALRT",
    "id": 260,
-   "sha256": "97222e86925a3f8f67facae6336de3791c0396b373e191e0a98e118b17fb1bdf"
+   "sha256": "97222e86925a3f8f67facae6336de3791c0396b373e191e0a98e118b17fb1bdf",
+   "name": "Erase Hi Score"
   },
   {
    "folder": "alrt",
    "type": "ALRT",
    "id": 261,
-   "sha256": "0fa1054cc4bf89c921f7d7cbcb792010313a83b6f7fb2c9217792e907138f649"
+   "sha256": "0fa1054cc4bf89c921f7d7cbcb792010313a83b6f7fb2c9217792e907138f649",
+   "name": "Not on floppy"
   },
   {
    "folder": "alrt",
@@ -198,73 +204,85 @@
    "folder": "dlog",
    "type": "DLOG",
    "id": 127,
-   "sha256": "bbb83325153e6c349493df5663fc3df3e941bb9f2b6747fbb0db65254124a045"
+   "sha256": "bbb83325153e6c349493df5663fc3df3e941bb9f2b6747fbb0db65254124a045",
+   "name": "About Hellcats"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 128,
-   "sha256": "f0a645da90cf17f6e9fc75c3ab771bd9885d4b4ef1e74895ee84cdaef68aa705"
+   "sha256": "f0a645da90cf17f6e9fc75c3ab771bd9885d4b4ef1e74895ee84cdaef68aa705",
+   "name": "Creating Instrument Panel"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 129,
-   "sha256": "bdf70c6cab4db0fc5440b81bdb57cb4f0bc337880b5941e2cca1da63e866398c"
+   "sha256": "bdf70c6cab4db0fc5440b81bdb57cb4f0bc337880b5941e2cca1da63e866398c",
+   "name": "Scenario Selection"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 130,
-   "sha256": "2ac0dbdea0752c8f1d5911f37401a0e44b7e5645f6d2320af9daa67fc4581e6d"
+   "sha256": "2ac0dbdea0752c8f1d5911f37401a0e44b7e5645f6d2320af9daa67fc4581e6d",
+   "name": "Duty Roster"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 131,
-   "sha256": "56f123570e59fad86438f4e2b8ff5a790c99e559e8085892a612531530193e1e"
+   "sha256": "56f123570e59fad86438f4e2b8ff5a790c99e559e8085892a612531530193e1e",
+   "name": "Paused Dialog"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 132,
-   "sha256": "4923517614814b104b06a2cde9505dcaebe9db028a93cd347cdd444b931776d9"
+   "sha256": "4923517614814b104b06a2cde9505dcaebe9db028a93cd347cdd444b931776d9",
+   "name": "Refuel"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 133,
-   "sha256": "5b9e1b2a9d8106b8a8df1c750858c6e4b347f4c1aa2b1f3a976e806c1de5c577"
+   "sha256": "5b9e1b2a9d8106b8a8df1c750858c6e4b347f4c1aa2b1f3a976e806c1de5c577",
+   "name": "Mission Summary"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 134,
-   "sha256": "9bec10c86e72594f71a4f567f418a0dafce48fde71d550d03b394955518599b7"
+   "sha256": "9bec10c86e72594f71a4f567f418a0dafce48fde71d550d03b394955518599b7",
+   "name": "High Scores"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 137,
-   "sha256": "bf415d2f46b469966a9c1aa58203153c6a9aa184d8910b11e8b05dbd8063de7f"
+   "sha256": "bf415d2f46b469966a9c1aa58203153c6a9aa184d8910b11e8b05dbd8063de7f",
+   "name": "Map"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 138,
-   "sha256": "2d7f6b2fd961faaae8c9fd0f9c7789bca2b126d08f036988e55d072559579925"
+   "sha256": "2d7f6b2fd961faaae8c9fd0f9c7789bca2b126d08f036988e55d072559579925",
+   "name": "About Hellcats 1-Bit"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 139,
-   "sha256": "cb5553724130c954977acd112c0e4a423c16b1f9878c579dc326381c1ecb172f"
+   "sha256": "cb5553724130c954977acd112c0e4a423c16b1f9878c579dc326381c1ecb172f",
+   "name": "Sound Error"
   },
   {
    "folder": "dlog",
    "type": "DLOG",
    "id": 1000,
-   "sha256": "128fdcf906fd6751f3079a45ac231cdd34739c48a742f372d03458880d3fe975"
+   "sha256": "128fdcf906fd6751f3079a45ac231cdd34739c48a742f372d03458880d3fe975",
+   "name": "Copy Protection"
   },
   {
    "folder": "drel",
@@ -282,7 +300,8 @@
    "folder": "hel1",
    "type": "HEL1",
    "id": 0,
-   "sha256": "d3b8930e79e1c2b08238b6c59c5b81a35a5c865a8d300ddeb666b562e469e759"
+   "sha256": "d3b8930e79e1c2b08238b6c59c5b81a35a5c865a8d300ddeb666b562e469e759",
+   "name": "Owner resource"
   },
   {
    "folder": "icn#",
@@ -336,19 +355,22 @@
    "folder": "pict",
    "type": "PICT",
    "id": 128,
-   "sha256": "e8a17dfbdec21e5e4f02213660614434301801b2fae7792af9b1d800301d8510"
+   "sha256": "e8a17dfbdec21e5e4f02213660614434301801b2fae7792af9b1d800301d8510",
+   "name": "Hellcats About PICT RSRC"
   },
   {
    "folder": "pict",
    "type": "PICT",
    "id": 129,
-   "sha256": "ec03368520c62e2591e78f07b60cfaff2bb977533fc1e3bea09d6b1ba30a3907"
+   "sha256": "ec03368520c62e2591e78f07b60cfaff2bb977533fc1e3bea09d6b1ba30a3907",
+   "name": "Hellcats About 1-Bit PICT"
   },
   {
    "folder": "pict",
    "type": "PICT",
    "id": 130,
-   "sha256": "a59e0538231c02293ebf07ce321f94fa2a99ef5fb5b48d2a1e4a46e1565c9a1a"
+   "sha256": "a59e0538231c02293ebf07ce321f94fa2a99ef5fb5b48d2a1e4a46e1565c9a1a",
+   "name": "Refuel Dialog 1bit PICT"
   },
   {
    "folder": "pict",
@@ -378,7 +400,8 @@
    "folder": "str#",
    "type": "STR#",
    "id": 129,
-   "sha256": "df2bd5cbf6fd9e8d530b4b2503b65c468234a549547fd193f7f97ee600cfafd3"
+   "sha256": "df2bd5cbf6fd9e8d530b4b2503b65c468234a549547fd193f7f97ee600cfafd3",
+   "name": "English Strings"
   },
   {
    "folder": "text",
@@ -402,13 +425,15 @@
    "folder": "cicn",
    "type": "cicn",
    "id": 256,
-   "sha256": "fbbbdf644863299e9cf37b3bac7f8bd18af9ee97395afab4ca58b88217b15ec1"
+   "sha256": "fbbbdf644863299e9cf37b3bac7f8bd18af9ee97395afab4ca58b88217b15ec1",
+   "name": "Ensign"
   },
   {
    "folder": "cicn",
    "type": "cicn",
    "id": 257,
-   "sha256": "aff20ca1e6516454134926991cfe3a081006a27a36ad814dd8ee1b63e6539c31"
+   "sha256": "aff20ca1e6516454134926991cfe3a081006a27a36ad814dd8ee1b63e6539c31",
+   "name": "Ensign"
   },
   {
    "folder": "cicn",
@@ -588,85 +613,99 @@
    "folder": "snds",
    "type": "snd ",
    "id": 2186,
-   "sha256": "2c2b130716c1c667b5ae6208a75a3d897f9b83d6a8fcad610c72a1f782efcecd"
+   "sha256": "2c2b130716c1c667b5ae6208a75a3d897f9b83d6a8fcad610c72a1f782efcecd",
+   "name": "Grass"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 13493,
-   "sha256": "0bb695b88f413637da7220802c6fcda2334e8cbace55fb4f41764bb4d8a9a9a6"
+   "sha256": "0bb695b88f413637da7220802c6fcda2334e8cbace55fb4f41764bb4d8a9a9a6",
+   "name": "Hit"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 15396,
-   "sha256": "dcbb44827934e29aa76ac98f435eb7ab3587a018c1b5b78ecd9af53504d169f0"
+   "sha256": "dcbb44827934e29aa76ac98f435eb7ab3587a018c1b5b78ecd9af53504d169f0",
+   "name": "Ditch"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 15490,
-   "sha256": "054bffa96ed4ab2a57611e0fd4b4b559f63e172252a1169c100464aee4d58d66"
+   "sha256": "054bffa96ed4ab2a57611e0fd4b4b559f63e172252a1169c100464aee4d58d66",
+   "name": "Explosion"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 16059,
-   "sha256": "9b6c665c6410d6aea78914a56df598da904930fb9a84878f9737adc8f7187d57"
+   "sha256": "9b6c665c6410d6aea78914a56df598da904930fb9a84878f9737adc8f7187d57",
+   "name": "Gear"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 16737,
-   "sha256": "76746b52017794456f50e0f7e738e8dbe9de81130e1a917f87234418c71d9248"
+   "sha256": "76746b52017794456f50e0f7e738e8dbe9de81130e1a917f87234418c71d9248",
+   "name": "Short Engine"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 16815,
-   "sha256": "a247996783133c75fa8f7ba10a16f82a34f4d4aa9fa4e9ecbea54ff01c9e7cce"
+   "sha256": "a247996783133c75fa8f7ba10a16f82a34f4d4aa9fa4e9ecbea54ff01c9e7cce",
+   "name": "ugh"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 19330,
-   "sha256": "e667bbdea77aec482a321dde3dd84ba82f140b9c0a3dd8ff2584c62db6024a72"
+   "sha256": "e667bbdea77aec482a321dde3dd84ba82f140b9c0a3dd8ff2584c62db6024a72",
+   "name": "Engine"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 21266,
-   "sha256": "bea713f5aa9eeb1b9c71b9fbc16748e663a91966ddc8f83371039acd922b5b07"
+   "sha256": "bea713f5aa9eeb1b9c71b9fbc16748e663a91966ddc8f83371039acd922b5b07",
+   "name": "Distant Explosion"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 22599,
-   "sha256": "0ceb0ebc138883350ecba9929b400e9002aad6521bb1c416d992a60b44a641e2"
+   "sha256": "0ceb0ebc138883350ecba9929b400e9002aad6521bb1c416d992a60b44a641e2",
+   "name": "Wind"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 24100,
-   "sha256": "39fd8533345884cfaf9f3ee7739cd332427f0b37412efdba179fd88dd4c744b5"
+   "sha256": "39fd8533345884cfaf9f3ee7739cd332427f0b37412efdba179fd88dd4c744b5",
+   "name": "Wheel"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 25233,
-   "sha256": "4bb0afeef0044ee7c17bb1d69f37cce1ec6b3fffaec4e1985a80d0dadc938cc5"
+   "sha256": "4bb0afeef0044ee7c17bb1d69f37cce1ec6b3fffaec4e1985a80d0dadc938cc5",
+   "name": "Gun"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 25954,
-   "sha256": "ea7f695b6657d7c39833cb454b7e6b1d0015057faf5dfd7396d8e7bec6aa5657"
+   "sha256": "ea7f695b6657d7c39833cb454b7e6b1d0015057faf5dfd7396d8e7bec6aa5657",
+   "name": "Missle"
   },
   {
    "folder": "snds",
    "type": "snd ",
    "id": 30683,
-   "sha256": "f16458e8e3b2d5efe77447b2549c1a605608865bce318fe8c06cbea470c04cee"
+   "sha256": "f16458e8e3b2d5efe77447b2549c1a605608865bce318fe8c06cbea470c04cee",
+   "name": "Taps"
   },
   {
    "folder": "styl",

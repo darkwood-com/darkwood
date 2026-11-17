@@ -2243,3 +2243,1675 @@ Cycle 25 of job f19bd982:
   logs. segment_methods.json is regenerated (CODE 2: 117).
 - Validation: probe, QA and the full Godot suite below.
 - Next: start_new_mission (0x3d38), then the idle slot $aa (CODE 4 +0x482).
+- Probe (cycle 25): update_menu_items now runs in the real start; 0x38b2 no longer stops it. The first
+  host stop is start_new_mission 0x3d38, then the idle slot $aa, with overlay hooks 0, 4 and 21
+  reported missing.
+- Full Godot suite NOT run to completion for cycles 24 and 25. A separate Codex session on this machine
+  (the ChatGPT app, a disk-cleanup task in ~/Documents/Codex/2026-11-15/...) sends SIGTERM to every
+  "Godot ... --script res://tests/run_all.gd" process ("Arrêt autorisé des tests Godot") and runs
+  nix-store --gc. Two runs died with exit 143 after 61 s and 27 s. That stop was left alone and not
+  worked around.
+  - Verified instead: QA PASS (cycle 24 state), and the targeted replays passed (ID02 reconstructed:
+    90/90 cases; overlay: 38/38; overlay reconstructed: 8/8).
+  - The full suite is to be rerun once the cleanup is over. The nix-store --gc may also mean the
+    nix-shell environment is fetched again on next use.
+
+Cycle 26 of job f19bd982:
+
+- The Codex cleanup session finished its nix-store --gc (free disk 57 GiB) and runs no command now.
+  QA was rerun on cycle 25's state: PASS (the earlier traceback was that GC mid-run). The full Godot
+  suite was rerun; its result is below.
+- start_new_mission (0x3d38) written from Leyte's CODE 2 bytes (ID02_reconstructed.gd). It is 1.0.3's
+  0x35e4 with Leyte's A5 and a loop 1.0.3 does not have:
+  - While JT $15a (1.0.3 $132) and JT $92 ($82) allow a mission: the mission hook A5 -0x10dc with the
+    game state -0x1376. With the window up (-0x1544): its port rect is invalidated (window -0x1548,
+    port -0x168a restored).
+  - -0x136e and the counters at -0x1420 / -0x1348 (12 each) are cleared, with -0x132e, -0x1330,
+    -0x132c, -0x1542, -0x1540 and -0x153e.
+  - The 1-bit hook -0x10d8 runs at depth 1.
+  - Then Leyte's flight session (0x4fc, word result); a nonzero result starts the next mission.
+- A fixture bug found and fixed in gen_leyte_id02_reconstructed_cases.py. The stand-ins' 0x400-byte log
+  slots from 0x40000 passed index 120 and reached CODE 1 at 0x5e000. The new mission stand-ins logged
+  over CODE 1's bytes, so their logs were lost (a "two missions" case changed only 1 byte).
+  - The emulated memory is now 0x80000 with CODE 1 at 0x7e000, plus an assert that the log table ends
+    below CODE 1.
+  - Stand-ins up to index 119 ended at 0x5e000 exactly, so earlier cases were unaffected.
+  - 7 mission cases (one and two missions, each check refusing, window up/down, depth 1/8); 97 in all
+    match. segment_methods.json is regenerated (CODE 2: 118).
+- Probe: no assertion stops remain in the start. main → … → start_new_mission, whose JT $15a (CODE 4
+  +0x694) is reported missing and so answers 0: no mission starts. The other missing routine is the
+  idle slot $aa (CODE 4 +0x482). Overlay hooks 0, 4 and 21 are reported missing.
+- Next: CODE 4 +0x694 (the mission-ready check) and +0x482 (idle), from Leyte's bytes against 1.0.3's
+  CODE 4, then Leyte's flight session 0x4fc.
+
+Cycle 27 of job f19bd982:
+
+- The full Godot suite rerun (cycle 25's state, uninterrupted): 117/117 in 753 s. QA PASS.
+- CODE 4 +0x482 (slot $aa, run every event-loop pass) written in leyte_runtime.gd as id04_0482. It is
+  1.0.3's id04_0432 (report_panel_store_failure, CODE 4 +0x432, slot $172): the same instructions found
+  by a byte search with A5 offsets masked. Leyte's operands: flag -0x151e, JT $4ba, JT $4da with the C
+  string at A5 -0xf80 and 0. The probe no longer reports $aa missing.
+- Leyte's JT slots paired with 1.0.3's CODE 4 dialogs through the two jump tables:
+  - $15a = CODE 4 +0x694 = 1.0.3's $132, +0x644 run_duty_roster_dialog: the Active Duty Roster, DLOG
+    130 (GetNewDialog 0x82).
+  - $92 = +0xc52 = 1.0.3's $82, +0xc02 run_scenario_selection_dialog ("Select a Mission").
+  - In 1.0.3 both are written in unexported.gd (id04_0644, id04_0c02) and checked by
+    tools/runtime/gen_runtime_cases.py.
+- Probe: the only host routine missing on the start path is JT $15a, the Duty Roster: the first game
+  screen. Overlay hooks 0, 4 and 21 are reported missing.
+- Owed: Leyte's runtime routines (CODE 5 0x3ba and $58a, CODE 6 $1da, CODE 4 $aa) have no emulator
+  cases yet. 1.0.3's are in unexported_cases.json.
+- Validation: QA and the full suite below.
+- Next: a Leyte runtime-case generator after tools/runtime/gen_runtime_cases.py (Leyte's CODE files and
+  a profile-built machine on temporary storage) covering the four routines above. Then the Duty Roster
+  (+0x694) and Select a Mission (+0xc52) from Leyte's bytes, with dialog cases driven by synthetic
+  ModalDialog item sequences.
+
+Cycle 28 of job f19bd982:
+
+- Cycle 27's QA: PASS.
+- Leyte's runtime-written routines are now checked against Leyte's original bytes (the gap from cycle 27):
+  - tools/leyte/gen_leyte_runtime_cases.py reuses tools/runtime/gen_runtime_cases.py's runner with its
+    CODE directory pointed at sources/leyte-gulf-1-0/CODE. It writes 1.0.3's cases with Leyte's operands
+    (a5_map.json and the CODE 5 port's own remapping: SysEnvirons $202, HLock/HUnlock $2da/$2a2,
+    HNoPurge/HPurge $29a, the string glue $33a, strcmp $562, the copy $572, DisposPtr $24a, the screen
+    bounds -0x16fe..-0x16f8, the equal string -0xda4).
+  - The fixture is godot/tests/leyte/fixtures/runtime_cases.json: 18 cases. CODE 4 0x482 (3), CODE 5
+    0x8b2 (4), CODE 6 0x858 (8), and CODE 5 0x3ba build_protection_code_strings (3), its first emulator
+    check.
+  - tests/leyte/test_leyte_runtime_routines.gd (in run_all) replays them on a machine the Leyte profile
+    builds. It extends test_unexported_routines.gd for its call logging. Its storage is a temporary
+    root (user://leyte-runtime-test), removed afterwards, and the profile's roots are restored.
+  - 18/18 match. --check is added to QA.
+- Validation: QA and the full suite below.
+- Next: the Duty Roster (CODE 4 +0x694, JT $15a) from Leyte's bytes against 1.0.3's id04_0644, with
+  cases after 1.0.3's duty_roster_cases (synthetic roster and ModalDialog item sequences).
+
+Cycle 29 of job f19bd982:
+
+- Cycle 28's run: QA PASS; full Godot suite 118/118 in 688 s, with the new
+  test_leyte_runtime_routines.gd. No test left a Leyte folder in Godot's user data, only the manual
+  probe's own root.
+- Leyte's Active Duty Roster written in leyte_runtime.gd (slot $15a). The first game screen the start
+  reaches.
+  - id04_0694: CODE 4 +0x694, 1.0.3's id04_0644 run_duty_roster_dialog with Leyte's operands: roster
+    -0x1426, settings -0x142a, current pilot -0x1422, rank names -0x103c, JT $4aa/$512/$33a/$342/$54a/
+    $552, filter $e2, user item proc $102, the record's message -0xe88.
+  - It calls the kept rank_pilots_by_score 0x11ba, prune 0x13d6, compute_pilot_score 0x5d8 and
+    set_dialog_user_item_proc 0x13c.
+  - As the original, the listed pilots are kept in its frame (-0x110) and the item-4 / OK rows are
+    read back from it unclamped. 1.0.3's runtime port clamps them, which the original does not.
+  - Item 4's record (show_mission_summary_dialog, 0x3638, not ported for Leyte) goes through _local4:
+    reported missing, never answered for it.
+  - id04_0208: install_default_ring_item, 1.0.3's id04_01b8 with slot $ea and A5 -0x2322.
+  - 4 roster cases (Cancel; OK unchanged; OK renamed, ten shown, the roster written; OK after other
+    items) in gen_leyte_runtime_cases.py: 22 in all, matching. Each roster case compares about 150
+    Toolbox and jump-table calls.
+- The probe now drives each ModalDialog with a synthetic Return (at most five) and prints the item.
+  The start reaches DLOG 130 (GetNewDialog), ModalDialog ends on item 1 (OK), the names are read back
+  and the selected pilot made current.
+- Next gaps, in the order met:
+  - the roster's filter (slot $e2, CODE 4 +0x634; 1.0.3's duty_roster_filter_proc +0x5e4);
+  - strncmp (JT $54a, CODE 2 +0x434; 1.0.3's runtime id02_0434 at the same offset);
+  - Select a Mission (JT $92, CODE 4 +0xc52; 1.0.3's id04_0c02). It is reported missing and answers
+    0, so no mission starts yet.
+- Validation: QA and the full suite below.
+
+Cycle 30 of job f19bd982:
+
+- Cycle 29's run: full suite 118/118 in 785 s. Its QA failed one check, "stale wording" (the word
+  "unported" in a leyte_runtime.gd comment). The comment is reworded and QA rerun: PASS.
+- tools/leyte/gen_host_ports.py: CODE 1's switch helpers (slots $2a / $32 / $3a, the same bytes in both
+  editions) end in an indexed JMP (4EF0, JMP d8(A0,D2.W)). The slot-identity check's glue comparison
+  did not accept that as a terminator, so every port reaching them through a sparse switch was refused
+  ("jump-table slot 0x2a does not reach the same routine"). It is accepted now, its extension word
+  compared too.
+  - Five Leyte CODE 4 dialog filters are now proven by instruction: duty_roster_filter_proc 0x634,
+    fuel_slider_dialog_filter 0xade, scenario_selection_filter_proc 0xc2a, refuel_dialog_filter_proc
+    0xfd4 and map_dialog_filter_proc 0x417e. None is newly refused.
+  - host_ports.json, the ports, segment_methods.json (CODE 4: 48) and jump_table.json (184 slots, 102
+    named) are regenerated.
+- strncmp (slot $54a, CODE 2 +0x434), byte for byte 1.0.3's id02_0434 at the same offset, added to
+  leyte_runtime.gd. 1.0.3's 12 strncmp cases run on Leyte's CODE 2: 34 runtime cases in all, matching.
+- Probe (synthetic Return): the Duty Roster runs end to end. The Return goes through Leyte's
+  duty_roster_filter_proc, which presses item 1 (OK), and the names are compared with strncmp. The only
+  host routine missing on the start path is now JT $92 (Select a Mission, CODE 4 +0xc52). It answers 0,
+  so no mission starts. Overlay hooks 0, 4 and 21 are reported missing.
+- Validation: QA and the full suite below.
+- Next: Select a Mission (CODE 4 +0xc52) from Leyte's bytes against 1.0.3's id04_0c02, with cases after
+  1.0.3's scenario_dialog_cases. Then Leyte's flight session (CODE 2 +0x4fc).
+
+Cycle 31 of job f19bd982:
+
+- Cycle 30's QA: PASS (its suite below).
+- Select a Mission written in leyte_runtime.gd (slot $92): id04_0c52, CODE 4 +0xc52. It is 1.0.3's
+  id04_0c02 (run_scenario_selection_dialog) with Leyte's operands and two options 1.0.3 does not have:
+  - Operands: settings -0x142a, fuel -0x1350 / -0x2310, pilot -0x1422, changed flag -0x1408, game
+    state -0x1376, -0x1542, mission radios -0x230a, bomb radios -0x22fa, JT $4aa/$4fa/$51a, filter
+    $162, user items $172/$102/$142.
+  - A second radio group (items 23/24 at A5 -0x22f4, from A5 -0x134a, stored at settings +0x26).
+  - A checkbox (item 25, from A5 -0x134c, toggled 0/6 on a hit, stored at +0x28 toggled when the box
+    differs, as the original does).
+  - Its callees not in the port: id04_032c (set_radio_group_selection, byte for byte 1.0.3's
+    id04_02dc); id04_009c / id04_00c4 (Leyte's own: SetCtlValue / GetCtlValue of a dialog item).
+  - id04_0566, confirm_end_mission (1.0.3 0x516). Leyte's mission counts as running from game state 2
+    (1.0.3: 3); it was refused on that compare.
+  - id04_1b4c, the kill report (1.0.3's get_mission_kill_report_state 0x18e0 without its "state 2
+    reports nothing" test).
+  - 5 cases (Cancel; OK unset; change all with the box ticked; no radio on; a running mission whose
+    end alert answers 1 then 2). 39 runtime cases in all, matching.
+- Probe (synthetic Return only): main → copy protection → overlay loaded → the Duty Roster (DLOG 130,
+  OK) → Select a Mission (DLOG 129, OK) → the overlay's mission hook. That is hook 2, 0x46e2 (1.0.3
+  0x3aa4), reported missing. Then the flight session, CODE 2 +0x4fc, which has no routine: the start
+  stops there.
+- Next: the flight session (Leyte CODE 2 +0x4fc; 1.0.3's run_flight_session 0x1a6c, "not found") and
+  the overlay hooks a mission needs (2 and 4: run_simulation_tick). That is the gate to gameplay; the
+  overlay's simulation (264 of its functions refused for Leyte) is the large remaining body of work.
+
+Cycle 32 of job f19bd982:
+
+- Cycle 31's QA: PASS (its suite below).
+- The flight session (Leyte CODE 2 +0x4fc, the main game loop; 1.0.3's run_flight_session 0x1a6c) is
+  read in full. A plain disassembly stops at its first sparse switch (jsr $32(a5)) by reading the case
+  table as code.
+  - tools/leyte/switch_listing.py, a read-only evidence tool, decodes CODE 1's three switch helpers'
+    inline tables and resumes after them. The table formats are taken from the helpers' own bytes:
+    - $2a / $32 (sparse, word / long values): a count, that many (offset.w, value) pairs, then the
+      default offset word. The helper's dbeq makes count + 1 passes; the last reads the default word.
+    - $3a (dense): low, high, the default offset, then one offset per case. Every target is its offset
+      word's address plus the offset.
+  - The routine spans 0x4fc..0x9bc. Its command keys are T/t (A5 -0x1071 bit 0), 1..5 (settings +0x10,
+    then apply_settings 0x2db2), Q/q (result 5), S/s and E/e, as in 1.0.3, with Leyte's operands.
+  - Its CODE 2 callees not yet written for Leyte: 0x45a / 0x4a4 (begin / end overlay session), 0x18e2,
+    0x552a, 0x1c92, 0x9e8, 0xa88, 0x54c8, 0x54fe and 0x36d8. Overlay hooks follow through the A5 hook
+    slots (-0x10b0 at the start).
+- Assessment: past the two dialogs, the start enters gameplay: this loop, its session routines and the
+  overlay's simulation. The overlay keeps 77 of its functions for Leyte, with 264 refused, and hooks 0,
+  2, 4 and 21 are missing. The flight session can be written and checked by its cases as the other
+  host routines were, but a mission will not run until the overlay's simulation is ported for Leyte.
+  That is several cycles of work at the current rate.
+- Next: the flight session's session routines (0x45a, 0x4a4) and the loop itself from the listing,
+  with cases; then the overlay hooks a mission calls first (2, then 4: run_simulation_tick).
+
+Cycle 33 of job f19bd982:
+
+- Cycle 31's full suite: 118/118 in 702 s. Cycle 32's QA (a read-only tool and checkpoint text only):
+  PASS.
+- The flight session's session routines, from Leyte's CODE 2 bytes:
+  - begin_overlay_session (0x45a) and end_overlay_session (0x4a4) in ID02_reconstructed.gd: 1.0.3's at
+    the same offsets, the same instructions with Leyte's operands.
+    - Begin: UnloadSeg A5 +0xda, 0x4c6, the prepare hook -0x10c4, load_game_sounds 0x22ac, FreeMem
+      $222 / MaxMem $22a under 100 000 bytes, the start hook -0x10c0, 0x9e8, then 0x23ee.
+    - End: shutdown_sound 0x4a96 with sound on (-0x136c), the finish hook -0x10b8, 0x2186, 0xa88, then
+      DrawMenuBar with -0x106a set.
+    - 7 emulator cases; 104 CODE 2 cases in all match.
+  - lock_session_handles (0x9e8) and unlock (0xa88) in leyte_runtime.gd: 1.0.3's id02_095a / 09fa
+    with Leyte's operands (counter -0x1572; handles -0x1270, -0x1256, -0x124e, -0x132a with their kept
+    pointers -0x126c, -0x1252, -0x124a, -0x1326; the 24-bit flag -0x13c6; HLock $28a, HUnlock $292).
+    8 cases with the HLock / HUnlock calls compared; 47 runtime cases in all match.
+- segment_methods.json (CODE 2: 120) and jump_table.json are regenerated.
+- A duplicate constant (LEYTE_JT_FREE_MEM, already declared with the same value) briefly broke the
+  reconstructed CODE 2 file's parse. It was caught by the targeted replay and removed before the run.
+- Still to write before a session can run: load_game_sounds 0x22ac (1.0.3 0x1f8e; 93 instructions
+  against 88), then the flight loop 0x4fc and its remaining callees 0x18e2, 0x552a, 0x1c92, 0x54c8,
+  0x54fe and 0x36d8.
+- Validation: QA and the full suite below.
+
+Cycle 34 of job f19bd982:
+
+- Cycle 33's QA: PASS (its suite below).
+- load_game_sounds (0x22ac) written from Leyte's CODE 2 bytes (ID02_reconstructed.gd). It is 1.0.3's
+  0x1f8e with Leyte's operands and one more sound:
+  - The slot table -0xd94 is recorded at -0x1170, then release_sound_slots 0x2186, MaxMem $22a and
+    FreeMem $222.
+  - The engine sound is from -0xd2e above 0x2e400 free, else from -0xd26.
+  - Then slots 5, 2, 9, 6, 7, 14 (Leyte's, from -0xcf2), 1, 12, 11, 10 and 8. Slot 8 falls back to
+    -0xcca, and that counts as a failure (BSET #0 of the failure word).
+  - Any failure shows the sound error dialog once (0x20f2). Both callees are the verified port's,
+    called by offset.
+- 5 cases (all loaded with plenty / little free; one missing; slot 8's fallback loading or missing).
+  109 CODE 2 cases in all match. segment_methods.json (CODE 2: 121) and jump_table.json are
+  regenerated.
+- A line-continuation slip in the case generator made it fail with an IndentationError. It was caught
+  at once and fixed; the replay then ran the regenerated fixture.
+- Validation: QA and the full suite below.
+- Next: the flight loop 0x4fc (listing in hand: tools/leyte/switch_listing.py), with its callees
+  0x18e2, 0x552a, 0x1c92, 0x54c8, 0x54fe and 0x36d8.
+
+Cycle 35 of job f19bd982:
+
+- Cycle 33's full suite: 118/118 in 725 s. Cycle 34's QA: PASS (its suite below).
+- The flight loop's callees, by the correspondence and Leyte's bytes. Already kept:
+  set_draw_color_index 0x18e2, run_segment3_entry_and_unload_a5safe 0x1c92 and handle_activate_event
+  0x36d8. Written now (ID02_reconstructed.gd):
+  - restore_screen_globals (0x552a, no correspondence row): 1.0.3's 0x4d96 (the runtime's id02_4d96)
+    with Leyte's operands: SetGDevice(-0x1078); -0x1400 / -0x13f6 / -0x1390 from -0x13c4 / -0x13c8 /
+    -0x13c6.
+  - process_pending_update_events (0x54c8) and handle_update_event (0x54fe): 1.0.3's 0x4d34 / 0x4d6a,
+    the same instructions. They differ only in the game window -0x1548, its flag -0x1544 and the redraw
+    0x5544. They were refused only through callees now reconstructed, and through A5 globals the map
+    does not pair.
+  - 8 cases (the update loop over 0, 1, 2 events and another window's, the records written by
+    GetNextEvent's stand-in into the frame; the single update for the window up / down / another).
+    117 CODE 2 cases in all match. segment_methods.json (CODE 2: 124) and jump_table.json (104 named)
+    are regenerated.
+- Every CODE 2 callee of the flight loop now has a routine for Leyte except the loop itself.
+- Validation: QA and the full suite below.
+- Next: the flight loop 0x4fc from the listing (its keys' sparse switch, the event loop, the end-of-
+  session switch), with cases.
+
+Cycle 36 of job f19bd982:
+
+- Cycle 34's full suite: 118/118 in 720 s.
+- CPU (user question): the load was the Hellcats iOS build left running in the iPhone 18 Pro simulator
+  (about 140% for over three hours) and the Claude app's renderer. The user stopped the app and shut
+  the simulator down. Pending the user's choice, the loop runs lighter: targeted tests (every Leyte
+  test) and QA each cycle at nice 15, with the full Godot suite run less often. No full suite this
+  cycle.
+- The flight loop written from Leyte's bytes (ID02_reconstructed.gd run_flight_session_leyte, 0x4fc,
+  word result). It is named apart from the base's refused run_flight_session, which returns nothing.
+  - It is 1.0.3's run_flight_session with Leyte's operands. The frame is the original's in memory:
+    event -0x22, mouse -0x2a, result -0xa, half the menu bar -4, the two-device flag -0x24, the return
+    value -0x26.
+  - Covered: the 13-case command-key switch (T/t, 1..5, Q/q, S/s, E/e); key, update and activate
+    event handling; the ask hook (-0x10c8); the frame counter -0x1582; the end-of-flight switch on
+    -1..10 (conclude JT $10a, next mission JT $16a, paused JT $8a, quit 0x35e2).
+  - Leyte's addition: with two devices the step hook runs once per device record, each made current
+    with its screen globals.
+  - 8 whole-session cases (command-Q; the hook's 2 then 5; concluded with answer 1, and with 3 flying
+    again; a plain key with two devices, paused; an update mid-flight; the first show with T and 3,
+    the pilot status written back; the ask hook with an activate). 125 CODE 2 cases in all match.
+- A fixture gap fixed: the CODE 2 case generator wired only CODE 1's dense switch ($3a). The flight
+  loop's sparse switch ($32) ran into an empty slot (the emulator's step limit). Slots $2a / $32 / $3a
+  are now all wired, as the jump table has them.
+- A runtime divergence found and fixed: GetNamedResource resolved names from 1.0.3's
+  resource_names.json even for Leyte. Leyte's 'snd ' "Missle" was not found, so load_game_sounds failed
+  and the sound error dialog (DLOG 139) appeared, which the original would not show.
+  - tools/leyte/extract_resources.py now writes each resource's name into the Godot mirror (39 named).
+  - LeyteResources builds its name table from there (case-insensitive, as before). 1.0.3 is unchanged.
+  - The extractor's sources outputs were rewritten with identical bytes (--check PASS, 238 files);
+    nothing under sources/ changed in content.
+- Probe (synthetic input only: Return for each ModalDialog, a click for a Button wait, Command-Q in
+  the flight loop): main → protection → overlay → Duty Roster (OK) → Select a Mission (OK) → the
+  flight loop. The session begins and all sounds load. The loop runs its frames until Command-Q.
+  - Then the end of flight reaches quit_application 0x35e2, which has no routine yet.
+  - The redraw's 0xab4 is also met.
+  - Overlay hooks met and reported missing: 0, 1, 2, 4, 8, 9, 10, 11, 13, 14 and 21; also JT $192
+    (CODE 3 +0x5eb4).
+- Validation: every Leyte test and QA at low priority, below.
+- Next: quit_application (0x35e2) and 0xab4 from Leyte's bytes; then the overlay hooks a frame calls,
+  starting with the step hook's routines.
+
+Cycle 37 of job f19bd982:
+
+- Cycle 36's validation (lighter mode): all 13 Leyte tests OK, QA PASS.
+- Three more CODE 2 routines from Leyte's bytes (ID02_reconstructed.gd). Each is a 1.0.3 routine its
+  runtime writes, with Leyte's operands:
+  - save_changed_settings (0x34d8; 1.0.3 0x2da0): flag -0x1408, settings handle -0x142a.
+  - quit_application (0x35e2; 1.0.3 0x2eaa): confirm JT $9a must answer 2; with changed settings, ask
+    JT $132 (1 saves, 2 cancels); the window -0x1548 hidden when shown (-0x1544); ExitToShell.
+  - redraw_panel_readouts_locked (0xab4; 1.0.3 0xa26): with session handles -0x1270 / -0x1256, the
+    readouts hook -0x10b4 between the lock 0x9e8 and the unlock 0xa88.
+  - 10 cases (save changed / not; 1.0.3's five quit cases; three readout cases). 135 CODE 2 cases in
+    all match.
+- A registration gap fixed: confirm_end_mission (CODE 4 +0x566) was registered by offset only, so
+  quit_application's JT $9a was reported missing and answered 0, cancelling the quit. Slot $9a now
+  reaches the same routine.
+- Tool note: tools/leyte/switch_listing.py's END is an absolute address. Two empty listings earlier in
+  this cycle came from an END below START, not from the shell.
+- Probe (synthetic input only: Return for each ModalDialog and alert, a click for a Button wait,
+  Command-Q in flight): a whole session runs from launch to quit.
+  - main → copy protection → overlay load → Duty Roster (OK) → Select a Mission (OK) → the flight
+    loop's frames → Command-Q → the end of flight → quit_application → CautionAlert 257 "Save
+    Changes" (Save, written to the probe's temporary root) → ExitToShell.
+  - No assertion stop remains on this path. Still reported missing on it: JT $192 (CODE 3 +0x5eb4) and
+    the overlay's hooks (0, 1, 2, 4, 8, 9, 10, 11, 13, 14, 21).
+  - The probe now answers alerts and ends at its timeout after ExitToShell, which parks the machine.
+- Not playable: a frame does nothing yet. The overlay's simulation and rendering hooks are missing, so
+  no aircraft, world or panel is drawn.
+- Validation: every Leyte test and QA at low priority, below.
+- Next: JT $192 (CODE 3 +0x5eb4), then the overlay hooks a frame calls, step hook first. The overlay's
+  simulation is the large body of work left before gameplay.
+
+Cycle 38 of job f19bd982:
+
+- Cycle 37's 13 Leyte tests: OK (its QA below).
+- JT $192 (CODE 3 +0x5eb4) identified. The A5 map pairs it with 1.0.3's slot $17a, which reaches
+  CODE 3 +0x5cc4 prepare_instrument_panel (the cockpit panel made ready, ported in 1.0.3's ID03.gd).
+  run_segment3_entry_and_unload_a5safe calls it when a flight session begins.
+  - Leyte's version is that routine extended:
+    - its panel cache is 'HEL3' 127 of 0x194-byte entries (0x650 bytes when made; 1.0.3: 'HEL2' 127,
+      0x160-byte entries, 0x580);
+    - it does not save the current resource file or UseResFile(A5 -0x1002) first, as 1.0.3 does;
+    - its globals move as elsewhere (the panel scale -0x151c / -0x1518, the overlay's sine / cosine
+      -0x10a8 / -0x10a4 into -0x21a2 / -0x219e, the cache handle -0x1430);
+    - it copies a larger set of tables from the matching entry.
+  - Its callees include compute_panel_screen_addresses 0x5a50, open_cport_on_buffer 0x5e26 and
+    close_port_glue 0x5ea6 (same instructions as 1.0.3's) and the instrument drawing CODE 3 holds.
+- Not written this cycle: a faithful translation needs the routine's full extent (it has several exits,
+  and an RTS cut runs past it) and its callees' Leyte status. A few hundred instructions.
+- Lighter mode continues. No code changed this cycle, so its validation is cycle 37's.
+- Next: delimit prepare_instrument_panel's Leyte routine (0x5eb4 to its exit), list the CODE 3 callees
+  it reaches and their status, then write it in a CODE 3 reconstruction (ID03_reconstructed.gd, with a
+  case generator after the CODE 2 one).
+
+Cycle 39 of job f19bd982:
+
+- Cycle 37's run: 13 Leyte tests OK, QA PASS. No code changed in cycle 38.
+- prepare_instrument_panel delimited and compared (evidence work; no code changed):
+  - Boundaries from the code itself (an unlk/rts followed by a link prologue): 1.0.3 0x5cc4..0x6c1c
+    (one 0xf58-byte function, as the inventory has it), Leyte 0x5eb4..0x6e5e (0xfaa bytes). Leyte's
+    0x6e5e is presumably remap_cached_panel_colours (1.0.3 0x6c1c); the correspondence finds neither.
+  - Instruction diff (tools/leyte/switch_listing.py; 1175 against 1198 lines). With A5 operands,
+    PC targets, record fields and the record size masked, 43 lines differ. All of Leyte's changes:
+    1. no CurResFile save / UseResFile(A5 -0x1002) at entry and the restore at exit;
+    2. the cache made 0x650 bytes (1.0.3 0x580), its entries 0x194 (1.0.3 0x160), type 'HEL3' (1.0.3
+       'HEL2'); Leyte's CODE 3 holds no 'HEL2' at all;
+    3. one more table of 13 longs kept per cache entry, loaded and saved with the others;
+    4. one more instrument drawn: a call with item 10, then one with (0x17c, 0x122, 7, its result,
+       0x37f, -0x2a8); and an immediate 0x474 becomes 0x4e2.
+  - Its callees in 1.0.3's port, in the Leyte CODE 3 port: compute_panel_screen_addresses,
+    open_cport_on_buffer, close_port_glue and make_inset_face_oval_region are kept.
+  - Found: the generated Leyte ID03.gd keeps 1.0.3's private helpers _entry, _load_cached_panel,
+    _draw_new_panel and _lend_panel_bitmap. They carry 1.0.3's PANEL_TYPE 'HEL2', PANEL_ENTRY_SIZE
+    0x160 and the cache handle A5 -0x13b2, which are wrong for Leyte (-0x1430). No kept public
+    function reaches them: they are dead code, called only by the refused prepare_instrument_panel.
+    Not changed: noted as a generator hygiene gap. Private helpers are kept without a reachability or
+    moved-constant test, which the overlay generator does apply.
+- Plan for the write: a CODE 3 reconstruction (godot/original/leyte/port/ID03_reconstructed.gd, the
+  Leyte profile's port 3). It holds prepare_instrument_panel with Leyte's own helper copies, since GDScript
+  constants cannot be overridden (the cache as 'HEL3' / 0x194 / -0x1430, the extra table and
+  instrument, no UseResFile). It also gets a case generator after the CODE 2 one, on Leyte's ID03.bin,
+  and a reachability rule for the host-port generator's private helpers.
+
+Cycle 40 of job f19bd982:
+
+- A CODE 3 reconstruction, godot/original/leyte/port/ID03_reconstructed.gd. The Leyte profile's port 3
+  and reconstructed.py's PORT_FILES now include it.
+  - prepare_instrument_panel (0x5eb4, slot $192) from Leyte's bytes. It is 1.0.3's with Leyte's
+    operands and the differences found in cycle 39: no UseResFile around it; the cache 'HEL3' / 0x194
+    / 0x650 at -0x1430.
+  - Its cached-entry path is written with Leyte's own helpers (_leyte_entry, _leyte_load_cached_panel,
+    _leyte_lend_panel_bitmap and the 9-record LEYTE_PANEL_RECORDS), not the generated port's stale
+    1.0.3 helpers.
+  - The A5 pairs were read positionally from the two aligned listings: 57 consistent. One apparent
+    two-way pair (-0x1186) is the record that moves from +0x12a to +0x15e when Leyte's 13-long table
+    takes +0x12a.
+  - The records were read from Leyte's own copies. The same extraction reproduces 1.0.3's
+    PANEL_RECORDS exactly.
+  - Its verified callees (0x5a50, 0x5e26, 0x5ea6, 0x3832) and the routines still to write (0x5be4
+    release_panel_bitmaps, 0x741e remap_panel_colours_identity) are called by offset.
+  - The new-panel path (0x637a..0x6df0, with its extra instrument and the three refused drawers) is not
+    written yet. Its branch asserts with that message: no 1.0.3 code runs there.
+- tools/leyte/gen_leyte_id03_reconstructed_cases.py: the CODE 2 generator's runner on Leyte's ID03.bin
+  with its own stand-ins. 4 cases (the current entry at depth 8; a stored entry loaded at depth 4; the
+  current entry after a near miss at depth 1; the cache made), all matching
+  (tests/leyte/port/test_leyte_id03_reconstructed.gd, in run_all; --check in QA).
+  segment_methods.json (CODE 3: 39) and jump_table.json (106 named) are regenerated.
+- Probe: the panel set-up now runs in the real start. It makes the 'HEL3' cache, finds no entry for
+  this display on a first start, and stops at the new-panel path's assertion. The session then goes on
+  to the Save alert and ExitToShell.
+- Validation (lighter mode): every Leyte test and QA at low priority, below.
+- Next: the new-panel path, with its extra instrument, draw_panel_section_with_numbered_boxes,
+  draw_percent_scale_gauge, draw_split_display_box, store_panel_bitmaps_as_resources (0x5ca6),
+  release_panel_bitmaps (0x5be4) and the colour remap (0x741e / 0x6e5e).
+
+Cycle 41 of job f19bd982:
+
+- Cycle 40's validation: all 14 Leyte tests OK, QA PASS.
+- Three more CODE 3 routines from Leyte's bytes (ID03_reconstructed.gd), each 1.0.3's with Leyte's
+  operands. Their A5 pairs were read from the aligned listings, all consistent:
+  - release_panel_bitmaps (0x5be4; 1.0.3 0x59f4, the runtime's id03_59f4): handles -0x1270 / -0x1256
+    / -0x124e / -0x132a; the entry *(A5 -0x1430) + 0x194 * A5 -0x21a4; DisposHandle $26a.
+  - store_panel_bitmaps_as_resources (0x5ca6; 1.0.3 0x5ab6, refused for Leyte on the record size):
+    'HEL3', entry A5 -0x142c, names from -0xe48, file -0x1042, failure flag -0x151e.
+  - remap_panel_colours_identity (0x741e; 1.0.3 0x71a2): the colours A5 -0x13d2; it calls
+    remap_cached_panel_colours (0x6e5e) by offset.
+  - 7 cases (release: all held / two / none, with the resource flag set or not; store: first, over
+    old ones, an add failing; the identity remap). 11 CODE 3 cases in all match.
+    segment_methods.json (CODE 3: 42) is regenerated.
+- remap_cached_panel_colours (Leyte 0x6e5e; 1.0.3 0x6c1c): 537 lines against 517. Its dense switch
+  on the depth (4 / 8) is the same. Leyte adds two colour lookups (a call with (2, 2, 2) and one with
+  (0, 0, 0), each mapped through the table into an A5 global) in one depth's branch. To write next.
+- Validation (lighter mode): every Leyte test and QA at low priority, below.
+- Next: remap_cached_panel_colours, then the new-panel path (0x637a..0x6df0) with its extra instrument
+  and the three refused drawers.
+
+Cycle 42 of job f19bd982:
+
+- Cycle 41's validation: all Leyte tests OK, QA PASS.
+- remap_cached_panel_colours (CODE 3 0x6e5e) written from Leyte's bytes (ID03_reconstructed.gd). It
+  is 1.0.3's 0x6c1c with Leyte's operands (28 pairs, all consistent, from the aligned listings) and
+  two more cached colours: A5 -0x11d0 = (0, 0, 0) and -0x11ce = (2, 2, 2), after -0x1204.
+  - Its order was checked against Leyte's write sequence. The 1-bit refresh is JT $49a; the generated
+    port's JT_FLUSH_PANEL_1BIT keeps 1.0.3's $482, used only by refused code.
+  - 4 cases (a configuration mismatch; depth 1; depth 8 and depth 4 over a synthetic panel bitmap and
+    gyro card, every cached colour refreshed). 15 CODE 3 cases in all match. segment_methods.json
+    (CODE 3: 43) and jump_table.json (107 named) are regenerated.
+- The panel cache's routines are now all written for Leyte: the set-up's found-entry path, load,
+  release, store and both colour remaps.
+- Validation (lighter mode): every Leyte test and QA at low priority, below.
+- Next: the new-panel path (0x637a..0x6df0): the least recently used entry chosen, the "creating panel"
+  dialog, the frame and edges, the instruments (63 of 66 kept; draw_panel_section_with_numbered_boxes,
+  draw_percent_scale_gauge and draw_split_display_box to write, plus Leyte's extra instrument), the
+  records saved and the bitmaps stored.
+
+Cycle 43 of job f19bd982:
+
+- Cycle 42's validation: all Leyte tests OK, QA PASS.
+- The three refused instrument drawers, examined:
+  - draw_panel_section_with_numbered_boxes 0x4304, draw_percent_scale_gauge 0x4790 and
+    draw_split_display_box 0x4b32 have instructions aligned with 1.0.3's (360 / 282 / 85 lines, no
+    conflicting pair). They were refused only for A5 globals the map cannot pair: -0x11a6, -0x1182,
+    -0x1198 and -0x1190.
+  - Those never appear as operands. Each is the second long of an 8-byte rect the code writes through
+    LEA base(A5) and two MOVE.L (A0)+ (bases -0x11aa, -0x1186, -0x119c, -0x1194, each confirmed in the
+    listing). So each is its base's Leyte pair + 4: -0x1220, -0x11c8, -0x1212, -0x120a.
+  - The three bodies, translated mechanically from 1.0.3's port through the per-function pairs, are in
+    ID03_reconstructed.gd. Every named constant they use already holds Leyte's value in the generated
+    port.
+  - NOT YET CHECKED on the emulator, and not registered by offset. Their cases reach
+    draw_vector_number, whose glyph walk reads stroke data from the A5 world's initialised data (CODE 3
+    0x9de..0xa1e, to an end mark 'c'). The case runner does not load it: zeroed, the walk never ends
+    (the emulator's step limit). They are reached only from the new-panel path, which is not written.
+  - Case-runner groundwork kept: polygon trap stand-ins (OpenPoly with a synthetic handle, Close / Kill
+    / Frame / Paint / Fill / Erase / Invert), JT $402, and digest (bounded) logs for MoveTo / LineTo,
+    which a vector-drawn digit calls more often than a 0x400-byte log holds.
+- The A5 map, measured (not changed): admitting "same_instructions" matches to a5_map.py's evidence, as
+  overlay_map.py already does, raises the mapped pairs from 162 to 376 (globals 115 -> 299). It changes
+  or loses none and adds no conflict (still 1: $28a). Not applied: it regenerates every host port and
+  their fixtures, a change to make with a full suite.
+- Validation (lighter mode): every Leyte test and QA at low priority, below. The CODE 3 fixture is
+  regenerated for the added stand-ins: 15 cases match.
+- Next: load the A5 world's initialised data (Leyte's DATA, as the runtime's init_a5_world does) in the
+  case runner, so the drawers can be checked. Then the new-panel path. The A5 map widening is a
+  candidate for a cycle with a full suite.
+
+Cycle 44 of job f19bd982:
+
+- Cycle 43's validation: all Leyte tests OK, QA PASS.
+- The CODE 3 case runner now starts drawing cases from Leyte's initialised A5 world
+  (gen_leyte_id03_reconstructed_cases.py a5_world):
+  - DATA 0's words expanded from A5 -0x2322 up to A5, each zero word followed by ZERO 0's run of zero
+    bytes, then DREL 0's cells relocated by A5, as mac_machine.gd init_a5_world builds it. 1473 writes,
+    ending exactly at A5.
+  - The writes are part of each case, so both sides start from it with no change to the replay helper.
+  - With it, the vector digits' stroke walk ends, and the three drawers' cases run on Leyte's code.
+- Two stand-in errors fixed on the way, both of which had made the emulator side meaningless:
+  - FillPoly takes (poly, pattern) and InvertPoly one handle; their argument sizes had been swapped.
+  - JT $42a (CODE 2 get_blended_fill_pattern) had no stand-in, so the emulator ran the zeros in its
+    unloaded slot. It now answers a synthetic pattern address.
+- The drawers are now actually checked, and they do not match Leyte's code yet:
+  - in the numbered section, the original writes the box rects from A5 -0x1240 and the port does not;
+  - the split box differs after its first writes.
+  - The cause (a translated drawer or a kept helper it calls) is not found yet. The six cases are kept
+    out of the fixture until it is, and the file says so (NOT YET MATCHING).
+- 15 CODE 3 cases match (the drawers' excluded).
+- Validation (lighter mode): every Leyte test and QA at low priority, below.
+- Next: compare the drawer cases write by write (the full change lists, not the first six), find the
+  diverging instruction and fix it. Then the new-panel path.
+
+Cycle 45 of job f19bd982:
+
+- Cycle 44's validation: all Leyte tests OK, QA PASS.
+- The drawer mismatch found, write by write (the replay loop mirrored in a scratch script, the full
+  change lists diffed; the scratch files removed afterwards). Two causes, neither in Leyte's evidence:
+  - draw_panel_section_with_numbered_boxes: the port wrote the box rects at 1.0.3's A5 -0x11c6 / -0x11be
+    / -0x11b6. The 1.0.3 body holds them as bare numbers in a list, wrapped in _g() only later, so the
+    mechanical _g(literal) substitution missed them. Now Leyte's -0x1240 / -0x1238 / -0x1230, which
+    are their positional pairs. A scan of the three drawers finds no other bare A5 literal.
+  - draw_split_display_box: the case's arguments were wrong, not the drawer. Its third argument is an
+    unused long at $c(a6) (the words at 8, $a, $10, $12), and the case had pushed five words. The masked
+    instructions are identical, so no constant differs.
+- 21 CODE 3 cases match, the six drawer cases included (depths 8, 4, 1 for each).
+  draw_panel_section_with_numbered_boxes (0x4304) and draw_split_display_box (0x4b32) are registered
+  (segment_methods.json CODE 3: 45). draw_percent_scale_gauge is written but not yet checked: it builds
+  offscreen ports the cases do not stand in for yet. The file says which is which.
+- Validation (lighter mode): every Leyte test and QA at low priority, below.
+- Next: draw_percent_scale_gauge's cases (stand-ins for new_offscreen_bw_port and friends), then the
+  new-panel path.
+
+Cycle 46 of job f19bd982:
+
+- Cycle 45's validation: all Leyte tests OK, QA PASS.
+- draw_percent_scale_gauge (CODE 3 0x4790) checked against Leyte's code.
+  - Six word arguments at 8(a6)..$12(a6), in the port's order.
+  - Its kept callees run as they are on both sides: new_offscreen_bw_port, dispose_offscreen_bw_port,
+    antialias_downsample_bw_3x, draw_vector_number, nearest_palette_index_rgb.
+  - Their calls are stood in for: NewPtr $242 (answering a synthetic bit buffer, then a port record),
+    DisposPtr $24a, OpenPort, SetPortBits, PortSize, RectRgn, ClosePort, PenPat, SetOrigin, and Line
+    (a digest log).
+  - 3 cases (depths 8, 4, 1), matching. All three formerly refused instrument drawers now match
+    Leyte's code. The gauge is registered (segment_methods.json CODE 3: 46); 24 CODE 3 cases in all.
+- Every routine the new-panel path calls is now written for Leyte: the 63 kept instrument functions,
+  the three drawers, store / release / remap.
+- Validation (lighter mode): every Leyte test and QA at low priority, below.
+- Next: the new-panel path itself (CODE 3 0x637a..0x6df0), from Leyte's listing against 1.0.3's
+  _draw_new_panel / _draw_panel_instruments. Leyte's 13-long record and its one extra instrument
+  (the call with item 10, then (0x17c, 0x122, 7, its result, 0x37f, -0x2a8)).
+
+Cycle 47 of job f19bd982:
+
+- Cycle 46's validation: all Leyte tests OK, QA PASS.
+- Leyte's new-panel path read against 1.0.3's _draw_new_panel / _draw_panel_instruments. Leyte's
+  instrument calls differ in two places:
+  - the split display box is drawn at a = 0x4e2 (1.0.3: 0x474);
+  - after it, Leyte draws one more instrument: CODE 3 0x4c42 with (0x17c, 0x122, 7 << 16 | scale, 0x37f,
+    -0x2a8). In 1.0.3, 0x4c42 is draw_flaps_indicator, which Leyte moves to 0x4e32. Leyte's 0x4c42
+    (151 instructions) resembles neither drawer (instruction similarity 0.27 / 0.25): it is Leyte's own.
+- That instrument written from Leyte's bytes as draw_six_cell_display_box (ID03_reconstructed.gd,
+  named for what it draws).
+  - A box placed as the split box places one, painted in colour 0, framed in colour 2, inset by 3.
+  - Six cells, three each way from the middle and 4 units lower each, kept as rects at A5 -0x1200 + 8 *
+    slot. That is the start of the 13-long table Leyte adds to each cache entry, which explains it.
+  - A cell step of 6 or more takes a 1-unit inset and a gap of 3, else a gap of 2.
+  - 6 cases (as the panel calls it, and a narrow box for the small-step branch; depths 8, 4, 1)
+    match Leyte's code at the first replay. It is registered (segment_methods.json CODE 3: 47); 30 CODE
+    3 cases in all.
+- Validation (lighter mode): every Leyte test and QA at low priority, below.
+- Next: _leyte_draw_new_panel and _leyte_draw_panel_instruments from Leyte's listing. 1.0.3's structure
+  with the pairs read in cycle 40, the split box's 0x4e2, the six-cell box, Leyte's records
+  (LEYTE_PANEL_RECORDS) saved, NewHandleClear $262, and every JT constant checked against the listing.
+
+Cycle 48 of job f19bd982:
+
+- Cycle 47's validation: all Leyte tests OK, QA PASS.
+- The new-panel path written (ID03_reconstructed.gd _leyte_draw_new_panel and
+  _leyte_draw_panel_instruments, replacing the stopping stub).
+  - 1.0.3's structure with the listing's pairs and these changes: the split box at a = 0x4e2; Leyte's
+    six-cell box after it; Leyte's records (LEYTE_PANEL_RECORDS) saved.
+  - The instrument list was checked call by call against Leyte's bytes (targets and immediates).
+  - Every constant was checked against the listing. Four of the generated port's are stale 1.0.3
+    numbers, used explicitly from the listing instead: JT_CREATING_PANEL_DIALOG $49a -> $4f2,
+    JT_NEW_HANDLE $24a -> $25a, JT_NEW_HANDLE_CLEAR $252 -> $262, JT_VIEW_FRAME_OUTLINE $3ba -> $36a.
+    The private helpers it calls (_corner_arc, _line_to, _panel_edge, _panel_colour, _h, _v,
+    scale_design_480_min10) hold no unpaired A5 literal and no stale constant.
+- Case-runner work for a whole new panel (gen_leyte_id03_reconstructed_cases.py new_panel_cases):
+  - QuickDraw stand-ins for every trap CODE 3 uses, signatures from quickdraw_traps.gd: regions, ovals,
+    clip, text, GetFontInfo, StringWidth, OffsetRect, PtInRgn, CopyBits, OpenCPort.
+  - The CODE 2 colour-port slots $34a / $44a stood in for; the overlay's cosine / sine (0x3000 /
+    0x3100) and point rotation (A5 -0x10a0, 0x3200) stood in for.
+  - The four bitmap handles given master pointers, and an 80 000 000-step limit for this generator
+    (the 3x anti-aliased labels).
+  - New in the shared runner (gen_leyte_id02_reconstructed_cases.py): a case may ask for CODE 2's own
+    routines behind slots (code2_slots: CODE 2 loaded at 0x10000). labs (JT $522, CODE 2 +0x1e) and
+    memset ($53a, +0x2b0) run as Leyte's code, since the port computes both inline. CODE 2's own
+    fixture is unchanged (--check PASS).
+  - Found on the way, each of which had made a run's emulator side silently wrong: calls through
+    unwired slots ran the zeros in them (JT $522), and an unset code pointer (the rotation) jumped to
+    address 0.
+- Result: the whole new panel now runs on Leyte's code (16650 changed bytes) and on the port. They
+  agree on the first writes and differ further in. The case is kept out of the fixture and the path is
+  marked NOT YET MATCHING. 30 CODE 3 cases match.
+- Probe: the start now draws the new panel with no assertion stop. JT $36a (the view-frame outline,
+  CODE 2 +0x19c0) is reported missing. The session runs on through the flight loop to the Save alert
+  and ExitToShell.
+- Validation (lighter mode): every Leyte test and QA at low priority, below.
+- Next: the new-panel case write by write (the full change lists), the first divergence found and
+  fixed. Then JT $36a, the view-frame outline.
+
+Cycle 49 of job f19bd982:
+
+- Cycle 48's Leyte tests: all OK (its QA still running at the time of writing).
+- The new-panel case compared write by write (scratch fixture and dump script; nothing left in the
+  project): 345 differing bytes, nearly all in the stand-ins' call logs.
+  - The rounding slots locate it: JT $372 (round_v) is called 193 times by the port and 192 by Leyte's
+    code, JT $3a2 (round_h) 212 against 211. Both agree call for call up to #166 / #181, then the port
+    has one extra pair, and they agree again shifted by one.
+  - The extra calls are inside draw_artificial_horizon (CODE 3 0x38fc, "same instructions"). The port
+    rounds (0x334, 0x366) in the horizon itself (line 1171), then again in make_inset_face_oval_region
+    (0x3832, "moved"). Leyte's code shows the horizon's round_v of 0x334 followed directly by 0xee84 and
+    then 0x49c.
+  - Leyte's 0x3832 does round both coordinates again (its listing), so the duplicate itself is the
+    original's. What differs is which values reach those calls between the horizon and 0x3832: possibly
+    the order of the coordinate arguments the horizon passes (the port passes (rect, size, v, h); Leyte
+    pushes its $10 then $e), or a difference in 0x3832's own reading of them.
+  - Not resolved this cycle. The shared kept functions are 1.0.3's port, so the finding may concern 1.0.3's
+    port as well: to be checked against 1.0.3's own code before any change.
+- No project code changed this cycle; cycle 48's validation stands.
+- Next: compare draw_artificial_horizon and make_inset_face_oval_region instruction by instruction with
+  their ports, in both editions, at the call that takes (rect, size, $e, $10). Fix whichever side is
+  wrong (if it is 1.0.3's port, with 1.0.3's own cases), then restore the new-panel case.
+
+Cycle 50 of job f19bd982:
+
+- Cycle 48's run: all Leyte tests OK, QA PASS. Cycle 49 changed no project code.
+- The new-panel divergence resolved. Three causes, one of them a fidelity error in 1.0.3's own port:
+  1. Case artefact: draw_artificial_horizon calls make_inset_face_oval_region (CODE 3 0x3832) directly
+     on both sides. The emulator met its stand-in (added for the set-up's _local call), the port ran it.
+     A case may now list routines that run as they are ("real", gen_leyte_id02_reconstructed_cases.py
+     run(); CODE 2's fixture unchanged), and the new-panel case runs 0x3832 so.
+  2. Translation: _leyte_draw_new_panel called remap_panel_colours_identity as a method, where Leyte's
+     code calls 0x741e like any local. It now goes through _local, as the original does.
+  3. 1.0.3's port: draw_instrument (CODE 3 0x3c02, in 1.0.3 and Leyte alike) gave every instrument a
+     five-word argument area. The gyro (kind 8) and horizon (kind 9) calls push six words, the card
+     flag first (MOVE.W #1, ...; LEA $c(A7)), seen in both editions' bytes. So the port entered both
+     instruments 2 bytes high: their frames' temporary rects sat 2 bytes off (no global or result
+     changed; the case's logged rect pointers showed it).
+     - Fixed in godot/original/port/ID03.gd: a7 = entry - 4 - 0xa - 0xc - 4 for kinds 8 and 9.
+     - The Leyte host ports are regenerated (Leyte's ID03.gd carries the fix).
+     - 1.0.3's own replays pass, id03_gauges_cases.json 59/59 included.
+  - Also a stand-in sizing fix: TextFace's style argument is pushed as a word (MOVE.W #1), and the
+    stand-in had read one byte, the word's high byte.
+- Result: 31 CODE 3 cases match, the whole new panel included. Leyte's cockpit panel is drawn, every
+  instrument, exactly as Leyte's code draws it, the six-cell box and the extra records included. The
+  new-panel path is no longer marked NOT YET MATCHING.
+- Validation: the Original port changed, so QA and the full Godot suite this cycle (low priority),
+  below.
+- Next: JT $36a (the view-frame outline, CODE 2 +0x19c0), the start's last reported host gap on the
+  panel path; then the overlay's frame hooks.
+
+Cycle 51 of job f19bd982:
+
+- Cycle 50's QA: PASS (its full suite below).
+- JT $36a (CODE 2 +0x19c0) is 1.0.3's draw_view_frame_outline (0x16aa, "same instructions"). It was
+  refused for "A5 globals not paired: -0xc80, -0x424", which are the view frame's design coordinates
+  (-3200 and -1060 units, passed to design_x_to_screen), not A5 offsets.
+  - gen_host_ports.py treats any literal in -0x2400..-0x200 as an A5 global. A literal a
+    design-coordinate converter takes directly (design_x_to_screen, design_y_to_screen, _h, _v) is now
+    left out of that scan (DESIGN_COORDINATE). It is a targeted exception, not a narrowing of the rule.
+  - Regenerated: no longer refused are draw_view_frame_outline and the two blitters refused only
+    through it (blit_image_clipped_to_region and its a5safe variant). None is newly refused.
+    segment_methods.json (CODE 2: 131) and jump_table.json (109 named) are regenerated.
+- Probe: the start reports no missing host routine any more. Launch → copy protection → overlay →
+  Duty Roster → Select a Mission → the complete cockpit panel → the flight loop → Command-Q → Save →
+  ExitToShell. What the start still reports missing is the overlay's frame hooks.
+- Validation: the Leyte tests and QA after cycle 50's full suite (below).
+- Next: the overlay's frame hooks, in the order a frame calls them (the step hook first). That is
+  the gate to anything drawn in the view.
+
+Cycle 52 of job f19bd982:
+
+- Cycle 51's run: all Leyte tests OK, QA PASS. Cycle 50's full suite: 119/119 in 599 s.
+- The overlay hooks the start reports missing, ranked by what blocks them (closure reached, unproven
+  in it). Nearest: hook 8 allocate_session_buffers (2 unproven); hook 11 unlock_session_buffers
+  (3); hooks 1 and 9 through reset_span_row_lists. Farthest: hook 10 overlay_frame_step (121
+  unproven) and hook 14 process_flight_input_and_outcome (87).
+- A real defect in the generated Leyte overlay port, fixed in tools/leyte/gen_overlay_port.py:
+  - Kept functions reaching the host through _host_memory_call(entry, depth, offset, ...) kept 1.0.3's
+    host-world offsets. Leyte's world has them 0x3c further on (0x2c6 -> 0x302, 0x2ce -> 0x30a, 0x2de
+    -> 0x31a, 0x2d2 -> 0x30e; the function's own proven pairs). The rewrite reached only "+ 0x.."
+    forms, so ensure_handle_allocated and lock_handle_nopurge would have called the wrong host
+    services. That offset argument is now rewritten through the function's pairs.
+  - The cycle 22 guard is extended: a moved field still written as a bare hex literal anywhere else
+    refuses the function. It refuses exactly one, lock_overlay_buffers (0xd8, 0x192, 0x1ac, 0x1b4
+    bare, also wrong for Leyte). Kept functions: 77 -> 76, helpers unchanged.
+- Hook 8 written (pacific_conflict_reconstructed.gd): allocate_session_buffers (0x150c). It is 1.0.3's
+  0xe80 without the free-memory test: a fixed 0x8340-byte entry handle (1200 entries) and 30 rows,
+  with Leyte's addresses (flag 0x27184, handles 0x20f30 / 0x20f34 / 0x20f44).
+  - The reconstructed overlay now registers its routines in code_table (_init), so the loader links
+    the hook.
+  - 4 cases (first allocation; handles in place, two screens; depth 1; no entry flag), the host
+    world's three services stood in for, match. They exercise the corrected ensure_handle_allocated
+    against Leyte's code. 12 reconstructed overlay cases in all.
+- Validation: the overlay case fixture regenerated (the kept set changed), every Leyte test and QA at
+  low priority, below.
+- Next: hook 11 (unlock_session_buffers, through unlock_handle_purgeable), then reset_span_row_lists
+  (unblocking hooks 1 and 9), then lock_overlay_buffers by hand.
+
+Cycle 53 of job f19bd982:
+
+- Hook 11 written (pacific_conflict_reconstructed.gd unlock_session_buffers, 0x16dc), through
+  unlock_handle_purgeable (0x149e: 1.0.3's 0xe32 with Leyte's host slots +0x312 / +0x316; the
+  correspondence had placed it on 0x1476, and Ghidra lists no function at 0x149e). 4 cases.
+- reset_span_row_lists found in Leyte at 0x7eac (the correspondence: "not found"). Leyte walks a pointer
+  over the data pointers 0x20f5c + 4 i instead of 1.0.3's index; same semantics, Leyte's addresses (view
+  rows 0x21010, width 0x21012, fill colour 0x23fd0). Written and registered; 7 cases.
+- Validation: overlay reconstructed fixture 23 cases, all matching; every Leyte test OK, QA PASS.
+
+Cycle 54 of job f19bd982:
+
+- Hook 1 written: update_view_clip_bounds (0x7f12), 1.0.3's 0x6ed6 instruction for instruction with
+  Leyte's addresses (read from the disassembly: palette_changed 0x23fd2, clip 0x20b2e / 0x27014 /
+  0x27012, view mode 0x23d88, inset 0x2700e, projection tables 0x2703c / 0x27024 -> 0x27050 / 0x2704e).
+  7 cases (view modes, inset flag, odd / negative rows, the mode-6 entry).
+- Hook 9 written: lock_session_buffers (0x15da, 1.0.3's 0xf72), through lock_handle_nopurge (0x1476,
+  host slots +0x30e / +0x31a) and the 24-bit mask (host word +0x76). 5 cases (entry flag, depth 1,
+  multi-screen, masked pointers, the helper alone).
+- The overlay case runner gained the host service +0x30e.
+- Overlay reconstructed fixture: 35 cases, all matching Leyte's code.
+- Probe with hooks 1 / 9 live: no assertion stop; the session still runs through the flight loop to the
+  Save alert and ExitToShell. Hooks reported missing: 0, 2, 4, 10, 12, 13, 14, 15, 16, 17, 21 (12 and
+  15..17 newly reached now that 9 runs; 1, 8, 9, 11 written).
+- Next: the hooks in the order the start meets them (0, 10, 2, 4, then 12..17 and 21), each found in
+  Leyte's bytes and checked against Leyte's code; lock_overlay_buffers by hand.
+
+Cycles 55-56 of job f19bd982:
+
+- Hooks 15 / 16 (sin_fixed14 / cos_fixed14): the generated port already holds them verified (recorded at
+  the file offsets 0x23c4 / 0x2426, image 0x23a4 / 0x2406, Leyte's tables 0x1fd94 / 0x1ff94); now
+  registered as the hooks. 16 cases with D0 (the case runner records D0 when a case asks).
+- Hook 17 (rotate_int3_vecs_by_3ang, 0x31ca) and its tree, compared instruction by instruction with
+  1.0.3's (branch targets paired, absolute addresses masked):
+  - the hook, build_attitude_matrix_3ang (0x2ce2) and load_attitude_angle_sincos (0x265c): the same;
+  - finalize_attitude_matrix_3ang (0x2be8): Leyte's own. 1.0.3 tagged the composer and multiplied
+    three matrices through matmul3x3_s16; Leyte writes the product inline from the six sin / cos words
+    (0x23d22 .. 0x23d2c). Written from the listing;
+  - transform_int3_vecs_by_matrix3 (0x3418): registers reallocated, same arithmetic; with count 0 its
+    D0 is the copy loop's end pointer, the frame address entry - 8 (1.0.3: matrix + 0x12).
+  - Note: capstone's text drops the index scale of a brief extension word (0x8cdc is a0.l*4); the
+    bytes were read to settle it.
+- 15 rotation cases (the hook with 3 and 0 vectors over 4 angle sets, the build, three finalize sets
+  including the extremes, the transform with 3 / 1 / 0 vectors).
+- Hook 13 (begin_flight_for_rank, 0x834c): 1.0.3's 0x72f0 with Leyte's addresses (rank table 0x204dc,
+  handler 0xfcf6, host words +0x37a / +0x37c) and one change: the second aim lag (0x2105e) is the
+  first halved toward zero (1.0.3 stored the same word twice). Its depth-1 path calls hook 3 (0x4e68,
+  refresh_object_colours_for_depth, not ported for Leyte), whose assertion stops there. 4 cases.
+- Overlay reconstructed fixture: 70 cases, all matching Leyte's code.
+- Validation with hooks 15 / 16 live: every Leyte test OK, QA PASS; the probe reaches ExitToShell.
+- Hooks still missing: 0, 2, 4, 10, 12, 14, 21 (1, 8, 9, 11, 13, 15, 16, 17 written).
+- Next: the probe with hooks 13 / 17 live; then hook 12 (0xe61e, 1.0.3 0xd23a) and hook 3 by the same
+  compare-then-write route.
+
+Cycle 57 of job f19bd982:
+
+- Probe with hook 17 live: it is no longer reported missing; the session still reaches ExitToShell.
+- Hook 12 (0xe61e) compared with 1.0.3's written _d23a: the same sequence (the readouts, then with
+  0x27010 set the throttle gauge 0xdf20, the radar range buttons 0x1bc0e and the bomb lamp 0xdde6) plus
+  one inserted call, 0xde86, a Leyte-only routine switching on player bytes +0x68e / +0x68f. The overlays
+  are then marked drawn through 0xe644 (mark_view_overlays_drawn, already verified).
+- update_bomb_indicator (0xdde6) written: 1.0.3's with Leyte's fields (object y +8, count byte +0x68d,
+  caches 0x2c57a / 0x2c57c, drawn flag 0x2c596, host words +0x204 / +0x200, lamp routine +0x2d6) and a
+  fourth argument (sext byte player +0x690). 4 cases; the case runner gained the host routine +0x2d6.
+- Overlay reconstructed fixture: 74 cases, all matching Leyte's code.
+- Next: the rest of hook 12's tree - update_radar_range_buttons (0x1bc0e, moved fields and one
+  immediate), Leyte's 0xde86, update_view_readouts_and_overlays (0xe3ca) - then hook 12 itself.
+
+Cycle 58 of job f19bd982:
+
+- Cycle 57's validation: every Leyte test OK; QA flagged stale wording ("unported" in a case-generator
+  docstring), reworded and rerun.
+- update_radar_range_buttons (0x1bc0e) written: 1.0.3's 0x17a6c instruction for instruction with Leyte's
+  fields (scope +0x1e8 / +0x1e4, colours +0x1de / +0x1e0, buttons +0x1c6 / +0x1ce / +0x1d6, routine
+  +0x2c6, globals 0x2cc22 / 0x2cc1e / 0x2cc18). 5 cases.
+- update_state_lamp (0xde86, Leyte only) written from the listing: player state byte +0x68e (cached in
+  0x2c57e under the drawn flag) through a pc-relative word switch (0..6, refined by +0x68f == 1 for
+  states 1 and 3) to a lamp code for host routine +0x2da. A state above 6 skips the switch and passes
+  the caller's D1; the port does not hold it and stops there with an assertion. 16 cases.
+- Case runner: two more host routines (+0x2c6, +0x2da); call-log slots narrowed to 0x80 bytes with an
+  assertion that they stay below the stack guard (the ninth would have fallen inside it).
+- Overlay reconstructed fixture: 95 cases, all matching Leyte's code.
+- Next: update_view_readouts_and_overlays (0xe3ca), the last piece of hook 12's tree, then hook 12.
+
+Cycle 59 of job f19bd982:
+
+- Cycle 58's validation: QA PASS after the wording fix; the probe with hook 13 live reaches
+  ExitToShell (hook 13 no longer reported missing).
+- update_view_readouts_and_overlays (0xe3ca) written: 1.0.3's 0xcfec with Leyte's addresses (panels
+  flag 0x27010, view 0x23d88, designated entity 0x21070, inset 0x2700e, readout index / caches 0x2c58c /
+  0x2c58e, drawn flag 0x2c596, object y +8, climb 0x21468, panel copy offset 0x21564 from host words
+  +0xe6 * +0xe4, text routine +0x2b2, c_strlen 0x1f73a entered 0x9c below). The panels path calls the
+  same fourteen routines in the same order at Leyte's addresses.
+- Hook 12 is NOT registered yet. The panels path reaches routines not yet written for Leyte, and
+  registering it now would turn the probe's "missing" note into an assertion stop at the first panel
+  frame. Those routines are:
+  - sky / ground 0xc77e, heading tape 0xd4b2, frame lines 0xccf6 and the radar scope 0x1bcea (not
+    found by the correspondence);
+  - the eleven needles (found, but refused by the generator: they pass host-world dial offsets as
+    bare literals to _simple_needle).
+- 5 readout cases (the inset-4 reset, plain passes, view 7, negative values, the degree sign, an
+  unchanged cache). The text routine's stand-in also logs 12 bytes read through its first argument,
+  so the printed digits (in the caller's frame, inside the stack guard) are checked too. Log slots
+  0xc0 bytes, still below the guard.
+- Overlay reconstructed fixture: 100 cases, all matching Leyte's code.
+- Next: the needles' host dial offsets (a generator rule for _simple_needle's literal host fields, or
+  by hand), then the sky / heading tape / frame lines / radar scope, then register hook 12.
+
+Cycle 60 of job f19bd982:
+
+- Cycle 59's validation: every Leyte test OK, QA PASS; the probe reaches ExitToShell.
+- The five simple panel needles written for Leyte (pacific_conflict_reconstructed.gd), each compared
+  with 1.0.3's instruction by instruction, every difference listed (not just the first four):
+  - airspeed 0xdb2c, direction 0xdbf6, climb 0xdc68, tachometer 0xdce2, manifold 0xdd64;
+  - the only differences: host dial words 4 bytes up (+0x100 / +0x150 / +0x120 / +0x140 / +0x130 ->
+    +0x104 / +0x154 / +0x124 / +0x144 / +0x134) and the player's rpm / manifold fields 0xe up (+0x66a
+    -> +0x678, +0x672 -> +0x680); every immediate identical;
+  - _simple_needle written (the generator refused it for the literal dial offsets its callers pass);
+    the helpers and draw_gauge_needle (0xd892) were already verified.
+- Case runner: the call logs moved to free memory at 0x38000 (0x100 bytes each, asserted below the
+  stand-in addresses); the host line routine +0x2aa and the two depth-routine code pointers
+  (0x23fc8 / 0x23fcc) stood in and logged.
+- 41 needle cases: each needle through the host line routine, through the depth routines with the
+  readouts not drawn, and drawn with a changed end, over its input ranges (airspeed's three pieces and
+  wrap, negative climb / manifold, heading wrap).
+- Overlay reconstructed fixture: 141 cases, all matching Leyte's code.
+- Next: the other needles (altimeter 0xd984, flaps 0xdfd0, ammo 0xe1da, fuel 0xe282, gear 0xe088),
+  then the sky / heading tape / frame lines / radar scope, then register hook 12.
+
+Cycle 61 of job f19bd982:
+
+- Cycle 60's validation: every Leyte test OK, QA PASS.
+- The other five needles written for Leyte (altimeter 0xd984, flaps 0xdfd0, gear 0xe088, ammo 0xe1da,
+  fuel 0xe282), each compared with 1.0.3's instruction by instruction, every difference listed:
+  - the altimeter's dial 4 bytes up (+0xf0 -> +0xf4) and its host fields as in draw_gauge_needle;
+  - the flaps / gear / ammo / fuel dials 0x38 up (e.g. +0x20e -> +0x246);
+  - their player bytes moved (+0x67b -> +0x68c, +0x679 -> +0x68a, +0x682 -> +0x696, +0x67d / +0x67e ->
+    +0x691 / +0x692) and caches at Leyte's addresses (0x2c572 .. 0x2c58a); every immediate identical.
+- abs_int (0x38e8): the same four instructions as 1.0.3's, but the generated port holds an asserting
+  stub; the reconstruction now carries the real body (found because the flaps cases stopped on it).
+- 51 cases: each needle through the host line routine and the depth routines, drawn and not drawn,
+  the cached-value early return, negative flaps / gear, both altimeter hands, both tanks against the
+  capacity record.
+- Overlay reconstructed fixture: 192 cases, all matching Leyte's code.
+- All eleven needles are now written. Hook 12 still waits on four drawers: sky / ground 0xc77e, heading
+  tape 0xd4b2, frame lines 0xccf6, radar scope 0x1bcea.
+- Next: those four, then register hook 12 and run the probe.
+
+Cycle 62 of job f19bd982:
+
+- Cycle 61's validation: every Leyte test OK, QA PASS.
+- Hook 12's four remaining drawing routines compared with 1.0.3's: frame lines 0xccf6 (24 more
+  instructions), heading tape 0xd4b2 (restructured, two port-switch helpers 0xd426 / 0xd486 with host
+  routines +0x2ba / +0x2be / +0x2c2) and radar scope 0x1bcea (its loops restructured) need reading by
+  hand; sky / ground 0xc77e is the same 372 instructions with moved fields.
+- draw_sky_and_ground (0xc77e) written, derived from 1.0.3's port by one substitution table checked
+  against the full comparison: host geometry +0x18a..+0x19d (1.0.3 +0x186..), colours +0x194 / +0x192,
+  depth-1 band routine +0x2b6, cursor hook +0x2fe, panel copy +0xe4 / +0xe6 / +0xe0, Leyte's globals.
+  Leyte checks the lower band's bound before its loop instead of jumping to it: the same rows.
+  reset_background_rows (0xc728, registers swapped, host +0x190) written too.
+- Found on the way: five of the generated port's DAT_ constants still hold 1.0.3's addresses
+  (DAT_00020ad8, DAT_00025f34, DAT_00025f3a, DAT_00025f44, DAT_00025f48); the routines that use them stay
+  refused there, and the reconstruction spells every global out.
+- 12 cases (the row reset with rows, none and no buffer; sky / ground on the colour path through the
+  span filler for each horizon order, all sky, all ground and the panels not drawn, and on the depth-1
+  path over even / odd frames with and without the cursor hook). The case runner gained the span
+  filler pointer (0x26ff0) and host routines +0x2b6 / +0x2fe.
+- Overlay reconstructed fixture: 204 cases, all matching Leyte's code.
+- Next: frame lines, heading tape and radar scope by hand, then register hook 12 and run the probe.
+
+Cycle 63 of job f19bd982:
+
+- Cycle 62's validation: every Leyte test OK, QA PASS.
+- draw_panel_frame_lines (0xccf6) written from the listing: 1.0.3's 0xba0a with every host field 0x38
+  up (+0x238..+0x25c -> +0x270..+0x294, line routine +0x2aa). Leyte saves five registers (1.0.3 four),
+  so the line-routine calls sit 0x2c / 0x40 below the entry. Its 24 extra instructions lay the screen
+  loops out per depth where 1.0.3 shared them: the same writes.
+- 6 cases: the line routine at depth 8 and its depth-1 return; the screen at depth 4 and 8 (an odd row
+  stride, a negative stride with an odd width); depth 2 drawing nothing. A negative width was left out:
+  its unsigned 32-bit count would write about 4 billion pixels, in the original as in the port.
+- Overlay reconstructed fixture: 210 cases, all matching Leyte's code.
+- Hook 12 now waits on two routines: the heading tape (0xd4b2, with its port helpers 0xd426 / 0xd486)
+  and the radar scope (0x1bcea).
+- Next: the heading tape, then the radar scope, then register hook 12 and run the probe.
+
+Cycle 64 of job f19bd982:
+
+- Cycle 63's validation: every Leyte test OK, QA PASS.
+- update_radar_scope (0x1bcea) written from the listing: 1.0.3's 0x17b48 with Leyte's layout - the
+  player position at object +4 / +0xc (1.0.3 +0x18 / +0x20), the scope centre / bounds 4 bytes up
+  (+0x1ec / +0x1ee, x +0x1e4..+0x1e8, y +0x1e2..+0x1e6), colour +0xe8, line routine +0x2aa, the track
+  lists 0x20744 / 0x20748 with their counts 0x2cc2a / 0x2cc26, blip routines 0x23fc0 / 0x23fc4. Its loops
+  are laid out differently (a dbra on the word count where 1.0.3 jumped to its test): the same
+  iterations. Stack depths identical.
+- 4 cases: a colour screen at heading 0 and turned (last frame's drawn blips erased, visible tracks
+  drawn, tracks off each side of the scope cleared), the line-routine screen, empty lists; the list
+  swap and counts. The case runner gained the two blip routines.
+- Overlay reconstructed fixture: 214 cases, all matching Leyte's code.
+- Hook 12's tree now lacks only the heading tape (0xd4b2, with its port helpers 0xd426 / 0xd486).
+- Next: the heading tape, then register hook 12 and run the probe.
+
+Cycle 65 of job f19bd982:
+
+- Cycle 64's validation: every Leyte test OK, QA PASS.
+- update_heading_tape (0xd4b2) written: read against Leyte's listing step by step, it is 1.0.3's 0xc18a
+  (the same frame, stack depths and column walk), so it was derived from 1.0.3's port by one
+  substitution table: tape fields 4 bytes up, host routines 0x38 up, colour +0x294, panel copy +0xe0 /
+  +0xe4 / +0xe6, cached position 0x2c598, the depth-8 copy at code address 0xd2ae. As in 1.0.3 the
+  depth-4 strip branch is unreachable. Its port helpers (0xd426 / 0xd486) were already verified.
+- copy_rect_depth8 (0xd2ae): the same 49 instructions as 1.0.3's (the correspondence missed it);
+  written with _dbra_word_count (the generated port held asserting stubs for both) and registered at
+  its code address.
+- Hook 12 (redraw_view_readouts, 0xe61e) written and REGISTERED: the readouts (0xe3ca), then with the
+  panels drawn the throttle gauge, radar range buttons, bomb lamp, Leyte's state lamp and the
+  overlays-drawn mark. Its whole tree is now on Leyte's code.
+- 15 cases: copy_rect_depth8 at each source misalignment and a short unaligned destination; the tape at
+  depth 8 (marked-column walk, wrap at the period), depth 4 (host copy, split), unchanged position, the
+  panels not drawn (offscreen port, rect fill, cursor hook); hook 12's readouts path and a whole panel
+  frame through the host line routine. A stale old position outside the period was replaced with a
+  real one (the walk would read past the marks table, in the original as in the port).
+- Overlay reconstructed fixture: 229 cases, all matching Leyte's code.
+- Probe with hook 12 live, Leyte tests and QA: running (result in the next checkpoint).
+- Next: the probe's result (the first divergence, if hook 12's drawing meets one), then hooks 0, 2, 4,
+  10, 14, 21.
+
+Cycle 66 of job f19bd982 (survey while the hook-12 probe runs):
+
+- The remaining hooks all reach the object / entity system, whose record layout Leyte changed. The
+  comparisons so far (hook 4's tree, run_simulation_tick 0x5192):
+  - dispatch_entity_tick (0x5152, 1.0.3 0x4484): controller at entity +0 (1.0.3 +8), flags +0x14
+    (1.0.3 +4), and the controller type hidden unless host +0xb0 is 8 (1.0.3 5);
+  - clear_pending_entity_slots (0x6c6a): the same, slot table 0x2144c;
+  - dispatch_entity_cleanup (0x60dc): child index word +0x10 (1.0.3 byte +1), type byte +0x28 (1.0.3
+    +0), flags +0x14, stamp +0x3e (1.0.3 +0x3c), frame counter 0x21020;
+  - retire_entity (0x603a): child indices words +0x10 / +0x12 (1.0.3 bytes +1 / +2), scene root
+    0x23c2c (+0x32 child table, 1.0.3 +0x30), child window 0x2107a / 0x21078, shot controller 0x21068,
+    and a new guard: the scene root's child-table entry is cleared only when it is this object;
+  - apply_entity_mission_rates (0x4fce, 114 instructions against 1.0.3's 100) still to read.
+- Hooks 2 and 21 reach deeper trees in the same system (object records with the type at +0x28, the
+  child index as a word).
+- Next: the probe's result; then hook 4's tree from its leaves up (retire, cleanup, mission rates,
+  tick, slots, then run_simulation_tick), each read by hand against Leyte's listing.
+- Probe with hook 12 registered: no assertion stop; hook 12 is no longer reported missing and the
+  session still runs through the flight loop to the Save alert and ExitToShell. Hooks still missing:
+  0, 2, 4, 10, 14, 21 (1, 8, 9, 11, 12, 13, 15, 16, 17 written). Every Leyte test OK, QA PASS, 49 GiB free.
+
+Cycle 67 of job f19bd982:
+
+- Hook 4's tree started from its leaves, each read from Leyte's listing:
+  - retire_entity (0x603a): 1.0.3's 0x51cc on Leyte's entity layout (controller +0, child indices words
+    +0x10 / +0x12, x +4, flags +0x14, stamp +0x3e; scene root 0x23c2c with its child table at +0x32;
+    window 0x2107a / 0x21078, scatter slots 0x2144c, shot controller 0x21068, retire count 0x2b22c), plus
+    Leyte's guard: the child-table entry is cleared only when it holds the object;
+  - dispatch_entity_cleanup (0x60dc): retired flag byte +0x17 bit 1, child index word +0x10, type byte
+    +0x28, stamp +0x3e from frame counter 0x21020.
+  The D0 each leaves for its caller matches 1.0.3's rules (the caller's, the child index, or 7).
+- 10 cases (equal / differing indices, the guard both ways, the window and the slot scrub, an index
+  word above 0x7fff, the shot controller, no controller; cleanup already retired, stamped, retired),
+  D0 checked wherever the code defines it.
+- Overlay reconstructed fixture: 239 cases, all matching Leyte's code.
+- Next: apply_entity_mission_rates (0x4fce), then dispatch_entity_tick, clear_pending_entity_slots and
+  run_simulation_tick (hook 4).
+
+Cycle 68 of job f19bd982:
+
+- Cycle 67's validation: every Leyte test OK, QA PASS.
+- apply_entity_mission_rates (0x4fce) written from the listing: 1.0.3's 0x433a on Leyte's entity layout
+  (flagged byte +0x17, scale bit byte +0x15, rate +0x18, child index word +0x10, parent template list
+  +0x2a, faces +0x4a with count word +0x3c, type byte +0x28, player = controller +0 == 0x20b28), with two
+  clamps 1.0.3 does not have: the rate held to 0..999999999, and with byte +0x16 bit 4 raised to at least
+  +0x20 + 0xce40 (before the shape clamp). The three indexed operands' scales (x8, x4, x2) were read from
+  the extension words, since capstone's text drops them.
+- dispatch_entity_tick (0x5152: controller +0, flags +0x14, hidden controller type 8 where 1.0.3 had 5)
+  and clear_pending_entity_slots (0x6c6a, slots 0x2144c) written.
+- 20 cases: mission rates over each phase, the parked rate, halving, the scale bit, both new clamps, the
+  shape clamp, the player's and others' faces, path 1; the tick's hide / show; the slots full and empty.
+- Overlay reconstructed fixture: 259 cases, all matching Leyte's code.
+- Hook 4's tree now lacks only run_simulation_tick itself (0x5192).
+- Next: run_simulation_tick, register hook 4 and run the probe.
+
+Cycle 69 of job f19bd982:
+
+- Cycle 68's validation: every Leyte test OK, QA PASS.
+- Hook 4 (run_simulation_tick, 0x5192) written and REGISTERED: 1.0.3's 0x44c8 with Leyte's arrays
+  (path 0: 0x20b44 / count 0x20f2c, 0x20804 / 0x20b24; path 1: 0x233bc / 0x219c4, 0x22d2c / 0x219c0),
+  pending slots through 0x6c6a, distance reset 0x7ff4 (verified); the same stack depths. Its whole tree
+  is now on Leyte's code.
+- 4 cases end to end (eight entities across the four arrays through the tick, mission rates and the
+  type-8 hide; the slots cleaned or kept by host +0xac; phases 0 and 6).
+- Overlay reconstructed fixture: 263 cases, all matching Leyte's code.
+- Probe with hook 4 live, Leyte tests and QA: running (result in the next checkpoint).
+- Next: the probe's result; then hooks 0, 2, 10, 14, 21.
+
+Cycle 70 of job f19bd982 (survey while the hook-4 probe runs):
+
+- Hook 21 (spawn_cloud_layer, 0x728c) maps to: overlay_rng_next (verified), fold_angle_pm_0x2000 (0xf85c,
+  the same 9 instructions, refused only for its 0x2000 / 0x4000 constants), abs_int and sin / cos
+  (written), spawn_camera_relative_object (0x1dc02, controller +0 for 1.0.3's +8) and
+  spawn_mission_pool_object (0x5f64), which reaches heap_realloc_grow_only (0x21c0, the same) and
+  instantiate_mission_pool_slot (0x5450): restructured in Leyte (134 instructions against 90, with a
+  frame 1.0.3 does not have) - the object-instantiation core that hook 2's tree reaches too.
+- Next: the probe's result; then instantiate_mission_pool_slot by hand (it unblocks hooks 2 and 21).
+- Probe with hook 4 registered: no assertion stop; hook 4 is no longer reported missing and the session
+  still runs through the flight loop to the Save alert and ExitToShell. Hooks still missing: 0, 2, 10,
+  14, 21 (1, 4, 8, 9, 11, 12, 13, 15, 16, 17 written). Every Leyte test OK, QA PASS, 49 GiB free.
+
+Cycle 71 of job f19bd982:
+
+- instantiate_mission_pool_slot (0x5450) read from Leyte's listing. It is 1.0.3's 0x46ba on Leyte's
+  layout (descriptor via root +0x2a, slot table root +0x32, type / slot as words +0x10 / +0x12, the
+  same-slot counter byte +0x29, the "below root +0x2e" flag in +0x14) with one rewritten part: after
+  the class factory creates the controller (stored at object +0 and cleared), Leyte transforms (0, 0,
+  0x1000 << word +0x36) through apply_template_chain_xform, subtracts the object position, turns that
+  vector into two angle words through 0x2554 (hook 19), and gives the controller the object position
+  (+0x14..+0x1c) and those angles (+0x20 / +0x22), where 1.0.3 copied three record words.
+- Its callees: update_object_camera_metric and alloc_object_from_desc (both written this cycle),
+  apply_template_chain_xform (0x3524) and activate_near_range_object (0x5c98), both restructured, hook
+  19 (0x2554), the class factories (one create routine per controller kind, through the factory table
+  0x2074c), apply_entity_mission_rates (written).
+- update_object_camera_metric (0x47b6): position +4 / +8 / +0xc, camera 0x23d68 / 0x23d64 / 0x23d60,
+  metric at +0x1c (1.0.3 +0x10).
+- alloc_object_from_desc (0x532e): shapes 0x54 bytes (1.0.3 0x52), type byte +0x28, flags +0x14,
+  position +4..+0xc, rate +0x18, words +0x36..+0x3c / +0x52, birth frame +0x42; kind 3 0x36 bytes with
+  the descriptor at +0x2a. Leyte's object record, as far as this shows it, keeps 1.0.3's field order
+  with the type byte moved behind the position.
+- 7 cases with D0 (the metric per dominant axis; both object kinds allocated on a fresh heap that
+  builds its sentinel and grows the arena from host +0x384).
+- Overlay reconstructed fixture: 270 cases, all matching Leyte's code.
+- Next: hook 19 (0x2554) and apply_template_chain_xform, then activate_near_range_object; the class
+  factories after that (they are the bulk of the flight code).
+
+Cycle 72 of job f19bd982:
+
+- Cycle 71's validation: every Leyte test OK, QA PASS.
+- Hook 19 (attitude_from_velocity, 0x2554) written and REGISTERED: the same 100 instructions as 1.0.3's
+  0x1f02, refused by the generator only for its callees:
+  - atan_fixed14 (0x24ec) and acos_fixed14 (0x2468): registers reallocated, Leyte's tan / cos tables
+    (0x20194 / 0x1ff94);
+  - isqrt_floor (0xf7c0): Leyte returns the root as a sign-extended word where 1.0.3 moved the long -
+    the same value (the root is at most 0x7fff).
+- 28 cases with D0 / outputs: atan and acos across their ranges and clamps, isqrt including 0, 1 and a
+  negative, and hook 19 over each heading branch, steep and level pitch of both signs, vz 0, speed 0.
+- Overlay reconstructed fixture: 298 cases, all matching Leyte's code.
+- Leyte tests, QA and a probe with hook 19 live: running.
+- Next: apply_template_chain_xform (0x3524), then activate_near_range_object (0x5c98), toward
+  instantiate_mission_pool_slot (hooks 2 and 21).
+
+Cycle 73 of job f19bd982:
+
+- Cycle 72's validation: every Leyte test OK, QA PASS (the probe with hook 19 live still running).
+- apply_template_chain_xform (0x3524) read from Leyte's listing: restructured. Leyte no longer walks
+  the parent chain itself: a new helper (0x36fa, about 150 instructions) composes the whole chain into
+  one matrix and translation in the frame (a6 - 0x1e) and returns whether any rotation applies; the
+  point path (src or dst 0) then works on the object position (+4..+0xc, from 1.0.3's +0x18..) and
+  always commits it (1.0.3 committed only with both pointers 0); the mesh path rotates and translates
+  the vertices once, offsets shifted by word +0x36 (1.0.3 +0x34). The composer builds each parent's
+  rotation (0x2ce2), multiplies matrices (0x2326), copies (memcpy 0x1f61a) and accumulates rotated
+  translations - to be read in full next.
+- translate_int3_vecs (0x2274) written: 1.0.3's 0x1c3c with the count tested before the loop (the same
+  iterations). 4 cases.
+- Overlay reconstructed fixture: 302 cases, all matching Leyte's code.
+- Next: the chain composer 0x36fa and the matrix product 0x2326, then apply_template_chain_xform.
+- Probe with hook 19 registered: no assertion stop; the session still reaches the Save alert and
+  ExitToShell. Hooks still missing: 0, 2, 10, 14, 21 (1, 4, 8, 9, 11, 12, 13, 15, 16, 17, 19 written).
+  Every Leyte test OK, QA PASS, 49 GiB free.
+
+Cycle 74 of job f19bd982:
+
+- Leyte's template-chain transform written (pacific_conflict_reconstructed.gd), read from the listing:
+  - leyte_matmul3x3_s16 (0x2326): 1.0.3's matmul3x3_s16 laid out with a frame (out = a x b, each element
+    the add.l sum of three muls.w products asr 12);
+  - compose_template_chain (0x36fa, Leyte only): identity / zero start, then for each parent (+0x24 chain,
+    slot index word +0x12, slot table parent +0x32): the slot's rotation (0x2ce2) folded in when an
+    angle is non-zero - copied the first time (memmove_block), then accumulated x R into the other frame
+    buffer - with the translation turned by R ((t . R) asr 12) before the slot's is added; otherwise the
+    slot's translation is added. Matrix to out (unless already there), translation at out + 0x12;
+    returns whether any rotation was folded in. Its work buffers live in its frame (a6 - 0x12, - 0x24,
+    - 0x48), at the stack depths the listing gives (0xb4 / 0xbc below the entry);
+  - apply_template_chain_xform (0x3524): the chain composed once, the point path on the object position
+    (+4..+0xc) always committed back, the mesh path rotated then translated by the translation << word
+    +0x36.
+- 11 cases: the product; the composer with no parent, a translating parent, a rotating parent and a
+  three-level chain mixing both (D0 checked); the point path on each; the mesh path translated and
+  rotated.
+- Overlay reconstructed fixture: 313 cases, all matching Leyte's code.
+- Next: activate_near_range_object (0x5c98), then instantiate_mission_pool_slot and the class factories.
+
+Cycle 75 of job f19bd982:
+
+- Cycle 74's validation: every Leyte test OK, QA PASS.
+- activate_near_range_object (0x5c98, 221 instructions against 1.0.3's 206) mapped. Its callees on
+  Leyte: heap_alloc (verified), build_object_poly_buffers (0x561c), build_land_outline_at_detail
+  (0x577a), set_object_faces_bw_pattern (0x5738, verified), apply_entity_mission_rates (written),
+  update_object_distance_band (0x49cc), sink_object_shape_at_waterline (0x19b32), translate_int3_vecs and
+  apply_template_chain_xform (written), shade_object_faces (0x4aec), instantiate_mission_pool_slot
+  (0x5450, mutually recursive with it) and update_object_camera_metric (written).
+- The distance bands written: the shared search on Leyte's band_limits table (0x203b8, read from the
+  image: 0, 40041, 81395, 124152, 168409, 214275, 261873, 311338, ...), the object's band word at +0x32
+  (1.0.3 +0x30), the record's at +4 (0x4a3a). 12 cases with D0 (kept, up one, up several, down several,
+  down one, near zero; a distance below 0 would walk off the table's front, in the original as in the
+  port, and is left out).
+- Overlay reconstructed fixture: 325 cases, all matching Leyte's code.
+- Next: shade_object_faces (0x4aec), build_object_poly_buffers (0x561c), build_land_outline_at_detail
+  and sink_object_shape_at_waterline, then activate_near_range_object and instantiate_mission_pool_slot.
+
+Cycle 76 of job f19bd982:
+
+- Cycle 75's validation: every Leyte test OK, QA PASS.
+- A new comparison aid (scratch, not part of the repository): the two listings aligned by a sequence
+  diff on normalised instructions (branch targets and absolute addresses masked), so a routine whose
+  loop gained a bound check before entry still lines up and only its real differences show.
+- shade_object_faces (0x4aec) written, derived from 1.0.3's port by the object-field table the aligned
+  listings give (type byte +0x28, retired byte +0x17, band word +0x32, flags +0x14, vertices +0x46 after
+  word +0x38, template list +0x2a, child index word +0x10, faces +0x4a with count word +0x3c, snapshot flag
+  byte +0x16); every constant paired one to one (light 0x21574 / 0x21572 / 0x21570, owner table 0x23fac);
+  the face records unchanged. Leyte checks the face loop's bound before entry: the same faces.
+- assign_face_colour (0x1be6, the same 94 instructions) and write_face_palette_slot (0x1b90, registers
+  reallocated; the three owner tables 0x23fa0..0x23fa8) written with Leyte's globals.
+- 12 cases: shading at depth 8 with haze, haze masked, an owning face, depth 4, depth 1, a flat-white face,
+  the retired skip and the snapshot; slot assignment re-queued, first free and all full (D0); the
+  multi-screen slot write. (A case-writing slip was caught on the way: the flags long at +0x14 written
+  after the retired byte +0x17 had cleared it; reordered, the retired case now changes nothing.)
+- Overlay reconstructed fixture: 337 cases, all matching Leyte's code.
+- Next: build_object_poly_buffers (0x561c), build_land_outline_at_detail and
+  sink_object_shape_at_waterline, then activate_near_range_object and instantiate_mission_pool_slot.
+
+Cycle 77 of job f19bd982:
+
+- Cycle 76's validation: every Leyte test OK, QA PASS.
+- build_object_poly_buffers (0x561c) written: 1.0.3's 0x47e8 (an earlier pairing had taken the wrong
+  1.0.3 address, 0x4938, which is build_land_outline_at_detail) derived from its port by the aligned
+  listings' table - face count word +0x3c, vertex count word +0x3a, faces +0x4a, flag byte +0x16,
+  palette_changed 0x23fd2; both loops' bounds checked before entry (the same iterations); the face
+  records unchanged.
+- 2 cases on a fresh heap (three faces with 3 / 0 / 4 index words; with and without the vertex trailer).
+- Overlay reconstructed fixture: 339 cases, all matching Leyte's code.
+- The two remaining leaves under activate_near_range_object sized: build_land_outline_at_detail (156
+  port lines; four polygon clippers, approx_dist3_xyz, heap_realloc_grow_only) and
+  sink_object_shape_at_waterline (132 lines; clip_polygon_y_nonneg, transform_vecs12_to_int3_by_matrix3).
+- Next: those two with their helpers, then activate_near_range_object and instantiate_mission_pool_slot.
+
+Cycle 78 of job f19bd982:
+
+- Cycle 77's validation: every Leyte test OK, QA PASS.
+- build_land_outline_at_detail (0x577a) written, derived from 1.0.3's 0x4938 port by three tables read
+  from the aligned listings:
+  - frame (link.w a6,#-0x1cf8 against -0x1c08): the work buffers below -0x8c0 moved down - relative
+    points -0x1cd0, transformed vertices -0x16d0, unique points -0xfc8 (room for 150 where 1.0.3 had 140),
+    last x / z -0x1ce4 / -0x1ce8; -0x8c0 and -0x460 unchanged; the chain transform entered 0x1d38 below.
+    Two traps on the way: the 4-digit frame displacements were first masked as addresses, and the
+    buffers indexed off a6 take their offset from a following adda.w (capstone shows the indexed
+    operands without a displacement) - both settled from the raw words;
+  - object fields: template list +0x2a, child index word +0x10, faces +0x4a / count +0x3c, vertices +0x46
+    after word +0x38, flags +0x14, second buffer +0x4e, position x / z +4 / +0xc, range +0x20, metric
+    +0x1c, shift +0x36, steps +0x34 (a chained substitution that first turned the child index into
+    +0x1c was caught and fixed);
+  - globals: detail ref 0x23c54 / 0x23c4c, camera 0x23d68 / 0x23d60, clip bounds 0x2701a / 0x27018 /
+    0x27016 / 0x20b2e; approx_dist3_xyz at 0x4886.
+- approx_dist3_xyz (0x4886, the same 36 instructions): the generated port held an asserting stub; the
+  real body written.
+- Test support: a case may carry its own stack guard (test_leyte_overlay_reconstructed.gd and the
+  generator), for routines whose frame keeps work buffers far below the default 0x840-byte band.
+- 5 cases: approx_dist3_xyz (D0); the land outline near with a wide limit and far with clipping (the
+  object, faces and globals compared; the frame ignored).
+- Overlay reconstructed fixture: 344 cases, all matching Leyte's code.
+- Next: sink_object_shape_at_waterline (with transform_vecs12_to_int3_by_matrix3), then
+  activate_near_range_object and instantiate_mission_pool_slot.
+
+Cycle 79 of job f19bd982 (survey):
+
+- Cycle 78's validation: every Leyte test OK, QA PASS.
+- A fuller comparison aid (scratch): one report per routine pair with the frame offsets, field /
+  immediate pairs and absolute addresses paired through the aligned listings, then the real
+  differences.
+- sink_object_shape_at_waterline is rewritten in Leyte, not moved:
+  - 0x19b32 is now a 17-instruction wrapper: compose_template_chain(obj, its frame) (0x36fa), then the
+    body 0x1970a(obj, three long arguments, the composed chain). 1.0.3's 0x15742 took four words and
+    walked the chain itself (apply_template_chain_xform);
+  - the body (330 instructions against 333) multiplies the sink rotation (0x2ce2) into the composed
+    chain with the 3x3 product (0x2326), transforms through 0x32a0 (1.0.3's
+    transform_vecs12_to_int3_by_matrix3, not found by the correspondence), reads the object position
+    from +4..+0xc (1.0.3 +0x18..+0x20), keeps its buffers about 0x78 lower in a larger frame (link
+    #-0x33dc against -0x3358), uses clip_polygon_y_nonneg (0x195d6, verified) and ends by calling 0x16116
+    where 1.0.3 called shade_object_faces;
+  - so it needs a hand reading of Leyte's listing, with 0x16116 and 0x32a0 identified first, and
+    activate_near_range_object's call to it checked for the new arguments.
+- No code changed this cycle.
+- Next: 0x16116 and 0x32a0, then the sink body and wrapper, then activate_near_range_object.
+
+Cycle 80 of job f19bd982:
+
+- The sink's two unknown callees identified and written:
+  - 0x32a0 = transform_vecs12_to_int3_by_matrix3 (1.0.3 0x2956), the count tested before the loop;
+  - 0x16116 = drop_contact_records_for_object (1.0.3 0x137ba): contact table 0x215a4, flag bytes +0x16
+    (1.0.3 +6), fractal reference +0x2e (1.0.3 +0x2c). So Leyte's sink body ends by dropping the object's
+    contacts where 1.0.3's re-shaded its faces.
+- release_fractal_reference (0x1746c) written: 1.0.3's 0x14ad2 on Leyte's layout (scenery flags byte
+  +0x15, owner flag +0x16, reference +0x2e, position +4..+0xc, template list +0x2a, child index word
+  +0x10; object_pool 0x20804 with word count 0x20b26, deferred-free flag 0x219a6, the warning through
+  overlay_printf 0x189c with the format at 0x17434).
+- A flaw in the scratch comparison aids found and fixed: they treated every mnemonic starting with "b" as
+  a branch, so btst / bset / bclr / bchg operands were masked. Re-running the routines compared with
+  them: shade_object_faces' flag bytes +6 / +7 -> +0x16 / +0x17 (already handled, checked by hand
+  against the listing then), build_land_outline_at_detail and build_object_poly_buffers unchanged - no
+  missed difference.
+- 7 cases: the vector transform (two records, none); the fractal release on the user path (last user
+  and still shared), with the static-scenery reset, and on the owner path freeing unused blocks and the
+  list; the contact drop (records naming the object as a or b, another kept, the release on the way).
+- Overlay reconstructed fixture: 351 cases, all matching Leyte's code.
+- Next: the sink body (0x1970a) and its wrapper (0x19b32), then activate_near_range_object.
+
+Cycle 81 of job f19bd982:
+
+- Cycle 80's validation: every Leyte test OK, QA PASS.
+- Leyte's waterline sink written from its listing:
+  - sink_object_shape_at_waterline (0x19b32): the wrapper - the object's chain composed into its frame
+    (0x36fa), then the body with (obj, ang1, ang2, ang3, chain). Leyte reads three arguments after obj
+    (1.0.3 passed four words, the fourth the drop); the port keeps the generated signature's fifth
+    parameter unread;
+  - leyte_sink_body (0x1970a): the sink rotation times the composed chain (0x2326) turns the template
+    vectors in one pass (0x32a0) - no separate chain transform; only the y words are rebased, by the
+    object's own y (+8) << shift (1.0.3 rebased all three after the chain transform, y by the drop), x / z
+    restored on the clipped points from +4 / +0xc; then 1.0.3's clip / hash / rebuild on Leyte's fields
+    and frame (any-face -0x33c0, clip count -0x33be, rotation -0x33aa, product -0x33bc, normals -0x3398,
+    bucket ids -0x2998, id buckets -0x2d98, clip out -0x2598, vertices -0x1f08, points -0x1800); it
+    re-shades only when host word +0xb2 is set and always drops the object's contacts (0x16116).
+- 2 cases (a square face crossing the waterline and a triangle below it, tilted under a translating
+  parent; the re-shade flag on a retired object), the per-case stack guard covering the 0x3438-deep frame.
+- Overlay reconstructed fixture: 353 cases, all matching Leyte's code.
+- Next: activate_near_range_object (0x5c98) - its call to the sink checked for the three arguments - then
+  instantiate_mission_pool_slot and the class factories.
+
+Cycle 82 of job f19bd982:
+
+- Cycle 81's validation: every Leyte test OK, QA PASS.
+- activate_near_range_object (0x5c98) written: 1.0.3's 0x4e4e on Leyte's layout (type byte +0x28, flag
+  bytes +0x15 / +0x16 / +0x17, controller +0, metric +0x1c, counts +0x38 / +0x3c, buffers +0x46 / +0x4e,
+  group child count +0x30 / table +0x32 / descriptor +0x2a; arrays 0x20b44 / 0x20804, controller_list
+  0x21bd4 / 0x219b4) with two changes read from the listing: a new steps word +0x34 computed after
+  publishing ((metric asr 2 + metric + range +0x20) << word +0x36, asr #1 until below 0x8000), and the
+  waterline sink called for controller types 0x1b..0x22 with the controller words +0x658 / +0x65a /
+  +0x65c (1.0.3: types 0x15..0x19, four words +0x34..).
+- instantiate_mission_pool_slot (0x5450) written from the cycle-71 reading: 1.0.3's on Leyte's layout,
+  with the controller set-up rewritten (the chain-transformed (0, 0, 0x1000 << word +0x36) minus the
+  object position, heading / pitch through hook 19, the controller given the object position and the
+  two angle words). Its class-factory call goes through _jsr to the definition record's create routine
+  (factory table 0x2074c); none of those is written for Leyte yet, so that path stops at its assertion.
+- 4 cases: activation of a childless group and of an unknown kind; instantiation end to end on a fresh
+  heap - a near shape activated through the plain path (buffers, face records, chain transform, band,
+  depth-8 shading) and a far one queued on entity_array_3.
+- Overlay reconstructed fixture: 357 cases, all matching Leyte's code.
+- The object-instantiation core under hooks 2 and 21 is now on Leyte's code except the class factories.
+- Next: hook 21 (spawn_cloud_layer, 0x728c: spawn_camera_relative_object, spawn_mission_pool_object,
+  fold_angle) and hook 2 (start_mission_scene, 0x46e2), then the class factories they reach.
+
+Cycle 83 of job f19bd982:
+
+- Cycle 82's validation: every Leyte test OK, QA PASS.
+- Hook 21 (spawn_cloud_layer, 0x728c) written and REGISTERED with its tree, each paired with 1.0.3's:
+  - fold_angle_pm_0x2000 (0xf85c): the same 10 instructions (the generated port held a stub);
+  - spawn_mission_pool_object (0x5f64): root (0x23c2c) count / table +0x30 / +0x32, template type word
+    +0x10 (1.0.3 byte +1), vertex buffer +0x46, instantiate 0x28 below;
+  - spawn_camera_relative_object (0x1dc02): controller +0 (1.0.3 +8), cloud templates 0x2cd90, camera
+    0x23d68 / 0x23d64 / 0x23d60;
+  - spawn_cloud_layer: the cloud controller type is 0x2a (1.0.3 0x1d), entity_array_1 0x20b44 / 0x20f2c.
+- 11 cases: fold_angle across its range (D0); the pool spawner with a free slot, a full table (grown by
+  10) and no vertices (D0 - with the camera far away the object is queued, has no vertex buffer and the
+  spawner retires it, in the original as in the port); hook 21 without clouds (type-0x2a clouds retired,
+  others kept). With clouds the hook reaches the cloud classes' create routines (through the factory
+  table), not yet written for Leyte - their assertion stops there.
+- Overlay reconstructed fixture: 368 cases, all matching Leyte's code.
+- Probe with hook 21 live, Leyte tests and QA: running (result in the next checkpoint).
+
+Cycle 84 of job f19bd982:
+
+- Cycle 83's Leyte tests OK and QA PASS (its probe still running at the time of writing).
+- Hook 2's tree mapped (start_mission_scene 0x46e2: 1.0.3's 0x3aa4 instruction for instruction, the scene
+  table at root +0x32, Leyte's globals): reset_distance_base_globals, fill_pose_history_angles and
+  stop_all_sound_channels already verified; hook 21 written; find_anchor_point (0x11fa) is a new
+  algorithm in Leyte (90 instructions against 22, a 0xb7c-byte frame, nearest-point searches through
+  approx_dist3_xyz) - its own cycle next.
+- Written with cases:
+  - reset_object_to_template_pose (0x5c30): position +4..+0xc and range +0x20 from the descriptor, flag
+    byte +0x17;
+  - deactivate_object (0x6130): type +0x28, flags +0x14 / +0x16, buffers +0x4e / +0x46, faces +0x4a / +0x3c,
+    controller +0, child indices words +0x12 / +0x10, fractal reference +0x2e; groups +0x30 / +0x32 with the
+    children's +0x28 / +0x2e / +0x14 / +0x29 / +0;
+  - copy_player_pose_to_camera (0x83de): position +4..+0xc, the type record's word +0x46 (1.0.3 +0x44 - a
+    field the first draft kept at +0x44, caught by the pairing and fixed against the listing).
+- 6 cases (the pose reset and its skip, the camera copy, a shape and a group deactivated).
+- Overlay reconstructed fixture: 373 cases, all matching Leyte's code.
+- Next: the hook-21 probe result; find_anchor_point; then start_mission_scene registered as hook 2.
+- Probe with hook 21 registered: the FIRST DIVERGENCE of this stretch. The cloud path instantiates through
+  the class-factory table 0x2074c, which lies exactly at the end of the loaded image (text + data =
+  0x2074c), i.e. in the zeroed bss: Leyte fills it at run time - routines at 0x38 and ~0x280 copy the
+  definition records (0x52 bytes each from 0x1f78c, 0x1c bytes from 0x1fbb0) into heap blocks and file
+  them under their word +0 - and those have not run in the port. The factory call therefore read a null
+  definition and jumped through garbage (dozens of assertions, no ExitToShell). Hook 21 is unregistered
+  again (written, cases kept), so the start returns to its previous reach; the probe is re-run to
+  confirm.
+- Next: find what reaches the definition-registration routines (no direct bsr: a code pointer, likely
+  the overlay initialisation or the mission set-up), port them, then register hooks 21 and 2.
+
+Cycle 85 of job f19bd982:
+
+- The hook-21 divergence traced to its source: in 1.0.3, overlay_init_template_pointer_tables fills the
+  definition table and is called first by init_mission_object_tables, which hook 0
+  (configure_renderer_for_display) calls when no mission has been built. Hook 0 is not ported for Leyte,
+  so the table was never filled. Hooks 21 and 2 therefore wait on hook 0 and the mission build under it.
+- Leyte's overlay_init_template_pointer_tables (0x38) written from the listing: seven 0x52-byte records
+  from 0x1f78c (1.0.3: four of 0x4a) and eight 0x1c-byte records from 0x1fbb0 (1.0.3: five), each at the
+  slot its first word names, then the fixed copies of two step tables (group A through table + 0x20,
+  group B through table + 0x8c; sizes 0x1a / 0x20; the k-th call of a group 0xc deeper, the first at 0x24
+  below the entry with five saved registers).
+- 1 case: the whole initialiser on a fresh heap (43 copies, 1023 changed bytes), matching Leyte's code.
+  (A first draft of the case zeroed 0x40 table slots and so ran over the host-world pointer at 0x207fc;
+  the table is 0xb0 bytes up to it, and the case now zeroes those 44 slots.)
+- Overlay reconstructed fixture: 374 cases, all matching Leyte's code.
+- Next: the probe confirming the start's reach with hook 21 unregistered; then Leyte's
+  init_mission_object_tables and hook 0 (configure_renderer_for_display, 0x8032), after which hooks 21
+  and 2 can be registered.
+
+Cycle 86 of job f19bd982:
+
+- Cycle 85's Leyte tests OK and QA PASS; the probe confirming the start without hook 21 still running.
+- Leyte's mission build located (0x1d2a, the one direct caller of the template initialiser 0x38 - an
+  earlier search had missed it by matching only bare operands) and written from the listing:
+  - init_mission_object_tables: 1.0.3's 0x16c2 on Leyte's layout (root 0x23c2c, descriptor +0x2a, child
+    count +0x30 / table +0x32 / window +0x2e, child indices words +0x10 / +0x12), with Leyte's changes:
+    child 2 is always table +0x44 (1.0.3 chose +0x5c when host word +0x90 == 2), the special children go
+    to 0x2159c / 0x21598 / 0x21594 / 0x2158c (+ child 2's faces at 0x21590), the window to 0x2107a / 0x21078
+    and its children to 0x21410 / 0x2141c / 0x21420; depths from the pushed arguments;
+  - instantiate_object_from_desc (0x5408): the controller at the object's +0 and Leyte's definition table
+    0x2074c (a Leyte class-factory helper);
+  - copy_object_vertex_buffer (0x221c): counts +0x38 / +0x3c, buffers +0x46 / +0x4e.
+- 3 cases (the vertex copy with vertices and none; a key-less descriptor instantiated on a fresh heap).
+  The full mission build needs a scene whose children reach working class factories, not yet written.
+- Overlay reconstructed fixture: 377 cases, all matching Leyte's code.
+- Next: hook 0 (configure_renderer_for_display, 0x8032), which calls this mission build; then the class
+  factories the scene's children name.
+- Probe with hook 21 unregistered again: the start is back to its previous reach - no assertion stop, the
+  Save alert and ExitToShell; hooks still missing 0, 2, 10, 14, 21 (21 written, waiting on hook 0 and the
+  class factories). Every Leyte test OK, QA PASS, 48 GiB free.
+
+Cycle 87 of job f19bd982:
+
+- Hook 0 (configure_renderer_for_display, 0x8032) written, NOT registered: 1.0.3's 0x6fd6, the same 157
+  instructions, derived from its port by the pairing's table (Leyte's globals, host +0x2ae for +0x276,
+  mission child 4's faces +0x4a, the depth-1 face output 0xb482, and the three renderer-hook tables mapped
+  slot by slot and address by address).
+- Why not registered: the renderer hooks it installs are 21 code addresses (span fillers 0x4294 / 0x3d9a /
+  0x3f46 / 0x40e8, depth routines 0xe784 / 0xece2 / 0xe978 / 0xef28, face / scatter outputs 0x19f12 /
+  0x19e8c / 0x1a104 / 0x19f8c / 0x1a20c / 0x1a204, blip drawers 0x1b992 / 0x1b902 / 0x1baca / 0x1b9ea /
+  0x1bbe2 / 0x1bbb6, face output 0xb3d0) with no Leyte port yet; once live, the frame code would call them
+  through _jsr - the hook-21 lesson. They are the next block of work (P2).
+- overlay_patch_template_u16_pair (0x0): Leyte patches three template words (0x1f7d0, + 0xa4, + 0xf6:
+  definition records 0, 2 and 3) where 1.0.3 patched two.
+- 5 cases: the patch; hook 0 with nothing changed, with a depth change to 8 and to 4 (colour state through
+  the verified initialisers, the renderer hooks, the template words, child 4's face flags) and to depth 1.
+  (The depth-change cases first had no heap; the palette owner tables then allocated over address 0. They
+  now carry a fresh arena.)
+- Overlay reconstructed fixture: 382 cases, all matching Leyte's code.
+- Next: the 21 renderer routines, depth 8 first (the span filler 0x4294, the depth routines 0xe784 /
+  0xece2, the outputs 0x19f12 / 0x19e8c / 0xb3d0, the blip drawers 0x1b992 / 0x1b902), then register hook 0.
+
+Cycle 88 of job f19bd982:
+
+- Cycle 87's validation: every Leyte test OK, QA PASS.
+- Hook 0's depth-8 renderer routines paired with 1.0.3's: the span filler (0x4294), draw / restore line
+  (0xe784 / 0xece2), the dot plotter (0x19f12) and both radar-blip routines (0x1b992 / 0x1b902) are the same
+  instructions with no real difference; written from 1.0.3's port with Leyte's globals, the span writer's
+  long-run labels moved with the routine (+0xb00: 0x4338 / 0x4396; the generated port already fills the
+  tables 0x27224 / 0x29224 with Leyte's labels), and the blip host fields (+0xe0 / +0xe4, +0x1eb).
+- 14 cases: dots of each size, a blip drawn and erased, lines drawn and restored (shallow, steep,
+  reversed), and the span filler on rows whose spans differ and match, aligned and at an odd screen start.
+  Three things found by them:
+  - a REAL PORT BUG caught before it reached the start: the derived blip erase still stepped the saved
+    panel by 1.0.3's row-bytes field (+0xe0); Leyte reads +0xe4. Fixed;
+  - the span records' header is the span count (as the sky routine's _bg_row writes it), not count - 1:
+    the case's records were wrong, not the port;
+  - a zero-length line starts the line routine's dbra counter at -1 and runs 65536 steps, in the original
+    as in the port: left out of the cases.
+- Overlay reconstructed fixture: 396 cases, all matching Leyte's code.
+- Next: the rest of the depth-8 hooks (output_face_colour 0xb3d0 with its edge-row helpers, erase_dots_depth8
+  0x19e8c), then the depth-4 / depth-1 sets, then register hook 0.
+
+### Cycle 89 checkpoint — depth-8 dot eraser
+
+- erase_dots_depth8 (Leyte 0x19e8c, 1.0.3 0x15e9e) reconstructed. The pairing tool found only the moved
+  globals: screen record 0x207fc, dot count 0x23fbc, dot table 0x2c83c. Leyte also checks the loop bound
+  before the first record, which runs the same records. Each dot gives back its saved pixels only where the
+  screen still shows its colour.
+- 2 cases: three dots (sizes 1, 3 and 4, one pixel since recoloured and left alone) and an empty list.
+- Overlay reconstructed fixture: 398 cases, all matching Leyte's code.
+- Depth-8 renderer set for hook 0: 7 of 8 routines written; output_face_colour (0xb3d0) remains.
+- Next: output_face_colour 0xb3d0 with its edge-row helpers, then the depth-4 / depth-1 sets, then register
+  hook 0.
+
+### Cycle 90 checkpoint — depth-8 face-colour output
+
+- output_face_colour (Leyte 0xb3d0, 1.0.3 0xa14e) and its edge rasteriser add_face_edges_to_rows (Leyte 0xaddc,
+  1.0.3 0x9b6c) reconstructed.
+  - The output routine pairs with no real difference. Its moved callees are the four clip passes
+    (0xc458 / 0xc50a / 0xc5bc / 0xc672), the horizon tracker 0xb2e0 and the rasteriser. The generated port
+    already had all of them except the rasteriser.
+  - The rasteriser differs only in checking its edge loop's bound before entry, which runs the same edges.
+  - Every moved global matches the generated port's DAT_ constants, so both bodies are 1.0.3's port as it
+    stands. The rasteriser calls assign_face_colour (0x1be6), which is already reconstructed.
+- 5 cases:
+  - a triangle inside the view (no palette slot);
+  - a quad clipped at the right and bottom whose face still owns slot 7 (marked used);
+  - a polygon wholly outside (returns 0, nothing rasterised);
+  - the ground face (horizon tracking against the alternate bottom row sets the bottom-corner bits);
+  - an edge equal to one already in its row's bucket, which takes the face as its second face, beside an
+    edge sorted before the existing one.
+- Overlay reconstructed fixture: 403 cases, all matching Leyte's code.
+- Depth-8 renderer set for hook 0: all 8 routines written. Hook 0 is still unregistered: its depth-4 and
+  depth-1 sets remain, and the routines are registered with it.
+- Next: the depth-4 set (0x3d9a, 0x3f46, 0x40e8, 0xe978, 0xef28, 0x1a104, 0x19f8c, 0x1baca, 0x1b9ea), then
+  the depth-1 set (0x1a20c, 0x1a204, 0x1bbe2, 0x1bbb6), then register hook 0 and run the start probe.
+
+### Cycle 91 checkpoint — depth-4 and 1-bit renderer routines
+
+- Every remaining renderer routine hook 0 installs was paired by instruction with 1.0.3's and reconstructed. The
+  only differences are moved globals, host fields and code-relative tables:
+  - span fillers A / B / C 0x3d9a / 0x3f46 / 0x40e8: all +0xb00, with their pc-relative run-writer tables
+    0x3d22 / 0x3ece / 0x4070 and label bases 0x3e34 / 0x3fd6 / 0x4178. The table fillers 0x3ef2 / 0x4094 pair
+    identically; the generated port already had the first, 0x3d46;
+  - depth-4 line draw / restore 0xe978 / 0xef28: +0x13e8, labels named in comments;
+  - depth-4 dot plotter / eraser 0x1a104 / 0x19f8c. The eraser checks its loop bound before entry;
+  - depth-4 blip drawer / eraser 0x1baca / 0x1b9ea: colour host +0x1eb for 1.0.3's +0x1e7, the saved panel's
+    row bytes +0xe4 for +0xe0;
+  - 1-bit blip eraser / drawer 0x1bbb6 / 0x1bbe2: host rectangle routine +0x2ae for 1.0.3's +0x276;
+  - 1-bit dot eraser 0x1a204 (clr.w 0x23fbc; 1.0.3 had no port function for its 0x16208). The 1-bit dot
+    plotter 0x1a20c is the generated port's plot_dot_bw.
+  - The generated port's dot_records constant (DAT_00026288) is still 1.0.3's address, so the reconstruction
+    uses literal Leyte addresses (dot table 0x2c83c).
+- 34 cases:
+  - both table fillers;
+  - dots of each size at both nibble phases, and four dots erased, one pixel recoloured since;
+  - blips at both phases, drawn and erased;
+  - the 1-bit blips, logging their host rectangle calls, and the 1-bit dot eraser;
+  - lines drawn and restored (shallow, steep, reversed);
+  - all three span fillers, A through handles.
+- Test strengthened: the depth-8 line-restore cases from cycle 88 changed nothing (both the screen and the
+  saved panel were zero along the lines). Both depths' restore cases now get a filled saved panel and copy
+  52-125 bytes back. They still match.
+- Overlay reconstructed fixture: 430 cases, all matching Leyte's code.
+- Hook 0's renderer set is complete for all three depths.
+- Next: register hook 0 (configure_renderer_for_display 0x8032) with code_table entries for its installed
+  routines (LEYTE_RENDERER_HOOKS_8 / 4 / 1), then run the start probe and fix the first divergence.
+
+### Cycles 92-94 checkpoint — hook 0 live, mission-build class factories
+
+- Hook 0 (configure_renderer_for_display, 0x8032) registered in code_table, together with the 21 renderer routines
+  it installs (LEYTE_RENDERER_HOOKS_8 / _4 / _1). Cycle 91's duplicate table fillers (init_span_table_3466 /
+  _3608) were removed: leyte_init_span_table_3ef2 / _4094 already covered them.
+- Start probe with hook 0 live: the first divergence was the mission build. init_mission_object_tables
+  instantiates the scene's children, and their class factories (definition +6, reached through 0x2074c) had no
+  port. The first was 0x1ebe0, followed by 0x1ca20, 0x13bb6, 0x14952 / 0x14974 / 0x14996, 0x1d56e, 0x1ed5c and
+  0xf616. Without a port the run continued on Nil values. Leyte's definition records are renumbered and more
+  numerous than 1.0.3's (7 + 8 for 4 + 5), so each factory was paired by its record's position.
+- Template-registration factories reconstructed:
+  - 0x1ebe0, ordnance: nine slots at 0x2cdd4, redirected to 0x1ebb6 only at index 8. 1.0.3 kept one template;
+  - 0x1ca20, shadow: six slots at 0x2cd70, past 4 redirected to 0x1c9da;
+  - 0x1d56e, parachute: 0x2cd8c, redirected to 0x1d516;
+  - 0x1ed5c, cloud: two slots at 0x2ce04; any index but 0 redirects both cloud definitions to 0x1ec7e;
+  - 0x14952 / 0x14974 / 0x14996: Leyte-only single templates 0x2c834 / 0x2c830 / 0x2c82c, factory 0x148fa;
+  - 0x13bb6, type-0x10 controller: sets only flags bit 0x100000 and no longer publishes the controller.
+- Second probe: all of those passed. The only failure left was 0xf616, the enemy-fighter factory (1.0.3
+  0xe1c6). Its chain is now reconstructed:
+  - 0xf616 create_enemy_fighter: template key 7 at 0x2c5ae;
+  - 0xf3b8 init_aircraft_controller: a 0x6c8-byte controller. Bombs +0x68d, ammo +0x696, tanks +0x691 / +0x692,
+    word +0x642, +0x63e, gear +0x68a, definition +0x44;
+  - 0x1ca84 spawn_object_shadow: a new null check on the player-object pointer 0x20b28; the controller at
+    object +0;
+  - 0x1c9da create_shadow_controller: now also resets the distance references (0x7ff4).
+  - heap_alloc_cleared (0x2184) and fill_pose_history (0xf326) pair identically.
+- 30 cases:
+  - every slot table empty, at its threshold and full;
+  - the single-template registrations and the type-0x10 controller;
+  - the aircraft controller, the shadow controller, the fighter template capture, and a fighter with its
+    shadow;
+  - shadows through the real pool spawn and shadow factory: live and owned by the player, live with no
+    player pointer, and out of range (retired).
+- Test gap found: cycle 85's "spawn pool object" cases never spawn a live object. The camera at 0x900000
+  leaves every spawned object inactive, so they all retire and return 0. The aircraft cases place the camera
+  beside the spawn point and do get live shadows. Strengthening the cycle-85 cases is a follow-up.
+- Overlay reconstructed fixture: 451 cases, all matching Leyte's code.
+- Third probe, with the fighter chain: clean, no assertion failures. Startup reaches the Save alert and
+  ExitToShell with hook 0 running for real: renderer configuration, colour state, renderer routines and the
+  whole mission build (scene root, children, template registrations, the enemy-fighter template and fighters
+  with shadows). Missing hooks: 2, 10, 14, 21 (hook 0 is no longer missing). All Leyte tests and QA pass;
+  48 GiB free.
+- Next: hook 2 (start_mission_scene 0x46e2). Its blocker, find_anchor_point (0x11fa), is a Leyte rewrite:
+  - a 0xb7c-byte frame;
+  - a scene visitor (0x22ce) collecting two candidate lists;
+  - a nearest pick through the distance routine 0x4886: only candidates farther than their per-entry limit
+    from every point in the first list qualify, and the pick is skipped when its type byte is 0x18.
+  Then hooks 21 (its cloud factories 0x1ec7e now registered as templates), 10 and 14. Follow-up: give the
+  cycle-85 pool-spawn cases an in-range live object.
+
+### Cycle 95 checkpoint — find_anchor_point (hook 2's blocker)
+
+- find_anchor_point (Leyte 0x11fa, 1.0.3 0xd4a) reconstructed with its chain:
+  - scene walker 0x82a: 1.0.3's 0x686 with a 0x730-byte frame, entering the traversal 0x750 below;
+  - node-chain transform 0x676: 1.0.3's 0x4d8 with registers reallocated; its callees are already Leyte's;
+  - the generated port's verified traverse_scene_tree, and the extended visitor 0x108e.
+  - The visitor's address comes from a pc-relative pea that capstone prints as the absolute target (0x108e).
+  - Visitor, mode != 0: no longer picks the nearest runway itself. It appends runway faces whose first vertex
+    isn't above ground to list A (x, 0x43, z), and nodes of kind 0x19 / 0x18 to list B with their range
+    (node +0xe) and kind. Mode 0 is 1.0.3's.
+  - find_anchor_point, mode != 0: for each A, the nearest B within that B's range sets D5 to B's kind. A
+    becomes the anchor when nearer the reference than the best, unless D5 is 0x18. D5 is not reset per
+    candidate: it carries over, and before the first in-range node it is the caller's register.
+  - The port takes the caller's D5 as entry_d5 and asserts when it is read while unknown, rather than invent
+    one. Hook 2 calls with mode 0 and never reads it; the mode-1 caller 0x43d4 inherits it from its own caller.
+- Case runner: per-case "d5_in" sets the emulator's D5 to the value the port receives as its extra argument.
+  The original code doesn't read the extra stack argument.
+- 6 cases on a scene of two runway leaves, two nodes and a placed, turned kind-1 leaf:
+  - mode 0: the kind-1 leaf with its record's attitude;
+  - N1 of kind 0x19: R1 taken;
+  - N1 of kind 0x18 vetoes R1, and R2 is taken through N2;
+  - with N2 out of range the veto carries over to R2: none taken;
+  - no node in range, with the caller's D5 at 0 (R1 taken) and at 0x18 (none).
+  A first, weaker scene put all runways on one leaf (one candidate position) and the kind-1 leaf at the
+  origin, so I rebuilt it before keeping the cases.
+- Overlay reconstructed fixture: 457 cases, all matching Leyte's code.
+- Next: hook 2 (start_mission_scene 0x46e2: the previous pool object 0x23c30 retired through 0x6130, then the
+  scene record's +0x74 object, find_anchor_point(0x23d6c, 0)...), then hooks 21, 10 and 14.
+
+### Cycles 96-97 checkpoint — hook 2 written, mission-object factories
+
+- Hook 2 (start_mission_scene, Leyte 0x46e2) reconstructed. It pairs with 1.0.3's 0x3aa4 with no real
+  difference: only moved globals and callees, and the scene table at +0x32 (1.0.3 +0x30). All its callees exist
+  for Leyte. An integration case runs it on the anchor scene: scene object set and activated, camera, distance
+  references, frame counter 0x100 -> 0x14b, sound choice reset, player pose ring, and no clouds.
+- Start probe with hook 2 registered: it runs, and the next divergence is the mission's own objects. Activating
+  the new scene object instantiates them, and their class factories had no port. 0x1dce2 is hit first, then
+  0x17ba2, 0x1862a, 0x1bea6, 0x1cc72, 0x1d21a, 0x1db7a and 0xf4a8; after that the run continues on bad values.
+  So hook 2 is written but NOT registered again, like hooks 0 and 21 before it, and the start is clean.
+- Factories reconstructed:
+  - 0x1dce2 / 0x1db7a: 0x32- / 0x40-byte flagged controllers. They return the controller still in D0 from
+    the allocation;
+  - 0x1d21a turret: 0x54 bytes, +0x42 = 0xce40, flag bits depending on the object's y;
+  - 0x1cc72 flak: 0xfa bytes, flag bits when word +0x3c <= 4;
+  - 0x1bea6 aircraft spawner: 1.0.3's 0x17cf6 on Leyte's layout, key 0x18.
+  - The normalised pairing can't tell these small factories apart (they differ only in immediates), so their
+    constants were read from the disassembly.
+- 0x1ec7e is not a cloud controller; I had paired its records (keys 0x27 / 0x28) with 1.0.3's cloud slot by
+  position. It is a Leyte class with a 0x634-byte controller. For kind 99 with no sub-record yet it builds one
+  (0x1a936: a kind-2 shape among the owner group's children, a record sized by the shape's face count), then
+  sets heading word +0x22 (0x1eeee, 0x18712) and fills the pose rings at +0x32.
+- 10 cases: each factory on a fresh heap, both turret and flak branches, and the spawner over all four ranges
+  with both keys.
+- Overlay reconstructed fixture: 468 cases, all matching Leyte's code.
+- Next: the remaining mission factories, then register hook 2 and run the probe. They are carrier 0x17ba2,
+  ship 0x1862a (and its siblings 0x185ba / 0x18544), aircraft_create 0xf4a8 and the kind-99 class 0x1ec7e;
+  all are Leyte rewrites of 1.0.3's.
+
+### Cycle 98 checkpoint — Leyte's ship classes
+
+- Cycles 96-97 validation: all Leyte tests and QA passed.
+- The ship-class factories hook 2 reaches, reconstructed from the disassembly. 1.0.3's controllers were
+  0x56..300 bytes; Leyte's are 0x69c..0x772, with the shared fields moved: range word +0x668, target distance
+  +0x66c, word +0x656 = definition word +0x1a, and the kind word at +0x32.
+  - 0x17ba2 carrier: becomes the first carrier (0x2104c) only while the anchor mode word 0x23d84 is set and the
+    anchor lies within the object's range (+0x20; approx_dist3_xyz 0x4886); the mode word then becomes 2.
+    +0x38 = 0x18e20;
+  - 0x18544 sinking: range 3, +0x38 = 0x18376, +0x696 / +0x698 = 2 / 0;
+  - 0x185ba basic: range 7, +0x696 = 3, object flag bit 1;
+  - 0x1862a escort (Leyte only): a nonzero kind also sets object word +0x16 |= 0x4000;
+  - 0x18088 firing ship: 1.0.3's 0x152ee on the moved fields, 0x772 bytes.
+  - A nonzero kind sets the object's +0x18 to 1000000000 in every class except the firing ship.
+- 11 cases: the carrier with no anchor mode, the anchor in range (first carrier, mode 2), the anchor beyond
+  range, and a first carrier already set; each other ship with kind 0 and 1; the firing ship.
+- Overlay reconstructed fixture: 479 cases, all matching Leyte's code.
+- Next: the last two factories hook 2 needs, then register hook 2 and run the probe. They are aircraft_create
+  0xf4a8 (1.0.3's 0xe0ae extended: player selection and per-host tank / bomb loading) and the kind-99 class
+  0x1ec7e (with 0x1a936, 0x1eeee and 0x18712).
+
+### Cycle 99 checkpoint — aircraft_create
+
+- Cycle 98 validation: all Leyte tests and QA passed; 49 GiB free.
+- aircraft_create (Leyte 0xf4a8, 1.0.3 0xe0ae) reconstructed from the disassembly. Its second argument is the
+  definition key, and the key now drives it:
+  - the player is the first aircraft of key 1 while *0x20b28 is 0 (1.0.3: the first aircraft);
+  - the player's stores load from three host bytes (+0xb9 bombs, +0xbb into +0x68e, +0xbd into +0x690);
+  - its weight word +0x642 gets 16 per bomb plus 5 per unit of +0x68e;
+  - its tanks scale by host word +0xb6 percent, the left one forced to 1 when both come out empty;
+  - 1.0.3's host-mode-2 loading is gone;
+  - the shadow kind follows the key: 1 -> 1, 2 -> 5, 3 -> 6 (the first key 3 claims 0x21074), others none;
+  - kinds 5 and 6 add a bomb and 0x10 of weight.
+- 7 cases through the real shadow spawn: the player with stores loaded, the player with tanks scaled empty,
+  key 1 with a player already, keys 2 and 3 (0x21074 free and claimed), and a key without a shadow. The expected
+  values were checked by hand: weight 0x13a, tanks -15, the empty-tank rule.
+- Overlay reconstructed fixture: 486 cases, all matching Leyte's code.
+- Next: the kind-99 class 0x1ec7e (with 0x1a936, 0x1eeee and 0x18712), then register hook 2 and run the probe.
+
+### Cycle 100 checkpoint — the kind-99 route class; hook 2 registered
+
+- Cycle 99 validation: all Leyte tests and QA passed.
+- 0x1ec7e (the class of definitions 0x27 / 0x28) reconstructed with its three helpers, all Leyte-only. Index
+  scales were decoded from the extension words, since capstone drops them.
+  - The class: a 0x634-byte controller. Kind 99 builds a route; a route ship takes its next waypoint and turns
+    toward it; then the pose rings at +0x32.
+  - 0x1a936 leyte_build_route: the first flagged, controller-less kind-2 shape up the owner chain. Its face
+    vertices (shifted by +0x36) are copied after an 8-byte header and the nearest index recorded; none -> 0,
+    and the kind is cleared.
+  - 0x1eeee leyte_next_waypoint: x/z distance to the current point; within 0xa9 it advances, wrapping at the
+    count. Without a route, or with +0x62d bit 1 set, it uses the static point 0x2cdf8 from +0x622 / +0x626.
+  - 0x18712 leyte_heading_to_point: halves |dx| + |dz| until it fits in 15 bits (andi.w leaves the upper word
+    for the tst.l), then attitude_from_velocity (0x2554) for the heading alone.
+- 7 cases: kind 99 with a route (nearest 1, stepped to 2, heading set), kind 99 without a route shape (kind
+  cleared), kind 5; the static waypoint near and far; the heading with small deltas and past 15 bits.
+- Overlay reconstructed fixture: 493 cases, all matching Leyte's code.
+- Every class factory the hook-2 probe reached is now written, so hook 2 is registered again; the start probe
+  is running.
+
+### Cycle 101 checkpoint — hook 2 live; the generated port's keep rule rebuilt on evidence
+
+- Start probe with hook 2 registered (cycle 100's routines): clean. The mission scene starts on Leyte's code,
+  its objects instantiated through the class factories, and the flight loop is entered.
+- Planning moved from one start probe per divergence to the whole call graph:
+  `tools/leyte/overlay_status.py` (read-only) lists, for every 1.0.3 overlay port function, whether Leyte has
+  it (kept by the generated port / reconstructed / missing), each of the 22 hooks' closure, and the frontier.
+- The generated port's keep rule (`tools/leyte/gen_overlay_port.py`) was rebuilt. Before: a function proven
+  instruction for instruction was kept only when its whole GDScript call closure was verified, and any hex
+  literal inside the image that the map did not reach refused it, plain numbers such as 0x3fff included.
+  76 functions were kept and 83 proven ones refused. Now a proven function is kept when its own body is
+  sound; a callee that is not kept stays a refusing stub (assert), never a silent success.
+- Cross-check, and what it found. The 34 hand-written routines the first version of the new rule also kept
+  were removed from the reconstruction and their emulator cases run against the generated versions. 31
+  passed; 3 generated functions were wrong although proven by instruction. Each cause is closed in the
+  generator, not worked around:
+  - a proof cut short: Ghidra lists a false entry inside some routines (FUN_00003be0 inside
+    update_object_camera_metric, FUN_00001db8 inside sin_fixed14), and the proof stopped there, never
+    seeing the tail (the metric's store, which Leyte moved from +0x10 to +0x1c). The proof now covers the
+    routine to its natural end; an entry the code runs past, where the port has no function, does not end it;
+  - an offset no instruction holds: a body reading the low byte of a word field (host +0x1e7 of the word at
+    +0x1e6) kept 1.0.3's offset. Every offset a body adds must now be explained by the function's own
+    operands: a displacement, an immediate, a byte or word inside a field (it moves with the field: the
+    manifest's derived_fields), or the sum of two operands; otherwise the function is refused;
+  - a helper kept without evidence: _heading_tape_finish held host offset 0x2c2, which no aligned instruction
+    pair had ever shown. A private helper is now kept only on the evidence of every kept function it is a
+    piece of.
+  - Also: a literal counts as a plain number only on the function's own operands (or as a bit mask, or one of
+    a few word-arithmetic constants no relocation of the overlay names); static functions can be proven;
+    sin_fixed14 / cos_fixed14, which pass each other's proof, are placed by the overlay map's hook pairs.
+- Result: 152 functions and 58 helpers kept (76 and 46 before), none of the earlier ones lost. 36 hand-written
+  routines are superseded by generated, proven ones and removed from the reconstruction
+  (docs/architecture/leyte_overlay_superseded_overrides.md keeps their text); their 493-case fixture passes on
+  the generated versions.
+- The base overlay test now runs the port as the game does (the reconstruction over the generated port). A
+  translated 1.0.3 case is left out when Leyte's run enters a routine the port has not got, when the function
+  is made of a refusing private helper, or when it calls a null code pointer. Entries are counted only when
+  a call or jump reaches them. 280 translated cases over 45 functions (38 over 18 before), all matching.
+- Names aligned with 1.0.3's identities so kept callers find them: matmul3x3_s16 (0x2326, with the D0 it
+  leaves), _distance_band, _aircraft_common, create_cloud_controller (0x1db7a, proven by
+  register_cloud_templates' redirect), create_view_attached_controller (0x1dce2). What I had called the cloud
+  registration (0x1ed5c) is the route ship's: leyte_register_route_ship_templates.
+- Hooks 18 (isqrt_floor) and 21 (spawn_cloud_layer) registered. Start probe: clean; only hooks 10
+  (overlay_frame_step) and 14 (process_flight_input_and_outcome) are reported missing on that path.
+- Validation: all Leyte tests pass, QA passes, 51 GiB free.
+- Scale, from overlay_status.py: 542 port functions; 210 kept, 92 reconstructed, 240 missing. Hook 10's
+  closure is 176 functions with 45 missing; hook 14's is 121 with 33 missing.

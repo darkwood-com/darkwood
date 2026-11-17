@@ -1,0 +1,7567 @@
+{
+ "schema": 1,
+ "generated_by": "tools/leyte/overlay_placement.py",
+ "counts": {
+  "routines_1_0_3": 428,
+  "routines_leyte": 492,
+  "placed": 400,
+  "unplaced": 28,
+  "by_evidence": {
+   "calls": 96,
+   "cases": 56,
+   "correspondence": 149,
+   "map": 54,
+   "similarity": 45
+  },
+  "addresses_beyond_the_map": 518
+ },
+ "routines": [
+  {
+   "name": "overlay_patch_template_u16_pair",
+   "hellcats_1_0_3": "0x0",
+   "leyte": "0x0",
+   "evidence": "cases",
+   "instructions": [
+    5,
+    6
+   ],
+   "matching": 5
+  },
+  {
+   "name": "copy_block_return_dst",
+   "hellcats_1_0_3": "0x12",
+   "leyte": "0x16",
+   "evidence": "correspondence",
+   "instructions": [
+    11,
+    11
+   ],
+   "matching": 11
+  },
+  {
+   "name": "overlay_init_template_pointer_tables",
+   "hellcats_1_0_3": "0x34",
+   "leyte": "0x38",
+   "evidence": "cases",
+   "instructions": [
+    225,
+    285
+   ],
+   "matching": 157
+  },
+  {
+   "name": "any_mission_kills_recorded",
+   "hellcats_1_0_3": "0x314",
+   "leyte": "0x3e8",
+   "evidence": "calls:1",
+   "instructions": [
+    13,
+    13
+   ],
+   "matching": 10
+  },
+  {
+   "name": "probe_nearest_facility_kind",
+   "hellcats_1_0_3": "0x334",
+   "leyte": "0x40c",
+   "evidence": "calls:2",
+   "instructions": [
+    48,
+    81
+   ],
+   "matching": 16
+  },
+  {
+   "name": "load_player_fuel_and_bombs",
+   "hellcats_1_0_3": "0x3da",
+   "leyte": "0x52c",
+   "evidence": "map",
+   "instructions": [
+    35,
+    44
+   ],
+   "matching": 31
+  },
+  {
+   "name": "tally_destroyed_entity",
+   "hellcats_1_0_3": "0x468",
+   "leyte": "0x5e2",
+   "evidence": "similarity:0.78",
+   "instructions": [
+    23,
+    36
+   ],
+   "matching": 23
+  },
+  {
+   "name": "transform_through_node_chain",
+   "hellcats_1_0_3": "0x4d8",
+   "leyte": "0x676",
+   "evidence": "calls:5",
+   "instructions": [
+    81,
+    83
+   ],
+   "matching": 53
+  },
+  {
+   "name": "traverse_scene_tree",
+   "hellcats_1_0_3": "0x5da",
+   "leyte": "0x77e",
+   "evidence": "correspondence",
+   "instructions": [
+    56,
+    56
+   ],
+   "matching": 56
+  },
+  {
+   "name": "for_each_mission_scene_object",
+   "hellcats_1_0_3": "0x686",
+   "leyte": "0x82a",
+   "evidence": "correspondence",
+   "instructions": [
+    22,
+    22
+   ],
+   "matching": 22
+  },
+  {
+   "name": "collect_map_features",
+   "hellcats_1_0_3": "0x6cc",
+   "leyte": "0x870",
+   "evidence": "calls:1",
+   "instructions": [
+    180,
+    184
+   ],
+   "matching": 179
+  },
+  {
+   "name": "plot_mission_map_symbols",
+   "hellcats_1_0_3": "0x934",
+   "leyte": "0xae2",
+   "evidence": "map",
+   "instructions": [
+    106,
+    148
+   ],
+   "matching": 84
+  },
+  {
+   "name": "point_near_camera_or_type80_object",
+   "hellcats_1_0_3": "0xbca",
+   "leyte": "0xf7c",
+   "evidence": "calls:1",
+   "instructions": [
+    28,
+    83
+   ],
+   "matching": 14
+  },
+  {
+   "name": "anchor_point_visitor",
+   "hellcats_1_0_3": "0xc2c",
+   "leyte": "0x108e",
+   "evidence": "calls:1",
+   "instructions": [
+    81,
+    103
+   ],
+   "matching": 54
+  },
+  {
+   "name": "find_anchor_point",
+   "hellcats_1_0_3": "0xd4a",
+   "leyte": "0x11fa",
+   "evidence": "cases",
+   "instructions": [
+    22,
+    90
+   ],
+   "matching": 18
+  },
+  {
+   "name": "ensure_handle_allocated",
+   "hellcats_1_0_3": "0xd90",
+   "leyte": "0x141c",
+   "evidence": "correspondence",
+   "instructions": [
+    32,
+    32
+   ],
+   "matching": 32
+  },
+  {
+   "name": "lock_handle_nopurge",
+   "hellcats_1_0_3": "0xdea",
+   "leyte": "0x1476",
+   "evidence": "cases",
+   "instructions": [
+    13,
+    13
+   ],
+   "matching": 13
+  },
+  {
+   "name": "unlock_handle_purgeable",
+   "hellcats_1_0_3": "0xe12",
+   "leyte": "0x149e",
+   "evidence": "cases",
+   "instructions": [
+    13,
+    13
+   ],
+   "matching": 13
+  },
+  {
+   "name": "lock_overlay_buffers",
+   "hellcats_1_0_3": "0xe3a",
+   "leyte": "0x14c6",
+   "evidence": "correspondence",
+   "instructions": [
+    18,
+    18
+   ],
+   "matching": 18
+  },
+  {
+   "name": "allocate_session_buffers",
+   "hellcats_1_0_3": "0xe80",
+   "leyte": "0x150c",
+   "evidence": "map",
+   "instructions": [
+    73,
+    61
+   ],
+   "matching": 60
+  },
+  {
+   "name": "lock_session_buffers",
+   "hellcats_1_0_3": "0xf72",
+   "leyte": "0x15da",
+   "evidence": "map",
+   "instructions": [
+    59,
+    59
+   ],
+   "matching": 59
+  },
+  {
+   "name": "unlock_session_buffers",
+   "hellcats_1_0_3": "0x1074",
+   "leyte": "0x16dc",
+   "evidence": "map",
+   "instructions": [
+    33,
+    33
+   ],
+   "matching": 33
+  },
+  {
+   "name": "overlay_main_entry",
+   "hellcats_1_0_3": "0x10f2",
+   "leyte": "0x175a",
+   "evidence": "correspondence",
+   "instructions": [
+    30,
+    30
+   ],
+   "matching": 30
+  },
+  {
+   "name": "widen_printf_format",
+   "hellcats_1_0_3": "0x11c6",
+   "leyte": "0x182e",
+   "evidence": "correspondence",
+   "instructions": [
+    27,
+    27
+   ],
+   "matching": 27
+  },
+  {
+   "name": "overlay_printf",
+   "hellcats_1_0_3": "0x1234",
+   "leyte": "0x189c",
+   "evidence": "correspondence",
+   "instructions": [
+    18,
+    18
+   ],
+   "matching": 18
+  },
+  {
+   "name": "reset_palette_owner_tables",
+   "hellcats_1_0_3": "0x1274",
+   "leyte": "0x18dc",
+   "evidence": "calls:2",
+   "instructions": [
+    36,
+    36
+   ],
+   "matching": 36
+  },
+  {
+   "name": "init_depth8_colour_state",
+   "hellcats_1_0_3": "0x12e0",
+   "leyte": "0x1948",
+   "evidence": "correspondence",
+   "instructions": [
+    6,
+    6
+   ],
+   "matching": 6
+  },
+  {
+   "name": "init_depth4_colour_state",
+   "hellcats_1_0_3": "0x12fc",
+   "leyte": "0x1964",
+   "evidence": "correspondence",
+   "instructions": [
+    126,
+    126
+   ],
+   "matching": 126
+  },
+  {
+   "name": "queue_face_palette_entry",
+   "hellcats_1_0_3": "0x145a",
+   "leyte": "0x1ac2",
+   "evidence": "correspondence",
+   "instructions": [
+    75,
+    75
+   ],
+   "matching": 75
+  },
+  {
+   "name": "write_face_palette_slot",
+   "hellcats_1_0_3": "0x1528",
+   "leyte": "0x1b90",
+   "evidence": "cases",
+   "instructions": [
+    30,
+    30
+   ],
+   "matching": 17
+  },
+  {
+   "name": "assign_face_colour",
+   "hellcats_1_0_3": "0x157e",
+   "leyte": "0x1be6",
+   "evidence": "correspondence",
+   "instructions": [
+    94,
+    94
+   ],
+   "matching": 94
+  },
+  {
+   "name": "init_mission_object_tables",
+   "hellcats_1_0_3": "0x16c2",
+   "leyte": "0x1d2a",
+   "evidence": "calls:1",
+   "instructions": [
+    126,
+    119
+   ],
+   "matching": 99
+  },
+  {
+   "name": "overlay_initialise",
+   "hellcats_1_0_3": "0x18b6",
+   "leyte": "0x1ef0",
+   "evidence": "calls:1",
+   "instructions": [
+    22,
+    22
+   ],
+   "matching": 22
+  },
+  {
+   "name": "heap_sbrk",
+   "hellcats_1_0_3": "0x1938",
+   "leyte": "0x1f70",
+   "evidence": "correspondence",
+   "instructions": [
+    6,
+    6
+   ],
+   "matching": 6
+  },
+  {
+   "name": "heap_new_size_class_block",
+   "hellcats_1_0_3": "0x1954",
+   "leyte": "0x1f8c",
+   "evidence": "correspondence",
+   "instructions": [
+    18,
+    18
+   ],
+   "matching": 18
+  },
+  {
+   "name": "heap_add_large_block",
+   "hellcats_1_0_3": "0x197a",
+   "leyte": "0x1fb2",
+   "evidence": "correspondence",
+   "instructions": [
+    21,
+    21
+   ],
+   "matching": 21
+  },
+  {
+   "name": "heap_free_coalesce",
+   "hellcats_1_0_3": "0x19b0",
+   "leyte": "0x1fe8",
+   "evidence": "correspondence",
+   "instructions": [
+    52,
+    52
+   ],
+   "matching": 52
+  },
+  {
+   "name": "heap_alloc",
+   "hellcats_1_0_3": "0x1a48",
+   "leyte": "0x2080",
+   "evidence": "correspondence",
+   "instructions": [
+    76,
+    76
+   ],
+   "matching": 76
+  },
+  {
+   "name": "heap_zero_payload",
+   "hellcats_1_0_3": "0x1b18",
+   "leyte": "0x2150",
+   "evidence": "correspondence",
+   "instructions": [
+    19,
+    19
+   ],
+   "matching": 19
+  },
+  {
+   "name": "heap_alloc_cleared",
+   "hellcats_1_0_3": "0x1b4c",
+   "leyte": "0x2184",
+   "evidence": "correspondence",
+   "instructions": [
+    10,
+    10
+   ],
+   "matching": 10
+  },
+  {
+   "name": "heap_calloc",
+   "hellcats_1_0_3": "0x1b64",
+   "leyte": "0x219c",
+   "evidence": "correspondence",
+   "instructions": [
+    14,
+    14
+   ],
+   "matching": 14
+  },
+  {
+   "name": "heap_realloc_grow_only",
+   "hellcats_1_0_3": "0x1b88",
+   "leyte": "0x21c0",
+   "evidence": "correspondence",
+   "instructions": [
+    32,
+    32
+   ],
+   "matching": 32
+  },
+  {
+   "name": "copy_object_vertex_buffer",
+   "hellcats_1_0_3": "0x1be4",
+   "leyte": "0x221c",
+   "evidence": "cases",
+   "instructions": [
+    26,
+    26
+   ],
+   "matching": 26
+  },
+  {
+   "name": "translate_int3_vecs",
+   "hellcats_1_0_3": "0x1c3c",
+   "leyte": "0x2274",
+   "evidence": "cases",
+   "instructions": [
+    25,
+    28
+   ],
+   "matching": 23
+  },
+  {
+   "name": "scale_int3_vecs",
+   "hellcats_1_0_3": "0x1c8c",
+   "leyte": "0x22ca",
+   "evidence": "similarity:0.87",
+   "instructions": [
+    25,
+    28
+   ],
+   "matching": 23
+  },
+  {
+   "name": "matmul3x3_s16",
+   "hellcats_1_0_3": "0x1ce2",
+   "leyte": "0x2326",
+   "evidence": "map",
+   "instructions": [
+    44,
+    49
+   ],
+   "matching": 9
+  },
+  {
+   "name": "sin_fixed14",
+   "hellcats_1_0_3": "0x1d56",
+   "leyte": "0x23a4",
+   "evidence": "map",
+   "instructions": [
+    37,
+    37
+   ],
+   "matching": 37
+  },
+  {
+   "name": "cos_fixed14",
+   "hellcats_1_0_3": "0x1db8",
+   "leyte": "0x2406",
+   "evidence": "map",
+   "instructions": [
+    37,
+    37
+   ],
+   "matching": 37
+  },
+  {
+   "name": "acos_fixed14",
+   "hellcats_1_0_3": "0x1e1a",
+   "leyte": "0x2468",
+   "evidence": "cases",
+   "instructions": [
+    43,
+    44
+   ],
+   "matching": 13
+  },
+  {
+   "name": "atan_fixed14",
+   "hellcats_1_0_3": "0x1e9c",
+   "leyte": "0x24ec",
+   "evidence": "cases",
+   "instructions": [
+    35,
+    36
+   ],
+   "matching": 30
+  },
+  {
+   "name": "attitude_from_velocity",
+   "hellcats_1_0_3": "0x1f02",
+   "leyte": "0x2554",
+   "evidence": "map",
+   "instructions": [
+    100,
+    100
+   ],
+   "matching": 100
+  },
+  {
+   "name": "load_attitude_angle_sincos",
+   "hellcats_1_0_3": "0x200a",
+   "leyte": "0x265c",
+   "evidence": "correspondence",
+   "instructions": [
+    34,
+    34
+   ],
+   "matching": 34
+  },
+  {
+   "name": "load_attitude_angle_sincos_5_6",
+   "hellcats_1_0_3": "0x2080",
+   "leyte": "0x26d2",
+   "evidence": "correspondence",
+   "instructions": [
+    20,
+    20
+   ],
+   "matching": 20
+  },
+  {
+   "name": "fill_attitude_rotation_bases",
+   "hellcats_1_0_3": "0x20c6",
+   "leyte": "0x2718",
+   "evidence": "correspondence",
+   "instructions": [
+    38,
+    38
+   ],
+   "matching": 38
+  },
+  {
+   "name": "fill_attitude_rotation_basis_4",
+   "hellcats_1_0_3": "0x2180",
+   "leyte": "0x27d2",
+   "evidence": "correspondence",
+   "instructions": [
+    13,
+    13
+   ],
+   "matching": 13
+  },
+  {
+   "name": "fill_attitude_rotation_basis_4_rx",
+   "hellcats_1_0_3": "0x21c0",
+   "leyte": "0x2812",
+   "evidence": "correspondence",
+   "instructions": [
+    13,
+    13
+   ],
+   "matching": 13
+  },
+  {
+   "name": "fill_attitude_rotation_bases_5_6",
+   "hellcats_1_0_3": "0x2200",
+   "leyte": "0x2852",
+   "evidence": "correspondence",
+   "instructions": [
+    26,
+    26
+   ],
+   "matching": 26
+  },
+  {
+   "name": "build_attitude_matrix_from_dir_roll",
+   "hellcats_1_0_3": "0x227e",
+   "leyte": "0x28d0",
+   "evidence": "correspondence",
+   "instructions": [
+    102,
+    102
+   ],
+   "matching": 102
+  },
+  {
+   "name": "finalize_attitude_matrix_3ang_alt",
+   "hellcats_1_0_3": "0x2408",
+   "leyte": "0x2a5a",
+   "evidence": "calls:1",
+   "instructions": [
+    17,
+    61
+   ],
+   "matching": 3
+  },
+  {
+   "name": "build_attitude_matrix_3ang_alt",
+   "hellcats_1_0_3": "0x2444",
+   "leyte": "0x2b52",
+   "evidence": "calls:2",
+   "instructions": [
+    11,
+    11
+   ],
+   "matching": 11
+  },
+  {
+   "name": "compose_attitude_matrix_x_alt",
+   "hellcats_1_0_3": "0x2468",
+   "leyte": "0x2b78",
+   "evidence": "map",
+   "instructions": [
+    23,
+    23
+   ],
+   "matching": 23
+  },
+  {
+   "name": "build_attitude_matrix_x_alt",
+   "hellcats_1_0_3": "0x24b6",
+   "leyte": "0x2bc6",
+   "evidence": "correspondence",
+   "instructions": [
+    10,
+    10
+   ],
+   "matching": 10
+  },
+  {
+   "name": "finalize_attitude_matrix_3ang",
+   "hellcats_1_0_3": "0x24d8",
+   "leyte": "0x2be8",
+   "evidence": "cases",
+   "instructions": [
+    18,
+    63
+   ],
+   "matching": 3
+  },
+  {
+   "name": "build_attitude_matrix_3ang",
+   "hellcats_1_0_3": "0x251e",
+   "leyte": "0x2ce2",
+   "evidence": "cases",
+   "instructions": [
+    11,
+    11
+   ],
+   "matching": 11
+  },
+  {
+   "name": "finalize_attitude_matrix_4ang",
+   "hellcats_1_0_3": "0x2542",
+   "leyte": "0x2d08",
+   "evidence": "calls:1",
+   "instructions": [
+    21,
+    111
+   ],
+   "matching": 4
+  },
+  {
+   "name": "build_attitude_matrix",
+   "hellcats_1_0_3": "0x2588",
+   "leyte": "0x2ec4",
+   "evidence": "calls:1",
+   "instructions": [
+    13,
+    11
+   ],
+   "matching": 11
+  },
+  {
+   "name": "compose_attitude_matrix_x",
+   "hellcats_1_0_3": "0x25b6",
+   "leyte": "0x2eec",
+   "evidence": "correspondence",
+   "instructions": [
+    24,
+    24
+   ],
+   "matching": 24
+  },
+  {
+   "name": "build_attitude_matrix_x",
+   "hellcats_1_0_3": "0x260e",
+   "leyte": "0x2f44",
+   "evidence": "correspondence",
+   "instructions": [
+    11,
+    11
+   ],
+   "matching": 11
+  },
+  {
+   "name": "compose_attitude_matrix_6ang",
+   "hellcats_1_0_3": "0x2634",
+   "leyte": "0x2f6a",
+   "evidence": "correspondence",
+   "instructions": [
+    34,
+    34
+   ],
+   "matching": 34
+  },
+  {
+   "name": "build_attitude_matrix_6ang",
+   "hellcats_1_0_3": "0x26ac",
+   "leyte": "0x2fe2",
+   "evidence": "calls:1",
+   "instructions": [
+    14,
+    14
+   ],
+   "matching": 14
+  },
+  {
+   "name": "compose_attitude_matrix_6ang_alt",
+   "hellcats_1_0_3": "0x26e0",
+   "leyte": "0x3016",
+   "evidence": "map",
+   "instructions": [
+    33,
+    33
+   ],
+   "matching": 33
+  },
+  {
+   "name": "build_attitude_matrix_6ang_alt",
+   "hellcats_1_0_3": "0x274e",
+   "leyte": "0x3084",
+   "evidence": "calls:1",
+   "instructions": [
+    14,
+    14
+   ],
+   "matching": 14
+  },
+  {
+   "name": "invoke_tagged_attitude_compose_neg_sins4",
+   "hellcats_1_0_3": "0x2782",
+   "leyte": "0x30b8",
+   "evidence": "calls:1",
+   "instructions": [
+    10,
+    11
+   ],
+   "matching": 1
+  },
+  {
+   "name": "invoke_tagged_attitude_compose_neg_sins6",
+   "hellcats_1_0_3": "0x27ac",
+   "leyte": "0x30e8",
+   "evidence": "correspondence",
+   "instructions": [
+    12,
+    12
+   ],
+   "matching": 12
+  },
+  {
+   "name": "transform_int3_vecs_asr_by_1d744",
+   "hellcats_1_0_3": "0x27e2",
+   "leyte": "0x311e",
+   "evidence": "calls:1",
+   "instructions": [
+    53,
+    56
+   ],
+   "matching": 51
+  },
+  {
+   "name": "rotate_int3_vecs_by_3ang",
+   "hellcats_1_0_3": "0x2886",
+   "leyte": "0x31ca",
+   "evidence": "map",
+   "instructions": [
+    17,
+    17
+   ],
+   "matching": 17
+  },
+  {
+   "name": "transform_vecs12_by_matrix3",
+   "hellcats_1_0_3": "0x28bc",
+   "leyte": "0x3200",
+   "evidence": "map",
+   "instructions": [
+    48,
+    51
+   ],
+   "matching": 46
+  },
+  {
+   "name": "transform_vecs12_to_int3_by_matrix3",
+   "hellcats_1_0_3": "0x2956",
+   "leyte": "0x32a0",
+   "evidence": "cases",
+   "instructions": [
+    48,
+    51
+   ],
+   "matching": 46
+  },
+  {
+   "name": "transform_listed_object_vecs12_by_1d744",
+   "hellcats_1_0_3": "0x29ee",
+   "leyte": "0x333e",
+   "evidence": "similarity:0.85",
+   "instructions": [
+    62,
+    68
+   ],
+   "matching": 55
+  },
+  {
+   "name": "transform_int3_vecs_by_matrix3",
+   "hellcats_1_0_3": "0x2aba",
+   "leyte": "0x3418",
+   "evidence": "cases",
+   "instructions": [
+    88,
+    91
+   ],
+   "matching": 64
+  },
+  {
+   "name": "apply_template_chain_xform",
+   "hellcats_1_0_3": "0x2bb8",
+   "leyte": "0x3524",
+   "evidence": "cases",
+   "instructions": [
+    104,
+    76
+   ],
+   "matching": 23
+  },
+  {
+   "name": "apply_template_chain_xform_always",
+   "hellcats_1_0_3": "0x2cf0",
+   "leyte": "0x3604",
+   "evidence": "calls:1",
+   "instructions": [
+    78,
+    78
+   ],
+   "matching": 76
+  },
+  {
+   "name": "abs_int",
+   "hellcats_1_0_3": "0x2de8",
+   "leyte": "0x38e8",
+   "evidence": "map",
+   "instructions": [
+    4,
+    4
+   ],
+   "matching": 4
+  },
+  {
+   "name": "noop_stub_2e12",
+   "hellcats_1_0_3": "0x2df2",
+   "leyte": "0x38f2",
+   "evidence": "calls:1",
+   "instructions": [
+    1,
+    1
+   ],
+   "matching": 1
+  },
+  {
+   "name": "scan_convert_edge_rows",
+   "hellcats_1_0_3": "0x2df4",
+   "leyte": "0x38f4",
+   "evidence": "correspondence",
+   "instructions": [
+    377,
+    377
+   ],
+   "matching": 377
+  },
+  {
+   "name": "init_span_table_32ba",
+   "hellcats_1_0_3": "0x3246",
+   "leyte": "0x3d46",
+   "evidence": "correspondence",
+   "instructions": [
+    22,
+    22
+   ],
+   "matching": 22
+  },
+  {
+   "name": "fill_span_rows_4bit_a",
+   "hellcats_1_0_3": "0x329a",
+   "leyte": "0x3d9a",
+   "evidence": "map",
+   "instructions": [
+    124,
+    124
+   ],
+   "matching": 124
+  },
+  {
+   "name": "init_span_table_3466",
+   "hellcats_1_0_3": "0x33f2",
+   "leyte": "0x3ef2",
+   "evidence": "calls:1",
+   "instructions": [
+    22,
+    22
+   ],
+   "matching": 22
+  },
+  {
+   "name": "fill_span_rows_4bit_b",
+   "hellcats_1_0_3": "0x3446",
+   "leyte": "0x3f46",
+   "evidence": "map",
+   "instructions": [
+    119,
+    119
+   ],
+   "matching": 119
+  },
+  {
+   "name": "init_span_table_3608",
+   "hellcats_1_0_3": "0x3594",
+   "leyte": "0x4094",
+   "evidence": "calls:1",
+   "instructions": [
+    22,
+    22
+   ],
+   "matching": 22
+  },
+  {
+   "name": "fill_span_rows_4bit_c",
+   "hellcats_1_0_3": "0x35e8",
+   "leyte": "0x40e8",
+   "evidence": "map",
+   "instructions": [
+    119,
+    119
+   ],
+   "matching": 119
+  },
+  {
+   "name": "overlay_init_noop",
+   "hellcats_1_0_3": "0x3712",
+   "leyte": "0x4212",
+   "evidence": "calls:2",
+   "instructions": [
+    1,
+    1
+   ],
+   "matching": 1
+  },
+  {
+   "name": "init_code_pointer_tables",
+   "hellcats_1_0_3": "0x3714",
+   "leyte": "0x4214",
+   "evidence": "correspondence",
+   "instructions": [
+    39,
+    39
+   ],
+   "matching": 39
+  },
+  {
+   "name": "fill_span_rows_8bit",
+   "hellcats_1_0_3": "0x3794",
+   "leyte": "0x4294",
+   "evidence": "map",
+   "instructions": [
+    125,
+    125
+   ],
+   "matching": 125
+  },
+  {
+   "name": "respawn_player_at_anchor",
+   "hellcats_1_0_3": "0x38d4",
+   "leyte": "0x43d4",
+   "evidence": "map",
+   "instructions": [
+    109,
+    193
+   ],
+   "matching": 85
+  },
+  {
+   "name": "start_mission_scene",
+   "hellcats_1_0_3": "0x3aa4",
+   "leyte": "0x46e2",
+   "evidence": "map",
+   "instructions": [
+    47,
+    47
+   ],
+   "matching": 47
+  },
+  {
+   "name": "update_object_camera_metric",
+   "hellcats_1_0_3": "0x3b78",
+   "leyte": "0x47b6",
+   "evidence": "correspondence",
+   "instructions": [
+    36,
+    36
+   ],
+   "matching": 36
+  },
+  {
+   "name": "compute_camera_abs_metric",
+   "hellcats_1_0_3": "0x3be0",
+   "leyte": "0x481e",
+   "evidence": "correspondence",
+   "instructions": [
+    36,
+    36
+   ],
+   "matching": 36
+  },
+  {
+   "name": "approx_dist3_xyz",
+   "hellcats_1_0_3": "0x3c48",
+   "leyte": "0x4886",
+   "evidence": "map",
+   "instructions": [
+    36,
+    36
+   ],
+   "matching": 36
+  },
+  {
+   "name": "segment_point_min_distance",
+   "hellcats_1_0_3": "0x3caa",
+   "leyte": "0x48e8",
+   "evidence": "calls:1",
+   "instructions": [
+    73,
+    75
+   ],
+   "matching": 71
+  },
+  {
+   "name": "update_object_distance_band",
+   "hellcats_1_0_3": "0x3d88",
+   "leyte": "0x49cc",
+   "evidence": "cases",
+   "instructions": [
+    30,
+    34
+   ],
+   "matching": 28
+  },
+  {
+   "name": "update_record_distance_band",
+   "hellcats_1_0_3": "0x3de2",
+   "leyte": "0x4a3a",
+   "evidence": "cases",
+   "instructions": [
+    30,
+    34
+   ],
+   "matching": 28
+  },
+  {
+   "name": "snapshot_face_colours",
+   "hellcats_1_0_3": "0x3e3c",
+   "leyte": "0x4aa8",
+   "evidence": "correspondence",
+   "instructions": [
+    22,
+    22
+   ],
+   "matching": 22
+  },
+  {
+   "name": "shade_object_faces",
+   "hellcats_1_0_3": "0x3e80",
+   "leyte": "0x4aec",
+   "evidence": "cases",
+   "instructions": [
+    266,
+    268
+   ],
+   "matching": 263
+  },
+  {
+   "name": "recolour_kind2_object",
+   "hellcats_1_0_3": "0x41cc",
+   "leyte": "0x4e42",
+   "evidence": "calls:4",
+   "instructions": [
+    12,
+    12
+   ],
+   "matching": 11
+  },
+  {
+   "name": "refresh_object_colours_for_depth",
+   "hellcats_1_0_3": "0x41f0",
+   "leyte": "0x4e68",
+   "evidence": "map",
+   "instructions": [
+    93,
+    103
+   ],
+   "matching": 79
+  },
+  {
+   "name": "apply_entity_mission_rates",
+   "hellcats_1_0_3": "0x433a",
+   "leyte": "0x4fce",
+   "evidence": "cases",
+   "instructions": [
+    100,
+    114
+   ],
+   "matching": 89
+  },
+  {
+   "name": "dispatch_entity_tick",
+   "hellcats_1_0_3": "0x4484",
+   "leyte": "0x5152",
+   "evidence": "cases",
+   "instructions": [
+    22,
+    22
+   ],
+   "matching": 20
+  },
+  {
+   "name": "run_simulation_tick",
+   "hellcats_1_0_3": "0x44c8",
+   "leyte": "0x5192",
+   "evidence": "map",
+   "instructions": [
+    61,
+    57
+   ],
+   "matching": 57
+  },
+  {
+   "name": "alloc_object_from_desc",
+   "hellcats_1_0_3": "0x459a",
+   "leyte": "0x532e",
+   "evidence": "cases",
+   "instructions": [
+    51,
+    51
+   ],
+   "matching": 49
+  },
+  {
+   "name": "instantiate_object_from_desc",
+   "hellcats_1_0_3": "0x4670",
+   "leyte": "0x5408",
+   "evidence": "cases",
+   "instructions": [
+    25,
+    25
+   ],
+   "matching": 24
+  },
+  {
+   "name": "instantiate_mission_pool_slot",
+   "hellcats_1_0_3": "0x46ba",
+   "leyte": "0x5450",
+   "evidence": "cases",
+   "instructions": [
+    90,
+    134
+   ],
+   "matching": 47
+  },
+  {
+   "name": "build_object_poly_buffers",
+   "hellcats_1_0_3": "0x47e8",
+   "leyte": "0x561c",
+   "evidence": "cases",
+   "instructions": [
+    83,
+    88
+   ],
+   "matching": 58
+  },
+  {
+   "name": "set_object_faces_bw_pattern",
+   "hellcats_1_0_3": "0x48f6",
+   "leyte": "0x5738",
+   "evidence": "correspondence",
+   "instructions": [
+    18,
+    18
+   ],
+   "matching": 18
+  },
+  {
+   "name": "build_land_outline_at_detail",
+   "hellcats_1_0_3": "0x4938",
+   "leyte": "0x577a",
+   "evidence": "cases",
+   "instructions": [
+    369,
+    370
+   ],
+   "matching": 364
+  },
+  {
+   "name": "reset_object_to_template_pose",
+   "hellcats_1_0_3": "0x4de6",
+   "leyte": "0x5c30",
+   "evidence": "cases",
+   "instructions": [
+    27,
+    27
+   ],
+   "matching": 26
+  },
+  {
+   "name": "activate_near_range_object",
+   "hellcats_1_0_3": "0x4e4e",
+   "leyte": "0x5c98",
+   "evidence": "cases",
+   "instructions": [
+    206,
+    221
+   ],
+   "matching": 171
+  },
+  {
+   "name": "spawn_mission_pool_object",
+   "hellcats_1_0_3": "0x50f6",
+   "leyte": "0x5f64",
+   "evidence": "cases",
+   "instructions": [
+    64,
+    63
+   ],
+   "matching": 43
+  },
+  {
+   "name": "retire_entity",
+   "hellcats_1_0_3": "0x51cc",
+   "leyte": "0x603a",
+   "evidence": "cases",
+   "instructions": [
+    44,
+    48
+   ],
+   "matching": 33
+  },
+  {
+   "name": "dispatch_entity_cleanup",
+   "hellcats_1_0_3": "0x526a",
+   "leyte": "0x60dc",
+   "evidence": "cases",
+   "instructions": [
+    24,
+    24
+   ],
+   "matching": 22
+  },
+  {
+   "name": "deactivate_object",
+   "hellcats_1_0_3": "0x52bc",
+   "leyte": "0x6130",
+   "evidence": "cases",
+   "instructions": [
+    89,
+    93
+   ],
+   "matching": 66
+  },
+  {
+   "name": "collect_near_objects",
+   "hellcats_1_0_3": "0x53d8",
+   "leyte": "0x6250",
+   "evidence": "calls:1",
+   "instructions": [
+    102,
+    103
+   ],
+   "matching": 96
+  },
+  {
+   "name": "collect_far_objects",
+   "hellcats_1_0_3": "0x553a",
+   "leyte": "0x63ba",
+   "evidence": "calls:1",
+   "instructions": [
+    221,
+    226
+   ],
+   "matching": 200
+  },
+  {
+   "name": "dispatch_overlap_collisions",
+   "hellcats_1_0_3": "0x5812",
+   "leyte": "0x66a6",
+   "evidence": "calls:1",
+   "instructions": [
+    61,
+    62
+   ],
+   "matching": 46
+  },
+  {
+   "name": "build_visible_object_list",
+   "hellcats_1_0_3": "0x58cc",
+   "leyte": "0x6754",
+   "evidence": "calls:1",
+   "instructions": [
+    92,
+    94
+   ],
+   "matching": 91
+  },
+  {
+   "name": "update_altitude_detail_bands",
+   "hellcats_1_0_3": "0x59f4",
+   "leyte": "0x6882",
+   "evidence": "calls:1",
+   "instructions": [
+    287,
+    292
+   ],
+   "matching": 273
+  },
+  {
+   "name": "clear_pending_entity_slots",
+   "hellcats_1_0_3": "0x5dd8",
+   "leyte": "0x6c6a",
+   "evidence": "correspondence",
+   "instructions": [
+    15,
+    15
+   ],
+   "matching": 15
+  },
+  {
+   "name": "update_ground_scatter_objects",
+   "hellcats_1_0_3": "0x5e08",
+   "leyte": "0x6c9a",
+   "evidence": "calls:1",
+   "instructions": [
+    432,
+    438
+   ],
+   "matching": 398
+  },
+  {
+   "name": "spawn_cloud_layer",
+   "hellcats_1_0_3": "0x63ec",
+   "leyte": "0x728c",
+   "evidence": "map",
+   "instructions": [
+    125,
+    127
+   ],
+   "matching": 123
+  },
+  {
+   "name": "overlay_frame_step",
+   "hellcats_1_0_3": "0x6578",
+   "leyte": "0x741e",
+   "evidence": "map",
+   "instructions": [
+    560,
+    652
+   ],
+   "matching": 456
+  },
+  {
+   "name": "reset_span_row_lists",
+   "hellcats_1_0_3": "0x6e54",
+   "leyte": "0x7eac",
+   "evidence": "cases",
+   "instructions": [
+    31,
+    31
+   ],
+   "matching": 20
+  },
+  {
+   "name": "clear_flag_00020ae4",
+   "hellcats_1_0_3": "0x6eae",
+   "leyte": "0x7f0a",
+   "evidence": "correspondence",
+   "instructions": [
+    2,
+    2
+   ],
+   "matching": 2
+  },
+  {
+   "name": "update_view_clip_bounds",
+   "hellcats_1_0_3": "0x6eb6",
+   "leyte": "0x7f12",
+   "evidence": "map",
+   "instructions": [
+    43,
+    43
+   ],
+   "matching": 43
+  },
+  {
+   "name": "reset_distance_base_globals",
+   "hellcats_1_0_3": "0x6f98",
+   "leyte": "0x7ff4",
+   "evidence": "correspondence",
+   "instructions": [
+    7,
+    7
+   ],
+   "matching": 7
+  },
+  {
+   "name": "configure_renderer_for_display",
+   "hellcats_1_0_3": "0x6fd6",
+   "leyte": "0x8032",
+   "evidence": "map",
+   "instructions": [
+    157,
+    157
+   ],
+   "matching": 157
+  },
+  {
+   "name": "begin_flight_for_rank",
+   "hellcats_1_0_3": "0x72f0",
+   "leyte": "0x834c",
+   "evidence": "map",
+   "instructions": [
+    25,
+    29
+   ],
+   "matching": 24
+  },
+  {
+   "name": "copy_player_pose_to_camera",
+   "hellcats_1_0_3": "0x737a",
+   "leyte": "0x83de",
+   "evidence": "correspondence",
+   "instructions": [
+    26,
+    26
+   ],
+   "matching": 26
+  },
+  {
+   "name": "process_flight_input_and_outcome",
+   "hellcats_1_0_3": "0x73ea",
+   "leyte": "0x844e",
+   "evidence": "map",
+   "instructions": [
+    1224,
+    1328
+   ],
+   "matching": 1147
+  },
+  {
+   "name": "request_instant_replay",
+   "hellcats_1_0_3": "0x8764",
+   "leyte": "0x98a6",
+   "evidence": "correspondence",
+   "instructions": [
+    6,
+    6
+   ],
+   "matching": 6
+  },
+  {
+   "name": "resolve_bailout_outcome",
+   "hellcats_1_0_3": "0x877e",
+   "leyte": "0x98c0",
+   "evidence": "correspondence",
+   "instructions": [
+    66,
+    66
+   ],
+   "matching": 66
+  },
+  {
+   "name": "place_camera_behind_object",
+   "hellcats_1_0_3": "0x8880",
+   "leyte": "0x99c2",
+   "evidence": "correspondence",
+   "instructions": [
+    59,
+    59
+   ],
+   "matching": 59
+  },
+  {
+   "name": "update_bailout_view",
+   "hellcats_1_0_3": "0x8952",
+   "leyte": "0x9a94",
+   "evidence": "correspondence",
+   "instructions": [
+    98,
+    98
+   ],
+   "matching": 98
+  },
+  {
+   "name": "turn_camera_toward_point",
+   "hellcats_1_0_3": "0x8a9e",
+   "leyte": "0x9be0",
+   "evidence": "correspondence",
+   "instructions": [
+    111,
+    111
+   ],
+   "matching": 111
+  },
+  {
+   "name": "update_tracking_camera",
+   "hellcats_1_0_3": "0x8c10",
+   "leyte": "0x9d52",
+   "evidence": "correspondence",
+   "instructions": [
+    249,
+    249
+   ],
+   "matching": 249
+  },
+  {
+   "name": "begin_replay_view",
+   "hellcats_1_0_3": "0x8fd4",
+   "leyte": "0xa116",
+   "evidence": "correspondence",
+   "instructions": [
+    144,
+    144
+   ],
+   "matching": 144
+  },
+  {
+   "name": "apply_player_mouse_controls",
+   "hellcats_1_0_3": "0x921e",
+   "leyte": "0xa360",
+   "evidence": "correspondence",
+   "instructions": [
+    42,
+    42
+   ],
+   "matching": 42
+  },
+  {
+   "name": "advance_frame_and_tick_controllers",
+   "hellcats_1_0_3": "0x92c4",
+   "leyte": "0xa406",
+   "evidence": "calls:1",
+   "instructions": [
+    118,
+    127
+   ],
+   "matching": 112
+  },
+  {
+   "name": "apply_controller_velocities",
+   "hellcats_1_0_3": "0x945c",
+   "leyte": "0xa5be",
+   "evidence": "calls:1",
+   "instructions": [
+    23,
+    25
+   ],
+   "matching": 22
+  },
+  {
+   "name": "tick_flagged_object_controllers",
+   "hellcats_1_0_3": "0x94b2",
+   "leyte": "0xa61a",
+   "evidence": "calls:1",
+   "instructions": [
+    40,
+    44
+   ],
+   "matching": 38
+  },
+  {
+   "name": "stop_all_sound_channels",
+   "hellcats_1_0_3": "0x9530",
+   "leyte": "0xa6a4",
+   "evidence": "correspondence",
+   "instructions": [
+    29,
+    29
+   ],
+   "matching": 29
+  },
+  {
+   "name": "play_game_sound",
+   "hellcats_1_0_3": "0x958c",
+   "leyte": "0xa700",
+   "evidence": "calls:14",
+   "instructions": [
+    84,
+    162
+   ],
+   "matching": 56
+  },
+  {
+   "name": "stop_game_sound",
+   "hellcats_1_0_3": "0x968e",
+   "leyte": "0xa8a4",
+   "evidence": "correspondence",
+   "instructions": [
+    10,
+    10
+   ],
+   "matching": 10
+  },
+  {
+   "name": "update_game_sounds",
+   "hellcats_1_0_3": "0x96d4",
+   "leyte": "0xa8ea",
+   "evidence": "calls:1",
+   "instructions": [
+    268,
+    291
+   ],
+   "matching": 268
+  },
+  {
+   "name": "face_is_back_facing",
+   "hellcats_1_0_3": "0x9ac0",
+   "leyte": "0xad30",
+   "evidence": "correspondence",
+   "instructions": [
+    53,
+    53
+   ],
+   "matching": 53
+  },
+  {
+   "name": "add_face_edges_to_rows",
+   "hellcats_1_0_3": "0x9b6c",
+   "leyte": "0xaddc",
+   "evidence": "cases",
+   "instructions": [
+    122,
+    124
+   ],
+   "matching": 121
+  },
+  {
+   "name": "emit_face_chain",
+   "hellcats_1_0_3": "0x9d14",
+   "leyte": "0xaf8a",
+   "evidence": "correspondence",
+   "instructions": [
+    35,
+    35
+   ],
+   "matching": 35
+  },
+  {
+   "name": "emit_faces_bsp",
+   "hellcats_1_0_3": "0x9d86",
+   "leyte": "0xaffc",
+   "evidence": "correspondence",
+   "instructions": [
+    108,
+    108
+   ],
+   "matching": 108
+  },
+  {
+   "name": "emit_faces_in_order",
+   "hellcats_1_0_3": "0x9ed8",
+   "leyte": "0xb14e",
+   "evidence": "calls:4",
+   "instructions": [
+    61,
+    63
+   ],
+   "matching": 60
+  },
+  {
+   "name": "emit_faces_unnumbered",
+   "hellcats_1_0_3": "0x9fa4",
+   "leyte": "0xb220",
+   "evidence": "calls:1",
+   "instructions": [
+    59,
+    61
+   ],
+   "matching": 58
+  },
+  {
+   "name": "track_ground_plane_horizon",
+   "hellcats_1_0_3": "0xa05e",
+   "leyte": "0xb2e0",
+   "evidence": "correspondence",
+   "instructions": [
+    71,
+    71
+   ],
+   "matching": 71
+  },
+  {
+   "name": "output_face_colour",
+   "hellcats_1_0_3": "0xa14e",
+   "leyte": "0xb3d0",
+   "evidence": "map",
+   "instructions": [
+    50,
+    50
+   ],
+   "matching": 50
+  },
+  {
+   "name": "output_face_bw",
+   "hellcats_1_0_3": "0xa200",
+   "leyte": "0xb482",
+   "evidence": "map",
+   "instructions": [
+    57,
+    57
+   ],
+   "matching": 57
+  },
+  {
+   "name": "submit_object_faces",
+   "hellcats_1_0_3": "0xa2d2",
+   "leyte": "0xb554",
+   "evidence": "calls:5",
+   "instructions": [
+    146,
+    156
+   ],
+   "matching": 111
+  },
+  {
+   "name": "transform_face_vertices",
+   "hellcats_1_0_3": "0xa4f2",
+   "leyte": "0xb796",
+   "evidence": "calls:2",
+   "instructions": [
+    97,
+    100
+   ],
+   "matching": 90
+  },
+  {
+   "name": "project_prepared_object",
+   "hellcats_1_0_3": "0xa656",
+   "leyte": "0xb902",
+   "evidence": "calls:2",
+   "instructions": [
+    60,
+    65
+   ],
+   "matching": 57
+  },
+  {
+   "name": "transform_and_project_object",
+   "hellcats_1_0_3": "0xa73e",
+   "leyte": "0xb9f8",
+   "evidence": "calls:2",
+   "instructions": [
+    344,
+    353
+   ],
+   "matching": 305
+  },
+  {
+   "name": "render_visible_objects",
+   "hellcats_1_0_3": "0xac52",
+   "leyte": "0xbf1e",
+   "evidence": "calls:1",
+   "instructions": [
+    220,
+    235
+   ],
+   "matching": 207
+  },
+  {
+   "name": "clip_face_near_plane",
+   "hellcats_1_0_3": "0xb008",
+   "leyte": "0xc2f0",
+   "evidence": "correspondence",
+   "instructions": [
+    106,
+    106
+   ],
+   "matching": 106
+  },
+  {
+   "name": "clip_polygon_x_min",
+   "hellcats_1_0_3": "0xb170",
+   "leyte": "0xc458",
+   "evidence": "correspondence",
+   "instructions": [
+    63,
+    63
+   ],
+   "matching": 63
+  },
+  {
+   "name": "clip_polygon_x_max",
+   "hellcats_1_0_3": "0xb222",
+   "leyte": "0xc50a",
+   "evidence": "correspondence",
+   "instructions": [
+    63,
+    63
+   ],
+   "matching": 63
+  },
+  {
+   "name": "clip_polygon_y_min",
+   "hellcats_1_0_3": "0xb2d4",
+   "leyte": "0xc5bc",
+   "evidence": "correspondence",
+   "instructions": [
+    63,
+    63
+   ],
+   "matching": 63
+  },
+  {
+   "name": "clip_polygon_y_max",
+   "hellcats_1_0_3": "0xb38a",
+   "leyte": "0xc672",
+   "evidence": "correspondence",
+   "instructions": [
+    63,
+    63
+   ],
+   "matching": 63
+  },
+  {
+   "name": "reset_background_rows",
+   "hellcats_1_0_3": "0xb440",
+   "leyte": "0xc728",
+   "evidence": "cases",
+   "instructions": [
+    17,
+    17
+   ],
+   "matching": 7
+  },
+  {
+   "name": "reset_overlay_display_state",
+   "hellcats_1_0_3": "0xb47e",
+   "leyte": "0xc766",
+   "evidence": "correspondence",
+   "instructions": [
+    5,
+    5
+   ],
+   "matching": 5
+  },
+  {
+   "name": "draw_sky_and_ground",
+   "hellcats_1_0_3": "0xb496",
+   "leyte": "0xc77e",
+   "evidence": "cases",
+   "instructions": [
+    372,
+    372
+   ],
+   "matching": 366
+  },
+  {
+   "name": "draw_panel_frame_lines",
+   "hellcats_1_0_3": "0xba0a",
+   "leyte": "0xccf6",
+   "evidence": "cases",
+   "instructions": [
+    200,
+    224
+   ],
+   "matching": 190
+  },
+  {
+   "name": "copy_rect_depth4",
+   "hellcats_1_0_3": "0xbc88",
+   "leyte": "0xcfa6",
+   "evidence": "correspondence",
+   "instructions": [
+    290,
+    290
+   ],
+   "matching": 290
+  },
+  {
+   "name": "copy_rect_depth8",
+   "hellcats_1_0_3": "0xbf90",
+   "leyte": "0xd2ae",
+   "evidence": "cases",
+   "instructions": [
+    137,
+    140
+   ],
+   "matching": 136
+  },
+  {
+   "name": "begin_offscreen_drawing",
+   "hellcats_1_0_3": "0xc0fe",
+   "leyte": "0xd426",
+   "evidence": "correspondence",
+   "instructions": [
+    26,
+    26
+   ],
+   "matching": 26
+  },
+  {
+   "name": "end_offscreen_drawing",
+   "hellcats_1_0_3": "0xc15e",
+   "leyte": "0xd486",
+   "evidence": "correspondence",
+   "instructions": [
+    12,
+    12
+   ],
+   "matching": 12
+  },
+  {
+   "name": "update_heading_tape",
+   "hellcats_1_0_3": "0xc18a",
+   "leyte": "0xd4b2",
+   "evidence": "cases",
+   "instructions": [
+    295,
+    301
+   ],
+   "matching": 251
+  },
+  {
+   "name": "draw_gauge_needle",
+   "hellcats_1_0_3": "0xc552",
+   "leyte": "0xd892",
+   "evidence": "map",
+   "instructions": [
+    67,
+    67
+   ],
+   "matching": 67
+  },
+  {
+   "name": "update_altimeter_needles",
+   "hellcats_1_0_3": "0xc644",
+   "leyte": "0xd984",
+   "evidence": "correspondence",
+   "instructions": [
+    122,
+    122
+   ],
+   "matching": 122
+  },
+  {
+   "name": "update_airspeed_needle",
+   "hellcats_1_0_3": "0xc7ec",
+   "leyte": "0xdb2c",
+   "evidence": "correspondence",
+   "instructions": [
+    53,
+    53
+   ],
+   "matching": 53
+  },
+  {
+   "name": "update_direction_needle",
+   "hellcats_1_0_3": "0xc8b6",
+   "leyte": "0xdbf6",
+   "evidence": "correspondence",
+   "instructions": [
+    31,
+    31
+   ],
+   "matching": 31
+  },
+  {
+   "name": "update_climb_needle",
+   "hellcats_1_0_3": "0xc928",
+   "leyte": "0xdc68",
+   "evidence": "correspondence",
+   "instructions": [
+    33,
+    33
+   ],
+   "matching": 33
+  },
+  {
+   "name": "update_tachometer_needle",
+   "hellcats_1_0_3": "0xc9a2",
+   "leyte": "0xdce2",
+   "evidence": "correspondence",
+   "instructions": [
+    34,
+    34
+   ],
+   "matching": 34
+  },
+  {
+   "name": "update_manifold_needle",
+   "hellcats_1_0_3": "0xca24",
+   "leyte": "0xdd64",
+   "evidence": "correspondence",
+   "instructions": [
+    36,
+    36
+   ],
+   "matching": 36
+  },
+  {
+   "name": "update_bomb_indicator",
+   "hellcats_1_0_3": "0xcaa6",
+   "leyte": "0xdde6",
+   "evidence": "cases",
+   "instructions": [
+    47,
+    48
+   ],
+   "matching": 23
+  },
+  {
+   "name": "update_throttle_gauge",
+   "hellcats_1_0_3": "0xcb42",
+   "leyte": "0xdf20",
+   "evidence": "correspondence",
+   "instructions": [
+    47,
+    47
+   ],
+   "matching": 47
+  },
+  {
+   "name": "update_flaps_needle",
+   "hellcats_1_0_3": "0xcbf2",
+   "leyte": "0xdfd0",
+   "evidence": "correspondence",
+   "instructions": [
+    49,
+    49
+   ],
+   "matching": 49
+  },
+  {
+   "name": "update_gear_needles",
+   "hellcats_1_0_3": "0xccaa",
+   "leyte": "0xe088",
+   "evidence": "correspondence",
+   "instructions": [
+    103,
+    103
+   ],
+   "matching": 103
+  },
+  {
+   "name": "update_ammo_needle",
+   "hellcats_1_0_3": "0xcdfc",
+   "leyte": "0xe1da",
+   "evidence": "correspondence",
+   "instructions": [
+    45,
+    45
+   ],
+   "matching": 45
+  },
+  {
+   "name": "update_fuel_needles",
+   "hellcats_1_0_3": "0xcea4",
+   "leyte": "0xe282",
+   "evidence": "correspondence",
+   "instructions": [
+    97,
+    97
+   ],
+   "matching": 97
+  },
+  {
+   "name": "update_view_readouts_and_overlays",
+   "hellcats_1_0_3": "0xcfec",
+   "leyte": "0xe3ca",
+   "evidence": "cases",
+   "instructions": [
+    168,
+    170
+   ],
+   "matching": 167
+  },
+  {
+   "name": "mark_view_overlays_drawn",
+   "hellcats_1_0_3": "0xd25c",
+   "leyte": "0xe644",
+   "evidence": "correspondence",
+   "instructions": [
+    6,
+    6
+   ],
+   "matching": 6
+  },
+  {
+   "name": "present_spans_to_window",
+   "hellcats_1_0_3": "0xd278",
+   "leyte": "0xe660",
+   "evidence": "correspondence",
+   "instructions": [
+    59,
+    59
+   ],
+   "matching": 59
+  },
+  {
+   "name": "present_bw_frame",
+   "hellcats_1_0_3": "0xd32c",
+   "leyte": "0xe714",
+   "evidence": "correspondence",
+   "instructions": [
+    34,
+    34
+   ],
+   "matching": 34
+  },
+  {
+   "name": "draw_line_depth8",
+   "hellcats_1_0_3": "0xd39c",
+   "leyte": "0xe784",
+   "evidence": "map",
+   "instructions": [
+    212,
+    212
+   ],
+   "matching": 212
+  },
+  {
+   "name": "draw_line_depth4",
+   "hellcats_1_0_3": "0xd590",
+   "leyte": "0xe978",
+   "evidence": "map",
+   "instructions": [
+    352,
+    352
+   ],
+   "matching": 352
+  },
+  {
+   "name": "restore_line_depth8",
+   "hellcats_1_0_3": "0xd8fa",
+   "leyte": "0xece2",
+   "evidence": "map",
+   "instructions": [
+    245,
+    245
+   ],
+   "matching": 245
+  },
+  {
+   "name": "restore_line_depth4",
+   "hellcats_1_0_3": "0xdb40",
+   "leyte": "0xef28",
+   "evidence": "map",
+   "instructions": [
+    420,
+    420
+   ],
+   "matching": 420
+  },
+  {
+   "name": "fill_pose_history",
+   "hellcats_1_0_3": "0xdf3e",
+   "leyte": "0xf326",
+   "evidence": "correspondence",
+   "instructions": [
+    18,
+    18
+   ],
+   "matching": 18
+  },
+  {
+   "name": "fill_pose_history_angles",
+   "hellcats_1_0_3": "0xdf78",
+   "leyte": "0xf360",
+   "evidence": "correspondence",
+   "instructions": [
+    18,
+    18
+   ],
+   "matching": 18
+  },
+  {
+   "name": "fill_pose_history_flags",
+   "hellcats_1_0_3": "0xdfb2",
+   "leyte": "0xf39a",
+   "evidence": "correspondence",
+   "instructions": [
+    10,
+    10
+   ],
+   "matching": 10
+  },
+  {
+   "name": "init_aircraft_controller",
+   "hellcats_1_0_3": "0xdfd0",
+   "leyte": "0xf3b8",
+   "evidence": "correspondence",
+   "instructions": [
+    46,
+    46
+   ],
+   "matching": 46
+  },
+  {
+   "name": "aircraft_destroy",
+   "hellcats_1_0_3": "0xe084",
+   "leyte": "0x1edee",
+   "evidence": "similarity:0.80",
+   "instructions": [
+    14,
+    16
+   ],
+   "matching": 12
+  },
+  {
+   "name": "aircraft_create",
+   "hellcats_1_0_3": "0xe0ae",
+   "leyte": "0xf4a8",
+   "evidence": "cases",
+   "instructions": [
+    70,
+    101
+   ],
+   "matching": 53
+  },
+  {
+   "name": "create_enemy_fighter",
+   "hellcats_1_0_3": "0xe1c6",
+   "leyte": "0xf616",
+   "evidence": "correspondence",
+   "instructions": [
+    34,
+    34
+   ],
+   "matching": 34
+  },
+  {
+   "name": "spawn_enemy_fighter",
+   "hellcats_1_0_3": "0xe242",
+   "leyte": "0xf692",
+   "evidence": "calls:1",
+   "instructions": [
+    19,
+    29
+   ],
+   "matching": 15
+  },
+  {
+   "name": "create_friendly_bomber",
+   "hellcats_1_0_3": "0xe284",
+   "leyte": "0xf6f4",
+   "evidence": "correspondence",
+   "instructions": [
+    39,
+    39
+   ],
+   "matching": 39
+  },
+  {
+   "name": "create_enemy_bomber",
+   "hellcats_1_0_3": "0xe320",
+   "leyte": "0xf790",
+   "evidence": "similarity:0.93",
+   "instructions": [
+    15,
+    15
+   ],
+   "matching": 14
+  },
+  {
+   "name": "isqrt_floor",
+   "hellcats_1_0_3": "0xe352",
+   "leyte": "0xf7c0",
+   "evidence": "map",
+   "instructions": [
+    26,
+    27
+   ],
+   "matching": 25
+  },
+  {
+   "name": "acos_scaled_dot3",
+   "hellcats_1_0_3": "0xe392",
+   "leyte": "0xf802",
+   "evidence": "correspondence",
+   "instructions": [
+    26,
+    26
+   ],
+   "matching": 26
+  },
+  {
+   "name": "fold_angle_pm_0x2000",
+   "hellcats_1_0_3": "0xe3ec",
+   "leyte": "0xf85c",
+   "evidence": "map",
+   "instructions": [
+    10,
+    10
+   ],
+   "matching": 10
+  },
+  {
+   "name": "table_lerp_1b2c0",
+   "hellcats_1_0_3": "0xe40a",
+   "leyte": "0xf87a",
+   "evidence": "correspondence",
+   "instructions": [
+    20,
+    20
+   ],
+   "matching": 20
+  },
+  {
+   "name": "damp_short_if_below_0x200",
+   "hellcats_1_0_3": "0xe448",
+   "leyte": "0xf8b8",
+   "evidence": "correspondence",
+   "instructions": [
+    19,
+    19
+   ],
+   "matching": 19
+  },
+  {
+   "name": "compute_template_force_from_626",
+   "hellcats_1_0_3": "0xe484",
+   "leyte": "0xf8f4",
+   "evidence": "correspondence",
+   "instructions": [
+    63,
+    63
+   ],
+   "matching": 63
+  },
+  {
+   "name": "scale_template_field_38",
+   "hellcats_1_0_3": "0xe550",
+   "leyte": "0xf9c0",
+   "evidence": "calls:1",
+   "instructions": [
+    18,
+    18
+   ],
+   "matching": 5
+  },
+  {
+   "name": "aircraft_tick",
+   "hellcats_1_0_3": "0xe58a",
+   "leyte": "0xf9f6",
+   "evidence": "similarity:0.67",
+   "instructions": [
+    127,
+    160
+   ],
+   "matching": 96
+  },
+  {
+   "name": "update_aircraft_entity",
+   "hellcats_1_0_3": "0xe772",
+   "leyte": "0xfcf6",
+   "evidence": "calls:8",
+   "instructions": [
+    1201,
+    1593
+   ],
+   "matching": 835
+  },
+  {
+   "name": "player_slew_mode",
+   "hellcats_1_0_3": "0xf7f0",
+   "leyte": "0x112a4",
+   "evidence": "calls:7",
+   "instructions": [
+    232,
+    473
+   ],
+   "matching": 109
+  },
+  {
+   "name": "animate_landing_gear",
+   "hellcats_1_0_3": "0xfb0a",
+   "leyte": "0x118e2",
+   "evidence": "similarity:0.97",
+   "instructions": [
+    221,
+    225
+   ],
+   "matching": 217
+  },
+  {
+   "name": "aircraft_collision",
+   "hellcats_1_0_3": "0xfdea",
+   "leyte": "0x11bd0",
+   "evidence": "similarity:0.74",
+   "instructions": [
+    44,
+    56
+   ],
+   "matching": 37
+  },
+  {
+   "name": "release_ai_target",
+   "hellcats_1_0_3": "0x1009c",
+   "leyte": "0x11ea6",
+   "evidence": "similarity:0.71",
+   "instructions": [
+    8,
+    9
+   ],
+   "matching": 6
+  },
+  {
+   "name": "enemy_fighter_notice_object",
+   "hellcats_1_0_3": "0x100b4",
+   "leyte": "0x11ec0",
+   "evidence": "similarity:0.70",
+   "instructions": [
+    140,
+    196
+   ],
+   "matching": 117
+  },
+  {
+   "name": "atan2_fixed14",
+   "hellcats_1_0_3": "0x102b6",
+   "leyte": "0x1213a",
+   "evidence": "correspondence",
+   "instructions": [
+    53,
+    53
+   ],
+   "matching": 53
+  },
+  {
+   "name": "build_relative_steer_sample",
+   "hellcats_1_0_3": "0x10340",
+   "leyte": "0x121c4",
+   "evidence": "calls:1",
+   "instructions": [
+    171,
+    172
+   ],
+   "matching": 156
+  },
+  {
+   "name": "enqueue_control_inputs_avg4",
+   "hellcats_1_0_3": "0x10538",
+   "leyte": "0x123be",
+   "evidence": "calls:2",
+   "instructions": [
+    78,
+    82
+   ],
+   "matching": 66
+  },
+  {
+   "name": "update_aircraft_damage_state",
+   "hellcats_1_0_3": "0x10630",
+   "leyte": "0x124c0",
+   "evidence": "similarity:0.96",
+   "instructions": [
+    235,
+    234
+   ],
+   "matching": 226
+  },
+  {
+   "name": "apply_relative_heading_steer",
+   "hellcats_1_0_3": "0x1099a",
+   "leyte": "0x12820",
+   "evidence": "correspondence",
+   "instructions": [
+    131,
+    131
+   ],
+   "matching": 131
+  },
+  {
+   "name": "steer_entity_toward_point",
+   "hellcats_1_0_3": "0x10b0e",
+   "leyte": "0x12994",
+   "evidence": "correspondence",
+   "instructions": [
+    26,
+    26
+   ],
+   "matching": 26
+  },
+  {
+   "name": "ai_bootstrap_climb_phase",
+   "hellcats_1_0_3": "0x10b64",
+   "leyte": "0x129ea",
+   "evidence": "calls:1",
+   "instructions": [
+    52,
+    54
+   ],
+   "matching": 35
+  },
+  {
+   "name": "adjust_ai_throttle_vs_speed",
+   "hellcats_1_0_3": "0x10c0c",
+   "leyte": "0x12a9a",
+   "evidence": "correspondence",
+   "instructions": [
+    45,
+    45
+   ],
+   "matching": 45
+  },
+  {
+   "name": "max_ai_throttle_maybe_invert_679",
+   "hellcats_1_0_3": "0x10c92",
+   "leyte": "0x12b20",
+   "evidence": "correspondence",
+   "instructions": [
+    12,
+    12
+   ],
+   "matching": 12
+  },
+  {
+   "name": "invert_ai_bias_67b_if_positive",
+   "hellcats_1_0_3": "0x10cb8",
+   "leyte": "0x12b46",
+   "evidence": "correspondence",
+   "instructions": [
+    5,
+    5
+   ],
+   "matching": 5
+  },
+  {
+   "name": "tick_ai_climb_then_waypoint",
+   "hellcats_1_0_3": "0x10cc8",
+   "leyte": "0x12b56",
+   "evidence": "correspondence",
+   "instructions": [
+    41,
+    41
+   ],
+   "matching": 41
+  },
+  {
+   "name": "ensure_ai_script_1b310_tick",
+   "hellcats_1_0_3": "0x10d88",
+   "leyte": "0x12c16",
+   "evidence": "calls:1",
+   "instructions": [
+    19,
+    19
+   ],
+   "matching": 19
+  },
+  {
+   "name": "ai_script_try_fire_burst",
+   "hellcats_1_0_3": "0x10e08",
+   "leyte": "0x12c96",
+   "evidence": "calls:1",
+   "instructions": [
+    48,
+    49
+   ],
+   "matching": 48
+  },
+  {
+   "name": "tick_ai_1b310_approach_fire",
+   "hellcats_1_0_3": "0x10eac",
+   "leyte": "0x12d3e",
+   "evidence": "correspondence",
+   "instructions": [
+    44,
+    44
+   ],
+   "matching": 44
+  },
+  {
+   "name": "ai_attack_or_fly",
+   "hellcats_1_0_3": "0x110d4",
+   "leyte": "0x13038",
+   "evidence": "map",
+   "instructions": [
+    43,
+    62
+   ],
+   "matching": 37
+  },
+  {
+   "name": "ai_fly",
+   "hellcats_1_0_3": "0x11162",
+   "leyte": "0x13100",
+   "evidence": "similarity:1.00",
+   "instructions": [
+    15,
+    15
+   ],
+   "matching": 15
+  },
+  {
+   "name": "ai_fly_bomber",
+   "hellcats_1_0_3": "0x1118e",
+   "leyte": "0x1312c",
+   "evidence": "map",
+   "instructions": [
+    15,
+    15
+   ],
+   "matching": 15
+  },
+  {
+   "name": "ai_dive_at_target",
+   "hellcats_1_0_3": "0x111ba",
+   "leyte": "0x13158",
+   "evidence": "similarity:0.89",
+   "instructions": [
+    71,
+    75
+   ],
+   "matching": 65
+  },
+  {
+   "name": "ai_bombing_run",
+   "hellcats_1_0_3": "0x112c0",
+   "leyte": "0x1325c",
+   "evidence": "calls:1",
+   "instructions": [
+    120,
+    237
+   ],
+   "matching": 47
+  },
+  {
+   "name": "spin_object_heading",
+   "hellcats_1_0_3": "0x11494",
+   "leyte": "0x135a8",
+   "evidence": "correspondence",
+   "instructions": [
+    6,
+    6
+   ],
+   "matching": 6
+  },
+  {
+   "name": "overlay_rng_mul_mix",
+   "hellcats_1_0_3": "0x114aa",
+   "leyte": "0x135be",
+   "evidence": "correspondence",
+   "instructions": [
+    19,
+    19
+   ],
+   "matching": 19
+  },
+  {
+   "name": "overlay_rng_init",
+   "hellcats_1_0_3": "0x114ea",
+   "leyte": "0x135fe",
+   "evidence": "calls:1",
+   "instructions": [
+    27,
+    25
+   ],
+   "matching": 18
+  },
+  {
+   "name": "overlay_rng_next",
+   "hellcats_1_0_3": "0x11544",
+   "leyte": "0x13652",
+   "evidence": "map",
+   "instructions": [
+    25,
+    25
+   ],
+   "matching": 25
+  },
+  {
+   "name": "create_plume_controller",
+   "hellcats_1_0_3": "0x11590",
+   "leyte": "0x136c2",
+   "evidence": "correspondence",
+   "instructions": [
+    11,
+    11
+   ],
+   "matching": 11
+  },
+  {
+   "name": "spawn_smoke_plume",
+   "hellcats_1_0_3": "0x115dc",
+   "leyte": "0x1370e",
+   "evidence": "similarity:0.74",
+   "instructions": [
+    36,
+    32
+   ],
+   "matching": 25
+  },
+  {
+   "name": "attach_trailing_plume",
+   "hellcats_1_0_3": "0x11650",
+   "leyte": "0x13778",
+   "evidence": "similarity:0.88",
+   "instructions": [
+    38,
+    39
+   ],
+   "matching": 34
+  },
+  {
+   "name": "tick_smoke_plume",
+   "hellcats_1_0_3": "0x116dc",
+   "leyte": "0x13808",
+   "evidence": "similarity:0.98",
+   "instructions": [
+    41,
+    41
+   ],
+   "matching": 40
+  },
+  {
+   "name": "shape_free_plume",
+   "hellcats_1_0_3": "0x11776",
+   "leyte": "0x138a0",
+   "evidence": "correspondence",
+   "instructions": [
+    139,
+    139
+   ],
+   "matching": 139
+  },
+  {
+   "name": "shape_trailing_plume",
+   "hellcats_1_0_3": "0x11920",
+   "leyte": "0x13a4a",
+   "evidence": "correspondence",
+   "instructions": [
+    100,
+    100
+   ],
+   "matching": 100
+  },
+  {
+   "name": "plume_pre_render",
+   "hellcats_1_0_3": "0x11a70",
+   "leyte": "0x13b9a",
+   "evidence": "similarity:1.00",
+   "instructions": [
+    10,
+    10
+   ],
+   "matching": 10
+  },
+  {
+   "name": "face_camera_heading",
+   "hellcats_1_0_3": "0x11ac6",
+   "leyte": "0x13bee",
+   "evidence": "correspondence",
+   "instructions": [
+    7,
+    7
+   ],
+   "matching": 7
+  },
+  {
+   "name": "create_effect_controller",
+   "hellcats_1_0_3": "0x11ade",
+   "leyte": "0x13c06",
+   "evidence": "correspondence",
+   "instructions": [
+    19,
+    19
+   ],
+   "matching": 19
+  },
+  {
+   "name": "replay_logged_effects",
+   "hellcats_1_0_3": "0x11b76",
+   "leyte": "0x13c9e",
+   "evidence": "correspondence",
+   "instructions": [
+    43,
+    43
+   ],
+   "matching": 43
+  },
+  {
+   "name": "mark_effect_log_end",
+   "hellcats_1_0_3": "0x11c0c",
+   "leyte": "0x13d34",
+   "evidence": "correspondence",
+   "instructions": [
+    9,
+    9
+   ],
+   "matching": 9
+  },
+  {
+   "name": "spawn_effect",
+   "hellcats_1_0_3": "0x11c38",
+   "leyte": "0x13d60",
+   "evidence": "calls:2",
+   "instructions": [
+    96,
+    98
+   ],
+   "matching": 94
+  },
+  {
+   "name": "spawn_destruction_effect",
+   "hellcats_1_0_3": "0x11d94",
+   "leyte": "0x13ec0",
+   "evidence": "similarity:0.77",
+   "instructions": [
+    118,
+    130
+   ],
+   "matching": 95
+  },
+  {
+   "name": "init_effect_kind2_burst",
+   "hellcats_1_0_3": "0x11edc",
+   "leyte": "0x14028",
+   "evidence": "similarity:0.99",
+   "instructions": [
+    110,
+    110
+   ],
+   "matching": 109
+  },
+  {
+   "name": "init_effect_kind0_flat_ring",
+   "hellcats_1_0_3": "0x1201a",
+   "leyte": "0x14164",
+   "evidence": "similarity:0.98",
+   "instructions": [
+    51,
+    51
+   ],
+   "matching": 50
+  },
+  {
+   "name": "init_effect_kind1_column",
+   "hellcats_1_0_3": "0x120aa",
+   "leyte": "0x141f2",
+   "evidence": "similarity:0.98",
+   "instructions": [
+    58,
+    58
+   ],
+   "matching": 57
+  },
+  {
+   "name": "init_effect_kind3_debris_explosion",
+   "hellcats_1_0_3": "0x1215e",
+   "leyte": "0x142a4",
+   "evidence": "similarity:0.99",
+   "instructions": [
+    89,
+    89
+   ],
+   "matching": 88
+  },
+  {
+   "name": "animate_effect_kind2_burst",
+   "hellcats_1_0_3": "0x12276",
+   "leyte": "0x143ba",
+   "evidence": "similarity:0.98",
+   "instructions": [
+    104,
+    106
+   ],
+   "matching": 103
+  },
+  {
+   "name": "animate_effect_kind0_ring",
+   "hellcats_1_0_3": "0x123ae",
+   "leyte": "0x144fa",
+   "evidence": "correspondence",
+   "instructions": [
+    59,
+    59
+   ],
+   "matching": 59
+  },
+  {
+   "name": "animate_effect_kind1_column",
+   "hellcats_1_0_3": "0x12466",
+   "leyte": "0x145b2",
+   "evidence": "correspondence",
+   "instructions": [
+    54,
+    54
+   ],
+   "matching": 54
+  },
+  {
+   "name": "animate_effect_kind3_debris",
+   "hellcats_1_0_3": "0x12508",
+   "leyte": "0x14654",
+   "evidence": "similarity:0.99",
+   "instructions": [
+    169,
+    171
+   ],
+   "matching": 168
+  },
+  {
+   "name": "face_object_to_camera",
+   "hellcats_1_0_3": "0x12718",
+   "leyte": "0x1486a",
+   "evidence": "correspondence",
+   "instructions": [
+    11,
+    11
+   ],
+   "matching": 11
+  },
+  {
+   "name": "tick_effect",
+   "hellcats_1_0_3": "0x12748",
+   "leyte": "0x1489a",
+   "evidence": "correspondence",
+   "instructions": [
+    23,
+    23
+   ],
+   "matching": 23
+  },
+  {
+   "name": "effect_pre_render_hook",
+   "hellcats_1_0_3": "0x1278a",
+   "leyte": "0x148dc",
+   "evidence": "correspondence",
+   "instructions": [
+    9,
+    9
+   ],
+   "matching": 9
+  },
+  {
+   "name": "create_ordnance_controller",
+   "hellcats_1_0_3": "0x127a6",
+   "leyte": "0x148fa",
+   "evidence": "similarity:1.00",
+   "instructions": [
+    21,
+    21
+   ],
+   "matching": 21
+  },
+  {
+   "name": "spawn_weapon_entity",
+   "hellcats_1_0_3": "0x12820",
+   "leyte": "0x149da",
+   "evidence": "calls:2",
+   "instructions": [
+    35,
+    37
+   ],
+   "matching": 23
+  },
+  {
+   "name": "ordnance_ballistic_step",
+   "hellcats_1_0_3": "0x12896",
+   "leyte": "0x14b72",
+   "evidence": "calls:1",
+   "instructions": [
+    111,
+    248
+   ],
+   "matching": 62
+  },
+  {
+   "name": "ordnance_tick",
+   "hellcats_1_0_3": "0x12a0a",
+   "leyte": "0x14eaa",
+   "evidence": "correspondence",
+   "instructions": [
+    80,
+    80
+   ],
+   "matching": 80
+  },
+  {
+   "name": "apply_blast_damage",
+   "hellcats_1_0_3": "0x12b46",
+   "leyte": "0x15192",
+   "evidence": "calls:1",
+   "instructions": [
+    139,
+    198
+   ],
+   "matching": 83
+  },
+  {
+   "name": "ordnance_detonation",
+   "hellcats_1_0_3": "0x12d14",
+   "leyte": "0x1544e",
+   "evidence": "calls:2",
+   "instructions": [
+    146,
+    256
+   ],
+   "matching": 57
+  },
+  {
+   "name": "ordnance_collision",
+   "hellcats_1_0_3": "0x12f32",
+   "leyte": "0x1578a",
+   "evidence": "calls:1",
+   "instructions": [
+    16,
+    22
+   ],
+   "matching": 13
+  },
+  {
+   "name": "point_in_polygon_xy",
+   "hellcats_1_0_3": "0x12fb2",
+   "leyte": "0x1581a",
+   "evidence": "calls:1",
+   "instructions": [
+    51,
+    53
+   ],
+   "matching": 28
+  },
+  {
+   "name": "point_in_polygon_xz",
+   "hellcats_1_0_3": "0x13050",
+   "leyte": "0x158be",
+   "evidence": "calls:2",
+   "instructions": [
+    51,
+    53
+   ],
+   "matching": 28
+  },
+  {
+   "name": "point_in_polygon_yz",
+   "hellcats_1_0_3": "0x130ee",
+   "leyte": "0x15962",
+   "evidence": "calls:1",
+   "instructions": [
+    51,
+    53
+   ],
+   "matching": 28
+  },
+  {
+   "name": "project_face_vertices_xy",
+   "hellcats_1_0_3": "0x1318c",
+   "leyte": "0x15a06",
+   "evidence": "calls:1",
+   "instructions": [
+    31,
+    34
+   ],
+   "matching": 29
+  },
+  {
+   "name": "project_face_vertices_xz",
+   "hellcats_1_0_3": "0x131ea",
+   "leyte": "0x15a6c",
+   "evidence": "calls:2",
+   "instructions": [
+    31,
+    34
+   ],
+   "matching": 29
+  },
+  {
+   "name": "project_face_vertices_yz",
+   "hellcats_1_0_3": "0x13248",
+   "leyte": "0x15ad2",
+   "evidence": "calls:1",
+   "instructions": [
+    31,
+    34
+   ],
+   "matching": 29
+  },
+  {
+   "name": "point_over_face_xz",
+   "hellcats_1_0_3": "0x132a8",
+   "leyte": "0x15bae",
+   "evidence": "correspondence",
+   "instructions": [
+    42,
+    42
+   ],
+   "matching": 42
+  },
+  {
+   "name": "surface_type_at_point",
+   "hellcats_1_0_3": "0x13326",
+   "leyte": "0x15c2c",
+   "evidence": "calls:1",
+   "instructions": [
+    87,
+    103
+   ],
+   "matching": 52
+  },
+  {
+   "name": "surface_type_under_object",
+   "hellcats_1_0_3": "0x13432",
+   "leyte": "0x15d72",
+   "evidence": "correspondence",
+   "instructions": [
+    7,
+    7
+   ],
+   "matching": 7
+  },
+  {
+   "name": "point_in_face_by_axis",
+   "hellcats_1_0_3": "0x1344c",
+   "leyte": "0x15d8c",
+   "evidence": "correspondence",
+   "instructions": [
+    101,
+    101
+   ],
+   "matching": 101
+  },
+  {
+   "name": "contact_pair_hash",
+   "hellcats_1_0_3": "0x1356c",
+   "leyte": "0x15eac",
+   "evidence": "correspondence",
+   "instructions": [
+    6,
+    6
+   ],
+   "matching": 6
+  },
+  {
+   "name": "find_contact_record",
+   "hellcats_1_0_3": "0x13580",
+   "leyte": "0x15ec0",
+   "evidence": "calls:2",
+   "instructions": [
+    25,
+    27
+   ],
+   "matching": 23
+  },
+  {
+   "name": "create_shape_contact_record",
+   "hellcats_1_0_3": "0x135c8",
+   "leyte": "0x15f0e",
+   "evidence": "calls:2",
+   "instructions": [
+    131,
+    136
+   ],
+   "matching": 111
+  },
+  {
+   "name": "age_contact_records",
+   "hellcats_1_0_3": "0x1375a",
+   "leyte": "0x160b0",
+   "evidence": "calls:1",
+   "instructions": [
+    30,
+    32
+   ],
+   "matching": 29
+  },
+  {
+   "name": "drop_contact_records_for_object",
+   "hellcats_1_0_3": "0x137ba",
+   "leyte": "0x16116",
+   "evidence": "cases",
+   "instructions": [
+    31,
+    33
+   ],
+   "matching": 30
+  },
+  {
+   "name": "create_fractal_contact_record",
+   "hellcats_1_0_3": "0x1381c",
+   "leyte": "0x1617e",
+   "evidence": "calls:2",
+   "instructions": [
+    105,
+    100
+   ],
+   "matching": 88
+  },
+  {
+   "name": "fractal_height_at",
+   "hellcats_1_0_3": "0x13960",
+   "leyte": "0x162b8",
+   "evidence": "calls:2",
+   "instructions": [
+    268,
+    271
+   ],
+   "matching": 264
+  },
+  {
+   "name": "test_terrain_collision",
+   "hellcats_1_0_3": "0x13cbc",
+   "leyte": "0x1661a",
+   "evidence": "calls:1",
+   "instructions": [
+    121,
+    121
+   ],
+   "matching": 117
+  },
+  {
+   "name": "test_proximity_collision",
+   "hellcats_1_0_3": "0x13e2e",
+   "leyte": "0x16784",
+   "evidence": "correspondence",
+   "instructions": [
+    29,
+    29
+   ],
+   "matching": 29
+  },
+  {
+   "name": "test_player_vs_type0e_proximity",
+   "hellcats_1_0_3": "0x13e8e",
+   "leyte": "0x167e4",
+   "evidence": "calls:2",
+   "instructions": [
+    16,
+    16
+   ],
+   "matching": 14
+  },
+  {
+   "name": "test_object_collision",
+   "hellcats_1_0_3": "0x13ec0",
+   "leyte": "0x16812",
+   "evidence": "calls:2",
+   "instructions": [
+    214,
+    219
+   ],
+   "matching": 119
+  },
+  {
+   "name": "handle_terrain_contact",
+   "hellcats_1_0_3": "0x14178",
+   "leyte": "0x16ae6",
+   "evidence": "calls:1",
+   "instructions": [
+    84,
+    84
+   ],
+   "matching": 80
+  },
+  {
+   "name": "handle_player_contact",
+   "hellcats_1_0_3": "0x1427c",
+   "leyte": "0x16be2",
+   "evidence": "calls:2",
+   "instructions": [
+    53,
+    53
+   ],
+   "matching": 51
+  },
+  {
+   "name": "dispatch_collision",
+   "hellcats_1_0_3": "0x14328",
+   "leyte": "0x16c8a",
+   "evidence": "calls:1",
+   "instructions": [
+    80,
+    82
+   ],
+   "matching": 75
+  },
+  {
+   "name": "sort_group_parts_by_distance",
+   "hellcats_1_0_3": "0x1441a",
+   "leyte": "0x16d7a",
+   "evidence": "calls:1",
+   "instructions": [
+    311,
+    324
+   ],
+   "matching": 283
+  },
+  {
+   "name": "lift_object_onto_terrain",
+   "hellcats_1_0_3": "0x14810",
+   "leyte": "0x171ba",
+   "evidence": "calls:1",
+   "instructions": [
+    209,
+    206
+   ],
+   "matching": 188
+  },
+  {
+   "name": "release_fractal_reference",
+   "hellcats_1_0_3": "0x14ad2",
+   "leyte": "0x1746c",
+   "evidence": "cases",
+   "instructions": [
+    70,
+    73
+   ],
+   "matching": 66
+  },
+  {
+   "name": "carry_attached_objects",
+   "hellcats_1_0_3": "0x14bca",
+   "leyte": "0x1756a",
+   "evidence": "calls:2",
+   "instructions": [
+    123,
+    179
+   ],
+   "matching": 53
+  },
+  {
+   "name": "step_sinking_object",
+   "hellcats_1_0_3": "0x14d66",
+   "leyte": "0x17850",
+   "evidence": "similarity:0.64",
+   "instructions": [
+    122,
+    129
+   ],
+   "matching": 80
+  },
+  {
+   "name": "apply_hit_to_sinkable_object",
+   "hellcats_1_0_3": "0x14f28",
+   "leyte": "0x17a2a",
+   "evidence": "calls:1",
+   "instructions": [
+    110,
+    110
+   ],
+   "matching": 73
+  },
+  {
+   "name": "create_carrier_controller",
+   "hellcats_1_0_3": "0x150a8",
+   "leyte": "0x17ba2",
+   "evidence": "cases",
+   "instructions": [
+    25,
+    45
+   ],
+   "matching": 10
+  },
+  {
+   "name": "create_firing_ship_controller",
+   "hellcats_1_0_3": "0x152ee",
+   "leyte": "0x18088",
+   "evidence": "correspondence",
+   "instructions": [
+    16,
+    16
+   ],
+   "matching": 16
+  },
+  {
+   "name": "create_sinking_controller",
+   "hellcats_1_0_3": "0x15560",
+   "leyte": "0x18544",
+   "evidence": "cases",
+   "instructions": [
+    20,
+    27
+   ],
+   "matching": 8
+  },
+  {
+   "name": "create_basic_ship_controller",
+   "hellcats_1_0_3": "0x155cc",
+   "leyte": "0x185ba",
+   "evidence": "cases",
+   "instructions": [
+    15,
+    26
+   ],
+   "matching": 7
+  },
+  {
+   "name": "clip_polygon_y_nonneg",
+   "hellcats_1_0_3": "0x1560e",
+   "leyte": "0x195d6",
+   "evidence": "correspondence",
+   "instructions": [
+    91,
+    91
+   ],
+   "matching": 91
+  },
+  {
+   "name": "sink_object_shape_at_waterline",
+   "hellcats_1_0_3": "0x15742",
+   "leyte": "0x19b32",
+   "evidence": "cases",
+   "instructions": [
+    333,
+    17
+   ],
+   "matching": 6
+  },
+  {
+   "name": "create_bullet_controller",
+   "hellcats_1_0_3": "0x15b72",
+   "leyte": "0x19b6a",
+   "evidence": "correspondence",
+   "instructions": [
+    16,
+    16
+   ],
+   "matching": 16
+  },
+  {
+   "name": "spawn_ordnance_scattered",
+   "hellcats_1_0_3": "0x15bd6",
+   "leyte": "0x19bce",
+   "evidence": "calls:2",
+   "instructions": [
+    90,
+    90
+   ],
+   "matching": 89
+  },
+  {
+   "name": "spawn_ordnance_oriented",
+   "hellcats_1_0_3": "0x15d00",
+   "leyte": "0x19cf6",
+   "evidence": "correspondence",
+   "instructions": [
+    28,
+    28
+   ],
+   "matching": 28
+  },
+  {
+   "name": "spawn_ordnance_oriented_3ang",
+   "hellcats_1_0_3": "0x15d58",
+   "leyte": "0x19d4e",
+   "evidence": "correspondence",
+   "instructions": [
+    25,
+    25
+   ],
+   "matching": 25
+  },
+  {
+   "name": "tick_bullet",
+   "hellcats_1_0_3": "0x15da8",
+   "leyte": "0x19d9e",
+   "evidence": "similarity:0.91",
+   "instructions": [
+    49,
+    46
+   ],
+   "matching": 43
+  },
+  {
+   "name": "bullet_pre_render",
+   "hellcats_1_0_3": "0x15e42",
+   "leyte": "0x19e30",
+   "evidence": "correspondence",
+   "instructions": [
+    23,
+    23
+   ],
+   "matching": 23
+  },
+  {
+   "name": "erase_dots_depth8",
+   "hellcats_1_0_3": "0x15e9e",
+   "leyte": "0x19e8c",
+   "evidence": "map",
+   "instructions": [
+    38,
+    40
+   ],
+   "matching": 37
+  },
+  {
+   "name": "plot_dot_depth8",
+   "hellcats_1_0_3": "0x15f1e",
+   "leyte": "0x19f12",
+   "evidence": "map",
+   "instructions": [
+    33,
+    33
+   ],
+   "matching": 33
+  },
+  {
+   "name": "erase_dots_depth4",
+   "hellcats_1_0_3": "0x15f98",
+   "leyte": "0x19f8c",
+   "evidence": "map",
+   "instructions": [
+    124,
+    127
+   ],
+   "matching": 122
+  },
+  {
+   "name": "plot_dot_depth4",
+   "hellcats_1_0_3": "0x16108",
+   "leyte": "0x1a104",
+   "evidence": "map",
+   "instructions": [
+    86,
+    86
+   ],
+   "matching": 86
+  },
+  {
+   "name": "plot_dot_bw",
+   "hellcats_1_0_3": "0x16210",
+   "leyte": "0x1a20c",
+   "evidence": "map",
+   "instructions": [
+    42,
+    42
+   ],
+   "matching": 42
+  },
+  {
+   "name": "draw_distant_object_dots",
+   "hellcats_1_0_3": "0x1629a",
+   "leyte": "0x1a296",
+   "evidence": "calls:1",
+   "instructions": [
+    274,
+    281
+   ],
+   "matching": 236
+  },
+  {
+   "name": "bullet_hits_shape",
+   "hellcats_1_0_3": "0x1663a",
+   "leyte": "0x1a64a",
+   "evidence": "calls:1",
+   "instructions": [
+    61,
+    61
+   ],
+   "matching": 57
+  },
+  {
+   "name": "apply_random_aircraft_damage",
+   "hellcats_1_0_3": "0x16704",
+   "leyte": "0x1a70c",
+   "evidence": "calls:1",
+   "instructions": [
+    56,
+    50
+   ],
+   "matching": 43
+  },
+  {
+   "name": "bullet_hits_aircraft",
+   "hellcats_1_0_3": "0x167d4",
+   "leyte": "0x1a7c6",
+   "evidence": "similarity:0.96",
+   "instructions": [
+    55,
+    55
+   ],
+   "matching": 53
+  },
+  {
+   "name": "impact_one_time_in_16",
+   "hellcats_1_0_3": "0x1688e",
+   "leyte": "0x1a87c",
+   "evidence": "correspondence",
+   "instructions": [
+    10,
+    10
+   ],
+   "matching": 10
+  },
+  {
+   "name": "alloc_transformed_vertex_block",
+   "hellcats_1_0_3": "0x168b2",
+   "leyte": "0x1a8a2",
+   "evidence": "calls:1",
+   "instructions": [
+    20,
+    20
+   ],
+   "matching": 20
+  },
+  {
+   "name": "alloc_copied_vertex_block",
+   "hellcats_1_0_3": "0x168fc",
+   "leyte": "0x1a8ec",
+   "evidence": "correspondence",
+   "instructions": [
+    21,
+    21
+   ],
+   "matching": 21
+  },
+  {
+   "name": "advance_route_waypoint",
+   "hellcats_1_0_3": "0x16946",
+   "leyte": "0x1aa84",
+   "evidence": "correspondence",
+   "instructions": [
+    66,
+    66
+   ],
+   "matching": 66
+  },
+  {
+   "name": "create_trail_controller",
+   "hellcats_1_0_3": "0x16a1a",
+   "leyte": "0x1ab5a",
+   "evidence": "map",
+   "instructions": [
+    16,
+    16
+   ],
+   "matching": 16
+  },
+  {
+   "name": "register_trail_templates",
+   "hellcats_1_0_3": "0x16a58",
+   "leyte": "0x1ab98",
+   "evidence": "correspondence",
+   "instructions": [
+    23,
+    23
+   ],
+   "matching": 23
+  },
+  {
+   "name": "spawn_trail",
+   "hellcats_1_0_3": "0x16ac8",
+   "leyte": "0x1ac08",
+   "evidence": "calls:1",
+   "instructions": [
+    31,
+    31
+   ],
+   "matching": 30
+  },
+  {
+   "name": "attach_smoke_trail",
+   "hellcats_1_0_3": "0x16b2c",
+   "leyte": "0x1ac6a",
+   "evidence": "similarity:0.84",
+   "instructions": [
+    28,
+    29
+   ],
+   "matching": 24
+  },
+  {
+   "name": "attach_burning_trail",
+   "hellcats_1_0_3": "0x16b7e",
+   "leyte": "0x1acbe",
+   "evidence": "calls:1",
+   "instructions": [
+    39,
+    53
+   ],
+   "matching": 34
+  },
+  {
+   "name": "destroy_trail_controller",
+   "hellcats_1_0_3": "0x16c04",
+   "leyte": "0x1ad8c",
+   "evidence": "similarity:0.76",
+   "instructions": [
+    24,
+    26
+   ],
+   "matching": 19
+  },
+  {
+   "name": "animate_smoke_trail",
+   "hellcats_1_0_3": "0x16c4a",
+   "leyte": "0x1add4",
+   "evidence": "similarity:0.99",
+   "instructions": [
+    125,
+    125
+   ],
+   "matching": 124
+  },
+  {
+   "name": "animate_burning_trail",
+   "hellcats_1_0_3": "0x16de6",
+   "leyte": "0x1af6e",
+   "evidence": "similarity:0.94",
+   "instructions": [
+    177,
+    183
+   ],
+   "matching": 169
+  },
+  {
+   "name": "tick_trail",
+   "hellcats_1_0_3": "0x1700a",
+   "leyte": "0x1b1aa",
+   "evidence": "correspondence",
+   "instructions": [
+    22,
+    22
+   ],
+   "matching": 22
+  },
+  {
+   "name": "create_ground_fire_controller",
+   "hellcats_1_0_3": "0x1704a",
+   "leyte": "0x1b1ea",
+   "evidence": "correspondence",
+   "instructions": [
+    12,
+    12
+   ],
+   "matching": 12
+  },
+  {
+   "name": "spawn_ground_fire_object",
+   "hellcats_1_0_3": "0x1709a",
+   "leyte": "0x1b23a",
+   "evidence": "similarity:0.95",
+   "instructions": [
+    22,
+    22
+   ],
+   "matching": 21
+  },
+  {
+   "name": "attach_ground_fire",
+   "hellcats_1_0_3": "0x170e2",
+   "leyte": "0x1b280",
+   "evidence": "similarity:0.81",
+   "instructions": [
+    23,
+    24
+   ],
+   "matching": 19
+  },
+  {
+   "name": "animate_ground_fire",
+   "hellcats_1_0_3": "0x17130",
+   "leyte": "0x1b2d6",
+   "evidence": "calls:1",
+   "instructions": [
+    169,
+    169
+   ],
+   "matching": 168
+  },
+  {
+   "name": "tick_ground_fire",
+   "hellcats_1_0_3": "0x17360",
+   "leyte": "0x1b504",
+   "evidence": "correspondence",
+   "instructions": [
+    12,
+    12
+   ],
+   "matching": 12
+  },
+  {
+   "name": "spawn_debris_fragment",
+   "hellcats_1_0_3": "0x173de",
+   "leyte": "0x1b582",
+   "evidence": "calls:1",
+   "instructions": [
+    66,
+    66
+   ],
+   "matching": 65
+  },
+  {
+   "name": "tick_debris_fragment",
+   "hellcats_1_0_3": "0x174a4",
+   "leyte": "0x1b646",
+   "evidence": "correspondence",
+   "instructions": [
+    42,
+    42
+   ],
+   "matching": 42
+  },
+  {
+   "name": "tick_ground_mark",
+   "hellcats_1_0_3": "0x175a0",
+   "leyte": "0x1b744",
+   "evidence": "correspondence",
+   "instructions": [
+    9,
+    9
+   ],
+   "matching": 9
+  },
+  {
+   "name": "spawn_ground_mark",
+   "hellcats_1_0_3": "0x175be",
+   "leyte": "0x1b762",
+   "evidence": "similarity:0.99",
+   "instructions": [
+    68,
+    68
+   ],
+   "matching": 67
+  },
+  {
+   "name": "add_radar_track",
+   "hellcats_1_0_3": "0x17692",
+   "leyte": "0x1b836",
+   "evidence": "similarity:0.96",
+   "instructions": [
+    27,
+    27
+   ],
+   "matching": 26
+  },
+  {
+   "name": "set_view_distance",
+   "hellcats_1_0_3": "0x176fa",
+   "leyte": "0x1b89c",
+   "evidence": "correspondence",
+   "instructions": [
+    7,
+    7
+   ],
+   "matching": 7
+  },
+  {
+   "name": "cycle_view_distance",
+   "hellcats_1_0_3": "0x17716",
+   "leyte": "0x1b8b8",
+   "evidence": "correspondence",
+   "instructions": [
+    12,
+    12
+   ],
+   "matching": 12
+  },
+  {
+   "name": "reset_radar_tracks",
+   "hellcats_1_0_3": "0x1774a",
+   "leyte": "0x1b8ec",
+   "evidence": "correspondence",
+   "instructions": [
+    5,
+    5
+   ],
+   "matching": 5
+  },
+  {
+   "name": "erase_radar_blip_depth8",
+   "hellcats_1_0_3": "0x17760",
+   "leyte": "0x1b902",
+   "evidence": "map",
+   "instructions": [
+    39,
+    39
+   ],
+   "matching": 39
+  },
+  {
+   "name": "erase_radar_blip_depth4",
+   "hellcats_1_0_3": "0x17848",
+   "leyte": "0x1b9ea",
+   "evidence": "map",
+   "instructions": [
+    77,
+    77
+   ],
+   "matching": 77
+  },
+  {
+   "name": "draw_radar_blip_depth4",
+   "hellcats_1_0_3": "0x17928",
+   "leyte": "0x1baca",
+   "evidence": "map",
+   "instructions": [
+    86,
+    86
+   ],
+   "matching": 86
+  },
+  {
+   "name": "erase_radar_blip_bw",
+   "hellcats_1_0_3": "0x17a14",
+   "leyte": "0x1bbb6",
+   "evidence": "map",
+   "instructions": [
+    14,
+    14
+   ],
+   "matching": 14
+  },
+  {
+   "name": "draw_radar_blip_bw",
+   "hellcats_1_0_3": "0x17a40",
+   "leyte": "0x1bbe2",
+   "evidence": "map",
+   "instructions": [
+    14,
+    14
+   ],
+   "matching": 14
+  },
+  {
+   "name": "update_radar_range_buttons",
+   "hellcats_1_0_3": "0x17a6c",
+   "leyte": "0x1bc0e",
+   "evidence": "correspondence",
+   "instructions": [
+    63,
+    63
+   ],
+   "matching": 63
+  },
+  {
+   "name": "update_radar_scope",
+   "hellcats_1_0_3": "0x17b48",
+   "leyte": "0x1bcea",
+   "evidence": "cases",
+   "instructions": [
+    122,
+    126
+   ],
+   "matching": 110
+  },
+  {
+   "name": "create_aircraft_spawner_controller",
+   "hellcats_1_0_3": "0x17cf6",
+   "leyte": "0x1bea6",
+   "evidence": "cases",
+   "instructions": [
+    51,
+    51
+   ],
+   "matching": 51
+  },
+  {
+   "name": "destroy_aircraft_spawner_controller",
+   "hellcats_1_0_3": "0x17d98",
+   "leyte": "0x1bf48",
+   "evidence": "correspondence",
+   "instructions": [
+    10,
+    10
+   ],
+   "matching": 10
+  },
+  {
+   "name": "tick_aircraft_spawner",
+   "hellcats_1_0_3": "0x17db4",
+   "leyte": "0x1bf64",
+   "evidence": "similarity:0.88",
+   "instructions": [
+    182,
+    182
+   ],
+   "matching": 161
+  },
+  {
+   "name": "ai_pursue_target",
+   "hellcats_1_0_3": "0x181ea",
+   "leyte": "0x1c28e",
+   "evidence": "calls:1",
+   "instructions": [
+    490,
+    537
+   ],
+   "matching": 424
+  },
+  {
+   "name": "create_shadow_controller",
+   "hellcats_1_0_3": "0x1889a",
+   "leyte": "0x1c9da",
+   "evidence": "cases",
+   "instructions": [
+    15,
+    17
+   ],
+   "matching": 9
+  },
+  {
+   "name": "register_shadow_templates",
+   "hellcats_1_0_3": "0x188d4",
+   "leyte": "0x1ca20",
+   "evidence": "cases",
+   "instructions": [
+    23,
+    23
+   ],
+   "matching": 23
+  },
+  {
+   "name": "spawn_object_shadow",
+   "hellcats_1_0_3": "0x18936",
+   "leyte": "0x1ca84",
+   "evidence": "cases",
+   "instructions": [
+    36,
+    38
+   ],
+   "matching": 35
+  },
+  {
+   "name": "tick_shadow",
+   "hellcats_1_0_3": "0x189b0",
+   "leyte": "0x1cb04",
+   "evidence": "similarity:0.96",
+   "instructions": [
+    27,
+    27
+   ],
+   "matching": 26
+  },
+  {
+   "name": "shadow_pre_render",
+   "hellcats_1_0_3": "0x18a14",
+   "leyte": "0x1cb66",
+   "evidence": "similarity:0.81",
+   "instructions": [
+    94,
+    91
+   ],
+   "matching": 75
+  },
+  {
+   "name": "create_flak_controller",
+   "hellcats_1_0_3": "0x18b32",
+   "leyte": "0x1cc72",
+   "evidence": "cases",
+   "instructions": [
+    17,
+    22
+   ],
+   "matching": 11
+  },
+  {
+   "name": "destroy_flak_controller",
+   "hellcats_1_0_3": "0x18b78",
+   "leyte": "0x1ccce",
+   "evidence": "similarity:0.62",
+   "instructions": [
+    12,
+    14
+   ],
+   "matching": 8
+  },
+  {
+   "name": "flak_notice_object",
+   "hellcats_1_0_3": "0x18b9a",
+   "leyte": "0x1ccf4",
+   "evidence": "similarity:0.90",
+   "instructions": [
+    62,
+    63
+   ],
+   "matching": 56
+  },
+  {
+   "name": "tick_flak_gun",
+   "hellcats_1_0_3": "0x18c76",
+   "leyte": "0x1cdce",
+   "evidence": "similarity:0.91",
+   "instructions": [
+    313,
+    320
+   ],
+   "matching": 288
+  },
+  {
+   "name": "create_turret_controller",
+   "hellcats_1_0_3": "0x190a0",
+   "leyte": "0x1d21a",
+   "evidence": "cases",
+   "instructions": [
+    20,
+    23
+   ],
+   "matching": 20
+  },
+  {
+   "name": "spawn_turret_on_object",
+   "hellcats_1_0_3": "0x19110",
+   "leyte": "0x1d298",
+   "evidence": "calls:1",
+   "instructions": [
+    24,
+    24
+   ],
+   "matching": 23
+  },
+  {
+   "name": "tick_turret",
+   "hellcats_1_0_3": "0x1915c",
+   "leyte": "0x1d2e2",
+   "evidence": "similarity:0.99",
+   "instructions": [
+    157,
+    157
+   ],
+   "matching": 155
+  },
+  {
+   "name": "turret_pre_render",
+   "hellcats_1_0_3": "0x19374",
+   "leyte": "0x1d4f6",
+   "evidence": "similarity:1.00",
+   "instructions": [
+    10,
+    10
+   ],
+   "matching": 10
+  },
+  {
+   "name": "create_parachute_controller",
+   "hellcats_1_0_3": "0x19396",
+   "leyte": "0x1d516",
+   "evidence": "calls:1",
+   "instructions": [
+    21,
+    21
+   ],
+   "matching": 21
+  },
+  {
+   "name": "register_parachute_template",
+   "hellcats_1_0_3": "0x193ee",
+   "leyte": "0x1d56e",
+   "evidence": "cases",
+   "instructions": [
+    7,
+    7
+   ],
+   "matching": 7
+  },
+  {
+   "name": "spawn_bailout_parachute",
+   "hellcats_1_0_3": "0x19410",
+   "leyte": "0x1d590",
+   "evidence": "calls:1",
+   "instructions": [
+    64,
+    65
+   ],
+   "matching": 57
+  },
+  {
+   "name": "destroy_parachute_controller",
+   "hellcats_1_0_3": "0x194fa",
+   "leyte": "0x1d67c",
+   "evidence": "correspondence",
+   "instructions": [
+    5,
+    5
+   ],
+   "matching": 5
+  },
+  {
+   "name": "parachute_descend",
+   "hellcats_1_0_3": "0x1950e",
+   "leyte": "0x1d690",
+   "evidence": "correspondence",
+   "instructions": [
+    307,
+    307
+   ],
+   "matching": 307
+  },
+  {
+   "name": "parachute_tick",
+   "hellcats_1_0_3": "0x19918",
+   "leyte": "0x1da9a",
+   "evidence": "similarity:1.00",
+   "instructions": [
+    57,
+    57
+   ],
+   "matching": 57
+  },
+  {
+   "name": "create_cloud_controller",
+   "hellcats_1_0_3": "0x199fa",
+   "leyte": "0x1db7a",
+   "evidence": "map",
+   "instructions": [
+    15,
+    15
+   ],
+   "matching": 15
+  },
+  {
+   "name": "register_cloud_templates",
+   "hellcats_1_0_3": "0x19a34",
+   "leyte": "0x1dbb4",
+   "evidence": "correspondence",
+   "instructions": [
+    23,
+    23
+   ],
+   "matching": 23
+  },
+  {
+   "name": "spawn_camera_relative_object",
+   "hellcats_1_0_3": "0x19a82",
+   "leyte": "0x1dc02",
+   "evidence": "calls:1",
+   "instructions": [
+    40,
+    40
+   ],
+   "matching": 39
+  },
+  {
+   "name": "follow_camera_offset",
+   "hellcats_1_0_3": "0x19b10",
+   "leyte": "0x1dc8e",
+   "evidence": "correspondence",
+   "instructions": [
+    20,
+    20
+   ],
+   "matching": 20
+  },
+  {
+   "name": "create_view_attached_controller",
+   "hellcats_1_0_3": "0x19b62",
+   "leyte": "0x1dce2",
+   "evidence": "cases",
+   "instructions": [
+    15,
+    15
+   ],
+   "matching": 15
+  },
+  {
+   "name": "tick_view_attached_object",
+   "hellcats_1_0_3": "0x19b9c",
+   "leyte": "0x1dd1c",
+   "evidence": "correspondence",
+   "instructions": [
+    26,
+    26
+   ],
+   "matching": 26
+  },
+  {
+   "name": "store_xyz_asr",
+   "hellcats_1_0_3": "0x19c06",
+   "leyte": "0x1dd86",
+   "evidence": "correspondence",
+   "instructions": [
+    20,
+    20
+   ],
+   "matching": 20
+  },
+  {
+   "name": "find_nearest_runway_approach_ends",
+   "hellcats_1_0_3": "0x19c3e",
+   "leyte": "0x1ddbe",
+   "evidence": "calls:1",
+   "instructions": [
+    264,
+    268
+   ],
+   "matching": 229
+  },
+  {
+   "name": "try_begin_landing_approach",
+   "hellcats_1_0_3": "0x19f9a",
+   "leyte": "0x1e132",
+   "evidence": "correspondence",
+   "instructions": [
+    136,
+    136
+   ],
+   "matching": 136
+  },
+  {
+   "name": "tick_landing_approach_glide",
+   "hellcats_1_0_3": "0x1a186",
+   "leyte": "0x1e31e",
+   "evidence": "map",
+   "instructions": [
+    347,
+    347
+   ],
+   "matching": 347
+  },
+  {
+   "name": "memmove_block",
+   "hellcats_1_0_3": "0x1a61e",
+   "leyte": "0x1f61a",
+   "evidence": "correspondence",
+   "instructions": [
+    81,
+    81
+   ],
+   "matching": 81
+  },
+  {
+   "name": "memzero",
+   "hellcats_1_0_3": "0x1a6f6",
+   "leyte": "0x1f6f2",
+   "evidence": "correspondence",
+   "instructions": [
+    25,
+    25
+   ],
+   "matching": 25
+  },
+  {
+   "name": "c_strlen",
+   "hellcats_1_0_3": "0x1a73e",
+   "leyte": "0x1f73a",
+   "evidence": "correspondence",
+   "instructions": [
+    11,
+    11
+   ],
+   "matching": 11
+  }
+ ],
+ "unplaced": [
+  {
+   "name": "nearest_type80_centroid_visitor",
+   "hellcats_1_0_3": "0xa9a",
+   "candidates": [
+    [
+     "0xce0",
+     0.56
+    ]
+   ]
+  },
+  {
+   "name": "aircraft_notice_object",
+   "hellcats_1_0_3": "0xfe76",
+   "candidates": [
+    [
+     "0x11c76",
+     0.51
+    ],
+    [
+     "0x19096",
+     0.4
+    ],
+    [
+     "0x11ec0",
+     0.39
+    ]
+   ]
+  },
+  {
+   "name": "ensure_ai_script_1b2e0_tick",
+   "hellcats_1_0_3": "0x10d48",
+   "candidates": [
+    [
+     "0x12c56",
+     1.0
+    ],
+    [
+     "0x12bd6",
+     1.0
+    ],
+    [
+     "0x18d1c",
+     0.89
+    ]
+   ]
+  },
+  {
+   "name": "ensure_ai_script_1b340_tick",
+   "hellcats_1_0_3": "0x10dc8",
+   "candidates": [
+    [
+     "0x12c56",
+     1.0
+    ],
+    [
+     "0x12bd6",
+     1.0
+    ],
+    [
+     "0x18d1c",
+     0.89
+    ]
+   ]
+  },
+  {
+   "name": "tick_ai_1b370_mission",
+   "hellcats_1_0_3": "0x10f48",
+   "candidates": [
+    [
+     "0x1325c",
+     0.18
+    ]
+   ]
+  },
+  {
+   "name": "create_spinner_controller",
+   "hellcats_1_0_3": "0x11466",
+   "candidates": [
+    [
+     "0x1357a",
+     1.0
+    ],
+    [
+     "0x1f5ee",
+     0.96
+    ],
+    [
+     "0x1b6ea",
+     0.74
+    ]
+   ]
+  },
+  {
+   "name": "register_smoke_template",
+   "hellcats_1_0_3": "0x115ba",
+   "candidates": [
+    [
+     "0x1d276",
+     1.0
+    ],
+    [
+     "0x1b722",
+     1.0
+    ],
+    [
+     "0x1b560",
+     1.0
+    ]
+   ]
+  },
+  {
+   "name": "destroy_plume_controller",
+   "hellcats_1_0_3": "0x116c8",
+   "candidates": [
+    [
+     "0x1ca6e",
+     0.67
+    ],
+    [
+     "0x1b2c0",
+     0.67
+    ],
+    [
+     "0x137f2",
+     0.67
+    ]
+   ]
+  },
+  {
+   "name": "create_camera_facing_controller",
+   "hellcats_1_0_3": "0x11a8e",
+   "candidates": [
+    [
+     "0x1b6ea",
+     1.0
+    ],
+    [
+     "0x13bb6",
+     1.0
+    ],
+    [
+     "0x1b526",
+     0.93
+    ]
+   ]
+  },
+  {
+   "name": "register_effect_template",
+   "hellcats_1_0_3": "0x11b28",
+   "candidates": [
+    [
+     "0x13c50",
+     1.0
+    ],
+    [
+     "0x1ebe0",
+     0.91
+    ],
+    [
+     "0x1ed5c",
+     0.65
+    ]
+   ]
+  },
+  {
+   "name": "register_ordnance_template",
+   "hellcats_1_0_3": "0x127fe",
+   "candidates": [
+    [
+     "0x1d276",
+     1.0
+    ],
+    [
+     "0x1b722",
+     1.0
+    ],
+    [
+     "0x1b560",
+     1.0
+    ]
+   ]
+  },
+  {
+   "name": "create_singleton_type10_controller",
+   "hellcats_1_0_3": "0x12f72",
+   "candidates": [
+    [
+     "0x157da",
+     1.0
+    ],
+    [
+     "0x1b526",
+     0.97
+    ],
+    [
+     "0x1b6ea",
+     0.9
+    ]
+   ]
+  },
+  {
+   "name": "tick_firing_ship_controller",
+   "hellcats_1_0_3": "0x15336",
+   "candidates": [
+    [
+     "0x18210",
+     0.35
+    ],
+    [
+     "0x1cdce",
+     0.28
+    ]
+   ]
+  },
+  {
+   "name": "tick_sinking_controller",
+   "hellcats_1_0_3": "0x155b8",
+   "candidates": [
+    [
+     "0x17dfa",
+     0.8
+    ],
+    [
+     "0x1eaae",
+     0.71
+    ],
+    [
+     "0x1e888",
+     0.71
+    ]
+   ]
+  },
+  {
+   "name": "register_bullet_template",
+   "hellcats_1_0_3": "0x15bb4",
+   "candidates": [
+    [
+     "0x1d276",
+     1.0
+    ],
+    [
+     "0x1b722",
+     1.0
+    ],
+    [
+     "0x1b560",
+     1.0
+    ]
+   ]
+  },
+  {
+   "name": "init_trail_kind0",
+   "hellcats_1_0_3": "0x16aa4",
+   "candidates": [
+    [
+     "0x1abf6",
+     1.0
+    ],
+    [
+     "0x1abe4",
+     1.0
+    ],
+    [
+     "0x1eaae",
+     0.36
+    ]
+   ]
+  },
+  {
+   "name": "init_trail_kind1",
+   "hellcats_1_0_3": "0x16ab6",
+   "candidates": [
+    [
+     "0x1abf6",
+     1.0
+    ],
+    [
+     "0x1abe4",
+     1.0
+    ],
+    [
+     "0x1eaae",
+     0.36
+    ]
+   ]
+  },
+  {
+   "name": "register_ground_fire_template",
+   "hellcats_1_0_3": "0x17078",
+   "candidates": [
+    [
+     "0x1d276",
+     1.0
+    ],
+    [
+     "0x1b722",
+     1.0
+    ],
+    [
+     "0x1b560",
+     1.0
+    ]
+   ]
+  },
+  {
+   "name": "destroy_ground_fire_controller",
+   "hellcats_1_0_3": "0x1711c",
+   "candidates": [
+    [
+     "0x1ca6e",
+     0.67
+    ],
+    [
+     "0x1b2c0",
+     0.67
+    ],
+    [
+     "0x137f2",
+     0.67
+    ]
+   ]
+  },
+  {
+   "name": "create_debris_controller",
+   "hellcats_1_0_3": "0x17382",
+   "candidates": [
+    [
+     "0x1b526",
+     1.0
+    ],
+    [
+     "0x157da",
+     0.97
+    ],
+    [
+     "0x1b6ea",
+     0.93
+    ]
+   ]
+  },
+  {
+   "name": "register_debris_template",
+   "hellcats_1_0_3": "0x173bc",
+   "candidates": [
+    [
+     "0x1d276",
+     1.0
+    ],
+    [
+     "0x1b722",
+     1.0
+    ],
+    [
+     "0x1b560",
+     1.0
+    ]
+   ]
+  },
+  {
+   "name": "create_ground_mark_controller",
+   "hellcats_1_0_3": "0x17546",
+   "candidates": [
+    [
+     "0x1b6ea",
+     1.0
+    ],
+    [
+     "0x13bb6",
+     1.0
+    ],
+    [
+     "0x1b526",
+     0.93
+    ]
+   ]
+  },
+  {
+   "name": "register_ground_mark_template",
+   "hellcats_1_0_3": "0x1757e",
+   "candidates": [
+    [
+     "0x1d276",
+     1.0
+    ],
+    [
+     "0x1b722",
+     1.0
+    ],
+    [
+     "0x1b560",
+     1.0
+    ]
+   ]
+  },
+  {
+   "name": "remove_mission_target",
+   "hellcats_1_0_3": "0x17fde",
+   "candidates": []
+  },
+  {
+   "name": "create_wave_spawner_controller",
+   "hellcats_1_0_3": "0x18020",
+   "candidates": [
+    [
+     "0x1b526",
+     0.27
+    ],
+    [
+     "0x157da",
+     0.27
+    ]
+   ]
+  },
+  {
+   "name": "tick_wave_spawner",
+   "hellcats_1_0_3": "0x180a8",
+   "candidates": [
+    [
+     "0x1c1d2",
+     0.52
+    ]
+   ]
+  },
+  {
+   "name": "destroy_shadow_controller",
+   "hellcats_1_0_3": "0x18922",
+   "candidates": [
+    [
+     "0x1ca6e",
+     0.67
+    ],
+    [
+     "0x1b2c0",
+     0.67
+    ],
+    [
+     "0x137f2",
+     0.67
+    ]
+   ]
+  },
+  {
+   "name": "register_turret_template",
+   "hellcats_1_0_3": "0x190ee",
+   "candidates": [
+    [
+     "0x1d276",
+     1.0
+    ],
+    [
+     "0x1b722",
+     1.0
+    ],
+    [
+     "0x1b560",
+     1.0
+    ]
+   ]
+  }
+ ],
+ "addresses": [
+  {
+   "hellcats_1_0_3": "0x0",
+   "leyte": "0x0",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x12",
+   "leyte": "0x16",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x34",
+   "leyte": "0x38",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x314",
+   "leyte": "0x3e8",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x334",
+   "leyte": "0x40c",
+   "votes": 9
+  },
+  {
+   "hellcats_1_0_3": "0x468",
+   "leyte": "0x5e2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x4d8",
+   "leyte": "0x676",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x5da",
+   "leyte": "0x77e",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x686",
+   "leyte": "0x82a",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x6cc",
+   "leyte": "0x870",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xbca",
+   "leyte": "0xf7c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xc2c",
+   "leyte": "0x108e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xd4a",
+   "leyte": "0x11fa",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xd90",
+   "leyte": "0x141c",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0xdea",
+   "leyte": "0x1476",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0xe12",
+   "leyte": "0x149e",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0xe3a",
+   "leyte": "0x14c6",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x10f2",
+   "leyte": "0x175a",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x11c6",
+   "leyte": "0x182e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1234",
+   "leyte": "0x189c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1274",
+   "leyte": "0x18dc",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x12e0",
+   "leyte": "0x1948",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x12fc",
+   "leyte": "0x1964",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x145a",
+   "leyte": "0x1ac2",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1528",
+   "leyte": "0x1b90",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x157e",
+   "leyte": "0x1be6",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x16c2",
+   "leyte": "0x1d2a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x18b6",
+   "leyte": "0x1ef0",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1938",
+   "leyte": "0x1f70",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1954",
+   "leyte": "0x1f8c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x197a",
+   "leyte": "0x1fb2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x19b0",
+   "leyte": "0x1fe8",
+   "votes": 21
+  },
+  {
+   "hellcats_1_0_3": "0x1a48",
+   "leyte": "0x2080",
+   "votes": 12
+  },
+  {
+   "hellcats_1_0_3": "0x1b18",
+   "leyte": "0x2150",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1b4c",
+   "leyte": "0x2184",
+   "votes": 25
+  },
+  {
+   "hellcats_1_0_3": "0x1b64",
+   "leyte": "0x219c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b88",
+   "leyte": "0x21c0",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1be4",
+   "leyte": "0x221c",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1c3c",
+   "leyte": "0x2274",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x1c8c",
+   "leyte": "0x22ca",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1e1a",
+   "leyte": "0x2468",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x1e9c",
+   "leyte": "0x24ec",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x200a",
+   "leyte": "0x265c",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x2080",
+   "leyte": "0x26d2",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x20c6",
+   "leyte": "0x2718",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x2180",
+   "leyte": "0x27d2",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x21c0",
+   "leyte": "0x2812",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x2200",
+   "leyte": "0x2852",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x227e",
+   "leyte": "0x28d0",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x2408",
+   "leyte": "0x2a5a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x2444",
+   "leyte": "0x2b52",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x24b6",
+   "leyte": "0x2bc6",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x24d8",
+   "leyte": "0x2be8",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x251e",
+   "leyte": "0x2ce2",
+   "votes": 13
+  },
+  {
+   "hellcats_1_0_3": "0x2542",
+   "leyte": "0x2d08",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x2588",
+   "leyte": "0x2ec4",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x25b6",
+   "leyte": "0x2eec",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x260e",
+   "leyte": "0x2f44",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x2634",
+   "leyte": "0x2f6a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x26ac",
+   "leyte": "0x2fe2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x274e",
+   "leyte": "0x3084",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x2782",
+   "leyte": "0x30b8",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x27ac",
+   "leyte": "0x30e8",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x27e2",
+   "leyte": "0x311e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x2956",
+   "leyte": "0x32a0",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x29ee",
+   "leyte": "0x333e",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x2aba",
+   "leyte": "0x3418",
+   "votes": 6
+  },
+  {
+   "hellcats_1_0_3": "0x2bb8",
+   "leyte": "0x3524",
+   "votes": 6
+  },
+  {
+   "hellcats_1_0_3": "0x2cf0",
+   "leyte": "0x3604",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x2df2",
+   "leyte": "0x38f2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x2df4",
+   "leyte": "0x38f4",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x3246",
+   "leyte": "0x3d46",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x33ce",
+   "leyte": "0x3ece",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x33f2",
+   "leyte": "0x3ef2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x34d6",
+   "leyte": "0x3fd6",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x34dc",
+   "leyte": "0x3fdc",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x34ee",
+   "leyte": "0x3fee",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x34f6",
+   "leyte": "0x3ff6",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x34fa",
+   "leyte": "0x3ffa",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x3526",
+   "leyte": "0x4026",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x3570",
+   "leyte": "0x4070",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x3594",
+   "leyte": "0x4094",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x3678",
+   "leyte": "0x4178",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x367e",
+   "leyte": "0x417e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x3690",
+   "leyte": "0x4190",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x3698",
+   "leyte": "0x4198",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x369c",
+   "leyte": "0x419c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x36c8",
+   "leyte": "0x41c8",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x3712",
+   "leyte": "0x4212",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x3714",
+   "leyte": "0x4214",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x3b78",
+   "leyte": "0x47b6",
+   "votes": 11
+  },
+  {
+   "hellcats_1_0_3": "0x3be0",
+   "leyte": "0x481e",
+   "votes": 11
+  },
+  {
+   "hellcats_1_0_3": "0x3caa",
+   "leyte": "0x48e8",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x3d88",
+   "leyte": "0x49cc",
+   "votes": 9
+  },
+  {
+   "hellcats_1_0_3": "0x3de2",
+   "leyte": "0x4a3a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x3e3c",
+   "leyte": "0x4aa8",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x3e80",
+   "leyte": "0x4aec",
+   "votes": 8
+  },
+  {
+   "hellcats_1_0_3": "0x41cc",
+   "leyte": "0x4e42",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x433a",
+   "leyte": "0x4fce",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x4484",
+   "leyte": "0x5152",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x459a",
+   "leyte": "0x532e",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x4670",
+   "leyte": "0x5408",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x46ba",
+   "leyte": "0x5450",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x47e8",
+   "leyte": "0x561c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x48f6",
+   "leyte": "0x5738",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x4938",
+   "leyte": "0x577a",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x4de6",
+   "leyte": "0x5c30",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x4e4e",
+   "leyte": "0x5c98",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x50f6",
+   "leyte": "0x5f64",
+   "votes": 15
+  },
+  {
+   "hellcats_1_0_3": "0x51cc",
+   "leyte": "0x603a",
+   "votes": 16
+  },
+  {
+   "hellcats_1_0_3": "0x526a",
+   "leyte": "0x60dc",
+   "votes": 11
+  },
+  {
+   "hellcats_1_0_3": "0x52bc",
+   "leyte": "0x6130",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x53d8",
+   "leyte": "0x6250",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x553a",
+   "leyte": "0x63ba",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x5812",
+   "leyte": "0x66a6",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x58cc",
+   "leyte": "0x6754",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x59f4",
+   "leyte": "0x6882",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x5dd8",
+   "leyte": "0x6c6a",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x5e08",
+   "leyte": "0x6c9a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x6e54",
+   "leyte": "0x7eac",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x6eae",
+   "leyte": "0x7f0a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x6f98",
+   "leyte": "0x7ff4",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x737a",
+   "leyte": "0x83de",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x7668",
+   "leyte": "0x86cc",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x831e",
+   "leyte": "0x9414",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x8764",
+   "leyte": "0x98a6",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x877e",
+   "leyte": "0x98c0",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x8880",
+   "leyte": "0x99c2",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x8952",
+   "leyte": "0x9a94",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x8a9e",
+   "leyte": "0x9be0",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x8c10",
+   "leyte": "0x9d52",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x8fd4",
+   "leyte": "0xa116",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x921e",
+   "leyte": "0xa360",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x92c4",
+   "leyte": "0xa406",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x945c",
+   "leyte": "0xa5be",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x94b2",
+   "leyte": "0xa61a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x9530",
+   "leyte": "0xa6a4",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x958c",
+   "leyte": "0xa700",
+   "votes": 14
+  },
+  {
+   "hellcats_1_0_3": "0x968e",
+   "leyte": "0xa8a4",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x96d4",
+   "leyte": "0xa8ea",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x9ac0",
+   "leyte": "0xad30",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x9b6c",
+   "leyte": "0xaddc",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x9d14",
+   "leyte": "0xaf8a",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x9d86",
+   "leyte": "0xaffc",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x9ed8",
+   "leyte": "0xb14e",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x9fa4",
+   "leyte": "0xb220",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xa05e",
+   "leyte": "0xb2e0",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xa2d2",
+   "leyte": "0xb554",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0xa4f2",
+   "leyte": "0xb796",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xa656",
+   "leyte": "0xb902",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xa73e",
+   "leyte": "0xb9f8",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xac52",
+   "leyte": "0xbf1e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xb008",
+   "leyte": "0xc2f0",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xb170",
+   "leyte": "0xc458",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0xb222",
+   "leyte": "0xc50a",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0xb2d4",
+   "leyte": "0xc5bc",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0xb38a",
+   "leyte": "0xc672",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0xb440",
+   "leyte": "0xc728",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xb47e",
+   "leyte": "0xc766",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xb496",
+   "leyte": "0xc77e",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xba0a",
+   "leyte": "0xccf6",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xbc88",
+   "leyte": "0xcfa6",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xbf90",
+   "leyte": "0xd2ae",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xc028",
+   "leyte": "0xd346",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xc0fe",
+   "leyte": "0xd426",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xc15e",
+   "leyte": "0xd486",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xc18a",
+   "leyte": "0xd4b2",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xc644",
+   "leyte": "0xd984",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xc7ec",
+   "leyte": "0xdb2c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xc8b6",
+   "leyte": "0xdbf6",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xc928",
+   "leyte": "0xdc68",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xc9a2",
+   "leyte": "0xdce2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xca24",
+   "leyte": "0xdd64",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xcaa6",
+   "leyte": "0xdde6",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xcb42",
+   "leyte": "0xdf20",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xcbf2",
+   "leyte": "0xdfd0",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xccaa",
+   "leyte": "0xe088",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xcdfc",
+   "leyte": "0xe1da",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xcea4",
+   "leyte": "0xe282",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xcfec",
+   "leyte": "0xe3ca",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0xd094",
+   "leyte": "0xe478",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xd25c",
+   "leyte": "0xe644",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xd278",
+   "leyte": "0xe660",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xd32c",
+   "leyte": "0xe714",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xdf3e",
+   "leyte": "0xf326",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0xdf78",
+   "leyte": "0xf360",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xdfb2",
+   "leyte": "0xf39a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xdfd0",
+   "leyte": "0xf3b8",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0xe084",
+   "leyte": "0x1edee",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xe0ae",
+   "leyte": "0xf4a8",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xe1c6",
+   "leyte": "0xf616",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xe242",
+   "leyte": "0xf692",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xe284",
+   "leyte": "0xf6f4",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xe320",
+   "leyte": "0xf790",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xe392",
+   "leyte": "0xf802",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xe40a",
+   "leyte": "0xf87a",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0xe448",
+   "leyte": "0xf8b8",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xe484",
+   "leyte": "0xf8f4",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xe550",
+   "leyte": "0xf9c0",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0xe58a",
+   "leyte": "0xf9f6",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xe772",
+   "leyte": "0xfcf6",
+   "votes": 17
+  },
+  {
+   "hellcats_1_0_3": "0xf7f0",
+   "leyte": "0x112a4",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0xfb0a",
+   "leyte": "0x118e2",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0xfdea",
+   "leyte": "0x11bd0",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1009c",
+   "leyte": "0x11ea6",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x100b4",
+   "leyte": "0x11ec0",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x100e4",
+   "leyte": "0x11eec",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x102b6",
+   "leyte": "0x1213a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x10340",
+   "leyte": "0x121c4",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x10538",
+   "leyte": "0x123be",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x10630",
+   "leyte": "0x124c0",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1099a",
+   "leyte": "0x12820",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x10b0e",
+   "leyte": "0x12994",
+   "votes": 9
+  },
+  {
+   "hellcats_1_0_3": "0x10b64",
+   "leyte": "0x129ea",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x10c0c",
+   "leyte": "0x12a9a",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x10c92",
+   "leyte": "0x12b20",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x10cb8",
+   "leyte": "0x12b46",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x10cc8",
+   "leyte": "0x12b56",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x10d88",
+   "leyte": "0x12c16",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x10e08",
+   "leyte": "0x12c96",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x10eac",
+   "leyte": "0x12d3e",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x11162",
+   "leyte": "0x13100",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x111ba",
+   "leyte": "0x13158",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x112c0",
+   "leyte": "0x1325c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x11494",
+   "leyte": "0x135a8",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x114aa",
+   "leyte": "0x135be",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x114ea",
+   "leyte": "0x135fe",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x11590",
+   "leyte": "0x136c2",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x115dc",
+   "leyte": "0x1370e",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x11650",
+   "leyte": "0x13778",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x116dc",
+   "leyte": "0x13808",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x11776",
+   "leyte": "0x138a0",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x11920",
+   "leyte": "0x13a4a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x11a70",
+   "leyte": "0x13b9a",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x11ac6",
+   "leyte": "0x13bee",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x11ade",
+   "leyte": "0x13c06",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x11b76",
+   "leyte": "0x13c9e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x11c0c",
+   "leyte": "0x13d34",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x11c38",
+   "leyte": "0x13d60",
+   "votes": 6
+  },
+  {
+   "hellcats_1_0_3": "0x11d94",
+   "leyte": "0x13ec0",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x11edc",
+   "leyte": "0x14028",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1201a",
+   "leyte": "0x14164",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x120aa",
+   "leyte": "0x141f2",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1215e",
+   "leyte": "0x142a4",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x12276",
+   "leyte": "0x143ba",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x123ae",
+   "leyte": "0x144fa",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x12466",
+   "leyte": "0x145b2",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x12508",
+   "leyte": "0x14654",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x12718",
+   "leyte": "0x1486a",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x12748",
+   "leyte": "0x1489a",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1278a",
+   "leyte": "0x148dc",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x127a6",
+   "leyte": "0x148fa",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x12820",
+   "leyte": "0x149da",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x12896",
+   "leyte": "0x14b72",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x12a0a",
+   "leyte": "0x14eaa",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x12b46",
+   "leyte": "0x15192",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x12d14",
+   "leyte": "0x1544e",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x12f32",
+   "leyte": "0x1578a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x12fb2",
+   "leyte": "0x1581a",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x13050",
+   "leyte": "0x158be",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x130ee",
+   "leyte": "0x15962",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1318c",
+   "leyte": "0x15a06",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x131ea",
+   "leyte": "0x15a6c",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x13248",
+   "leyte": "0x15ad2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x132a8",
+   "leyte": "0x15bae",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x13326",
+   "leyte": "0x15c2c",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x13432",
+   "leyte": "0x15d72",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1344c",
+   "leyte": "0x15d8c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1356c",
+   "leyte": "0x15eac",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x13580",
+   "leyte": "0x15ec0",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x135c8",
+   "leyte": "0x15f0e",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1375a",
+   "leyte": "0x160b0",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x137ba",
+   "leyte": "0x16116",
+   "votes": 8
+  },
+  {
+   "hellcats_1_0_3": "0x1381c",
+   "leyte": "0x1617e",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x13960",
+   "leyte": "0x162b8",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x13cbc",
+   "leyte": "0x1661a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x13e2e",
+   "leyte": "0x16784",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x13e8e",
+   "leyte": "0x167e4",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x13ec0",
+   "leyte": "0x16812",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x14178",
+   "leyte": "0x16ae6",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1427c",
+   "leyte": "0x16be2",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x14328",
+   "leyte": "0x16c8a",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x1441a",
+   "leyte": "0x16d7a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x14810",
+   "leyte": "0x171ba",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x14a9a",
+   "leyte": "0x17434",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x14ad2",
+   "leyte": "0x1746c",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x14bca",
+   "leyte": "0x1756a",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x14d66",
+   "leyte": "0x17850",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x14f28",
+   "leyte": "0x17a2a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x150a8",
+   "leyte": "0x17ba2",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x152ee",
+   "leyte": "0x18088",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x15560",
+   "leyte": "0x18544",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x155cc",
+   "leyte": "0x185ba",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1560e",
+   "leyte": "0x195d6",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x15742",
+   "leyte": "0x19b32",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x15b72",
+   "leyte": "0x19b6a",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x15bd6",
+   "leyte": "0x19bce",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x15d00",
+   "leyte": "0x19cf6",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x15d58",
+   "leyte": "0x19d4e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x15da8",
+   "leyte": "0x19d9e",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x15e42",
+   "leyte": "0x19e30",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1629a",
+   "leyte": "0x1a296",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1663a",
+   "leyte": "0x1a64a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x16704",
+   "leyte": "0x1a70c",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x167d4",
+   "leyte": "0x1a7c6",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1688e",
+   "leyte": "0x1a87c",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x168b2",
+   "leyte": "0x1a8a2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x168fc",
+   "leyte": "0x1a8ec",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x16946",
+   "leyte": "0x1aa84",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x16a58",
+   "leyte": "0x1ab98",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x16ac8",
+   "leyte": "0x1ac08",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x16b2c",
+   "leyte": "0x1ac6a",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x16b7e",
+   "leyte": "0x1acbe",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x16c04",
+   "leyte": "0x1ad8c",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x16c4a",
+   "leyte": "0x1add4",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x16de6",
+   "leyte": "0x1af6e",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1700a",
+   "leyte": "0x1b1aa",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1704a",
+   "leyte": "0x1b1ea",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1709a",
+   "leyte": "0x1b23a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x170e2",
+   "leyte": "0x1b280",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x17130",
+   "leyte": "0x1b2d6",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x17360",
+   "leyte": "0x1b504",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x173de",
+   "leyte": "0x1b582",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x174a4",
+   "leyte": "0x1b646",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x175a0",
+   "leyte": "0x1b744",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x175be",
+   "leyte": "0x1b762",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x17692",
+   "leyte": "0x1b836",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x176fa",
+   "leyte": "0x1b89c",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x17716",
+   "leyte": "0x1b8b8",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1774a",
+   "leyte": "0x1b8ec",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x17a6c",
+   "leyte": "0x1bc0e",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x17b48",
+   "leyte": "0x1bcea",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x17cf6",
+   "leyte": "0x1bea6",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x17d98",
+   "leyte": "0x1bf48",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x17db4",
+   "leyte": "0x1bf64",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x181ea",
+   "leyte": "0x1c28e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1889a",
+   "leyte": "0x1c9da",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x188d4",
+   "leyte": "0x1ca20",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x18936",
+   "leyte": "0x1ca84",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x189b0",
+   "leyte": "0x1cb04",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x18a14",
+   "leyte": "0x1cb66",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x18b32",
+   "leyte": "0x1cc72",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x18b78",
+   "leyte": "0x1ccce",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x18b9a",
+   "leyte": "0x1ccf4",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x18c76",
+   "leyte": "0x1cdce",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x190a0",
+   "leyte": "0x1d21a",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x19110",
+   "leyte": "0x1d298",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1915c",
+   "leyte": "0x1d2e2",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x19374",
+   "leyte": "0x1d4f6",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x19396",
+   "leyte": "0x1d516",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x193ee",
+   "leyte": "0x1d56e",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x19410",
+   "leyte": "0x1d590",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x194fa",
+   "leyte": "0x1d67c",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x1950e",
+   "leyte": "0x1d690",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x19918",
+   "leyte": "0x1da9a",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x19a34",
+   "leyte": "0x1dbb4",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x19a82",
+   "leyte": "0x1dc02",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x19b10",
+   "leyte": "0x1dc8e",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x19b62",
+   "leyte": "0x1dce2",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x19b9c",
+   "leyte": "0x1dd1c",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x19c06",
+   "leyte": "0x1dd86",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x19c3e",
+   "leyte": "0x1ddbe",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x19f9a",
+   "leyte": "0x1e132",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a61e",
+   "leyte": "0x1f61a",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1a6f6",
+   "leyte": "0x1f6f2",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1a73e",
+   "leyte": "0x1f73a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a790",
+   "leyte": "0x1f78c",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1a7d2",
+   "leyte": "0x1f7d0",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a8b8",
+   "leyte": "0x1f9ca",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a8d2",
+   "leyte": "0x1f9fe",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a906",
+   "leyte": "0x1fa18",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a920",
+   "leyte": "0x1fa32",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a93a",
+   "leyte": "0x1fa4c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a954",
+   "leyte": "0x1fa66",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a96e",
+   "leyte": "0x1fa80",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a988",
+   "leyte": "0x1fd7a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a9a8",
+   "leyte": "0x1fa9a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a9c2",
+   "leyte": "0x1faba",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a9dc",
+   "leyte": "0x1fad4",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1a9f6",
+   "leyte": "0x1faf4",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1aa10",
+   "leyte": "0x1fb14",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1aa2a",
+   "leyte": "0x1fb2e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1aa44",
+   "leyte": "0x1fb48",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1aa5e",
+   "leyte": "0x1fbb0",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1aaea",
+   "leyte": "0x1fc90",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1ab04",
+   "leyte": "0x1fcde",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1ab38",
+   "leyte": "0x1fcf8",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1ab52",
+   "leyte": "0x1fd12",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1ab6c",
+   "leyte": "0x1fd94",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1ad6c",
+   "leyte": "0x1ff94",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x1af6c",
+   "leyte": "0x20194",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b190",
+   "leyte": "0x203b8",
+   "votes": 6
+  },
+  {
+   "hellcats_1_0_3": "0x1b214",
+   "leyte": "0x2043c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b264",
+   "leyte": "0x2048c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b2b4",
+   "leyte": "0x204dc",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b310",
+   "leyte": "0x20538",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b3f4",
+   "leyte": "0x20598",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x1b40c",
+   "leyte": "0x205bc",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b43c",
+   "leyte": "0x205ec",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b51c",
+   "leyte": "0x20744",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1b520",
+   "leyte": "0x20748",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x1b5a4",
+   "leyte": "0x20804",
+   "votes": 6
+  },
+  {
+   "hellcats_1_0_3": "0x1b734",
+   "leyte": "0x20b24",
+   "votes": 15
+  },
+  {
+   "hellcats_1_0_3": "0x1b736",
+   "leyte": "0x20b26",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x1b83e",
+   "leyte": "0x21026",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1b844",
+   "leyte": "0x2102c",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1b846",
+   "leyte": "0x21030",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x1b848",
+   "leyte": "0x21032",
+   "votes": 9
+  },
+  {
+   "hellcats_1_0_3": "0x1b84a",
+   "leyte": "0x21034",
+   "votes": 11
+  },
+  {
+   "hellcats_1_0_3": "0x1b84c",
+   "leyte": "0x21036",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1b84e",
+   "leyte": "0x21038",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1b850",
+   "leyte": "0x2103a",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1b852",
+   "leyte": "0x2103c",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x1b854",
+   "leyte": "0x2103e",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1b856",
+   "leyte": "0x21040",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x1b85c",
+   "leyte": "0x21046",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1b864",
+   "leyte": "0x2104c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b868",
+   "leyte": "0x21050",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x1b86a",
+   "leyte": "0x21052",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1b874",
+   "leyte": "0x2105c",
+   "votes": 11
+  },
+  {
+   "hellcats_1_0_3": "0x1b878",
+   "leyte": "0x21060",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b88c",
+   "leyte": "0x21078",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x1b88e",
+   "leyte": "0x2107a",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x1b894",
+   "leyte": "0x2107c",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1b8a4",
+   "leyte": "0x2108c",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1b8e4",
+   "leyte": "0x210cc",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x1b924",
+   "leyte": "0x2110c",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1bc24",
+   "leyte": "0x2140c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1bc28",
+   "leyte": "0x21410",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1bc8c",
+   "leyte": "0x21474",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1bd84",
+   "leyte": "0x2156c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1bd88",
+   "leyte": "0x21570",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x1bd8a",
+   "leyte": "0x21572",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x1bd8c",
+   "leyte": "0x21574",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x1bd96",
+   "leyte": "0x2157e",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1bd9e",
+   "leyte": "0x21586",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x1bdac",
+   "leyte": "0x21594",
+   "votes": 11
+  },
+  {
+   "hellcats_1_0_3": "0x1bdb0",
+   "leyte": "0x21598",
+   "votes": 6
+  },
+  {
+   "hellcats_1_0_3": "0x1bdb8",
+   "leyte": "0x215a0",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x1bdba",
+   "leyte": "0x215a2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1bdbc",
+   "leyte": "0x215a4",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x1c1bc",
+   "leyte": "0x219a6",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1c1c0",
+   "leyte": "0x219aa",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x1c1c4",
+   "leyte": "0x219ac",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1c1c8",
+   "leyte": "0x219b0",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1c1ca",
+   "leyte": "0x219b2",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1c1cc",
+   "leyte": "0x219b4",
+   "votes": 8
+  },
+  {
+   "hellcats_1_0_3": "0x1c1ce",
+   "leyte": "0x219b6",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1c1d0",
+   "leyte": "0x219b8",
+   "votes": 8
+  },
+  {
+   "hellcats_1_0_3": "0x1c1d4",
+   "leyte": "0x219bc",
+   "votes": 16
+  },
+  {
+   "hellcats_1_0_3": "0x1c1d6",
+   "leyte": "0x219be",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1c1d8",
+   "leyte": "0x219c0",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x1c1dc",
+   "leyte": "0x219c4",
+   "votes": 13
+  },
+  {
+   "hellcats_1_0_3": "0x1c1e0",
+   "leyte": "0x20f2c",
+   "votes": 13
+  },
+  {
+   "hellcats_1_0_3": "0x1c1e2",
+   "leyte": "0x20f2e",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1c1e4",
+   "leyte": "0x219cc",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1c25c",
+   "leyte": "0x21bd4",
+   "votes": 10
+  },
+  {
+   "hellcats_1_0_3": "0x1c43c",
+   "leyte": "0x21f44",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x1c9dc",
+   "leyte": "0x22994",
+   "votes": 11
+  },
+  {
+   "hellcats_1_0_3": "0x1cbe4",
+   "leyte": "0x22d2c",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1d0e4",
+   "leyte": "0x233bc",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x1d4a4",
+   "leyte": "0x20b44",
+   "votes": 9
+  },
+  {
+   "hellcats_1_0_3": "0x1d704",
+   "leyte": "0x23c34",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x1d70c",
+   "leyte": "0x23c3c",
+   "votes": 8
+  },
+  {
+   "hellcats_1_0_3": "0x1d72c",
+   "leyte": "0x23c5c",
+   "votes": 6
+  },
+  {
+   "hellcats_1_0_3": "0x1d744",
+   "leyte": "0x23c74",
+   "votes": 12
+  },
+  {
+   "hellcats_1_0_3": "0x1d800",
+   "leyte": "0x23d30",
+   "votes": 10
+  },
+  {
+   "hellcats_1_0_3": "0x1d804",
+   "leyte": "0x23d34",
+   "votes": 9
+  },
+  {
+   "hellcats_1_0_3": "0x1d854",
+   "leyte": "0x23d84",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1d86c",
+   "leyte": "0x23d9c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1d96c",
+   "leyte": "0x23e9c",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x1da89",
+   "leyte": "0x23fb9",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1da8b",
+   "leyte": "0x23fbb",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x20ad8",
+   "leyte": "0x27008",
+   "votes": 10
+  },
+  {
+   "hellcats_1_0_3": "0x20b44",
+   "leyte": "0x2707c",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x20b46",
+   "leyte": "0x2707e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x20b48",
+   "leyte": "0x27080",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x20c4c",
+   "leyte": "0x27184",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x24cec",
+   "leyte": "0x2b228",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x24cf0",
+   "leyte": "0x2b22c",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x24cf4",
+   "leyte": "0x2b230",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x24cf6",
+   "leyte": "0x2b232",
+   "votes": 10
+  },
+  {
+   "hellcats_1_0_3": "0x24cf7",
+   "leyte": "0x2b233",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x24cf8",
+   "leyte": "0x2b234",
+   "votes": 10
+  },
+  {
+   "hellcats_1_0_3": "0x24cfc",
+   "leyte": "0x2b238",
+   "votes": 10
+  },
+  {
+   "hellcats_1_0_3": "0x24d00",
+   "leyte": "0x2b23c",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x24d02",
+   "leyte": "0x2b23e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x24d04",
+   "leyte": "0x2b240",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x24d06",
+   "leyte": "0x2b242",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x24d2c",
+   "leyte": "0x2b268",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x24d2e",
+   "leyte": "0x2b26a",
+   "votes": 5
+  },
+  {
+   "hellcats_1_0_3": "0x24d34",
+   "leyte": "0x2b270",
+   "votes": 6
+  },
+  {
+   "hellcats_1_0_3": "0x24d38",
+   "leyte": "0x2b274",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x24d62",
+   "leyte": "0x2b29e",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x24d66",
+   "leyte": "0x2b2a2",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x256b2",
+   "leyte": "0x2bbf8",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x25b12",
+   "leyte": "0x2c0a8",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x25b14",
+   "leyte": "0x2c0aa",
+   "votes": 6
+  },
+  {
+   "hellcats_1_0_3": "0x25b18",
+   "leyte": "0x2c0ae",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x25b20",
+   "leyte": "0x2c0b6",
+   "votes": 8
+  },
+  {
+   "hellcats_1_0_3": "0x25b2c",
+   "leyte": "0x2c0c2",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x25d30",
+   "leyte": "0x2c2c6",
+   "votes": 7
+  },
+  {
+   "hellcats_1_0_3": "0x25f34",
+   "leyte": "0x2c4cc",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x25f3a",
+   "leyte": "0x2c4d2",
+   "votes": 8
+  },
+  {
+   "hellcats_1_0_3": "0x25f44",
+   "leyte": "0x2c4dc",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x25f48",
+   "leyte": "0x2c4e0",
+   "votes": 2
+  },
+  {
+   "hellcats_1_0_3": "0x25fe2",
+   "leyte": "0x2c57a",
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x25fe4",
+   "leyte": "0x2c57c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x25ff2",
+   "leyte": "0x2c58c",
+   "votes": 10
+  },
+  {
+   "hellcats_1_0_3": "0x25ff4",
+   "leyte": "0x2c58e",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x2626e",
+   "leyte": "0x2c81a",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x26280",
+   "leyte": "0x2c834",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x26284",
+   "leyte": "0x2c838",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x26288",
+   "leyte": "0x2c83c",
+   "votes": 4
+  },
+  {
+   "hellcats_1_0_3": "0x26678",
+   "leyte": "0x2cc2c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x26768",
+   "leyte": "0x2cd6c",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x2676c",
+   "leyte": "0x2cd70",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x26780",
+   "leyte": "0x2cd8c",
+   "votes": 2
+  }
+ ],
+ "leyte_only": [
+  "0xce0",
+  "0xe52",
+  "0x1330",
+  "0x13c8",
+  "0x36fa",
+  "0x525c",
+  "0x52b6",
+  "0xde86",
+  "0xf46c",
+  "0xfc5c",
+  "0x11c76",
+  "0x12bd6",
+  "0x12c56",
+  "0x12dda",
+  "0x12e76",
+  "0x1357a",
+  "0x1369e",
+  "0x136ec",
+  "0x137f2",
+  "0x13bb6",
+  "0x13c50",
+  "0x14952",
+  "0x14974",
+  "0x14996",
+  "0x149b8",
+  "0x14a58",
+  "0x14afe",
+  "0x14fe6",
+  "0x153f2",
+  "0x15420",
+  "0x157da",
+  "0x15b3a",
+  "0x177d0",
+  "0x17c66",
+  "0x17cee",
+  "0x17d2a",
+  "0x17d8c",
+  "0x17dfa",
+  "0x17e0e",
+  "0x180d0",
+  "0x18210",
+  "0x18376",
+  "0x1862a",
+  "0x1869c",
+  "0x18712",
+  "0x18784",
+  "0x18908",
+  "0x18b34",
+  "0x18d1c",
+  "0x18d54",
+  "0x18e20",
+  "0x18f08",
+  "0x18f94",
+  "0x19096",
+  "0x19196",
+  "0x19396",
+  "0x194aa",
+  "0x1970a",
+  "0x19bac",
+  "0x1a936",
+  "0x1abe4",
+  "0x1abf6",
+  "0x1b218",
+  "0x1b2c0",
+  "0x1b526",
+  "0x1b560",
+  "0x1b6ea",
+  "0x1b722",
+  "0x1c182",
+  "0x1c1d2",
+  "0x1ca6e",
+  "0x1d276",
+  "0x1e7b6",
+  "0x1e888",
+  "0x1e8a0",
+  "0x1e912",
+  "0x1eaae",
+  "0x1eac4",
+  "0x1ebb6",
+  "0x1ebe0",
+  "0x1ec2e",
+  "0x1ec7e",
+  "0x1ed5c",
+  "0x1eda0",
+  "0x1ee1e",
+  "0x1eeee",
+  "0x1efc0",
+  "0x1f014",
+  "0x1f0d8",
+  "0x1f164",
+  "0x1f4fc",
+  "0x1f5ee"
+ ]
+}
