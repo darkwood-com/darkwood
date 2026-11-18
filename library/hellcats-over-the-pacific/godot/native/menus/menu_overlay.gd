@@ -8,6 +8,8 @@ extends Control
 
 const ROW := 16
 
+const UiFont := preload("res://native/display/ui_font.gd")
+
 var machine
 var screen: Control
 var _version := -1
@@ -18,6 +20,7 @@ func attach(owner_machine, mac_screen: Control) -> void:
 	screen = mac_screen
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	theme = UiFont.theme()           # the Native font (sharp at any window size): every item inherits it
 
 func to_godot(p: Vector2) -> Vector2:
 	var area: Rect2 = screen.get_global_rect()
@@ -34,8 +37,8 @@ func _process(_delta: float) -> void:
 		_rebuild(snap)
 	for n in _nodes:
 		var r: Rect2i = n[1]
-		var a: Vector2 = to_godot(Vector2(r.position))
-		var b: Vector2 = to_godot(Vector2(r.end))
+		var a: Vector2 = UiFont.snap(to_godot(Vector2(r.position)))
+		var b: Vector2 = UiFont.snap(to_godot(Vector2(r.end)))
 		n[0].position = a
 		n[0].size = b - a
 		var font_size: int = maxi(8, int(round((b - a).y / maxf(r.size.y, 1) * 12.0)))

@@ -7,11 +7,11 @@
   "placed": 400,
   "unplaced": 28,
   "by_evidence": {
-   "calls": 96,
-   "cases": 56,
+   "calls": 89,
+   "cases": 64,
    "correspondence": 149,
    "map": 54,
-   "similarity": 45
+   "similarity": 44
   },
   "addresses_beyond_the_map": 518
  },
@@ -504,7 +504,7 @@
    "name": "scale_int3_vecs",
    "hellcats_1_0_3": "0x1c8c",
    "leyte": "0x22ca",
-   "evidence": "similarity:0.87",
+   "evidence": "cases",
    "instructions": [
     25,
     28
@@ -834,7 +834,7 @@
    "name": "transform_int3_vecs_asr_by_1d744",
    "hellcats_1_0_3": "0x27e2",
    "leyte": "0x311e",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     53,
     56
@@ -1384,7 +1384,7 @@
    "name": "build_visible_object_list",
    "hellcats_1_0_3": "0x58cc",
    "leyte": "0x6754",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     92,
     94
@@ -1637,7 +1637,7 @@
    "name": "apply_controller_velocities",
    "hellcats_1_0_3": "0x945c",
    "leyte": "0xa5be",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     23,
     25
@@ -1648,7 +1648,7 @@
    "name": "tick_flagged_object_controllers",
    "hellcats_1_0_3": "0x94b2",
    "leyte": "0xa61a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     40,
     44
@@ -1747,7 +1747,7 @@
    "name": "emit_faces_in_order",
    "hellcats_1_0_3": "0x9ed8",
    "leyte": "0xb14e",
-   "evidence": "calls:4",
+   "evidence": "cases",
    "instructions": [
     61,
     63
@@ -1758,7 +1758,7 @@
    "name": "emit_faces_unnumbered",
    "hellcats_1_0_3": "0x9fa4",
    "leyte": "0xb220",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     59,
     61
@@ -3243,7 +3243,7 @@
    "name": "age_contact_records",
    "hellcats_1_0_3": "0x1375a",
    "leyte": "0x160b0",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     30,
     32

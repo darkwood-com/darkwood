@@ -12,6 +12,8 @@ const RADIO := 6
 const STATIC_TEXT := 8
 const EDIT_TEXT := 16
 
+const UiFont := preload("res://native/display/ui_font.gd")
+
 var machine
 var screen: Control
 var _version := -1
@@ -24,6 +26,7 @@ func attach(owner_machine, mac_screen: Control) -> void:
 	screen = mac_screen
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	theme = UiFont.theme()           # the Native font (sharp at any window size): every item inherits it
 
 ## A point of the Mac screen in this control's coordinates (the inverse of game.gd's to_screen).
 func to_godot(p: Vector2) -> Vector2:
@@ -151,8 +154,8 @@ func _place() -> void:
 		var r: Rect2i = _items[i]["rect"]
 		if _clip.has_area():
 			r = r.intersection(_clip)
-		var a: Vector2 = to_godot(Vector2(r.position))
-		var b: Vector2 = to_godot(Vector2(r.end))
+		var a: Vector2 = UiFont.snap(to_godot(Vector2(r.position)))
+		var b: Vector2 = UiFont.snap(to_godot(Vector2(r.end)))
 		var c: Control = _controls[i]
 		c.position = a
 		c.size = b - a
