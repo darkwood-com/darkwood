@@ -24,8 +24,10 @@ $tool = new McpLevelTool($root, fixture: true);
 $temp = sys_get_temp_dir().'/darkwood-design-test-'.bin2hex(random_bytes(8));
 try {
     check(['generate_original_level'] === $tool->discover(), 'SDK discovery failed.');
-    $toolbox = new Toolbox([$tool]);
+    $toolbox = new Toolbox([$tool], toolFactory: $tool);
     check('generate_original_level' === $toolbox->getTools()[0]->getName(), 'Symfony AI tool registration failed.');
+    check(2000 === $toolbox->getTools()[0]->getParameters()['properties']['prompt']['maxLength'], 'The SDK input length bound was lost in Symfony tool metadata.');
+    check(false === $toolbox->getTools()[0]->getParameters()['additionalProperties'], 'Unexpected tool arguments were enabled.');
     $result = $toolbox->execute(new ToolCall('fixture-call', 'generate_original_level', ['prompt' => 'Original forest level']));
     $content = $result->getResult();
     check('fixture' === $content['mode'], 'Fixture must never be labelled real AI.');

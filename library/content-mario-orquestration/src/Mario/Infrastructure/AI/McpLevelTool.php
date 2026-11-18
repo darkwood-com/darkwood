@@ -6,16 +6,13 @@ namespace App\Mario\Infrastructure\AI;
 
 use Mcp\Client\Client;
 use Mcp\Client\Transport\StdioTransport;
-use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
+use Symfony\AI\Agent\Toolbox\ToolFactoryInterface;
+use Symfony\AI\Platform\Tool\ExecutionReference;
+use Symfony\AI\Platform\Tool\Tool;
 use Symfony\AI\Platform\Tool\ToolEffectHints;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-#[AsTool(
-    name: 'generate_original_level',
-    description: 'Ask the existing MCP server to generate an original platformer level using Symfony AI, validate its geometry and return its JSON. Calls the configured AI provider; does not write files.',
-    effectHints: new ToolEffectHints(readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: true),
-)]
-final class McpLevelTool
+final class McpLevelTool implements ToolFactoryInterface
 {
     private ?Client $client = null;
     private array $calls = [];
@@ -37,6 +34,25 @@ final class McpLevelTool
         }
 
         return array_map(static fn ($tool): string => $tool->name, $this->client->listTools()->tools);
+    }
+
+    /** Preserve the actual SDK schema, including its input length bounds. */
+    public function getTool(object|string $reference): iterable
+    {
+        $this->discover();
+        foreach ($this->client->listTools()->tools as $remote) {
+            if ('generate_original_level' === $remote->name) {
+                yield new Tool(
+                    new ExecutionReference(self::class),
+                    $remote->name,
+                    $remote->description ?? 'Generate one original level.',
+                    $remote->inputSchema,
+                    effectHints: new ToolEffectHints(readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: true),
+                );
+                return;
+            }
+        }
+        throw new \RuntimeException('The expected generation tool is not available.');
     }
 
     /** @return array<string, mixed> */

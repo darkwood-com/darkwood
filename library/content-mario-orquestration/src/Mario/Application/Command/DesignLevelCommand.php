@@ -54,9 +54,9 @@ final class DesignLevelCommand extends Command
             $agent = new Agent(
                 Factory::createPlatform($key, HttpClient::create(['timeout' => 90, 'max_duration' => 150])),
                 'gpt-5-mini',
-                [new SystemPromptInputProcessor('You are a level designer. Interpret the user brief, then call generate_original_level exactly once with a concrete original level brief. Do not invent a result. After the tool returns, summarize its geometry and warnings in at most 80 words, in the language of the user. You cannot save, publish or claim playability. Never reproduce Nintendo characters or levels.')],
+                [new SystemPromptInputProcessor('You are a level designer. Interpret the user brief, then call generate_original_level exactly once with a concise original level brief of at most 1500 characters. Never put level JSON or the planned answer in the tool prompt. Preserve the user requirements without inventing a result. After the tool returns, summarize its geometry and warnings in at most 80 words, in the language of the user. You cannot save, publish or claim playability. Never reproduce Nintendo characters or levels.')],
                 name: 'level_designer',
-                toolbox: new Toolbox([$tool]),
+                toolbox: new Toolbox([$tool], toolFactory: $tool),
                 maxToolCalls: 1,
             );
             $summary = $agent->call($prompt, ['max_output_tokens' => 4000])->asText();

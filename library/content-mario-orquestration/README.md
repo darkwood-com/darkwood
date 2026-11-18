@@ -42,7 +42,7 @@ The five-minute path is an installation guide, not a guaranteed network or model
 ## Actual architecture
 
 1. `DesignLevelCommand` starts the Symfony AI Agent named `level_designer` with one typed tool in the official `Toolbox`.
-2. The agent interprets the user's brief and invokes `generate_original_level` exactly once.
+2. The adapter forwards the real SDK input schema (including its 2000-character prompt bound) to the official Toolbox. The agent interprets the user's brief and invokes `generate_original_level` exactly once.
 3. `McpLevelTool` connects the official `Mcp\Client\Client` to the existing `bin/mcp.php` over SDK `StdioTransport`, discovers its tool and calls it.
 4. That existing server uses `Mcp\Server\Server` and the Symfony AI `level_generator` agent to generate original JSON through OpenAI `gpt-5-mini`.
 5. PHP validates the actual payload. The designer explains it; the optional exporter produces JSON, evidence and a geometry preview after CLI approval.
