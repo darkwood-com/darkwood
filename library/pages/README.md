@@ -3,12 +3,12 @@
 Canonical URL: <https://pages.darkwood.com/>. Hosting remains GitHub Pages for
 `darkwood-com/darkwood`, using GitHub Actions (not a `gh-pages` branch).
 
-`publish-monorepo-pages.yml` builds `.github/scripts/build-catalog-pages.mjs`
-with Node 22 and uploads `dist/github-pages` using `upload-pages-artifact`.
+`publish-monorepo-pages.yml` builds `library/pages/build.mjs`
+with Node 22 and uploads `library/pages/dist` using `upload-pages-artifact`.
 `deploy-pages` publishes that artifact to the `github-pages` environment on
 pushes to `main` or a manual workflow dispatch.
 
-`.github/pages/CNAME` is the versioned domain source. The builder derives its
+`library/pages/CNAME` is the versioned domain source. The builder derives its
 default HTTPS base URL from it and copies it into the artifact. Canonicals,
 Open Graph, navigation, card JSON, sitemap and robots all use this base.
 GitHub Actions Pages stores the custom domain in repository settings; GitHub
@@ -28,8 +28,8 @@ paths after changes. Do not add `/darkwood/` to custom-domain paths.
 Local build and validation (Node 22 in the existing Nix environment):
 
 ```sh
-node .github/scripts/build-catalog-pages.mjs
-node .github/scripts/validate-catalog-pages.mjs
+node library/pages/build.mjs
+node library/pages/validate.mjs
 ```
 
 Rollback: revert the domain-related source commit without rewriting history,
@@ -61,3 +61,11 @@ alone does not provide a redirect from a former custom domain. Future API, MCP,
 WebSocket, POST or OAuth migrations must examine the client and callback
 contract; a 301 is not assumed transparent. Existing single-level service names,
 Identity endpoints and protocol DNS records remain unchanged.
+
+## Card ownership
+
+This card owns the generator, public assets and `dist/`. Inputs are the root public
+`tags.json` and `.github/distribution-cards.json`; private catalogues are never read.
+The Jost fonts and their OFL notice are shipped locally. No runtime dependency on
+Uniflow or another card distribution is required. The separate Symfony AI MCP
+workshop owns its own distribution and keeps its existing artifact repository.

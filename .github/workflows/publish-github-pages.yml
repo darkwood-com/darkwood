@@ -7,6 +7,7 @@ on:
       - .github/distribution-cards.json
       - library/content-darkwood-memory/**
       - library/content-darkwood-intent/**
+      - library/content-darkwood-ai-mcp-symfony-hackathon/**
       - library/darkwood-php/src/Darkwood/Component/Flow/docs/**
       - .github/workflows/publish-github-pages.yml
   workflow_dispatch:
@@ -21,7 +22,7 @@ on:
           - darkwood-php-component-flow
           - content-darkwood-memory
           - content-darkwood-intent
-          - content-ai-mcp-symfony-hackathon
+          - content-darkwood-ai-mcp-symfony-hackathon
       dry_run:
         description: Build and compare without pushing
         required: true
@@ -131,22 +132,28 @@ jobs:
           fi
           echo "selected=$selected" >> "$GITHUB_OUTPUT"
 
-      - name: Set up Node.js for Flow
+      - name: Set up Node.js for static sites
         if: steps.select.outputs.selected == 'true' && matrix.builder == 'node'
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: ${{ matrix.source }}/package-lock.json
 
-      - name: Build Flow documentation
+      - name: Build and validate the Node static site
         if: steps.select.outputs.selected == 'true' && matrix.builder == 'node'
         working-directory: ${{ matrix.source }}
+        env:
+          ARTIFACT_DIRECTORY: ${{ github.workspace }}/${{ matrix.artifact }}
+          DOMAIN: ${{ matrix.domain }}
         run: |
-          npm ci --no-audit --no-fund
-          npm run build
-          test -s src/public/index.html
-          test "$(cat src/public/CNAME)" = "flow.darkwood.com"
+          if [[ -f package-lock.json ]]; then
+            npm ci --no-audit --no-fund
+            npm run build
+          else
+            node build.mjs
+            node validate.mjs
+          fi
+          test -s "$ARTIFACT_DIRECTORY/index.html"
+          test "$(cat "$ARTIFACT_DIRECTORY/CNAME")" = "$DOMAIN"
 
       - name: Set up Nix for PHP static sites
         if: steps.select.outputs.selected == 'true' && matrix.builder == 'nix'

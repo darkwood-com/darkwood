@@ -1058,6 +1058,36 @@
         "image-processing",
         "python"
       ]
+    },
+    {
+      "id": "content-darkwood-ai-mcp-symfony-hackathon",
+      "path": "library/content-darkwood-ai-mcp-symfony-hackathon",
+      "domain": "darkwood",
+      "description": "Darkwood Symfony AI MCP Hackathon workshop: qualified cards, reproducible Mario instructions and real execution evidence.",
+      "kind": "content",
+      "status": "done",
+      "dependencies": [],
+      "topics": [
+        "ai",
+        "hackathon",
+        "mcp",
+        "php",
+        "symfony"
+      ]
+    },
+    {
+      "id": "pages",
+      "path": "library/pages",
+      "domain": "darkwood",
+      "description": "Build and publication of the public Darkwood card catalogue on pages.darkwood.com.",
+      "kind": "infrastructure",
+      "status": "done",
+      "dependencies": [],
+      "topics": [
+        "catalogue",
+        "github-pages",
+        "static-site"
+      ]
     }
   ]
 }

@@ -1,19 +1,19 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { validatePublicationDomains } from "./validate-publication-domains.mjs";
+import { validatePublicationDomains } from "../../.github/scripts/validate-publication-domains.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
-const output = resolve(root, process.argv[2] ?? "dist/github-pages");
+const output = resolve(root, process.argv[2] ?? "library/pages/dist");
 const catalog = JSON.parse(await readFile(resolve(root, "tags.json"), "utf8"));
 const distribution = JSON.parse(await readFile(resolve(root, ".github/distribution-cards.json"), "utf8"));
 validatePublicationDomains(distribution);
 
-const customDomain = (await readFile(resolve(root, ".github/pages/CNAME"), "utf8")).trim();
+const customDomain = (await readFile(resolve(root, "library/pages/CNAME"), "utf8")).trim();
 const siteUrl = new URL(process.argv[3] ?? `https://${customDomain}/`).href;
 const repositoryUrl = "https://github.com/darkwood-com/darkwood";
 const sourceBaseUrl = `${repositoryUrl}/tree/main/`;
-const sourceAssets = resolve(root, ".github/pages");
-const sourceFonts = resolve(root, "library/uniflow/assets/fonts");
+const sourceAssets = resolve(root, "library/pages/assets");
+const sourceFonts = resolve(root, "library/pages/assets/fonts");
 const cardRedirects = new Map([
   ["adventofcode", "content-adventofcode"],
   ["php-pipe-operator", "content-php-pipe-operator"],
@@ -55,6 +55,7 @@ const publicLinksFor = (project) => {
     if (publication.repository && publication.repository !== "darkwood-com/darkwood") {
       links.push({ label: "Distribution repository", url: `https://github.com/${publication.repository}` });
     }
+    if (publication.homepage?.domain) links.push({ label: "Public website", url: `https://${publication.homepage.domain}/` });
     if (publication.pages?.domain) links.push({ label: "Public website", url: `https://${publication.pages.domain}/` });
   }
   return links.filter((link, index, all) => all.findIndex((candidate) => candidate.url === link.url) === index);
@@ -185,12 +186,12 @@ await writeFile(resolve(output, "404.html"), notFound);
 await writeFile(resolve(output, "data/cards.json"), `${JSON.stringify(cardsJson)}\n`);
 await writeFile(resolve(output, "sitemap.xml"), sitemap);
 await writeFile(resolve(output, "robots.txt"), `User-agent: *\nAllow: ${new URL(siteUrl).pathname}\nSitemap: ${siteUrl}sitemap.xml\n`);
-await copyFile(resolve(sourceAssets, "CNAME"), resolve(output, "CNAME"));
+await copyFile(resolve(root, "library/pages/CNAME"), resolve(output, "CNAME"));
 await writeFile(resolve(output, ".nojekyll"), "");
 await copyFile(resolve(sourceAssets, "catalog.css"), resolve(output, "assets/catalog.css"));
 await copyFile(resolve(sourceAssets, "catalog.js"), resolve(output, "assets/catalog.js"));
 await copyFile(resolve(sourceAssets, "mark.svg"), resolve(output, "assets/mark.svg"));
-for (const font of ["Jost-400-Book.otf", "Jost-500-Medium.otf", "Jost-600-Semi.otf", "Jost-700-Bold.otf"]) {
+for (const font of ["Jost-400-Book.otf", "Jost-500-Medium.otf", "Jost-600-Semi.otf", "Jost-700-Bold.otf", "OFL.txt"]) {
   await copyFile(resolve(sourceFonts, font), resolve(output, "assets/fonts", font));
 }
 for (const { project, html } of detailPages) {

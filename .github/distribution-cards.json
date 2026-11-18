@@ -102,27 +102,26 @@
       }
     },
     {
-      "id": "content-ai-mcp-symfony-hackathon",
-      "source": "library/content-darkwood-intent",
+      "id": "content-darkwood-ai-mcp-symfony-hackathon",
+      "source": "library/content-darkwood-ai-mcp-symfony-hackathon",
       "repository": "darkwood-com/content-ai-mcp-symfony-hackathon",
-      "structuralException": "Static workshop export; canonical source remains in content-darkwood-intent",
       "pages": {
-        "source": "library/content-darkwood-intent",
-        "artifact": "library/content-darkwood-intent/dist-hackathon",
+        "source": "library/content-darkwood-ai-mcp-symfony-hackathon",
+        "artifact": "library/content-darkwood-ai-mcp-symfony-hackathon/dist",
         "repository": "darkwood-com/content-ai-mcp-symfony-hackathon",
         "domain": "ai-mcp-symfony-hackathon-content.darkwood.com",
-        "builder": "nix",
-        "nodeTest": "content-darkwood-intent",
-        "workshop": "hackathon"
+        "builder": "node"
       }
     },
     {
-      "id": "darkwood",
-      "source": ".",
+      "id": "pages",
+      "source": "library/pages",
       "repository": "darkwood-com/darkwood",
       "homepage": {
         "type": "github-pages",
-        "builder": ".github/scripts/build-catalog-pages.mjs"
+        "builder": "library/pages/build.mjs",
+        "artifact": "library/pages/dist",
+        "domain": "pages.darkwood.com"
       }
     }
   ]

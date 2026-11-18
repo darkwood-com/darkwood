@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Un parcours PHP vérifié : génération de niveau JSON avec Symfony AI et le SDK MCP officiel.">
+  <meta property="og:title" content="Darkwood Symfony AI MCP Hackathon">
+  <meta property="og:description" content="Un parcours PHP vérifié : génération de niveau JSON avec Symfony AI et le SDK MCP officiel.">
+  <meta property="og:type" content="website"><meta property="og:url" content="https://ai-mcp-symfony-hackathon-content.darkwood.com/">
+  <link rel="canonical" href="https://ai-mcp-symfony-hackathon-content.darkwood.com/">
+  <title>Darkwood Symfony AI MCP Hackathon</title>
+  <link rel="icon" href="/logo-darkwood.png">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/themes.js" defer></script>
+  </head>
+<body class="theme-light" data-mode="static">
+<script>try{var t=localStorage.getItem('theme');if(['light','dark','sepia'].includes(t))document.body.className='theme-'+t;}catch(e){}</script>
+<a class="skip-link" href="#main">Aller aux démonstrations</a>
+<header class="navbar-top">
+    <a class="header-brand" href="/" aria-label="Darkwood AI et MCP — accueil"><span class="logo-surface"><img src="/logo-darkwood.png" alt="Darkwood" width="36" height="36"></span><span>Atelier AI & MCP</span></a>
+  <div class="top-actions">
+    <a href="https://github.com/darkwood-com/darkwood/tree/main/library/content-darkwood-ai-mcp-symfony-hackathon" class="icon-control" aria-label="GitHub — source de l’atelier Symfony AI MCP" title="Voir le projet sur GitHub" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="ui-icon" aria-hidden="true" focusable="false" viewBox="0 0 16 16">
+  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+</svg>
+</a>
+    <button id="theme-switcher" class="icon-control" aria-label="Thème Clair : passer au thème Sombre" title="Thème Clair : passer au thème Sombre"><span id="theme-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" focusable="false">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+</span></button>
+    <button id="menu-toggle" class="icon-control mobile-only" aria-expanded="false" aria-controls="sidebar" aria-label="Ouvrir le menu" title="Ouvrir le menu"><svg class="ui-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+</button>
+  </div>
+  <span id="theme-status" class="visually-hidden" role="status"></span>
+</header>
+<template id="theme-icons"><span data-theme-icon="light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" focusable="false">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+</span><span data-theme-icon="dark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" focusable="false">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+</span><span data-theme-icon="sepia"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" focusable="false">
+                    <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                    <line x1="6" y1="1" x2="6" y2="4" />
+                    <line x1="10" y1="1" x2="10" y2="4" />
+                    <line x1="14" y1="1" x2="14" y2="4" />
+                </svg>
+</span></template>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar" aria-label="Navigation principale">
+    <div class="mobile-menu-heading mobile-only"><span>Explorer l’atelier</span><button id="menu-close" class="icon-control" aria-label="Fermer le menu" title="Fermer le menu"><svg class="ui-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M6 18 18 6"/></svg>
+</button></div>
+    <nav class="sidebar-nav" aria-label="Parcours du hackathon">
+      <a href="/" aria-current="page">Vue d’ensemble</a>
+            <a href="#parcours">Le parcours retenu</a><a href="#preuve">Preuve d’exécution</a><a href="#selection">Les cards qualifiées</a><a href="#installation">Reproduire</a><a href="#limites">Limites</a><a href="#concours">Le concours</a>          </nav>
+  </aside>
+  <div class="page-column"><main id="main" tabindex="-1"><section class="hero">
+  <p class="eyebrow">DARKWOOD · ATELIER PHP · NOVEMBRE 2026</p>
+  <h1>Darkwood Symfony AI MCP Hackathon</h1>
+  <div class="hero-bottom"><p>Transformer une intention en résultat vérifiable : un agent Symfony AI génère un niveau JSON original, accessible par le SDK PHP MCP officiel. Cet atelier présente le parcours retenu et situe les autres expériences Darkwood.</p></div>
+  <p><a href="#preuve">Examiner la preuve ↓</a> · <a href="https://github.com/darkwood-com/darkwood/tree/main/library/content-mario-orquestration">Code et instructions ↗</a></p>
+</section>
+<section id="parcours" class="intent-chain">
+  <div class="section-heading"><h2>Un parcours, une candidature</h2><span>MARIO ORCHESTRATION</span></div>
+  <ol><li>Intention</li><li>Outil MCP</li><li>Agent Symfony AI</li><li>OpenAI</li><li>JSON validé</li></ol>
+  <p>La card existante <strong>Mario Orchestration</strong> est retenue pour une génération structurée de niveau de plateforme. Le serveur stdio utilise <code>Mcp\Server\Server</code> et expose <code>generate_original_level</code>. L’agent <code>level_generator</code> appelle réellement le fournisseur ; le résultat est décodé et contrôlé avant d’être retourné.</p>
+  <p><strong>Socle testé localement :</strong> Symfony AI 1.0.0-BETA1, SDK <code>mcp/sdk</code> 0.10.0, Symfony 8.1.11, PHP 8.5. Licence MIT. Flow et Navi restent des dépendances du projet ; le parcours retenu ne prétend pas démontrer leur orchestration multi-agent.</p>
+</section>
+<section id="preuve" class="experiences">
+  <div class="section-heading"><h2>Ce qui a réellement tourné</h2><span>ESSAI DU 17 NOVEMBRE 2026</span></div>
+  <div class="cards">
+    <article class="demo-card"><span class="service">01 · INITIALISER</span><h3>Connexion MCP stdio</h3><p>Échange initialize réussi, puis découverte de l’outil par tools/list. Un prompt vide est refusé par le schéma du SDK avec le code −32602.</p></article>
+    <article class="demo-card"><span class="service">02 · GÉNÉRER</span><h3>Whispering Grove</h3><p>Un appel tools/call a retourné un résultat <code>real_ai</code> : niveau de 48 × 15 cases, six rectangles de terrain et sept objets. La réponse vient du fournisseur OpenAI via Symfony AI.</p></article>
+    <article class="demo-card"><span class="service">03 · VÉRIFIER</span><h3>Contrôles de structure</h3><p>Le programme vérifie les dimensions, les types et les limites des coordonnées. Les essais de régression et une installation propre ont été exécutés localement.</p></article>
+  </div>
+  <p><a href="/hackathon/mcp-proof.json">Consulter la trace JSON publique de l’essai</a>. Cette trace est un enregistrement d’exécution ; ouvrir cette page ne lance aucun modèle et ne facture aucun appel API.</p>
+</section>
+<section id="selection" class="experiences">
+  <div class="section-heading"><h2>Les expériences qualifiées</h2><span>PÉRIMÈTRE PUBLIC</span></div>
+  <div class="cards">
+        <article class="demo-card"><span class="service">Sélectionnée et démontrée localement</span><h3>Mario Orchestration</h3><p>Génération réelle Symfony AI + SDK officiel. Installation et code disponibles dans le monorepo ; vidéo finale à valider.</p><a class="card-bottom" href="https://github.com/darkwood-com/darkwood/tree/main/library/content-mario-orquestration">Examiner le code <span>↗</span></a></article><article class="demo-card"><span class="service">Contexte · non soumissible en l’état</span><h3>Publish Article MCP Apps</h3><p>Protocole personnalisé, génération de brouillon et URL de publication simulées. Pas de Symfony AI ni de SDK officiel dans ce parcours.</p><a class="card-bottom" href="https://github.com/darkwood-com/darkwood/tree/main/library/darkwood-publish-article-mcp-apps">Examiner le code <span>↗</span></a></article><article class="demo-card"><span class="service">Contexte · correctif requis</span><h3>Composio MCP</h3><p>Anciennes API Symfony AI MCP et services Composio externes. Compatibilité actuelle et exécution de bout en bout non établies.</p><a class="card-bottom" href="https://github.com/darkwood-com/darkwood/tree/main/library/content-composio-mcp">Examiner le code <span>↗</span></a></article><article class="demo-card"><span class="service">Contexte · tests locaux validés</span><h3>Connect Flow</h3><p>Parcours langage vers Flow avec Ollama et Composio. Douze tests locaux passent ; pas de preuve d’appel externe ni de SDK MCP officiel.</p><a class="card-bottom" href="https://github.com/darkwood-com/darkwood/tree/main/library/content-connect-flow">Examiner le code <span>↗</span></a></article><article class="demo-card"><span class="service">Contexte · non soumissible en l’état</span><h3>Recherche Entreprise MCP</h3><p>Recherche d’entreprises et protocole personnalisé. Symfony 8.1 validé localement ; absence de Symfony AI et de SDK officiel dans le manifeste.</p><a class="card-bottom" href="https://github.com/darkwood-com/darkwood/tree/main/library/content-recherche-entreprise-mcp">Examiner le code <span>↗</span></a></article><article class="demo-card"><span class="service">Contexte · exécution complète à qualifier</span><h3>Flowvox</h3><p>Pipeline vocal avec dépendances micro, modèle et services locaux. Dépendances AI bêta installées ; démonstration vocale de bout en bout non vérifiée.</p><a class="card-bottom" href="https://github.com/darkwood-com/darkwood/tree/main/library/flowvox">Examiner le code <span>↗</span></a></article>  </div>
+  <p>Les composants RUN et les réalisations privées participent au savoir-faire de Darkwood. Aucun code privé ni accès de production n’est nécessaire à la démonstration retenue. Les statuts de cet atelier décrivent les vérifications et ne modifient pas les statuts canoniques des cards.</p>
+</section>
+<section id="installation" class="intent-chain">
+  <div class="section-heading"><h2>Reproduire la démonstration</h2><span>PHP · COMPOSER · CLÉ FOURNISSEUR</span></div>
+  <p>Le code appartient au monorepo public existant. Depuis la card Mario, le README détaille l’installation Composer, le mode de simulation explicite et le transport MCP stdio. Utiliser sa propre clé OpenAI en variable d’environnement ; aucune clé n’est fournie par l’atelier.</p>
+  <p><a href="https://github.com/darkwood-com/darkwood/tree/main/library/content-mario-orquestration#readme">Instructions d’installation et script de 90 secondes ↗</a></p>
+  <p><strong>État de livraison :</strong> les adaptations AI bêta et MCP, l’installation depuis le lock et la trace de cet atelier ont été vérifiées localement. Le README du monorepo permet de reproduire ce parcours. La vidéo et la soumission définitive restent à valider.</p>
+</section>
+<section id="limites" class="intent-chain">
+  <div class="section-heading"><h2>Limites connues</h2><span>PORTÉE DES PREUVES</span></div>
+  <p>Le JSON ne constitue pas une preuve de jouabilité. L’importeur Godot demande encore une adaptation ; aucun jeu complet n’est annoncé. Les contrôles géométriques ne prouvent ni qu’un parcours est franchissable, ni l’originalité juridique de tous les contenus générés.</p>
+  <p>Le mode fake reste une fixture de test explicite, distincte de l’appel réel enregistré. Le parcours retenu utilise un agent ; les autres composants multi-agents du dépôt restent expérimentaux. Une clé fournisseur, un accès réseau et un crédit API sont nécessaires pour reproduire la génération réelle.</p>
+</section>
+<section id="concours" class="intent-chain">
+  <div class="section-heading"><h2>Pourquoi Darkwood participe</h2><span>CONTENT FACTORY</span></div>
+  <p>Darkwood relie PHP, outils, agents et automatisation pour rendre l’exécution observable et reproductible. Le hackathon permet de confronter ce travail aux préversions Symfony AI et MCP et de documenter leurs limites à partir d’un cas réel.</p>
+  <p>Le <a href="https://symfony.com/hackathon">site officiel du hackathon</a>, consulté le 18 novembre 2026, demande un dépôt public exécutable et une vidéo réelle de 90 secondes, à remettre avant le 22 novembre à 18 h CET. La décision d’acceptation appartient aux organisateurs.</p>
+  <p><a href="https://pages.darkwood.com/">Explorer le catalogue Darkwood</a> · <a href="https://flow.darkwood.com/">Découvrir Flow</a> · <a href="https://darkwood.com/">Darkwood</a></p>
+</section>
+</main><footer><span>Darkwood · PHP · Symfony AI · MCP</span><span>Atelier statique · génération exécutée en PHP.</span></footer></div>
+</div>
+</body>
+</html>

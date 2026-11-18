@@ -56,7 +56,10 @@ if (form) {
         const comparison = collator.compare(left.dataset.name, right.dataset.name);
         return data.sort === "name-desc" ? -comparison : comparison;
       });
-      for (const card of ordered) grid.append(card);
+      // Preserve link nodes on input blur when the requested order is unchanged.
+      if (ordered.some((card, index) => grid.children[index] !== card)) {
+        for (const card of ordered) grid.append(card);
+      }
       const groupVisible = ordered.filter((card) => !card.hidden).length;
       group.hidden = groupVisible === 0;
       group.querySelector("[data-group-count]").textContent = groupVisible;
