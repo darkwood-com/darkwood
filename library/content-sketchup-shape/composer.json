@@ -4,19 +4,20 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "darkwood/navi": "^1.0",
-        "symfony/ai-bundle": "^0.6.0",
-        "symfony/ai-ollama-platform": "^0.6.0",
-        "symfony/console": "8.0.*",
-        "symfony/dotenv": "8.0.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "8.0.*",
-        "symfony/http-client": "8.0.*",
-        "symfony/runtime": "8.0.*",
-        "symfony/yaml": "8.0.*"
+        "darkwood/navi": "^8.1.6",
+        "symfony/ai-bundle": "1.0.0-BETA1",
+        "symfony/ai-ollama-platform": "1.0.0-BETA1",
+        "symfony/console": "8.1.*",
+        "symfony/dotenv": "8.1.*",
+        "symfony/flex": "^2.12",
+        "symfony/framework-bundle": "8.1.*",
+        "symfony/http-client": "8.1.*",
+        "symfony/runtime": "8.1.*",
+        "symfony/yaml": "8.1.*",
+        "symfony/ai-platform": "1.0.0-BETA1"
     },
     "config": {
         "allow-plugins": {
@@ -55,7 +56,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.0.*"
+            "require": "8.1.*"
         }
     }
 }

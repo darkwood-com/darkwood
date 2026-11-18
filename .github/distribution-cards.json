@@ -102,6 +102,21 @@
       }
     },
     {
+      "id": "content-ai-mcp-symfony-hackathon",
+      "source": "library/content-darkwood-intent",
+      "repository": "darkwood-com/content-ai-mcp-symfony-hackathon",
+      "structuralException": "Static workshop export; canonical source remains in content-darkwood-intent",
+      "pages": {
+        "source": "library/content-darkwood-intent",
+        "artifact": "library/content-darkwood-intent/dist-hackathon",
+        "repository": "darkwood-com/content-ai-mcp-symfony-hackathon",
+        "domain": "ai-mcp-symfony-hackathon.content.darkwood.com",
+        "builder": "nix",
+        "nodeTest": "content-darkwood-intent",
+        "workshop": "hackathon"
+      }
+    },
+    {
       "id": "darkwood",
       "source": ".",
       "repository": "darkwood-com/darkwood",

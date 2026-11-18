@@ -4,14 +4,24 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=8.2",
-        "darkwood/ai-jev-platform": "^0.1",
+        "php": ">=8.5",
+        "darkwood/ai-jev-platform": "*@dev",
         "symfony/dotenv": "^7.4|^8.0",
-        "symfony/http-client": "^7.3|^8.0"
+        "symfony/http-client": "^7.3|^8.0",
+        "symfony/ai-platform": "1.0.0-BETA1"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
         "sort-packages": true
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../src/platform/src/Bridge/Jev",
+            "options": {
+                "symlink": false
+            }
+        }
+    ]
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Application\Workflow\WorkflowRunner;
-use App\Domain\Execution\Context;
+use Navi\Application\Workflow\WorkflowRunner;
+use Navi\Domain\Execution\Context;
 use App\Infrastructure\Action\BuildCodePromptAction;
 use App\Infrastructure\Action\BuildDesignPromptAction;
 use App\Infrastructure\Action\ExtractDesignSpecAction;

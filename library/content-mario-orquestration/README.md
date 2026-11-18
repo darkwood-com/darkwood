@@ -1,92 +1,46 @@
-# Mario Multi-Agent Demo (Symfony AI)
+# Darkwood original level generator
 
-## But de la démo
+Symfony AI generates an original platformer level as JSON. The official PHP MCP SDK exposes `generate_original_level` over stdio. This submission path uses one named agent, `level_generator`. The existing multi-agent and Godot experiments remain exploratory.
 
-Cette démo montre comment orchestrer plusieurs agents spécialisés pour produire un niveau de platformer 2D "mario-like" (sans cloner officiellement Mario, sans assets Nintendo).
+## Install
 
-Plutôt que de demander "fais tout le jeu", on découpe le raisonnement:
+Use PHP 8.5 with ctype, iconv, mbstring and the extensions required by Composer. From the public monorepo, enter `library/content-mario-orquestration`.
 
-- orchestrator: route la demande vers le bon spécialiste
-- layout: structure terrain/progression
-- gameplay: objets et mécaniques
-- godot_export: JSON exploitable côté Godot
-- qa: validation jouabilité / cohérence / sécurité copyright
-- fallback: réponse de secours hors spécialité
-
-## Commande de démo
-
-```bash
-php bin/console app:mario:orchestrate
+```sh
+composer install --no-scripts
+composer validate --no-check-publish
+composer check-platform-reqs
 ```
 
-Options utiles:
+The committed lock pins Symfony AI to 1.0.0-BETA1 and mcp/sdk to 0.10.0. Composer plugins generate the Symfony runtime loader. Automatic application scripts are disabled during installation for reproducibility.
 
-```bash
-php bin/console app:mario:orchestrate --prompt="Generate a Mario-like platformer level"
-php bin/console app:mario:orchestrate --output=var/mario-orchestration/level.json
-php bin/console app:mario:orchestrate --dry-run
-php bin/console app:mario:orchestrate --fake
+Provide `OPENAI_API_KEY` through your process environment or your own ignored `.env.local`. Never commit a key. The real generator calls OpenAI using gpt-5-mini and requires network access and provider credit.
+
+## Run
+
+```sh
+php bin/console app:mario:orchestrate --prompt='Create an original forest platformer level as json' --dry-run
+php bin/mcp.php
 ```
 
-## Mode fake (déterministe)
+The CLI displays the generated JSON and geometry validation. Omit `--dry-run` to export to `var/mario-orchestration/level.json`. The MCP process uses newline-delimited JSON-RPC over stdio. Configure the host to launch `php bin/mcp.php` from this directory with `OPENAI_API_KEY` in its environment. It offers one tool with a prompt of 1–2000 characters and returns the validated level without writing files.
 
-Le mode fake évite tout appel API et génère toujours une sortie stable:
+An absent key or invalid provider response fails explicitly. The MCP process reads its key from the environment. The CLI also loads Symfony environment files.
 
-- activé explicitement via `--fake`
-- activé automatiquement si `OPENAI_API_KEY` est absent
+For an explicit offline fixture only, use `php bin/console app:mario:orchestrate --fake --dry-run`. This fixture proves local execution only. Real generation is required for the hackathon video.
 
-Exemple recommandé pour la vidéo:
+## Scope and limits
 
-```bash
-php bin/console app:mario:orchestrate --fake
-```
+Validation checks required fields, dimensions, coordinates and terrain bounds. It does not establish that the level is playable. The Godot importer and scene require further work before a playable game can be demonstrated. The alternate deterministic level command is separate from the real generation path.
 
-Résultat attendu:
+This project is licensed under MIT, as declared in LICENSE and composer.json. Nintendo assets and level copies must not be included.
 
-- orchestration affichée en console
-- agent sélectionné affiché
-- JSON exporté dans `var/mario-orchestration/level.json`
+## 90-second demonstration
 
-## Mode OpenAI réel
+- 0–15 seconds — Show the existing project, the locked Symfony AI beta and official MCP SDK versions.
+- 15–30 seconds — Initialize the MCP server and list its single generation tool.
+- 30–65 seconds — Call the tool with an original level request and show the real response, named agent and validation.
+- 65–80 seconds — Show coordinates, terrain and goal in the resulting JSON. Explain the geometry checks and playability limit.
+- 80–90 seconds — Show installation instructions and the source paths implementing AI generation and the SDK tool.
 
-Configurer la clé:
-
-```bash
-export OPENAI_API_KEY="sk-..."
-```
-
-Puis lancer:
-
-```bash
-php bin/console app:mario:orchestrate
-```
-
-La factory utilise ce pattern Symfony AI:
-
-- `EventDispatcher`
-- `PlatformSubscriber`
-- `Factory::createPlatform(...)`
-- `Agent`
-- `Handoff`
-- `MultiAgent`
-- `MessageBag`
-- `Message::ofUser()`
-
-## Différence avec le vibe coding classique
-
-Approche "un seul prompt": rapide, mais souvent opaque et difficile a contrôler.
-
-Approche orchestration multi-agents:
-
-- responsabilités explicites par agent
-- routage observable (qui a traité quoi)
-- validation dédiée QA
-- meilleure reproductibilité (mode fake)
-- plus simple à faire évoluer en production
-
-## Pourquoi cette approche donne plus de contrôle
-
-- prompts spécialisés plus faciles à maintenir
-- diagnostics plus clairs (agent sélectionné, résultat, validation)
-- possibilité de brancher de nouveaux agents sans réécrire toute la chaîne
-- séparation nette entre génération, export et vérification
+Record only an actual successful run. Review terminal output for credentials before recording. Public publication and final submission require owner approval.

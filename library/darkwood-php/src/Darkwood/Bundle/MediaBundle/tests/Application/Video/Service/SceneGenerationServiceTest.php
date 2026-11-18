@@ -125,8 +125,8 @@ final class SceneGenerationServiceTest extends TestCase
 
         try {
             $storage = new LocalArtifactStorage(new VideoPathResolver($tmp));
-            $voice = $this->createMock(VoiceGenerationProviderInterface::class);
-            $video = $this->createMock(VideoGenerationProviderInterface::class);
+            $voice = $this->createStub(VoiceGenerationProviderInterface::class);
+            $video = $this->createStub(VideoGenerationProviderInterface::class);
             $unusedBenchVideo = $this->createMock(VideoGenerationProviderInterface::class);
             $unusedBenchVideo->expects(self::never())->method('generateVideo');
             $benchmark = new SceneVideoBenchmarkService($unusedBenchVideo, $storage);

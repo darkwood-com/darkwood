@@ -1,9 +1,9 @@
 {
-	"require": {
-        "php": ">=8.3",
+    "require": {
+        "php": ">=8.5",
         "symfony/event-dispatcher": "^7.0",
-		"amphp/amp": "^3.0",
-        "darkwood/flow": "dev-1.x-dev",
+        "amphp/amp": "^3.0",
+        "darkwood/flow": "^1.2.4",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.3",
@@ -12,47 +12,47 @@
         "phpstan/phpdoc-parser": "^1.29",
         "react/async": "^4.3",
         "spatie/async": "^1.6",
-        "symfony/asset": "7.1.*",
-        "symfony/asset-mapper": "7.1.*",
-        "symfony/console": "7.1.*",
-        "symfony/doctrine-messenger": "7.1.*",
-        "symfony/dotenv": "7.1.*",
-        "symfony/expression-language": "7.1.*",
+        "symfony/asset": "7.4.*",
+        "symfony/asset-mapper": "7.4.*",
+        "symfony/console": "7.4.*",
+        "symfony/doctrine-messenger": "7.4.*",
+        "symfony/dotenv": "7.4.*",
+        "symfony/expression-language": "7.4.*",
         "symfony/flex": "^2",
-        "symfony/form": "7.1.*",
-        "symfony/framework-bundle": "7.1.*",
-        "symfony/http-client": "7.1.*",
-        "symfony/intl": "7.1.*",
-        "symfony/mailer": "7.1.*",
-        "symfony/messenger": "7.1.*",
-        "symfony/mime": "7.1.*",
+        "symfony/form": "7.4.*",
+        "symfony/framework-bundle": "7.4.*",
+        "symfony/http-client": "7.4.*",
+        "symfony/intl": "7.4.*",
+        "symfony/mailer": "7.4.*",
+        "symfony/messenger": "7.4.*",
+        "symfony/mime": "7.4.*",
         "symfony/monolog-bundle": "^3.0",
-        "symfony/notifier": "7.1.*",
+        "symfony/notifier": "7.4.*",
         "symfony/panther": "^2.1",
-        "symfony/process": "7.1.*",
-        "symfony/property-access": "7.1.*",
-        "symfony/property-info": "7.1.*",
-        "symfony/runtime": "7.1.*",
-        "symfony/security-bundle": "7.1.*",
-        "symfony/serializer": "7.1.*",
+        "symfony/process": "7.4.*",
+        "symfony/property-access": "7.4.*",
+        "symfony/property-info": "7.4.*",
+        "symfony/runtime": "7.4.*",
+        "symfony/security-bundle": "7.4.*",
+        "symfony/serializer": "7.4.*",
         "symfony/stimulus-bundle": "^2.19",
-        "symfony/string": "7.1.*",
-        "symfony/translation": "7.1.*",
-        "symfony/twig-bundle": "7.1.*",
+        "symfony/string": "7.4.*",
+        "symfony/translation": "7.4.*",
+        "symfony/twig-bundle": "7.4.*",
         "symfony/ux-icons": "^2.19",
         "symfony/ux-live-component": "^2.19",
         "symfony/ux-turbo": "^2.19",
-        "symfony/validator": "7.1.*",
-        "symfony/web-link": "7.1.*",
-        "symfony/yaml": "7.1.*",
+        "symfony/validator": "7.4.*",
+        "symfony/web-link": "7.4.*",
+        "symfony/yaml": "7.4.*",
         "symfonycasts/sass-bundle": "^0.7.0",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-		"php-etl/pipeline": "^0.6.1",
-		"imagine/imagine": "^1.3",
-		"symfony/twitter-notifier": "7.1.*",
-		"symfony/scheduler": "7.1.*",
-		"theodo-group/llphant": "^0.8"
+        "php-etl/pipeline": "^0.6.1",
+        "imagine/imagine": "^1.3",
+        "symfony/twitter-notifier": "7.4.*",
+        "symfony/scheduler": "7.4.*",
+        "theodo-group/llphant": "^0.8"
     },
     "require-dev": {
         "amphp/amp": "^3.0",
@@ -62,13 +62,13 @@
         "react/async": "^4.3",
         "spatie/async": "^1.6",
         "symfony/doctrine-messenger": "^7.0",
-        "symfony/browser-kit": "7.1.*",
-        "symfony/css-selector": "7.1.*",
-        "symfony/debug-bundle": "7.1.*",
+        "symfony/browser-kit": "7.4.*",
+        "symfony/css-selector": "7.4.*",
+        "symfony/debug-bundle": "7.4.*",
         "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "^7.1",
-        "symfony/stopwatch": "7.1.*",
-        "symfony/web-profiler-bundle": "7.1.*"
+        "symfony/stopwatch": "7.4.*",
+        "symfony/web-profiler-bundle": "7.4.*"
     },
     "autoload": {
         "psr-4": {
@@ -80,18 +80,19 @@
             "App\\Test\\": "../../tests"
         }
     },
-	"config": {
-		"allow-plugins": {
-			"symfony/flex": true,
-			"symfony/runtime": true,
-			"php-http/discovery": true
-		}
-	},
-	"scripts": {
-		"auto-scripts": {
-			"cache:clear": "symfony-cmd",
-			"assets:install %PUBLIC_DIR%": "symfony-cmd",
-			"importmap:install": "symfony-cmd"
-		}
-	}
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "php-http/discovery": true
+        }
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
+        }
+    },
+    "prefer-stable": true
 }

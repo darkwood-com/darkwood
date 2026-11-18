@@ -77,6 +77,15 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'monthly' => [
+            'tap' => [RedactSensitiveData::class],
+            'driver' => 'monthly',
+            'path' => storage_path('logs/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'max_files' => 3,
+            'replace_placeholders' => true,
+        ],
+
         'slack' => [
             'tap' => [RedactSensitiveData::class],
             'driver' => 'slack',

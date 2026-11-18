@@ -35,7 +35,7 @@ final class VideoBenchmarkReportWriterTest extends TestCase
         $renderRoot = sys_get_temp_dir() . '/vbw_' . uniqid('', true);
         $this->tempRoots[] = $renderRoot;
 
-        $setup = $this->createMock(VideoProjectSetupInterface::class);
+        $setup = $this->createStub(VideoProjectSetupInterface::class);
         $setup->method('getRenderOutputPath')->willReturn($renderRoot . '/render/final.mp4');
 
         $writer = new VideoBenchmarkReportWriter($setup);
@@ -65,7 +65,7 @@ final class VideoBenchmarkReportWriterTest extends TestCase
         mkdir($renderRoot . '/render', 0o755, true);
         $this->tempRoots[] = $renderRoot;
 
-        $setup = $this->createMock(VideoProjectSetupInterface::class);
+        $setup = $this->createStub(VideoProjectSetupInterface::class);
         $setup->method('getRenderOutputPath')->willReturn($renderRoot . '/render/final.mp4');
 
         $writer = new VideoBenchmarkReportWriter($setup);

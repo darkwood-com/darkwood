@@ -21,6 +21,7 @@ on:
           - darkwood-php-component-flow
           - content-darkwood-memory
           - content-darkwood-intent
+          - content-ai-mcp-symfony-hackathon
       dry_run:
         description: Build and compare without pushing
         required: true
@@ -67,7 +68,8 @@ jobs:
             repository_name: (.pages.repository | split("/")[1]),
             domain: .pages.domain,
             builder: .pages.builder,
-            node_test: (.pages.nodeTest // "")
+            node_test: (.pages.nodeTest // ""),
+            workshop: (.pages.workshop // "")
           }]}' .github/distribution-cards.json)
           echo "value=$value" >> "$GITHUB_OUTPUT"
 
@@ -140,13 +142,20 @@ jobs:
       - name: Test and export the PHP static site
         if: steps.select.outputs.selected == 'true' && matrix.builder == 'nix'
         working-directory: ${{ matrix.source }}
+        env:
+          WORKSHOP: ${{ matrix.workshop }}
+          ARTIFACT_DIRECTORY: ${{ github.workspace }}/${{ matrix.artifact }}
         run: |
           nix develop -c composer install --no-interaction --prefer-dist --no-progress
           nix develop -c php bin/console lint:twig templates
           nix develop -c php bin/phpunit
           nix develop -c node --test "tests/${{ matrix.node_test }}.test.mjs"
-          nix develop -c php bin/console app:export-static
-          test -s dist/index.html
+          if [[ -n "$WORKSHOP" ]]; then
+            nix develop -c php bin/console app:export-static --workshop="$WORKSHOP"
+          else
+            nix develop -c php bin/console app:export-static
+          fi
+          test -s "$ARTIFACT_DIRECTORY/index.html"
 
       - name: Create a repository-scoped publication token
         if: steps.select.outputs.selected == 'true'

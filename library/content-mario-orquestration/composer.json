@@ -1,6 +1,6 @@
 {
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
@@ -9,9 +9,12 @@
         "ext-iconv": "*",
         "darkwood/flow": "^8.1.6",
         "darkwood/navi": "^8.1.6",
-        "symfony/ai-agent": "^0.8.0",
-        "symfony/ai-bundle": "^0.8.0",
-        "symfony/ai-open-ai-platform": "^0.8.0",
+        "mcp/sdk": "0.10.0",
+        "symfony/ai-agent": "1.0.0-BETA1",
+        "symfony/ai-bundle": "1.0.0-BETA1",
+        "symfony/ai-open-ai-platform": "1.0.0-BETA1",
+        "symfony/ai-open-responses-platform": "1.0.0-BETA1",
+        "symfony/ai-platform": "1.0.0-BETA1",
         "symfony/console": "8.1.*",
         "symfony/dotenv": "8.1.*",
         "symfony/flex": "^2.12",

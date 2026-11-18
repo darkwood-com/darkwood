@@ -20,9 +20,12 @@ final class MarioAgentOrchestrator
      */
     public function orchestrate(string $prompt, bool $forceFake): array
     {
+        if ('' === trim($prompt) || mb_strlen($prompt) > 2000) {
+            throw new \InvalidArgumentException('Prompt must contain between 1 and 2000 characters.');
+        }
         $selectedAgent = $this->selectAgent($prompt);
-        $apiKey = $_ENV['OPENAI_API_KEY'] ?? $_SERVER['OPENAI_API_KEY'] ?? null;
-        $fakeMode = $forceFake || null === $apiKey || '' === trim((string) $apiKey);
+        $apiKey = $_ENV['OPENAI_API_KEY'] ?? $_SERVER['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY');
+        $fakeMode = $forceFake;
 
         if ($fakeMode) {
             $payload = $this->buildDeterministicPayload();
@@ -36,16 +39,22 @@ final class MarioAgentOrchestrator
             ];
         }
 
-        $multiAgent = $this->multiAgentFactory->create($apiKey);
+        if (!\is_string($apiKey) || '' === trim($apiKey)) {
+            throw new \RuntimeException('OPENAI_API_KEY is required for real generation. Use --fake only for an explicit offline fixture.');
+        }
+        $agent = $this->multiAgentFactory->createLevelAgent($apiKey);
         $messageBag = new MessageBag(Message::ofUser($this->buildRealPrompt($prompt)));
-        $result = $multiAgent->call($messageBag);
-        $content = $result->getContent();
+        try {
+            $content = $agent->call($messageBag, ['text' => ['format' => ['type' => 'json_object']], 'max_output_tokens' => 6000])->asText();
+        } catch (\Throwable) {
+            throw new \RuntimeException('AI generation failed. Check provider access and retry. No level was generated.');
+        }
         $resultText = \is_string($content) ? $content : json_encode($content, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
         $payload = $this->extractJsonPayload($resultText);
 
         return [
             'fake_mode' => false,
-            'selected_agent' => $selectedAgent,
+            'selected_agent' => $agent->getName(),
             'result_text' => $resultText,
             'payload' => $payload,
             'validation' => $this->validatePayload($payload),
@@ -54,7 +63,7 @@ final class MarioAgentOrchestrator
 
     private function buildRealPrompt(string $prompt): string
     {
-        return $prompt.' Return valid JSON for a copyright-safe mario-like platformer that can be imported in Godot.';
+        return $prompt.' Return the complete original platformer level JSON.';
     }
 
     private function selectAgent(string $prompt): string
@@ -98,7 +107,7 @@ final class MarioAgentOrchestrator
                 new TerrainElement('gap', 40, 13, 3, 2),
                 new TerrainElement('ground', 43, 13, 60, 2),
                 new TerrainElement('pipe_like_obstacle', 28, 11, 2, 2),
-                new TerrainElement('stairs', 180, 9, null, null, ['steps' => 5]),
+                new TerrainElement('stairs', 180, 9, 5, 4, ['steps' => 5]),
             ],
             objects: [
                 new GameplayObject('coin', 14, 8),
@@ -106,7 +115,7 @@ final class MarioAgentOrchestrator
                 new GameplayObject('enemy', 22, 12, ['kind' => 'walker']),
             ],
             metadata: [
-                'generated_by' => 'symfony_ai_multi_agent',
+                'generated_by' => 'deterministic_fixture',
                 'copyright_safe' => true,
                 'inspiration' => 'classic_2d_platformer',
             ],
@@ -120,27 +129,16 @@ final class MarioAgentOrchestrator
      */
     private function extractJsonPayload(string $resultText): array
     {
-        $decoded = json_decode($resultText, true);
-        if (\is_array($decoded)) {
-            return $decoded;
+        try {
+            $decoded = json_decode($resultText, true, 64, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            throw new \RuntimeException('AI output is invalid JSON. No level was generated.');
+        }
+        if (!\is_array($decoded) || array_is_list($decoded)) {
+            throw new \RuntimeException('AI output must be a level object.');
         }
 
-        return [
-            'name' => 'agent_generated_platformer_level',
-            'tile_size' => 16,
-            'width' => 220,
-            'height' => 15,
-            'player_start' => ['x' => 2, 'y' => 12],
-            'goal' => ['x' => 210, 'y' => 12],
-            'terrain' => [],
-            'objects' => [],
-            'metadata' => [
-                'generated_by' => 'symfony_ai_multi_agent',
-                'copyright_safe' => true,
-                'inspiration' => 'classic_2d_platformer',
-                'raw_output' => $resultText,
-            ],
-        ];
+        return $decoded;
     }
 
     /**
@@ -168,6 +166,50 @@ final class MarioAgentOrchestrator
             $errors[] = 'metadata must be an object.';
         }
 
-        return new ValidationReport([] === $errors, $errors, []);
+        foreach (['tile_size', 'width', 'height'] as $dimension) {
+            if (!\is_int($payload[$dimension] ?? null) || $payload[$dimension] < 1 || $payload[$dimension] > 512) {
+                $errors[] = $dimension.' must be an integer between 1 and 512.';
+            }
+        }
+        if (!\is_string($payload['name'] ?? null) || '' === trim($payload['name'])) {
+            $errors[] = 'name must be nonempty text.';
+        }
+        if (!\is_array($payload['terrain'] ?? null) || [] === $payload['terrain']) {
+            $errors[] = 'terrain must contain at least one element.';
+        }
+        foreach (['terrain', 'objects'] as $collection) {
+            if (\is_array($payload[$collection] ?? null) && (!array_is_list($payload[$collection]) || \count($payload[$collection]) > 100)) {
+                $errors[] = $collection.' must be a list of at most 100 elements.';
+            }
+        }
+        if ([] !== $errors) {
+            return new ValidationReport(false, $errors);
+        }
+        $positions = [$payload['player_start'], $payload['goal'], ...$payload['terrain'], ...$payload['objects']];
+        foreach ($positions as $position) {
+            if (!\is_array($position)) {
+                $errors[] = 'Each position must be an object.';
+                continue;
+            }
+            foreach (['x' => 'width', 'y' => 'height'] as $axis => $dimension) {
+                if (!\is_int($position[$axis] ?? null) || $position[$axis] < 0 || $position[$axis] >= $payload[$dimension]) {
+                    $errors[] = $axis.' must be an integer inside the level bounds.';
+                }
+            }
+        }
+
+        foreach ($payload['terrain'] as $piece) {
+            if (!\is_array($piece)) {
+                continue;
+            }
+            foreach (['w' => 'width', 'h' => 'height'] as $size => $dimension) {
+                $axis = 'w' === $size ? 'x' : 'y';
+                if (!\is_int($piece[$size] ?? null) || $piece[$size] < 1 || !\is_int($piece[$axis] ?? null) || $piece[$axis] + $piece[$size] > $payload[$dimension]) {
+                    $errors[] = 'Terrain dimensions must be positive integers inside the level bounds.';
+                }
+            }
+        }
+
+        return new ValidationReport([] === $errors, $errors, ['Geometry checks do not establish playability or copyright clearance.']);
     }
 }

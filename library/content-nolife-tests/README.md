@@ -33,6 +33,9 @@ composer install
 
 ## Run
 
+`fixtures/article.html` is a synthetic local document used by the existing
+behavioral examples. It contains no production data or copied external article.
+
 ```bash
 # Full suite (Good + Bad educational examples)
 composer test

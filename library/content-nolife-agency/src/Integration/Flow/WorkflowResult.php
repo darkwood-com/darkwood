@@ -13,8 +13,8 @@ final readonly class WorkflowResult
         public string $workflowKey,
         public string $runId,
         public string $finalState,
-        public array $completedSteps = [],
-        public array $outputArtifactPaths = [],
+        public array $completedSteps,
+        public array $outputArtifactPaths,
         public string $status,
         public array $metadata = [],
     ) {

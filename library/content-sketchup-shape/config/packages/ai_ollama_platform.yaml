@@ -3,4 +3,3 @@ ai:
         ollama:
             endpoint: '%env(OLLAMA_HOST_URL)%'
             http_client: http_client.ollama
-            api_catalog: true

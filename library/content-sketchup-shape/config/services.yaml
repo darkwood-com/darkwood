@@ -32,7 +32,7 @@ services:
         resource: '../src/'
 
     # WorkflowRunner lives in vendor (darkwood/navi) — register explicitly
-    App\Application\Workflow\WorkflowRunner: ~
+    Navi\Application\Workflow\WorkflowRunner: ~
 
     # DESIGN AGENT — interprets intention → JSON design spec
     App\Domain\Port\DesignPromptBuilderInterface: '@App\Infrastructure\AI\DesignPromptBuilder'

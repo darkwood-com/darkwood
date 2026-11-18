@@ -1,3 +1,1 @@
-sensio_framework_extra:
-    router:
-        annotations: false
+# Routing uses Symfony's native attribute loader; no Sensio configuration is needed.

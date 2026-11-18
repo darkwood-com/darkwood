@@ -31,7 +31,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  * @psalm-type ImportsConfig = list<string|array{
  *     resource: string,
  *     type?: string|null,
- *     ignore_errors?: bool,
+ *     ignore_errors?: bool|'not_found',
  * }>
  * @psalm-type ParametersConfig = array<string, scalar|\UnitEnum|array<scalar|\UnitEnum|array<mixed>|Param|null>|Param|null>
  * @psalm-type ArgumentsType = list<mixed>|array<string, mixed>
@@ -78,6 +78,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     tags?: TagsType,
  *     resource_tags?: TagsType,
  *     decorates?: string,
+ *     decorates_tag?: string,
  *     decoration_inner_name?: string,
  *     decoration_priority?: int,
  *     decoration_on_invalid?: 'exception'|'ignore'|null,
@@ -118,10 +119,15 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     stack: list<DefinitionType|AliasType|PrototypeType|array<class-string, ArgumentsType|null>>,
  *     public?: bool,
  *     deprecated?: DeprecationType,
+ *     decorates?: string,
+ *     decorates_tag?: string,
+ *     decoration_inner_name?: string,
+ *     decoration_priority?: int,
+ *     decoration_on_invalid?: 'exception'|'ignore'|null,
  * }
  * @psalm-type ServicesConfig = array{
  *     _defaults?: DefaultsType,
- *     _instanceof?: InstanceofType,
+ *     _instanceof?: array<class-string, InstanceofType>,
  *     ...<string, DefinitionType|AliasType|PrototypeType|StackType|ArgumentsType|null>
  * }
  * @psalm-type ExtensionType = array<string, mixed>
@@ -136,9 +142,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     set_locale_from_accept_language?: bool|Param, // Whether to use the Accept-Language HTTP header to set the Request locale (only when the "_locale" request attribute is not passed). // Default: false
  *     set_content_language_from_locale?: bool|Param, // Whether to set the Content-Language HTTP header on the Response using the Request locale. // Default: false
  *     enabled_locales?: list<scalar|Param|null>,
- *     trusted_hosts?: string|list<scalar|Param|null>,
+ *     trusted_hosts?: Param|string|list<scalar|Param|null>,
  *     trusted_proxies?: mixed, // Default: ["%env(default::SYMFONY_TRUSTED_PROXIES)%"]
- *     trusted_headers?: string|list<scalar|Param|null>,
+ *     trusted_headers?: Param|string|list<scalar|Param|null>,
  *     error_controller?: scalar|Param|null, // Default: "error_controller"
  *     handle_all_throwables?: bool|Param, // HttpKernel will handle all kinds of \Throwable. // Default: true
  *     csrf_protection?: bool|array{
@@ -168,7 +174,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         allow_revalidate?: bool|Param,
  *         stale_while_revalidate?: int|Param,
  *         stale_if_error?: int|Param,
- *         terminate_on_cache_hit?: bool|Param,
+ *         terminate_on_cache_hit?: bool|Param, // Deprecated: Setting the "framework.http_cache.terminate_on_cache_hit.terminate_on_cache_hit" configuration option is deprecated. It will be removed in version 9.0.
  *     },
  *     esi?: bool|array{ // ESI configuration
  *         enabled?: bool|Param, // Default: false
@@ -188,7 +194,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         only_exceptions?: bool|Param, // Default: false
  *         only_main_requests?: bool|Param, // Default: false
  *         dsn?: scalar|Param|null, // Default: "file:%kernel.cache_dir%/profiler"
- *         collect_serializer_data?: true|Param, // Default: true
+ *         collect_serializer_data?: true|Param, // Deprecated: Setting the "framework.profiler.collect_serializer_data.collect_serializer_data" configuration option is deprecated. It will be removed in version 9.0. // Default: true
  *     },
  *     workflows?: bool|array{
  *         enabled?: bool|Param, // Default: false
@@ -202,23 +208,23 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 property?: scalar|Param|null,
  *                 service?: scalar|Param|null,
  *             },
- *             supports?: string|list<scalar|Param|null>,
+ *             supports?: Param|string|list<scalar|Param|null>,
  *             definition_validators?: list<scalar|Param|null>,
  *             support_strategy?: scalar|Param|null,
- *             initial_marking?: \BackedEnum|string|list<scalar|Param|null>,
+ *             initial_marking?: \BackedEnum|Param|string|list<scalar|Param|null>,
  *             events_to_dispatch?: null|list<string|Param>,
- *             places?: string|list<array{ // Default: []
+ *             places?: Param|string|list<array{ // Default: []
  *                 name?: scalar|Param|null,
  *                 metadata?: array<string, mixed>,
  *             }>,
  *             transitions?: list<array{ // Default: []
  *                 name?: string|Param,
  *                 guard?: string|Param, // An expression to block the transition.
- *                 from?: \BackedEnum|string|list<array{ // Default: []
+ *                 from?: \BackedEnum|Param|string|list<array{ // Default: []
  *                     place?: string|Param,
  *                     weight?: int|Param, // Default: 1
  *                 }>,
- *                 to?: \BackedEnum|string|list<array{ // Default: []
+ *                 to?: \BackedEnum|Param|string|list<array{ // Default: []
  *                     place?: string|Param,
  *                     weight?: int|Param, // Default: 1
  *                 }>,
@@ -258,7 +264,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     },
  *     request?: bool|array{ // Request configuration
  *         enabled?: bool|Param, // Default: false
- *         formats?: array<string, string|list<scalar|Param|null>>,
+ *         formats?: array<string, Param|string|list<scalar|Param|null>>,
  *     },
  *     assets?: bool|array{ // Assets configuration
  *         enabled?: bool|Param, // Default: true
@@ -268,7 +274,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         version_format?: scalar|Param|null, // Default: "%%s?%%s"
  *         json_manifest_path?: scalar|Param|null, // Default: null
  *         base_path?: scalar|Param|null, // Default: ""
- *         base_urls?: string|list<scalar|Param|null>,
+ *         base_urls?: Param|string|list<scalar|Param|null>,
  *         packages?: array<string, array{ // Default: []
  *             strict_mode?: bool|Param, // Throw an exception if an entry is missing from the manifest.json. // Default: false
  *             version_strategy?: scalar|Param|null, // Default: null
@@ -276,12 +282,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             version_format?: scalar|Param|null, // Default: null
  *             json_manifest_path?: scalar|Param|null, // Default: null
  *             base_path?: scalar|Param|null, // Default: ""
- *             base_urls?: string|list<scalar|Param|null>,
+ *             base_urls?: Param|string|list<scalar|Param|null>,
  *         }>,
  *     },
  *     asset_mapper?: bool|array{ // Asset Mapper configuration
  *         enabled?: bool|Param, // Default: true
- *         paths?: string|array<string, scalar|Param|null>,
+ *         paths?: Param|string|array<string, scalar|Param|null>,
  *         excluded_patterns?: list<scalar|Param|null>,
  *         exclude_dotfiles?: bool|Param, // If true, any files starting with "." will be excluded from the asset mapper. // Default: true
  *         server?: bool|Param, // If true, a "dev server" will return the assets from the public directory (true in "debug" mode only by default). // Default: true
@@ -300,7 +306,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     },
  *     translator?: bool|array{ // Translator configuration
  *         enabled?: bool|Param, // Default: false
- *         fallbacks?: string|list<scalar|Param|null>,
+ *         fallbacks?: Param|string|list<scalar|Param|null>,
  *         logging?: bool|Param, // Default: false
  *         formatter?: scalar|Param|null, // Default: "translator.formatter.default"
  *         cache_dir?: scalar|Param|null, // Default: "%kernel.cache_dir%/translations"
@@ -319,7 +325,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             domains?: list<scalar|Param|null>,
  *             locales?: list<scalar|Param|null>,
  *         }>,
- *         globals?: array<string, string|array{ // Default: []
+ *         globals?: array<string, Param|string|array{ // Default: []
  *             value?: mixed,
  *             message?: string|Param,
  *             parameters?: array<string, scalar|Param|null>,
@@ -329,7 +335,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     validation?: bool|array{ // Validation configuration
  *         enabled?: bool|Param, // Default: false
  *         enable_attributes?: bool|Param, // Default: true
- *         static_method?: string|list<scalar|Param|null>,
+ *         static_method?: Param|string|list<scalar|Param|null>,
  *         translation_domain?: scalar|Param|null, // Default: "validators"
  *         email_validation_mode?: "html5"|"html5-allow-no-tld"|"strict"|Param, // Default: "html5"
  *         mapping?: array{
@@ -340,6 +346,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             endpoint?: scalar|Param|null, // API endpoint for the NotCompromisedPassword Validator. // Default: null
  *         },
  *         disable_translation?: bool|Param, // Default: false
+ *         property_metadata_existence_check?: bool|Param, // When enabled, validateProperty() and validatePropertyValue() throw an exception if no metadata is found for the given property. // Default: false
  *         auto_mapping?: array<string, array{ // Default: []
  *             services?: list<scalar|Param|null>,
  *         }>,
@@ -389,13 +396,14 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         default_doctrine_dbal_provider?: scalar|Param|null, // Default: "database_connection"
  *         default_pdo_provider?: scalar|Param|null, // Default: null
  *         pools?: array<string, array{ // Default: []
- *             adapters?: string|list<scalar|Param|null>,
+ *             adapters?: Param|string|list<scalar|Param|null>,
  *             tags?: scalar|Param|null, // Default: null
  *             public?: bool|Param, // Default: false
  *             default_lifetime?: scalar|Param|null, // Default lifetime of the pool.
  *             provider?: scalar|Param|null, // Overwrite the setting from the default provider for this adapter.
  *             early_expiration_message_bus?: scalar|Param|null,
  *             clearer?: scalar|Param|null,
+ *             marshaller?: scalar|Param|null, // The marshaller service to use for this pool.
  *         }>,
  *     },
  *     php_errors?: array{ // PHP errors handling configuration
@@ -410,19 +418,17 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     web_link?: bool|array{ // Web links configuration
  *         enabled?: bool|Param, // Default: true
  *     },
- *     lock?: bool|string|array{ // Lock configuration
+ *     lock?: Param|bool|string|array{ // Lock configuration
  *         enabled?: bool|Param, // Default: false
- *         resources?: string|array<string, string|list<scalar|Param|null>>,
+ *         resources?: Param|string|array<string, Param|string|list<scalar|Param|null>>,
  *     },
- *     semaphore?: bool|string|array{ // Semaphore configuration
+ *     semaphore?: Param|bool|string|array{ // Semaphore configuration
  *         enabled?: bool|Param, // Default: false
- *         resources?: string|array<string, scalar|Param|null>,
+ *         resources?: Param|string|array<string, scalar|Param|null>,
  *     },
  *     messenger?: bool|array{ // Messenger configuration
  *         enabled?: bool|Param, // Default: true
- *         routing?: array<string, string|array{ // Default: []
- *             senders?: list<scalar|Param|null>,
- *         }>,
+ *         routing?: array<string, Param|string|list<scalar|Param|null>>,
  *         serializer?: array{
  *             default_serializer?: scalar|Param|null, // Service id to use as the default serializer for the transports. // Default: "messenger.transport.native_php_serializer"
  *             symfony_serializer?: array{
@@ -430,12 +436,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 context?: array<string, mixed>,
  *             },
  *         },
- *         transports?: array<string, string|array{ // Default: []
+ *         transports?: array<string, Param|string|array{ // Default: []
  *             dsn?: scalar|Param|null,
  *             serializer?: scalar|Param|null, // Service id of a custom serializer to use. // Default: null
  *             options?: array<string, mixed>,
  *             failure_transport?: scalar|Param|null, // Transport name to send failed messages to (after all retries have failed). // Default: null
- *             retry_strategy?: string|array{
+ *             retry_strategy?: Param|string|array{
  *                 service?: scalar|Param|null, // Service id to override the retry strategy entirely. // Default: null
  *                 max_retries?: int|Param, // Default: 3
  *                 delay?: int|Param, // Time in ms to delay (or the initial value when multiplier is used). // Default: 1000
@@ -446,15 +452,15 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             rate_limiter?: scalar|Param|null, // Rate limiter name to use when processing messages. // Default: null
  *         }>,
  *         failure_transport?: scalar|Param|null, // Transport name to send failed messages to (after all retries have failed). // Default: null
- *         stop_worker_on_signals?: int|string|list<scalar|Param|null>,
+ *         stop_worker_on_signals?: Param|int|string|list<scalar|Param|null>,
  *         default_bus?: scalar|Param|null, // Default: null
  *         buses?: array<string, array{ // Default: {"messenger.bus.default":{"default_middleware":{"enabled":true,"allow_no_handlers":false,"allow_no_senders":true},"middleware":[]}}
- *             default_middleware?: bool|string|array{
+ *             default_middleware?: Param|bool|string|array{
  *                 enabled?: bool|Param, // Default: true
  *                 allow_no_handlers?: bool|Param, // Default: false
  *                 allow_no_senders?: bool|Param, // Default: true
  *             },
- *             middleware?: string|list<string|array{ // Default: []
+ *             middleware?: Param|string|list<Param|string|array{ // Default: []
  *                 id?: scalar|Param|null,
  *                 arguments?: list<mixed>,
  *             }>,
@@ -498,14 +504,14 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 enabled?: bool|Param, // Default: false
  *                 cache_pool?: string|Param, // The taggable cache pool to use for storing the responses. // Default: "cache.http_client"
  *                 shared?: bool|Param, // Indicates whether the cache is shared (public) or private. // Default: true
- *                 max_ttl?: int|Param, // The maximum TTL (in seconds) allowed for cached responses. Null means no cap. // Default: null
+ *                 max_ttl?: int|Param, // The maximum TTL (in seconds) allowed for cached responses. // Default: 86400
  *             },
  *             retry_failed?: bool|array{
  *                 enabled?: bool|Param, // Default: false
  *                 retry_strategy?: scalar|Param|null, // service id to override the retry strategy. // Default: null
- *                 http_codes?: int|string|array<string, array{ // Default: []
+ *                 http_codes?: Param|int|string|array<string, array{ // Default: []
  *                     code?: int|Param,
- *                     methods?: string|list<string|Param>,
+ *                     methods?: Param|string|list<string|Param>,
  *                 }>,
  *                 max_retries?: int|Param, // Default: 3
  *                 delay?: int|Param, // Time in ms to delay (or the initial value when multiplier is used). // Default: 1000
@@ -514,8 +520,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 jitter?: float|Param, // Randomness in percent (between 0 and 1) to apply to the delay. // Default: 0.1
  *             },
  *         },
- *         mock_response_factory?: scalar|Param|null, // The id of the service that should generate mock responses. It should be either an invokable or an iterable.
- *         scoped_clients?: array<string, string|array{ // Default: []
+ *         mock_response_factory?: scalar|Param|null, // `true` to always return empty 200 responses, or the id of the service to use to generate mock responses - which should be either an invokable or an iterable.
+ *         scoped_clients?: array<string, Param|string|array{ // Default: []
  *             scope?: scalar|Param|null, // The regular expression that the request URL must match before adding the other options. When none is provided, the base URI is used instead.
  *             base_uri?: scalar|Param|null, // The URI to resolve relative URLs, following rules in RFC 3985, section 2.
  *             auth_basic?: scalar|Param|null, // An HTTP Basic authentication "username:password".
@@ -545,20 +551,21 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 md5?: mixed,
  *             },
  *             crypto_method?: scalar|Param|null, // The minimum version of TLS to accept; must be one of STREAM_CRYPTO_METHOD_TLSv*_CLIENT constants.
+ *             mock_response_factory?: scalar|Param|null, // `true` to always return empty 200 responses, `false` to disable mocking, or the id of the service to use to generate mock responses (invokable or iterable).
  *             extra?: array<string, mixed>,
  *             rate_limiter?: scalar|Param|null, // Rate limiter name to use for throttling requests. // Default: null
  *             caching?: bool|array{ // Caching configuration.
  *                 enabled?: bool|Param, // Default: false
  *                 cache_pool?: string|Param, // The taggable cache pool to use for storing the responses. // Default: "cache.http_client"
  *                 shared?: bool|Param, // Indicates whether the cache is shared (public) or private. // Default: true
- *                 max_ttl?: int|Param, // The maximum TTL (in seconds) allowed for cached responses. Null means no cap. // Default: null
+ *                 max_ttl?: int|Param, // The maximum TTL (in seconds) allowed for cached responses. // Default: 86400
  *             },
  *             retry_failed?: bool|array{
  *                 enabled?: bool|Param, // Default: false
  *                 retry_strategy?: scalar|Param|null, // service id to override the retry strategy. // Default: null
- *                 http_codes?: int|string|array<string, array{ // Default: []
+ *                 http_codes?: Param|int|string|array<string, array{ // Default: []
  *                     code?: int|Param,
- *                     methods?: string|list<string|Param>,
+ *                     methods?: Param|string|list<string|Param>,
  *                 }>,
  *                 max_retries?: int|Param, // Default: 3
  *                 delay?: int|Param, // Time in ms to delay (or the initial value when multiplier is used). // Default: 1000
@@ -575,10 +582,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         transports?: array<string, scalar|Param|null>,
  *         envelope?: array{ // Mailer Envelope configuration
  *             sender?: scalar|Param|null,
- *             recipients?: string|list<scalar|Param|null>,
- *             allowed_recipients?: string|list<scalar|Param|null>,
+ *             recipients?: Param|string|list<scalar|Param|null>,
+ *             allowed_recipients?: Param|string|list<scalar|Param|null>,
  *         },
- *         headers?: array<string, string|array{ // Default: []
+ *         headers?: array<string, Param|string|array{ // Default: []
  *             value?: mixed,
  *         }>,
  *         dkim_signer?: bool|array{ // DKIM signer configuration
@@ -615,7 +622,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         chatter_transports?: array<string, scalar|Param|null>,
  *         texter_transports?: array<string, scalar|Param|null>,
  *         notification_on_failed_messages?: bool|Param, // Default: false
- *         channel_policy?: array<string, string|list<scalar|Param|null>>,
+ *         channel_policy?: array<string, Param|string|list<scalar|Param|null>>,
  *         admin_recipients?: list<array{ // Default: []
  *             email?: scalar|Param|null,
  *             phone?: scalar|Param|null, // Default: ""
@@ -628,13 +635,14 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             cache_pool?: scalar|Param|null, // The cache pool to use for storing the current limiter state. // Default: "cache.rate_limiter"
  *             storage_service?: scalar|Param|null, // The service ID of a custom storage implementation, this precedes any configured "cache_pool". // Default: null
  *             policy?: "fixed_window"|"token_bucket"|"sliding_window"|"compound"|"no_limit"|Param, // The algorithm to be used by this limiter.
- *             limiters?: string|list<scalar|Param|null>,
+ *             limiters?: Param|string|list<scalar|Param|null>,
  *             limit?: int|Param, // The maximum allowed hits in a fixed interval or burst.
  *             interval?: scalar|Param|null, // Configures the fixed interval if "policy" is set to "fixed_window" or "sliding_window". The value must be a number followed by "second", "minute", "hour", "day", "week" or "month" (or their plural equivalent).
  *             rate?: array{ // Configures the fill rate if "policy" is set to "token_bucket".
  *                 interval?: scalar|Param|null, // Configures the rate interval. The value must be a number followed by "second", "minute", "hour", "day", "week" or "month" (or their plural equivalent).
  *                 amount?: int|Param, // Amount of tokens to add each interval. // Default: 1
  *             },
+ *             anchor_at?: scalar|Param|null, // Aligns the "fixed_window" policy to a calendar (e.g. "2024-01-05 00:00:00 UTC" combined with `interval: 1 month` resets the counter on the 5th of each month). UTC if not specified. // Default: null
  *         }>,
  *     },
  *     uid?: bool|array{ // Uid configuration
@@ -644,49 +652,59 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         name_based_uuid_namespace?: scalar|Param|null,
  *         time_based_uuid_version?: 7|6|1|Param, // Default: 7
  *         time_based_uuid_node?: scalar|Param|null,
+ *         uuid47_secret?: scalar|Param|null, // A high-entropy secret used by the "uuid47_transformer" service. Defaults to "kernel.secret". // Default: null
  *     },
  *     html_sanitizer?: bool|array{ // HtmlSanitizer configuration
  *         enabled?: bool|Param, // Default: false
  *         sanitizers?: array<string, array{ // Default: []
+ *             default_action?: "drop"|"block"|"allow"|Param, // Defines how the sanitizer must behave by default.
  *             allow_safe_elements?: bool|Param, // Allows "safe" elements and attributes. // Default: false
  *             allow_static_elements?: bool|Param, // Allows all static elements and attributes from the W3C Sanitizer API standard. // Default: false
  *             allow_elements?: array<string, mixed>,
- *             block_elements?: string|list<string|Param>,
- *             drop_elements?: string|list<string|Param>,
+ *             block_elements?: Param|string|list<string|Param>,
+ *             drop_elements?: Param|string|list<string|Param>,
  *             allow_attributes?: array<string, mixed>,
  *             drop_attributes?: array<string, mixed>,
  *             force_attributes?: array<string, array<string, string|Param>>,
  *             force_https_urls?: bool|Param, // Transforms URLs using the HTTP scheme to use the HTTPS scheme instead. // Default: false
- *             allowed_link_schemes?: string|list<string|Param>,
- *             allowed_link_hosts?: null|string|list<string|Param>,
+ *             allowed_link_schemes?: Param|string|list<string|Param>,
+ *             allowed_link_hosts?: Param|null|string|list<string|Param>,
  *             allow_relative_links?: bool|Param, // Allows relative URLs to be used in links href attributes. // Default: false
- *             allowed_media_schemes?: string|list<string|Param>,
- *             allowed_media_hosts?: null|string|list<string|Param>,
+ *             allowed_media_schemes?: Param|string|list<string|Param>,
+ *             allowed_media_hosts?: Param|null|string|list<string|Param>,
  *             allow_relative_medias?: bool|Param, // Allows relative URLs to be used in media source attributes (img, audio, video, ...). // Default: false
- *             with_attribute_sanitizers?: string|list<string|Param>,
- *             without_attribute_sanitizers?: string|list<string|Param>,
+ *             with_attribute_sanitizers?: Param|string|list<string|Param>,
+ *             without_attribute_sanitizers?: Param|string|list<string|Param>,
  *             max_input_length?: int|Param, // The maximum length allowed for the sanitized input. // Default: 0
  *         }>,
  *     },
  *     webhook?: bool|array{ // Webhook configuration
  *         enabled?: bool|Param, // Default: false
  *         message_bus?: scalar|Param|null, // The message bus to use. // Default: "messenger.default_bus"
+ *         event_header_name?: scalar|Param|null, // Default: "Webhook-Event"
+ *         id_header_name?: scalar|Param|null, // Default: "Webhook-Id"
+ *         signature_header_name?: scalar|Param|null, // Default: "Webhook-Signature"
+ *         signing_algorithm?: scalar|Param|null, // Default: "sha256"
  *         routing?: array<string, array{ // Default: []
  *             service?: scalar|Param|null,
- *             secret?: scalar|Param|null, // Default: ""
+ *             secret?: scalar|Param|null, // The secret used to verify incoming request signatures. It must be set in production: with an empty value, depending on the parser, requests from any sender are accepted or every request is rejected. // Default: ""
  *         }>,
  *     },
- *     remote-event?: bool|array{ // RemoteEvent configuration
+ *     remote_event?: bool|array{ // RemoteEvent configuration
  *         enabled?: bool|Param, // Default: false
  *     },
  *     json_streamer?: bool|array{ // JSON streamer configuration
  *         enabled?: bool|Param, // Default: false
+ *         default_options?: array{
+ *             include_null_properties?: bool|Param, // Encode the properties with null value // Default: false
+ *             ...<string, mixed>
+ *         },
  *     },
  * }
  * @psalm-type DoctrineConfig = array{
  *     dbal?: array{
  *         default_connection?: scalar|Param|null,
- *         types?: array<string, string|array{ // Default: []
+ *         types?: array<string, Param|string|array{ // Default: []
  *             class?: scalar|Param|null,
  *         }>,
  *         driver_schemes?: array<string, scalar|Param|null>,
@@ -709,7 +727,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             servicename?: scalar|Param|null, // Overrules dbname parameter if given and used as SERVICE_NAME or SID connection parameter for Oracle depending on the service parameter.
  *             sessionMode?: scalar|Param|null, // The session mode to use for the oci8 driver
  *             server?: scalar|Param|null, // The name of a running database server to connect to for SQL Anywhere.
- *             default_dbname?: scalar|Param|null, // Override the default database (postgres) to connect to for PostgreSQL connexion.
+ *             default_dbname?: scalar|Param|null, // Override the default database (postgres) to connect to for PostgreSQL connection.
  *             sslmode?: scalar|Param|null, // Determines whether or with what priority a SSL TCP/IP connection will be negotiated with the server for PostgreSQL.
  *             sslrootcert?: scalar|Param|null, // The name of a file containing SSL certificate authority (CA) certificate(s). If the file exists, the server's certificate will be verified to be signed by one of these authorities.
  *             sslcert?: scalar|Param|null, // The path to the SSL client certificate file for PostgreSQL.
@@ -755,7 +773,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 servicename?: scalar|Param|null, // Overrules dbname parameter if given and used as SERVICE_NAME or SID connection parameter for Oracle depending on the service parameter.
  *                 sessionMode?: scalar|Param|null, // The session mode to use for the oci8 driver
  *                 server?: scalar|Param|null, // The name of a running database server to connect to for SQL Anywhere.
- *                 default_dbname?: scalar|Param|null, // Override the default database (postgres) to connect to for PostgreSQL connexion.
+ *                 default_dbname?: scalar|Param|null, // Override the default database (postgres) to connect to for PostgreSQL connection.
  *                 sslmode?: scalar|Param|null, // Determines whether or with what priority a SSL TCP/IP connection will be negotiated with the server for PostgreSQL.
  *                 sslrootcert?: scalar|Param|null, // The name of a file containing SSL certificate authority (CA) certificate(s). If the file exists, the server's certificate will be verified to be signed by one of these authorities.
  *                 sslcert?: scalar|Param|null, // The path to the SSL client certificate file for PostgreSQL.
@@ -765,8 +783,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 MultipleActiveResultSets?: bool|Param, // Configuring MultipleActiveResultSets for the pdo_sqlsrv driver
  *                 instancename?: scalar|Param|null, // Optional parameter, complete whether to add the INSTANCE_NAME parameter in the connection. It is generally used to connect to an Oracle RAC server to select the name of a particular instance.
  *                 connectstring?: scalar|Param|null, // Complete Easy Connect connection descriptor, see https://docs.oracle.com/database/121/NETAG/naming.htm.When using this option, you will still need to provide the user and password parameters, but the other parameters will no longer be used. Note that when using this parameter, the getHost and getPort methods from Doctrine\DBAL\Connection will no longer function as expected.
+ *                 ...<string, mixed>
  *             }>,
+ *             ...<string, mixed>
  *         }>,
+ *         ...<string, mixed>
  *     },
  *     orm?: array{
  *         default_entity_manager?: scalar|Param|null,
@@ -777,17 +798,17 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             evict_cache?: bool|Param, // Set to true to fetch the entity from the database instead of using the cache, if any // Default: false
  *         },
  *         entity_managers?: array<string, array{ // Default: []
- *             query_cache_driver?: string|array{
+ *             query_cache_driver?: Param|string|array{
  *                 type?: scalar|Param|null, // Default: null
  *                 id?: scalar|Param|null,
  *                 pool?: scalar|Param|null,
  *             },
- *             metadata_cache_driver?: string|array{
+ *             metadata_cache_driver?: Param|string|array{
  *                 type?: scalar|Param|null, // Default: null
  *                 id?: scalar|Param|null,
  *                 pool?: scalar|Param|null,
  *             },
- *             result_cache_driver?: string|array{
+ *             result_cache_driver?: Param|string|array{
  *                 type?: scalar|Param|null, // Default: null
  *                 id?: scalar|Param|null,
  *                 pool?: scalar|Param|null,
@@ -801,21 +822,24 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                         }>,
  *                     }>,
  *                 }>,
+ *                 ...<string, mixed>
  *             },
  *             connection?: scalar|Param|null,
  *             class_metadata_factory_name?: scalar|Param|null, // Default: "Doctrine\\ORM\\Mapping\\ClassMetadataFactory"
  *             default_repository_class?: scalar|Param|null, // Default: "Doctrine\\ORM\\EntityRepository"
  *             auto_mapping?: scalar|Param|null, // Default: false
+ *             auto_discover_entities?: bool|Param|null, // Registers all entity classes discovered by the container scan, removing the need for explicit "mappings". When not set, enabled if neither "mappings" nor "auto_mapping" is configured and Symfony 8.2 and doctrine/orm 3.6 are available. // Default: null
  *             naming_strategy?: scalar|Param|null, // Default: "doctrine.orm.naming_strategy.default"
  *             quote_strategy?: scalar|Param|null, // Default: "doctrine.orm.quote_strategy.default"
  *             typed_field_mapper?: scalar|Param|null, // Default: "doctrine.orm.typed_field_mapper.default"
  *             entity_listener_resolver?: scalar|Param|null, // Default: null
  *             fetch_mode_subselect_batch_size?: scalar|Param|null,
+ *             use_schema_editor_api?: bool|Param|null, // Set to "true" or "false" to explicitly opt in or out of the schema editor API for schema generation. Requires doctrine/dbal 4.5 or higher and doctrine/orm 3.8 or higher. // Default: null
  *             repository_factory?: scalar|Param|null, // Default: "doctrine.orm.container_repository_factory"
  *             schema_ignore_classes?: list<scalar|Param|null>,
  *             validate_xml_mapping?: bool|Param, // Set to "true" to opt-in to the new mapping driver mode that was added in Doctrine ORM 2.14 and will be mandatory in ORM 3.0. See https://github.com/doctrine/orm/pull/6728. // Default: false
  *             second_level_cache?: array{
- *                 region_cache_driver?: string|array{
+ *                 region_cache_driver?: Param|string|array{
  *                     type?: scalar|Param|null, // Default: null
  *                     id?: scalar|Param|null,
  *                     pool?: scalar|Param|null,
@@ -826,7 +850,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 enabled?: bool|Param, // Default: true
  *                 factory?: scalar|Param|null,
  *                 regions?: array<string, array{ // Default: []
- *                     cache_driver?: string|array{
+ *                     cache_driver?: Param|string|array{
  *                         type?: scalar|Param|null, // Default: null
  *                         id?: scalar|Param|null,
  *                         pool?: scalar|Param|null,
@@ -834,7 +858,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                     lock_path?: scalar|Param|null, // Default: "%kernel.cache_dir%/doctrine/orm/slc/filelock"
  *                     lock_lifetime?: scalar|Param|null, // Default: 60
  *                     type?: scalar|Param|null, // Default: "default"
- *                     lifetime?: scalar|Param|null, // Default: 0
+ *                     lifetime?: scalar|Param|null, // Default: null
  *                     service?: scalar|Param|null,
  *                     name?: scalar|Param|null,
  *                 }>,
@@ -844,11 +868,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 }>,
  *             },
  *             hydrators?: array<string, scalar|Param|null>,
- *             mappings?: array<string, bool|string|array{ // Default: []
+ *             mappings?: array<string, Param|bool|string|array{ // Default: []
  *                 mapping?: scalar|Param|null, // Default: true
  *                 type?: scalar|Param|null,
  *                 dir?: scalar|Param|null,
- *                 alias?: scalar|Param|null,
+ *                 alias?: scalar|Param|null, // Deprecated: The "doctrine.orm.entity_managers..mappings..alias.alias" option is deprecated and will be removed in DoctrineBundle 4.0, as Doctrine ORM no longer supports entity namespace aliases.
  *                 prefix?: scalar|Param|null,
  *                 is_bundle?: bool|Param,
  *             }>,
@@ -857,14 +881,16 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 numeric_functions?: array<string, scalar|Param|null>,
  *                 datetime_functions?: array<string, scalar|Param|null>,
  *             },
- *             filters?: array<string, string|array{ // Default: []
+ *             filters?: array<string, Param|string|array{ // Default: []
  *                 class?: scalar|Param|null,
  *                 enabled?: bool|Param, // Default: false
  *                 parameters?: array<string, mixed>,
+ *                 ...<string, mixed>
  *             }>,
  *             identity_generation_preferences?: array<string, scalar|Param|null>,
  *         }>,
  *         resolve_target_entities?: array<string, scalar|Param|null>,
+ *         ...<string, mixed>
  *     },
  * }
  * @psalm-type DoctrineMigrationsConfig = array{
@@ -897,17 +923,53 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             api_key?: string|Param,
  *             base_url?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         amazeeai?: array{
  *             base_url?: string|Param,
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         anthropic?: array{
  *             api_key?: string|Param,
  *             version?: string|Param, // Default: null
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *             cache_retention?: "none"|"short"|"long"|Param, // Prompt cache retention policy for Anthropic models // Default: "short"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         azure?: array<string, array{ // Default: []
  *             api_key?: string|Param,
@@ -915,10 +977,41 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             deployment?: string|Param,
  *             api_version?: string|Param, // The used API version
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         }>,
  *         bedrock?: array<string, array{ // Default: []
- *             bedrock_runtime_client?: string|Param, // Service ID of the Bedrock runtime client to use // Default: null
- *             model_catalog?: string|Param, // Default: null
+ *             api?: "invoke_model"|"completions"|"responses"|"messages"|Param, // Inference engine and protocol: the SDK-based InvokeModel API, or one of the Bedrock Mantle routes // Default: "invoke_model"
+ *             bedrock_runtime_client?: string|Param, // Service ID of the Bedrock runtime client to use; only valid with "api: invoke_model" // Default: null
+ *             api_key?: string|Param, // Bedrock API key; when omitted, requests are signed with AWS SigV4. Mantle only
+ *             region?: string|Param, // AWS region the Mantle base URL is derived from, defaults to "us-west-2". Mantle only
+ *             credential_provider?: string|Param, // Service ID of the AsyncAws credential provider used for SigV4 signing. Mantle only
+ *             http_client?: string|Param, // Service ID of the HTTP client to use, defaults to "http_client". Mantle only
+ *             path?: string|Param, // Overrides the Mantle request path, for models served on the other path prefix
+ *             cache_retention?: "none"|"short"|"long"|Param, // Anthropic Messages prompt-cache retention, defaults to "short"; only valid with "api: messages"
+ *             workspace?: string|Param, // Bedrock Mantle workspace ID sent with Anthropic Messages requests; only valid with "api: messages"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         }>,
  *         cache?: array<string, array{ // Default: []
  *             platform?: string|Param,
@@ -930,136 +1023,536 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             api_key?: string|Param,
  *             version?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         cerebras?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         cohere?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         decart?: array{
  *             api_key?: string|Param,
  *             host?: string|Param, // Default: "https://api.decart.ai/v1"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
+ *         },
+ *         deepgram?: array{
+ *             api_key?: string|Param,
+ *             endpoint?: string|Param, // Deepgram REST API endpoint // Default: "https://api.deepgram.com/v1/"
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         deepseek?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         dockermodelrunner?: array{
  *             host_url?: string|Param, // Default: "http://127.0.0.1:12434"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
+ *         },
+ *         edenai?: array{
+ *             api_key?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 api?: bool|Param, // Fetch the models from the provider API instead of using the bundled list // Default: false
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         elevenlabs?: array{
  *             api_key?: string|Param,
  *             endpoint?: string|Param, // Default: "https://api.elevenlabs.io/v1/"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         failover?: array<string, array{ // Default: []
  *             platforms?: list<scalar|Param|null>,
  *             rate_limiter?: string|Param,
  *         }>,
+ *         fireworks?: array{
+ *             api_key?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
+ *         },
  *         gemini?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         generic?: array<string, array{ // Default: []
  *             base_url?: string|Param,
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *             model_catalog?: string|Param, // Service ID of the model catalog to use
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *             supports_completions?: bool|Param, // Default: true
  *             supports_embeddings?: bool|Param, // Default: true
  *             completions_path?: string|Param, // Default: "/v1/chat/completions"
  *             embeddings_path?: string|Param, // Default: "/v1/embeddings"
  *         }>,
+ *         higgsfield?: array{
+ *             api_key?: string|Param,
+ *             api_secret?: string|Param,
+ *             base_url?: string|Param, // Base URL of the Higgsfield API. Defaults to "https://platform.higgsfield.ai" when null.
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
+ *         },
  *         huggingface?: array{
  *             api_key?: string|Param,
- *             provider?: string|Param, // Default: "hf-inference"
+ *             provider?: string|Param, // Inference provider for chat completion, Hugging Face picks one when null // Default: null
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 api?: bool|Param, // Fetch the models from the provider API instead of using the bundled list // Default: false
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         lmstudio?: array{
  *             host_url?: string|Param, // Default: "http://127.0.0.1:1234"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
+ *         },
+ *         minimax?: array{
+ *             endpoint?: string|Param, // Default: "https://api.minimax.io/v1"
+ *             api_key?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         mistral?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         ollama?: array{
  *             endpoint?: string|Param, // Endpoint for Ollama (e.g. "http://127.0.0.1:11434" for local, or a cloud endpoint). If null, the http_client is used as-is and must already be configured with a base URI.
  *             api_key?: string|Param, // API key for Ollama Cloud authentication (optional for local usage)
  *             http_client?: string|Param, // Service ID of the HTTP client to use. When "endpoint" is null, this client must be pre-configured (e.g. with a base_uri). // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         openai?: array{
  *             api_key?: string|Param,
  *             region?: scalar|Param|null, // The region for OpenAI API (EU, US, or null for default) // Default: null
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         openresponses?: array<string, array{ // Default: []
  *             base_url?: string|Param,
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *             model_catalog?: string|Param, // Service ID of the model catalog to use
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *             responses_path?: string|Param, // Default: "/v1/responses"
  *         }>,
  *         openrouter?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 api?: bool|Param, // Fetch the models from the provider API instead of using the bundled list // Default: false
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         ovh?: array{
  *             api_key?: scalar|Param|null,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         perplexity?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         scaleway?: array{
  *             api_key?: scalar|Param|null,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
- *         transformersphp?: array<mixed>,
+ *         together?: array{
+ *             api_key?: string|Param,
+ *             endpoint?: string|Param, // Base endpoint for the Together API. Defaults to "https://api.together.xyz" when null.
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
+ *         },
+ *         transformersphp?: array{
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
+ *         },
+ *         typesafe?: array{
+ *             api_key?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
+ *         },
+ *         venice?: array{
+ *             api_key?: string|Param,
+ *             endpoint?: string|Param, // Default: "https://api.venice.ai/api/v1/"
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
+ *         },
  *         vertexai?: array{
  *             location?: string|Param, // Required for the project-scoped endpoint. Must be set together with "project_id". // Default: null
  *             project_id?: string|Param, // Required for the project-scoped endpoint. Must be set together with "location". // Default: null
  *             api_key?: string|Param, // When set without "location" and "project_id", uses the global endpoint. Note: API keys only identify the project for billing and do not provide identity-based access control. For production use with IAM, audit logging, or data residency, prefer the project-scoped endpoint with service account authentication. // Default: null
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *         voyage?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: Param|string|array{ // Model catalog of the platform, a string is short for the "service" option
+ *                 service?: string|Param, // Service ID of a custom model catalog to use instead of the bridge one
+ *                 models?: array<string, array{ // Default: []
+ *                     class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
+ *                     capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
+ *                 }>,
+ *                 cache?: bool|array{ // Caches the model lookups, "true" is short for enabling it with the defaults
+ *                     enabled?: bool|Param, // Default: false
+ *                     service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
+ *                     ttl?: int|Param, // Lifetime of the cached lookups in seconds // Default: 3600
+ *                 },
+ *             },
  *         },
  *     },
- *     model?: array<string, array<string, array{ // Default: []
- *         class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
- *         capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
- *     }>>,
  *     agent?: array<string, array{ // Default: []
  *         platform?: string|Param, // Service name of platform // Default: "Symfony\\AI\\Platform\\PlatformInterface"
  *         model?: mixed,
  *         memory?: mixed, // Memory configuration: string for static memory, or array with "service" key for service reference // Default: null
- *         prompt?: string|array{ // The system prompt configuration
+ *         prompt?: Param|string|array{ // The system prompt configuration
  *             text?: string|Param, // The system prompt text
  *             file?: string|Param, // Path to file containing the system prompt
  *             include_tools?: bool|Param, // Include tool definitions at the end of the system prompt // Default: false
  *             enable_translation?: bool|Param, // Enable translation for the system prompt // Default: false
  *             translation_domain?: string|Param, // The translation domain for the system prompt // Default: null
  *         },
- *         tools?: bool|array{
- *             enabled?: bool|Param, // Default: true
- *             services?: list<string|array{ // Default: []
+ *         tools?: bool|array{ // Tools are opt-in: set to true to inject all services tagged with "ai.tool", or configure an explicit list of tools. When the option is omitted (or set to null or false), no tools are registered.
+ *             enabled?: bool|Param, // Default: false
+ *             execution_strategy?: scalar|Param|null, // The tool execution strategy. Built-in options are "sequential" (default) and "fiber". A custom service ID implementing ToolExecutorInterface can also be provided. // Default: null
+ *             services?: list<Param|string|array{ // Default: []
  *                 service?: string|Param,
  *                 agent?: string|Param,
+ *                 mcp_server?: string|Param, // A remote MCP server whose tools are exposed to this agent, as "<client>.<server>" referencing a connection configured under "mcp.clients".
  *                 name?: string|Param,
  *                 description?: string|Param,
  *                 method?: string|Param,
+ *                 prefix?: string|Param, // Only with "mcp_server": prefix put in front of every remote tool name. Defaults to "<server>_".
  *             }>,
  *         },
- *         keep_tool_messages?: bool|Param, // Keep tool messages in the conversation history // Default: false
  *         include_sources?: bool|Param, // Include sources exposed by tools as part of the tool result metadata // Default: false
+ *         message_store?: string|Param, // Service name of the message store continuing and saving the conversations of the agent by their ID // Default: null
+ *         max_tool_calls?: scalar|Param|null, // Maximum number of tool calls per agent call, null to disable // Default: 50
  *         fault_tolerant_toolbox?: bool|Param, // Continue the agent run even if a tool call fails // Default: true
  *         speech?: bool|array{ // Speech (TTS/STT) decorator configuration
  *             enabled?: bool|Param, // Default: true
@@ -1093,6 +1586,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         chromadb?: array<string, array{ // Default: []
  *             client?: string|Param, // Default: "Codewithkyrian\\ChromaDB\\Client"
  *             collection?: string|Param,
+ *             embedding_function?: string|Param, // Service id of a Codewithkyrian\ChromaDB\Embeddings\EmbeddingFunction, required to query the store with a TextQuery.
  *         }>,
  *         clickhouse?: array<string, array{ // Default: []
  *             dsn?: string|Param,
@@ -1104,36 +1598,43 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             account_id?: string|Param,
  *             api_key?: string|Param,
  *             index_name?: string|Param,
+ *             http_client?: string|Param, // Default: "http_client"
  *             dimensions?: int|Param, // Default: 1536
  *             metric?: string|Param, // Default: "cosine"
  *             endpoint?: string|Param,
+ *         }>,
+ *         doctrine?: array<string, array{ // Default: []
+ *             entity?: string|Param, // FQCN of the entity with #[Embedding] on a field, or on the class when it is mirrored.
+ *             metric?: "cosine"|"euclidean"|"inner_product"|Param, // Metric to use for vector similarity search. // Default: "cosine"
+ *             entity_manager?: string|Param, // Service id of the entity manager owning the entity. // Default: "doctrine.orm.entity_manager"
+ *             vectorizer?: string|Param, // Service id of the vectorizer embedding the entities on flush and through "ai:store:index". // Default: null
+ *             mirror_to?: string|Param, // Service id of the store to mirror the entity into, needs a "vectorizer" and #[Embedding] on the entity class. // Default: null
  *         }>,
  *         elasticsearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
  *             index_name?: string|Param,
  *             vectors_field?: string|Param, // Default: "_vectors"
  *             dimensions?: int|Param, // Default: 1536
- *             similarity?: string|Param, // Default: "cosine"
- *             http_client?: string|Param, // Default: "http_client"
+ *             metric?: string|Param, // Default: "cosine"
+ *             http_client?: string|Param,
  *         }>,
  *         manticoresearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
  *             table?: string|Param,
  *             field?: string|Param, // Default: "_vectors"
  *             type?: string|Param, // Default: "hnsw"
- *             similarity?: string|Param, // Default: "cosine"
+ *             metric?: string|Param, // Default: "cosine"
  *             dimensions?: int|Param, // Default: 1536
  *             quantization?: string|Param,
+ *             http_client?: string|Param,
  *         }>,
  *         mariadb?: array<string, array{ // Default: []
  *             connection?: string|Param,
  *             table_name?: string|Param,
  *             index_name?: string|Param,
  *             vector_field_name?: string|Param,
- *             setup_options?: array{
- *                 dimensions?: int|Param,
- *             },
- *             distance?: "cosine"|"euclidean"|"distance"|Param, // Distance metric to use for vector similarity search // Default: "euclidean"
+ *             dimensions?: int|Param, // Number of dimensions of the vector column created by "ai:store:setup"
+ *             metric?: "cosine"|"euclidean"|"distance"|Param, // Distance metric to use for vector similarity search // Default: "euclidean"
  *         }>,
  *         meilisearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
@@ -1155,7 +1656,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             collection?: string|Param,
  *             vector_field?: string|Param, // Default: "_vectors"
  *             dimensions?: int|Param, // Default: 1536
- *             metric_type?: string|Param, // Default: "COSINE"
+ *             metric?: string|Param, // Default: "COSINE"
+ *             http_client?: string|Param,
  *         }>,
  *         mongodb?: array<string, array{ // Default: []
  *             client?: string|Param, // Default: "MongoDB\\Client"
@@ -1164,9 +1666,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             index_name?: string|Param,
  *             vector_field?: string|Param, // Default: "vector"
  *             bulk_write?: bool|Param, // Default: false
- *             setup_options?: array{
- *                 fields?: mixed, // Default: []
- *             },
+ *             dimensions?: int|Param, // Number of dimensions of the vector index created by "ai:store:setup"
+ *             metric?: "euclidean"|"cosine"|"dotProduct"|Param, // Distance function of the vector index created by "ai:store:setup"
+ *             index_fields?: mixed, // Extra fields of the vector index created by "ai:store:setup", like filter fields
  *         }>,
  *         neo4j?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
@@ -1177,16 +1679,17 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             node_name?: string|Param,
  *             vector_field?: string|Param, // Default: "embeddings"
  *             dimensions?: int|Param, // Default: 1536
- *             distance?: string|Param, // Default: "cosine"
+ *             metric?: string|Param, // Default: "cosine"
  *             quantization?: bool|Param,
+ *             http_client?: string|Param,
  *         }>,
  *         opensearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
  *             index_name?: string|Param,
  *             vectors_field?: string|Param, // Default: "_vectors"
  *             dimensions?: int|Param, // Default: 1536
- *             space_type?: string|Param, // Default: "l2"
- *             http_client?: string|Param, // Default: "http_client"
+ *             metric?: string|Param, // Default: "l2"
+ *             http_client?: string|Param,
  *         }>,
  *         pinecone?: array<string, array{ // Default: []
  *             client?: string|Param, // Default: "Probots\\Pinecone\\Client"
@@ -1194,6 +1697,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             namespace?: string|Param,
  *             filter?: list<scalar|Param|null>,
  *             top_k?: int|Param,
+ *             dimensions?: int|Param, // Number of dimensions of the index created by "ai:store:setup"
+ *             metric?: "cosine"|"euclidean"|"dotproduct"|Param, // Distance metric of the index created by "ai:store:setup"
+ *             cloud?: string|Param, // Cloud of the serverless index created by "ai:store:setup"
+ *             region?: string|Param, // Region of the serverless index created by "ai:store:setup"
  *         }>,
  *         postgres?: array<string, array{ // Default: []
  *             dsn?: string|Param,
@@ -1201,15 +1708,13 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             password?: string|Param,
  *             table_name?: string|Param,
  *             vector_field?: string|Param, // Default: "embedding"
- *             distance?: "cosine"|"inner_product"|"l1"|"l2"|Param, // Distance metric to use for vector similarity search // Default: "l2"
+ *             metric?: "cosine"|"inner_product"|"l1"|"l2"|Param, // Distance metric to use for vector similarity search // Default: "l2"
  *             lang?: string|Param, // Default: "english"
  *             dbal_connection?: string|Param,
- *             setup_options?: array{
- *                 vector_type?: string|Param, // Default: "vector"
- *                 vector_size?: int|Param, // Default: 1536
- *                 index_method?: string|Param, // Default: "ivfflat"
- *                 index_opclass?: string|Param, // Default: "vector_cosine_ops"
- *             },
+ *             dimensions?: int|Param, // Number of dimensions of the vector column created by "ai:store:setup"
+ *             vector_type?: "vector"|"halfvec"|Param, // Type of the vector column created by "ai:store:setup"
+ *             index_method?: string|Param, // The pgvector index method, "hnsw" by default.
+ *             index_opclass?: string|Param, // The operator class of the index, the one of the distance by default (e.g. "vector_l2_ops").
  *         }>,
  *         qdrant?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
@@ -1217,7 +1722,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             collection_name?: string|Param, // The name of the store will be used if the "collection_name" is not set
  *             http_client?: string|Param, // Default: "http_client"
  *             dimensions?: int|Param, // Default: 1536
- *             distance?: string|Param, // Default: "Cosine"
+ *             metric?: string|Param, // Default: "Cosine"
  *             async?: bool|Param, // Default: false
  *         }>,
  *         redis?: array<string, array{ // Default: []
@@ -1225,14 +1730,17 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             client?: string|Param, // a service id of a Redis client
  *             index_name?: string|Param,
  *             key_prefix?: string|Param, // Default: "vector:"
- *             distance?: "COSINE"|"L2"|"IP"|Param, // Distance metric to use for vector similarity search // Default: "COSINE"
+ *             metric?: "COSINE"|"L2"|"IP"|Param, // Distance metric to use for vector similarity search // Default: "COSINE"
+ *             dimensions?: int|Param, // Number of dimensions of the index created by "ai:store:setup"
  *         }>,
  *         s3vectors?: array<string, array{ // Default: []
  *             client?: string|Param, // Service reference to an existing S3VectorsClient
- *             configuration?: array<mixed>,
+ *             configuration?: list<scalar|Param|null>,
  *             vector_bucket_name?: string|Param,
  *             index_name?: string|Param,
- *             filter?: array<mixed>,
+ *             filter?: list<mixed>,
+ *             dimensions?: int|Param, // Number of dimensions of the index created by "ai:store:setup"
+ *             metric?: "cosine"|"euclidean"|Param, // Distance metric of the index created by "ai:store:setup"
  *             top_k?: int|Param, // Default number of results to return // Default: 3
  *         }>,
  *         sqlite?: array<string, array{ // Default: []
@@ -1241,16 +1749,16 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             table_name?: string|Param,
  *             strategy?: string|Param,
  *             vec?: bool|Param, // Default: false
- *             distance?: "cosine"|"L2"|Param, // Default: "cosine"
- *             vector_dimension?: int|Param, // Default: 1536
+ *             metric?: "cosine"|"L2"|Param, // Default: "cosine"
+ *             dimensions?: int|Param, // Default: 1536
  *         }>,
  *         supabase?: array<string, array{ // Default: []
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             http_client?: string|Param, // Service ID of the HTTP client to use
  *             url?: string|Param,
  *             api_key?: string|Param,
  *             table?: string|Param,
  *             vector_field?: string|Param, // Default: "embedding"
- *             vector_dimension?: int|Param, // Default: 1536
+ *             dimensions?: int|Param, // Default: 1536
  *             function_name?: string|Param, // Default: "match_documents"
  *         }>,
  *         surrealdb?: array<string, array{ // Default: []
@@ -1260,8 +1768,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             namespace?: string|Param,
  *             database?: string|Param,
  *             table?: string|Param,
+ *             http_client?: string|Param, // Default: "http_client"
  *             vector_field?: string|Param, // Default: "_vectors"
- *             strategy?: string|Param, // Default: "cosine"
+ *             metric?: string|Param, // Default: "cosine"
  *             dimensions?: int|Param, // Default: 1536
  *             namespaced_user?: bool|Param,
  *         }>,
@@ -1269,6 +1778,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             endpoint?: string|Param,
  *             api_key?: string|Param,
  *             collection?: string|Param,
+ *             http_client?: string|Param, // Default: "http_client"
  *             vector_field?: string|Param, // Default: "_vectors"
  *             dimensions?: int|Param, // Default: 1536
  *         }>,
@@ -1307,7 +1817,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             index_name?: string|Param,
  *         }>,
  *         memory?: array<string, array{ // Default: []
- *             identifier?: string|Param,
  *         }>,
  *         mongodb?: array<string, array{ // Default: []
  *             client?: string|Param, // Default: "MongoDB\\Client"
@@ -1338,10 +1847,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             namespaced_user?: bool|Param, // Using a namespaced user is a good practice to prevent any undesired access to a specific table, see https://surrealdb.com/docs/surrealdb/reference-guide/security-best-practices
  *         }>,
  *     },
- *     chat?: array<string, array{ // Default: []
- *         agent?: string|Param,
- *         message_store?: string|Param,
- *     }>,
  *     vectorizer?: array<string, array{ // Default: []
  *         platform?: string|Param, // Service name of platform // Default: "Symfony\\AI\\Platform\\PlatformInterface"
  *         model?: mixed,
@@ -1363,7 +1868,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     hubs?: array<string, array{ // Default: []
  *         url?: scalar|Param|null, // URL of the hub's publish endpoint
  *         public_url?: scalar|Param|null, // URL of the hub's public endpoint // Default: null
- *         jwt?: string|array{ // JSON Web Token configuration.
+ *         jwt?: Param|string|array{ // JSON Web Token configuration.
  *             value?: scalar|Param|null, // JSON Web Token to use to publish to this hub.
  *             provider?: scalar|Param|null, // The ID of a service to call to provide the JSON Web Token.
  *             factory?: scalar|Param|null, // The ID of a service to call to create the JSON Web Token.
@@ -1386,6 +1891,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         id?: scalar|Param|null,
  *         type?: scalar|Param|null,
  *         value?: mixed,
+ *         ...<string, mixed>
  *     }>,
  *     autoescape_service?: scalar|Param|null, // Default: null
  *     autoescape_service_method?: scalar|Param|null, // Default: null
@@ -1396,7 +1902,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     auto_reload?: scalar|Param|null,
  *     optimizations?: int|Param,
  *     default_path?: scalar|Param|null, // The default path used to load templates. // Default: "%kernel.project_dir%/templates"
- *     file_name_pattern?: string|list<scalar|Param|null>,
+ *     file_name_pattern?: Param|string|list<scalar|Param|null>,
  *     paths?: array<string, mixed>,
  *     date?: array{ // The default format options used by the date filter.
  *         format?: scalar|Param|null, // Default: "F j, Y H:i"
@@ -1425,6 +1931,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *     },
  *     default_transport?: scalar|Param|null, // Default: "default"
+ *     mercure?: array{
+ *         ignore_cookie_domain_errors?: bool|Param, // Render nothing and log a warning, instead of failing, when the authorization cookie of a private stream source cannot be created because the page is served on another domain than the hub // Default: false
+ *     },
  * }
  * @psalm-type UxNativeConfig = array{
  *     output_dir?: scalar|Param|null, // Directory where configuration JSON files are written. Defaults to %kernel.project_dir%/public. // Default: null
@@ -1433,7 +1942,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     access_denied_url?: scalar|Param|null, // Default: null
  *     session_fixation_strategy?: "none"|"migrate"|"invalidate"|Param, // Default: "migrate"
  *     expose_security_errors?: \Symfony\Component\Security\Http\Authentication\ExposeSecurityLevel::None|\Symfony\Component\Security\Http\Authentication\ExposeSecurityLevel::AccountStatus|\Symfony\Component\Security\Http\Authentication\ExposeSecurityLevel::All|Param, // Default: "none"
- *     erase_credentials?: bool|Param, // Default: true
+ *     erase_credentials?: bool|Param, // Deprecated: Setting the "security.erase_credentials.erase_credentials" configuration option is deprecated. It will be removed in Symfony 9.0, as the "eraseCredentials()" method was removed in Symfony 8.0. // Default: true
  *     access_decision_manager?: array{
  *         strategy?: "affirmative"|"consensus"|"unanimous"|"priority"|Param,
  *         service?: scalar|Param|null,
@@ -1441,9 +1950,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         allow_if_all_abstain?: bool|Param, // Default: false
  *         allow_if_equal_granted_denied?: bool|Param, // Default: true
  *     },
- *     password_hashers?: array<string, string|array{ // Default: []
+ *     password_hashers?: array<string, Param|string|array{ // Default: []
  *         algorithm?: scalar|Param|null,
- *         migrate_from?: string|list<scalar|Param|null>,
+ *         migrate_from?: Param|string|list<scalar|Param|null>,
  *         hash_algorithm?: scalar|Param|null, // Name of hashing algorithm for PBKDF2 (i.e. sha256, sha512, etc..) See hash_algos() for a list of supported algorithms. // Default: "sha512"
  *         key_length?: scalar|Param|null, // Default: 40
  *         ignore_case?: bool|Param, // Default: false
@@ -1457,7 +1966,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     providers?: array<string, array{ // Default: []
  *         id?: scalar|Param|null,
  *         chain?: array{
- *             providers?: string|list<scalar|Param|null>,
+ *             providers?: Param|string|list<scalar|Param|null>,
  *         },
  *         entity?: array{
  *             class?: scalar|Param|null, // The full entity class name of your user class.
@@ -1467,7 +1976,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         memory?: array{
  *             users?: array<string, array{ // Default: []
  *                 password?: scalar|Param|null, // Default: null
- *                 roles?: string|list<scalar|Param|null>,
+ *                 roles?: Param|string|list<scalar|Param|null>,
  *             }>,
  *         },
  *         ldap?: array{
@@ -1476,7 +1985,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             search_dn?: scalar|Param|null, // Default: null
  *             search_password?: scalar|Param|null, // Default: null
  *             extra_fields?: list<scalar|Param|null>,
- *             default_roles?: string|list<scalar|Param|null>,
+ *             default_roles?: Param|string|list<scalar|Param|null>,
  *             role_fetcher?: scalar|Param|null, // Default: null
  *             uid_key?: scalar|Param|null, // Default: "sAMAccountName"
  *             filter?: scalar|Param|null, // Default: "({uid_key}={user_identifier})"
@@ -1486,7 +1995,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     firewalls?: array<string, array{ // Default: []
  *         pattern?: scalar|Param|null,
  *         host?: scalar|Param|null,
- *         methods?: string|list<scalar|Param|null>,
+ *         methods?: Param|string|list<scalar|Param|null>,
  *         security?: bool|Param, // Default: true
  *         user_checker?: scalar|Param|null, // The UserChecker to use when authenticating users in this firewall. // Default: "security.user_checker"
  *         request_matcher?: scalar|Param|null,
@@ -1505,8 +2014,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             path?: scalar|Param|null, // Default: "/logout"
  *             target?: scalar|Param|null, // Default: "/"
  *             invalidate_session?: bool|Param, // Default: true
- *             clear_site_data?: string|list<"*"|"cache"|"cookies"|"storage"|"executionContexts"|Param>,
- *             delete_cookies?: string|array<string, array{ // Default: []
+ *             clear_site_data?: Param|string|list<"*"|"cache"|"cookies"|"storage"|"clientHints"|"executionContexts"|"prefetchCache"|"prerenderCache"|Param>,
+ *             delete_cookies?: Param|string|array<string, array{ // Default: []
  *                 path?: scalar|Param|null, // Default: null
  *                 domain?: scalar|Param|null, // Default: null
  *                 secure?: scalar|Param|null, // Default: false
@@ -1526,7 +2035,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             limiter?: scalar|Param|null, // A service id implementing "Symfony\Component\HttpFoundation\RateLimiter\RequestRateLimiterInterface".
  *             max_attempts?: int|Param, // Default: 5
  *             interval?: scalar|Param|null, // Default: "1 minute"
- *             lock_factory?: scalar|Param|null, // The service ID of the lock factory used by the login rate limiter (or null to disable locking). // Default: null
+ *             lock_factory?: scalar|Param|null, // The service ID of the lock factory used by the login rate limiter ("auto" to use the default one when the Lock component is configured, or null to disable locking). // Default: "auto"
  *             cache_pool?: string|Param, // The cache pool to use for storing the limiter state // Default: "cache.rate_limiter"
  *             storage_service?: string|Param, // The service ID of a custom storage implementation, this precedes any configured "cache_pool" // Default: null
  *         },
@@ -1644,11 +2153,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             success_handler?: scalar|Param|null,
  *             failure_handler?: scalar|Param|null,
  *             realm?: scalar|Param|null, // Default: null
- *             token_extractors?: string|list<scalar|Param|null>,
- *             token_handler?: string|array{
+ *             token_extractors?: Param|string|list<scalar|Param|null>,
+ *             token_handler?: Param|string|array{
  *                 id?: scalar|Param|null,
- *                 oidc_user_info?: string|array{
- *                     base_uri?: scalar|Param|null, // Base URI of the userinfo endpoint on the OIDC server, or the OIDC server URI to use the discovery (require "discovery" to be configured).
+ *                 oidc_user_info?: Param|string|array{
+ *                     base_uri?: scalar|Param|null, // Base URI of the userinfo endpoint on the OIDC server, or the OIDC server URI to use the discovery (require "discovery" to be configured). The latter must end with a slash when it has a path, as the discovery path is resolved against it as a relative URL.
  *                     discovery?: array{ // Enable the OIDC discovery.
  *                         cache?: array{
  *                             id?: scalar|Param|null, // Cache service id to use to cache the OIDC discovery configuration.
@@ -1659,10 +2168,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 },
  *                 oidc?: array{
  *                     discovery?: array{ // Enable the OIDC discovery.
- *                         base_uri?: string|list<scalar|Param|null>,
+ *                         base_uri?: Param|string|list<scalar|Param|null>,
  *                         cache?: array{
  *                             id?: scalar|Param|null, // Cache service id to use to cache the OIDC discovery configuration.
  *                         },
+ *                         enforce_key_usage_verification?: bool|Param, // When enabled (default), only keys explicitly designated for signature (via "use":"sig" or a "key_ops" entry containing "sign"/"verify") are accepted. When disabled, keys without any usage designation are also accepted; keys explicitly restricted to encryption are still rejected. // Default: true
  *                     },
  *                     claim?: scalar|Param|null, // Claim which contains the user identifier (e.g.: sub, email..). // Default: "sub"
  *                     audience?: scalar|Param|null, // Audience set in the token, for validation purpose.
@@ -1700,10 +2210,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         remember_me?: array{
  *             secret?: scalar|Param|null, // Default: "%kernel.secret%"
  *             service?: scalar|Param|null,
- *             user_providers?: string|list<scalar|Param|null>,
+ *             user_providers?: Param|string|list<scalar|Param|null>,
  *             catch_exceptions?: bool|Param, // Default: true
  *             signature_properties?: list<scalar|Param|null>,
- *             token_provider?: string|array{
+ *             token_provider?: Param|string|array{
  *                 service?: scalar|Param|null, // The service ID of a custom remember-me token provider.
  *                 doctrine?: bool|array{
  *                     enabled?: bool|Param, // Default: false
@@ -1715,9 +2225,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             lifetime?: int|Param, // Default: 31536000
  *             path?: scalar|Param|null, // Default: "/"
  *             domain?: scalar|Param|null, // Default: null
- *             secure?: true|false|"auto"|Param, // Default: false
+ *             secure?: true|false|"auto"|Param, // Defaults to the value of "framework.session.cookie_secure", or to "auto".
  *             httponly?: bool|Param, // Default: true
- *             samesite?: null|"lax"|"strict"|"none"|Param, // Default: null
+ *             samesite?: null|"lax"|"strict"|"none"|Param, // Defaults to the value of "framework.session.cookie_samesite", or to "lax".
  *             always_remember_me?: bool|Param, // Default: false
  *             remember_me_parameter?: scalar|Param|null, // Default: "_remember_me"
  *         },
@@ -1728,14 +2238,14 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         path?: scalar|Param|null, // Use the urldecoded format. // Default: null
  *         host?: scalar|Param|null, // Default: null
  *         port?: int|Param, // Default: null
- *         ips?: string|list<scalar|Param|null>,
+ *         ips?: Param|string|list<scalar|Param|null>,
  *         attributes?: array<string, scalar|Param|null>,
  *         route?: scalar|Param|null, // Default: null
- *         methods?: string|list<scalar|Param|null>,
+ *         methods?: Param|string|list<scalar|Param|null>,
  *         allow_if?: scalar|Param|null, // Default: null
- *         roles?: string|list<scalar|Param|null>,
+ *         roles?: Param|string|list<scalar|Param|null>,
  *     }>,
- *     role_hierarchy?: array<string, string|list<scalar|Param|null>>,
+ *     role_hierarchy?: array<string, Param|string|list<scalar|Param|null>>,
  * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
@@ -1751,21 +2261,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     turbo?: TurboConfig,
  *     ux_native?: UxNativeConfig,
  *     security?: SecurityConfig,
- *     "when@dev"?: array{
- *         imports?: ImportsConfig,
- *         parameters?: ParametersConfig,
- *         services?: ServicesConfig,
- *         framework?: FrameworkConfig,
- *         doctrine?: DoctrineConfig,
- *         doctrine_migrations?: DoctrineMigrationsConfig,
- *         ai?: AiConfig,
- *         mercure?: MercureConfig,
- *         twig?: TwigConfig,
- *         stimulus?: StimulusConfig,
- *         turbo?: TurboConfig,
- *         ux_native?: UxNativeConfig,
- *         security?: SecurityConfig,
- *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1878,7 +2373,6 @@ namespace Symfony\Component\Routing\Loader\Configurator;
  *     deprecated?: array{package:string, version:string, message?:string},
  * }
  * @psalm-type RoutesConfig = array{
- *     "when@dev"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
  *     "when@prod"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
  *     "when@test"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
  *     ...<string, RouteConfig|ImportConfig|AliasConfig>
