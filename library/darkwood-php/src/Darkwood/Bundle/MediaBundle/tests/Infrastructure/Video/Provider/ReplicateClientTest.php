@@ -18,7 +18,7 @@ final class ReplicateClientTest extends TestCase
     {
         $hex = str_repeat('a', 64);
         $client = new ReplicateClient(
-            $this->createStub(HttpClientInterface::class),
+            self::createStub(HttpClientInterface::class),
             new ReplicateApiConfig('t'),
             ReplicateTestRateLimiterFactory::create(),
         );
@@ -74,7 +74,7 @@ final class ReplicateClientTest extends TestCase
     public function testExtractFirstOutputUrlFindsNestedHttpsUrl()
     {
         $client = new ReplicateClient(
-            $this->createStub(HttpClientInterface::class),
+            self::createStub(HttpClientInterface::class),
             new ReplicateApiConfig(''),
             ReplicateTestRateLimiterFactory::create(),
         );
@@ -167,11 +167,12 @@ final class ReplicateClientTest extends TestCase
 
     private function throttledResponse(): ResponseInterface
     {
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(429);
         $response->method('getHeaders')->willReturn(['retry-after' => ['1']]);
         $response->method('getContent')->willReturnCallback(static function (bool $throw = true): string {
             self::assertFalse($throw);
+
             return '{}';
         });
 
@@ -183,10 +184,11 @@ final class ReplicateClientTest extends TestCase
      */
     private function jsonResponse(array $data, int $status = 200): ResponseInterface
     {
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn($status);
         $response->method('getContent')->willReturnCallback(static function (bool $throw = true) use ($data): string {
             self::assertFalse($throw);
+
             return json_encode($data, JSON_THROW_ON_ERROR);
         });
 

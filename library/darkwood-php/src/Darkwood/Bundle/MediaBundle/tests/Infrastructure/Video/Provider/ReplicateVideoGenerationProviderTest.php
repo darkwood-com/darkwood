@@ -38,7 +38,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
             'output' => ['https://cdn.example.com/video.mp4'],
             'metrics' => ['test_metric' => 1],
         ]);
-        $downloadResponse = $this->createStub(ResponseInterface::class);
+        $downloadResponse = self::createStub(ResponseInterface::class);
 
         $downloadResponse
             ->method('getStatusCode')
@@ -48,9 +48,11 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
         $downloadResponse
             ->method('getContent')
             ->willReturnCallback(static function (bool $throw = true): string {
-            self::assertFalse($throw);
-            return 'FAKE-VIDEO-DATA';
-        });
+                self::assertFalse($throw);
+
+                return 'FAKE-VIDEO-DATA';
+            })
+        ;
 
         $postJson = null;
         $pollCount = 0;
@@ -200,10 +202,11 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
             'status' => 'succeeded',
             'output' => 'https://cdn.example.com/v2.mp4',
         ]);
-        $downloadResponse = $this->createStub(ResponseInterface::class);
+        $downloadResponse = self::createStub(ResponseInterface::class);
         $downloadResponse->method('getStatusCode')->willReturn(200);
         $downloadResponse->method('getContent')->willReturnCallback(static function (bool $throw = true): string {
             self::assertFalse($throw);
+
             return 'X';
         });
 
@@ -316,10 +319,11 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
             'status' => 'succeeded',
             'output' => ['https://cdn.example.com/h.mp4'],
         ]);
-        $download = $this->createStub(ResponseInterface::class);
+        $download = self::createStub(ResponseInterface::class);
         $download->method('getStatusCode')->willReturn(200);
         $download->method('getContent')->willReturnCallback(static function (bool $throw = true): string {
             self::assertFalse($throw);
+
             return 'VID';
         });
 
@@ -380,7 +384,7 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
 
     public function testPollTimeoutExceeded()
     {
-        $httpClient = $this->createStub(HttpClientInterface::class);
+        $httpClient = self::createStub(HttpClientInterface::class);
 
         $createResponse = $this->jsonHttpResponse(['id' => 'pred-slow', 'status' => 'starting']);
         $processingResponse = $this->jsonHttpResponse([
@@ -437,10 +441,11 @@ final class ReplicateVideoGenerationProviderTest extends TestCase
      */
     private function jsonHttpResponse(array $data, int $statusCode = 200): ResponseInterface
     {
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn($statusCode);
         $response->method('getContent')->willReturnCallback(static function (bool $throw = true) use ($data): string {
             self::assertFalse($throw);
+
             return json_encode($data, JSON_THROW_ON_ERROR);
         });
 

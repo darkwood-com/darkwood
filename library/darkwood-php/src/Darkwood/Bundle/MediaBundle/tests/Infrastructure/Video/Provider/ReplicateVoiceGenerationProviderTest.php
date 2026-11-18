@@ -42,7 +42,7 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
             'output' => 'https://cdn.example.com/voice.mp3',
             'metrics' => ['duration' => 2.5],
         ]);
-        $downloadResponse = $this->createStub(ResponseInterface::class);
+        $downloadResponse = self::createStub(ResponseInterface::class);
 
         $downloadResponse
             ->method('getStatusCode')
@@ -52,9 +52,11 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
         $downloadResponse
             ->method('getContent')
             ->willReturnCallback(static function (bool $throw = true): string {
-            self::assertFalse($throw);
-            return 'FAKE-MP3-BYTES';
-        });
+                self::assertFalse($throw);
+
+                return 'FAKE-MP3-BYTES';
+            })
+        ;
 
         $postJson = null;
         $pollCount = 0;
@@ -335,10 +337,11 @@ final class ReplicateVoiceGenerationProviderTest extends TestCase
      */
     private function jsonHttpResponse(array $data, int $statusCode = 200): ResponseInterface
     {
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn($statusCode);
         $response->method('getContent')->willReturnCallback(static function (bool $throw = true) use ($data): string {
             self::assertFalse($throw);
+
             return json_encode($data, JSON_THROW_ON_ERROR);
         });
 
