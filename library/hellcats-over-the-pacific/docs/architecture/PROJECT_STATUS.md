@@ -3915,3 +3915,28 @@ Cycle 88 of job f19bd982:
 - Validation: all Leyte tests pass, QA passes, 51 GiB free.
 - Scale, from overlay_status.py: 542 port functions; 210 kept, 92 reconstructed, 240 missing. Hook 10's
   closure is 176 functions with 45 missing; hook 14's is 121 with 33 missing.
+
+### Cycle 102 checkpoint — routine placement, the frame step's first routines (loop stopped here)
+
+- `tools/leyte/overlay_placement.py` -> `sources/leyte-gulf-1-0/overlay_placement.json`: 400 of 428 1.0.3 overlay
+  routines placed in Leyte's overlay by following the code, and 518 address pairs beyond the overlay map. Seeds: the
+  map's text pairs, whole-alignment correspondence rows, and routines with hand-written cases. Then votes from call
+  targets, relocated longs and PC-relative operands in the aligned instructions, and similarity for the rest. Of the
+  functions verified at their correspondence or relocation place, 133 agree with the placement, 0 differ and 9 are
+  unplaced. Added to QA (--check).
+- gen_overlay_port.py tries a refused function at its placed routine and reads (An) as displacement 0: 161 functions
+  kept (19 through the placement). 3 more hand-written routines are superseded (archived in
+  leyte_overlay_superseded_overrides.md).
+- New tools: `draft_overlay_port.py` (a Leyte draft of a 1.0.3 port function from the placed pair, for hand porting)
+  and `overlay_case_coverage.py` (which instructions no emulator case executes). Coverage found an
+  apply_controller_velocities case setting the wrong flag byte, and spawn_cloud_layer's cloud path never run; both
+  fixed with cases. overlay_status.py shows each missing routine's Leyte address and match counts.
+- 1.0.3's translated cases also run against hand-written routines: 478 cases over 82 functions.
+- Hook 10 batch 1 written with cases: transform_int3_vecs_asr_by_1d744, transform_vecs12_by_matrix3,
+  scale_int3_vecs, apply_controller_velocities, tick_flagged_object_controllers, age_contact_records,
+  build_visible_object_list, emit_faces_in_order / _unnumbered. 521 hand-written cases.
+- Validation: overlay tests, all Leyte tests and QA pass. Start probe clean through the flight loop; hooks 10 and 14
+  missing. Free disk is down to 13 GiB.
+- The autonomous loop was cancelled at the user's request. Prepared but NOT applied (session scratchpad): hook 10
+  batch 2 (project_prepared_object, transform_face_vertices, the face projections, emit_faces_bsp,
+  collect_near_objects) and the own-routine label rule, which in a trial build keeps scan_convert_edge_rows.
