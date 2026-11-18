@@ -24,7 +24,6 @@ final class ExportStaticCommand extends Command
     protected function configure(): void
     {
         $this->addOption('base-path', null, InputOption::VALUE_REQUIRED, 'URL prefix, empty for a custom domain.', '');
-        $this->addOption('workshop', null, InputOption::VALUE_REQUIRED, 'Workshop to export: intent or hackathon.', 'intent');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -35,22 +34,13 @@ final class ExportStaticCommand extends Command
             return Command::INVALID;
         }
 
-        $profile = (string) $input->getOption('workshop');
-        if (!in_array($profile, ['intent', 'hackathon'], true)) {
-            $output->writeln('<error>Unknown workshop profile.</error>');
-            return Command::INVALID;
-        }
-        $hackathon = 'hackathon' === $profile;
-        $directory = $this->projectDir.($hackathon ? '/dist-hackathon' : '/dist');
+        $directory = $this->projectDir.'/dist';
         if (is_link($directory)) {
             throw new \RuntimeException('dist/ must not be a symlink.');
         }
         $assets = ['style.css', 'themes.js', 'static.js', 'intent-model.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'aftertrace/teaser.mp4', 'aftertrace/remembered-route.png'];
-        if ($hackathon) {
-            $assets = ['style.css', 'themes.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'hackathon/mcp-proof.json'];
-        }
         $allowed = array_merge(['index.html', '.nojekyll'], $assets);
-        foreach ($hackathon ? [] : array_keys(IntentExamples::DEMOS) as $slug) {
+        foreach (array_keys(IntentExamples::DEMOS) as $slug) {
             $allowed[] = 'demo/'.$slug.'/index.html';
         }
         if (is_dir($directory)) {
@@ -62,11 +52,8 @@ final class ExportStaticCommand extends Command
         }
 
         $context = ['static_mode' => true, 'base_path' => $prefix, 'demos' => IntentExamples::DEMOS];
-        if ($hackathon) {
-            $context += ['workshop' => 'hackathon', 'site_title' => 'Darkwood Symfony AI MCP Hackathon', 'site_description' => 'Un parcours PHP vérifié : génération de niveau JSON avec Symfony AI et le SDK MCP officiel.', 'site_url' => 'https://ai-mcp-symfony-hackathon-content.darkwood.com/'];
-        }
-        $pages = ['index.html' => [$hackathon ? 'hackathon.html.twig' : 'home.html.twig', $context]];
-        foreach ($hackathon ? [] : IntentExamples::DEMOS as $slug => $demo) {
+        $pages = ['index.html' => ['home.html.twig', $context]];
+        foreach (IntentExamples::DEMOS as $slug => $demo) {
             $pages['demo/'.$slug.'/index.html'] = ['demo.html.twig', $context + ['slug' => $slug, 'demo' => $demo]];
         }
         foreach ($pages as $path => [$template, $values]) {

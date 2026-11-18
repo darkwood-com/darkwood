@@ -40,19 +40,8 @@ Ouvrir `http://127.0.0.1:8097`.
 
 ## Export statique
 
-### Atelier Symfony AI MCP Hackathon
-
-Le même générateur et le thème Darkwood exportent un atelier de présentation autonome, sans nouvelle application ni backend :
-
-```sh
-nix develop -c php bin/console app:export-static --workshop=hackathon
-```
-
-L’artefact est `dist-hackathon/`, séparé de `dist/` pour préserver Intention. Le manifeste de distribution relie cet export au domaine demandé `ai-mcp-symfony-hackathon-content.darkwood.com` et à son dépôt d’artefacts GitHub Pages. La disponibilité publique n’est acquise qu’après publication, résolution DNS et vérification HTTPS.
-
-La trace `public/hackathon/mcp-proof.json` provient de l’essai réel du 17 novembre 2026 de la card Mario : initialisation, découverte, rejet d’un prompt vide et appel réel du modèle via le SDK officiel. Elle ne contient aucun accès fournisseur. La page ne déclenche pas d’appel IA. Les versions et les résultats décrivent les essais locaux ; vérifier leur correspondance avec le commit public avant diffusion.
-
-Le profil par défaut reste Intention. Les mêmes contrôles PHP couvrent les deux exports et les ressources autorisées. Aucun média Replicate, article public ou formulaire de candidature n’est généré par cet export.
+Cet export appartient uniquement à Intention et produit ses sept pages dans `dist/`.
+L’atelier Symfony AI MCP possède désormais sa [propre card](../content-darkwood-ai-mcp-symfony-hackathon/) et sa distribution indépendante.
 
 ```sh
 nix --extra-experimental-features 'nix-command flakes' develop -c php bin/console app:export-static
@@ -89,9 +78,7 @@ Les médias Aftertrace proviennent de l’atelier Memory et renvoient uniquement
 
 ## Atelier Symfony AI et MCP
 
-Le profil `app:export-static --workshop=hackathon` génère `dist-hackathon/`
-pour <https://ai-mcp-symfony-hackathon-content.darkwood.com/>. Le domaine est
-publié par la même chaîne GitHub Pages. Cette page statique présente des preuves
-PHP/MCP existantes ; elle ne lance aucun appel de modèle dans le navigateur.
-La vidéo et la soumission au concours restent un chantier distinct soumis à
-leur validation éditoriale.
+L’atelier est maintenu dans [content-darkwood-ai-mcp-symfony-hackathon](../content-darkwood-ai-mcp-symfony-hackathon/)
+et publié sur <https://ai-mcp-symfony-hackathon-content.darkwood.com/>.
+Son build ne dépend plus d’Intention. La vidéo et la soumission au concours restent
+un chantier distinct soumis à validation.

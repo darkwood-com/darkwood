@@ -16,8 +16,10 @@ does not require or use the artifact CNAME for this publishing mode. Keep both
 settings and the versioned domain aligned. Every build validates all catalogue
 cards, their internal targets and metadata before upload.
 
-DNS: Cloudflare, `pages.darkwood.com` CNAME `darkwood-com.github.io`, **DNS only**,
-TTL automatic. No VPS, proxy or other service record is involved. Configure
+DNS is managed by Cloudflare. The intended GitHub Pages target is
+`darkwood-com.github.io`; the public resolver currently returns A records for
+`pages.darkwood.com`, not a visible CNAME (18 November 2026). This refactor does
+not alter DNS or proxy settings. No VPS service is involved. Configure
 the domain in repository Pages settings before creating its DNS record, then
 verify DNS and the GitHub-issued certificate and enable Enforce HTTPS.
 
