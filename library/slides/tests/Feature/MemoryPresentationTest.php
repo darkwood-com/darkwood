@@ -34,7 +34,7 @@ class MemoryPresentationTest extends TestCase
         $dom = new \DOMDocument;
         $dom->loadHTML('<?xml encoding="utf-8" ?>'.$html, LIBXML_NOERROR | LIBXML_NOWARNING);
         foreach ((new \DOMXPath($dom))->query('//a[@href]') as $link) {
-            $this->assertContains(parse_url($link->getAttribute('href'), PHP_URL_HOST), ['memory.content.darkwood.com', 'slides.darkwood.com']);
+            $this->assertContains(parse_url($link->getAttribute('href'), PHP_URL_HOST), ['memory-content.darkwood.com', 'slides.darkwood.com']);
         }
         foreach (['aftertrace-failure.png', 'aftertrace-route.png', 'aftertrace-delivery.png'] as $image) {
             $this->assertFileExists(public_path('images/memory/'.$image));

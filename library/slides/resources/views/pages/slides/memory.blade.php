@@ -73,6 +73,6 @@ PHP;
 <div class="memory-summary"><p>Darkwood <span>les raisons d’une décision</span></p><p>Flow <span>l’état d’un calcul</span></p><p>Uniflow <span>la méthode et son exécution</span></p><p>Darkwaar <span>la connaissance du joueur</span></p><p>DJMatyo <span>un motif transformable</span></p><p>Heroclip <span>les repères d’un récit</span></p></div>
 </x-darkwood.content>
 <x-darkwood.content class="memory-slide" transition="fade" id="memory-22" title="Ce qui rend la suite possible" overline="Mémoire" :page="22" :pages="$memorySlideCount" label="Darkwood">
-<p class="memory-question">La mémoire rend la suite possible lorsqu’elle conserve ce dont nous avons besoin pour reprendre, comprendre et transformer.</p><p><a href="https://memory.content.darkwood.com/" target="_blank" rel="noopener noreferrer">Explorer les six démonstrations →</a></p><p class="memory-note">Un même principe, des réalisations et des durées différentes.</p>
+<p class="memory-question">La mémoire rend la suite possible lorsqu’elle conserve ce dont nous avons besoin pour reprendre, comprendre et transformer.</p><p><a href="https://memory-content.darkwood.com/" target="_blank" rel="noopener noreferrer">Explorer les six démonstrations →</a></p><p class="memory-note">Un même principe, des réalisations et des durées différentes.</p>
 </x-darkwood.content>
 </x-darkwood.deck>
