@@ -2,9 +2,9 @@
 
 Six expériences interactives montrent comment une intention est interprétée dans un contexte, devient une décision et produit un résultat à évaluer.
 
-**Domaine cible : [intent-content.darkwood.com](https://intent-content.darkwood.com)**
+**Site : [intent-content.darkwood.com](https://intent-content.darkwood.com)**
 
-Migration préparée ; ne pas annoncer cette URL disponible avant validation DNS, HTTPS et redirection. À la demande du propriétaire, `intent.content.darkwood.com` ne bénéficie pas de rétrocompatibilité ni de redirection. Les données localStorage restent dans l’ancienne origine et ne sont pas transférées automatiquement.
+Migration du 18 novembre 2026 validée : DNS uniquement vers GitHub Pages, certificat approuvé et HTTPS forcé. À la demande du propriétaire, `intent.content.darkwood.com` ne bénéficie pas de rétrocompatibilité ni de redirection. Les données localStorage restent dans l’ancienne origine et ne sont pas transférées automatiquement.
 
 Les démonstrations sont pédagogiques. Elles n’annoncent pas de nouvelles fonctions des services Darkwood et ne constituent pas des benchmarks.
 
@@ -86,3 +86,12 @@ Le workflow canonique `.github/workflows/publish-github-pages.yml` construit et 
 ## Sources et limites
 
 Les médias Aftertrace proviennent de l’atelier Memory et renvoient uniquement vers la page officielle Darkwaar. Les polices Jost conservent leur licence OFL dans `public/fonts/OFL.txt`. L’atelier ne contacte ni Darkwaar, Heroclip, DJ Matyo91, Flow ni Uniflow pendant l’utilisation.
+
+## Atelier Symfony AI et MCP
+
+Le profil `app:export-static --workshop=hackathon` génère `dist-hackathon/`
+pour <https://ai-mcp-symfony-hackathon-content.darkwood.com/>. Le domaine est
+publié par la même chaîne GitHub Pages. Cette page statique présente des preuves
+PHP/MCP existantes ; elle ne lance aucun appel de modèle dans le navigateur.
+La vidéo et la soumission au concours restent un chantier distinct soumis à
+leur validation éditoriale.

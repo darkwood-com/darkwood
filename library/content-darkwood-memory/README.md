@@ -4,9 +4,9 @@ Du logiciel à l’IA, des jeux vidéo à la musique et à l’image : ce que no
 
 Six démonstrations autonomes, un atelier interactif et trois ambiances visuelles. Ces expériences accompagnent un article Darkwood ; elles ne constituent pas des annonces de fonctionnalités des services.
 
-**Domaine cible : [memory-content.darkwood.com](https://memory-content.darkwood.com)**
+**Site : [memory-content.darkwood.com](https://memory-content.darkwood.com)**
 
-Migration préparée ; ne pas annoncer cette URL disponible avant validation DNS, HTTPS et redirection. À la demande du propriétaire, `memory.content.darkwood.com` ne bénéficie pas de rétrocompatibilité ni de redirection. Les données localStorage restent dans l’ancienne origine et ne sont pas transférées automatiquement.
+Migration du 18 novembre 2026 validée : DNS uniquement vers GitHub Pages, certificat approuvé et HTTPS forcé. À la demande du propriétaire, `memory.content.darkwood.com` ne bénéficie pas de rétrocompatibilité ni de redirection. Les données localStorage restent dans l’ancienne origine et ne sont pas transférées automatiquement.
 
 ## Lancer le projet Symfony
 
