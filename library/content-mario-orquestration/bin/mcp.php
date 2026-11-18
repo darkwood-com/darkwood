@@ -9,18 +9,19 @@ use Mcp\Server\Transport\StdioTransport;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
+$fixture = in_array('--fixture', $argv, true);
 $orchestrator = new MarioAgentOrchestrator(new MarioMultiAgentFactory());
 $server = Server::builder()
     ->setServerInfo('Darkwood original level generator', '1.0.0')
     ->addTool(
-        static function (string $prompt) use ($orchestrator): array {
-            $result = $orchestrator->orchestrate($prompt, false);
+        static function (string $prompt) use ($orchestrator, $fixture): array {
+            $result = $orchestrator->orchestrate($prompt, $fixture);
             if (!$result['validation']->isValid()) {
                 throw new RuntimeException('Generated level failed geometry validation.');
             }
 
             return [
-                'mode' => 'real_ai',
+                'mode' => $fixture ? 'fixture' : 'real_ai',
                 'agent' => $result['selected_agent'],
                 'level' => $result['payload'],
                 'warnings' => $result['validation']->warnings(),

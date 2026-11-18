@@ -144,7 +144,7 @@ final class MarioAgentOrchestrator
     /**
      * @param array<string, mixed> $payload
      */
-    private function validatePayload(array $payload): ValidationReport
+    public function validatePayload(array $payload): ValidationReport
     {
         $errors = [];
 

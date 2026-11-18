@@ -1,46 +1,84 @@
-# Darkwood original level generator
+# Darkwood original level designer
 
-Symfony AI generates an original platformer level as JSON. The official PHP MCP SDK exposes `generate_original_level` over stdio. This submission path uses one named agent, `level_generator`. The existing multi-agent and Godot experiments remain exploratory.
+An existing Darkwood Symfony application interprets a level brief with a **Symfony AI Agent**, calls its existing **official PHP MCP SDK server**, checks the returned geometry and produces a reviewable local artifact only after explicit approval.
 
-## Install
+This is a level design and inspection workflow, **not a playable game**. No Nintendo assets, characters or copied levels are included. The historical Godot importer and multi-agent experiments are not the submitted execution path.
 
-Use PHP 8.5 with ctype, iconv, mbstring and the extensions required by Composer. From the public monorepo, enter `library/content-mario-orquestration`.
+## Five-minute quickstart
+
+Requirements: Git, Nix with flakes, network access and your own OpenAI API key with provider credit. Nix supplies PHP 8.5, Composer and required extensions; no Docker, database, private package, Navi installation or system PHP is needed.
 
 ```sh
-composer install --no-scripts
+git clone --depth=1 --filter=blob:none --sparse https://github.com/darkwood-com/darkwood.git
+cd darkwood
+git sparse-checkout set library/content-mario-orquestration
+cd library/content-mario-orquestration
+nix --extra-experimental-features 'nix-command flakes' develop
+composer install --no-scripts --no-interaction
+composer check-platform-reqs
+php tests/generation-regression.php
+php tests/design-regression.php
+```
+
+Provide `OPENAI_API_KEY` through your process environment or your own ignored `.env.local`. The committed `.env` contains no provider credential. Never paste a key into source files, transcripts or recordings. A key is not required for the two explicit offline regression scripts.
+
+```sh
+php bin/console app:mario:design \
+  --prompt='Create a small original forest platformer level for a beginner with two low platforms and three collectible lights.'
+```
+
+This makes real model calls and prints the result. It does **not** write any level, preview or execution evidence. To explicitly approve new local artifacts:
+
+```sh
+php bin/console app:mario:design \
+  --prompt='Create a small original forest platformer level for a beginner with two low platforms and three collectible lights.' \
+  --approve-export
+```
+
+Open the printed directory's `preview.html` in a browser. `level.json` contains the actual generated data; `evidence.json` records the actual MCP tool call, model summary and elapsed time. Each approved export uses a new directory under `var/mario-design/`, never overwriting a previous run. No publishing capability is exposed to the model.
+
+The five-minute path is an installation guide, not a guaranteed network or model latency. A failed request exits nonzero, never silently substitutes a fixture and never claims a successful design.
+
+## Actual architecture
+
+1. `DesignLevelCommand` starts the Symfony AI Agent named `level_designer` with one typed tool in the official `Toolbox`.
+2. The agent interprets the user's brief and invokes `generate_original_level` exactly once.
+3. `McpLevelTool` connects the official `Mcp\Client\Client` to the existing `bin/mcp.php` over SDK `StdioTransport`, discovers its tool and calls it.
+4. That existing server uses `Mcp\Server\Server` and the Symfony AI `level_generator` agent to generate original JSON through OpenAI `gpt-5-mini`.
+5. PHP validates the actual payload. The designer explains it; the optional exporter produces JSON, evidence and a geometry preview after CLI approval.
+
+The `symfony/ai-agent`, `symfony/ai-platform`, OpenAI bridge and AI Bundle are locked to **1.0.0-BETA1**; **mcp/sdk is locked to 0.10.0**. The Symfony application keeps its existing AI Bundle and services. Navi and Flow remain installed historical dependencies, **not execution stages claimed for this demonstration**.
+
+### Why a small adapter
+
+The published `symfony/ai-mcp-tool` 1.0.0-BETA1 requires `mcp/sdk ^0.9` and its bridge targets the former `Mcp\Client` API. It cannot be combined with the existing locked SDK 0.10.0 client namespace. Rather than downgrade or alias the SDK, this card uses the official Symfony `Toolbox` with a single adapter calling the official SDK client. It implements no JSON-RPC, transport or MCP server of its own.
+
+Sources checked on 18 November 2026: [official bridge manifest](https://github.com/symfony/ai/blob/v1.0.0-BETA1/src/agent/src/Bridge/Mcp/composer.json), [bridge implementation](https://github.com/symfony/ai/blob/v1.0.0-BETA1/src/agent/src/Bridge/Mcp/ClientToolset.php), [official PHP SDK](https://github.com/modelcontextprotocol/php-sdk).
+
+## Validation and limits
+
+```sh
 composer validate --no-check-publish
 composer check-platform-reqs
+php bin/console lint:container
+php tests/generation-regression.php
+php tests/design-regression.php
 ```
 
-The committed lock pins Symfony AI to 1.0.0-BETA1 and mcp/sdk to 0.10.0. Composer plugins generate the Symfony runtime loader. Automatic application scripts are disabled during installation for reproducibility.
+Regressions cover required geometry, terrain bounds, prompt validation, missing-key failure, real SDK discovery and invocation against an **explicit fixture** server, Symfony Toolbox registration, repeated generation rejection, unique exports and HTML escaping. Those offline tests do not prove a live model call. Real runs and recordings must use `app:mario:design`, which has no fixture switch.
 
-Provide `OPENAI_API_KEY` through your process environment or your own ignored `.env.local`. Never commit a key. The real generator calls OpenAI using gpt-5-mini and requires network access and provider credit.
+Geometry checks cover required fields, coordinates, dimensions and terrain bounds. They do **not** prove reachability, gameplay balance, playability or legal clearance. The HTML preview is a projection of the returned coordinates, not a game simulation. A bad provider response can fail validation; repeat a new request explicitly if needed. No hidden retry generates extra levels.
 
-## Run
+## Existing lower-level entry points
 
-```sh
-php bin/console app:mario:orchestrate --prompt='Create an original forest platformer level as json' --dry-run
-php bin/mcp.php
-```
+`php bin/mcp.php` exposes the existing `generate_original_level` tool to external MCP clients. Supply the provider key in the process environment. `php bin/mcp.php --fixture` is solely for explicit offline testing and returns `mode: fixture`.
 
-The CLI displays the generated JSON and geometry validation. Omit `--dry-run` to export to `var/mario-orchestration/level.json`. The MCP process uses newline-delimited JSON-RPC over stdio. Configure the host to launch `php bin/mcp.php` from this directory with `OPENAI_API_KEY` in its environment. It offers one tool with a prompt of 1–2000 characters and returns the validated level without writing files.
+`app:mario:orchestrate --prompt='...' --dry-run` directly calls the generation agent; its explicit `--fake` option is an offline fixture. This older command is separate from the agent → MCP client → server demonstration. The other multi-agent/Godot paths remain exploratory.
 
-An absent key or invalid provider response fails explicitly. The MCP process reads its key from the environment. The CLI also loads Symfony environment files.
+## Workshop and submission
 
-For an explicit offline fixture only, use `php bin/console app:mario:orchestrate --fake --dry-run`. This fixture proves local execution only. Real generation is required for the hackathon video.
+[Darkwood Symfony AI MCP Hackathon](https://ai-mcp-symfony-hackathon-content.darkwood.com/) presents the verified path. Its canonical source and distribution are in `library/content-darkwood-ai-mcp-symfony-hackathon`, independent of Intent.
 
-## Scope and limits
+Suggested 90-second demonstration: show this quickstart and pinned packages, run a real design, observe MCP discovery/tool execution, open the resulting geometry and evidence, then show the approval boundary and playability limit. Record an actual run; do not present fixture tests or a replay as live execution. Submission status is reported separately; no registration or acceptance is implied by this repository.
 
-Validation checks required fields, dimensions, coordinates and terrain bounds. It does not establish that the level is playable. The Godot importer and scene require further work before a playable game can be demonstrated. The alternate deterministic level command is separate from the real generation path.
-
-This project is licensed under MIT, as declared in LICENSE and composer.json. Nintendo assets and level copies must not be included.
-
-## 90-second demonstration
-
-- 0–15 seconds — Show the existing project, the locked Symfony AI beta and official MCP SDK versions.
-- 15–30 seconds — Initialize the MCP server and list its single generation tool.
-- 30–65 seconds — Call the tool with an original level request and show the real response, named agent and validation.
-- 65–80 seconds — Show coordinates, terrain and goal in the resulting JSON. Explain the geometry checks and playability limit.
-- 80–90 seconds — Show installation instructions and the source paths implementing AI generation and the SDK tool.
-
-Record only an actual successful run. Review terminal output for credentials before recording. Public publication and final submission require owner approval.
+License: MIT, as declared in `composer.json` and `LICENSE`.
