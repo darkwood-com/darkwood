@@ -45,8 +45,11 @@ func run() -> bool:
 		var before: PackedByteArray = mem._bytes.duplicate()
 		var result = p.callv(String(c["method"]), c["args"].map(func(v): return int(v)))
 		var got := []
+		## A case whose routine keeps a deep frame (work buffers in stack memory) widens its own guard.
+		var case_lo: int = int(c["stack_guard"][0]) if c.has("stack_guard") else lo
+		var case_hi: int = int(c["stack_guard"][1]) if c.has("stack_guard") else hi
 		for addr in range(size):
-			if addr >= lo and addr < hi:
+			if addr >= case_lo and addr < case_hi:
 				continue
 			if mem._bytes[addr] != before[addr]:
 				got.append([addr, mem._bytes[addr]])

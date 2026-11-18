@@ -321,7 +321,7 @@ def check_leyte_overlay() -> None:
     """Leyte Gulf's overlay extracted verbatim (the Ghidra input), its evidence-based names and the
     semantic C generated from them."""
     import subprocess
-    for tool in ("extract_overlay.py", "names_from_correspondence.py", "semantic_overlay.py", "a5_map.py", "gen_host_ports.py", "extract_resources.py", "build_jump_table.py", "gen_loader_fixture.py", "gen_leyte_id02_reconstructed_cases.py", "build_segment_methods.py", "build_glue_slots.py", "overlay_map.py", "gen_overlay_port.py", "gen_leyte_overlay_cases.py", "gen_leyte_overlay_reconstructed_cases.py"):
+    for tool in ("extract_overlay.py", "names_from_correspondence.py", "semantic_overlay.py", "a5_map.py", "gen_host_ports.py", "extract_resources.py", "build_jump_table.py", "gen_loader_fixture.py", "gen_leyte_id02_reconstructed_cases.py", "build_segment_methods.py", "build_glue_slots.py", "overlay_map.py", "overlay_placement.py", "gen_overlay_port.py", "gen_leyte_overlay_cases.py", "gen_leyte_overlay_reconstructed_cases.py", "gen_leyte_runtime_cases.py", "gen_leyte_id03_reconstructed_cases.py"):
         result = subprocess.run([sys.executable, str(REPO_ROOT / "tools" / "leyte" / tool), "--check"],
                                 capture_output=True, text=True)
         if result.returncode != 0:

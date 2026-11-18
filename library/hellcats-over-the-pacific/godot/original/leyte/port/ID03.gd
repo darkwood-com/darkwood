@@ -1134,8 +1134,10 @@ func draw_instrument(kind: int, size: int, tick: int, pen: int, v: int, h: int) 
 		6:
 			draw_direction_indicator(size, tick, pen, v, h)
 		8:
+			a7 = entry - 4 - 0xa - 0xc - 4   # six words: the card flag too (MOVE.W #1 first; LEA $c(A7) after)
 			draw_gyro_instrument(size, tick, pen, v, h, 1)
 		9:
+			a7 = entry - 4 - 0xa - 0xc - 4
 			draw_artificial_horizon(size, tick, pen, v, h, 1)
 	a7 = entry
 	var rec: int = C68kScript.u32(_g(-0x131c) + C68kScript.lsl32(C68kScript.u32(k), 4))

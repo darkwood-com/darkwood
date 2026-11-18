@@ -54,7 +54,9 @@ def build() -> dict:
                 "count": len(rows), "resources": rows}
     files[BASE / "resources.json"] = (json.dumps(manifest, indent=1) + "\n").encode()
     mirror = {"schema": 1, "generated_by": "tools/leyte/extract_resources.py",
-              "resources": [{"folder": FOLDERS.get(r["type"], r["type"]).lower(), "type": r["type"], "id": r["id"], "sha256": r["sha256"]}
+              # Each resource's name too (when it has one): GetNamedResource resolves Leyte's names from here.
+              "resources": [dict({"folder": FOLDERS.get(r["type"], r["type"]).lower(), "type": r["type"], "id": r["id"],
+                                  "sha256": r["sha256"]}, **({"name": r["name"]} if r["name"] else {}))
                             for r in rows if r["type"] != "CODE"]}
     files[MIRROR / "resources.json"] = (json.dumps(mirror, indent=1) + "\n").encode()
     return files

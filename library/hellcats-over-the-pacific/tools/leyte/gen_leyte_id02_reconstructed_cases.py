@@ -24,11 +24,12 @@ from segment_stubs import install  # noqa: E402
 
 BINARY = ROOT / "sources" / "leyte-gulf-1-0" / "CODE" / "ID02.bin"
 FIXTURE = ROOT / "godot" / "tests" / "leyte" / "port" / "fixtures" / "id02_reconstructed_cases.json"
-MEMORY_SIZE, CODE, A5 = 0x60000, 0x30000, 0x20000
+MEMORY_SIZE, CODE, A5 = 0x80000, 0x30000, 0x20000
 STACK_TOP, STACK_GUARD = 0x2F000, (0x2E000, 0x2F040)
 LOGS = 0x40000                   # 0x400 per stand-in, clear of the code and the data below
-## CODE 1 (the C runtime's switch helpers, behind slot $3a: CODE 1 +0xbe, a JMP abs.l written there)
-ID01_AT = 0x5E000
+## CODE 1 (the C runtime's switch helpers, behind slots $2a / $32 / $3a: CODE 1 +0x96 / +0xaa / +0xbe, JMP abs.l)
+ID01_AT = 0x7E000
+CODE2_AT = 0x10000               # Leyte's CODE 2, for another segment's cases that call its library routines
 ID01 = ROOT / "sources" / "leyte-gulf-1-0" / "CODE" / "ID01.bin"
 IMAGE, BLOCK, ENTRY_OFF = 0x15000, 0x16000, 0x100
 ROUTINES = {"reset_overlay_state": 0x245A, "apply_settings_to_live_options": 0x2DB2, "apply_display_palettes": 0x54B8,
@@ -39,17 +40,29 @@ ROUTINES = {"reset_overlay_state": 0x245A, "apply_settings_to_live_options": 0x2
             "poll_and_dispatch_event": 0x370C, "redraw_main_window": 0x5544,
             "rebuild_all_palette_index_maps": 0x4E32, "build_palette_index_map": 0x502C,
             "check_device_color_state_changed": 0x53AC, "refresh_display_if_changed": 0x2D60,
-            "update_menu_items": 0x38B2}
+            "update_menu_items": 0x38B2, "start_new_mission": 0x3D38,
+            "begin_overlay_session": 0x45A, "end_overlay_session": 0x4A4, "load_game_sounds": 0x22AC,
+            "restore_screen_globals": 0x552A, "process_pending_update_events": 0x54C8, "handle_update_event": 0x54FE,
+            "run_flight_session_leyte": 0x4FC, "save_changed_settings": 0x34D8, "quit_application": 0x35E2,
+            "redraw_panel_readouts_locked": 0xAB4}
 ## Routines a method calls as written methods of the port (not by offset): Leyte's own code runs for
 ## them in its cases, under the same stand-ins, instead of a local stand-in.
 REAL = {"configure_display_from_main_device": {0x24C8}, "rebuild_all_palette_index_maps": {0x502C},
-        "check_device_color_state_changed": {0x502C}, "update_menu_items": {0x3CE4}}
+        "check_device_color_state_changed": {0x502C}, "update_menu_items": {0x3CE4},
+        "quit_application": {0x34D8}}
 WORD_RESULT = {"import_settings_from_resource_file", "build_palette_index_map"}     # cases compare D0's low word
 H127, REC127, H128 = 0x19A40, 0x19B00, 0x19A50
 HEL1, MENU = 0x48454C31, 0x4D454E55
 REC227, REC228, H227, H228, CTAB = 0x19000, 0x19200, 0x19800, 0x19810, 0x19900
 POLL = 0x370C                    # main's event loop: the emulator run stops at its second pass (the port: event_loop_passes 1)
 ## The overlay's hooks (A5 slot -> stand-in address) and the settings record (its handle at A5 - 0x142a).
+READOUTS_HOOK = 0x17F00         # A5 - 0x10b4, the overlay's readouts hook (redraw_panel_readouts_locked)
+## The overlay's flight hooks (A5 slot -> stand-in address): the pilot's, the key hook, the ask hook,
+## the step hook, and the two after a concluded mission.
+FLIGHT_HOOKS = {-0x10B0: 0x17900, -0x10AC: 0x17A00, -0x10C8: 0x17B00, -0x10BC: 0x17C00, -0x10D0: 0x17D00, -0x10CC: 0x17E00}
+## The overlay's session hooks (A5 slot -> stand-in address): prepare, start, finish.
+SESSION_HOOKS = {-0x10C4: 0x17600, -0x10C0: 0x17700, -0x10B8: 0x17800}
+MISSION_HOOK = 0x17500          # A5 - 0x10dc, the overlay's mission hook (start_new_mission)
 HOOKS = {-0x10D4: 0x17000, -0x1090: 0x17100, -0x10D8: 0x17200, -0x10E4: 0x17300}
 SETTINGS_HANDLE, SETTINGS = 0x18000, 0x18010
 STUBS = [["jt", 0x252, [4], True, 4], ["trap", 0xA975, [], True, 4], ["addr", IMAGE + ENTRY_OFF, [4, 4, 4], False, 0],
@@ -91,7 +104,26 @@ STUBS = [["jt", 0x252, [4], True, 4], ["trap", 0xA975, [], True, 4], ["addr", IM
          ["local", 0x52F6, [], False, 0], ["local", 0xDB2, [4], False, 0], ["local", 0x502C, [2, 4, 4, 4], False, 2],
          ["jt", 0x1A2, [4, 4], False, 0], ["local", 0x3CE4, [4, 2, 2], False, 0],
          ["trap", 0xA939, [2, 4], True, 0], ["trap", 0xA93A, [2, 4], True, 0], ["trap", 0xA937, [], True, 0],
-         ["trap", 0xA945, [1, 2, 4], True, 0]]
+         ["trap", 0xA945, [1, 2, 4], True, 0],
+         ["jt", 0x15A, [], False, 2], ["jt", 0x92, [], False, 2], ["local", 0x4FC, [], False, 2],
+         ["addr", MISSION_HOOK, [4], False, 0], ["trap", 0xA928, [4], True, 0],
+         ["local", 0x4C6, [], False, 0], ["local", 0x22AC, [], False, 0], ["local", 0x9E8, [], False, 0],
+         ["local", 0x23EE, [], False, 0], ["local", 0x4A96, [], False, 0], ["local", 0x2186, [], False, 0],
+         ["local", 0xA88, [], False, 0], ["local", 0x21FA, [4, 2], False, 2], ["local", 0x20F2, [], False, 0],
+         ["trap", 0xA91F, [4], True, 0], ["trap", 0xA972, [4], True, 0], ["trap", 0xA974, [], True, 2],
+         ["trap", 0xA999, [2], True, 0], ["local", 0x1C92, [], False, 0], ["local", 0x54C8, [], False, 0],
+         ["local", 0x45A, [], False, 0], ["local", 0x4A4, [], False, 0], ["local", 0x54FE, [4], False, 0],
+         ["jt", 0x10A, [2, 4], False, 2], ["jt", 0x16A, [], False, 0], ["jt", 0x8A, [], False, 0],
+         ["addr", FLIGHT_HOOKS[-0x10B0], [4], False, 0], ["addr", FLIGHT_HOOKS[-0x10AC], [4, 4], False, 2],
+         ["addr", FLIGHT_HOOKS[-0x10C8], [], False, 4], ["addr", FLIGHT_HOOKS[-0x10BC], [4, 4], False, 0],
+         ["addr", FLIGHT_HOOKS[-0x10D0], [], False, 0], ["addr", FLIGHT_HOOKS[-0x10CC], [], False, 0],
+         ["jt", 0x9A, [], False, 2], ["jt", 0x132, [], False, 2], ["local", 0x34D8, [], False, 0],
+         ["addr", READOUTS_HOOK, [], False, 0]] + [
+         ["addr", at, [], False, 0] for at in SESSION_HOOKS.values()]
+
+
+## Each stand-in logs into its own 0x400 bytes from LOGS: the table must end below CODE 1.
+assert LOGS + 0x400 * len(STUBS) <= ID01_AT, "the call logs reach CODE 1 (%d stand-ins)" % len(STUBS)
 
 
 class Stop(Exception):
@@ -458,6 +490,160 @@ def menu_cases() -> list:
     ]
 
 
+def mission_cases() -> list:
+    """start_new_mission: the two checks (JT $15a, $92) and the session (0x4fc) as stand-ins with chosen
+    results, the counters and flags as markers to be cleared."""
+    WIN = 0x1D800
+
+    def case(name, ready, check, session, up=1, playing=1, image=True, depth=1, state=0xFFFE):
+        w = [[A5 - 0x10DC, 4, MISSION_HOOK], [A5 - 0x10D8, 4, HOOKS[-0x10D8]], [A5 - 0x1376, 2, state],
+             [A5 - 0x1544, 2, up], [A5 - 0x1548, 4, WIN], [A5 - 0x168A, 4, 0x1D900], [A5 - 0x1070, 2, playing],
+             [A5 - 0x1048, 4, IMAGE if image else 0], [A5 - 0x13F8, 2, depth]]
+        w += [[A5 + off, 2, 0x1111] for off in (-0x136E, -0x132E, -0x1330, -0x132C, -0x1542, -0x1540, -0x153E)]
+        w += [[A5 - 0x1420 + 2 * i, 2, 0x2200 + i] for i in range(0xC)] + [[A5 - 0x1348 + 2 * i, 2, 0x3300 + i] for i in range(0xC)]
+        return {"name": "mission: " + name, "method": "start_new_mission", "args": [], "a7": STACK_TOP - 4, "writes": w,
+                "results": {("jt", 0x15A): ready, ("jt", 0x92): check, ("local", 0x4FC): session}}
+    return [
+        case("not ready", [0], [1], [0]),
+        case("check refuses", [1], [0], [0]),
+        case("one mission, window up, 1-bit hook", [1], [1], [0]),
+        case("one mission, window down", [1], [1], [0], up=0),
+        case("depth 8: no 1-bit hook", [1], [1], [0], depth=8),
+        case("two missions, then not ready", [1, 1, 0], [1, 1], [1, 0]),
+        case("session again, then the check refuses", [1, 1], [1, 0], [1], playing=0),
+    ]
+
+
+def session_cases() -> list:
+    """begin_overlay_session (FreeMem below / above 100 000 bytes: MaxMem or not) and
+    end_overlay_session (sound on / off, the menu bar hidden or not); every callee a stand-in."""
+    hooks = [[A5 + k, 4, v] for k, v in SESSION_HOOKS.items()]
+    out = []
+    for free in (50000, 0x186A0, 0x7FFFFFFF):
+        out.append({"name": "begin session: FreeMem %d" % free, "method": "begin_overlay_session", "args": [],
+                    "a7": STACK_TOP - 4, "writes": hooks, "results": {("jt", 0x222): [free]}})
+    for sound in (0, 1):
+        for hidden in (0, 1):
+            out.append({"name": "end session: sound %d, bar hidden %d" % (sound, hidden), "method": "end_overlay_session",
+                        "args": [], "a7": STACK_TOP - 4, "results": {},
+                        "writes": hooks + [[A5 - 0x136C, 2, sound], [A5 - 0x106A, 2, hidden]]})
+    return out
+
+
+def sound_cases() -> list:
+    """load_game_sounds: the loader (0x21fa) answers each load from the case (0 loaded, nonzero not),
+    FreeMem above or below 0x2e400 picks the engine sound; slot 8's fallback when its first is missing."""
+    m = "load_game_sounds"
+    def case(name, free, loads):
+        return {"name": "sounds: " + name, "method": m, "args": [], "a7": STACK_TOP - 4, "writes": [[A5 - 0x1170, 4, 0]],
+                "results": {("jt", 0x222): [free], ("local", 0x21FA): loads}}
+    return [
+        case("all loaded, plenty free", 0x40000, [0]),
+        case("all loaded, little free", 0x2E400, [0]),
+        case("one missing", 0x40000, [0, 0, 0, 1] + [0] * 10),
+        case("slot 8 missing, its fallback loads", 0x10000, [0] * 12 + [1, 0]),
+        case("slot 8 and its fallback missing", 0x10000, [0] * 12 + [1, 1]),
+    ]
+
+
+def update_cases() -> list:
+    """restore_screen_globals; process_pending_update_events over a sequence of update events
+    (GetNextEvent answering true for each, then false; the records written into the frame) for the game
+    window A5 - 0x1548 or another; handle_update_event with the window up or down, for it or another."""
+    win, other = 0x1D800, 0x1DC00
+    base = [[A5 - 0x1548, 4, win], [A5 - 0x1544, 2, 1]]
+    out = [{"name": "screen globals restored", "method": "restore_screen_globals", "args": [], "results": {},
+            "writes": [[A5 - 0x1078, 4, 0x1E200], [A5 - 0x13C4, 4, 0x12345678], [A5 - 0x13C8, 2, 0x2A0],
+                       [A5 - 0x13C6, 2, 1], [A5 - 0x1400, 4, 0], [A5 - 0x13F6, 2, 0], [A5 - 0x1390, 2, 0]]}]
+    for name, windows in (("none", []), ("one for the game window", [win]), ("one for another window", [other]),
+                          ("two for the game window, then another", [win, win, other])):
+        records = [event_record(6, w) for w in windows] or [event_record(0)]
+        out.append({"name": "pending updates: " + name, "method": "process_pending_update_events", "args": [],
+                    "a7": STACK_TOP - 4, "writes": base,
+                    "results": {("trap", 0xA970): [0x100] * len(windows) + [0],
+                                ("derefs", "trap", 0xA970): {0: ["outseq", records]}}})
+    EV = 0x1D400
+    for name, up, w in (("game window", 1, win), ("window down", 0, win), ("another window", 1, other)):
+        out.append({"name": "update event: " + name, "method": "handle_update_event", "args": [EV],
+                    "stack": [(4, EV)], "a7": STACK_TOP - 4 - 4, "results": {},
+                    "writes": [[A5 - 0x1548, 4, win], [A5 - 0x1544, 2, up], [EV, 2, 6], [EV + 2, 4, w]]})
+    return out
+
+
+def flight_cases() -> list:
+    """run_flight_session_leyte (0x4fc) over whole sessions: every callee a stand-in. Each frame calls
+    GetNextEvent once for the keys, then for the other events until it answers false; `frames` gives,
+    per frame, the key event (or None) and the other events. TickCount climbs by 4 a call, so each
+    frame's four-tick wait passes at once; the key hook (A5 - 0x10ac) answers from `hooks`."""
+    ROSTER_H, RECORDS = 0x1D000, 0x1D100
+    devices = A5 - 0x13D6
+
+    def case(name, frames, hooks, conclude=(1,), up=1, two=False, status=0, ask=0):
+        calls, records = [], []
+        for key, others in frames:
+            calls.append(0x100 if key else 0)
+            records.append(key or event_record(0))
+            for e in others:
+                calls.append(0x100)
+                records.append(e)
+            calls.append(0)
+            records.append(event_record(0))
+        w = [[A5 + k, 4, v] for k, v in FLIGHT_HOOKS.items()]
+        w += [[A5 - 0x1426, 4, ROSTER_H], [ROSTER_H, 4, RECORDS], [A5 - 0x1422, 2, 1], [RECORDS + 0x40 + 0x22, 2, 3],
+              [RECORDS + 0x40 + 0x20, 2, 0], [A5 - 0x132E, 2, status], [A5 - 0x1544, 2, up], [A5 - 0x1548, 4, 0x1D800],
+              [A5 - 0x1352, 2, 1 if two else 0], [A5 - 0x1074, 2, 1 if two else 0], [A5 - 0x1072, 2, ask],
+              [A5 - 0x1086, 4, 0], [A5 - 0x13F0, 2, 640], [A5 - 0x13EE, 2, 480], [A5 - 0x1576, 4, 0x00100020],
+              [0xBAA, 2, 20], [A5 - 0x107E, 2, 0], [A5 - 0x1368, 2, 1], [A5 - 0x142A, 4, SETTINGS_HANDLE],
+              [SETTINGS_HANDLE, 4, SETTINGS], [SETTINGS + 0x10, 2, 2], [A5 - 0x1071, 1, 0], [A5 - 0xE24, 4, 0x1D900]]
+        if two:
+            w += [[devices, 4, 0x1E000], [devices + 0x12, 4, 0x500000], [devices + 0xE, 2, 0x280], [devices + 0x10, 2, 1],
+                  [devices + 0x16, 4, 0], [devices + 0x2C, 4, 0x1E100], [devices + 0x2C + 0x12, 4, 0x600000]]
+        return {"name": "flight: " + name, "method": "run_flight_session_leyte", "args": [], "a7": STACK_TOP - 4,
+                "writes": w, "results": {("trap", 0xA970): calls, ("derefs", "trap", 0xA970): {0: ["outseq", records]},
+                                         ("trap", 0xA975): [4 * k for k in range(1, 600)],
+                                         ("addr", FLIGHT_HOOKS[-0x10AC]): hooks, ("jt", 0x10A): list(conclude),
+                                         ("addr", FLIGHT_HOOKS[-0x10C8]): [ask]}}
+    CMD = 0x100
+
+    def key(c, what=4, mods=CMD):
+        return event_record(what, c, modifiers=mods)
+    return [
+        case("command-Q quits", [(key(0x51), [])], [0]),
+        case("hook 2: next mission, then 5", [(None, []), (None, []), (None, [])], [0, 2, 5]),
+        case("concluded, answer 1", [(None, [])], [1], conclude=(1,)),
+        case("concluded, answer 3: again, then quit", [(None, []), (None, [])], [1, 5], conclude=(3,)),
+        case("plain key, two devices: paused, then quit", [(key(0x61, 3, 0), []), (None, [])], [4, 5], two=True),
+        case("an update mid-flight, then quit", [(None, [event_record(6, 0x1D800)]), (None, [])], [0, 5]),
+        case("first show, T and 3 keys, status written", [(key(0x54), []), (key(0x33), []), (key(0x71), [])], [0, 0, 0],
+             up=0, status=2),
+        case("the ask hook, an activate, then quit", [(None, [event_record(8, 0x1D800, modifiers=1)]), (None, [])], [0, 0, 5],
+             ask=1),
+    ]
+
+
+def quit_cases() -> list:
+    """save_changed_settings (changed or not); quit_application after 1.0.3's cases (the confirm JT $9a
+    answering 0 or 2; with changed settings the ask JT $132 answering 1 save, 2 cancel, 3 go on; the
+    window shown or not; ExitToShell a stand-in that returns); redraw_panel_readouts_locked with both,
+    one or neither session handle."""
+    out = []
+    for changed in (0, 1):
+        out.append({"name": "save settings: changed %d" % changed, "method": "save_changed_settings", "args": [],
+                    "results": {}, "writes": [[A5 - 0x1408, 2, changed], [A5 - 0x142A, 4, SETTINGS_HANDLE]]})
+    for confirm, changed, answer, shown in ((0, 1, 1, 1), (2, 0, 0, 1), (2, 1, 1, 1), (2, 1, 2, 1), (2, 1, 3, 0)):
+        out.append({"name": "quit: confirm %d changed %d answer %d shown %d" % (confirm, changed, answer, shown),
+                    "method": "quit_application", "args": [], "a7": STACK_TOP - 4,
+                    "writes": [[A5 - 0x1408, 2, changed], [A5 - 0x1544, 2, shown], [A5 - 0x1548, 4, 0x1D800],
+                               [A5 - 0x142A, 4, SETTINGS_HANDLE]],
+                    "results": {("jt", 0x9A): [confirm], ("jt", 0x132): [answer]}})
+    for first, second in ((1, 1), (1, 0), (0, 1)):
+        out.append({"name": "panel readouts: handles %d %d" % (first, second), "method": "redraw_panel_readouts_locked",
+                    "args": [], "a7": STACK_TOP - 4, "results": {},
+                    "writes": [[A5 - 0x1270, 4, 0x1D300 if first else 0], [A5 - 0x1256, 4, 0x1D310 if second else 0],
+                               [A5 - 0x10B4, 4, READOUTS_HOOK]]})
+    return out
+
+
 def build() -> list:
     a, d = "apply_settings_to_live_options", "apply_display_palettes"
     return [
@@ -481,6 +667,12 @@ def build() -> list:
         *palette_map_cases(),
         *colour_check_cases(),
         *menu_cases(),
+        *mission_cases(),
+        *session_cases(),
+        *sound_cases(),
+        *update_cases(),
+        *flight_cases(),
+        *quit_cases(),
         *poll_cases(),
         *redraw_cases(),
         *[{"name": "service table, FreeMem %#x" % free, "method": "install_overlay_service_table", "args": [], "writes": [],
@@ -506,12 +698,23 @@ def run(c: dict) -> list:
     emu.mem[CODE:CODE + len(code)] = code
     id01 = ID01.read_bytes()
     emu.mem[ID01_AT:ID01_AT + len(id01)] = id01
-    emu.write(A5 + 0x3A, 2, 0x4EF9)
-    emu.write(A5 + 0x3C, 4, ID01_AT + 0xBE)
+    # CODE 1's three switch helpers behind slots $2a / $32 / $3a (+0x96 / +0xaa / +0xbe), as the loaded
+    # jump table has them: JMP abs.l.
+    for slot, target in ((0x2A, 0x96), (0x32, 0xAA), (0x3A, 0xBE)):
+        emu.write(A5 + slot, 2, 0x4EF9)
+        emu.write(A5 + slot + 2, 4, ID01_AT + target)
+    # A case of another segment may ask for CODE 2's own routines behind some slots (C library helpers the
+    # port computes inline: labs, memset): Leyte's CODE 2 loaded at CODE2_AT, each slot a JMP abs.l there.
+    if c.get("code2_slots"):
+        code2 = (ROOT / "sources" / "leyte-gulf-1-0" / "CODE" / "ID02.bin").read_bytes()
+        emu.mem[CODE2_AT:CODE2_AT + len(code2)] = code2
+        for slot, target in c["code2_slots"].items():
+            emu.write(A5 + int(slot), 2, 0x4EF9)
+            emu.write(A5 + int(slot) + 2, 4, CODE2_AT + int(target))
     for a, s, v in c["writes"]:
         emu.write(a, s, v)
     emu.a[5] = A5
-    own = {ROUTINES[c["method"]]} | REAL.get(c["method"], set())   # these run: no stand-in at their entry
+    own = {ROUTINES[c["method"]]} | REAL.get(c["method"], set()) | set(c.get("real", []))   # these run: no stand-in at their entry
     install(emu, A5, [["addr", CODE + e[1]] + e[2:] if e[0] == "local" else e for e in logs(c["results"])
                       if not (e[0] == "local" and e[1] in own)])
     poll = emu.stubs.get(CODE + POLL)

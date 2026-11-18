@@ -948,3 +948,406 @@ func update_menu_items() -> void:
 	for pair in [[7, 0x13], [9, 0x15], [8, 0x17], [0xb, 0x1b], [0xa, 0x19]]:
 		settings = memory.read_u32(memory.read_u32(C68kScript.u32(a5 - 0x142a)))
 		_trap(TRAP_CHECK_ITEM, [memory.read_u8(settings + pair[1]), pair[0], view_menu])
+
+const LEYTE_JT_MISSION_READY: int = 0x15a     ## C routine, no arguments: word result, 0 when no mission can start (1.0.3: $132)
+const LEYTE_JT_MISSION_CHECK: int = 0x92      ## C routine, no arguments: word result, 0 to stay (1.0.3: $82)
+const LEYTE_LOCAL_FLIGHT_SESSION: int = 0x4fc ## Leyte's run_flight_session (1.0.3's 0x1a6c, "not found"): word result
+
+## 0x3d38 (1.0.3's start_new_mission 0x35e4 with Leyte's A5, and a loop 1.0.3 does not have): while
+## JT $15a and JT $92 both allow a mission, the overlay's mission hook (A5 - 0x10dc) is called with the
+## game state (A5 - 0x1376, sign-extended); with the game window up (A5 - 0x1544) its port rect is
+## invalidated (the window A5 - 0x1548, the port A5 - 0x168a restored); A5 - 0x136e and the twelve
+## counters at A5 - 0x1420 / - 0x1348 are cleared with A5 - 0x132e / - 0x1330 / - 0x132c / - 0x1542 /
+## - 0x1540 / - 0x153e; the 1-bit hook A5 - 0x10d8 runs in a running game (A5 - 0x1070) with an
+## overlay image (A5 - 0x1048) at depth 1 (A5 - 0x13f8) with the window up. Then the flight session
+## (0x4fc); a nonzero result starts the next mission the same way.
+func start_new_mission() -> void:
+	while true:
+		if (_jt(LEYTE_JT_MISSION_READY, []) & 0xffff) == 0:
+			return
+		if (_jt(LEYTE_JT_MISSION_CHECK, []) & 0xffff) == 0:
+			return
+		_hook(-0x10dc, [C68kScript.u32(memory.read_s16(C68kScript.u32(a5 - 0x1376)))])
+		if memory.read_u16(C68kScript.u32(a5 - 0x1544)) != 0:
+			var saved: int = memory.read_u32(C68kScript.u32(a5 - 0x168a))
+			_trap(TRAP_SET_PORT, [memory.read_u32(C68kScript.u32(a5 - 0x1548))])
+			_trap(TRAP_INVAL_RECT, [C68kScript.u32(memory.read_u32(C68kScript.u32(a5 - 0x1548)) + 0x10)])
+			_trap(TRAP_SET_PORT, [saved])
+		memory.write_u16(C68kScript.u32(a5 - 0x136e), 0)
+		for i in 0xc:
+			memory.write_u16(C68kScript.u32(a5 - 0x1420 + 2 * i), 0)
+			memory.write_u16(C68kScript.u32(a5 - 0x1348 + 2 * i), 0)
+		for off in [-0x132e, -0x1330, -0x132c, -0x1542, -0x1540, -0x153e]:
+			memory.write_u16(C68kScript.u32(a5 + off), 0)
+		if memory.read_u16(C68kScript.u32(a5 - 0x1070)) != 0 and memory.read_u32(C68kScript.u32(a5 - 0x1048)) != 0 \
+				and memory.read_s16(C68kScript.u32(a5 - 0x13f8)) == 1 and memory.read_u16(C68kScript.u32(a5 - 0x1544)) != 0:
+			_hook(-0x10d8)
+		if (_local(LEYTE_LOCAL_FLIGHT_SESSION, []) & 0xffff) == 0:
+			return
+
+const LEYTE_LOCAL_FREE_MEMORY_AND_SOUND: int = 0x4c6   ## ensure_free_memory_and_init_sound (verified)
+const LEYTE_LOCAL_LOAD_GAME_SOUNDS: int = 0x22ac       ## load_game_sounds (1.0.3 0x1f8e, "not found")
+const LEYTE_LOCAL_LOCK_SESSION: int = 0x9e8            ## lock_session_handles (1.0.3 0x95a; the runtime's)
+const LEYTE_LOCAL_LOCK_SOUND_SLOTS: int = 0x23ee       ## lock_sound_slots (verified)
+const LEYTE_LOCAL_SHUTDOWN_SOUND: int = 0x4a96         ## shutdown_sound (verified)
+const LEYTE_LOCAL_RELEASE_SOUND_SLOTS: int = 0x2186    ## release_sound_slots (verified)
+const LEYTE_LOCAL_UNLOCK_SESSION: int = 0xa88          ## unlock_session_handles (1.0.3 0x9fa; the runtime's)
+
+## 0x45a (1.0.3's begin_overlay_session at the same offset, the same instructions with Leyte's
+## operands): this code's segment unloaded (UnloadSeg A5 + 0xda), memory and sound made ready (0x4c6),
+## the overlay's prepare hook (A5 - 0x10c4), the game sounds loaded (0x22ac), MaxMem (JT $22a, its
+## grow in the frame) when FreeMem (JT $222) is under 100 000 bytes, the start hook (A5 - 0x10c0), the
+## session handles locked (0x9e8) and the sound slots (0x23ee).
+func begin_overlay_session() -> void:
+	assert(a7 != 0, "begin_overlay_session needs a7 (MaxMem's grow is in its frame)")
+	var a6: int = a7 - 4
+	memory.write_u32(a6 - 4, 0)
+	_trap(TRAP_UNLOAD_SEG, [C68kScript.u32(a5 + 0xda)])
+	_local(LEYTE_LOCAL_FREE_MEMORY_AND_SOUND, [])
+	_hook(-0x10c4)
+	_local(LEYTE_LOCAL_LOAD_GAME_SOUNDS, [])
+	if C68kScript.s32(_jt(LEYTE_JT_FREE_MEM, [])) < 0x186a0:
+		_jt(LEYTE_JT_MAX_MEM, [a6 - 4])
+	_hook(-0x10c0)
+	_local(LEYTE_LOCAL_LOCK_SESSION, [])
+	_local(LEYTE_LOCAL_LOCK_SOUND_SLOTS, [])
+
+## 0x4a4 (1.0.3's end_overlay_session at the same offset, the runtime's id02_04a4 there): with sound on
+## (A5 - 0x136c) shutdown_sound (0x4a96); the overlay's finish hook (A5 - 0x10b8); the sound slots
+## released (0x2186); the session handles unlocked (0xa88); DrawMenuBar when the menu bar was hidden
+## (A5 - 0x106a).
+func end_overlay_session() -> void:
+	if memory.read_u16(C68kScript.u32(a5 - 0x136c)) != 0:
+		_local(LEYTE_LOCAL_SHUTDOWN_SOUND, [])
+	_hook(-0x10b8)
+	_local(LEYTE_LOCAL_RELEASE_SOUND_SLOTS, [])
+	_local(LEYTE_LOCAL_UNLOCK_SESSION, [])
+	if memory.read_u16(C68kScript.u32(a5 - 0x106a)) != 0:
+		_trap(TRAP_DRAW_MENU_BAR, [])
+
+const LEYTE_LOCAL_LOAD_NAMED_SOUND: int = 0x21fa  ## load_named_sound_into_slot (verified; C: name, slot): word result
+const LEYTE_LOCAL_SOUND_ERROR_ONCE: int = 0x20f2  ## show_sound_error_dialog_once (verified)
+
+## 0x22ac (1.0.3's load_game_sounds 0x1f8e with Leyte's operands and one more sound): the slot table
+## (A5 - 0xd94) recorded at A5 - 0x1170, the old slots released (0x2186), MaxMem (JT $22a, its grow in
+## the frame) and FreeMem (JT $222) asked, then the named sounds loaded (0x21fa): the engine sound in
+## slot 0 from A5 - 0xd2e with more than 0x2e400 free, else A5 - 0xd26; then slots 5, 2, 9, 6, 7, 14
+## (Leyte's, from A5 - 0xcf2), 1, 12, 11, 10 and 8; slot 8 from A5 - 0xcca when A5 - 0xcd4 is
+## missing, which also counts as a failure. Any failure shows the sound error dialog once (0x20f2).
+func load_game_sounds() -> void:
+	assert(a7 != 0, "load_game_sounds needs a7 (MaxMem's grow is in its frame)")
+	var a6: int = a7 - 4
+	memory.write_u32(a6 - 6, 0)
+	memory.write_u32(C68kScript.u32(a5 - 0x1170), C68kScript.u32(a5 - 0xd94))
+	_local(LEYTE_LOCAL_RELEASE_SOUND_SLOTS, [])
+	var failed: int = 0
+	_jt(LEYTE_JT_MAX_MEM, [a6 - 6])
+	var free: int = C68kScript.s32(_jt(LEYTE_JT_FREE_MEM, []))
+	failed |= _local(LEYTE_LOCAL_LOAD_NAMED_SOUND, [C68kScript.u32(a5 + (-0xd2e if free > 0x2e400 else -0xd26)), 0])
+	for pair in [[-0xd18, 5], [-0xd14, 2], [-0xd10, 9], [-0xcfe, 6], [-0xcf8, 7], [-0xcf2, 0xe], [-0xcea, 1],
+			[-0xce6, 0xc], [-0xce0, 0xb], [-0xcda, 0xa]]:
+		failed |= _local(LEYTE_LOCAL_LOAD_NAMED_SOUND, [C68kScript.u32(a5 + pair[0]), pair[1]])
+	if _local(LEYTE_LOCAL_LOAD_NAMED_SOUND, [C68kScript.u32(a5 - 0xcd4), 8]) & 0xffff != 0:
+		failed |= 1
+		failed |= _local(LEYTE_LOCAL_LOAD_NAMED_SOUND, [C68kScript.u32(a5 - 0xcca), 8])
+	if (failed & 0xffff) != 0:
+		_local(LEYTE_LOCAL_SOUND_ERROR_ONCE, [])
+
+## 0x552a (1.0.3's restore_screen_globals 0x4d96, the runtime's id02_4d96 there, with Leyte's
+## operands): SetGDevice(A5 - 0x1078), then the screen base / row bytes / flag back from A5 - 0x13c4 /
+## - 0x13c8 / - 0x13c6 into A5 - 0x1400 / - 0x13f6 / - 0x1390.
+func restore_screen_globals() -> void:
+	_trap(TRAP_SET_GDEVICE, [memory.read_u32(C68kScript.u32(a5 - 0x1078))])
+	memory.write_u32(C68kScript.u32(a5 - 0x1400), memory.read_u32(C68kScript.u32(a5 - 0x13c4)))
+	memory.write_u16(C68kScript.u32(a5 - 0x13f6), memory.read_u16(C68kScript.u32(a5 - 0x13c8)))
+	memory.write_u16(C68kScript.u32(a5 - 0x1390), memory.read_u16(C68kScript.u32(a5 - 0x13c6)))
+
+## 0x54c8 (1.0.3's process_pending_update_events 0x4d34, the same instructions with Leyte's
+## operands): pending update events (GetNextEvent, update mask, the record in the frame) for the game
+## window (A5 - 0x1548) handled: BeginUpdate, the window redrawn (0x5544), EndUpdate; stops at the first
+## other window's or none.
+func process_pending_update_events() -> void:
+	assert(a7 != 0, "process_pending_update_events needs a7 (the event record is in its frame)")
+	var a6: int = a7 - 4
+	while (_trap(TRAP_GET_NEXT_EVENT, [a6 - 0x10, 0x40]) >> 8) & 0xff != 0:
+		if memory.read_u32(a6 - 0xe) != memory.read_u32(C68kScript.u32(a5 - 0x1548)):
+			return
+		_trap(TRAP_BEGIN_UPDATE, [memory.read_u32(C68kScript.u32(a5 - 0x1548))])
+		_local(LEYTE_LOCAL_REDRAW, [])
+		_trap(TRAP_END_UPDATE, [memory.read_u32(C68kScript.u32(a5 - 0x1548))])
+
+## 0x54fe (1.0.3's handle_update_event 0x4d6a; C, the event): an update of the game window
+## (A5 - 0x1548), while it is up (A5 - 0x1544), redrawn between BeginUpdate and EndUpdate.
+func handle_update_event(event: int) -> void:
+	if memory.read_u16(C68kScript.u32(a5 - 0x1544)) == 0:
+		return
+	if memory.read_u32(C68kScript.u32(event + 2)) != memory.read_u32(C68kScript.u32(a5 - 0x1548)):
+		return
+	_trap(TRAP_BEGIN_UPDATE, [memory.read_u32(C68kScript.u32(a5 - 0x1548))])
+	_local(LEYTE_LOCAL_REDRAW, [])
+	_trap(TRAP_END_UPDATE, [memory.read_u32(C68kScript.u32(a5 - 0x1548))])
+
+const LEYTE_LOCAL_RESTORE_SCREEN: int = 0x552a     ## restore_screen_globals (above)
+const LEYTE_LOCAL_SEGMENT3_ENTRY: int = 0x1c92     ## run_segment3_entry_and_unload_a5safe (verified)
+const LEYTE_LOCAL_PENDING_UPDATES: int = 0x54c8    ## process_pending_update_events (above)
+const LEYTE_LOCAL_BEGIN_SESSION: int = 0x45a       ## begin_overlay_session (above)
+const LEYTE_LOCAL_END_SESSION: int = 0x4a4         ## end_overlay_session (above)
+const LEYTE_LOCAL_UPDATE_EVENT: int = 0x54fe       ## handle_update_event (above; C, the event)
+const LEYTE_LOCAL_ACTIVATE_EVENT: int = 0x36d8     ## handle_activate_event (verified; C, the event by value)
+const LEYTE_JT_CONCLUDE_MISSION: int = 0x10a      ## C (result, message): word answer, 3 to fly again (1.0.3: $da)
+const LEYTE_JT_NEXT_MISSION: int = 0x16a          ## C, no arguments (1.0.3: $9a)
+const LEYTE_JT_PAUSED: int = 0x8a                 ## C, no arguments: the paused dialog (1.0.3: $122)
+const FLIGHT_KEY_EVENTS: int = 0x18               ## GetNextEvent mask: key down / up
+const FLIGHT_OTHER_EVENTS: int = 0xffe7           ## every event but the null, mouse and key ones
+
+## 0x4fc (1.0.3's run_flight_session 0x1a6c with Leyte's operands and its per-device step; word result:
+## named apart from the base's refused run_flight_session, which returns nothing, as GDScript forbids an
+## override with another signature; start_new_mission reaches it by its offset).
+## Frame (link 0x2e): the event record at -0x22 (its modifiers -0x14), the mouse point -0x2a (v) / -0x28
+## (h), the result -0xa, half the menu bar -4, the two-device flag -0x24 (A5 - 0x1352 and - 0x1074), the
+## return value -0x26, the device loop's index -2 and record -0x12.
+## A session: HiliteMenu(0); the screen globals restored (0x552a); segment 3's entry (0x1c92); the game
+## window (A5 - 0x1548) shown the first time (A5 - 0x1544 set), else selected with its pending updates
+## (0x54c8); the session begun (0x45a), the cursor hidden, A5 - 0x107e / - 0x1368 cleared when only the
+## second is set; A5 - 0x1088 cleared; the event glue JT $20a(-7); the overlay's hook A5 - 0x10b0 with
+## the current pilot's word +0x22; A5 - 0x157e = TickCount, A5 - 0x1582 = A5 - 0x157a = 0.
+## Each frame: the half screen sizes (A5 - 0x13f0 / - 0x13ee >> 1, into -0x2c / -0x2e); four ticks after
+## A5 - 0x1086; GetMouse (a move stored at A5 - 0x1576 with A5 - 0x108c = h and A5 - 0x108a = v + half
+## the menu bar); A5 - 0x1088 = Button. One key event: a command key-up through ID01's sparse switch
+## (T / t: A5 - 0x1071's bit 0; 1..5: settings +0x10 and apply_settings; Q / q: result 5; S / s: the
+## session ended and begun again around settings +3's bit 0; E / e: settings +5's bit 0), then without a
+## result the key hook (A5 - 0x10ac) with (0, 0); another command event the key hook with (0, 0); a plain
+## key the hook with (character, what); no key the hook with (0, 0). Every other event pending, by ID01's
+## dense switch on 6..8: an update ends the session, is handled (0x54fe), and begins it again; an
+## activate likewise through 0x36d8. With A5 - 0x1072 the hook A5 - 0x10c8 may ask for the key hook
+## (twice when the first answers 0). The step hook (A5 - 0x10bc): with two devices once per device record
+## (A5 - 0x13d6 + 0x16 k, k 0..2) that has a device, made current with its screen globals, with (k = 0,
+## k + 1); otherwise once with (1, 1). Without a result A5 - 0x1582 counts the frame.
+## The end: the session ended (0x4a4), the screen globals restored, JT $20a(-1), InitCursor; the pilot's
+## status word (+0x20) written back from A5 - 0x132e when it changed (ChangedResource, UpdateResFile of
+## A5 - 0x1042). Then by the result's low byte (ID01's dense switch on -1..10): 1 and 6..10 conclude the
+## mission (JT $10a with A5 - 0xe24); its answer 3 flies again (9 at once; else JT $16a and the hook
+## A5 - 0x10d0, then 1 at once, others after the hook A5 - 0x10cc and a redraw), any other answer returns
+## 1; 2 flies again after JT $16a and A5 - 0x10d0; 4 after the paused dialog (JT $8a); 5 quits (0x35e2)
+## and returns; the rest return. The value returned is -0x26 (0 unless a mission was concluded).
+func run_flight_session_leyte() -> int:
+	assert(a7 != 0, "run_flight_session_leyte needs a7 (its event record and mouse point are in its frame)")
+	var a6: int = a7 - 4
+	var event: int = a6 - 0x22
+	memory.write_u32(a6 - 0xe, 0)
+	var two: bool = memory.read_u16(C68kScript.u32(a5 - 0x1352)) != 0 and memory.read_u16(C68kScript.u32(a5 - 0x1074)) != 0
+	memory.write_u16(a6 - 0x24, 1 if two else 0)
+	memory.write_u16(a6 - 0x26, 0)
+	while true:
+		_trap(TRAP_HILITE_MENU, [0])
+		_local(LEYTE_LOCAL_RESTORE_SCREEN, [])
+		_local(LEYTE_LOCAL_SEGMENT3_ENTRY, [])
+		if memory.read_u16(C68kScript.u32(a5 - 0x1544)) == 0:
+			_trap(TRAP_SHOW_WINDOW, [memory.read_u32(C68kScript.u32(a5 - 0x1548))])
+			memory.write_u16(C68kScript.u32(a5 - 0x1544), 1)
+		else:
+			_trap(TRAP_SELECT_WINDOW, [memory.read_u32(C68kScript.u32(a5 - 0x1548))])
+			_local(LEYTE_LOCAL_PENDING_UPDATES, [])
+		_local(LEYTE_LOCAL_BEGIN_SESSION, [])
+		_trap(TRAP_HIDE_CURSOR, [])
+		_drawn_once_reset()
+		memory.write_u16(C68kScript.u32(a5 - 0x1088), 0)
+		_jt(LEYTE_JT_EVENT_GLUE, [0xfff9])
+		var roster_rec: int = C68kScript.u32(memory.read_u32(memory.read_u32(C68kScript.u32(a5 - 0x1426)))
+				+ (memory.read_s16(C68kScript.u32(a5 - 0x1422)) << 6))
+		_hook(-0x10b0, [C68kScript.u32(memory.read_s16(roster_rec + 0x22))])
+		memory.write_u32(C68kScript.u32(a5 - 0x157e), C68kScript.u32(_trap(TRAP_TICK_COUNT, [])))
+		memory.write_u32(C68kScript.u32(a5 - 0x1582), 0)
+		memory.write_u32(C68kScript.u32(a5 - 0x157a), 0)
+		memory.write_u16(a6 - 0xa, 0)
+		memory.write_u16(a6 - 4, C68kScript.u16(int(C68kScript.s16(memory.read_u16(LM_MBAR_HEIGHT)) / 2.0)))
+		while true:
+			memory.write_u16(a6 - 0x2c, C68kScript.u16(memory.read_s16(C68kScript.u32(a5 - 0x13f0)) >> 1))
+			memory.write_u16(a6 - 0x2e, C68kScript.u16(memory.read_s16(C68kScript.u32(a5 - 0x13ee)) >> 1))
+			while C68kScript.s32(C68kScript.u32(_trap(TRAP_TICK_COUNT, [])) - memory.read_u32(C68kScript.u32(a5 - 0x1086))) < 4:
+				pass
+			memory.write_u32(C68kScript.u32(a5 - 0x1086), C68kScript.u32(_trap(TRAP_TICK_COUNT, [])))
+			_trap(TRAP_GET_MOUSE, [a6 - 0x2a])
+			memory.write_u16(C68kScript.u32(a5 - 0x1088), C68kScript.u16(C68kScript.s8((_trap(TRAP_BUTTON, []) >> 8) & 0xff)))
+			if memory.read_u16(a6 - 0x28) != memory.read_u16(C68kScript.u32(a5 - 0x1574)) \
+					or memory.read_u16(a6 - 0x2a) != memory.read_u16(C68kScript.u32(a5 - 0x1576)):
+				memory.write_u32(C68kScript.u32(a5 - 0x1576), memory.read_u32(a6 - 0x2a))
+				memory.write_u16(C68kScript.u32(a5 - 0x108c), memory.read_u16(a6 - 0x28))
+				memory.write_u16(C68kScript.u32(a5 - 0x108a), C68kScript.u16(memory.read_u16(a6 - 0x2a) + memory.read_u16(a6 - 4)))
+			var result: int = 0
+			if (_trap(TRAP_GET_NEXT_EVENT, [event, FLIGHT_KEY_EVENTS]) >> 8) & 0xff != 0:
+				if (memory.read_u16(a6 - 0x14) & 0x100) != 0:
+					if memory.read_u16(event) == 4:
+						result = _leyte_command_key(memory.read_u32(event + 2) & 0xff)
+						if result == 0:
+							result = _key_hook_leyte(0, 0)
+					else:
+						result = _key_hook_leyte(0, 0)
+				else:
+					result = _key_hook_leyte(memory.read_u32(event + 2) & 0xff, C68kScript.u32(memory.read_s16(event)))
+			else:
+				result = _key_hook_leyte(0, 0)
+			memory.write_u16(a6 - 0xa, result)
+			while (_trap(TRAP_GET_NEXT_EVENT, [event, FLIGHT_OTHER_EVENTS]) >> 8) & 0xff != 0:
+				match memory.read_s16(event):
+					6:
+						_local(LEYTE_LOCAL_END_SESSION, [])
+						_local(LEYTE_LOCAL_UPDATE_EVENT, [event])
+						_drawn_once_reset()
+						_trap(TRAP_HIDE_CURSOR, [])
+						_local(LEYTE_LOCAL_BEGIN_SESSION, [])
+					8:
+						_local(LEYTE_LOCAL_END_SESSION, [])
+						_local(LEYTE_LOCAL_ACTIVATE_EVENT, [memory.read_u32(event), memory.read_u32(event + 4),
+								memory.read_u32(event + 8), memory.read_u32(event + 0xc)])
+						_local(LEYTE_LOCAL_BEGIN_SESSION, [])
+			result = memory.read_u16(a6 - 0xa)
+			if memory.read_u16(C68kScript.u32(a5 - 0x1072)) != 0 and C68kScript.u32(_hook(-0x10c8)) != 0:
+				if result == 0:
+					result = _key_hook_leyte(0, 0)
+					memory.write_u16(a6 - 0xa, result)
+				if result == 0:
+					result = _key_hook_leyte(0, 0)
+					memory.write_u16(a6 - 0xa, result)
+			if memory.read_u16(a6 - 0x24) != 0:
+				memory.write_u32(a6 - 0x12, C68kScript.u32(a5 - 0x13d6))
+				memory.write_u16(a6 - 2, 1)
+				while memory.read_s16(a6 - 2) < 4:
+					var rec: int = memory.read_u32(a6 - 0x12)
+					if memory.read_u32(rec) != 0:
+						_trap(TRAP_SET_GDEVICE, [memory.read_u32(rec)])
+						memory.write_u32(C68kScript.u32(a5 - 0x1400), memory.read_u32(rec + 0x12))
+						memory.write_u16(C68kScript.u32(a5 - 0x13f6), memory.read_u16(rec + 0xe))
+						memory.write_u16(C68kScript.u32(a5 - 0x1390), memory.read_u16(rec + 0x10))
+						var k: int = memory.read_s16(a6 - 2)
+						_hook(-0x10bc, [1 if k == 1 else 0, C68kScript.u32(k)])
+					memory.write_u32(a6 - 0x12, C68kScript.u32(rec + 0x16))
+					memory.write_u16(a6 - 2, memory.read_u16(a6 - 2) + 1)
+			else:
+				_hook(-0x10bc, [1, 1])
+			if memory.read_u16(a6 - 0xa) != 0:
+				break
+			memory.write_u32(C68kScript.u32(a5 - 0x1582), C68kScript.u32(memory.read_u32(C68kScript.u32(a5 - 0x1582)) + 1))
+		var outcome: int = _leyte_end_flight(a6)
+		if outcome != 0:
+			return memory.read_u16(a6 - 0x26)
+	return 0
+
+## The command keys of the flight loop (ID01's sparse switch on the character, 13 cases): 0 when none.
+func _leyte_command_key(c: int) -> int:
+	match c:
+		0x54, 0x74:
+			memory.write_u8(C68kScript.u32(a5 - 0x1071), memory.read_u8(C68kScript.u32(a5 - 0x1071)) ^ 1)
+		0x31, 0x32, 0x33, 0x34, 0x35:
+			var settings: int = memory.read_u32(memory.read_u32(C68kScript.u32(a5 - 0x142a)))
+			memory.write_u16(settings + 0x10, C68kScript.u16(c - 0x30))
+			_settings_applied_live()
+		0x51, 0x71:
+			return 5
+		0x53, 0x73:
+			_local(LEYTE_LOCAL_RESTORE_SCREEN, [])
+			_local(LEYTE_LOCAL_END_SESSION, [])
+			var settings: int = memory.read_u32(memory.read_u32(C68kScript.u32(a5 - 0x142a)))
+			memory.write_u8(settings + 3, memory.read_u8(settings + 3) ^ 1)
+			_settings_applied_live()
+			_local(LEYTE_LOCAL_BEGIN_SESSION, [])
+		0x45, 0x65:
+			var settings: int = memory.read_u32(memory.read_u32(C68kScript.u32(a5 - 0x142a)))
+			memory.write_u8(settings + 5, memory.read_u8(settings + 5) ^ 1)
+			_settings_applied_live()
+	return 0
+
+## A5 - 0x1544 cleared around apply_settings_to_live_options (0x2db2), then set.
+func _settings_applied_live() -> void:
+	memory.write_u16(C68kScript.u32(a5 - 0x1544), 0)
+	_local(LEYTE_LOCAL_FINISH, [])
+	memory.write_u16(C68kScript.u32(a5 - 0x1544), 1)
+
+## A5 - 0x107e and - 0x1368 cleared when only the second is set.
+func _drawn_once_reset() -> void:
+	if memory.read_u16(C68kScript.u32(a5 - 0x107e)) == 0 and memory.read_u16(C68kScript.u32(a5 - 0x1368)) != 0:
+		memory.write_u16(C68kScript.u32(a5 - 0x107e), 0)
+		memory.write_u16(C68kScript.u32(a5 - 0x1368), 0)
+
+## The overlay's key hook (A5 - 0x10ac; C: character, what), its word result.
+func _key_hook_leyte(c: int, what: int) -> int:
+	return _hook(-0x10ac, [C68kScript.u32(c), C68kScript.u32(what)]) & 0xffff
+
+## The end of a flight (from 0x8ce): 0 to fly again (the loop goes back to its HiliteMenu), else nonzero
+## with -0x26 set as the original leaves it.
+func _leyte_end_flight(a6: int) -> int:
+	_local(LEYTE_LOCAL_END_SESSION, [])
+	_local(LEYTE_LOCAL_RESTORE_SCREEN, [])
+	_jt(LEYTE_JT_EVENT_GLUE, [0xffff])
+	_trap(TRAP_INIT_CURSOR, [])
+	var rec: int = C68kScript.u32(memory.read_u32(memory.read_u32(C68kScript.u32(a5 - 0x1426)))
+			+ (memory.read_s16(C68kScript.u32(a5 - 0x1422)) << 6))
+	if memory.read_u16(rec + 0x20) != memory.read_u16(C68kScript.u32(a5 - 0x132e)):
+		memory.write_u16(rec + 0x20, memory.read_u16(C68kScript.u32(a5 - 0x132e)))
+		_trap(TRAP_CHANGED_RESOURCE, [memory.read_u32(C68kScript.u32(a5 - 0x1426))])
+		_trap(TRAP_UPDATE_RES_FILE, [memory.read_u16(C68kScript.u32(a5 - 0x1042))])
+	var code: int = C68kScript.s16(memory.read_u16(a6 - 0xa) & 0xff)
+	match code:
+		1, 6, 7, 8, 9, 10:
+			var answer: int = _jt(LEYTE_JT_CONCLUDE_MISSION, [memory.read_u16(a6 - 0xa), memory.read_u32(C68kScript.u32(a5 - 0xe24))])
+			if answer & 0xffff != 3:
+				memory.write_u16(a6 - 0x26, 1)
+				return 1
+			if code == 9:
+				return 0
+			_jt(LEYTE_JT_NEXT_MISSION, [])
+			_hook(-0x10d0)
+			if code == 1:
+				return 0
+			_hook(-0x10cc)
+			_local(LEYTE_LOCAL_REDRAW, [])
+			return 0
+		2:
+			_jt(LEYTE_JT_NEXT_MISSION, [])
+			_hook(-0x10d0)
+			return 0
+		4:
+			_jt(LEYTE_JT_PAUSED, [])
+			return 0
+		5:
+			_local(LEYTE_LOCAL_QUIT, [])
+			return 1
+	return 1
+
+const LEYTE_JT_CONFIRM_END: int = 0x9a     ## confirm_end_mission (CODE 4 +0x566; C, word answer, 2 to go on; 1.0.3: $13a)
+const LEYTE_JT_ASK_SAVE: int = 0x132       ## ask_save_changes (C, word answer; 1.0.3: $ba)
+
+## 0x34d8 (1.0.3's save_changed_settings 0x2da0, the runtime's id02_2da0 there, with Leyte's operands):
+## changed settings (A5 - 0x1408) written: ChangedResource and WriteResource of the settings handle
+## A5 - 0x142a, the flag cleared.
+func save_changed_settings() -> void:
+	if memory.read_u16(C68kScript.u32(a5 - 0x1408)) != 0:
+		_trap(TRAP_CHANGED_RESOURCE, [memory.read_u32(C68kScript.u32(a5 - 0x142a))])
+		_trap(TRAP_WRITE_RESOURCE, [memory.read_u32(C68kScript.u32(a5 - 0x142a))])
+		memory.write_u16(C68kScript.u32(a5 - 0x1408), 0)
+
+## 0x35e2 (1.0.3's quit_application 0x2eaa, the runtime's id02_2eaa there, with Leyte's operands): JT
+## $9a must answer 2; with changed settings (A5 - 0x1408) JT $132 asks (ID01's dense switch on 1..2:
+## 1 saves them (0x34d8), 2 cancels the quit, any other answer goes on); the game window (A5 - 0x1548)
+## hidden when shown (A5 - 0x1544), then ExitToShell.
+func quit_application() -> void:
+	if _jt(LEYTE_JT_CONFIRM_END, []) & 0xffff != 2:
+		return
+	if memory.read_u16(C68kScript.u32(a5 - 0x1408)) != 0:
+		var choice: int = _jt(LEYTE_JT_ASK_SAVE, []) & 0xffff
+		if choice == 1:
+			save_changed_settings()
+		elif choice == 2:
+			return
+	if memory.read_u16(C68kScript.u32(a5 - 0x1544)) != 0:
+		_trap(TRAP_HIDE_WINDOW, [memory.read_u32(C68kScript.u32(a5 - 0x1548))])
+	_trap(TRAP_EXIT_TO_SHELL, [])
+
+## 0xab4 (1.0.3's redraw_panel_readouts_locked 0xa26, the runtime's id02_0a26 there): with the first two
+## session handles allocated (A5 - 0x1270, - 0x1256), the overlay's hook A5 - 0x10b4 (its readouts
+## and gauges) runs between the session handles' lock (0x9e8) and unlock (0xa88).
+func redraw_panel_readouts_locked() -> void:
+	if memory.read_u32(C68kScript.u32(a5 - 0x1270)) != 0 and memory.read_u32(C68kScript.u32(a5 - 0x1256)) != 0:
+		_local(LEYTE_LOCAL_LOCK_SESSION, [])
+		_hook(-0x10b4)
+		_local(LEYTE_LOCAL_UNLOCK_SESSION, [])

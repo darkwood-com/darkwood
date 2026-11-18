@@ -125,6 +125,8 @@ def _glue_bytes(code: bytes, at: int):
         w = int.from_bytes(code[end:end + 2], "big")
         if w == 0x4E75 or (w & 0xFFF8) == 0x4ED0 or w == 0x4EFA:     # rts / jmp (an) / jmp d16(pc)
             return code[at:end + 2]
+        if (w & 0xFFF8) == 0x4EF0:     # jmp d8(an, xn): CODE 1's switch helpers' dispatch, its extension word kept
+            return code[at:end + 4]
     return None
 
 
@@ -219,7 +221,13 @@ def _reach(name: str, bodies: dict) -> set:
     return seen
 
 
+## A literal a design-coordinate converter takes is a coordinate, not an A5 offset (the view frame's
+## -3200 and -1060 design units fall in the A5 world's range): left out of the A5 scan.
+DESIGN_COORDINATE = re.compile(r"\b(design_x_to_screen|design_y_to_screen|_h|_v)\(-0x[0-9a-fA-F]+\)")
+
+
 def _values(body: str, consts: dict) -> set:
+    body = DESIGN_COORDINATE.sub(r"\1(COORD)", body)
     vals = {(-1 if m.group(1) else 1) * int(m.group(2), 16) for m in LITERAL.finditer(body)}
     return vals | {consts[w] for w in re.findall(r"\b([A-Z_][A-Z0-9_]*)\b", body) if w in consts}
 

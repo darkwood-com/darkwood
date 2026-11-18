@@ -17,7 +17,8 @@ ROOT = Path(__file__).resolve().parents[2]
 ID02 = "original/leyte/port/ID02_reconstructed.gd"
 ID08 = "original/leyte/port/ID08.gd"
 ## segment -> the port file the runtime instantiates for it when it has reconstructed routines
-PORT_FILES = {2: ID02, 8: ID08}
+ID03 = "original/leyte/port/ID03_reconstructed.gd"
+PORT_FILES = {2: ID02, 3: ID03, 8: ID08}
 ROUTINES = {
     (2, 0x245A): (ID02, "reset_overlay_state"),
     (2, 0x54B8): (ID02, "apply_display_palettes"),
@@ -38,6 +39,26 @@ ROUTINES = {
     (2, 0x53AC): (ID02, "check_device_color_state_changed"),
     (2, 0x2D60): (ID02, "refresh_display_if_changed"),
     (2, 0x38B2): (ID02, "update_menu_items"),
+    (2, 0x3D38): (ID02, "start_new_mission"),
+    (2, 0x45A): (ID02, "begin_overlay_session"),
+    (2, 0x4A4): (ID02, "end_overlay_session"),
+    (2, 0x22AC): (ID02, "load_game_sounds"),
+    (2, 0x552A): (ID02, "restore_screen_globals"),
+    (2, 0x54C8): (ID02, "process_pending_update_events"),
+    (2, 0x54FE): (ID02, "handle_update_event"),
+    (2, 0x4FC): (ID02, "run_flight_session_leyte"),
+    (2, 0x34D8): (ID02, "save_changed_settings"),
+    (2, 0x35E2): (ID02, "quit_application"),
+    (2, 0xAB4): (ID02, "redraw_panel_readouts_locked"),
+    (3, 0x5EB4): (ID03, "prepare_instrument_panel"),
+    (3, 0x5BE4): (ID03, "release_panel_bitmaps"),
+    (3, 0x5CA6): (ID03, "store_panel_bitmaps_as_resources"),
+    (3, 0x741E): (ID03, "remap_panel_colours_identity"),
+    (3, 0x6E5E): (ID03, "remap_cached_panel_colours"),
+    (3, 0x4304): (ID03, "draw_panel_section_with_numbered_boxes"),
+    (3, 0x4B32): (ID03, "draw_split_display_box"),
+    (3, 0x4790): (ID03, "draw_percent_scale_gauge"),
+    (3, 0x4C42): (ID03, "draw_six_cell_display_box"),
     (8, 0x6): (ID08, "load_overlay_from_data_fork"),
     (8, 0x350): (ID08, "alloc_and_read_resource_payload"),
 }
@@ -48,7 +69,8 @@ COVERED_BY = {"alloc_and_read_resource_payload": "load_overlay_from_data_fork"}
 
 def check() -> list[str]:
     bad = []
-    cases = json.loads((ROOT / "godot" / "tests" / "leyte" / "port" / "fixtures" / "id02_reconstructed_cases.json").read_text())["cases"]
+    cases = [c for f in ("id02_reconstructed_cases.json", "id03_reconstructed_cases.json")
+             for c in json.loads((ROOT / "godot" / "tests" / "leyte" / "port" / "fixtures" / f).read_text())["cases"]]
     tested = {c["method"] for c in cases} | {"load_overlay_from_data_fork"}
     for (seg, off), (path, method) in ROUTINES.items():
         source = (ROOT / "godot" / path).read_text()
