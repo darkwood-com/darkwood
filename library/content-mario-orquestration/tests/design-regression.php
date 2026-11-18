@@ -36,6 +36,15 @@ try {
     } catch (RuntimeException $error) {
         check(str_contains($error->getMessage(), 'One generation'), 'Wrong repeated-call failure.');
     }
+    $invalidTool = new McpLevelTool($root, fixture: true);
+    try {
+        $invalidTool('  ');
+        throw new LogicException('Whitespace prompt was accepted.');
+    } catch (RuntimeException $error) {
+        check(str_contains($error->getMessage(), 'MCP tool error: Invalid prompt'), 'Tool failure was hidden as a generic protocol error.');
+    } finally {
+        $invalidTool->disconnect();
+    }
     $level = $content['level'];
     $level['name'] = '<script>alert("x")</script>';
     $exporter = new LevelPreviewExporter();

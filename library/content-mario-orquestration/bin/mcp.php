@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Mario\Infrastructure\AI\MarioAgentOrchestrator;
 use App\Mario\Infrastructure\AI\MarioMultiAgentFactory;
+use Mcp\Schema\Content\TextContent;
+use Mcp\Schema\Result\CallToolResult;
 use Mcp\Server\Server;
 use Mcp\Server\Transport\StdioTransport;
 
@@ -14,10 +16,21 @@ $orchestrator = new MarioAgentOrchestrator(new MarioMultiAgentFactory());
 $server = Server::builder()
     ->setServerInfo('Darkwood original level generator', '1.0.0')
     ->addTool(
-        static function (string $prompt) use ($orchestrator, $fixture): array {
-            $result = $orchestrator->orchestrate($prompt, $fixture);
+        static function (string $prompt) use ($orchestrator, $fixture): array|CallToolResult {
+            try {
+                $result = $orchestrator->orchestrate($prompt, $fixture);
+            } catch (InvalidArgumentException) {
+                return new CallToolResult([new TextContent('Invalid prompt: provide 1–2000 non-whitespace characters.')], true, ['error' => 'invalid_prompt']);
+            } catch (RuntimeException $error) {
+                $code = str_starts_with($error->getMessage(), 'AI output') ? 'invalid_provider_output' : 'provider_failure';
+                return new CallToolResult([new TextContent('Generation failed: '.$code.'. No level exported; retry explicitly.')], true, ['error' => $code]);
+            }
             if (!$result['validation']->isValid()) {
-                throw new RuntimeException('Generated level failed geometry validation.');
+                return new CallToolResult(
+                    [new TextContent('Invalid generated geometry: '.implode(' ', $result['validation']->errors()))],
+                    true,
+                    ['error' => 'invalid_geometry', 'validation_errors' => $result['validation']->errors()],
+                );
             }
 
             return [
