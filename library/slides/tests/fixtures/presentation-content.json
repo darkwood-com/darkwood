@@ -6355,30 +6355,106 @@
                 }
             ]
         },
+        "mario-ai-agents-hackathon": {
+            "count": 4,
+            "slides": [
+                {
+                    "id": "mario-ai-agents-hackathon-0",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Darkwood · Hackathon 2026",
+                            "Original level designer",
+                            "Symfony AI + the official PHP MCP SDK"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "18-11-2026"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-1",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "A real tool call",
+                            "Agent → MCP → checked JSON",
+                            "Existing Darkwood Symfony application",
+                            "The agent interprets the brief. The SDK client calls the real server."
+                        ],
+                        "code": [
+                            "php bin/console app:mario:design \\\n  --prompt='An original beginner forest level' \\\n  --approve-export"
+                        ],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "02 | execution"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-2",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Actual generated geometry",
+                            "Checked coordinates, structured JSON and execution evidence.",
+                            "Inspect the result"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/darkwood/hackathon/level-preview.png"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "03 | evidence"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-3",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Geometry is not proof of playability",
+                            "No hidden fixture or model-side publishing",
+                            "Public code and quickstart",
+                            "Public source · MIT · Nix",
+                            "Reproduce it",
+                            "Symfony AI 1.0.0-BETA1 + mcp/sdk 0.10.0"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://github.com/darkwood-com/darkwood/tree/main/library/content-mario-orquestration"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "04 | limits"
+                        ]
+                    }
+                }
+            ]
+        },
         "mario-ai-agents": {
-            "count": 15,
+            "count": 9,
             "slides": [
                 {
                     "id": "mario-ai-agents-0",
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Agents",
-                            "J'ai force 4 IA a recreer Mario de zero",
-                            "Jeu jouable",
-                            "Mais au lieu de juste comparer les modeles, j'ai voulu comprendre comment orchestrer des agents IA pour produire un jeu.",
-                            "Prompt",
-                            "Tests",
-                            "Video Darkwood / IA x Game Dev",
-                            "→",
-                            "→",
-                            "→"
+                            "Darkwood · Hackathon 2026",
+                            "Symfony AI × MCP",
+                            "Un brief, un outil réel, une géométrie vérifiée"
                         ],
                         "code": [],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "01 | hook"
+                            "18-11-2026"
                         ]
                     }
                 },
@@ -6387,22 +6463,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Chaque patch casse autre chose.",
-                            "Collision bugs",
-                            "Dette technique immediate",
-                            "Le perso traverse le sol ou reste bloque.",
-                            "Le probleme du vibe coding classique",
-                            "Logique incoherente",
-                            "Niveaux impossibles",
-                            "Prompt unique → IA → code fragile",
-                            "Regles qui se contredisent d'un fichier a l'autre.",
-                            "Sauts injustes, progression cassee."
+                            "Conception de niveaux",
+                            "Contrôler les coordonnées produites",
+                            "Faire approuver l’export local",
+                            "Interpréter le besoin du concepteur",
+                            "Le problème",
+                            "Un texte convaincant ne garantit pas un niveau exploitable."
                         ],
                         "code": [],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "02 | probleme"
+                            "02 | problème"
                         ]
                     }
                 },
@@ -6411,26 +6483,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "AI Bundle",
-                            "Abstraction multi-modeles et streaming.",
-                            "Agent",
-                            "Configuration Symfony via YAML.",
-                            "Platform",
-                            "RAG, indexation et recherche semantique.",
-                            "Site:",
-                            "Stack IA",
-                            "Store",
-                            "Symfony AI: agents, tools, RAG, multi-modal pour PHP.",
-                            "Tool calling, subagents, orchestration.",
-                            "ai.symfony.com"
+                            "Aucun fichier écrit sans approbation",
+                            "Du JSON et une vue de sa géométrie",
+                            "La solution retenue",
+                            "Un artefact vérifiable",
+                            "Un brief original, un appel d’outil",
+                            "Une seule card existante : Mario Orchestration."
                         ],
                         "code": [],
-                        "links": [
-                            "https://ai.symfony.com/"
-                        ],
+                        "links": [],
                         "hooks": [],
                         "footer": [
-                            "03 | symfony-ai"
+                            "03 | solution"
                         ]
                     }
                 },
@@ -6439,24 +6503,17 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "2D solide",
-                            "GDScript rapide a iterer.",
-                            "Godot: moteur open-source parfait pour prototyper vite.",
-                            "Moteur de jeu",
-                            "Nodes et scenes pour platformers.",
-                            "Open source",
-                            "Pipeline dev sans lock-in.",
-                            "Scriptable",
-                            "Site:",
-                            "godotengine.org"
+                            "Architecture réelle",
+                            "Le parcours exécuté",
+                            "Même application Symfony, serveur stdio existant"
                         ],
-                        "code": [],
-                        "links": [
-                            "https://godotengine.org/"
+                        "code": [
+                            "Brief utilisateur\n  → Symfony AI : level_designer\n  → Toolbox : client MCP officiel\n  → Serveur MCP : level_generator\n  → Validation PHP → JSON + aperçu approuvé"
                         ],
+                        "links": [],
                         "hooks": [],
                         "footer": [
-                            "04 | godot"
+                            "04 | architecture"
                         ]
                     }
                 },
@@ -6465,24 +6522,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Approche orchestration",
-                            "Gameplay Agent",
-                            "Generated Game / Level JSON",
-                            "Godot Export Agent",
-                            "Layout Agent",
-                            "Orchestrator Agent",
-                            "QA Agent",
-                            "Un agent chef route vers des agents specialises.",
-                            "User Prompt",
-                            "↓",
-                            "↓",
-                            "↓"
+                            "Agent et Platform 1.0.0-BETA1, modèle gpt-5-mini",
+                            "Agent · Platform · Toolbox",
+                            "Générer le niveau puis expliquer le résultat",
+                            "Interpréter le brief et appeler l’outil",
+                            "Le rôle de Symfony AI",
+                            "Les règles géométriques restent en PHP."
                         ],
                         "code": [],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "05 | architecture"
+                            "05 | Symfony AI"
                         ]
                     }
                 },
@@ -6491,17 +6542,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Idee cle: un agent chef route vers des agents specialises avec un contexte partage.",
-                            "Le script Symfony AI",
-                            "Pattern: Agent + Handoff + MultiAgent + MessageBag"
+                            "Client et serveur du SDK officiel",
+                            "Découverte par tools/list, appel par tools/call",
+                            "Le rôle de MCP",
+                            "SDK PHP officiel 0.10.0",
+                            "Un adaptateur Toolbox relie les API existantes. Aucun protocole maison.",
+                            "Un schéma SDK préservé : generate_original_level"
                         ],
-                        "code": [
-                            "$messages = MessageBag::of(Message::ofUser($prompt));\n\n$orchestrator = new Agent(...);\n$layout = new Agent(...);\n$gameplay = new Agent(...);\n$export = new Agent(...);\n$qa = new Agent(...);\n\n$flow = MultiAgent::of($orchestrator)\n    ->handoff($layout)\n    ->handoff($gameplay)\n    ->handoff($export)\n    ->handoff($qa);\n\n$result = $flow->run($messages);"
-                        ],
+                        "code": [],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "06 | symfony-ai"
+                            "06 | MCP"
                         ]
                     }
                 },
@@ -6510,22 +6562,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "4 roles complementaires",
-                            "Ajoute les mecaniques.",
-                            "Construit le niveau.",
-                            "Gameplay Agent",
-                            "Genere les fichiers exploitables.",
-                            "Godot Export Agent",
-                            "Layout Agent",
-                            "Les agents",
-                            "QA Agent",
-                            "Verifie la jouabilite."
+                            "Depuis library/content-mario-orquestration",
+                            "Démonstration",
+                            "Exécuter puis approuver",
+                            "Une nouvelle sortie locale : level.json, evidence.json et preview.html."
                         ],
-                        "code": [],
+                        "code": [
+                            "php bin/console app:mario:design \\\n  --prompt='Un petit niveau de forêt original' \\\n  --approve-export"
+                        ],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "07 | agents"
+                            "07 | exécution"
                         ]
                     }
                 },
@@ -6534,19 +6582,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "ChatGPT",
-                            "Claude",
-                            "Gemini",
-                            "Grok",
-                            "Les 4 IA testees",
-                            "Meme prompt initial. Resultats tres differents.",
-                            "Objectif: comparer creativite, stabilite, cout et jouabilite."
+                            "48 × 15 cases · 4 pièces de terrain · 3 objets · 47,6 s sur cet essai.",
+                            "Cette mesure isolée n’est pas un benchmark.",
+                            "Essai réel du 18 novembre 2026",
+                            "Le résultat observé"
                         ],
                         "code": [],
-                        "links": [],
+                        "links": [
+                            "http://localhost/darkwood/hackathon/level-preview.png"
+                        ],
                         "hooks": [],
                         "footer": [
-                            "08 | benchmark"
+                            "08 | résultat"
                         ]
                     }
                 },
@@ -6555,133 +6602,21 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Export jeu",
-                            "Generation automatique",
-                            "La generation se fait en une seule commande Symfony.",
-                            "Multi-agent",
-                            "Prompt",
-                            "→",
-                            "→"
-                        ],
-                        "code": [
-                            "php bin/console app:mario:orchestrate"
-                        ],
-                        "links": [],
-                        "hooks": [],
-                        "footer": [
-                            "09 | commande"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-9",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "ChatGPT - bonne base, iteration rapide",
-                            "Demo ChatGPT"
+                            "Agent → outil MCP → résultat réel vérifié",
+                            "Atelier, code et instructions de reproduction",
+                            "Candidature en préparation. Aucune soumission ou sélection annoncée.",
+                            "Ce que la preuve établit",
+                            "Installation publique sous Nix, clé personnelle",
+                            "La géométrie ne prouve pas la jouabilité",
+                            "Reproduction et limites"
                         ],
                         "code": [],
                         "links": [
-                            "http://localhost:8062/Super%20Mario%20Bros.html"
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/"
                         ],
                         "hooks": [],
                         "footer": [
-                            "10 | chatgpt"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-10",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Claude - meilleur raisonnement, plus cher",
-                            "Demo Claude"
-                        ],
-                        "code": [],
-                        "links": [
-                            "http://localhost:8061/Super%20mario%20bros.html"
-                        ],
-                        "hooks": [],
-                        "footer": [
-                            "11 | claude"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-11",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Demo Gemini",
-                            "Gemini - tres bon rendu visuel et creativite"
-                        ],
-                        "code": [],
-                        "links": [
-                            "http://localhost:8063/Solar%20Engine.html"
-                        ],
-                        "hooks": [],
-                        "footer": [
-                            "12 | gemini"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-12",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Demo Grok",
-                            "Grok - interessant, mais instable"
-                        ],
-                        "code": [],
-                        "links": [
-                            "http://localhost:8060/Platformer.html"
-                        ],
-                        "hooks": [],
-                        "footer": [
-                            "13 | grok"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-13",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Cadrer",
-                            "Ce que l'experience montre",
-                            "Corriger",
-                            "L'efficacite vient du systeme d'agents, pas d'un prompt unique.",
-                            "Le vrai sujet n'est pas \"quelle IA code le mieux\".",
-                            "Orchestrer",
-                            "Tester"
-                        ],
-                        "code": [],
-                        "links": [],
-                        "hooks": [],
-                        "footer": [
-                            "14 | enseignements"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-14",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Abonne-toi si tu veux voir la suite avec Godot, Symfony AI et orchestration d'agents.",
-                            "CTA",
-                            "Conclusion",
-                            "Le futur du vibe coding, c'est l'orchestration",
-                            "Un seul agent peut produire un prototype. Plusieurs agents bien cadres peuvent produire un systeme."
-                        ],
-                        "code": [],
-                        "links": [],
-                        "hooks": [],
-                        "footer": [
-                            "15 | conclusion"
+                            "09 | conclusion"
                         ]
                     }
                 }

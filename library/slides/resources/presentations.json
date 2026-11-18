@@ -57,7 +57,7 @@
     {
         "id": "32e0ac94-aca0-4c2d-a9c4-520149df813e",
         "source_slug": "mario-ai-agents",
-        "title": "mario ai agents"
+        "title": "Darkwood Symfony AI MCP Hackathon — atelier"
     },
     {
         "id": "2ae239c4-47cc-44a9-ae68-39933ab8c722",
@@ -148,5 +148,10 @@
         "id": "0f5c8043-3959-47ae-8127-7bb9ea1256a6",
         "source_slug": "intent",
         "title": "De l’intention à l’exécution"
+    },
+    {
+        "id": "55ea6e1d-f9f8-4630-928f-e3f1445b09d4",
+        "source_slug": "mario-ai-agents-hackathon",
+        "title": "Darkwood Symfony AI MCP Hackathon — 90 seconds"
     }
 ]

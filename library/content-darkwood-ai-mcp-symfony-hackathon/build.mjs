@@ -3,7 +3,7 @@ import { resolve, dirname } from 'node:path';
 
 const card = import.meta.dirname;
 const output = resolve(card, 'dist');
-const assets = ['style.css', 'themes.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'hackathon/mcp-proof.json'];
+const assets = ['style.css', 'themes.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'hackathon/mcp-proof.json', 'hackathon/design-proof.json', 'hackathon/level-preview.png', 'hackathon/actual-demo.mp4', 'hackathon/workshop-fr.mp4'];
 const allowed = new Set(['index.html', 'CNAME', '.nojekyll', ...assets]);
 
 // Refuse unexpected output or symlinks rather than deleting user files.
@@ -33,4 +33,4 @@ for (const [source, target] of [['src/index.html', 'index.html'], ['CNAME', 'CNA
   await copyFile(resolve(card, source), destination);
 }
 await writeFile(resolve(output, '.nojekyll'), '');
-console.log('Exported workshop from this card only: dist/ (1 page, 7 assets, CNAME, .nojekyll).');
+console.log('Exported workshop from this card only: dist/ (1 page, 11 assets, CNAME, .nojekyll).');

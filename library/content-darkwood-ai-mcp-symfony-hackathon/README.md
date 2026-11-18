@@ -22,7 +22,7 @@ nix --extra-experimental-features 'nix-command flakes' develop -c node build.mjs
 nix --extra-experimental-features 'nix-command flakes' develop -c node validate.mjs
 ```
 
-L'unique sortie publiable est `dist/`. Elle contient une page, sept ressources,
+L'unique sortie publiable est `dist/`. Elle contient une page, neuf ressources,
 `CNAME` et `.nojekyll`. Les sources et ressources ont été transférées depuis
 l'atelier existant ; aucun framework ou système de build supplémentaire n'est
 nécessaire. Les copies locales du thème permettent une génération autonome.
@@ -51,3 +51,11 @@ Les polices Jost conservent leur attribution et licence dans `public/fonts/OFL.t
 
 Retour arrière : rétablir une version antérieure de cette card par un commit normal,
 puis relancer le même workflow. Le domaine et le dépôt de publication sont conservés.
+
+## Current verified iteration
+
+The main path is designer agent → official SDK client → existing SDK server → generation agent → PHP geometry validation → approved local artifacts. The current proof is public/hackathon/design-proof.json; mcp-proof.json remains available as a dated historical trace. docs/hackathon-review.md distinguishes observations from judgments and compares public entries. Video generation does not establish publication or submission.
+
+## Recorded media
+
+`public/hackathon/actual-demo.mp4` is the reviewed 89.68-second real execution at source commit `e55d2593165b82cbb495d3c14341d610d85a63be`, with Navi narration. `workshop-fr.mp4` is the separate 282.5-second narrated pedagogical presentation. These static files do not execute a model. The contest entry has not been submitted.

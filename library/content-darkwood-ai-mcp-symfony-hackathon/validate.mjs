@@ -29,7 +29,7 @@ const css = await readFile(resolve(output, 'style.css'), 'utf8');
 for (const [, raw] of css.matchAll(/url\(['"]?([^)'"\s]+)['"]?\)/g)) {
   assert.ok((await stat(resolve(output, raw))).isFile(), `Missing CSS asset ${raw}`);
 }
-const expected = ['.nojekyll', 'CNAME', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'hackathon/mcp-proof.json', 'index.html', 'logo-darkwood.png', 'style.css', 'themes.js'];
+const expected = ['.nojekyll', 'CNAME', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'hackathon/mcp-proof.json', 'hackathon/design-proof.json', 'hackathon/level-preview.png', 'hackathon/actual-demo.mp4', 'hackathon/workshop-fr.mp4', 'index.html', 'logo-darkwood.png', 'style.css', 'themes.js'];
 async function files(directory, prefix = '') {
   const result = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -44,3 +44,15 @@ const proof = JSON.parse(await readFile(resolve(output, 'hackathon/mcp-proof.jso
 assert.equal(proof[3].result.structuredContent.mode, 'real_ai');
 assert.equal(proof[3].result.isError, false);
 console.log('Validated workshop: 6 qualified cards, anchors, assets, canonical/Open Graph, real AI evidence and public-only file whitelist.');
+
+const design = JSON.parse(await readFile(resolve(output, 'hackathon/design-proof.json'), 'utf8'));
+assert.equal(design.execution.mode, 'real_ai');
+assert.equal(design.execution.agent, 'level_designer');
+assert.equal(design.execution.tool_calls.length, 1);
+assert.equal(design.execution.tool_calls[0].tool, 'generate_original_level');
+assert.equal(design.execution.tool_calls[0].result.mode, 'real_ai');
+assert.ok(design.execution.tool_calls[0].arguments.prompt.length <= 2000);
+assert.match(design.public_source_commit, /^[0-9a-f]{40}$/);
+assert.equal(design.versions['mcp/sdk'].replace(/^v/, ''), '0.10.0');
+assert.ok(html.includes(design.execution.tool_calls[0].result.level.name));
+console.log('Validated current designer → official SDK MCP proof, source commit and model result.');
