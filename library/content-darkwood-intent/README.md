@@ -2,7 +2,9 @@
 
 Six expériences interactives montrent comment une intention est interprétée dans un contexte, devient une décision et produit un résultat à évaluer.
 
-**Site : [intent.content.darkwood.com](https://intent.content.darkwood.com)**
+**Domaine cible : [intent-content.darkwood.com](https://intent-content.darkwood.com)**
+
+Migration préparée ; ne pas annoncer cette URL disponible avant validation DNS, HTTPS et redirection. À la demande du propriétaire, `intent.content.darkwood.com` ne bénéficie pas de rétrocompatibilité ni de redirection. Les données localStorage restent dans l’ancienne origine et ne sont pas transférées automatiquement.
 
 Les démonstrations sont pédagogiques. Elles n’annoncent pas de nouvelles fonctions des services Darkwood et ne constituent pas des benchmarks.
 
@@ -46,7 +48,7 @@ Le même générateur et le thème Darkwood exportent un atelier de présentatio
 nix develop -c php bin/console app:export-static --workshop=hackathon
 ```
 
-L’artefact est `dist-hackathon/`, séparé de `dist/` pour préserver Intention. Le manifeste de distribution relie cet export au domaine demandé `ai-mcp-symfony-hackathon.content.darkwood.com` et à son dépôt d’artefacts GitHub Pages. La disponibilité publique n’est acquise qu’après publication, résolution DNS et vérification HTTPS.
+L’artefact est `dist-hackathon/`, séparé de `dist/` pour préserver Intention. Le manifeste de distribution relie cet export au domaine demandé `ai-mcp-symfony-hackathon-content.darkwood.com` et à son dépôt d’artefacts GitHub Pages. La disponibilité publique n’est acquise qu’après publication, résolution DNS et vérification HTTPS.
 
 La trace `public/hackathon/mcp-proof.json` provient de l’essai réel du 17 novembre 2026 de la card Mario : initialisation, découverte, rejet d’un prompt vide et appel réel du modèle via le SDK officiel. Elle ne contient aucun accès fournisseur. La page ne déclenche pas d’appel IA. Les versions et les résultats décrivent les essais locaux ; vérifier leur correspondance avec le commit public avant diffusion.
 
@@ -79,7 +81,7 @@ Les tests couvrent les routes, les limites éditoriales, les décisions détermi
 
 ## Publication
 
-Le workflow canonique `.github/workflows/publish-github-pages.yml` construit et teste ce dossier dans Nix, puis synchronise exclusivement `dist/` vers `darkwood-com/content-darkwood-intent`. Le domaine exact `intent.content.darkwood.com` est écrit dans `CNAME`. Les sources restent dans le monorepo.
+Le workflow canonique `.github/workflows/publish-github-pages.yml` construit et teste ce dossier dans Nix, puis synchronise exclusivement `dist/` vers `darkwood-com/content-darkwood-intent`. Le domaine exact `intent-content.darkwood.com` est écrit dans `CNAME`. Les sources restent dans le monorepo.
 
 ## Sources et limites
 

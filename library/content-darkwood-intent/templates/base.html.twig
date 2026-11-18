@@ -4,6 +4,7 @@
 {% set current = slug|default('') %}
 {% set home_href = is_static ? prefix ~ '/' : path('home') %}
 {% set hackathon = workshop|default('intent') == 'hackathon' %}
+{% set canonical_url = site_url|default('https://intent-content.darkwood.com/')|trim('/') ~ prefix ~ '/' ~ (current == '' ? '' : 'demo/' ~ current ~ '/') %}
 <!doctype html>
 <html lang="fr">
 <head>
@@ -11,8 +12,8 @@
   <meta name="description" content="{{ site_description|default('Six expériences interactives pour comprendre comment une intention devient décision, exécution, résultat et évaluation.') }}">
   <meta property="og:title" content="{{ site_title|default('De l’intention à l’exécution · Darkwood') }}">
   <meta property="og:description" content="{{ site_description|default('Changez une intention ou son contexte et observez les conséquences dans six domaines Darkwood.') }}">
-  <meta property="og:type" content="website"><meta property="og:url" content="{{ site_url|default('https://intent.content.darkwood.com/') }}">
-  {% if hackathon %}<link rel="canonical" href="{{ site_url }}">{% endif %}
+  <meta property="og:type" content="website"><meta property="og:url" content="{{ canonical_url }}">
+  <link rel="canonical" href="{{ canonical_url }}">
   <title>{% block title %}{{ site_title|default('Intention · Darkwood') }}{% endblock %}</title>
   <link rel="icon" href="{{ prefix }}/logo-darkwood.png">
   <link rel="stylesheet" href="{{ prefix }}/style.css">

@@ -63,7 +63,7 @@ final class ExportStaticCommand extends Command
 
         $context = ['static_mode' => true, 'base_path' => $prefix, 'demos' => IntentExamples::DEMOS];
         if ($hackathon) {
-            $context += ['workshop' => 'hackathon', 'site_title' => 'Darkwood Symfony AI MCP Hackathon', 'site_description' => 'Un parcours PHP vérifié : génération de niveau JSON avec Symfony AI et le SDK MCP officiel.', 'site_url' => 'https://ai-mcp-symfony-hackathon.content.darkwood.com/'];
+            $context += ['workshop' => 'hackathon', 'site_title' => 'Darkwood Symfony AI MCP Hackathon', 'site_description' => 'Un parcours PHP vérifié : génération de niveau JSON avec Symfony AI et le SDK MCP officiel.', 'site_url' => 'https://ai-mcp-symfony-hackathon-content.darkwood.com/'];
         }
         $pages = ['index.html' => [$hackathon ? 'hackathon.html.twig' : 'home.html.twig', $context]];
         foreach ($hackathon ? [] : IntentExamples::DEMOS as $slug => $demo) {

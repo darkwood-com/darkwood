@@ -83,7 +83,7 @@
         "source": "library/content-darkwood-memory",
         "artifact": "library/content-darkwood-memory/dist",
         "repository": "darkwood-com/content-darkwood-memory",
-        "domain": "memory.content.darkwood.com",
+        "domain": "memory-content.darkwood.com",
         "builder": "nix",
         "nodeTest": "content-darkwood-memory"
       }
@@ -96,7 +96,7 @@
         "source": "library/content-darkwood-intent",
         "artifact": "library/content-darkwood-intent/dist",
         "repository": "darkwood-com/content-darkwood-intent",
-        "domain": "intent.content.darkwood.com",
+        "domain": "intent-content.darkwood.com",
         "builder": "nix",
         "nodeTest": "content-darkwood-intent"
       }
@@ -110,7 +110,7 @@
         "source": "library/content-darkwood-intent",
         "artifact": "library/content-darkwood-intent/dist-hackathon",
         "repository": "darkwood-com/content-ai-mcp-symfony-hackathon",
-        "domain": "ai-mcp-symfony-hackathon.content.darkwood.com",
+        "domain": "ai-mcp-symfony-hackathon-content.darkwood.com",
         "builder": "nix",
         "nodeTest": "content-darkwood-intent",
         "workshop": "hackathon"

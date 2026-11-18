@@ -49,7 +49,20 @@ jobs:
       - name: Check out the publication manifest
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          sparse-checkout: .github/distribution-cards.json
+          sparse-checkout: |
+            .github/distribution-cards.json
+            .github/scripts/validate-publication-domains.mjs
+            .github/scripts/validate-publication-domains.test.mjs
+
+      - name: Set up Node.js for hostname validation
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version: "22"
+
+      - name: Validate publication hostnames
+        run: |
+          node --test .github/scripts/validate-publication-domains.test.mjs
+          node .github/scripts/validate-publication-domains.mjs
 
       - name: Build the Pages matrix
         id: matrix

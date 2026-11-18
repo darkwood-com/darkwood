@@ -4,7 +4,9 @@ Du logiciel à l’IA, des jeux vidéo à la musique et à l’image : ce que no
 
 Six démonstrations autonomes, un atelier interactif et trois ambiances visuelles. Ces expériences accompagnent un article Darkwood ; elles ne constituent pas des annonces de fonctionnalités des services.
 
-**Site : [memory.content.darkwood.com](https://memory.content.darkwood.com)**
+**Domaine cible : [memory-content.darkwood.com](https://memory-content.darkwood.com)**
+
+Migration préparée ; ne pas annoncer cette URL disponible avant validation DNS, HTTPS et redirection. À la demande du propriétaire, `memory.content.darkwood.com` ne bénéficie pas de rétrocompatibilité ni de redirection. Les données localStorage restent dans l’ancienne origine et ne sont pas transférées automatiquement.
 
 ## Lancer le projet Symfony
 
@@ -73,7 +75,7 @@ Les tests couvrent les routes PHP, les sessions et leur isolation, la protection
 
 Le workflow canonique `.github/workflows/publish-github-pages.yml` du monorepo installe les dépendances verrouillées dans Nix, exécute les tests, génère `dist/` puis publie uniquement l’artefact dans le satellite `darkwood-com/content-darkwood-memory`. Les sources, issues et contributions restent dans le monorepo ; le satellite Pages n’est pas une source de développement.
 
-Le domaine `memory.content.darkwood.com` pointe vers GitHub Pages en DNS uniquement. Son certificat HTTPS est géré par GitHub pour ce nom exact. Le site n’utilise aucun serveur PHP permanent.
+Le domaine `memory-content.darkwood.com` pointe vers GitHub Pages en DNS uniquement. Son certificat HTTPS est géré par GitHub pour ce nom exact. Le site n’utilise aucun serveur PHP permanent.
 
 ## Licence et assets
 

@@ -27,6 +27,9 @@ final class StaticExportTest extends KernelTestCase
             foreach ($files as $file) {
                 $html = file_get_contents(self::$kernel->getProjectDir().'/dist/'.$file);
                 $crawler = new Crawler($html);
+                $canonical = 'https://intent-content.darkwood.com'.$prefix.'/'.('index.html' === $file ? '' : substr($file, 0, -strlen('index.html')));
+                self::assertSame($canonical, $crawler->filter('link[rel="canonical"]')->attr('href'));
+                self::assertSame($canonical, $crawler->filter('meta[property="og:url"]')->attr('content'));
                 self::assertCount(1, $crawler->filter('body.theme-light[data-mode="static"]'));
                 self::assertCount(1, $crawler->filter('header img[alt="Darkwood"]'));
                 self::assertCount(1, $crawler->filter('#theme-switcher'));
@@ -74,7 +77,7 @@ final class StaticExportTest extends KernelTestCase
         $directory = self::$kernel->getProjectDir().'/dist-hackathon';
         $crawler = new Crawler(file_get_contents($directory.'/index.html'));
         self::assertSame('Darkwood Symfony AI MCP Hackathon', $crawler->filter('h1')->text());
-        self::assertSame('https://ai-mcp-symfony-hackathon.content.darkwood.com/', $crawler->filter('link[rel="canonical"]')->attr('href'));
+        self::assertSame('https://ai-mcp-symfony-hackathon-content.darkwood.com/', $crawler->filter('link[rel="canonical"]')->attr('href'));
         self::assertCount(6, $crawler->filter('#selection article'));
         foreach ($crawler->filter('nav a[href^="#"]') as $anchor) {
             self::assertCount(1, $crawler->filter($anchor->getAttribute('href')));

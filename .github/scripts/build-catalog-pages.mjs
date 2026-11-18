@@ -1,10 +1,12 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { validatePublicationDomains } from "./validate-publication-domains.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
 const output = resolve(root, process.argv[2] ?? "dist/github-pages");
 const catalog = JSON.parse(await readFile(resolve(root, "tags.json"), "utf8"));
 const distribution = JSON.parse(await readFile(resolve(root, ".github/distribution-cards.json"), "utf8"));
+validatePublicationDomains(distribution);
 
 const customDomain = (await readFile(resolve(root, ".github/pages/CNAME"), "utf8")).trim();
 const siteUrl = new URL(process.argv[3] ?? `https://${customDomain}/`).href;

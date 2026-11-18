@@ -27,6 +27,8 @@ jobs:
             .github/pages
             .github/scripts/build-catalog-pages.mjs
             .github/scripts/validate-catalog-pages.mjs
+            .github/scripts/validate-publication-domains.mjs
+            .github/scripts/validate-publication-domains.test.mjs
             README.md
             library/uniflow/assets/fonts/Jost-400-Book.otf
             library/uniflow/assets/fonts/Jost-500-Medium.otf
@@ -42,6 +44,7 @@ jobs:
 
       - name: Build the catalog
         run: |
+          node --test .github/scripts/validate-publication-domains.test.mjs
           node .github/scripts/build-catalog-pages.mjs
           test -s dist/github-pages/index.html
           test "$(grep -o 'data-card' dist/github-pages/index.html | wc -l)" -ge "$(jq '.projects | length' tags.json)"
