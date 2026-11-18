@@ -103,7 +103,7 @@ var handleSidebarMinify = function() {
 ------------------------------------------------ */
 var handlePageContentView = function() {
   "use strict";
-  $(window).load(function() {
+  $(window).on('load', function() {
       $.when($('#page-loader').addClass('hide')).done(function() {
         $('#page-container').addClass('in');
       });

@@ -9,10 +9,36 @@ $.fn.datepicker.dates['fr'] = {
 
 $(document).ready(function() {
 
-    $('.ckeditor').each(function(e){
-        CKEDITOR.replace( this.id, {
-            customConfig: '/bundles/admin/ckeditor/article-config.js'
+    // Keep the original textarea/name: Symfony receives the edited HTML on submit.
+    $('.ckeditor').each(function() {
+        var $field = $(this);
+        var $count = $('<small class="help-block editor-count" aria-live="polite"></small>');
+        $field.trumbowyg({
+            lang: 'fr',
+            svgPath: '/build/admin/vendor/trumbowyg/dist/ui/icons.svg',
+            autogrow: true,
+            semantic: false,
+            removeformatPasted: true,
+            btns: [
+                ['viewHTML'], ['formatting'], ['strong', 'em', 'underline'],
+                ['link'], ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                ['unorderedList', 'orderedList'], ['removeformat'], ['undo', 'redo']
+            ]
         });
+        $field.closest('.trumbowyg-box').after($count);
+        var editor = $field.data('trumbowyg');
+        var updateCount = function() {
+            editor.syncCode();
+            var text = $('<div>').html($field.trumbowyg('html')).text().trim();
+            $count.text((text ? text.split(/\s+/u).length : 0) + ' mots · ' + Array.from(text).length + ' caractères');
+        };
+        $field.on('tbwchange tbwblur', updateCount);
+        editor.$ed.on('input', updateCount);
+        $field.closest('form').on('submit', function() {
+            editor.syncCode();
+            $field.val($field.trumbowyg('html'));
+        });
+        updateCount();
     });
 
     $('.meditor').each(function(e) {

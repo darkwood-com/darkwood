@@ -1,4 +1,26 @@
 import Encore from '@symfony/webpack-encore';
+import { createRequire } from 'node:module';
+import path from 'node:path';
+
+// Resolve the admin workspace so Bootstrap 3 never resolves to the public site's Bootstrap 5.
+const adminRequire = createRequire(new URL('./assets/admin/package.json', import.meta.url));
+const adminPackages = {
+    'jquery': ['dist'],
+    'jquery-ui-dist': ['.'],
+    'bootstrap': ['dist'],
+    'font-awesome': ['css', 'fonts'],
+    'animate.css': ['.'],
+    'bootstrap-social': ['.'],
+    'bootstrap-datepicker': ['dist'],
+    'bootstrap-multiselect': ['dist'],
+    'bootstrap-select': ['dist'],
+    'bootstrap-switch': ['dist'],
+    'jquery-slimscroll': ['.'],
+    'gritter': ['css', 'js', 'images'],
+    'tag-it': ['css', 'js'],
+    'konami': ['.'],
+    'trumbowyg': ['dist'],
+};
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -74,5 +96,21 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
 ;
+
+for (const [name, directories] of Object.entries(adminPackages)) {
+    const root = path.dirname(adminRequire.resolve(`${name}/package.json`));
+    Encore.copyFiles({
+        from: root,
+        to: `admin/vendor/${name}/[path][name].[ext]`,
+        pattern: /(?:^|[/\\])(?:LICENSE|LICENCE|COPYING)(?:[^/\\]*)$/i,
+    });
+    for (const directory of directories) {
+        Encore.copyFiles({
+            from: path.join(root, directory),
+            to: `admin/vendor/${name}/${directory === '.' ? '' : `${directory}/`}[path][name].[ext]`,
+            pattern: /\.(?:js|css|woff2?|ttf|eot|svg|png|gif)$/,
+        });
+    }
+}
 
 export default await Encore.getWebpackConfig();
