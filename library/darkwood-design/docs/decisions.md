@@ -10,4 +10,4 @@ Clair, sombre et sépia modifient des rôles de couleur. Les produits gardent le
 
 ## 2026-11-15 — Différences produit conservées
 
-Darkwaar garde ses besoins tactiles, Heroclip Studio son espace cinématique, DJ Matyo91 ses contrôles audio, Slidewire son canvas 16:9 et Uniflow ses composants Symfony/Bootstrap. Une identité commune ne signifie pas une interface identique.
+Darkwaar garde ses besoins tactiles, Heroclip Studio son espace cinématique, DJ Matyo ses contrôles audio, Slidewire son canvas 16:9 et Uniflow ses composants Symfony/Bootstrap. Une identité commune ne signifie pas une interface identique.

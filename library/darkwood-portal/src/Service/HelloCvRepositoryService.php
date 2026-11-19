@@ -448,7 +448,7 @@ final readonly class HelloCvRepositoryService
             ),
             new HelloCvProject(
                 id: 'djmatyo91',
-                name: 'DJMatyo91 Youtube',
+                name: 'DJ Matyo Youtube',
                 description: 'My DJ YouTube channel about Happy Hardcore',
                 type: 'channel',
                 links: [['label' => 'YouTube', 'url' => 'https://www.youtube.com/@djmatyo91']],
