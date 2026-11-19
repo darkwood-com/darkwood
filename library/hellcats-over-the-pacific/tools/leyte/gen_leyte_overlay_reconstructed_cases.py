@@ -116,7 +116,11 @@ ROUTINES = {"leyte_overlay_main_entry": 0x175A, "leyte_overlay_initialise": 0x1E
             "tick_shadow": 0x1CB04, "tick_view_attached_object": 0x1DD1C,
             "tick_turret": 0x1D2E2, "spawn_ordnance_scattered": 0x19BCE,
             "tick_aircraft_spawner": 0x1BF64, "spawn_enemy_fighter": 0xF692,
-            "shadow_pre_render": 0x1CB66}
+            "shadow_pre_render": 0x1CB66,
+            "tally_destroyed_entity": 0x5E2, "apply_random_aircraft_damage": 0x1A70C,
+            "spawn_destruction_effect": 0x13EC0,
+            "apply_hit_to_sinkable_object": 0x17A2A,
+            "apply_blast_damage": 0x15192, "leyte_destroy_entity": 0x14FE6}
 ## The host world's memory services ensure_handle_allocated calls (world +0x302 create, +0x30a
 ## reallocate, +0x31a make unpurgeable; 1.0.3: +0x2c6 / +0x2ce / +0x2de) as logging stand-ins at
 ## SERVICES; everything else runs as it is.
@@ -194,7 +198,7 @@ def session_buffer_cases() -> list:
               0x20F48: 0x3B140, 0x20F4C: 0x3B150, 0x20F50: 0x3B160}),
         case("depth 1: the entry handle only", 1, 1, 0, {}),
         case("no entry flag, one screen", 0, 4, 0, {0x20F38: 0x3B200}),
-    ] + unlock_cases() + span_reset_cases() + clip_cases() + lock_cases() + trig_cases() + rotation_cases() + flight_rank_cases() + bomb_lamp_cases() + radar_button_cases() + state_lamp_cases() + readout_cases() + needle_cases() + more_needle_cases() + sky_cases() + frame_line_cases() + radar_scope_cases() + heading_tape_cases() + hook12_cases() + entity_retire_cases() + entity_tick_cases() + simulation_tick_cases() + object_alloc_cases() + attitude_cases() + translate_cases() + chain_xform_cases() + band_cases() + shade_cases() + poly_buffer_cases() + land_outline_cases() + contact_cases() + terrain_cases() + object_collision_cases() + bullet_cases() + pending_pose_cases() + carrier_cases() + effect_cases() + small_flight_cases() + tracking_camera_cases() + replay_view_cases() + facility_cases() + type80_point_cases() + control_input_cases() + frame_advance_cases() + sound_cases() + runway_cases() + steer_sample_cases() + flight_input_cases() + bailout_view_cases() + small_tick_cases() + turret_cases() + spawner_cases() + shadow_render_cases() + sink_cases() + instantiate_cases() + cloud_cases() + scene_part_cases() + template_table_cases() + mission_part_cases() + hook0_cases() + depth8_cases() + erase_dot_cases() + face_colour_cases() + depth4_cases() + template_factory_cases() + aircraft_cases() + anchor_cases() + mission_factory_cases() + ship_factory_cases() + route_ship_cases() + frame_batch1_cases() + cloud_layer_cases() + frame_batch2_cases() + frame_batch3_cases() + polygon_cases() + surface_cases() + submit_cases() + transform_object_cases() + sort_parts_cases() + render_objects_cases() + far_objects_cases() + altitude_cases() + scatter_cases() + dot_cases() + frame_step_cases() + collision_test_cases() + contact_cases()
+    ] + unlock_cases() + span_reset_cases() + clip_cases() + lock_cases() + trig_cases() + rotation_cases() + flight_rank_cases() + bomb_lamp_cases() + radar_button_cases() + state_lamp_cases() + readout_cases() + needle_cases() + more_needle_cases() + sky_cases() + frame_line_cases() + radar_scope_cases() + heading_tape_cases() + hook12_cases() + entity_retire_cases() + entity_tick_cases() + simulation_tick_cases() + object_alloc_cases() + attitude_cases() + translate_cases() + chain_xform_cases() + band_cases() + shade_cases() + poly_buffer_cases() + land_outline_cases() + contact_cases() + terrain_cases() + object_collision_cases() + bullet_cases() + pending_pose_cases() + carrier_cases() + effect_cases() + small_flight_cases() + tracking_camera_cases() + replay_view_cases() + facility_cases() + type80_point_cases() + control_input_cases() + frame_advance_cases() + sound_cases() + runway_cases() + steer_sample_cases() + flight_input_cases() + bailout_view_cases() + small_tick_cases() + turret_cases() + spawner_cases() + shadow_render_cases() + damage_small_cases() + destruction_effect_cases() + sinkable_hit_cases() + blast_cases() + sink_cases() + instantiate_cases() + cloud_cases() + scene_part_cases() + template_table_cases() + mission_part_cases() + hook0_cases() + depth8_cases() + erase_dot_cases() + face_colour_cases() + depth4_cases() + template_factory_cases() + aircraft_cases() + anchor_cases() + mission_factory_cases() + ship_factory_cases() + route_ship_cases() + frame_batch1_cases() + cloud_layer_cases() + frame_batch2_cases() + frame_batch3_cases() + polygon_cases() + surface_cases() + submit_cases() + transform_object_cases() + sort_parts_cases() + render_objects_cases() + far_objects_cases() + altitude_cases() + scatter_cases() + dot_cases() + frame_step_cases() + collision_test_cases() + contact_cases()
 
 
 def unlock_cases() -> list:
@@ -3369,6 +3373,165 @@ def shadow_render_cases() -> list:
                         ("type 7, scale 2", [[ODEF, 2, 7], [SOBJ + 0x36, 2, 2], [OCTL + 0x24, 2, 0x900]]),
                         ("an empty face", [[FACE + 0x14, 2, 0]])):
         out.append({"name": "shadow render: " + name, "method": "shadow_pre_render", "args": [SH], "writes": w + extra, "d0": True})
+    return out
+
+
+def damage_small_cases() -> list:
+    """tally_destroyed_entity (D0): word +0x52 negative, type 0 and 3 away from bases, near a friendly base (a carrier
+    facility) with no controller, with a counted type and with each spared type (0x10 / 0x11 / 0x12 / 0x15), near an
+    enemy field (0x100); apply_random_aircraft_damage (D0) over several draws: spared by the definition's +0x50, each
+    roll band, the high band with bits clear / set / bit 1, by the player."""
+    E, ECTL, EDEF = 0x3C000, 0x3C100, 0x3C200
+    FO, FCTL, FDEF = 0x3C300, 0x3C400, 0x3C500
+    base = [[0x207FC, 4, HOST], [HOST + 0xD6, 2, 7], [HOST + 0xBC + 6, 2, 2], [E + 4, 4, 0x10000], [E + 8, 4, 0x1000],
+            [E + 0xC, 4, 0x20000], [E, 4, 0], [0x20B26, 2, 0]]
+
+    def near(t):
+        return [[0x20B26, 2, 1], [0x20804, 4, FO], [FO, 4, FCTL], [FCTL + 4, 4, FDEF], [FDEF, 2, t], [FCTL + 0x698, 2, 0xFFFF],
+                [FCTL + 0x69A, 2, 0xFFFF], [FO + 4, 4, 0x10100], [FO + 8, 4, 0x1000], [FO + 0xC, 4, 0x20000]]
+    out = []
+    for name, extra in (("type negative", [[E + 0x52, 2, 0xFFFF]]), ("type 0", [[E + 0x52, 2, 0]]), ("type 3", [[E + 0x52, 2, 3]]),
+                        ("near a friendly base, no controller", near(0x1B) + [[E + 0x52, 2, 3]]),
+                        ("near a friendly base, type 4", near(0x1B) + [[E + 0x52, 2, 3], [E, 4, ECTL], [ECTL + 4, 4, EDEF], [EDEF, 2, 4]]),
+                        ("near an enemy field, type 3", near(0x1C) + [[E + 0x52, 2, 3]])) + tuple(
+                        ("near a friendly base, spared type 0x%x" % t, near(0x1B) + [[E + 0x52, 2, 1], [E, 4, ECTL], [ECTL + 4, 4, EDEF], [EDEF, 2, t]])
+                        for t in (0x10, 0x11, 0x12, 0x15)):
+        out.append({"name": "tally: " + name, "method": "tally_destroyed_entity", "args": [E], "writes": base + extra, "d0": True})
+    C, CDEF = 0x3C600, 0x3C700
+    w = [[C + 4, 4, CDEF], [CDEF + 0x50, 2, 0xFFFF], [C + 0x698, 2, 0]]
+    for k in range(12):
+        cur = 0x2C5B4 + 8 * k
+        for name, extra, by in (("draw %d" % k, [], 0), ("draw %d, bits 6.. set, bit 1, by the player" % k, [[C + 0x698, 2, 0x202]], 1)):
+            out.append({"name": "random damage: " + name, "method": "apply_random_aircraft_damage", "args": [C, by],
+                        "writes": w + extra + [[0x2C5B4, 4, cur]] + [[0x2C5B8 + 4 * j, 4, (0x9E3779B1 * (j + 3)) & 0xFFFFFFFF] for j in range(55)],
+                        "d0": True})
+    out.append({"name": "random damage: spared", "method": "apply_random_aircraft_damage", "args": [C, 1],
+                "writes": w + [[CDEF + 0x50, 2, 0], [0x2C5B4, 4, 0x2C5B4]] + [[0x2C5B8 + 4 * j, 4, (0x9E3779B1 * (j + 3)) & 0xFFFFFFFF] for j in range(55)],
+                "d0": True})
+    return out
+
+
+def destruction_effect_cases() -> list:
+    """spawn_destruction_effect (D0) through spawn_effect's logged ring (the template retires): airborne, near on a
+    runway / deck surface (0x30 / 0x60 / 0x70: the ground height), near on water 0x10, near elsewhere, the flagged
+    type 0x23 / 0x24 face, size rounding of a negative size."""
+    dead = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    TMPL = 0x30600
+    common = [[0x2C81A + 4 * k, 4, TMPL] for k in range(4)] + [[0x2CC10, 4, TMPL], [0x2C698, 2, 3], [0x21058, 2, 0],
+              [0x23D88, 2, 3], [0x21020, 4, 0x77], [0x2C5B4, 4, 0x2C5B8]]
+    O, C, D, F = 0x3C000, 0x3C100, 0x3C200, 0x3C300
+    w = dead + common + [[O, 4, C], [O + 4, 4, 0x10000], [O + 8, 4, 0x500], [O + 0xC, 4, 0x20000], [C + 8, 4, 0x10],
+                         [C + 0xC, 4, 0x20], [C + 0x10, 4, 0xFFFFFFF0], [C + 0x2E, 4, 0x4C0], [C + 4, 4, D], [D, 2, 3],
+                         [O + 0x4A, 4, F], [F + 0x13, 1, 2]]
+    out = []
+    for name, size, extra in (("airborne", 0x40, [[C + 0x2E, 4, 0x100]]), ("near, on a runway (0x30)", 0x40, [[C + 0x2C, 1, 0x30]]),
+                              ("near, on a deck (0x60)", 0x41, [[C + 0x2C, 1, 0x60]]), ("near, on a deck (0x70)", 0x42, [[C + 0x2C, 1, 0x70]]),
+                              ("near, on water (0x10)", 0x40, [[C + 0x2C, 1, 0x10]]), ("near, elsewhere (0x20)", 0x40, [[C + 0x2C, 1, 0x20]]),
+                              ("near, type 0x24 flagged", 0x40, [[C + 0x2C, 1, 0x40], [D, 2, 0x24]]),
+                              ("near, type 0x23 unflagged", 0x40, [[C + 0x2C, 1, 0x40], [D, 2, 0x23], [F + 0x13, 1, 0]]),
+                              ("near, a negative size", -5, [[C + 0x2C, 1, 0x50]])):
+        out.append({"name": "destruction effect: " + name, "method": "spawn_destruction_effect", "args": [O, size & 0xFFFFFFFF],
+                    "writes": w + extra, "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def sinkable_hit_cases() -> list:
+    """apply_hit_to_sinkable_object: the anchor cleared (this controller, word 2) or kept, credit, no hits left, the last
+    hit (folded angle either sign, sinking started or not), one and two left, many left (the drop register 0), a
+    carrier with an unknown deck tag (a quarter of a, either sign), over several draws."""
+    C, D = 0x3C000, 0x3C100
+    rng = [[0x2C5B8 + 4 * j, 4, (0x9E3779B1 * (j + 11)) & 0xFFFFFFFF] for j in range(55)]
+    w = rng + [[C + 4, 4, D], [D, 2, 0x20], [C + 0x656, 2, 1], [C + 0x658, 2, 0x100], [0x21020, 4, 0x500], [0x2104C, 4, 0],
+               [0x23D84, 2, 2], [C + 0x69A, 2, 0xFFFF]]
+    out = []
+    for name, credit, extra in (("the anchor cleared, credit, the last hit", 1, [[0x2104C, 4, C]]),
+                                ("the anchor kept (word 1)", 0, [[0x2104C, 4, C], [0x23D84, 2, 1]]),
+                                ("no hits left", 1, [[C + 0x656, 2, 0]]),
+                                ("the last hit, angle negative", 0, [[C + 0x658, 2, 0x3000]]),
+                                ("the last hit, sinking started", 0, [[C + 0x670, 2, 1]]),
+                                ("one left", 0, [[C + 0x656, 2, 2]]), ("one left, sinking started", 0, [[C + 0x656, 2, 2], [C + 0x670, 2, 1]]),
+                                ("two left", 0, [[C + 0x656, 2, 3]]), ("many left", 0, [[C + 0x656, 2, 9]]),
+                                ("a carrier, deck tag unknown, the last hit", 0, [[D, 2, 0x1B]]),
+                                ("a carrier, deck tag unknown, angle negative", 0, [[D, 2, 0x1B], [C + 0x658, 2, 0x3000]]),
+                                ("a carrier, deck tag known", 0, [[D, 2, 0x1B], [C + 0x69A, 2, 0]])):
+        for k, cur in enumerate((0x2C5B4, 0x2C5D4, 0x2C618)):
+            out.append({"name": "sinkable hit: %s (draws %d)" % (name, k), "method": "apply_hit_to_sinkable_object",
+                        "args": [C, credit], "writes": w + extra + [[0x2C5B4, 4, cur]]})
+    return out
+
+
+def blast_cases() -> list:
+    """apply_blast_damage over object_pool objects (one to four per case, controllers past the high call logs) around a
+    blast at (0x10000, 0x1000, 0x20000): aircraft inside / just outside (the draw, sure_hit, credit), a ship inside (its
+    hit with the approx_dist3_xyz D1), a large-range ship with hit_ships (modes 1 / 2, the carrier tag, outside 1.5
+    ranges), a controller-less wreck after a ship (the stale type), type 0x12, types 0x27 / 0x28, a flagged object that
+    is the player's / a flagged 0x24 wreck / another flagged one, an object beyond range + 0x7cf; the destruction path
+    through spawn_destruction_effect (pool retiring) and leyte_destroy_entity's tally and missions 2 / 3 / 6."""
+    dead = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    TMPL = 0x30600
+    common = dead + [[0x2C81A + 4 * k, 4, TMPL] for k in range(4)] + [[0x2CC10, 4, TMPL], [0x2C698, 2, 3], [0x21058, 2, 0],
+                     [0x23D88, 2, 3], [0x21020, 4, 0x77], [0x2C5B4, 4, 0x2C5B8], [0x20B28, 4, 0], [HOST + 0x90, 2, 0],
+                     [HOST + 0xD2, 2, 0], [0x27062, 2, 0], [0x27058, 2, 0], [0x2705A, 2, 0]]
+    common += [[0x2C5B8 + 4 * j, 4, (0x9E3779B1 * (j + 5)) & 0xFFFFFFFF] for j in range(55)]
+    BX, BY, BZ = 0x10000, 0x1000, 0x20000
+
+    def objs(specs):
+        w = [[0x20B26, 2, len(specs)]]
+        for k, sp in enumerate(specs):
+            o, c, d = 0x3C000 + 0x100 * k, 0x41000 + 0x700 * k, 0x3C900 + 0x10 * k
+            dx, rng, typ = sp["dx"], sp.get("range", 0x400), sp.get("type")
+            w += [[0x20804 + 4 * k, 4, o], [o + 4, 4, (BX + dx) & 0xFFFFFFFF], [o + 8, 4, sp.get("y", BY)], [o + 0xC, 4, BZ],
+                  [o + 0x20, 4, rng & 0xFFFFFFFF], [o + 0x14, 4, sp.get("flags", 0)], [o + 0x10, 2, 1], [o + 0x12, 2, 1],
+                  [o + 0x52, 2, sp.get("tally", 0xFFFF)]]
+            if typ is None:
+                w += [[o, 4, 0]]
+            else:
+                w += [[o, 4, c], [c + 4, 4, d], [d, 2, typ], [c + 0x656, 2, sp.get("hits", 3)], [c + 0x69A, 2, sp.get("deck", 0)],
+                      [c + 0x658, 2, 0x100]]
+            if sp.get("player"):
+                w += [[0x20B28, 4, c]]
+        return w
+    out = []
+    for name, specs, args, extra in (
+            ("an aircraft inside, credited", [{"dx": 0x100, "type": 3}], (0x200, 1, 0, 0), []),
+            ("an aircraft just outside, the draw", [{"dx": 0x500, "type": 3}], (0x800, 0, 0, 0), []),
+            ("an aircraft outside, other draws", [{"dx": 0x600, "type": 7}], (0x800, 0, 0, 0), [[0x2C5B4, 4, 0x2C600]]),
+            ("an aircraft outside, sure_hit: random damage", [{"dx": 0x500, "type": 3}], (0x800, 1, 1, 0), []),
+            ("a ship inside: its hit (many hits left)", [{"dx": 0x100, "type": 0x1C, "hits": 9}], (0x800, 1, 0, 0), []),
+            ("a ship inside, then a wreck without a controller", [{"dx": 0x100, "type": 0x1C}, {"dx": 0x80}], (0x800, 0, 0, 0), []),
+            ("an aircraft, then a wreck: the stale type", [{"dx": 0x100, "type": 3}, {"dx": 0x80}], (0x800, 0, 0, 0), []),
+            ("type 0x12", [{"dx": 0x500, "type": 0x12}], (0x800, 0, 0, 0), []),
+            ("type 0x27 within 0x5db", [{"dx": 0x800, "type": 0x27}], (0x800, 0, 0, 0), []),
+            ("type 0x28, sure_hit", [{"dx": 0x800, "type": 0x28}], (0x800, 0, 1, 0), []),
+            ("an object within 0x257 past its range, another past it", [{"dx": 0x600, "type": 0x30}, {"dx": 0x700, "type": 0x30}], (0x800, 0, 0, 0), []),
+            ("beyond range + 0x7cf", [{"dx": 0x2000, "type": 3}], (0x800, 0, 0, 0), []),
+            ("flagged: the player's, a 0x24 wreck, another", [{"dx": 0x100, "type": 3, "flags": 2, "player": True},
+                                                             {"dx": 0x100, "type": 0x24, "flags": 0x10002},
+                                                             {"dx": 0x100, "type": 0x30, "flags": 0x200}], (0x800, 0, 0, 0), []),
+            ("a large ship, hit_ships 1, within 1.5 ranges", [{"dx": 0x1000, "type": 0x1E, "range": 0xC00}], (0x200, 0, 0, 1), []),
+            ("a large ship, hit_ships 1, beyond", [{"dx": 0x1300, "type": 0x1E, "range": 0xC00}], (0x200, 0, 0, 1), []),
+            ("a large carrier, hit_ships 2, its deck unknown", [{"dx": 0x400, "type": 0x1B, "range": 0xC00, "deck": 0xFFFF}], (0x200, 0, 0, 2), []),
+            ("a large carrier, hit_ships 2, its deck known", [{"dx": 0x400, "type": 0x1B, "range": 0xC00}], (0x200, 0, 0, 2), []),
+            ("a large 0x20, hit_ships 2", [{"dx": 0x400, "type": 0x20, "range": 0xC00}], (0x200, 0, 0, 2), []),
+            ("a large ship, hit_ships 0x10000", [{"dx": 0x400, "type": 0x1E, "range": 0xC00}], (0x200, 0, 0, 0x10000), []),
+            ("a large aircraft, hit_ships 1", [{"dx": 0x400, "type": 3, "range": 0xC00}], (0x200, 0, 0, 1), []),
+            ("a wreck on the ground, credited (tally)", [{"dx": 0x100, "type": 0x30, "y": 0, "tally": 2}], (0x800, 1, 0, 0), []),
+            ("mission 2: a type-10 target", [{"dx": 0x100, "type": 0x30, "tally": 10}], (0x800, 1, 0, 0),
+             [[HOST + 0x90, 2, 2], [0x27062, 2, 2]]),
+            ("mission 3: a type-10 target", [{"dx": 0x100, "type": 0x30, "tally": 10}], (0x800, 1, 0, 0), [[HOST + 0x90, 2, 3]]),
+            ("mission 6: type 0x28, the fifth", [{"dx": 0x100, "type": 0x28}], (0x800, 1, 0, 0), [[HOST + 0x90, 2, 6], [0x27058, 2, 4]]),
+            ("mission 6: type 0x27, the fourth", [{"dx": 0x100, "type": 0x27}], (0x800, 1, 0, 0), [[HOST + 0x90, 2, 6], [0x2705A, 2, 3]])):
+        radius, credit, sure, ships = args
+        out.append({"name": "blast: " + name, "method": "apply_blast_damage", "args": [BX, BY, BZ, radius, credit, sure, ships],
+                    "writes": common + objs(specs) + extra, "stack_guard": [0x3E000, 0x3F040]})
+    # leyte_destroy_entity's mission points, reached directly: an entity on each point of mission 2 and on mission 3's
+    for name, x, z, mission in (("mission 2, the first point", 0x498EB4, -0x1D34A4, 2), ("mission 2, the third point", 0x4995EE, -0x1D33DC, 2),
+                                ("mission 3, its point", 0x5CF903, -0x3E0E, 3), ("mission 3, away", 0x5CF903, 0, 3)):
+        E = 0x3C000
+        w = common + [[E, 4, 0], [E + 4, 4, x & 0xFFFFFFFF], [E + 0xC, 4, z & 0xFFFFFFFF], [E + 0x52, 2, 10], [E + 0x10, 2, 1], [E + 0x12, 2, 1],
+                      [HOST + 0x90, 2, mission], [0x27062, 2, 2], [0x20B26, 2, 0]]
+        out.append({"name": "destroy entity: " + name, "method": "leyte_destroy_entity", "args": [0, E], "writes": w,
+                    "stack_guard": [0x3E000, 0x3F040]})
     return out
 
 

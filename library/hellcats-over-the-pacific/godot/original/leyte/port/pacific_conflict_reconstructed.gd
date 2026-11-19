@@ -9032,3 +9032,347 @@ func shadow_pre_render(ctl: int) -> int:
 				memory.write_u32(vert, C68kScript.u32(-half if x < 0 else half))
 		idx += 2
 	return 0
+
+## 0x5e2 (a2 saved): the kill tally, Leyte's. Word +0x52 < 0 -> host word +0xd6 + 1. Else
+## probe_nearest_facility_kind(entity) (0xc below): near a friendly base (0x200) the kill counts at +0xd6
+## unless the entity's controller (+0) definition type is 0x10 / 0x11 / 0x12 / 0x15 (no controller: it
+## counts); otherwise type word +0x52 == 0 counts nothing and type t adds 1 to host word +0xbc + 2t. Returns
+## D0 as the code leaves it (the caller's, the probe's kind, the type word, or 2t).
+func tally_destroyed_entity(entity: int, d0_in: int = 0) -> int:
+	assert(memory != null, "tally_destroyed_entity requires original global memory")
+	var entry_a7: int = a7
+	var d0: int = C68kScript.u32(d0_in)
+	var host: int = memory.read_u32(0x207fc)
+	if memory.read_s16(entity + 0x52) >= 0:
+		a7 = entry_a7 - 0xc
+		d0 = C68kScript.u32(probe_nearest_facility_kind(entity))
+		a7 = entry_a7
+		if d0 != 0x200:
+			if memory.read_s16(entity + 0x52) == 0:
+				return d0
+			d0 = C68kScript.u32(memory.read_s16(entity + 0x52) << 1)
+			var counter: int = C68kScript.u32(host + C68kScript.s32(d0) + 0xbc)
+			memory.write_u16(counter, C68kScript.u16(memory.read_u16(counter) + 1))
+			return d0
+		var ctl: int = memory.read_u32(entity)
+		if ctl != 0:
+			var kind: int = memory.read_u16(memory.read_u32(ctl + 4))
+			d0 = (d0 & 0xffff0000) | kind
+			if kind in [0x10, 0x11, 0x12, 0x15]:
+				return d0
+	memory.write_u16(host + 0xd6, C68kScript.u16(memory.read_u16(host + 0xd6) + 1))
+	return d0
+
+## 0x1a70c (link 0, a2-a3 saved): Leyte's random aircraft damage. A first draw above the definition's word
+## +0x50 (unsigned) leaves the aircraft unharmed (1.0.3 spared types 1 and 3 three times in four and played
+## the hit sound for the player). Else a roll (rng & 0xff) sets one damage bit of word +0x698: <= 5 bit 0,
+## <= 0x2a bit 1, <= 0x37 bit 2, <= 0x44 bit 3, <= 0x50 bit 4, <= 0x5d bit 5; above, bit 6 when bits 6..9 are
+## clear, otherwise (bit 9 -> bit 8 when byte +0x698 bit 1) word +0x69c = 0. by_player sets bit 15. Returns
+## D0: the first draw when spared, else the roll (or the masked bits).
+func apply_random_aircraft_damage(ctl: int, by_player: int) -> int:
+	assert(memory != null, "apply_random_aircraft_damage requires original global memory")
+	var flags: int = ctl + 0x698
+	var d0: int = C68kScript.u32(overlay_rng_next())
+	if (d0 & 0xffff) > memory.read_u16(memory.read_u32(ctl + 4) + 0x50):
+		return d0
+	d0 = overlay_rng_next() & 0xff
+	if d0 <= 5:
+		memory.write_u16(flags, memory.read_u16(flags) | 1)
+	elif d0 <= 0x2a:
+		memory.write_u16(flags, memory.read_u16(flags) | 2)
+	elif d0 <= 0x37:
+		memory.write_u16(flags, memory.read_u16(flags) | 4)
+	elif d0 <= 0x44:
+		memory.write_u16(flags, memory.read_u16(flags) | 8)
+	elif d0 <= 0x50:
+		memory.write_u16(flags, memory.read_u16(flags) | 0x10)
+	elif d0 <= 0x5d:
+		memory.write_u16(flags, memory.read_u16(flags) | 0x20)
+	else:
+		d0 = memory.read_u16(flags) & 0x3c0
+		if d0 == 0:
+			memory.write_u16(flags, memory.read_u16(flags) | 0x40)
+		else:
+			if (memory.read_u8(flags) & 2) != 0:
+				memory.write_u16(flags, memory.read_u16(flags) & 0xfdff)
+				memory.write_u16(flags, memory.read_u16(flags) | 0x100)
+			memory.write_u16(ctl + 0x69c, 0)
+	if C68kScript.u32(by_player) != 0:
+		memory.write_u16(flags, memory.read_u16(flags) | 0x8000)
+	return d0
+
+## 0x13ec0 (eight saved registers): the destruction effect for an object, Leyte's. With a controller (+0):
+## the effect point is the object position (+4 / +8 / +0xc) + the controller's +8 / +0xc / +0x10; near the
+## ground when that y is within 0x63 of the controller's ground +0x2e (signed); surface = sext byte +0x2c, or
+## surface_type_under_object (0x28 below) when the ground height is 0; near, y becomes the ground height on
+## surfaces 0x30 / 0x60 / 0x70, else 0; not near, the surface word is 0. A type 0x23 / 0x24 definition whose
+## first face (+0x4a) has byte +0x13 bit 1 passes 0 as the effect's byte argument (1.0.3: always 1). Without
+## a controller: near, y = 0, the surface from surface_type_under_object. Airborne -> spawn_effect(2, size, 5,
+## 0, 1); surface 0x10 -> (0, size, 0x4b, 0, 0); otherwise (3, 3 * size / 4 truncating, 0x2d, flag, 0) (0x44
+## below). Returns the near flag.
+func spawn_destruction_effect(obj: int, size: int) -> int:
+	assert(memory != null, "spawn_destruction_effect requires original global memory")
+	var entry_a7: int = a7
+	size = C68kScript.s32(size)
+	var ctl: int = memory.read_u32(obj)
+	var flag: int = 1
+	var near: int
+	var surface: int
+	var x: int
+	var y: int
+	var z: int
+	if ctl != 0:
+		x = C68kScript.s32(memory.read_s32(obj + 4) + memory.read_s32(ctl + 8))
+		y = C68kScript.s32(memory.read_s32(obj + 8) + memory.read_s32(ctl + 0xc))
+		z = C68kScript.s32(memory.read_s32(obj + 0xc) + memory.read_s32(ctl + 0x10))
+		near = 1 if C68kScript.s32(y - memory.read_s32(ctl + 0x2e)) <= 0x63 else 0
+		surface = memory.read_s8(ctl + 0x2c)
+		if near != 0:
+			if memory.read_u32(ctl + 0x2e) == 0:
+				a7 = entry_a7 - 0x28
+				surface = C68kScript.s16(surface_type_under_object(obj))
+				a7 = entry_a7
+			if surface == 0x30 or surface == 0x60 or surface == 0x70:
+				y = memory.read_s32(ctl + 0x2e)
+			else:
+				y = 0
+		else:
+			surface = 0
+		var kind: int = memory.read_s16(memory.read_u32(ctl + 4))
+		if (kind == 0x24 or kind == 0x23) and (memory.read_u8(memory.read_u32(obj + 0x4a) + 0x13) & 2) != 0:
+			flag = 0
+	else:
+		near = 1
+		x = memory.read_s32(obj + 4)
+		y = 0
+		z = memory.read_s32(obj + 0xc)
+		a7 = entry_a7 - 0x28
+		surface = C68kScript.s16(surface_type_under_object(obj))
+		a7 = entry_a7
+	a7 = entry_a7 - 0x44
+	if near == 0:
+		spawn_effect(2, C68kScript.u32(size), 5, 0, 1, C68kScript.u32(x), C68kScript.u32(y), C68kScript.u32(z))
+	elif surface == 0x10:
+		spawn_effect(0, C68kScript.u32(size), 0x4b, 0, 0, C68kScript.u32(x), C68kScript.u32(y), C68kScript.u32(z))
+	else:
+		spawn_effect(3, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(size * 3), 4)), 0x2d, flag, 0, C68kScript.u32(x), C68kScript.u32(y), C68kScript.u32(z))
+	a7 = entry_a7
+	return near
+
+## 0x17a2a (six saved registers): a hit on a sinkable ship, Leyte's. The anchor word 0x23d84 is cleared when it
+## is 2 and this controller is 0x2104c's (1.0.3 tested the distance); credit sets word +0x672. With hits left
+## (word +0x656) one is used up and the new count picks the sinking motion (draws from overlay_rng_next):
+## 0 (the last): a = (rng & 0xffff) remu 0x140 + 0x200 (1.0.3: + 0x500), negated when the folded word +0x658 is
+## negative, drop = rng remu 200 + 1000, and the c roll unless sinking started (word +0x670); 1: a = (rng & 0x3f)
+## + 0x100 (negated on rng bit 0), drop = rng remu 100 + 100, and the c roll unless started; 2: the c roll:
+## c = +-((rng & 0x7f) + 0x200), drop = rng remu 100 + 100. Other counts keep the drop register as the caller
+## left it (D1, d1_in). A carrier (type 0x1b) whose deck word +0x69a is 0xffff takes a quarter of a (asr.w,
+## toward zero). Then over 15 steps (+0x66a): rates +0x65e / +0x660 / +0x662 / +0x666 = a / 0 / c / drop
+## divs.w 15, next frame +0x66c = frame + 0x1e, started +0x670 = 1.
+func apply_hit_to_sinkable_object(ctl: int, credit: int, d1_in: int = 0) -> void:
+	assert(memory != null, "apply_hit_to_sinkable_object requires original global memory")
+	var entry_a7: int = a7
+	if ctl == memory.read_u32(0x2104c) and memory.read_u16(0x23d84) == 2:
+		memory.write_u16(0x23d84, 0)
+	if C68kScript.u32(credit) != 0:
+		memory.write_u16(ctl + 0x672, 1)
+	if memory.read_u16(ctl + 0x656) == 0:
+		return
+	memory.write_u16(ctl + 0x656, C68kScript.u16(memory.read_u16(ctl + 0x656) - 1))
+	var a: int = 0
+	var c: int = 0
+	var drop: int = C68kScript.s16(d1_in)
+	var hits: int = memory.read_s16(ctl + 0x656)
+	var roll_c: bool = false
+	if hits == 0:
+		a = C68kScript.s16(((overlay_rng_next() & 0xffff) % 0x140) + 0x200)
+		a7 = entry_a7 - 0x20
+		var folded: int = C68kScript.s16(fold_angle_pm_0x2000(C68kScript.u32(memory.read_s16(ctl + 0x658))))
+		a7 = entry_a7
+		if folded < 0:
+			a = C68kScript.s16(-a)
+		drop = C68kScript.s16(((overlay_rng_next() & 0xffff) % 200) + 1000)
+		roll_c = memory.read_u16(ctl + 0x670) == 0
+	elif hits == 1:
+		a = (overlay_rng_next() & 0x3f) + 0x100
+		if (overlay_rng_next() & 1) != 0:
+			a = -a
+		drop = C68kScript.s16(((overlay_rng_next() & 0xffff) % 100) + 100)
+		roll_c = memory.read_u16(ctl + 0x670) == 0
+	elif hits == 2:
+		roll_c = true
+	if roll_c:
+		c = (overlay_rng_next() & 0x7f) + 0x200
+		if (overlay_rng_next() & 1) != 0:
+			c = -c
+		drop = C68kScript.s16(((overlay_rng_next() & 0xffff) % 100) + 100)
+	if memory.read_s16(memory.read_u32(ctl + 4)) == 0x1b and memory.read_u16(ctl + 0x69a) == 0xffff:
+		if a < 0:
+			a += 3
+		a = C68kScript.s16(a) >> 2
+	memory.write_u16(ctl + 0x66a, 0xf)
+	memory.write_u16(ctl + 0x65e, C68kScript.u16(C68kScript.divs_trunc(a, 15)))
+	memory.write_u16(ctl + 0x660, 0)
+	memory.write_u16(ctl + 0x662, C68kScript.u16(C68kScript.divs_trunc(c, 15)))
+	memory.write_u16(ctl + 0x666, C68kScript.u16(C68kScript.divs_trunc(drop, 15)))
+	memory.write_u32(ctl + 0x66c, C68kScript.u32(memory.read_u32(0x21020) + 0x1e))
+	memory.write_u16(ctl + 0x670, 1)
+
+## approx_dist3_xyz (0x4886) leaves D1 = |dz|, or the larger of |dx| / |dy| when |dz| is larger still (its
+## swap); apply_blast_damage hands that register on to apply_hit_to_sinkable_object.
+static func _approx_dist3_d1(ax: int, ay: int, az: int, bx: int, by: int, bz: int) -> int:
+	var d2: int = abs_int(C68kScript.s32(bx - ax))
+	var d3: int = abs_int(C68kScript.s32(by - ay))
+	var d1: int = abs_int(C68kScript.s32(bz - az))
+	if C68kScript.s32(d3) > C68kScript.s32(d2):
+		d2 = d3
+	if C68kScript.s32(d1) > C68kScript.s32(d2):
+		d1 = d2
+	return C68kScript.u32(d1)
+
+## 0x14fe6 (Leyte only; a2 saved): an entity destroyed with (credit, entity). In live play a credited kill is
+## tallied (tally_destroyed_entity, 0xc below). Mission objectives: a type-10 entity (word +0x52) in mission 2
+## (host word +0x90) counts once per target point it lies within 0x63 of (approx_dist3_xyz on x / z, the points
+## (0x498eb4, -0x1d34a4), (0x4991d4, -0x1d324c), (0x4995ee, -0x1d33dc)) into word 0x27062, three of them setting
+## host +0xd2 = 1 when 0; in mission 3 one within 0x63 of (0x5cf903, -0x3e0e) sets +0xd2 = 1 when 0. Other
+## entities in mission 6: a type 0x28 controller definition counts into 0x27058 (the fifth sets +0xd2 = 1 when
+## 0), a type 0x27 into 0x2705a (the fourth sets +0xd2 = -1 when not negative). Then dispatch_entity_cleanup
+## (0xc below).
+func leyte_destroy_entity(credit: int, entity: int) -> void:
+	assert(memory != null, "leyte_destroy_entity requires original global memory")
+	var entry_a7: int = a7
+	if memory.read_u16(0x21058) == 0 and C68kScript.u32(credit) != 0:
+		a7 = entry_a7 - 0xc
+		tally_destroyed_entity(entity)
+		a7 = entry_a7
+	var host: int = memory.read_u32(0x207fc)
+	var x: int = memory.read_s32(entity + 4)
+	var z: int = memory.read_s32(entity + 0xc)
+	if memory.read_s16(entity + 0x52) == 0xa:
+		if memory.read_s16(host + 0x90) == 2:
+			for p in [[0x498eb4, -0x1d34a4], [0x4991d4, -0x1d324c], [0x4995ee, -0x1d33dc]]:
+				if C68kScript.s32(approx_dist3_xyz(x, 0, z, p[0], 0, p[1])) <= 0x63:
+					memory.write_u16(0x27062, C68kScript.u16(memory.read_u16(0x27062) + 1))
+			if memory.read_s16(0x27062) == 3 and memory.read_u16(host + 0xd2) == 0:
+				memory.write_u16(host + 0xd2, 1)
+		if memory.read_s16(host + 0x90) == 3:
+			if C68kScript.s32(approx_dist3_xyz(x, 0, z, 0x5cf903, 0, -0x3e0e)) <= 0x63 and memory.read_u16(host + 0xd2) == 0:
+				memory.write_u16(host + 0xd2, 1)
+	else:
+		var ctl: int = memory.read_u32(entity)
+		var kind: int = memory.read_s16(memory.read_u32(ctl + 4)) if ctl != 0 else -1
+		if kind == 0x28:
+			if memory.read_s16(host + 0x90) == 6:
+				memory.write_u16(0x27058, C68kScript.u16(memory.read_u16(0x27058) + 1))
+				if memory.read_s16(0x27058) == 5 and memory.read_u16(host + 0xd2) == 0:
+					memory.write_u16(host + 0xd2, 1)
+		elif kind == 0x27:
+			if memory.read_s16(host + 0x90) == 6:
+				memory.write_u16(0x2705a, C68kScript.u16(memory.read_u16(0x2705a) + 1))
+				if memory.read_s16(0x2705a) == 4 and memory.read_s16(host + 0xd2) >= 0:
+					memory.write_u16(host + 0xd2, 0xffff)
+	a7 = entry_a7 - 0xc
+	dispatch_entity_cleanup(entity)
+	a7 = entry_a7
+
+## 0x15192 (link 0, ten saved registers): a blast at (x, y, z), Leyte's. For each object_pool object (0x20804,
+## count word 0x20b26): its controller (+0) definition type word is kept in D3, which an object without a
+## controller leaves as the previous one set it (d3_in before the first). A flagged object (long +0x14 &
+## 0x10242) is considered only when it is the player's, or has the bit 0x10000 and a type 0x23 / 0x24 controller.
+## Range (long +0x20) above the radius: only ships with hit_ships (types 0x1b..0x22; mode 2 only a carrier with
+## its deck tag unknown, 0x1d, 0x20 or 0x21) within 1.5 times the range take apply_hit_to_sinkable_object. Else,
+## within range + 0x7cf (approx_dist3_xyz from the position +4 / +8 / +0xc): inside the range a hit; aircraft
+## (type <= 7) are hit when not sure_hit and the overshoot is within rng & 0x3ff, else they take
+## apply_random_aircraft_damage; type 0x12 always; types 0x27 / 0x28 within 0x5db unless sure_hit; others within
+## 0x257. A hit ship (0x1b..0x22) takes apply_hit_to_sinkable_object (its drop register the D1 approx_dist3_xyz
+## left), an aircraft damage word +0x698 |= 0x400 (| 0x8000 when credited), type 0x12 word +0x638 |= 0x400;
+## anything else spawn_destruction_effect(range / 8 on the ground (y 0), else / 4) and leyte_destroy_entity.
+## Calls are entered 0x38 below.
+func apply_blast_damage(x: int, y: int, z: int, radius: int, credit: int, sure_hit: int, hit_ships: int, d3_in: int = 0) -> void:
+	assert(memory != null, "apply_blast_damage requires original global memory")
+	var entry_a7: int = a7
+	x = C68kScript.s32(x)
+	y = C68kScript.s32(y)
+	z = C68kScript.s32(z)
+	var d3: int = C68kScript.s16(d3_in)
+	var left: int = memory.read_u16(0x20b26)
+	var slot: int = 0x20804
+	while left != 0:
+		left -= 1
+		var obj: int = memory.read_u32(slot)
+		slot += 4
+		var ctl: int = memory.read_u32(obj)
+		if ctl != 0:
+			d3 = memory.read_s16(memory.read_u32(ctl + 4))
+		if (memory.read_u32(obj + 0x14) & 0x10242) != 0:
+			var flagged_wreck: bool = (memory.read_u8(obj + 0x15) & 1) != 0 and ctl != 0 and (d3 == 0x24 or d3 == 0x23)
+			if not flagged_wreck and (ctl == 0 or ctl != memory.read_u32(0x20b28)):
+				continue
+		var rng: int = memory.read_s32(obj + 0x20)
+		var ox: int = memory.read_s32(obj + 4)
+		var oy: int = memory.read_s32(obj + 8)
+		var oz: int = memory.read_s32(obj + 0xc)
+		if rng > C68kScript.s32(radius):
+			if C68kScript.u32(hit_ships) == 0 or ctl == 0 or d3 <= 0x1a or d3 > 0x22:
+				continue
+			if (hit_ships & 0xffff) == 0:
+				continue                         # the mode is tested as a word (move.w d6, d0 / tst.w d0)
+			if (hit_ships & 0xffff) == 2:
+				var ok: bool = (d3 == 0x1b and memory.read_u16(ctl + 0x69a) == 0xffff) or d3 == 0x1d or d3 == 0x20 or d3 == 0x21
+				if not ok:
+					continue
+			var d2: int = C68kScript.s32(approx_dist3_xyz(ox, oy, oz, x, y, z))
+			var half: int = rng + 1 if rng < 0 else rng
+			if C68kScript.s32((half >> 1) + rng) <= d2:
+				continue
+			a7 = entry_a7 - 0x38
+			apply_hit_to_sinkable_object(ctl, credit, _approx_dist3_d1(ox, oy, oz, x, y, z))
+			a7 = entry_a7
+			continue
+		var dist: int = C68kScript.s32(approx_dist3_xyz(ox, oy, oz, x, y, z))
+		var over: int = C68kScript.s32(dist - rng)
+		if over > 0x7cf:
+			continue
+		var hit: bool
+		if dist < rng:
+			hit = true
+		elif ctl != 0 and d3 <= 7:
+			hit = false
+			if C68kScript.u32(sure_hit) == 0 and over <= (overlay_rng_next() & 0x3ff):
+				hit = true
+			else:
+				a7 = entry_a7 - 0x38
+				apply_random_aircraft_damage(ctl, credit)
+				a7 = entry_a7
+		elif ctl != 0 and d3 == 0x12:
+			hit = over <= 0x7cf
+		elif ctl != 0 and (d3 == 0x27 or d3 == 0x28):
+			hit = C68kScript.u32(sure_hit) == 0 and over <= 0x5db
+		else:
+			hit = over <= 0x257
+		if not hit:
+			continue
+		if ctl != 0 and d3 > 0x1a and d3 <= 0x22:
+			a7 = entry_a7 - 0x38
+			apply_hit_to_sinkable_object(ctl, credit, _approx_dist3_d1(ox, oy, oz, x, y, z))
+			a7 = entry_a7
+		elif ctl != 0 and d3 <= 7:
+			if C68kScript.u32(credit) != 0:
+				memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) | 0x8000)
+			memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) | 0x400)
+		elif ctl != 0 and d3 == 0x12:
+			memory.write_u16(ctl + 0x638, memory.read_u16(ctl + 0x638) | 0x400)
+		else:
+			var size: int = rng
+			if memory.read_u32(obj + 8) == 0:
+				if size < 0:
+					size += 7
+				size = size >> 3
+			else:
+				if size < 0:
+					size += 3
+				size = size >> 2
+			a7 = entry_a7 - 0x38
+			spawn_destruction_effect(obj, C68kScript.u32(size))
+			leyte_destroy_entity(credit, obj)
+			a7 = entry_a7
