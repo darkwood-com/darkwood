@@ -56,7 +56,7 @@
     },
     {
         "id": "32e0ac94-aca0-4c2d-a9c4-520149df813e",
-        "source_slug": "mario-ai-agents",
+        "source_slug": "ai-mcp-symfony-hackathon-content",
         "title": "Darkwood Symfony AI MCP Hackathon — atelier"
     },
     {
@@ -151,7 +151,7 @@
     },
     {
         "id": "55ea6e1d-f9f8-4630-928f-e3f1445b09d4",
-        "source_slug": "mario-ai-agents-hackathon",
+        "source_slug": "ai-mcp-symfony-hackathon-content-hackathon",
         "title": "Darkwood Symfony AI MCP Hackathon — 90 seconds"
     }
 ]

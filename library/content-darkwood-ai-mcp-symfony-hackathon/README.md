@@ -58,10 +58,10 @@ The main path is designer agent → official SDK client → existing SDK server 
 
 ## Vidéos et narration continue — itération 4
 
-- [Darkwood MCP Experience](https://youtu.be/IbljHH4wj0s), anglais, 86,21 s,
+- [Darkwood MCP Experience](https://youtu.be/cNAtFOlZAVA), anglais, 85,47 s,
   non répertoriée ; source et résultat réellement enregistrés, attente condensée.
-- [Présentation française](https://youtu.be/Ytts4XFgTxI), narration continue,
-  232,88 s, non répertoriée.
+- [Présentation française](https://youtu.be/vAHU-TKbo9Y), narration continue,
+  134 s, non répertoriée.
 
 Les identifiants, la chaîne et les anciens chemins sont conservés dans
 `public/hackathon/experience-edit.json`. Les huit slides restent dans la card
@@ -84,3 +84,21 @@ existant. Les anciennes itérations sont décrites dans `docs/hackathon-review.m
 
 Le jury peut toujours exécuter Mario indépendamment, avec sa propre clé. La
 candidature est préparée et **non soumise**. Aucun post social n’est déclenché.
+
+## Presentation sources (iteration 5)
+
+The canonical SlideWire sources are in the existing Slides card:
+`resources/views/pages/slides/ai-mcp-symfony-hackathon-content-hackathon.blade.php`
+(English) and `ai-mcp-symfony-hackathon-content.blade.php` (French). Navi uses the
+matching YAML names under `config/presentation-scripts/`. Each deck has eight
+slides: welcome, six-card grid, create, connect, automate, interact, recorded
+execution and discovery. Maturity labels remain visible; only the documented
+Mario path is the contest execution. DarkwoodGame stays an independent read-only
+observation. The local recorded tool excerpt preserves source pixels from the
+18 November execution, omits the long command and labels condensed waiting.
+
+Generate with the existing `navi:slides:generate-video DECK --narration-mode=continuous
+--avatar=assets/images/avatar.jpg --avatar-layout=column`. At 1920×1080 the
+portrait occupies Intent's separate left column and slides fit the right area,
+centered at x=256, y=72 with dimensions 1664×936. There is no lip-sync or new
+avatar generation. Review the complete output before replacing YouTube links.
