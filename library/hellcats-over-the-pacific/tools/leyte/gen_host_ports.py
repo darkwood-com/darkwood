@@ -156,7 +156,7 @@ def _remap_constants(seg: str, hcode: bytes, lcode: bytes, corr: dict, a5map: di
             ha, la = a5_operands(a), a5_operands(b)
             assert a.mnemonic == b.mnemonic and len(ha) == len(la), "%s %s +0x%x: %s %s | %s" % (seg, name, a.address, a.mnemonic, a.op_str, b.op_str)
             masked = lambda ins: re.sub(r"-?\$[0-9a-f]+\(a5\)", "A5", re.sub(r"\$[0-9a-f]+\.l|\$[0-9a-f]+\(pc\)", "X", ins.op_str))
-            if a.mnemonic.startswith(("b", "j", "db")) and a.mnemonic not in ("bset", "bclr", "btst", "bchg"):
+            if a.mnemonic.startswith(("b", "j", "db")) and not a.mnemonic.startswith(("bset", "bclr", "btst", "bchg")):
                 pass                                  # branch targets move with the code
             else:
                 ma, mb = masked(a), masked(b)

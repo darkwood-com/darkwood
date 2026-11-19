@@ -96,7 +96,7 @@ def build() -> dict:
         aligned += 1
         for a, b in zip(his, lis):
             pa, pb = PC_REL.findall(a.op_str), PC_REL.findall(b.op_str)
-            if len(pa) == len(pb) and not (a.mnemonic.startswith(("b", "db")) and a.mnemonic not in ("bset", "bclr", "btst", "bchg")):
+            if len(pa) == len(pb) and not (a.mnemonic.startswith(("b", "db")) and not a.mnemonic.startswith(("bset", "bclr", "btst", "bchg"))):
                 for x, y in zip(pa, pb):
                     pairs.setdefault(int(x, 16), {}).setdefault(int(y, 16), set()).add(r["name"])
             hs = [k for k in range(a.size) if a.address + k in hrel]

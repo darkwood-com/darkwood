@@ -7,11 +7,11 @@
   "placed": 400,
   "unplaced": 28,
   "by_evidence": {
-   "calls": 89,
-   "cases": 64,
+   "calls": 41,
+   "cases": 117,
    "correspondence": 149,
    "map": 54,
-   "similarity": 44
+   "similarity": 39
   },
   "addresses_beyond_the_map": 518
  },
@@ -53,7 +53,7 @@
    "name": "any_mission_kills_recorded",
    "hellcats_1_0_3": "0x314",
    "leyte": "0x3e8",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     13,
     13
@@ -64,7 +64,7 @@
    "name": "probe_nearest_facility_kind",
    "hellcats_1_0_3": "0x334",
    "leyte": "0x40c",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     48,
     81
@@ -152,7 +152,7 @@
    "name": "point_near_camera_or_type80_object",
    "hellcats_1_0_3": "0xbca",
    "leyte": "0xf7c",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     28,
     83
@@ -658,7 +658,7 @@
    "name": "finalize_attitude_matrix_3ang_alt",
    "hellcats_1_0_3": "0x2408",
    "leyte": "0x2a5a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     17,
     61
@@ -669,7 +669,7 @@
    "name": "build_attitude_matrix_3ang_alt",
    "hellcats_1_0_3": "0x2444",
    "leyte": "0x2b52",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     11,
     11
@@ -812,7 +812,7 @@
    "name": "invoke_tagged_attitude_compose_neg_sins4",
    "hellcats_1_0_3": "0x2782",
    "leyte": "0x30b8",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     10,
     11
@@ -1109,7 +1109,7 @@
    "name": "segment_point_min_distance",
    "hellcats_1_0_3": "0x3caa",
    "leyte": "0x48e8",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     73,
     75
@@ -1351,7 +1351,7 @@
    "name": "collect_near_objects",
    "hellcats_1_0_3": "0x53d8",
    "leyte": "0x6250",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     102,
     103
@@ -1362,7 +1362,7 @@
    "name": "collect_far_objects",
    "hellcats_1_0_3": "0x553a",
    "leyte": "0x63ba",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     221,
     226
@@ -1373,7 +1373,7 @@
    "name": "dispatch_overlap_collisions",
    "hellcats_1_0_3": "0x5812",
    "leyte": "0x66a6",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     61,
     62
@@ -1395,7 +1395,7 @@
    "name": "update_altitude_detail_bands",
    "hellcats_1_0_3": "0x59f4",
    "leyte": "0x6882",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     287,
     292
@@ -1417,7 +1417,7 @@
    "name": "update_ground_scatter_objects",
    "hellcats_1_0_3": "0x5e08",
    "leyte": "0x6c9a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     432,
     438
@@ -1626,7 +1626,7 @@
    "name": "advance_frame_and_tick_controllers",
    "hellcats_1_0_3": "0x92c4",
    "leyte": "0xa406",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     118,
     127
@@ -1670,7 +1670,7 @@
    "name": "play_game_sound",
    "hellcats_1_0_3": "0x958c",
    "leyte": "0xa700",
-   "evidence": "calls:14",
+   "evidence": "cases",
    "instructions": [
     84,
     162
@@ -1692,7 +1692,7 @@
    "name": "update_game_sounds",
    "hellcats_1_0_3": "0x96d4",
    "leyte": "0xa8ea",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     268,
     291
@@ -1802,7 +1802,7 @@
    "name": "submit_object_faces",
    "hellcats_1_0_3": "0xa2d2",
    "leyte": "0xb554",
-   "evidence": "calls:5",
+   "evidence": "cases",
    "instructions": [
     146,
     156
@@ -1813,7 +1813,7 @@
    "name": "transform_face_vertices",
    "hellcats_1_0_3": "0xa4f2",
    "leyte": "0xb796",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     97,
     100
@@ -1824,7 +1824,7 @@
    "name": "project_prepared_object",
    "hellcats_1_0_3": "0xa656",
    "leyte": "0xb902",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     60,
     65
@@ -1835,7 +1835,7 @@
    "name": "transform_and_project_object",
    "hellcats_1_0_3": "0xa73e",
    "leyte": "0xb9f8",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     344,
     353
@@ -1846,7 +1846,7 @@
    "name": "render_visible_objects",
    "hellcats_1_0_3": "0xac52",
    "leyte": "0xbf1e",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     220,
     235
@@ -2319,7 +2319,7 @@
    "name": "spawn_enemy_fighter",
    "hellcats_1_0_3": "0xe242",
    "leyte": "0xf692",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     19,
     29
@@ -2517,7 +2517,7 @@
    "name": "build_relative_steer_sample",
    "hellcats_1_0_3": "0x10340",
    "leyte": "0x121c4",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     171,
     172
@@ -2528,7 +2528,7 @@
    "name": "enqueue_control_inputs_avg4",
    "hellcats_1_0_3": "0x10538",
    "leyte": "0x123be",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     78,
     82
@@ -2880,7 +2880,7 @@
    "name": "spawn_effect",
    "hellcats_1_0_3": "0x11c38",
    "leyte": "0x13d60",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     96,
     98
@@ -3100,7 +3100,7 @@
    "name": "point_in_polygon_xy",
    "hellcats_1_0_3": "0x12fb2",
    "leyte": "0x1581a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     51,
     53
@@ -3111,7 +3111,7 @@
    "name": "point_in_polygon_xz",
    "hellcats_1_0_3": "0x13050",
    "leyte": "0x158be",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     51,
     53
@@ -3122,7 +3122,7 @@
    "name": "point_in_polygon_yz",
    "hellcats_1_0_3": "0x130ee",
    "leyte": "0x15962",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     51,
     53
@@ -3133,7 +3133,7 @@
    "name": "project_face_vertices_xy",
    "hellcats_1_0_3": "0x1318c",
    "leyte": "0x15a06",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     31,
     34
@@ -3144,7 +3144,7 @@
    "name": "project_face_vertices_xz",
    "hellcats_1_0_3": "0x131ea",
    "leyte": "0x15a6c",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     31,
     34
@@ -3155,7 +3155,7 @@
    "name": "project_face_vertices_yz",
    "hellcats_1_0_3": "0x13248",
    "leyte": "0x15ad2",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     31,
     34
@@ -3177,7 +3177,7 @@
    "name": "surface_type_at_point",
    "hellcats_1_0_3": "0x13326",
    "leyte": "0x15c2c",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     87,
     103
@@ -3221,7 +3221,7 @@
    "name": "find_contact_record",
    "hellcats_1_0_3": "0x13580",
    "leyte": "0x15ec0",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     25,
     27
@@ -3232,7 +3232,7 @@
    "name": "create_shape_contact_record",
    "hellcats_1_0_3": "0x135c8",
    "leyte": "0x15f0e",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     131,
     136
@@ -3265,7 +3265,7 @@
    "name": "create_fractal_contact_record",
    "hellcats_1_0_3": "0x1381c",
    "leyte": "0x1617e",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     105,
     100
@@ -3276,7 +3276,7 @@
    "name": "fractal_height_at",
    "hellcats_1_0_3": "0x13960",
    "leyte": "0x162b8",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     268,
     271
@@ -3287,7 +3287,7 @@
    "name": "test_terrain_collision",
    "hellcats_1_0_3": "0x13cbc",
    "leyte": "0x1661a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     121,
     121
@@ -3309,7 +3309,7 @@
    "name": "test_player_vs_type0e_proximity",
    "hellcats_1_0_3": "0x13e8e",
    "leyte": "0x167e4",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     16,
     16
@@ -3320,7 +3320,7 @@
    "name": "test_object_collision",
    "hellcats_1_0_3": "0x13ec0",
    "leyte": "0x16812",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     214,
     219
@@ -3331,7 +3331,7 @@
    "name": "handle_terrain_contact",
    "hellcats_1_0_3": "0x14178",
    "leyte": "0x16ae6",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     84,
     84
@@ -3342,7 +3342,7 @@
    "name": "handle_player_contact",
    "hellcats_1_0_3": "0x1427c",
    "leyte": "0x16be2",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     53,
     53
@@ -3353,7 +3353,7 @@
    "name": "dispatch_collision",
    "hellcats_1_0_3": "0x14328",
    "leyte": "0x16c8a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     80,
     82
@@ -3364,7 +3364,7 @@
    "name": "sort_group_parts_by_distance",
    "hellcats_1_0_3": "0x1441a",
    "leyte": "0x16d7a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     311,
     324
@@ -3375,7 +3375,7 @@
    "name": "lift_object_onto_terrain",
    "hellcats_1_0_3": "0x14810",
    "leyte": "0x171ba",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     209,
     206
@@ -3507,7 +3507,7 @@
    "name": "spawn_ordnance_scattered",
    "hellcats_1_0_3": "0x15bd6",
    "leyte": "0x19bce",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     90,
     90
@@ -3617,7 +3617,7 @@
    "name": "draw_distant_object_dots",
    "hellcats_1_0_3": "0x1629a",
    "leyte": "0x1a296",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     274,
     281
@@ -3628,7 +3628,7 @@
    "name": "bullet_hits_shape",
    "hellcats_1_0_3": "0x1663a",
    "leyte": "0x1a64a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     61,
     61
@@ -3859,7 +3859,7 @@
    "name": "spawn_debris_fragment",
    "hellcats_1_0_3": "0x173de",
    "leyte": "0x1b582",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     66,
     66
@@ -4046,7 +4046,7 @@
    "name": "tick_aircraft_spawner",
    "hellcats_1_0_3": "0x17db4",
    "leyte": "0x1bf64",
-   "evidence": "similarity:0.88",
+   "evidence": "cases",
    "instructions": [
     182,
     182
@@ -4101,7 +4101,7 @@
    "name": "tick_shadow",
    "hellcats_1_0_3": "0x189b0",
    "leyte": "0x1cb04",
-   "evidence": "similarity:0.96",
+   "evidence": "cases",
    "instructions": [
     27,
     27
@@ -4112,7 +4112,7 @@
    "name": "shadow_pre_render",
    "hellcats_1_0_3": "0x18a14",
    "leyte": "0x1cb66",
-   "evidence": "similarity:0.81",
+   "evidence": "cases",
    "instructions": [
     94,
     91
@@ -4189,7 +4189,7 @@
    "name": "tick_turret",
    "hellcats_1_0_3": "0x1915c",
    "leyte": "0x1d2e2",
-   "evidence": "similarity:0.99",
+   "evidence": "cases",
    "instructions": [
     157,
     157
@@ -4200,7 +4200,7 @@
    "name": "turret_pre_render",
    "hellcats_1_0_3": "0x19374",
    "leyte": "0x1d4f6",
-   "evidence": "similarity:1.00",
+   "evidence": "cases",
    "instructions": [
     10,
     10
@@ -4354,7 +4354,7 @@
    "name": "find_nearest_runway_approach_ends",
    "hellcats_1_0_3": "0x19c3e",
    "leyte": "0x1ddbe",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     264,
     268

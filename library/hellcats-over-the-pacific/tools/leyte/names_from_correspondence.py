@@ -58,7 +58,7 @@ _BIT_OPS = {"bset", "bclr", "btst", "bchg"}
 def _operands(mnemonic: str, ops: str) -> str:
     """An instruction's operands with what layout moves masked: branch / call targets, PC-relative
     displacements, absolute long addresses, register-relative displacements ((An) as $0(An))."""
-    if _BRANCH.match(mnemonic) and mnemonic not in _BIT_OPS and not mnemonic.startswith("bf"):
+    if _BRANCH.match(mnemonic) and mnemonic.split(".")[0] not in _BIT_OPS and not mnemonic.startswith("bf"):
         ops = re.sub(r"\$[0-9a-f]+", "T", ops)
     ops = re.sub(r"-?\$[0-9a-f]+\(pc", "(pc", ops)
     ops = re.sub(r"\$[0-9a-f]+\.l", "ABS", ops)

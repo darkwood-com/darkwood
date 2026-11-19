@@ -81,6 +81,16 @@ func _init() -> void:
 			var r: int = int(alert.call(a))
 			print("[probe] alert %04x %s -> item %d" % [word, str(a), r])
 			return r
+	# ExitToShell parks the game thread for the scene to end (the program ends there on the Mac); the probe
+	# has no scene, so it reports there and ends the process.
+	machine.toolbox.traps[0xa9f4] = func(_a: Array) -> int:
+		machine.log_line("ExitToShell")
+		print("[probe] ExitToShell; missing: ", machine.missing.size())
+		for k in machine.missing:
+			print("[probe] missing ", k, " ", machine.missing[k])
+		LeyteProfile.clear()
+		OS.kill(OS.get_process_id())
+		return 0
 	var program = machine.segments.instances[2]
 	program.a7 = machine.STACK_TOP
 	program.event_loop_passes = 1

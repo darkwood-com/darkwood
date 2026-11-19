@@ -13994,7 +13994,7 @@ func _update_external_camera(body: int, a6: int) -> void:
 	a7 = body - 8
 	var reach: int = C68kScript.s32(update_object_camera_metric(obj) + _routed.read_u32(obj + 0x14))
 	var shift: int = 0
-	while (reach & 0x8000) != 0:
+	while (reach & 0xffff8000) != 0:
 		shift += 1
 		reach = C68kScript.asr32(reach, 1)
 	shift += 1

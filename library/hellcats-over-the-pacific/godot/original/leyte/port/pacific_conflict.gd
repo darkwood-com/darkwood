@@ -3516,7 +3516,63 @@ func _copy_xyz(src: int, dst: int) -> void:
 ## aim y <= 0x43 else 0x181; the +0x32 handler is saved (0x26798) and becomes 0x1a186
 ## (tick_landing_approach_glide). Returns 0.
 func try_begin_landing_approach(ctl: int) -> int:
-	assert(false, "try_begin_landing_approach: not verified for Leyte Gulf (sources/leyte-gulf-1-0/host_ports.json unverified)")
+	assert(memory != null, "try_begin_landing_approach requires original global memory")
+	assert(a7 != 0, "try_begin_landing_approach needs a7 (its frame holds the runway ends)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var obj: int = memory.read_u32(ctl)
+	var near: int = a6 - 0xc
+	var far: int = a6 - 0x18
+	a7 = entry_a7 - 0x50
+	var missing: int = find_nearest_runway_approach_ends(obj, near, far)
+	a7 = entry_a7
+	if missing != 0:
+		return 1
+	var dist: int = approx_dist3_xyz(memory.read_s32(obj + 0x4), memory.read_s32(obj + 0x8), memory.read_s32(obj + 0xc), memory.read_s32(near), memory.read_s32(near + 4), memory.read_s32(near + 8))
+	if dist <= 0x270f or dist > 0x26ac0:
+		return 1
+	var dx: int = C68kScript.s32(memory.read_u32(far) - memory.read_u32(near))
+	var dy: int = C68kScript.s32(memory.read_u32(far + 4) - memory.read_u32(near + 4))
+	var dz: int = C68kScript.s32(memory.read_u32(far + 8) - memory.read_u32(near + 8))
+	for pair in [[dx, 0, 0], [dz, 8, 8]]:
+		var v: int = C68kScript.s32(C68kScript.lsl32(C68kScript.s32(C68kScript.lsl32(pair[0], 1) + pair[0]), 1))
+		if v < 0:
+			v = C68kScript.s32(v + 0x3f)
+		memory.write_u32(DAT_000267bc + pair[2], C68kScript.u32(C68kScript.asr32(v, 6) + memory.read_u32(near + pair[1])))
+	memory.write_u32(DAT_000267bc + 4, memory.read_u32(near + 4))
+	memory.write_u16(DAT_000267b2, C68kScript.u16(C68kScript.asr32(dx, 3)))
+	memory.write_u16(DAT_000267b2 + 4, C68kScript.u16(C68kScript.asr32(dy, 3)))
+	memory.write_u16(DAT_000267b2 + 8, C68kScript.u16(C68kScript.asr32(dz, 3)))
+	var gx: int = memory.read_s16(DAT_000267b2)
+	var gy: int = memory.read_s16(DAT_000267b2 + 4)
+	var gz: int = memory.read_s16(DAT_000267b2 + 8)
+	a7 = entry_a7 - 0x48
+	var length: int = C68kScript.s16(isqrt_floor(C68kScript.s32(C68kScript.s32(gx * gx + gy * gy) + gz * gz)))
+	a7 = entry_a7
+	assert(length != 0, "try_begin_landing_approach: divs.l by zero traps")
+	memory.write_u16(DAT_000267b2, C68kScript.u16(C68kScript.divs_trunc(C68kScript.lsl32(gx, 12), length)))
+	memory.write_u16(DAT_000267b2 + 4, 0xfdc0)
+	memory.write_u16(DAT_000267b2 + 8, C68kScript.u16(C68kScript.divs_trunc(C68kScript.lsl32(gz, 12), length)))
+	for off in [0, 8]:
+		var v: int = memory.read_s16(DAT_000267b2 + off) * 10000
+		if v < 0:
+			v += 0xfff
+		memory.write_u32(DAT_000267bc + off, C68kScript.u32((v >> 12) + memory.read_u32(DAT_000267bc + off)))
+		if off == 0:
+			memory.write_u32(DAT_000267bc + 4, C68kScript.u32(memory.read_u32(DAT_000267bc + 4) + 0x43))
+	memory.write_u16(DAT_000267ac, 0)
+	if memory.read_s8(ctl + 0x68c) > 0:
+		memory.write_u8(ctl + 0x68c, C68kScript.u8(-memory.read_s8(ctl + 0x68c)))
+	memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) & 0xbfff)
+	memory.write_u32(ctl + 0x622, 0)
+	memory.write_u16(ctl + 0x620, 0)
+	memory.write_u32(DAT_000267a8, 0)
+	memory.write_u32(DAT_000267a4, 0)
+	memory.write_u32(DAT_000267a0, memory.read_u32(obj + 0x4))
+	memory.write_u32(DAT_0002679c, memory.read_u32(obj + 0xc))
+	memory.write_u16(DAT_000267ae, 0x11b if memory.read_s32(DAT_000267bc + 4) <= 0x43 else 0x181)
+	memory.write_u32(DAT_00026798, memory.read_u32(ctl + 0x32))
+	memory.write_u32(ctl + 0x32, 0x1e31e)
 	return 0
 
 ## Truncating (x * word) / 4096 as the glide does it: muls.l, +0xfff when negative, asr 12.
@@ -4517,45 +4573,7 @@ func resolve_bailout_outcome() -> int:
 ## the midpoint; otherwise it takes the chute's next pose-ring position (index + 1, wrapping past
 ## 0x4a) and looks at the chute. turn_camera_toward_point 0x30 below; returns 0.
 func update_bailout_view() -> int:
-	assert(memory != null, "update_bailout_view requires original global memory")
-	var entry_a7: int = a7
-	var chute_ctl: int = memory.read_u32(DAT_0001b87c)
-	if chute_ctl == 0 or (memory.read_u8(memory.read_u32(chute_ctl) + 7) & 2) != 0 or (memory.read_u16(chute_ctl + 0x61e) != 0 and memory.read_s16(chute_ctl + 0x614) > 0x5a0):
-		a7 = entry_a7 - 0x28
-		var outcome: int = resolve_bailout_outcome()
-		a7 = entry_a7
-		return outcome
-	var chute: int = memory.read_u32(chute_ctl)
-	var target: Array = [memory.read_u32(chute + 0x4), memory.read_u32(chute + 0x8), memory.read_u32(chute + 0xc)]
-	var placed: bool = false
-	if memory.read_u32(DAT_0001b738) != 0 and (C68kScript.s32(memory.read_u32(DAT_0001b838) - 0x4b) <= memory.read_s32(chute + 0x42) or C68kScript.s32(memory.read_u32(chute + 0x8) - memory.read_u32(chute_ctl + 0x2e)) > 0x373):
-		var plane: int = memory.read_u32(memory.read_u32(DAT_0001b738))
-		a7 = entry_a7 - 0x3c
-		var dist: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(plane + 0x4), memory.read_s32(plane + 0x8), memory.read_s32(plane + 0xc), memory.read_s32(chute + 0x4), memory.read_s32(chute + 0x8), memory.read_s32(chute + 0xc)))
-		a7 = entry_a7
-		if dist <= 0x9ab0:
-			for k in 3:
-				var m: int = C68kScript.s32(memory.read_u32(plane + 0x4 + 4 * k) + memory.read_u32(chute + 0x4 + 4 * k))
-				target[k] = C68kScript.u32((m + 1 if m < 0 else m) >> 1)
-			var shift: int = 0
-			while (C68kScript.u32(dist) & 0xffff8000) != 0:
-				shift = C68kScript.s16(shift + 1)
-				dist = C68kScript.asr32(dist, 1)
-			a7 = entry_a7 - 0x38
-			place_camera_behind_object(chute, target[0], target[1], target[2], shift)
-			a7 = entry_a7
-			placed = true
-	if not placed:
-		var slot: int = (memory.read_u16(chute_ctl + 0x60e) + 1) & 0xffff
-		if slot > 0x4a:
-			slot = (slot - 0x4b) & 0xffff
-		var pose: int = C68kScript.u32(chute_ctl + 0x32 + C68kScript.s16(slot) * 0x14)
-		memory.write_u32(DAT_0001d838, memory.read_u32(pose))
-		memory.write_u32(DAT_0001d834, memory.read_u32(pose + 4))
-		memory.write_u32(DAT_0001d830, memory.read_u32(pose + 8))
-	a7 = entry_a7 - 0x30
-	turn_camera_toward_point(target[0], target[1], target[2])
-	a7 = entry_a7
+	assert(false, "update_bailout_view: not verified for Leyte Gulf (sources/leyte-gulf-1-0/host_ports.json unverified)")
 	return 0
 
 ## A replay camera position: pose ring entry + the offset (vx, vy, vz) turned by the entry's heading
@@ -4697,7 +4715,7 @@ func update_ground_scatter_objects() -> void:
 ## 0x32: memmove_block(src, dst, n) (entered 0x14 below: d2, three arguments, bsr); returns dst.
 func copy_block_return_dst(dst: int, src: int, nbytes: int) -> int:
 	var entry_a7: int = a7
-	a7 = entry_a7 - 0x14
+	a7 = entry_a7 - 0x18
 	memmove_block(src, dst, nbytes)
 	a7 = entry_a7
 	return dst
@@ -6387,7 +6405,431 @@ static func _swap(r: int) -> int:
 ## unlinked and edge_pool_count cleared. The sentinel edge (0x1b174: view_width << 16 | 0x8000)
 ## toggles the background face at 0x1b184 (order 0x7fff, colour 0x1b188 = fill | 0xffff0000).
 func scan_convert_edge_rows() -> void:
-	assert(false, "scan_convert_edge_rows: not verified for Leyte Gulf (sources/leyte-gulf-1-0/host_ports.json unverified)")
+	assert(memory != null, "scan_convert_edge_rows requires original global memory")
+	assert(a7 != 0, "scan_convert_edge_rows needs a7 (its frame holds the edge lists)")
+	var a6: int = a7 - 4
+	var d0: int = 0
+	var d1: int = 0
+	var d2: int = 0
+	var d3: int = 0
+	var d4: int = 0
+	var d5: int = 0
+	var d6: int = 0
+	var d7: int = 0
+	var r0: int = 0
+	var r1: int = 0
+	var r2: int = 0
+	var r3: int = 0
+	var r4: int = 0
+	var r5: int = 0
+	memory.write_u32(a6 - 0x498, 0)
+	memory.write_u32(a6 - 0x440, a6 - 0x23c)
+	memory.write_u32(a6 - 0x444, a6 - 0x43c)
+	memory.write_u32(a6 - 0x1c, DAT_0001eaac)
+	memory.write_u32(0x2039c, C68kScript.u32(C68kScript.lsl32(memory.read_s16(DAT_0001b82a), 16)) | 0x8000)
+	memory.write_u32(0x203b0, 0xffff0000 | C68kScript.u32(memory.read_s16(DAT_0001daa0)))
+	memory.write_u32(memory.read_u32(a6 - 0x440), 0x2039c)
+	memory.write_u32(memory.read_u32(a6 - 0x440) + 4, 0)
+	memory.write_u32(a6 - 0x460, 1)
+	var end_row: int = memory.read_s16(0x27012)
+	if memory.read_u32(0x2101c) != 0:
+		end_row = C68kScript.asr32(end_row, 1)
+	memory.write_u32(a6 - 0x4a4, C68kScript.u32(end_row))
+	memory.write_u32(a6 - 0x20, DAT_0001daa4)
+	memory.write_u16(C68kScript.u32(DAT_0001daa4 + C68kScript.s32(C68kScript.lsl32(end_row, 1))), 1)
+	memory.write_u32(a6 - 0x28, memory.read_u32(0x20f80))
+	memory.write_u32(a6 - 0x2c, memory.read_u32(0x20f7c))
+	memory.write_u32(a6 - 0x34, memory.read_u32(a6 - 0x2c))
+	d6 = memory.read_u32(a6 - 0x34)
+	var label: int = 0x2ede
+	while true:
+		match label:
+			0x2ede:
+				memory.write_u32(a6 - 0x30, d6)
+				d6 = C68kScript.u32(d6 + 4)
+				r1 = memory.read_u32(a6 - 0x440)
+				if _lo(d2) != 0:
+					label = 0x3a72
+					continue
+				r5 = memory.read_u32(a6 - 0x1c)
+				r2 = C68kScript.u32(r5 + 4)
+				r0 = memory.read_u32(a6 - 0x20)
+				memory.write_u16(r0, 0)
+				r0 = C68kScript.u32(r0 + 2)
+				d2 = r2
+				while true:
+					var bucket_head: int = memory.read_u32(r2)
+					r2 = C68kScript.u32(r2 + 4)
+					if bucket_head != 0:
+						break
+					var flag: int = memory.read_u16(r0)
+					r0 = C68kScript.u32(r0 + 2)
+					if flag != 0:
+						r0 = C68kScript.u32(r0 - 2)
+						break
+				d2 = C68kScript.u32(r2 - d2) >> 2
+				memory.write_u32(a6 - 0x20, r0)
+				r2 = C68kScript.u32(r2 - 4)
+				memory.write_u32(a6 - 0x1c, r2)
+				r2 = memory.read_u32(a6 - 0x444)
+				memory.write_u32(a6 - 0x440, r2)
+				r3 = r2
+				memory.write_u32(a6 - 0x444, r1)
+				d0 = memory.read_u32(r5)
+				if d0 == 0:
+					label = 0x2f66
+					continue
+				r0 = C68kScript.u32(d0 + 0xc)
+				d4 = memory.read_u32(r0)
+				label = 0x3a56
+			0x2f34:
+				if memory.read_u16(r4 + 0xa) == _lo(d3):
+					label = 0x3a56
+					continue
+				d1 = memory.read_u32(r4)
+				if C68kScript.s32(d4) >= C68kScript.s32(d1):
+					label = 0x3a54
+					continue
+				r1 = C68kScript.u32(r1 - 4)
+				d1 = d4
+				r4 = r0
+				d0 = memory.read_u32(r4 + 0xc)
+				if d0 == 0:
+					label = 0x3a64
+					continue
+				r0 = C68kScript.u32(d0 + 0xc)
+				d4 = memory.read_u32(r0)
+				label = 0x3a54
+			0x3a54:
+				memory.write_u32(r2, r4)
+				r2 = C68kScript.u32(r2 + 4)
+				label = 0x3a56
+			0x3a56:
+				d0 = memory.read_u32(r1)
+				r1 = C68kScript.u32(r1 + 4)
+				r4 = d0
+				label = 0x2f34 if d0 != 0 else 0x3a6c
+			0x2f5e:
+				if memory.read_u16(r4 + 0xa) == _lo(d3):
+					label = 0x2f66
+					continue
+				label = 0x3a64
+			0x3a64:
+				memory.write_u32(r2, r4)
+				r2 = C68kScript.u32(r2 + 4)
+				label = 0x2f66
+			0x2f66:
+				d0 = memory.read_u32(r1)
+				r1 = C68kScript.u32(r1 + 4)
+				r4 = d0
+				label = 0x2f5e if d0 != 0 else 0x3a6c
+			0x3a6c:
+				memory.write_u32(r5, 0)
+				memory.write_u32(r2, 0)
+				r1 = r3
+				label = 0x3a72
+			0x3a72:
+				d5 = 0xffffffff
+				d4 = 0xffffffff
+				d2 = _swap(d2) & 0xffff0000
+				label = 0x3b0c
+			0x3a7e:
+				d0 = 0
+				r3 = C68kScript.u32(r4 - 0xc)
+				r2 = memory.read_u32(r3)
+				r3 = C68kScript.u32(r3 + 4)
+				while true:
+					var inside: int = memory.read_u16(r2) ^ 0x8000
+					memory.write_u16(r2, inside)
+					if inside == 0:
+						if r5 == r2:
+							d0 = 0xffffffff
+					else:
+						r0 = C68kScript.u32(r2 + 8)
+						if memory.read_u32(r0) == 0:
+							memory.write_u32(r0, memory.read_u32(a6 - 0x460))
+							memory.write_u32(a6 - 0x460, r2)
+						r0 = memory.read_u32(r2)
+						if C68kScript.s16(_lo(d2)) < C68kScript.s16(_lo(r0)):
+							r5 = r2
+							d2 = _setlo(d2, _lo(r0))
+							d0 = d0 | 1
+					r2 = memory.read_u32(r3)
+					r3 = C68kScript.u32(r3 + 4)
+					if r2 == 0:
+						break
+				d1 = memory.read_u32(r4)
+				r4 = C68kScript.u32(r4 + 4)
+				var change: int = C68kScript.s8(d0 & 0xff)
+				if change == 0:
+					label = 0x3afe
+					continue
+				if change < 0:
+					d2 = _setlo(d2, 0)
+					r3 = a6 - 0x460
+					r2 = memory.read_u32(r3)
+					while true:
+						d0 = memory.read_u32(r2)
+						if C68kScript.s32(d0) < 0:
+							if C68kScript.s16(_lo(d0)) > C68kScript.s16(_lo(d2)):
+								r5 = r2
+								d2 = _setlo(d2, _lo(d0))
+							r3 = C68kScript.u32(r2 + 8)
+						else:
+							r0 = C68kScript.u32(r2 + 8)
+							memory.write_u32(r3, memory.read_u32(r0))
+							memory.write_u32(r0, 0)
+						r2 = memory.read_u32(r3)
+						if r2 == 1:
+							break
+				d0 = memory.read_u32(r5 + 4)
+				if d0 != d4:
+					r0 = d6
+					d6 = (d1 & 0xffff0000) | (d4 & 0xffff)
+					memory.write_u32(r0, d6)
+					r0 = C68kScript.u32(r0 + 4)
+					d4 = d0
+					d6 = r0
+				label = 0x3afe
+			0x3afe:
+				d1 = C68kScript.u32(d1 + memory.read_u32(r4))
+				r4 = C68kScript.u32(r4 - 4)
+				memory.write_u32(r4, d1)
+				memory.write_u16(r4 + 8, _lo(d4))
+				if C68kScript.s32(d1) < C68kScript.s32(d5):
+					label = 0x3b4c
+					continue
+				d5 = d1
+				label = 0x3b0c
+			0x3b0c:
+				d0 = memory.read_u32(r1)
+				r1 = C68kScript.u32(r1 + 4)
+				r4 = d0
+				if d0 != 0:
+					label = 0x3a7e
+					continue
+				var header: int = memory.read_u32(a6 - 0x30)
+				memory.write_u32(header, C68kScript.u32((C68kScript.u32(d6 - header) >> 2) - 1))
+				r2 = memory.read_u32(a6 - 0x460)
+				while r2 != 1:
+					memory.write_u16(r2, 0)
+					r2 = memory.read_u32(r2 + 8)
+				d3 = C68kScript.u32(d3 + 1)
+				d2 = _swap(d2)
+				d2 = _setlo(d2, _lo(d2) - 1)
+				if C68kScript.s16(_lo(d2)) > 0:
+					label = 0x30c4
+					continue
+				if C68kScript.s16(_lo(d2)) < 0:
+					d2 = _setlo(d2, -_lo(d2))
+				label = 0x3b42
+			0x3b42:
+				label = 0x2ede if C68kScript.s32(d3) < memory.read_s32(a6 - 0x4a4) else 0x3b7e
+			0x3b4c:
+				d0 = _setlo(d0, memory.read_u16(r4 + 0xa) - _lo(d3) - 1)
+				if _lo(d0) == 0:
+					memory.write_u32(r4, 0x7fff0000)
+					label = 0x3b0c
+					continue
+				r3 = C68kScript.u32(r1 - 8)
+				while true:
+					memory.write_u32(r3 + 4, memory.read_u32(r3))
+					r3 = C68kScript.u32(r3 - 4)
+					r0 = memory.read_u32(r3)
+					if not (C68kScript.s32(d1) < memory.read_s32(r0)):
+						break
+				r3 = C68kScript.u32(r3 + 4)
+				memory.write_u32(r3, r4)
+				d2 = _swap(d2)
+				if C68kScript.s16(_lo(d2)) > 0:
+					d2 = _setlo(d2, -_lo(d2) + 2)
+				d2 = _swap(d2)
+				label = 0x3b0c
+			0x3b7e:
+				memory.write_u32(a6 - 0x46c, a6 - 0x460)
+				memory.write_u32(a6 - 0x464, memory.read_u32(a6 - 0x460))
+				while memory.read_u32(a6 - 0x464) != 1:
+					var face: int = memory.read_u32(a6 - 0x464)
+					memory.write_u16(face, 0)
+					memory.write_u32(a6 - 0x468, memory.read_u32(face + 8))
+					memory.write_u32(face + 8, 0)
+					memory.write_u32(a6 - 0x464, memory.read_u32(a6 - 0x468))
+				memory.write_u32(DAT_00020ab0, 0)
+				return
+			0x30c4:
+				r5 = d6
+				r2 = memory.read_u32(a6 - 0x440)
+				while true:
+					r4 = memory.read_u32(r2)
+					r2 = C68kScript.u32(r2 + 4)
+					d0 = memory.read_u32(r4) & 0xffff0000
+					r4 = C68kScript.u32(r4 + 4)
+					d0 = d0 | memory.read_u32(r4)
+					r4 = C68kScript.u32(r4 + 4)
+					if d0 != 0:
+						break
+				r2 = C68kScript.u32(r2 - 8)
+				r4 = memory.read_u32(r2)
+				r2 = C68kScript.u32(r2 + 4)
+				d6 = _setlo(d6, memory.read_u16(r4 + 8))
+				label = 0x3c62 if C68kScript.s16(_lo(d2)) >= 4 else 0x3be4
+			0x3be4:
+				d0 = _setlo(d0, _lo(d2))
+				d7 = _setlo(d7, _lo(d2) - 1)
+				label = 0x3bea
+			0x3bea:
+				d4 = _setlo(d4, _lo(d6))
+				memory.write_u32(a6 - 0x30, r5)
+				r5 = C68kScript.u32(r5 + 4)
+				d5 = 0xffffffff
+				r1 = r2
+				r4 = memory.read_u32(r1)
+				r1 = C68kScript.u32(r1 + 4)
+				label = 0x3bf8
+			0x3bf8:
+				r0 = r4
+				r3 = memory.read_u32(r4)
+				r4 = C68kScript.u32(r4 + 4)
+				d1 = r3
+				r3 = C68kScript.u32(r3 + memory.read_u32(r4))
+				r4 = C68kScript.u32(r4 + 4)
+				d1 = _setlo(d1, _lo(d4))
+				memory.write_u32(r5, d1)
+				r5 = C68kScript.u32(r5 + 4)
+				d4 = _setlo(d4, memory.read_u16(r4))
+				memory.write_u32(r0, r3)
+				if C68kScript.s32(r3) < C68kScript.s32(d5):
+					label = 0x3c30
+					continue
+				d5 = r3
+				label = 0x3c0e
+			0x3c0e:
+				d1 = memory.read_u32(r1)
+				r1 = C68kScript.u32(r1 + 4)
+				r4 = d1
+				if d1 != 0:
+					label = 0x3bf8
+					continue
+				var hdr: int = memory.read_u32(a6 - 0x30)
+				memory.write_u32(hdr, C68kScript.u32((C68kScript.u32(r5 - hdr) >> 2) - 1))
+				d7 = _setlo(d7, _lo(d7) - 1)
+				if _lo(d7) != 0xffff:
+					label = 0x3bea
+					continue
+				d3 = _setlo(d3, _lo(d3) + _lo(d0))
+				d2 = _setlo(d2, _lo(d2) - _lo(d0))
+				d6 = r5
+				label = 0x3b42
+			0x3c30:
+				d0 = _setlo(d0, _lo(d0) - _lo(d7))
+				r4 = C68kScript.u32(r4 - 8)
+				d1 = r3
+				d7 = _setlo(d7, memory.read_u16(r4 + 0xa) - _lo(d3) - 1)
+				if _lo(d7) == 0:
+					memory.write_u32(r4, 0x7fff0000)
+					label = 0x3c0e
+					continue
+				r3 = C68kScript.u32(r1 - 8)
+				while true:
+					memory.write_u32(r3 + 4, memory.read_u32(r3))
+					r3 = C68kScript.u32(r3 - 4)
+					if C68kScript.s32(r3) < C68kScript.s32(r2):
+						break
+					r0 = memory.read_u32(r3)
+					if not (C68kScript.s32(d1) < memory.read_s32(r0)):
+						break
+				r3 = C68kScript.u32(r3 + 4)
+				memory.write_u32(r3, r4)
+				d7 = _setlo(d7, 0)
+				label = 0x3c0e
+			0x3c62:
+				d4 = _setlo(d4, _lo(d6))
+				d5 = 0x80000000
+				r0 = 0
+				d7 = _setlo(d7, _lo(d2))
+				r1 = r2
+				r4 = memory.read_u32(r1)
+				r1 = C68kScript.u32(r1 + 4)
+				var to_short: bool = false
+				while true:
+					r4 = C68kScript.u32(r4 + 4)
+					d1 = memory.read_u32(r4)
+					r4 = C68kScript.u32(r4 + 4)
+					d0 = _setlo(d0, memory.read_u16(r4))
+					if _lo(d0) != _lo(d4):
+						d4 = _setlo(d4, _lo(d0))
+						r0 = C68kScript.u32(r0 + 1)
+					if C68kScript.s32(d1) < C68kScript.s32(d5):
+						d0 = C68kScript.u32(memory.read_u32(r4 - 8) - memory.read_u32(r3 - 8))
+						d5 = C68kScript.u32(d5 - d1)
+						d0 = d0 / d5
+						if C68kScript.s16(_lo(d0)) < C68kScript.s16(_lo(d7)):
+							d7 = _setlo(d7, _lo(d0))
+							if C68kScript.s16(_lo(d7)) <= 1:
+								to_short = true
+								break
+					d5 = d1
+					r3 = r4
+					d0 = memory.read_u32(r1)
+					r1 = C68kScript.u32(r1 + 4)
+					r4 = d0
+					if d0 == 0:
+						break
+				if to_short:
+					label = 0x3be4
+					continue
+				d2 = _setlo(d2, _lo(d2) - _lo(d7))
+				d3 = _setlo(d3, _lo(d3) + _lo(d7))
+				r3 = r5
+				d5 = _setlo(r0, _lo(r0) << 2)
+				d0 = _setlo(d0, _lo(d7) - 1)
+				while true:
+					memory.write_u32(r3, r0)
+					r3 = C68kScript.u32(r3 + 4 + C68kScript.s16(_lo(d5)))
+					d0 = _setlo(d0, _lo(d0) - 1)
+					if _lo(d0) == 0xffff:
+						break
+				d4 = _setlo(d4, _lo(d6))
+				r3 = C68kScript.u32(r5 + 4)
+				r1 = r2
+				r2 = C68kScript.u32(C68kScript.s16(_lo(d7)) - 1)
+				r4 = memory.read_u32(r1)
+				r1 = C68kScript.u32(r1 + 4)
+				while true:
+					d1 = memory.read_u32(r4)
+					r4 = C68kScript.u32(r4 + 4)
+					d6 = memory.read_u32(r4)
+					r4 = C68kScript.u32(r4 + 4)
+					r0 = C68kScript.u32(memory.read_s16(r4))
+					if _lo(r0) == _lo(d4):
+						d0 = C68kScript.u32(C68kScript.s32(r2 + 1) * C68kScript.s32(d6))
+						d1 = C68kScript.u32(d1 + d0)
+						memory.write_u32(r4 - 8, d1)
+					else:
+						r5 = r3
+						r3 = C68kScript.u32(r3 + 4)
+						d7 = r2
+						while true:
+							memory.write_u32(r5, (d1 & 0xffff0000) | _lo(d4))
+							r5 = C68kScript.u32(r5 + 4)
+							d1 = C68kScript.u32(d1 + d6)
+							r5 = C68kScript.u32(r5 + C68kScript.s16(_lo(d5)))
+							d7 = _setlo(d7, _lo(d7) - 1)
+							if _lo(d7) == 0xffff:
+								break
+						d4 = _setlo(d4, _lo(r0))
+						memory.write_u32(r4 - 8, d1)
+					d0 = memory.read_u32(r1)
+					r1 = C68kScript.u32(r1 + 4)
+					r4 = d0
+					if d0 == 0:
+						break
+				r5 = C68kScript.u32(r5 - C68kScript.s16(_lo(d5)))
+				d6 = r5
+				label = 0x3b42
+			_:
+				assert(false, "scan_convert_edge_rows: unknown label 0x%x" % label)
+				return
 
 ## 0x20: the word argument into both template record words 0x1a7d2 and 0x1a7d2 + 0x4a.
 func overlay_patch_template_u16_pair(value: int) -> void:
@@ -6676,7 +7118,7 @@ func begin_flight_for_rank(rank: int) -> void:
 func apply_player_mouse_controls() -> void:
 	assert(memory != null, "apply_player_mouse_controls requires original global memory")
 	var player: int = memory.read_u32(DAT_0001b738)
-	if (memory.read_u8(player + 0x685) & 1) != 0:
+	if (memory.read_u8(player + 0x699) & 1) != 0:
 		return
 	var entry_a7: int = a7
 	if memory.read_u16(0x2105a) != 0 and memory.read_u32(DAT_0001b888) != 0:
@@ -7137,8 +7579,8 @@ func _update_view_camera(body: int, a6: int) -> int:
 	assert(false, "_update_view_camera: not verified for Leyte Gulf (sources/leyte-gulf-1-0/host_ports.json unverified)")
 	return 0
 
-## _update_view_camera, view 6 (0x85a2): k = 1 + the asr steps that clear bit 15 of
-## update_object_camera_metric(object) + object +0x14 (the low word tested, as in the original);
+## _update_view_camera, view 6 (0x85a2): k = 1 + the asr steps while update_object_camera_metric(object)
+## + object +0x14 has a bit above bit 14 (andi.w #$8000 keeps d0's high word: tst.l sees reach & 0xffff8000);
 ## d = (object - camera) asr k; attitude_from_velocity(d, ext isqrt_floor(|d|^2), |d|^2, a6 -
 ## 0x20, a6 - 0x22); the stored angles (0x24d00 / 0x24d04) snap when a folded delta exceeds
 ## 0x1000, else ease by a quarter; the camera takes their negated low words, roll 0.

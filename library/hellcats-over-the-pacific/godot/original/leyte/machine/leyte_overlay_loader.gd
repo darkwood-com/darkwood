@@ -48,6 +48,7 @@ func _leyte_hook(address: int, index: int) -> Callable:
 	return func(args: Array) -> int:
 		var saved: int = port.a7
 		port.a7 = machine.free_stack()
+		port.caller_a5 = machine.A5      # the host calls its hooks with A5 set (CODE 2's globals)
 		var r = port.code_table[address].callv(args)
 		port.a7 = saved
 		return 0 if r == null else int(r)

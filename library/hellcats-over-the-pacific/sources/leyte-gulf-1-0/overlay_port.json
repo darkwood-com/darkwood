@@ -141,6 +141,7 @@
   "restore_line_depth4": "0xef48",
   "restore_line_depth8": "0xed02",
   "rotate_int3_vecs_by_3ang": "0x31ea",
+  "scan_convert_edge_rows": "0x3914",
   "set_object_faces_bw_pattern": "0x5758",
   "set_view_distance": "0x1b8bc",
   "sin_fixed14": "0x23c4",
@@ -158,9 +159,9 @@
   "tick_ground_mark": "0x1b764",
   "track_ground_plane_horizon": "0xb300",
   "traverse_scene_tree": "0x79e",
+  "try_begin_landing_approach": "0x1e152",
   "turn_camera_toward_point": "0x9c00",
   "unlock_session_buffers": "0x16fc",
-  "update_bailout_view": "0x9ab4",
   "update_object_camera_metric": "0x47d6",
   "update_throttle_gauge": "0xdf40",
   "update_view_clip_bounds": "0x7f32"
@@ -282,7 +283,8 @@
    "0x1c": "0x8",
    "0x20": "0xc",
    "0x33e": "0x37a",
-   "0x340": "0x37c"
+   "0x340": "0x37c",
+   "0x685": "0x699"
   },
   "begin_offscreen_drawing": {
    "0x282": "0x2ba",
@@ -405,11 +407,12 @@
   "tick_ground_mark": {
    "0x3c": "0x3e"
   },
-  "update_bailout_view": {
+  "try_begin_landing_approach": {
    "0x18": "0x4",
    "0x1c": "0x8",
    "0x20": "0xc",
-   "0x40": "0x42"
+   "0x67b": "0x68c",
+   "0x684": "0x698"
   },
   "update_object_camera_metric": {
    "0x10": "0x1c",
@@ -557,6 +560,10 @@
   ],
   "tick_ground_mark": [
    "retire_entity"
+  ],
+  "try_begin_landing_approach": [
+   "find_nearest_runway_approach_ends",
+   "isqrt_floor"
   ],
   "turn_camera_toward_point": [
    "isqrt_floor"
@@ -907,8 +914,8 @@
   "animate_burning_trail": "placed at 0x1af8e (overlay_placement.json), where +0x16de6: movem.l d2-d6/a2-a5, -(a7) | d2-d7/a2-a5, -(a7)",
   "animate_effect_kind2_burst": "placed at 0x143da (overlay_placement.json), where +0x12328: bne.b | bne.w",
   "animate_effect_kind3_debris": "placed at 0x14674 (overlay_placement.json), where +0x1255e: or.l d5, $4(a4) | d5, $14(a4) (ambiguous displacement 0x4)",
-  "animate_ground_fire": "+0x1714e: movea.l $8(a5), a4 | (a5), a4",
-  "animate_landing_gear": "placed at 0x11902 (overlay_placement.json), where +0xfb5e: andi.b #$fd, $67a(a4) | #$fd, $68b(a4)",
+  "animate_ground_fire": "+0x1714e: movea.l $8(a5), a4 | (a5), a4 (ambiguous displacement 0x8)",
+  "animate_landing_gear": "placed at 0x11902 (overlay_placement.json), where +0xfb1a: btst.b #$1, $67a(a4) | #$1, $68b(a4)",
   "animate_smoke_trail": "+0x16c5c: movea.l $8(a2), a4 | (a2), a4 (ambiguous displacement 0x8)",
   "any_mission_kills_recorded": "placed at 0x408 (overlay_placement.json), where +0x31c: moveq | adda.w",
   "apply_blast_damage": "placed at 0x151b2 (overlay_placement.json), where +0x12b4e: move.l | movea.l",
@@ -943,7 +950,7 @@
   "create_aircraft_spawner_controller": "placed at 0x1bec6 (overlay_placement.json), where +0x17d10: ori.l #$30040, $4(a2) | #$30040, $14(a2) (ambiguous displacement 0x4)",
   "create_basic_ship_controller": "placed at 0x185da (overlay_placement.json), where +0x155d0: pea.l | movem.l",
   "create_bullet_controller": "+0x15b9a: ori.l #$122000, $4(a2) | #$122000, $14(a2) (ambiguous displacement 0x4)",
-  "create_camera_facing_controller": "its Leyte routine is claimed by another function too (and 2 Leyte functions pass: 0x13bd6, 0x1b70a)",
+  "create_camera_facing_controller": "a moved record field it rests on is also written in decimal: 0x5",
   "create_carrier_controller": "placed at 0x17bc2 (overlay_placement.json), where +0x150ac: move.l | movem.l",
   "create_cloud_controller": "placed at 0x1db9a (overlay_placement.json), where +0x19a12: ori.l #$132000, $4(a2) | #$132000, $14(a2) (ambiguous displacement 0x4)",
   "create_debris_controller": "its Leyte routine is claimed by another function too",
@@ -955,7 +962,7 @@
   "create_fractal_contact_record": "placed at 0x1619e (overlay_placement.json), where +0x13872: move.w | move.l",
   "create_friendly_bomber": "+0xe2ac: suba.w $40(a0), a4 | $42(a0), a4 (ambiguous displacement 0x40)",
   "create_ground_fire_controller": "+0x1705e: ori.l #$12040, $4(a2) | #$12040, $14(a2) (ambiguous displacement 0x4)",
-  "create_ground_mark_controller": "its Leyte routine is claimed by another function too (and 2 Leyte functions pass: 0x13bd6, 0x1b70a)",
+  "create_ground_mark_controller": "a moved record field it rests on is also written in decimal: 0x5",
   "create_ordnance_controller": "placed at 0x1491a (overlay_placement.json), where +0x127b2: pea.l $620.w | $63c.w",
   "create_parachute_controller": "placed at 0x1d536 (overlay_placement.json), where +0x193b0: ori.l #$132000, $4(a2) | #$132000, $14(a2) (ambiguous displacement 0x4)",
   "create_plume_controller": "+0x115a4: ori.l #$112000, $4(a2) | #$112000, $14(a2) (ambiguous displacement 0x4)",
@@ -1006,7 +1013,7 @@
   "init_aircraft_controller": "+0xdfdc: pea.l $6b0.w | $6c8.w",
   "init_effect_kind0_flat_ring": "+0x12022: movea.l $8(a3), a4 | (a3), a4 (ambiguous displacement 0x8)",
   "init_effect_kind1_column": "+0x120b2: movea.l $8(a3), a2 | (a3), a2 (ambiguous displacement 0x8)",
-  "init_effect_kind2_burst": "+0x11ee4: movea.l $8(a5), a2 | (a5), a2",
+  "init_effect_kind2_burst": "+0x11ee4: movea.l $8(a5), a2 | (a5), a2 (ambiguous displacement 0x8)",
   "init_effect_kind3_debris_explosion": "+0x12166: movea.l $8(a3), a2 | (a3), a2 (ambiguous displacement 0x8)",
   "init_mission_object_tables": "placed at 0x1d4a (overlay_placement.json), where +0x1708: clr.l | movea.w",
   "init_trail_kind0": "its Leyte routine is claimed by another function too (and 2 Leyte functions pass: 0x1ac04, 0x1ac16)",
@@ -1052,7 +1059,7 @@
   "refresh_object_colours_for_depth": "placed at 0x4e88 (overlay_placement.json), where +0x41f0: movem.l d2/a2-a3, -(a7) | d2/a2-a4, -(a7)",
   "register_shadow_templates": "placed at 0x1ca40 (overlay_placement.json), where +0x188f6: cmpi.w #$3, d0 | #$5, d0",
   "release_ai_target": "placed at 0x11ec6 (overlay_placement.json), where +0x100a6: movea.l | moveq",
-  "release_fractal_reference": "placed at 0x1748c (overlay_placement.json), where +0x14ade: A5 0x5 -> 0x15 not in the A5 map",
+  "release_fractal_reference": "placed at 0x1748c (overlay_placement.json), where +0x14afc: move.b | move.w",
   "remove_mission_target": "not found in Leyte",
   "render_visible_objects": "placed at 0xbf3e (overlay_placement.json), where +0xac9c: bra.b | subq.l",
   "reset_background_rows": "+0xb448: movea.l $20ad4.l, a1 | $27004.l, a0",
@@ -1063,12 +1070,11 @@
   "run_simulation_tick": "placed at 0x51b2 (overlay_placement.json), where +0x450e: move.l | addq.l",
   "scale_int3_vecs": "placed at 0x22ea (overlay_placement.json), where +0x1c90: move.l | movea.l",
   "scale_template_field_38": "placed at 0xf9e0 (overlay_placement.json), where +0xe550: link.w | move.l",
-  "scan_convert_edge_rows": "its body names unmapped image addresses 0x2f54, 0x2f56, 0x2f64, 0x2f6c, 0x2f72, 0x2f7e",
   "segment_point_min_distance": "placed at 0x4908 (overlay_placement.json), where +0x3d12: moveq | adda.w",
-  "shade_object_faces": "placed at 0x4b0c (overlay_placement.json), where +0x3e8c: A5 0x7 -> 0x17 not in the A5 map",
+  "shade_object_faces": "placed at 0x4b0c (overlay_placement.json), where +0x3e96: cmpi.b #$2, (a5) | #$2, $28(a5)",
   "shadow_pre_render": "placed at 0x1cb86 (overlay_placement.json), where +0x18a14: link.w a6, #$fff4 | a6, #$fff8",
   "shape_free_plume": "+0x118c2: sub.l $40(a4), d2 | $42(a4), d2 (ambiguous displacement 0x40)",
-  "shape_trailing_plume": "+0x11934: A5 0x44 -> 0x46 not in the A5 map",
+  "shape_trailing_plume": "+0x11934: movea.l $44(a5), a2 | $46(a5), a2 (ambiguous displacement 0x44)",
   "sink_object_shape_at_waterline": "placed at 0x19b52 (overlay_placement.json), where +0x15742: link.w a6, #$cca8 | a6, #$ffe0",
   "sort_group_parts_by_distance": "placed at 0x16d9a (overlay_placement.json), where +0x1443e: move.w | move.l",
   "spawn_bailout_parachute": "placed at 0x1d5b0 (overlay_placement.json), where +0x1944a: movea.l d0, a0 | d0, a1",
@@ -1111,7 +1117,7 @@
   "tick_sinking_controller": "not found in Leyte",
   "tick_smoke_plume": "+0x116ec: movea.l $8(a1), a0 | (a1), a0 (ambiguous displacement 0x8)",
   "tick_trail": "a moved record field it rests on is also written in decimal: 0x4",
-  "tick_turret": "a moved record field it rests on is also written in decimal: 0x3, 0x8",
+  "tick_turret": "a moved record field it rests on is also written in decimal: 0x3, 0x7, 0x8",
   "tick_view_attached_object": "+0x19bce: move.l $20(a1), d0 | $c(a1), d0 (ambiguous displacement 0x20)",
   "tick_wave_spawner": "not found in Leyte",
   "transform_and_project_object": "placed at 0xba18 (overlay_placement.json), where +0xa8b0: sub.l $20(a0), d1 | $c(a0), d1 (ambiguous displacement 0x20)",
@@ -1123,7 +1129,6 @@
   "transform_vecs12_by_matrix3": "placed at 0x3220 (overlay_placement.json), where +0x28c0: move.l | movea.l",
   "transform_vecs12_to_int3_by_matrix3": "placed at 0x32c0 (overlay_placement.json), where +0x295a: move.l | movea.l",
   "translate_int3_vecs": "placed at 0x2294 (overlay_placement.json), where +0x1c40: move.l | movea.l",
-  "try_begin_landing_approach": "+0x1a116: A5 0x67b -> 0x68c not in the A5 map",
   "turret_pre_render": "placed at 0x1d516 (overlay_placement.json), where +0x19394: ori.b | link.w",
   "unlock_handle_purgeable": "placed at 0x14be (overlay_placement.json), where +0xe20: movea.l $2d6(a0), a0 | $312(a0), a0",
   "update_aircraft_damage_state": "placed at 0x124e0 (overlay_placement.json), where +0x10640: move.w $686(a3), d1 | $69a(a3), d1",
@@ -1132,6 +1137,7 @@
   "update_altimeter_needles": "a moved record field it rests on is also written as a bare literal: 0xf0, 0xf4",
   "update_altitude_detail_bands": "placed at 0x68a2 (overlay_placement.json), where +0x5bc8: move.l | muls.l",
   "update_ammo_needle": "a moved record field it rests on is also written as a bare literal: 0x232, 0x236",
+  "update_bailout_view": "a moved record field it rests on is also written in decimal: 0x7",
   "update_bomb_indicator": "placed at 0xde06 (overlay_placement.json), where +0xcaa6: movem.l d2-d4, -(a7) | d2-d3, -(a7)",
   "update_climb_needle": "a moved record field it rests on is also written as a bare literal: 0x120",
   "update_direction_needle": "a moved record field it rests on is also written as a bare literal: 0x150",
@@ -1147,7 +1153,7 @@
   "update_radar_scope": "placed at 0x1bd0a (overlay_placement.json), where +0x17b5e: move.w $1e8(a0), -$2(a6) | $1ec(a0), -$2(a6)",
   "update_record_distance_band": "placed at 0x4a5a (overlay_placement.json), where +0x3e12: bra.b | cmp.l",
   "update_tachometer_needle": "a moved record field it rests on is also written as a bare literal: 0x140",
-  "update_tracking_camera": "+0x8c94: A5 0x20 -> 0xc not in the A5 map",
+  "update_tracking_camera": "+0x8c94: move.l $20(a5), -(a7) | $c(a5), -(a7) (ambiguous displacement 0x20)",
   "update_view_readouts_and_overlays": "placed at 0xe3ea (overlay_placement.json), where +0xd02a: lea.l | subq.w",
   "widen_printf_format": "+0x1222: ori.b #$a0, d1 | #$fc, d2",
   "write_face_palette_slot": "placed at 0x1bb0 (overlay_placement.json), where +0x152c: move.l $14(a7), d3 | $14(a7), d2"

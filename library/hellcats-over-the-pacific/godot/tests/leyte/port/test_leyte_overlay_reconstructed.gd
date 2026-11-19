@@ -34,6 +34,7 @@ func run() -> bool:
 		p.install_call_logs(c.get("call_logs", []))
 		var entry_a7: int = int(fixture["stack_top"]) - 4 - 4 * c["args"].size()
 		p.a7 = entry_a7
+		p.caller_a5 = int(c.get("a5_in", 0))
 		for r in c["zero"]:
 			for addr in range(int(r[0]), int(r[1])):
 				mem._bytes[addr] = 0

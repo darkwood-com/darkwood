@@ -111,6 +111,28 @@ func _init(param_memory = null) -> void:
 	code_table[0xd2ae] = Callable(self, "copy_rect_depth8")
 	code_table[0xe61e] = Callable(self, "redraw_view_readouts")
 	code_table[0x5192] = Callable(self, "run_simulation_tick")
+	## hook 10: the frame step (0x741e)
+	code_table[0x741e] = Callable(self, "overlay_frame_step")
+	## routines reached through pointers from hook 10's frame: the broad-phase tests (collect_far_objects) and the
+	## turret's pre-render hook (a controller definition's +0xe)
+	code_table[0x16784] = Callable(self, "test_proximity_collision")
+	code_table[0x167e4] = Callable(self, "test_player_vs_type0e_proximity")
+	code_table[0x1d4f6] = Callable(self, "turret_pre_render")
+	code_table[0x16be2] = Callable(self, "handle_player_contact")
+	code_table[0x16812] = Callable(self, "test_object_collision")
+	## a sinking ship's pre-render hook (its controller definition's +0xe)
+	code_table[0x17dfa] = Callable(self, "leyte_pending_pose_pre_render")
+	## a ship's and a carrier's collision hooks (controller definition +0x12, called (ship, other, record))
+	code_table[0x17e0e] = Callable(self, "leyte_ship_collision_hook")
+	code_table[0x17e54] = Callable(self, "leyte_carrier_deck_hook")
+	## the scene visitor point_near_camera_or_type80_object hands to for_each_mission_scene_object
+	code_table[0xce0] = Callable(self, "leyte_type80_centroid_visitor")
+	code_table[0x844e] = Callable(self, "process_flight_input_and_outcome")
+	code_table[0x1cb04] = Callable(self, "tick_shadow")
+	code_table[0x1dd1c] = Callable(self, "tick_view_attached_object")
+	code_table[0x1d2e2] = Callable(self, "tick_turret")
+	code_table[0x1bf64] = Callable(self, "tick_aircraft_spawner")
+	code_table[0x1cb66] = Callable(self, "shadow_pre_render")
 	code_table[0x2554] = Callable(self, "attitude_from_velocity")
 	## hook 0 (configure_renderer_for_display, 0x8032) and the renderer routines it installs for each depth
 	## (LEYTE_RENDERER_HOOKS_8 / _4 / _1), reached through those pointers.
@@ -4165,3 +4187,4848 @@ func emit_faces_in_order() -> void:
 func emit_faces_unnumbered() -> void:
 	assert(memory != null, "emit_faces_unnumbered requires original global memory")
 	_emit_root_chains(false)
+
+## Batch 2 of the frame step's closure (hook 10): drafted from 1.0.3's port through the placed routine pairs
+## (tools/leyte/draft_overlay_port.py) and settled against Leyte's listing. Each routine tests its loop counts before
+## entering (1.0.3 jumped to the test at the bottom: the same iterations); what else differs is said with it.
+
+## The view-vertex projection (1.0.3's _project_view_vertex), which Leyte inlines in project_prepared_object (0xb902)
+## and transform_face_vertices (0xb796), with Leyte's projection scales (x word 0x27050, y word 0x2704e): z (word view
+## +0xa) > 4: x = (word +2 muls.w scale_x) divs.l z, y = (-(word +6) muls.l scale_y) divs.l z; otherwise x =
+## 0x80000000 (behind the near plane; y left as it was).
+func _project_view_vertex(view: int, out: int) -> void:
+	var z: int = memory.read_s16(view + 0xa)
+	if z > 4:
+		memory.write_u32(out, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(memory.read_s16(view + 2) * memory.read_s16(0x27050)), z)))
+		memory.write_u32(out + 4, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(-memory.read_s16(view + 6) * memory.read_s16(0x2704e)), z)))
+	else:
+		memory.write_u32(out, 0x80000000)
+
+## 0xb902 (1.0.3's project_prepared_object 0xa656; the object's fields each 2 further on, the face table read once
+## before the face loop): set the renderer up for prepared_object (0x2c0ba): view_vertices (0x2c0b6) = +0x4e,
+## face_table (0x2c4c6) = +0x4a, root_face_count (0x2c0ae) = word +0x3a, vertex_shift (0x2b296) = word +0x34,
+## face_normals (0x2b286) = +0x46 + 12 * sext word +0x38, vertex0 (0x2b28a) = the first model vertex; every view vertex
+## (word +0x38 of them) is projected into 0x2bbf8 (_project_view_vertex) and every face (word +0x3c) gets +0x13 |= 0x60.
+func project_prepared_object() -> void:
+	assert(memory != null, "project_prepared_object requires original global memory")
+	var obj: int = memory.read_u32(0x2c0ba)
+	memory.write_u32(0x2c0b6, memory.read_u32(obj + 0x4e))
+	memory.write_u32(0x2c4c6, memory.read_u32(obj + 0x4a))
+	memory.write_u16(0x2c0ae, memory.read_u16(obj + 0x3a))
+	memory.write_u16(0x2b296, memory.read_u16(obj + 0x34))
+	memory.write_u32(0x2b286, C68kScript.u32(C68kScript.s32(memory.read_s16(obj + 0x38) * 12) + memory.read_u32(obj + 0x46)))
+	var verts: int = memory.read_u32(obj + 0x46)
+	for k in 3:
+		memory.write_u32(0x2b28a + 4 * k, memory.read_u32(verts + 4 * k))
+	var view: int = memory.read_u32(0x2c0b6)
+	var out: int = 0x2bbf8
+	var left: int = memory.read_u16(memory.read_u32(0x2c0ba) + 0x38)
+	while true:
+		left = (left - 1) & 0xffff
+		if left == 0xffff:
+			break
+		_project_view_vertex(view, out)
+		view += 12
+		out += 8
+	var faces_left: int = memory.read_u16(memory.read_u32(0x2c0ba) + 0x3c)
+	var flag: int = C68kScript.u32(memory.read_u32(0x2c4c6) + 0x13)
+	while true:
+		faces_left = (faces_left - 1) & 0xffff
+		if faces_left == 0xffff:
+			break
+		memory.write_u8(flag, memory.read_u8(flag) | 0x60)
+		flag += 0x20
+
+## 0xb796 (1.0.3's transform_face_vertices 0xa4f2; registers renamed, the model's vertex buffer at +0x46): bring the
+## face's vertices into camera space once per frame (vertex_done bytes 0x2b2a2): (vertex asr vertex_shift) - eye
+## (words 0x2b29c / 0x2b29a / 0x2b298), as words, through object_matrix (0x2b29e: (sum of muls.w + 0x800) asr 12, words
+## +2 / +6 / +0xa of view_vertices), then projected into 0x2bbf8 (_project_view_vertex).
+func transform_face_vertices(face: int) -> void:
+	assert(memory != null, "transform_face_vertices requires original global memory")
+	var eye_x: int = memory.read_u16(0x2b29c)
+	var eye_y: int = memory.read_u16(0x2b29a)
+	var eye_z: int = memory.read_u16(0x2b298)
+	var m: int = memory.read_u32(0x2b29e)
+	var cursor: int = memory.read_u32(face + 0x18)
+	var verts: int = memory.read_u32(memory.read_u32(0x2c0ba) + 0x46)
+	var view: int = memory.read_u32(0x2c0b6)
+	var shift: int = memory.read_s16(0x2b296)
+	var left: int = memory.read_u16(face + 0x14)
+	while true:
+		left = (left - 1) & 0xffff
+		if left == 0xffff:
+			return
+		var i: int = memory.read_s16(cursor)
+		if memory.read_u8(C68kScript.u32(0x2b2a2 + i)) == 0:
+			var out: int = C68kScript.u32(view + 12 * i)
+			var v: int = C68kScript.u32(verts + 12 * i)
+			memory.write_u8(C68kScript.u32(0x2b2a2 + i), 1)
+			var d0: int = C68kScript.s16(C68kScript.asr32(memory.read_s32(v), shift) - eye_x)
+			var d1: int = C68kScript.s16(C68kScript.asr32(memory.read_s32(v + 4), shift) - eye_y)
+			var d2: int = C68kScript.s16(C68kScript.asr32(memory.read_s32(v + 8), shift) - eye_z)
+			for k in 3:
+				var acc: int = C68kScript.s32(d0 * memory.read_s16(m + 2 * k) + d1 * memory.read_s16(m + 6 + 2 * k) + d2 * memory.read_s16(m + 12 + 2 * k) + 0x800)
+				memory.write_u16(out + 2 + 4 * k, C68kScript.u16(C68kScript.asr32(acc, 12)))
+			_project_view_vertex(out, C68kScript.u32(0x2bbf8 + 8 * i))
+		cursor = C68kScript.u32(cursor + 2)
+
+## 1.0.3's _project_face_vertices with the model's vertex buffer at +0x46 (Leyte's project_face_vertices_xy 0x15a06 and
+## _xz 0x15a6c): for each vertex index of the face (count word +0x14, list +0x18), the vertex (12-byte longs) asr.l by the
+## word shift (mod 64) minus the word origins goes to the same index of out as words +2 and dst_b.
+func _project_face_vertices(model: int, shift: int, face: int, origin_a: int, origin_b: int, out: int, src_b: int, dst_b: int) -> void:
+	assert(memory != null, "_project_face_vertices requires original global memory")
+	var model_verts: int = memory.read_u32(model + 0x46)
+	var left: int = memory.read_s16(face + 0x14)
+	var vidx: int = memory.read_u32(face + 0x18)
+	shift = C68kScript.s16(shift) & 0x3f
+	while true:
+		left = C68kScript.s16(left - 1)
+		if left == -1:
+			return
+		var mv: int = model_verts + memory.read_s16(vidx) * 0xc
+		var ov: int = out + memory.read_s16(vidx) * 0xc
+		memory.write_u16(ov + 2, C68kScript.u16(C68kScript.asr32(memory.read_u32(mv), shift) - origin_a))
+		memory.write_u16(ov + dst_b, C68kScript.u16(C68kScript.asr32(memory.read_u32(mv + src_b), shift) - origin_b))
+		vidx = vidx + 2
+
+## 0x15a06 (1.0.3's project_face_vertices_xy 0x1318c): x / y to output words +2 / +6.
+func project_face_vertices_xy(model: int, shift: int, face: int, origin_x: int, origin_y: int, out: int) -> void:
+	_project_face_vertices(model, shift, face, origin_x, origin_y, out, 4, 6)
+
+## 0x15a6c (1.0.3's project_face_vertices_xz 0x131ea): x / z to output words +2 / +0xa.
+func project_face_vertices_xz(model: int, shift: int, face: int, origin_x: int, origin_z: int, out: int) -> void:
+	_project_face_vertices(model, shift, face, origin_x, origin_z, out, 8, 10)
+
+## 0x15ad2 (1.0.3's project_face_vertices_yz 0x13248; the vertex buffer at +0x46): vertex +4 / +8 asr.l shift minus the
+## origins go to output words +6 / +0xa.
+func project_face_vertices_yz(model: int, shift: int, face: int, origin_y: int, origin_z: int, out: int) -> void:
+	assert(memory != null, "project_face_vertices_yz requires original global memory")
+	var model_verts: int = memory.read_u32(model + 0x46)
+	var left: int = memory.read_s16(face + 0x14)
+	var vidx: int = memory.read_u32(face + 0x18)
+	shift = C68kScript.s16(shift) & 0x3f
+	while true:
+		left = C68kScript.s16(left - 1)
+		if left == -1:
+			return
+		var mv: int = model_verts + memory.read_s16(vidx) * 0xc
+		var ov: int = out + memory.read_s16(vidx) * 0xc
+		memory.write_u16(ov + 6, C68kScript.u16(C68kScript.asr32(memory.read_u32(mv + 4), shift) - origin_y))
+		memory.write_u16(ov + 10, C68kScript.u16(C68kScript.asr32(memory.read_u32(mv + 8), shift) - origin_z))
+		vidx = vidx + 2
+
+## 0xaffc (1.0.3's emit_faces_bsp 0x9d86, the same 108 instructions; the prepared object's distance at +0x1c for 1.0.3's
+## +0x10 - the face records' +0x10 / +0x11 subtrees and +0x1c distance are unchanged): BSP draw order from node index.
+## Back-facing (face_is_back_facing 0xad30, 0x24 below) and near mode as in the root walks; a far face (+0x1c < the
+## object distance) or one with +0x13 bit 1 is not emitted. Otherwise it is numbered and queued. Then the far side first:
+## back-facing -> front subtree (+0x10), else back subtree (+0x11) (0x20 below); the face is renumbered; when it was
+## emitted its +0x12 chain follows (emit_face_chain 0xaf8a, 0x24 below); then the other subtree.
+func emit_faces_bsp(node: int) -> void:
+	assert(memory != null, "emit_faces_bsp requires original global memory")
+	var entry_a7: int = a7
+	var idx: int = C68kScript.s16(node)
+	var distance: int = memory.read_s32(memory.read_u32(0x2c0ba) + 0x1c)
+	var face: int = _face_record(idx)
+	var skip: bool = false
+	var one_sided: bool = (memory.read_u8(face + 0x13) & 1) == 0
+	var back: int = _call_back_facing(entry_a7, 0x24, idx, face)
+	var emit_check: bool = true
+	if memory.read_u16(0x2c0ac) != 0:
+		if back != 0:
+			skip = true
+		if _face_near_mode(face, back, one_sided):
+			emit_check = false
+	elif back != 0:
+		skip = true
+		if one_sided:
+			emit_check = false
+	if emit_check:
+		if distance > memory.read_s32(face + 0x1c) or (memory.read_u8(face + 0x13) & 2) != 0:
+			skip = true
+		else:
+			_emit_face(face, true)
+	var first: int = 0x10 if back != 0 else 0x11
+	var second: int = 0x11 if back != 0 else 0x10
+	if memory.read_s8(face + first) >= 0:
+		a7 = entry_a7 - 0x20
+		emit_faces_bsp(memory.read_s8(face + first))
+		a7 = entry_a7
+	memory.write_u16(face + 2, memory.read_u16(0x219a8))
+	memory.write_u16(0x219a8, C68kScript.u16(memory.read_u16(0x219a8) + 1))
+	if not skip and memory.read_s8(face + 0x12) >= 0:
+		a7 = entry_a7 - 0x24
+		emit_face_chain(memory.read_s8(face + 0x12), distance)
+		a7 = entry_a7
+	if memory.read_s8(face + second) >= 0:
+		a7 = entry_a7 - 0x20
+		emit_faces_bsp(memory.read_s8(face + second))
+		a7 = entry_a7
+
+## 0x6250 (1.0.3's collect_near_objects 0x53d8 on Leyte's object layout: the type byte at +0x28 for +0, the flags long
+## +0x14 for +4, hidden +0x17 bit 1 for +7, metric +0x1c, range +0x18, radius +0x20, position +4 / +8 / +0xc, detail
+## shift +0x34 and its scale word +0x36 for +0x32 / +0x34, last seen +0x3e): sort the near list (count long *count, low
+## word) in place. An object inside its range and not hidden is kept; a visible shape (type 2, flags bit 6 clear) also
+## gets its detail shift (asr steps bringing ((metric asr 2) + metric + radius) asl the scale word under 0x8000), a
+## camera-relative view point (camera 0x23d68 / 0x23d64 / 0x23d60; asr by the shift; skipped for flags bit 2) at
+## view_points (0x21f44, count 0x219b8), and a place in visible_list (0x22994, count 0x219bc). An object beyond its
+## range is still kept while within 0x19c7f of it and not hidden, and a shape seen in the last 0x4b frames (0x21020 -
+## +0x3e) stays; otherwise it retires (a shape with +0x3e set; retire_entity 0x603a, 0x30 below), is deactivated
+## (0x6130, 0x30 below) and moves to entity_array_3 (0x233bc, count 0x219c4). Then view_point_count and *count.
+func collect_near_objects(list: int, count_ptr: int) -> void:
+	assert(memory != null, "collect_near_objects requires original global memory")
+	var entry_a7: int = a7
+	var point: int = C68kScript.u32(0x21f44 + memory.read_s32(0x219b8) * 12)
+	var keep: int = list
+	var read: int = list
+	var left: int = memory.read_u16(count_ptr + 2)
+	while left != 0:
+		left -= 1
+		var obj: int = memory.read_u32(read)
+		read += 4
+		var hidden: bool = (memory.read_u8(obj + 0x17) & 2) != 0
+		var kept: bool = true
+		if memory.read_s32(obj + 0x1c) > memory.read_s32(obj + 0x18) or hidden:
+			if C68kScript.s32(memory.read_u32(obj + 0x1c) - memory.read_u32(obj + 0x18)) > 0x19c7f or hidden:
+				if memory.read_u8(obj + 0x28) == 2 and C68kScript.s32(memory.read_u32(0x21020) - memory.read_u32(obj + 0x3e)) <= 0x4b:
+					pass
+				else:
+					a7 = entry_a7 - 0x30
+					if memory.read_u8(obj + 0x28) == 2 and memory.read_u32(obj + 0x3e) != 0:
+						retire_entity(obj)
+					deactivate_object(obj)
+					a7 = entry_a7
+					memory.write_u32(0x233bc + memory.read_s32(0x219c4) * 4, obj)
+					memory.write_u32(0x219c4, C68kScript.u32(memory.read_u32(0x219c4) + 1))
+					kept = false
+		elif memory.read_u8(obj + 0x28) == 2 and (memory.read_u32(obj + 0x14) & 0x40) == 0:
+			var size: int = C68kScript.s32(C68kScript.lsl32(C68kScript.s32(C68kScript.asr32(memory.read_u32(obj + 0x1c), 2) + memory.read_u32(obj + 0x1c) + memory.read_u32(obj + 0x20)), memory.read_s16(obj + 0x36)))
+			var detail: int = 0
+			while (C68kScript.u32(size) & 0xffff8000) != 0:
+				detail = C68kScript.s16(detail + 1)
+				size = C68kScript.asr32(size, 1)
+			memory.write_u16(obj + 0x34, C68kScript.u16(detail))
+			if (memory.read_u32(obj + 0x14) & 4) == 0:
+				memory.write_u32(point, C68kScript.u32(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 0x4) - memory.read_u32(0x23d68)), detail)))
+				memory.write_u32(point + 4, C68kScript.u32(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 0x8) - memory.read_u32(0x23d64)), detail)))
+				memory.write_u32(point + 8, C68kScript.u32(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 0xc) - memory.read_u32(0x23d60)), detail)))
+				point += 12
+			memory.write_u32(0x22994 + memory.read_s32(0x219bc) * 4, obj)
+			memory.write_u32(0x219bc, C68kScript.u32(memory.read_u32(0x219bc) + 1))
+		if kept:
+			memory.write_u32(keep, obj)
+			keep += 4
+	memory.write_u32(0x219b8, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(point - 0x21f44), 12)))
+	memory.write_u32(count_ptr, C68kScript.u32(C68kScript.asr32(C68kScript.s32(keep - list), 2)))
+
+## Batch 3 of the frame step's closure (hook 10), drafted (tools/leyte/draft_overlay_port.py) and settled against
+## Leyte's listing.
+
+## 0x14c6 (1.0.3's lock_overlay_buffers 0xe3a, the same 18 instructions on the host world's moved fields): lock the host
+## handles at +0x196, +0x1b0, +0x1b8 and +0xdc (1.0.3 +0x192 / +0x1ac / +0x1b4 / +0xd8) through the host's lock routine
+## +0x30e (1.0.3 +0x2d2; 8, 0xc, 0x10, 0x14 below as the arguments pile up).
+func lock_overlay_buffers() -> void:
+	assert(memory != null, "lock_overlay_buffers requires original global memory")
+	var entry_a7: int = a7
+	var depth: int = 8
+	for off in [0x196, 0x1b0, 0x1b8, 0xdc]:
+		_host_memory_call(entry_a7, depth, 0x30e, [memory.read_u32(memory.read_u32(0x207fc) + off)])
+		depth += 4
+
+## 0x16c8a (1.0.3's dispatch_collision 0x14328 on Leyte's object layout: the controller at the object's +0 for +8, its
+## flag bytes +0x15 / +0x16 for +5 / +6; the pair table (0x205ec, cursor 0x2c838) holds 17 entries for 10; the count
+## tested before the loop): call the collision handler(s) at definition (controller +4) +0x12 of objects a and b, unless
+## view_mode (0x23d88) == 8 or either flags byte +0x15 has bit 0. One handler: (owner, other, 0). Two: the pair table by
+## definition type words in either order, else a's handler when a's byte +0x16 has bit 5, else b's. Returns D0 (the
+## handler's, or the caller's d0_in when nothing is called).
+func dispatch_collision(obj_a: int, obj_b: int, d0_in: int = 0) -> int:
+	assert(memory != null, "dispatch_collision requires original global memory")
+	var def_a: int = 0
+	var def_b: int = 0
+	var handler_a: int = 0
+	var handler_b: int = 0
+	var left: int
+	var cursor: int
+
+	if memory.read_s16(0x23d88) == 8:
+		return d0_in
+	if (memory.read_u8(obj_a + 0x15) & 1) != 0:
+		return d0_in
+	if (memory.read_u8(obj_b + 0x15) & 1) != 0:
+		return d0_in
+	if memory.read_u32(obj_a) != 0:
+		def_a = memory.read_u32(memory.read_u32(obj_a) + 4)
+		handler_a = memory.read_u32(def_a + 0x12)
+	if memory.read_u32(obj_b) != 0:
+		def_b = memory.read_u32(memory.read_u32(obj_b) + 4)
+		handler_b = memory.read_u32(def_b + 0x12)
+	if handler_a == 0 or handler_b == 0:
+		if handler_a != 0:
+			return _jsr(handler_a, [obj_a, obj_b, 0], d0_in)
+		if handler_b == 0:
+			return d0_in
+		return _jsr(handler_b, [obj_b, obj_a, 0], d0_in)
+	memory.write_u32(0x2c838, 0x205ec)
+	left = 0x11
+	while true:
+		left = C68kScript.s16(left - 1)
+		if left == -1:
+			break
+		cursor = memory.read_u32(0x2c838)
+		if memory.read_s16(cursor) == memory.read_s16(def_a) and memory.read_s16(cursor + 2) == memory.read_s16(def_b):
+			return _jsr(memory.read_u32(cursor + 4), [obj_a, obj_b, 0], d0_in)
+		if memory.read_s16(cursor) == memory.read_s16(def_b) and memory.read_s16(cursor + 2) == memory.read_s16(def_a):
+			return _jsr(memory.read_u32(cursor + 4), [obj_b, obj_a, 0], d0_in)
+		memory.write_u32(0x2c838, C68kScript.u32(cursor + 8))
+	if (memory.read_u8(obj_a + 0x16) & 0x20) != 0:
+		return _jsr(handler_a, [obj_a, obj_b, 0], d0_in)
+	return _jsr(handler_b, [obj_b, obj_a, 0], d0_in)
+
+## 0x66a6 (1.0.3's dispatch_overlap_collisions 0x5812 on Leyte's object layout: metric +0x1c, radius +0x18, running
+## minimum +0x2a, the controller at +0; Leyte no longer clears designated_entity_2 first; both counts tested before
+## their loops): one-dimensional sweep over a list sorted by metric. Each object whose reach (metric + radius) exceeds
+## the smallest start (metric - radius) seen so far scans back over the earlier entries: an earlier object whose start
+## lies below the reach is a pair - the definition +0x16 notice handler of each (with a controller and a handler) is
+## jsr'd as (self, other), this object's first (0x30 below); an earlier object that does not reach ends the scan once
+## its running minimum is above the reach. Every object then stores the running minimum start in +0x2a.
+func dispatch_overlap_collisions(list: int, header: int) -> void:
+	assert(memory != null, "dispatch_overlap_collisions requires original global memory")
+	var entry_a7: int = a7
+	var left: int = memory.read_u16(header + 2)
+	var min_start: int = 0x7fffffff
+	var cursor: int = list
+	while true:
+		left = C68kScript.u16(left - 1)
+		if left == 0xffff:
+			break
+		var obj: int = memory.read_u32(cursor)
+		cursor += 4
+		var reach: int = C68kScript.s32(memory.read_u32(obj + 0x1c) + memory.read_u32(obj + 0x18))
+		if min_start < reach:
+			var back: int = cursor - 4
+			var back_left: int = C68kScript.u16(C68kScript.asr32(back - list, 2))
+			while true:
+				back_left = C68kScript.u16(back_left - 1)
+				if back_left == 0xffff:
+					break
+				back -= 4
+				var other: int = memory.read_u32(back)
+				var start: int = C68kScript.s32(memory.read_u32(other + 0x1c) - memory.read_u32(other + 0x18))
+				if reach <= start:
+					if reach < memory.read_s32(other + 0x2a):
+						break
+					continue
+				for pair in [[obj, other], [other, obj]]:
+					var ctl: int = memory.read_u32(pair[0])
+					if ctl == 0:
+						continue
+					var notice: int = memory.read_u32(memory.read_u32(ctl + 4) + 0x16)
+					if notice == 0:
+						continue
+					a7 = entry_a7 - 0x30
+					_jsr(notice, [pair[0], pair[1]])
+					a7 = entry_a7
+		var own_start: int = C68kScript.s32(memory.read_u32(obj + 0x1c) - memory.read_u32(obj + 0x18))
+		if own_start < min_start:
+			min_start = own_start
+		memory.write_u32(obj + 0x2a, C68kScript.u32(min_start))
+
+## Leyte's point-in-polygon tests: point_in_polygon_xy 0x1581a, _xz 0x158be, _yz 0x15962 (1.0.3 0x12fb2 / 0x13050 /
+## 0x130ee). Leyte orders the comparisons differently and tests the vertex count before the loop, but every path
+## computes what 1.0.3's does: an edge straddles when (pb < prev_b and cur_b <= pb) or (prev_b <= pb and pb < cur_b);
+## both ends beyond pa count a crossing, one end beyond counts one when prev_a + ((pb - prev_b) muls.w (cur_a - prev_a))
+## divs.l (cur_b - prev_b) > 0 (compared with 0, not pa, in both); the result is the crossings' parity. The three share
+## one shape (their listings equal with offsets masked), so they are 1.0.3's entry points over the generated port's
+## _point_in_polygon.
+func point_in_polygon_xy(px: int, py: int, verts: int, count: int, vidx: int) -> int:
+	return _point_in_polygon(px, py, verts, count, vidx, 2, 6)
+
+func point_in_polygon_xz(px: int, pz: int, verts: int, count: int, vidx: int) -> int:
+	return _point_in_polygon(px, pz, verts, count, vidx, 2)
+
+func point_in_polygon_yz(py: int, pz: int, verts: int, count: int, vidx: int) -> int:
+	return _point_in_polygon(py, pz, verts, count, vidx, 6)
+
+## 0x15c2c (1.0.3's surface_type_at_point 0x13326). Surface code at (x, z): walks entity_array_1 from the end (count word
+## 0x20f2e), skipping an object whose |metric +0x1c - the point's camera metric| or approximate distance to its position
+## (+4 / +8 / +0xc) exceeds its range +0x20, whose flags long +0x14 has any of 0x2042, or whose type byte +0x28 is not 2 (a
+## shape). Its faces (count word +0x3c, records +0x4a, from the last) with a surface byte +0x16 are projected xz at shift
+## word +0x34 + 1 from the point scaled by (scale word +0x36 - 1 - detail word +0x34), left when that word is not negative
+## and right by its magnitude otherwise; the first face whose polygon holds (0, 0) gives its code, else the default face's
+## (0x21590), sign-extended. Frame (link.w a6,#-0x708): projection buffer at a6 - 0x708.
+func surface_type_at_point(x: int, y_unused: int, z: int) -> int:
+	assert(memory != null, "surface_type_at_point requires original global memory")
+	assert(a7 != 0, "surface_type_at_point needs a7 (its frame holds the projection buffer)")
+	var projected: int = a7 - 4 - 0x708
+	var left: int = memory.read_s16(0x20f2e)
+	var slot: int = 0x20b44 + left * 4
+	var metric: int = compute_camera_abs_metric(x, y_unused, z)
+	while true:
+		left = C68kScript.s16(left - 1)
+		if left == -1:
+			return memory.read_s8(memory.read_u32(0x21590) + 0x16)
+		slot = slot - 4
+		var obj: int = memory.read_u32(slot)
+		if abs_int(C68kScript.s32(memory.read_s32(obj + 0x1c) - metric)) > memory.read_s32(obj + 0x20):
+			continue
+		if (memory.read_u32(obj + 0x14) & 0x2042) != 0:
+			continue
+		if memory.read_u8(obj + 0x28) != 2:
+			continue
+		if approx_dist3_xyz(x, y_unused, z, memory.read_s32(obj + 4), memory.read_s32(obj + 8), memory.read_s32(obj + 0xc)) > memory.read_s32(obj + 0x20):
+			continue
+		var faces_left: int = memory.read_s16(obj + 0x3c)
+		var face: int = C68kScript.u32(memory.read_u32(obj + 0x4a) + faces_left * 0x20 - 0x20)
+		while true:
+			faces_left = C68kScript.s16(faces_left - 1)
+			if faces_left == -1:
+				break
+			if memory.read_u8(face + 0x16) != 0:
+				var scale: int = C68kScript.s16(memory.read_s16(obj + 0x36) - 1 - memory.read_s16(obj + 0x34))
+				var px: int
+				var pz: int
+				if scale < 0:
+					px = C68kScript.asr32(x, -scale)
+					pz = C68kScript.asr32(z, -scale)
+				else:
+					px = C68kScript.lsl32(x, scale)
+					pz = C68kScript.lsl32(z, scale)
+				project_face_vertices_xz(obj, memory.read_s16(obj + 0x34) + 1, face, px, pz, projected)
+				if point_in_polygon_xz(0, 0, projected, memory.read_s16(face + 0x14), memory.read_u32(face + 0x18)) != 0:
+					return memory.read_s8(face + 0x16)
+			face = C68kScript.u32(face - 0x20)
+	return 0 ## not reached: the loop exits through its returns
+
+## 0x30b8, at 1.0.3's invoke_tagged_attitude_compose_neg_sins4 0x2782 (transform_and_project_object's call for the inverse
+## attitude). Leyte no longer negates the sines and recomposes: it transposes the 3x3 word matrix at out in place (words
+## +2 / +6, +4 / +0xc, +0xa / +0xe swapped), the inverse of a rotation.
+func invoke_tagged_attitude_compose_neg_sins4(out: int) -> void:
+	assert(memory != null, "invoke_tagged_attitude_compose_neg_sins4 requires original global memory")
+	for pair in [[6, 2], [0xc, 4], [0xe, 0xa]]:
+		var w: int = memory.read_u16(out + pair[0])
+		memory.write_u16(out + pair[0], memory.read_u16(out + pair[1]))
+		memory.write_u16(out + pair[1], w)
+
+## Near-mode penetration test of a face (Leyte inlines it twice in submit_object_faces): point_in_polygon_xy(0, 0,
+## view_vertices 0x2c0b6, sext word +0x14, +0x18) (0x38 below) -> dispatch_collision(player object, prepared_object
+## 0x2c0ba) (0x2c below).
+func _face_penetration(entry_a7: int, face: int) -> void:
+	assert(memory != null, "_face_penetration requires original global memory")
+	a7 = entry_a7 - 0x38
+	var hit: int = point_in_polygon_xy(0, 0, memory.read_u32(0x2c0b6), memory.read_s16(face + 0x14), memory.read_u32(face + 0x18))
+	if hit != 0:
+		a7 = entry_a7 - 0x2c
+		dispatch_collision(memory.read_u32(memory.read_u32(0x20b28)), memory.read_u32(0x2c0ba), hit)
+	a7 = entry_a7
+
+## 0xb554 (1.0.3's submit_object_faces 0xa2d2, eight saved registers). As 1.0.3 on Leyte's addresses, with the object
+## flags long at +0x14 (for +4), and a face whose flags byte +0x13 has bit 1 kept out of near mode's work: neither its
+## penetration test nor the inside flag (bit 3) update in the queue pass, nor the back-face pass's test (it still becomes
+## inside there). The loops test their counts first.
+func submit_object_faces() -> void:
+	assert(memory != null, "submit_object_faces requires original global memory")
+	var entry_a7: int = a7
+	var drawn: bool = false
+	var queue: int = 0x2c2c6
+	var left: int = C68kScript.asr32(C68kScript.s32(memory.read_u32(0x2c2c2) - 0x2c2c6), 2) & 0xffff
+	while true:
+		left = (left - 1) & 0xffff
+		if left == 0xffff:
+			break
+		var face: int = memory.read_u32(queue)
+		queue += 4
+		if (memory.read_u8(face + 0x13) & 0x60) != 0x60:
+			memory.write_u8(face + 0x13, memory.read_u8(face + 0x13) | 0x20)
+			a7 = entry_a7 - 0x28
+			transform_face_vertices(face)
+			a7 = entry_a7
+		memory.write_u8(face + 0x13, memory.read_u8(face + 0x13) & 0xbf)
+		memory.write_u16(0x2c0b0, memory.read_u16(face + 0x14))
+		var need_clip: bool = memory.read_u16(0x2c0aa) != 0
+		if not need_clip:
+			var out: int = 0x2b338
+			var idx: int = memory.read_u32(face + 0x18)
+			var n: int = memory.read_u16(0x2c0b0)
+			while true:
+				n = (n - 1) & 0xffff
+				if n == 0xffff:
+					break
+				var entry: int = C68kScript.u32(0x2bbf8 + 8 * memory.read_s16(idx))
+				idx += 2
+				memory.write_u32(out + 4, memory.read_u32(entry + 4))
+				memory.write_u32(out, memory.read_u32(entry))
+				if memory.read_u32(entry) == 0x80000000:
+					need_clip = true
+					break
+				out += 8
+		if need_clip:
+			a7 = entry_a7 - 0x38
+			var hit: int = clip_face_near_plane(0x2c0b0, memory.read_u32(0x2c0b6), memory.read_u32(face + 0x18), 0x2bbf8, 0x2b338)
+			a7 = entry_a7
+			if hit != 0:
+				memory.write_u16(0x2c0a8, 1)
+		if memory.read_u16(0x2c0ac) != 0 and (memory.read_u8(face + 0x13) & 2) == 0:
+			var flipped: int = 1 if (memory.read_u8(face + 0x13) & 0x10) != 0 else 0
+			if memory.read_s16(0x2c0ac) != 2:
+				var inside: int = 1 if (memory.read_u8(face + 0x13) & 8) != 0 else 0
+				if (flipped ^ inside) != 0:
+					_face_penetration(entry_a7, face)
+			if flipped != 0:
+				memory.write_u8(face + 0x13, memory.read_u8(face + 0x13) | 8)
+			else:
+				memory.write_u8(face + 0x13, memory.read_u8(face + 0x13) & 0xf7)
+		if memory.read_u16(0x2c0b0) != 0:
+			a7 = entry_a7 - 0x28
+			var r = _jsr(memory.read_u32(0x26fe4), [face])
+			a7 = entry_a7
+			if int(r) != 0:
+				drawn = true
+	if memory.read_u16(0x2c0ac) != 0:
+		var back: int = 0x2c0c2
+		var count: int = C68kScript.asr32(C68kScript.s32(memory.read_u32(0x2c0be) - 0x2c0c2), 2) & 0xffff
+		while true:
+			count = (count - 1) & 0xffff
+			if count == 0xffff:
+				break
+			var face2: int = memory.read_u32(back)
+			back += 4
+			if memory.read_s16(0x2c0ac) != 2 and (memory.read_u8(face2 + 0x13) & 0xa) == 0:
+				if (memory.read_u8(face2 + 0x13) & 0x60) != 0x60:
+					a7 = entry_a7 - 0x28
+					transform_face_vertices(face2)
+					a7 = entry_a7
+				_face_penetration(entry_a7, face2)
+			memory.write_u8(face2 + 0x13, memory.read_u8(face2 + 0x13) | 8)
+	var obj: int = memory.read_u32(0x2c0ba)
+	if drawn:
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) | 4)
+	else:
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) & 0xfffffffb)
+	if memory.read_u16(0x2c0a8) == 0:
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) & 0xfffffff7)
+
+## update_object_distance_band (0x6c below) on the prepared object's metric +0x1c (1.0.3's +0x10) when haze, and, when it
+## changed the band (or always), shade_object_faces (0x68 below).
+func _band_and_shade(entry_a7: int, always_shade: bool, haze: int) -> void:
+	assert(memory != null, "_band_and_shade requires original global memory")
+	var obj: int = memory.read_u32(0x2c0ba)
+	var changed: int = 0
+	if haze != 0:
+		a7 = entry_a7 - 0x6c
+		changed = update_object_distance_band(obj, memory.read_s32(obj + 0x1c))
+	if always_shade or changed != 0:
+		a7 = entry_a7 - 0x68
+		shade_object_faces(memory.read_u32(0x2c0ba))
+	a7 = entry_a7
+
+## 0xb9f8 (1.0.3's transform_and_project_object 0xa73e; link.w a6,#-0x34, ten saved registers: body 0x60 below the entry),
+## on Leyte's object layout: the controller at +0 (for +8), the position +4 / +8 / +0xc (for +0x18 / +8 / +0x20 - 1.0.3's
+## eye used its own position fields), flag bytes +0x15 / +0x16 (for +5 / +6), the band metric +0x1c, the face count +0x3c;
+## the shift word +0x34 and scale +0x36 as before. The inverse attitude is Leyte's transpose (0x30b8). The loops test their
+## counts first. Returns 4 when the controller is unlinked or its pre-render hook says so, else 0.
+func transform_and_project_object() -> int:
+	assert(memory != null, "transform_and_project_object requires original global memory")
+	assert(a7 != 0, "transform_and_project_object needs a7 (its frame holds the eye vectors)")
+	var entry_a7: int = a7
+	var rel: int = entry_a7 - 4 - 0x24
+	memory.write_u32(0x2b29e, 0x23c74)
+	var world: int = memory.read_u32(0x207fc)
+	var haze: int = memory.read_s16(world + 0xaa)
+	var lit: int = memory.read_s16(world + 0xb2)
+	var obj: int = memory.read_u32(0x2c0ba)
+	memory.write_u16(0x2b296, memory.read_u16(obj + 0x34))
+	var shift: int = C68kScript.s16(memory.read_u16(obj + 0x36) - memory.read_u16(0x2b296))
+	memory.write_u16(0x2b29c, C68kScript.u16(_shift_signed(memory.read_s32(0x23d68), shift)))
+	memory.write_u16(0x2b29a, C68kScript.u16(_shift_signed(memory.read_s32(0x23d64), shift)))
+	memory.write_u16(0x2b298, C68kScript.u16(_shift_signed(memory.read_s32(0x23d60), shift)))
+	var ctl: int = memory.read_u32(memory.read_u32(0x2c0ba))
+	if ctl == 0:
+		if (memory.read_u8(memory.read_u32(0x2c0ba) + 0x16) & 2) == 0:
+			_band_and_shade(entry_a7, false, haze)
+	else:
+		if memory.read_u32(ctl) == 0:
+			return 4
+		var hook: int = memory.read_u32(memory.read_u32(ctl + 4) + 0xe)
+		var res: int = 0
+		if hook != 0:
+			a7 = entry_a7 - 0x6c
+			res = int(_jsr(hook, [ctl, 1]))
+			a7 = entry_a7
+			if (res & 4) != 0:
+				return 4
+		obj = memory.read_u32(0x2c0ba)
+		if (memory.read_u8(obj + 0x15) & 0x10) == 0:
+			_band_and_shade(entry_a7, false, haze)
+		else:
+			if (res & 1) == 0:
+				a7 = entry_a7 - 0x74
+				build_attitude_matrix_3ang(memory.read_s16(ctl + 0x20), memory.read_s16(ctl + 0x22), memory.read_s16(ctl + 0x24), 0x23c5c)
+			a7 = entry_a7 - 0x70
+			matmul3x3_s16(0x23c5c, 0x23c74, 0x2b274)
+			memory.write_u32(0x2b29e, 0x2b274)
+			a7 = entry_a7 - 0x74
+			invoke_tagged_attitude_compose_neg_sins4(0x23c5c)
+			a7 = entry_a7
+			obj = memory.read_u32(0x2c0ba)
+			memory.write_u16(rel + 2, C68kScript.u16(_shift_signed(C68kScript.s32(memory.read_u32(0x23d68) - memory.read_u32(obj + 4)), shift)))
+			memory.write_u16(rel + 6, C68kScript.u16(_shift_signed(C68kScript.s32(memory.read_u32(0x23d64) - memory.read_u32(obj + 8)), shift)))
+			memory.write_u16(rel + 0xa, C68kScript.u16(_shift_signed(C68kScript.s32(memory.read_u32(0x23d60) - memory.read_u32(obj + 0xc)), shift)))
+			if (memory.read_u8(memory.read_u32(0x2c0ba) + 0x16) & 1) != 0 and lit != 0:
+				var lx: int = memory.read_u16(0x21574)
+				var ly: int = memory.read_u16(0x21572)
+				var lz: int = memory.read_u16(0x21570)
+				memory.write_u16(rel + 0xe, lx)
+				memory.write_u16(rel + 0x12, ly)
+				memory.write_u16(rel + 0x16, lz)
+				a7 = entry_a7 - 0x74
+				transform_vecs12_by_matrix3(2, rel, rel, 0x23c5c)
+				a7 = entry_a7
+				memory.write_u16(0x21574, memory.read_u16(rel + 0xe))
+				memory.write_u16(0x21572, memory.read_u16(rel + 0x12))
+				memory.write_u16(0x21570, memory.read_u16(rel + 0x16))
+				_band_and_shade(entry_a7, true, haze)
+				memory.write_u16(0x21574, lx)
+				memory.write_u16(0x21572, ly)
+				memory.write_u16(0x21570, lz)
+			else:
+				a7 = entry_a7 - 0x74
+				transform_vecs12_by_matrix3(1, rel, rel, 0x23c5c)
+				a7 = entry_a7
+				_band_and_shade(entry_a7, false, haze)
+			memory.write_u16(0x2b29c, memory.read_u16(rel + 2))
+			memory.write_u16(0x2b29a, memory.read_u16(rel + 6))
+			memory.write_u16(0x2b298, memory.read_u16(rel + 0xa))
+			if (res & 2) != 0:
+				a7 = entry_a7 - 0x6c
+				_jsr(memory.read_u32(memory.read_u32(ctl + 4) + 0xe), [ctl, 2])
+				a7 = entry_a7
+	obj = memory.read_u32(0x2c0ba)
+	memory.write_u32(0x2c0b6, memory.read_u32(obj + 0x4e))
+	memory.write_u32(0x2c4c6, memory.read_u32(obj + 0x4a))
+	memory.write_u16(0x2c0ae, memory.read_u16(obj + 0x3a))
+	memory.write_u32(0x2b286, C68kScript.u32(memory.read_s16(obj + 0x38) * 12 + memory.read_u32(obj + 0x46)))
+	var verts: int = memory.read_u32(obj + 0x46)
+	for k in 3:
+		memory.write_u32(0x2b28a + 4 * k, memory.read_u32(verts + 4 * k))
+	var count: int = memory.read_s16(memory.read_u32(0x2c0ba) + 0x38)
+	var q: int = count
+	if q < 0:
+		q += 3
+	q = C68kScript.s16(q) >> 2
+	for k in q + 1:
+		memory.write_u32(0x2b2a2 + 4 * k, 0)
+	var face: int = memory.read_u32(0x2c4c6)
+	var faces_left: int = memory.read_s16(memory.read_u32(0x2c0ba) + 0x3c)
+	while true:
+		faces_left -= 1
+		if faces_left == -1:
+			break
+		var flags: int = memory.read_u8(face + 0x13)
+		if (flags & 0x60) == 0x20:
+			memory.write_u8(face + 0x13, flags | 0x40)
+			var idx: int = memory.read_u32(face + 0x18)
+			for k in maxi(memory.read_s16(face + 0x14), 0):
+				memory.write_u8(C68kScript.u32(0x2b2a2 + memory.read_s16(idx)), 1)
+				idx += 2
+		else:
+			memory.write_u8(face + 0x13, flags & 0xdf)
+		face += 0x20
+	var m: int = memory.read_u32(0x2b29e)
+	var eye_x: int = memory.read_u16(0x2b29c)
+	var eye_y: int = memory.read_u16(0x2b29a)
+	var eye_z: int = memory.read_u16(0x2b298)
+	var vshift: int = memory.read_s16(0x2b296)
+	var view: int = memory.read_u32(0x2c0b6)
+	var out: int = 0x2bbf8
+	var left: int = count & 0xffff
+	var k2: int = 0
+	while true:
+		left = (left - 1) & 0xffff
+		if left == 0xffff:
+			break
+		if memory.read_u8(0x2b2a2 + k2) != 0:
+			var v: int = C68kScript.u32(verts + 12 * k2)
+			var d0: int = C68kScript.s16(C68kScript.asr32(memory.read_s32(v), vshift) - eye_x)
+			var d1: int = C68kScript.s16(C68kScript.asr32(memory.read_s32(v + 4), vshift) - eye_y)
+			var d2: int = C68kScript.s16(C68kScript.asr32(memory.read_s32(v + 8), vshift) - eye_z)
+			var w: int = C68kScript.u32(view + 12 * k2)
+			for c in 3:
+				var acc: int = C68kScript.s32(d0 * memory.read_s16(m + 2 * c) + d1 * memory.read_s16(m + 6 + 2 * c) + d2 * memory.read_s16(m + 12 + 2 * c) + 0x800)
+				memory.write_u16(w + 2 + 4 * c, C68kScript.u16(C68kScript.asr32(acc, 12)))
+			var z: int = memory.read_s16(w + 0xa)
+			if z > 4:
+				memory.write_u32(out, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(memory.read_s16(w + 2) * memory.read_s16(0x27050)), z)))
+				memory.write_u32(out + 4, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(C68kScript.s16(-memory.read_s16(w + 6)) * memory.read_s16(0x2704e)), z)))
+			else:
+				memory.write_u32(out, 0x80000000)
+		out += 8
+		k2 += 1
+	return 0
+
+## 0x16d7a (1.0.3's sort_group_parts_by_distance 0x1441a; link.w a6,#-0x424, ten saved registers: body 0x450 below the
+## entry), 1.0.3's code on Leyte's layout: the scale word +0x36 (for +0x34), the part count +0x3a (kept in the frame at
+## a6 - 0x420; for +0x38), the vertex count +0x38, vertices +0x46, the face table +0x4a with +0x3c faces, the group list
+## +0x2e (for +0x2c), draw_order_next 0x219a8, deferred_free_flag 0x219a6; the loops test their counts first (the
+## same iterations). Draw order for a group object's parts: the camera, scaled by the scale word (asl) with y = 0, is
+## restored at the end; each part's horizontal camera distance goes into the frame array (a6 - 0x400); with host word
+## +0xaa each part's colour record gets its band and, when it changed, the part face's colour bytes and palette slot;
+## the parts are insertion-sorted far to near; group entries (freed when word 0 and deferred_free_flag) are sorted by
+## their metric +0xc and merged with the parts, each numbered before the first part nearer than it (count << 7
+## numbers), the parts one number each.
+func sort_group_parts_by_distance(obj: int) -> void:
+	assert(memory != null, "sort_group_parts_by_distance requires original global memory")
+	assert(a7 != 0, "sort_group_parts_by_distance needs a7 (its frame holds the distances)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var dist: int = a6 - 0x400
+	var cam_x: int = memory.read_u32(0x23d68)
+	var cam_y: int = memory.read_u32(0x23d64)
+	var cam_z: int = memory.read_u32(0x23d60)
+	var scale: int = memory.read_s16(obj + 0x36)
+	memory.write_u32(0x23d68, C68kScript.u32(C68kScript.lsl32(cam_x, scale & 0x3f)))
+	memory.write_u32(0x23d64, 0)
+	memory.write_u32(0x23d60, C68kScript.u32(C68kScript.lsl32(memory.read_u32(0x23d60), scale & 0x3f)))
+	var parts: int = memory.read_s16(obj + 0x3a)
+	var centres: int = C68kScript.u32(C68kScript.s32(C68kScript.s32(memory.read_s16(obj + 0x38) - parts) * 12) + memory.read_u32(obj + 0x46))
+	var faces: int = memory.read_u32(obj + 0x4a)
+	var list: int = C68kScript.u32(faces + C68kScript.s32(memory.read_s16(obj + 0x3c) * 32))
+	var colours: int = C68kScript.u32(list + 2 * parts)
+	var lit: bool = memory.read_u16(memory.read_u32(0x207fc) + 0xaa) != 0
+	for k in range(maxi(parts, 0)):
+		var part: int = memory.read_s16(list + 2 * k)
+		var c: int = C68kScript.u32(centres + 12 * part)
+		a7 = entry_a7 - 0x460
+		var d: int = compute_camera_abs_metric(memory.read_s32(c), 0, memory.read_s32(c + 8))
+		a7 = entry_a7
+		memory.write_u32(dist + 4 * k, C68kScript.u32(d))
+		if lit:
+			var rec: int = C68kScript.u32(colours + 6 * part)
+			a7 = entry_a7 - 0x468
+			var changed: int = update_record_distance_band(rec, d)
+			a7 = entry_a7
+			if changed != 0:
+				var face: int = C68kScript.u32(faces + 32 * part)
+				var band: int = memory.read_s16(rec + 4)
+				var keep: int = C68kScript.s32(0x20 - band)
+				var tints: Array = [0x7d, 0x84, 0xa8]
+				for ch in 3:
+					var v: int = C68kScript.u32(C68kScript.s32(memory.read_u8(rec + ch) * keep) + C68kScript.s32(band * tints[ch]))
+					memory.write_u8(face + 0xc + ch, (v >> 5) & 0xff)
+				var slot: int = memory.read_u8(face + 0xf)
+				if memory.read_u32(C68kScript.u32(memory.read_u32(0x23fac) + slot * 4)) == face:
+					a7 = entry_a7 - 0x458
+					write_face_palette_slot(face)
+					a7 = entry_a7
+				else:
+					memory.write_u8(face + 0xf, 0)
+	# Insertion sort of the part list, far to near.
+	for k in range(maxi(parts, 0)):
+		var idx: int = memory.read_u16(list + 2 * k)
+		var dk: int = memory.read_s32(dist + 4 * k)
+		var j: int = k - 1
+		while j >= 0 and dk > memory.read_s32(dist + 4 * j):
+			memory.write_u16(list + 2 * (j + 1), memory.read_u16(list + 2 * j))
+			memory.write_u32(dist + 4 * (j + 1), memory.read_u32(dist + 4 * j))
+			j -= 1
+		memory.write_u16(list + 2 * (j + 1), idx)
+		memory.write_u32(dist + 4 * (j + 1), C68kScript.u32(dk))
+	var groups: int = memory.read_u32(obj + 0x2e)
+	var count: int = 0
+	var entries: int = C68kScript.u32(groups + 4)
+	if groups != 0:
+		count = memory.read_u16(groups)
+		if memory.read_u16(0x219a6) != 0:
+			var kept: int = entries
+			var left: int = count
+			var src: int = entries
+			while true:
+				left = (left - 1) & 0xffff
+				if left == 0xffff:
+					break
+				var e: int = memory.read_u32(src)
+				src += 4
+				if memory.read_u16(e) != 0:
+					memory.write_u32(kept, e)
+					kept += 4
+				else:
+					a7 = entry_a7 - 0x458
+					heap_free_coalesce(e)
+					a7 = entry_a7
+			count = C68kScript.asr32(C68kScript.s32(kept - entries), 2) & 0xffff
+			memory.write_u16(groups, count)
+	if groups == 0 or C68kScript.s16(count) == 0:
+		for k in range(maxi(parts, 0)):
+			_number_face(C68kScript.u32(faces + 32 * memory.read_s16(list + 2 * k)))
+	else:
+		var n: int = C68kScript.s16(count)
+		for k in range(maxi(n, 0)):
+			var e2: int = memory.read_u32(entries + 4 * k)
+			a7 = entry_a7 - 0x460
+			var m: int = compute_camera_abs_metric(memory.read_s32(e2 + 4), 0, memory.read_s32(e2 + 8))
+			a7 = entry_a7
+			memory.write_u32(e2 + 0xc, C68kScript.u32(m))
+			var j2: int = k - 1
+			while j2 >= 0:
+				var other: int = memory.read_u32(entries + 4 * j2)
+				if m <= memory.read_s32(other + 0xc):
+					break
+				memory.write_u32(entries + 4 * (j2 + 1), other)
+				j2 -= 1
+			memory.write_u32(entries + 4 * (j2 + 1), e2)
+		# Merge: groups farther than a part are numbered before it.
+		var gi: int = 0
+		var group: int = memory.read_u32(entries)
+		gi = 1
+		var gdist: int = memory.read_s32(group + 0xc)
+		var groups_left: int = (n - 1) & 0xffff
+		var k3: int = 0
+		var finished: bool = false
+		while k3 < (parts & 0xffff) and not finished:
+			var face2: int = C68kScript.u32(faces + 32 * memory.read_s16(list + 2 * k3))
+			var pd: int = memory.read_s32(dist + 4 * k3)
+			k3 += 1
+			while gdist > pd:
+				_number_group(group)
+				groups_left = (groups_left - 1) & 0xffff
+				if groups_left == 0xffff:
+					_number_face(face2)
+					while k3 < (parts & 0xffff):
+						_number_face(C68kScript.u32(faces + 32 * memory.read_s16(list + 2 * k3)))
+						k3 += 1
+					finished = true
+					break
+				group = memory.read_u32(entries + 4 * gi)
+				gi += 1
+				gdist = memory.read_s32(group + 0xc)
+			if not finished:
+				_number_face(face2)
+		if not finished:
+			while true:
+				_number_group(group)
+				groups_left = (groups_left - 1) & 0xffff
+				if groups_left == 0xffff:
+					break
+				group = memory.read_u32(entries + 4 * gi)
+				gi += 1
+	memory.write_u32(0x23d68, cam_x)
+	memory.write_u32(0x23d64, cam_y)
+	memory.write_u32(0x23d60, cam_z)
+
+## A prepared object's face pass (Leyte inlines it at each call site of render_visible_objects): force_near_clip = word
+## +0x16 & 8 (byte +0x17 bit 3), face_was_clipped cleared, both face queues reset, the faces emitted (unnumbered, or
+## emit_faces_bsp(0) when byte +0x17 bit 5, else in order), then submit_object_faces. depth: the caller's stack depth
+## below entry_a7 at the bsr.
+func _render_object_faces(entry_a7: int, depth: int, unnumbered: bool) -> void:
+	assert(memory != null, "_render_object_faces requires original global memory")
+	var obj: int = memory.read_u32(0x2c0ba)
+	memory.write_u16(0x2c0aa, memory.read_u16(obj + 0x16) & 8)
+	memory.write_u16(0x2c0a8, 0)
+	memory.write_u32(0x2c2c2, 0x2c2c6)
+	memory.write_u32(0x2c0be, 0x2c0c2)
+	if unnumbered:
+		a7 = entry_a7 - depth
+		emit_faces_unnumbered()
+	elif (memory.read_u8(obj + 0x17) & 0x20) != 0:
+		a7 = entry_a7 - depth - 4
+		emit_faces_bsp(0)
+	else:
+		a7 = entry_a7 - depth
+		emit_faces_in_order()
+	a7 = entry_a7 - depth
+	submit_object_faces()
+	a7 = entry_a7
+
+## Near mode for the prepared object (inlined twice in render_visible_objects): allowed and its metric +0x1c within its
+## range +0x20 -> 1, and on first entry (byte +0x15 bit 5 clear) its +0x3c faces lose +0x13 bit 3, the bit is set and near
+## mode is 2; otherwise near mode 0 and the bit (flags long +0x14 bit 21) cleared.
+func _render_near_mode(allowed: bool) -> void:
+	assert(memory != null, "_render_near_mode requires original global memory")
+	var obj: int = memory.read_u32(0x2c0ba)
+	if allowed:
+		var near: int = 1 if memory.read_s32(obj + 0x1c) <= memory.read_s32(obj + 0x20) else 0
+		memory.write_u16(0x2c0ac, near)
+		if near != 0:
+			if (memory.read_u8(obj + 0x15) & 0x20) == 0:
+				var faces: int = memory.read_u32(0x2c4c6)
+				for k in maxi(memory.read_s16(obj + 0x3c), 0):
+					memory.write_u8(faces + 32 * k + 0x13, memory.read_u8(faces + 32 * k + 0x13) & 0xf7)
+				memory.write_u8(obj + 0x15, memory.read_u8(obj + 0x15) | 0x20)
+				memory.write_u16(0x2c0ac, 2)
+			return
+	else:
+		memory.write_u16(0x2c0ac, 0)
+	memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) & 0xffdfffff)
+
+## 0xbf1e (1.0.3's render_visible_objects 0xac52; link.w a6,#-0x370, five saved registers: body 0x388 below the entry),
+## on Leyte's layout: the group-sort flag byte +0x16 bit 1, the parent +0x2e, the last object's flags long +0x14; near
+## mode and the face pass as above. The loops test their (long) counts first. Near mode is allowed in view 1 unless
+## view_flag 0x23d86. Edge pool count 0x26fe0, draw order (1) and near mode reset. Pass 1: the visible_list_split
+## (0x215a0) pre-transformed objects of 0x22994 are projected and their faces run. visible_first_pass (0x219aa) = the
+## visible count's low word - it. Pass 2: the others: one with byte +0x16 bit 1 has its parts sorted (its faces then run
+## unnumbered); one with a parent is deferred into the frame list (a6 - 0x370); the rest transform_and_project_object
+## (skipped on 4), near mode decided only while the remaining count is below visible_first_pass. Pass 3: deferred objects
+## draw with their parent's draw order (parent word +2, written back). The draw order is restored; in view 1 the object
+## at 0x2158c (+0x14 |= 4) is projected and drawn last.
+func render_visible_objects() -> void:
+	assert(memory != null, "render_visible_objects requires original global memory")
+	assert(a7 != 0, "render_visible_objects needs a7 (its frame holds the deferred list)")
+	var entry_a7: int = a7
+	var deferred: int = entry_a7 - 4 - 0x370
+	var deferred_end: int = deferred
+	var body: int = 0x388
+	var allowed: bool = memory.read_u16(0x23d86) == 0 and memory.read_s16(0x23d88) == 1
+	memory.write_u32(0x26fe0, 0)
+	memory.write_u16(0x219a8, 1)
+	memory.write_u16(0x2c0ac, 0)
+	var sort_parts: bool = false
+	var slot: int = 0x22994
+	var left: int = C68kScript.s32(memory.read_u32(0x215a0))
+	while true:
+		left = C68kScript.s32(left - 1)
+		if left == -1:
+			break
+		memory.write_u32(0x2c0ba, memory.read_u32(slot))
+		slot += 4
+		a7 = entry_a7 - body - 4
+		project_prepared_object()
+		a7 = entry_a7
+		_render_object_faces(entry_a7, body + 4, false)
+	memory.write_u16(0x219aa, C68kScript.u16(memory.read_u16(0x219be) - memory.read_u16(0x219aa)))
+	slot = C68kScript.u32(0x22994 + 4 * memory.read_u32(0x215a0))
+	var d2: int = C68kScript.s32(memory.read_u32(0x219bc) - memory.read_u32(0x215a0))
+	while true:
+		d2 = C68kScript.s32(d2 - 1)
+		if d2 == -1:
+			break
+		var obj: int = memory.read_u32(slot)
+		slot += 4
+		memory.write_u32(0x2c0ba, obj)
+		if (memory.read_u8(obj + 0x16) & 2) != 0:
+			sort_parts = true
+		elif memory.read_u32(obj + 0x2e) != 0:
+			memory.write_u32(deferred_end, obj)
+			deferred_end += 4
+			continue
+		a7 = entry_a7 - body - 4
+		var r: int = transform_and_project_object()
+		a7 = entry_a7
+		if r == 4:
+			continue
+		if memory.read_s16(0x219aa) > d2:
+			_render_near_mode(allowed)
+		else:
+			memory.write_u16(0x2c0ac, 0)
+		if sort_parts:
+			a7 = entry_a7 - body - 8
+			sort_group_parts_by_distance(memory.read_u32(0x2c0ba))
+			a7 = entry_a7
+			sort_parts = false
+			_render_object_faces(entry_a7, body + 8, true)
+		else:
+			_render_object_faces(entry_a7, body + 4, false)
+	var order: int = memory.read_u16(0x219a8)
+	var p: int = deferred
+	while p < deferred_end:
+		var obj2: int = memory.read_u32(p)
+		p += 4
+		memory.write_u32(0x2c0ba, obj2)
+		var parent: int = memory.read_u32(obj2 + 0x2e)
+		memory.write_u16(0x219a8, memory.read_u16(parent + 2))
+		a7 = entry_a7 - body - 4
+		var r2: int = transform_and_project_object()
+		a7 = entry_a7
+		if r2 != 4:
+			_render_near_mode(allowed)
+			_render_object_faces(entry_a7, body + 4, false)
+		memory.write_u16(parent + 2, memory.read_u16(0x219a8))
+	memory.write_u16(0x219a8, order)
+	if memory.read_s16(0x23d88) == 1:
+		var last: int = memory.read_u32(0x2158c)
+		memory.write_u32(last + 0x14, memory.read_u32(last + 0x14) | 4)
+		memory.write_u32(0x2c0ba, last)
+		a7 = entry_a7 - body - 4
+		project_prepared_object()
+		a7 = entry_a7
+		_render_object_faces(entry_a7, body + 4, false)
+
+## One of the four broad-phase tests collect_far_objects calls (bsr in Leyte: 0x16812 test_object_collision, 0x16be2
+## handle_player_contact, 0x16784 test_proximity_collision, 0x167e4 test_player_vs_type0e_proximity), entered 0xc below
+## the caller's body. Reached through code_table at their Leyte addresses, as 1.0.3's port does, so a case can stand them in.
+func _far_collision(proximity: bool, player: bool, a: int, b: int) -> void:
+	_jsr((0x167e4 if player else 0x16784) if proximity else (0x16be2 if player else 0x16812), [a, b])
+
+## 0x63ba (1.0.3's collect_far_objects 0x553a; link a6 -0x37c and ten registers, body 0x3a8 below the entry), 1.0.3's
+## code on Leyte's layout: flags long +0x14 (for +4; the active object's word +0x16 loses 0x800, other objects' bytes
+## +0x15 bit 4 and +0x17 bits 1 / 6), metric +0x1c (for +0x10), range +0x18, radius +0x20 (for +0x14), running minimum
+## +0x2a (for +0x28), position +4 / +8 / +0xc, scale word +0x36 and detail word +0x34; the view points 0x21f44 (count
+## 0x219b8), visible list 0x22994 (0x219bc), overlap list 0x219cc (0x219ac), entity_array_3 0x233bc (0x219c4), frame
+## counter 0x21020. The loops test their counts first. Sorts the far list in place, as collect_near_objects does, while
+## running the broad-phase collisions (_far_collision); out-of-range objects are kept within 0x19c7f (unhidden) - those
+## seen in the last 0x4b frames skip overlap and collisions - else retired / deactivated into entity_array_3.
+func collect_far_objects(list: int, count_ptr: int) -> void:
+	assert(memory != null, "collect_far_objects requires original global memory")
+	assert(a7 != 0, "collect_far_objects needs a7 (its frame holds the active list)")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x3a8
+	var point: int = C68kScript.u32(0x21f44 + memory.read_s32(0x219b8) * 12)
+	var keep: int = list
+	var read: int = list
+	var left: int = memory.read_u16(count_ptr + 2)
+	var min_start: int = 0x7fffffff
+	var active: int = entry_a7 - 4 - 0x370
+	var active_count: int = 0
+	while left != 0:
+		left -= 1
+		var obj: int = memory.read_u32(read)
+		read += 4
+		var flags: int = memory.read_u32(obj + 0x14)
+		var normal: bool = true
+		if memory.read_s32(obj + 0x1c) > memory.read_s32(obj + 0x18) or (flags & 2) != 0:
+			if C68kScript.s32(memory.read_u32(obj + 0x1c) - memory.read_u32(obj + 0x18)) > 0x19c7f or (flags & 2) != 0:
+				if C68kScript.s32(memory.read_u32(0x21020) - memory.read_u32(obj + 0x3e)) <= 0x4b:
+					normal = false
+				else:
+					a7 = body - 8
+					if memory.read_u32(obj + 0x3e) != 0:
+						retire_entity(obj)
+					deactivate_object(obj)
+					a7 = entry_a7
+					memory.write_u32(0x233bc + memory.read_s32(0x219c4) * 4, obj)
+					memory.write_u32(0x219c4, C68kScript.u32(memory.read_u32(0x219c4) + 1))
+					continue
+		elif (flags & 0x40) == 0:
+			var size: int = C68kScript.s32(C68kScript.lsl32(C68kScript.s32(C68kScript.asr32(memory.read_u32(obj + 0x1c), 2) + memory.read_u32(obj + 0x1c) + memory.read_u32(obj + 0x20)), memory.read_s16(obj + 0x36)))
+			var detail: int = 0
+			while (C68kScript.u32(size) & 0xffff8000) != 0:
+				detail = C68kScript.s16(detail + 1)
+				size = C68kScript.asr32(size, 1)
+			memory.write_u16(obj + 0x34, C68kScript.u16(detail))
+			if (flags & 4) == 0:
+				memory.write_u32(point, C68kScript.u32(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 0x4) - memory.read_u32(0x23d68)), detail)))
+				memory.write_u32(point + 4, C68kScript.u32(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 0x8) - memory.read_u32(0x23d64)), detail)))
+				memory.write_u32(point + 8, C68kScript.u32(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 0xc) - memory.read_u32(0x23d60)), detail)))
+				point += 12
+			memory.write_u32(0x22994 + memory.read_s32(0x219bc) * 4, obj)
+			memory.write_u32(0x219bc, C68kScript.u32(memory.read_u32(0x219bc) + 1))
+		if normal:
+			if (flags & 0x8000) != 0:
+				memory.write_u32(0x219cc + memory.read_s32(0x219ac) * 4, obj)
+				memory.write_u32(0x219ac, C68kScript.u32(memory.read_u32(0x219ac) + 1))
+			var reach: int = C68kScript.s32(memory.read_u32(obj + 0x1c) + memory.read_u32(obj + 0x20))
+			if (flags & 0x2800) != 0:
+				memory.write_u16(obj + 0x16, memory.read_u16(obj + 0x16) & 0xf7ff)
+				if min_start < reach:
+					var scan: int = keep
+					var n: int = C68kScript.asr32(keep - list, 2) & 0xffff
+					while n != 0:
+						n -= 1
+						scan -= 4
+						var other: int = memory.read_u32(scan)
+						if (memory.read_u8(other + 0x17) & 2) != 0:
+							continue
+						if reach > C68kScript.s32(memory.read_u32(other + 0x1c) - memory.read_u32(other + 0x20)):
+							a7 = body - 0xc
+							_far_collision((memory.read_u8(other + 0x15) & 0x10) != 0, (flags & 0x40) != 0, obj, other)
+							a7 = entry_a7
+						elif reach < memory.read_s32(other + 0x2a):
+							break
+				memory.write_u32(active + active_count * 4, obj)
+				active_count += 1
+			elif min_start < reach:
+				var n: int = active_count & 0xffff
+				var scan: int = active + active_count * 4
+				while n != 0:
+					n -= 1
+					scan -= 4
+					var other: int = memory.read_u32(scan)
+					if reach > C68kScript.s32(memory.read_u32(other + 0x1c) - memory.read_u32(other + 0x20)):
+						a7 = body - 0xc
+						_far_collision((flags & 0x100000) != 0, (memory.read_u8(other + 0x17) & 0x40) != 0, other, obj)
+						a7 = entry_a7
+					elif reach < memory.read_s32(other + 0x2a):
+						break
+			var start: int = C68kScript.s32(memory.read_u32(obj + 0x1c) - memory.read_u32(obj + 0x20))
+			if min_start > start:
+				min_start = start
+			memory.write_u32(obj + 0x2a, C68kScript.u32(min_start))
+		memory.write_u32(keep, obj)
+		keep += 4
+	memory.write_u32(0x219b8, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(point - 0x21f44), 12)))
+	memory.write_u32(count_ptr, C68kScript.u32(C68kScript.asr32(C68kScript.s32(keep - list), 2)))
+
+## 0x525c (Leyte only; update_altitude_detail_bands calls it after a reference move): for each controller of
+## controller_list (0x21bd4, long count 0x219b4, word index) whose definition (+4) type word is 8 and whose target
+## (+0x32) is set, the first later entry equal to the target's first long (*(+0x32)) is swapped with it, so that entry
+## comes first.
+func leyte_order_tracked_controllers() -> void:
+	assert(memory != null, "leyte_order_tracked_controllers requires original global memory")
+	var i: int = 0
+	while i < memory.read_s32(0x219b4):
+		var slot: int = 0x21bd4 + 4 * i
+		var ctl: int = memory.read_u32(slot)
+		if memory.read_u16(memory.read_u32(ctl + 4)) == 8 and memory.read_u32(ctl + 0x32) != 0:
+			var j: int = C68kScript.s16(i + 1)
+			while j < memory.read_s32(0x219b4):
+				var other: int = memory.read_u32(0x21bd4 + 4 * j)
+				if other == memory.read_u32(memory.read_u32(ctl + 0x32)):
+					memory.write_u32(slot, other)
+					memory.write_u32(0x21bd4 + 4 * j, ctl)
+					break
+				j = C68kScript.s16(j + 1)
+		i = C68kScript.s16(i + 1)
+
+## 0x52b6 (Leyte only; link.w a6,#-0x190, called by update_altitude_detail_bands at its end after a reference move):
+## when entity_array_1 (0x20b44, long count 0x20f2c) is not empty, its shapes (type byte +0x28 == 2) whose controller
+## (+0) definition type word is 0xf move to the end of the list, both parts in their order (through a frame buffer at
+## a6 - 0x190); the loops run the count's low word.
+func leyte_move_type0f_shapes_last() -> void:
+	assert(memory != null, "leyte_move_type0f_shapes_last requires original global memory")
+	if memory.read_s32(0x20f2c) <= 0:
+		return
+	var moved: Array = []
+	var write: int = 0x20b44
+	var read: int = 0x20b44
+	var left: int = memory.read_u16(0x20f2e)
+	while left != 0:
+		left -= 1
+		var obj: int = memory.read_u32(read)
+		read += 4
+		var ctl: int = memory.read_u32(obj)
+		if memory.read_u8(obj + 0x28) == 2 and ctl != 0 and memory.read_u16(memory.read_u32(ctl + 4)) == 0xf:
+			moved.append(obj)
+		else:
+			memory.write_u32(write, obj)
+			write += 4
+	if a7 != 0:
+		var buffer: int = a7 - 4 - 0x190
+		for k in moved.size():
+			memory.write_u32(buffer + 4 * k, moved[k])
+	for obj in moved:
+		memory.write_u32(write, obj)
+		write += 4
+
+## A hidden (+0x17 bit 1), unreferenced (+0x29 == 0) far object is freed (inlined twice in update_altitude_detail_bands):
+## its controller (+0) loses the object link, runs its definition destroy hook (+0xa) and is freed (0x30 below), then the
+## object. Returns whether a controller was freed.
+func _free_far_object(slot: int, entry_a7: int) -> bool:
+	assert(memory != null, "_free_far_object requires original global memory")
+	var freed_ctl: bool = false
+	var ctl: int = memory.read_u32(memory.read_u32(slot))
+	a7 = entry_a7 - 0x30
+	if ctl != 0:
+		memory.write_u32(ctl, 0)
+		var hook: int = memory.read_u32(memory.read_u32(ctl + 4) + 0xa)
+		if hook != 0:
+			_jsr(hook, [ctl])
+		heap_free_coalesce(ctl)
+		freed_ctl = true
+	heap_free_coalesce(memory.read_u32(slot))
+	a7 = entry_a7
+	return freed_ctl
+
+## 0x6882 (1.0.3's update_altitude_detail_bands 0x59f4, ten saved registers, no frame), 1.0.3's code on Leyte's
+## addresses and layout (land outline flag byte +0x16 bit 4, hidden byte +0x17 bit 1, reference byte +0x29, range +0x18,
+## the controller at +0), the loops testing their counts first, and two Leyte routines after a reference move:
+## leyte_order_tracked_controllers before the lists are re-sorted, leyte_move_type0f_shapes_last at the end. The altitude
+## band (0x23c3c, log word 0x23c34) follows the camera height; its value (table 0x2043c, interpolated) is the y of the
+## horizon objects' vertices (0x21594 vertices 0..3, 0x21598 +0x64 / +0x70). The near reference (x / y / z 0x23c54 /
+## 0x23c50 / 0x23c4c) moves to the camera beyond a metric of 0xce40, the far one (0x23c48 / 0x23c44 / 0x23c40) beyond
+## 0x80e80 (both move). A band change across 0xff or a move rebuilds the land outlines at the band's tolerance (table
+## 0x2048c); after a move the very far list (0x22d2c, 0x219c0; on a far move) and the far list (0x233bc, 0x219c4) are
+## re-sorted, freeing hidden unreferenced objects, and freed controllers are compacted out of controller_list.
+func update_altitude_detail_bands() -> void:
+	assert(memory != null, "update_altitude_detail_bands requires original global memory")
+	var entry_a7: int = a7
+	var near_moved: bool = false
+	var far_moved: bool = false
+	var rebuild: bool = false
+	var cam_y: int = memory.read_s32(0x23d64)
+	var band: int = memory.read_s32(0x23c3c)
+	if cam_y < band or not (C68kScript.s32(C68kScript.lsl32(band, 1)) > cam_y):
+		var old_band: int = band
+		var bits: int = 0
+		var y: int = cam_y
+		while y != 0:
+			y = C68kScript.asr32(y, 1)
+			bits += 1
+		if bits != 0:
+			memory.write_u32(0x23c3c, C68kScript.u32(C68kScript.lsl32(1, bits - 1)))
+			memory.write_u16(0x23c34, C68kScript.u16(bits - 1))
+		else:
+			memory.write_u32(0x23c3c, 0)
+			memory.write_u16(0x23c34, 0)
+		if memory.read_s32(0x23c3c) > 0xff or old_band > 0xff:
+			rebuild = true
+	var log2: int = memory.read_s16(0x23c34)
+	var value: int = memory.read_s32(C68kScript.u32(0x2043c + log2 * 4))
+	if memory.read_u32(0x23c3c) != 0:
+		value = C68kScript.s32(value + C68kScript.asr32(C68kScript.s32(C68kScript.s32(memory.read_u32(0x23d64) - memory.read_u32(0x23c3c)) * value), log2))
+	for k in 4:
+		memory.write_u32(memory.read_u32(memory.read_u32(0x21594) + 0x46) + 4 + 12 * k, C68kScript.u32(value))
+	memory.write_u32(memory.read_u32(memory.read_u32(0x21598) + 0x46) + 0x64, C68kScript.u32(value))
+	memory.write_u32(memory.read_u32(memory.read_u32(0x21598) + 0x46) + 0x70, C68kScript.u32(value))
+	a7 = entry_a7 - 0x38
+	var m: int = compute_camera_abs_metric(memory.read_s32(0x23c54), memory.read_s32(0x23c50), memory.read_s32(0x23c4c))
+	a7 = entry_a7
+	if C68kScript.s32(m + C68kScript.asr32(m, 3)) > 0xce40:
+		near_moved = true
+		rebuild = true
+		memory.write_u32(0x23c54, memory.read_u32(0x23d68))
+		memory.write_u32(0x23c50, memory.read_u32(0x23d64))
+		memory.write_u32(0x23c4c, memory.read_u32(0x23d60))
+	a7 = entry_a7 - 0x38
+	m = compute_camera_abs_metric(memory.read_s32(0x23c48), memory.read_s32(0x23c44), memory.read_s32(0x23c40))
+	a7 = entry_a7
+	if C68kScript.s32(m + C68kScript.asr32(m, 3)) > 0x80e80:
+		far_moved = true
+		near_moved = true
+		rebuild = true
+		for k in 3:
+			var c: int = memory.read_u32([0x23d68, 0x23d64, 0x23d60][k])
+			memory.write_u32(0x23c54 - 4 * k, c)
+			memory.write_u32(0x23c48 - 4 * k, c)
+	if rebuild:
+		var v: int = memory.read_s32(C68kScript.u32(0x2048c + memory.read_s16(0x23c34) * 4))
+		var halvings: int = 0
+		var w: int = v
+		while w > 0x7fff:
+			halvings += 1
+			w = C68kScript.asr32(w, 1)
+		var base: int = C68kScript.asr32(v, halvings)
+		var limit: int = C68kScript.s16(C68kScript.divs_trunc(C68kScript.s32(base * 9), 10))
+		var tol: int = C68kScript.s32(base * 0x16a1)
+		if tol < 0:
+			tol = C68kScript.s32(tol + 0xfff)
+		tol = C68kScript.s32(C68kScript.lsl32(C68kScript.asr32(tol, 12), halvings))
+		var slot: int = 0x20b44
+		var left: int = C68kScript.s32(memory.read_u32(0x20f2c))
+		while true:
+			left = C68kScript.s32(left - 1)
+			if left == -1:
+				break
+			var obj: int = memory.read_u32(slot)
+			slot += 4
+			if (memory.read_u8(obj + 0x16) & 0x10) == 0:
+				continue
+			a7 = entry_a7 - 0x30
+			reset_object_to_template_pose(obj)
+			a7 = entry_a7 - 0x40
+			build_land_outline_at_detail(obj, tol, C68kScript.s16(halvings), limit)
+			a7 = entry_a7
+	if not near_moved:
+		return
+	a7 = entry_a7 - 0x2c
+	leyte_order_tracked_controllers()
+	a7 = entry_a7
+	var freed: bool = false
+	if far_moved:
+		var write: int = 0x22d2c
+		var read: int = 0x22d2c
+		var count3: int = memory.read_s32(0x219c4)
+		var i: int = 0
+		while i < memory.read_s32(0x219c0):
+			var obj: int = memory.read_u32(read)
+			if (memory.read_u8(obj + 0x17) & 2) != 0:
+				if memory.read_u8(obj + 0x29) != 0:
+					memory.write_u32(write, obj)
+					write += 4
+				elif _free_far_object(read, entry_a7):
+					freed = true
+				read += 4
+			else:
+				a7 = entry_a7 - 0x30
+				var d: int = C68kScript.s32(update_object_camera_metric(obj) - memory.read_u32(memory.read_u32(read) + 0x18))
+				a7 = entry_a7
+				obj = memory.read_u32(read)
+				if d > 0x80e7f:
+					memory.write_u32(write, obj)
+					write += 4
+				else:
+					memory.write_u32(C68kScript.u32(0x233bc + count3 * 4), obj)
+					count3 += 1
+				read += 4
+			i += 1
+		memory.write_u32(0x219c0, C68kScript.u32(C68kScript.asr32(write - 0x22d2c, 2)))
+		memory.write_u32(0x219c4, C68kScript.u32(count3))
+	var write3: int = 0x233bc
+	var read3: int = 0x233bc
+	var j: int = 0
+	while j < memory.read_s32(0x219c4):
+		var obj: int = memory.read_u32(read3)
+		if (memory.read_u8(obj + 0x17) & 2) != 0:
+			if memory.read_u8(obj + 0x29) != 0:
+				memory.write_u32(write3, obj)
+				write3 += 4
+			elif _free_far_object(read3, entry_a7):
+				freed = true
+			read3 += 4
+		else:
+			a7 = entry_a7 - 0x30
+			var d: int = C68kScript.s32(update_object_camera_metric(obj) - memory.read_u32(memory.read_u32(read3) + 0x18))
+			a7 = entry_a7
+			obj = memory.read_u32(read3)
+			if d > 0x80e7f:
+				memory.write_u32(C68kScript.u32(0x22d2c + memory.read_s32(0x219c0) * 4), obj)
+				memory.write_u32(0x219c0, C68kScript.u32(memory.read_u32(0x219c0) + 1))
+			elif d > 0xce3f:
+				memory.write_u32(write3, obj)
+				write3 += 4
+			else:
+				a7 = entry_a7 - 0x30
+				activate_near_range_object(obj)
+				a7 = entry_a7
+			read3 += 4
+		j += 1
+	memory.write_u32(0x219c4, C68kScript.u32(C68kScript.asr32(write3 - 0x233bc, 2)))
+	if freed:
+		var dst: int = 0x21bd4
+		var src: int = 0x21bd4
+		var n: int = C68kScript.s32(memory.read_u32(0x219b4))
+		while true:
+			n = C68kScript.s32(n - 1)
+			if n == -1:
+				break
+			var ctl: int = memory.read_u32(src)
+			src += 4
+			if memory.read_u32(ctl) != 0:
+				memory.write_u32(dst, ctl)
+				dst += 4
+		memory.write_u32(0x219b4, C68kScript.u32(C68kScript.asr32(dst - 0x21bd4, 2)))
+	a7 = entry_a7 - 0x2c
+	leyte_move_type0f_shapes_last()
+	a7 = entry_a7
+
+## 0x6c9a (1.0.3's update_ground_scatter_objects 0x5e08; link.w a6,#-0x38c, nine saved registers: body 0x3b4 below the
+## entry), written from Leyte's listing on 1.0.3's structure. Leyte's layout: object flags long +0x14 (for +4; byte +0x15
+## bit 4, word +0x16), class word +0x10 and scene index word +0x12 (1.0.3's bytes +1 / +2), metric +0x1c, vertex / face
+## counts +0x38 / +0x3c, vertices +0x46, fractal reference +0x2e; the template descriptors from the mission root's +0x2a
+## list + 0x1a. Off unless host word +0xac (scatter_started 0x2b228 cleared); h = camera y, minus the player's (0x20b28)
+## +0x2e in views <= 5; above 0x26ac the slots are cleared once (clear_pending_entity_slots). First use (or view_flag
+## 0x23d86) resets the 64 points (0x2110c) to x = z = 1000000000 and the 7 slots' (0x2144c) +0x14 bit 2. A point beyond
+## 0x4d58 of the camera on x or z is re-placed (views <= 5 without the flag: on the 0x4d58 circle at the player heading
+## +0x22 +-0x600; otherwise in the square), a slot it named loses +0x14 bit 2, its state byte (0x210cc) becomes 0x3f. The
+## points are taken to view space (frame a6 - 0x300) and projected; newly on-screen ones get bit 7 and join the visible
+## list (a6 - 0x380, words). Each slot k: a live object (+0x14 & 6 == 0) whose point (0x2107c) no longer reads 0xc0 | k
+## detaches and is hidden (+0x14 |= 0x40) when nothing is newly visible, else unhidden and moved; an empty slot takes a
+## point when one is. Points are popped until one's surface (cached at 0x2108c with state bit 6 - zero-extended - else
+## surface_type_at_point(x, 0, z), its word) has a template (0x2140c, surface asr.w 4); heading 0x540 on surface 0x10,
+## else ((r & 0xfff) << 6) >> 4. A same-class object with vertices is re-placed in place; another is cleaned up and
+## respawned; an empty slot spawns spawn_mission_pool_object(template, x, y, z, 0, heading, 0, 0).
+func update_ground_scatter_objects() -> void:
+	assert(memory != null, "update_ground_scatter_objects requires original global memory")
+	assert(a7 != 0, "update_ground_scatter_objects needs a7 (its frame holds the view points)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var body: int = entry_a7 - 0x3b4
+	var view_buf: int = a6 - 0x300
+	var visible: int = a6 - 0x380
+	if memory.read_u16(memory.read_u32(0x207fc) + 0xac) == 0:
+		memory.write_u32(0x2b228, 0)
+		return
+	var h: int = memory.read_s32(0x23d64)
+	if memory.read_s16(0x23d88) <= 5:
+		h = C68kScript.s32(h - memory.read_u32(memory.read_u32(0x20b28) + 0x2e))
+	if h > 0x26ac:
+		if memory.read_u32(0x2b228) == 0:
+			return
+		a7 = body - 4
+		clear_pending_entity_slots()
+		a7 = entry_a7
+		memory.write_u32(0x2b228, 0)
+		return
+	if memory.read_u32(0x2b228) == 0:
+		memory.write_u16(0x23d86, 1)
+		memory.write_u32(0x2b228, 1)
+	if memory.read_u16(0x23d86) != 0:
+		for i in 0x40:
+			memory.write_u32(0x2110c + 12 * i, 1000000000)
+			memory.write_u32(0x2110c + 12 * i + 8, 1000000000)
+		for k in 7:
+			var slot_obj: int = memory.read_u32(0x2144c + 4 * k)
+			if slot_obj != 0:
+				memory.write_u32(slot_obj + 0x14, memory.read_u32(slot_obj + 0x14) & 0xfffffffb)
+	var tmpl_base: int = C68kScript.u32(memory.read_u32(memory.read_u32(0x23c2c) + 0x2a) + 0x1a)
+	for i in 0x40:
+		var pt: int = 0x2110c + 12 * i
+		a7 = body - 8
+		var far: bool = abs_int(C68kScript.s32(memory.read_u32(pt) - memory.read_u32(0x23d68))) > 0x4d58
+		if not far:
+			far = abs_int(C68kScript.s32(memory.read_u32(pt + 8) - memory.read_u32(0x23d60))) > 0x4d58
+		a7 = entry_a7
+		if not far:
+			continue
+		if memory.read_s16(0x23d88) <= 5 and memory.read_u16(0x23d86) == 0:
+			a7 = body - 4
+			var r: int = overlay_rng_next()
+			var bearing: int = (C68kScript.asr32((r & 0xfff) * 0xc00, 12) + memory.read_u16(memory.read_u32(0x20b28) + 0x22) + 0xfa00) & 0x3fff
+			a7 = body - 8
+			var sin_v: int = sin_fixed14(bearing)
+			a7 = body - 0xc
+			var cos_v: int = cos_fixed14(bearing)
+			a7 = entry_a7
+			memory.write_u32(pt, C68kScript.u32(C68kScript.asr32(C68kScript.s16(sin_v) * -0x4d58, 12) + memory.read_s32(0x23d68)))
+			memory.write_u32(pt + 4, 0)
+			memory.write_u32(pt + 8, C68kScript.u32(C68kScript.asr32(C68kScript.s16(cos_v) * 0x4d58, 12) + memory.read_s32(0x23d60)))
+		else:
+			a7 = body - 4
+			var rx: int = overlay_rng_next()
+			a7 = entry_a7
+			memory.write_u32(pt, C68kScript.u32(C68kScript.asr32((rx & 0xfff) * 0x9ab0, 12) + memory.read_s32(0x23d68) - 0x4d58))
+			memory.write_u32(pt + 4, 0)
+			a7 = body - 4
+			var rz: int = overlay_rng_next()
+			a7 = entry_a7
+			memory.write_u32(pt + 8, C68kScript.u32(C68kScript.asr32((rz & 0xfff) * 0x9ab0, 12) + memory.read_s32(0x23d60) - 0x4d58))
+		var state: int = memory.read_u8(0x210cc + i)
+		if (state & 0xc0) == 0xc0 and (state & 0x3f) != 0x3f:
+			var named: int = memory.read_u32(0x2144c + 4 * (state & 0x3f))
+			if named != 0:
+				memory.write_u32(named + 0x14, memory.read_u32(named + 0x14) & 0xfffffffb)
+		memory.write_u8(0x210cc + i, 0x3f)
+	a7 = body - 0x1c
+	translate_int3_vecs(0x40, 0x2110c, view_buf, C68kScript.s32(-memory.read_s32(0x23d68)), C68kScript.s32(-h), C68kScript.s32(-memory.read_s32(0x23d60)))
+	a7 = body - 0x2c
+	transform_vecs12_by_matrix3(0x40, view_buf, view_buf, 0x23c74)
+	a7 = entry_a7
+	var n_visible: int = 0
+	for i in 0x40:
+		var v: int = view_buf + 12 * i
+		var vz: int = memory.read_s16(v + 0xa)
+		var on_screen: bool = false
+		if vz > 4:
+			var sx: int = C68kScript.divs_trunc(C68kScript.s32(memory.read_s16(v + 2) * memory.read_s16(0x27050)), vz)
+			var sy: int = C68kScript.divs_trunc(C68kScript.s32(-memory.read_s16(v + 6) * memory.read_s16(0x2704e)), vz)
+			on_screen = not (memory.read_s16(0x2701a) > sx or memory.read_s16(0x27018) < sx
+					or memory.read_s16(0x27016) > sy or memory.read_s16(0x20b2e) < sy)
+		if not on_screen:
+			memory.write_u8(0x210cc + i, memory.read_u8(0x210cc + i) & 0x7f)
+		elif memory.read_u8(0x210cc + i) < 0x80:
+			memory.write_u8(0x210cc + i, memory.read_u8(0x210cc + i) | 0x80)
+			memory.write_u16(visible + 2 * n_visible, i)
+			n_visible += 1
+	for k in 7:
+		var obj: int = memory.read_u32(0x2144c + 4 * k)
+		if obj != 0:
+			if (memory.read_u32(obj + 0x14) & 6) != 0:
+				continue
+			var own: int = memory.read_s16(0x2107c + 2 * k)
+			var own_state: int = memory.read_u8(C68kScript.u32(0x210cc + own))
+			if own_state == (k | 0xc0):
+				continue
+			if (own_state & 0x3f) == k:
+				memory.write_u8(C68kScript.u32(0x210cc + own), own_state | 0x3f)
+			if n_visible == 0:
+				memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) | 0x40)
+				continue
+			memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) & 0xffffffbf)
+		var point: int = 0
+		var surface: int = 0
+		var template: int = 0
+		while n_visible != 0:
+			n_visible -= 1
+			point = memory.read_s16(visible + 2 * n_visible)
+			if (memory.read_u8(0x210cc + point) & 0x40) != 0:
+				surface = memory.read_u8(0x2108c + point)
+			else:
+				var pt0: int = 0x2110c + 12 * point
+				a7 = body - 0x10
+				surface = C68kScript.s16(surface_type_at_point(memory.read_s32(pt0), 0, memory.read_s32(pt0 + 8)))
+				a7 = entry_a7
+				memory.write_u8(0x2108c + point, surface & 0xff)
+				memory.write_u8(0x210cc + point, memory.read_u8(0x210cc + point) | 0x40)
+			template = memory.read_u32(C68kScript.u32(0x2140c + (surface >> 4) * 4))
+			if template != 0:
+				break
+		if template == 0:
+			continue
+		var pt: int = 0x2110c + 12 * point
+		memory.write_u8(0x210cc + point, (memory.read_u8(0x210cc + point) & 0xc0) | k)
+		memory.write_u16(0x2107c + 2 * k, point)
+		var heading: int
+		if surface == 0x10:
+			heading = 0x540
+		else:
+			a7 = body - 4
+			heading = ((overlay_rng_next() & 0xfff) << 6) >> 4
+			a7 = entry_a7
+		if obj == 0:
+			a7 = body - 0x24
+			memory.write_u32(0x2144c + 4 * k, C68kScript.u32(spawn_mission_pool_object(template, memory.read_s32(pt), memory.read_s32(pt + 4), memory.read_s32(pt + 8), 0, C68kScript.s16(heading), 0, 0)))
+			a7 = entry_a7
+		elif memory.read_u16(template + 0x10) == memory.read_u16(obj + 0x10) and memory.read_u32(obj + 0x46) != 0:
+			if memory.read_u32(obj + 0x2e) != 0:
+				a7 = body - 8
+				release_fractal_reference(obj)
+				a7 = entry_a7
+			memory.write_u16(obj + 0x16, memory.read_u16(obj + 0x16) | 0x800)
+			var rec: int = C68kScript.u32(memory.read_u32(memory.read_u32(0x23c2c) + 0x32) + memory.read_u16(obj + 0x12) * 0x18)
+			memory.write_u32(rec + 8, memory.read_u32(pt))
+			memory.write_u32(rec + 0xc, 0)
+			memory.write_u32(rec + 0x10, memory.read_u32(pt + 8))
+			memory.write_u16(rec + 4, C68kScript.u16(heading))
+			var desc: int = C68kScript.u32(memory.read_u32(C68kScript.u32(tmpl_base + 0x14 + memory.read_u16(obj + 0x10) * 0x18)) + memory.read_u32(memory.read_u32(0x207fc) + 0x8c))
+			memory.write_u32(obj + 4, C68kScript.u32(memory.read_u32(pt) + memory.read_u32(desc + 2)))
+			memory.write_u32(obj + 8, memory.read_u32(desc + 6))
+			memory.write_u32(obj + 0xc, C68kScript.u32(memory.read_u32(pt + 8) + memory.read_u32(desc + 0xa)))
+			var n: int = C68kScript.s32(memory.read_s16(obj + 0x38) + memory.read_s16(obj + 0x3c))
+			if (memory.read_u8(obj + 0x15) & 0x10) != 0:
+				a7 = body - 0x1c
+				translate_int3_vecs(n, C68kScript.u32(desc + 0x22), memory.read_u32(obj + 0x46), 0, 0, 0)
+			else:
+				a7 = body - 0x14
+				apply_template_chain_xform(obj, n, C68kScript.u32(desc + 0x22), memory.read_u32(obj + 0x46))
+			a7 = body - 8
+			update_object_camera_metric(obj)
+			a7 = body - 0x10
+			update_object_distance_band(obj, memory.read_s32(obj + 0x1c))
+			a7 = body - 0x14
+			shade_object_faces(obj)
+			a7 = entry_a7
+		else:
+			a7 = body - 8
+			dispatch_entity_cleanup(obj)
+			a7 = body - 0x28
+			memory.write_u32(0x2144c + 4 * k, C68kScript.u32(spawn_mission_pool_object(template, memory.read_s32(pt), memory.read_s32(pt + 4), memory.read_s32(pt + 8), 0, C68kScript.s16(heading), 0, 0)))
+			a7 = entry_a7
+
+## Camera-matrix transform of a word vector (x, y, z) into a 12-byte view record's words +2 / +6 / +0xa ((sum of muls.w +
+## 0x800) asr 12 through the camera matrix 0x23c74; inlined in draw_distant_object_dots).
+func _camera_transform_words(x: int, y: int, z: int, out: int) -> void:
+	for c in 3:
+		var acc: int = C68kScript.s32(x * memory.read_s16(0x23c74 + 2 * c) + y * memory.read_s16(0x23c74 + 6 + 2 * c)
+				+ z * memory.read_s16(0x23c74 + 12 + 2 * c) + 0x800)
+		memory.write_u16(out + 2 + 4 * c, C68kScript.u16(C68kScript.asr32(acc, 12)))
+
+## 0x1a296 (1.0.3's draw_distant_object_dots 0x1629a; link.w a6,#-0x30, ten saved registers: body 0x5c below the
+## entry), 1.0.3's code on Leyte's layout and addresses: the controller at +0 (for +8), faces +0x4a, shift word +0x34 and
+## scale word +0x36 (for +0x32 / +0x34), position +4 / +8 / +0xc (for +0x18 / +0x1c / +0x20), vertices +0x46; the queue
+## 0x2cb86 (count word 0x2cb84), the dot records 0x2c83c (count word 0x23fbc), the colour tally 0x23fba and colour word
+## 0x23fb8, the erase / plot routines (0x23fb4 / 0x23fb0), the screen bounds 0x2701a / 0x27018 / 0x27016 / 0x27014. A
+## trail (controller byte +0x3b bit 1) transforms its first two vertices: Leyte tests the count first, where 1.0.3 ran a
+## third record. Each record in front and on screen gets a dot (size 4 / 3 / 2 / 1 by distance against 5000 shifted).
+func draw_distant_object_dots() -> void:
+	assert(memory != null, "draw_distant_object_dots requires original global memory")
+	assert(a7 != 0, "draw_distant_object_dots needs a7 (its frame holds the view records)")
+	var entry_a7: int = a7
+	var records: int = entry_a7 - 4 - 0x18
+	if memory.read_u16(memory.read_u32(0x207fc) + 0x9e) != 0:
+		memory.write_u16(0x2cb84, 0)
+		memory.write_u16(0x23fbc, 0)
+	a7 = entry_a7 - 0x60
+	_jsr(memory.read_u32(0x23fb4), [])
+	a7 = entry_a7
+	var queue: int = 0x2cb86
+	var out: int = 0x2c83c
+	var left: int = memory.read_u16(0x2cb84)
+	while true:
+		left = (left - 1) & 0xffff
+		if left == 0xffff:
+			break
+		var obj: int = memory.read_u32(queue)
+		queue += 4
+		var ctl: int = memory.read_u32(obj)
+		var face: int = memory.read_u32(obj + 0x4a)
+		var shift: int = memory.read_s16(obj + 0x34)
+		var tally_used: bool = false
+		if memory.read_u8(face + 0xf) != 0xff:
+			if memory.read_u16(0x23fba) != 0:
+				memory.write_u8(face + 0xf, memory.read_u8(0x23fbb))
+				tally_used = true
+			else:
+				a7 = entry_a7 - 0x64
+				var failed: int = assign_face_colour(face)
+				a7 = entry_a7
+				if failed != 0:
+					return
+				memory.write_u16(0x23fba, memory.read_u8(face + 0xf))
+		if not tally_used:
+			memory.write_u16(0x23fb8, memory.read_u16(face + 6))
+		var near: int
+		var count: int
+		if (memory.read_u8(ctl + 0x3b) & 2) != 0:
+			var d5: int = C68kScript.s16(memory.read_u16(obj + 0x36) - shift)
+			var rel: Array = []
+			for k in 3:
+				rel.append(_shift_signed(C68kScript.s32(memory.read_u32([0x23d68, 0x23d64, 0x23d60][k]) - memory.read_u32(obj + 4 + 4 * k)), d5))
+			near = _shift_signed(5000, d5)
+			var v: int = memory.read_u32(obj + 0x46)
+			for k in 2:
+				var x: int = C68kScript.s16(C68kScript.asr32(memory.read_s32(v), shift) - rel[0])
+				var y: int = C68kScript.s16(C68kScript.asr32(memory.read_s32(v + 4), shift) - rel[1])
+				var z: int = C68kScript.s16(C68kScript.asr32(memory.read_s32(v + 8), shift) - rel[2])
+				_camera_transform_words(x, y, z, records + 12 * k)
+				v += 12
+			count = 2
+		else:
+			var px: int = C68kScript.s16(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 4) - memory.read_u32(0x23d68)), shift))
+			var py: int = C68kScript.s16(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 8) - memory.read_u32(0x23d64)), shift))
+			var pz: int = C68kScript.s16(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 0xc) - memory.read_u32(0x23d60)), shift))
+			near = C68kScript.asr32(5000, shift)
+			_camera_transform_words(px, py, pz, records)
+			count = 1
+		for k in count:
+			var rec: int = records + 12 * k
+			var z2: int = memory.read_s16(rec + 0xa)
+			if z2 <= 4:
+				continue
+			var sx: int = C68kScript.divs_trunc(C68kScript.s32(memory.read_s16(rec + 2) * memory.read_s16(0x27050)), z2)
+			var sy: int = C68kScript.divs_trunc(C68kScript.s32(-memory.read_s16(rec + 6) * memory.read_s16(0x2704e)), z2)
+			if memory.read_s16(0x2701a) > sx or C68kScript.s32(memory.read_s16(0x27018) - 1) < sx:
+				continue
+			if memory.read_s16(0x27016) > sy or C68kScript.s32(memory.read_s16(0x27014) - 1) < sy:
+				continue
+			var size: int
+			if z2 <= near:
+				size = 4
+			else:
+				var half: int = near
+				if half < 0:
+					half += 1
+				var mid: int = C68kScript.s32((half >> 1) + near)
+				if mid >= z2:
+					size = 3
+				elif C68kScript.s32(C68kScript.lsl32(near, 1)) >= z2:
+					size = 2
+				else:
+					size = 1
+			memory.write_u16(out + 6, size)
+			memory.write_u8(out + 8, memory.read_u8(0x23fb9))
+			a7 = entry_a7 - 0x70
+			_jsr(memory.read_u32(0x23fb0), [out, sx, sy, size])
+			a7 = entry_a7
+			out += 0xe
+	memory.write_u16(0x2cb84, 0)
+	memory.write_u16(0x23fbc, C68kScript.u16(C68kScript.divs_trunc(C68kScript.s32(out - 0x2c83c), 0xe)))
+
+## overlay_frame_step's queueing (inlined): obj at visible_list (0x22994) [visible_count (0x219bc)++], its flags long +0x14
+## bit 2 set.
+func _queue_visible(obj: int) -> void:
+	var count: int = memory.read_u32(0x219bc)
+	memory.write_u32(C68kScript.u32(0x22994 + count * 4), obj)
+	memory.write_u32(0x219bc, C68kScript.u32(count + 1))
+	memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) | 4)
+
+## overlay_frame_step's far-object sort (inlined; calls entered 8 below the body): the far objects (0x20804, long count
+## 0x20b24) are insertion-sorted by descending metric +0x1c (stable). Without carried pairs (word 0x21046) each key is the
+## fresh update_object_camera_metric; with them all metrics update first, each rider's +0x1c is saved in +0x2a and biased
+## by its carrier's +0x20: with the carrier's level (its controller's word +0x696) below the camera height, added when the
+## level is above the rider's y + 100, else subtracted; at or above it, added unless the level is above the rider's y +
+## 100. The sort runs on the biased keys, the saved metrics come back and the pair count is cleared. (1.0.3: metric +0x10,
+## carrier +0x14, level controller +0x54, rider y without the 100.)
+func _sort_far_objects(body: int) -> void:
+	var entry: int = a7
+	var count: int = memory.read_s32(0x20b24)
+	var pairs: int = memory.read_s16(0x21046)
+	a7 = body - 8
+	if pairs != 0:
+		for i in range(maxi(count, 0)):
+			update_object_camera_metric(memory.read_u32(0x20804 + 4 * i))
+		var pair: int = memory.read_u32(0x21048)
+		for k in range(maxi(pairs, 0)):
+			var carrier: int = memory.read_u32(pair + 8 * k)
+			var rider: int = memory.read_u32(pair + 8 * k + 4)
+			memory.write_u32(rider + 0x2a, memory.read_u32(rider + 0x1c))
+			var level: int = memory.read_s16(memory.read_u32(carrier) + 0x696)
+			var above: bool = level > C68kScript.s32(memory.read_u32(rider + 8) + 100)
+			var delta: int = 0
+			if level < memory.read_s32(0x23d64):
+				delta = 1 if above else -1
+			elif not above:
+				delta = 1
+			if delta != 0:
+				memory.write_u32(rider + 0x1c, C68kScript.u32(memory.read_u32(rider + 0x1c) + delta * memory.read_s32(carrier + 0x20)))
+	for i in range(maxi(count, 0)):
+		var obj: int = memory.read_u32(0x20804 + 4 * i)
+		var key: int
+		if pairs != 0:
+			key = memory.read_s32(obj + 0x1c)
+		else:
+			key = C68kScript.s32(update_object_camera_metric(obj))
+		var j: int = i - 1
+		while j >= 0 and key > memory.read_s32(memory.read_u32(0x20804 + 4 * j) + 0x1c):
+			memory.write_u32(0x20804 + 4 * (j + 1), memory.read_u32(0x20804 + 4 * j))
+			j -= 1
+		memory.write_u32(0x20804 + 4 * (j + 1), obj)
+	if pairs != 0:
+		var pair2: int = memory.read_u32(0x21048)
+		for k in range(maxi(pairs, 0)):
+			var rider2: int = memory.read_u32(pair2 + 8 * k + 4)
+			memory.write_u32(rider2 + 0x1c, memory.read_u32(rider2 + 0x2a))
+		memory.write_u16(0x21046, 0)
+	a7 = entry
+
+## overlay_frame_step: a host routine (host_world + offset), entered 4 + 4 * args below the body.
+func _frame_host(body: int, offset: int, args: Array) -> void:
+	var saved: int = a7
+	a7 = body - 4 - 4 * args.size()
+	_jsr(memory.read_u32(memory.read_u32(0x207fc) + offset), args)
+	a7 = saved
+
+## overlay_frame_step's panel layout (inlined, view 1 with the panels not drawn: 0x27010 clear):
+## reset_overlay_display_state; the panel rows from the y scale 0x2704e (0x20b2e = * 0x78 / 0x1e0, 0x27014 = * 0x43 /
+## 0x1e0, 0x27012 = 0x20b2e + half of 0x21010). step_mode 0 re-creates the session buffers around host +0x2a2 (unlock,
+## then allocate / lock both, the panels-drawn flag kept from the host's call: when the host clears it the flag stays
+## set below). For new frame 1 the host's four handle pointers (+0x196 / +0x1b0 / +0x1b8 / +0xdc) are read into +0x19a /
+## +0x1b4 / +0x1bc / +0xe0 (masked to 24 bits with host word +0x76). Then draw_sky_and_ground and update_heading_tape
+## (both with the hooks flag), host +0x2a6, update_radar_range_buttons; the cursor hook (+0x2fe) around each step when
+## the hooks are on. Leyte's +0x2fe / +0x2a2 / +0x2a6 are 1.0.3's +0x2c2 / +0x26a / +0x26e.
+func _lay_out_view_panels(body: int, step_mode: int, new_frame: int, hooks: bool) -> void:
+	var saved: int = a7
+	a7 = body - 4
+	reset_overlay_display_state()
+	a7 = saved
+	var scale_y: int = memory.read_s16(0x2704e)
+	memory.write_u16(0x20b2e, C68kScript.u16(C68kScript.divs_trunc(C68kScript.s32(scale_y * 0x78), 0x1e0)))
+	memory.write_u16(0x27014, C68kScript.u16(C68kScript.divs_trunc(C68kScript.s32(scale_y * 0x43), 0x1e0)))
+	var half: int = memory.read_s16(0x21010)
+	if half < 0:
+		half += 1
+	memory.write_u16(0x27012, C68kScript.u16((half >> 1) + memory.read_u16(0x20b2e)))
+	var kept: bool = false
+	if C68kScript.u32(step_mode) == 0:
+		if hooks:
+			_frame_host(body, 0x2fe, [])
+		a7 = body - 4
+		unlock_session_buffers()
+		a7 = saved
+		memory.write_u16(0x27010, 1)
+		_frame_host(body, 0x2a2, [])
+		if memory.read_u16(0x27010) == 0:
+			kept = true
+		memory.write_u16(0x27010, 0)
+		a7 = body - 4
+		allocate_session_buffers()
+		lock_session_buffers()
+		lock_overlay_buffers()
+		a7 = saved
+		if hooks:
+			_frame_host(body, 0x2fe, [])
+	if C68kScript.u32(new_frame) == 1:
+		var host: int = memory.read_u32(0x207fc)
+		var mask: int = 0xffffff if memory.read_u16(host + 0x76) != 0 else 0xffffffff
+		for pair in [[0x196, 0x19a], [0x1b0, 0x1b4], [0x1b8, 0x1bc], [0xdc, 0xe0]]:
+			memory.write_u32(host + pair[1], memory.read_u32(memory.read_u32(host + pair[0])) & mask)
+	a7 = body - 8
+	draw_sky_and_ground(1 if hooks else 0)
+	a7 = body - 0xc
+	update_heading_tape(1 if hooks else 0)
+	a7 = saved
+	if hooks:
+		_frame_host(body, 0x2fe, [])
+	_frame_host(body, 0x2a6, [])
+	a7 = body - 4
+	update_radar_range_buttons()
+	a7 = saved
+	if hooks:
+		_frame_host(body, 0x2fe, [])
+	if not kept:
+		memory.write_u16(0x27010, 1)
+
+## 0x741e (hook 10; 1.0.3's overlay_frame_step 0x6578; link.w a6,#-0x38, ten saved registers: body 0x64 below the entry),
+## written from Leyte's listing. One overlay frame for window new_frame (1 the main view):
+## - new frame 1 swaps the slot usage maps (0x23d94 / 0x23d90; the new current one, 64 longs, cleared) and counts the
+##   colour tally slot (word 0x23fba); 20 retirements (0x2b22c) reset the distance bases; the altitude bands update;
+## - Leyte's side views (new_frame != 1): the screen bounds, view mode, palette face (0x21590, cleared) and bottom rows are
+##   saved and set for view mode 2 (0x27014 = 0x20b2e = 0x20b30, 0x27012 = 0x21010), the heading (0x23d30) turned by
+##   -0xd43 for window 2 (+0xd43 otherwise), all restored at the end;
+## - the window's colour owners (0x23f9c[n] -> 0x23fac), span buffers (0x20f6c / 0x20f5c[n] -> 0x20f7c / 0x20f80), and
+##   host record (host + 0x1a + 0x16 n: +4 -> 0x23d8c, word +8 -> 0x23d8a); the fill colour follows the depth;
+## - the inverse camera matrix (view mode 2: six angles and the vector (0, 0, 0x1000) in the frame; otherwise the folded
+##   fourth angle times the third's sine), the horizon objects queued (0x21598 also re-banded and shaded with haze, else
+##   0x2159c) and transformed, then the forward matrix;
+## - the camera metrics of entity_array_1, the ground scatter, the visible split, the far sort (_sort_far_objects), the
+##   near and far lists (overlap collisions only every 16th frame: 0x21020 & 0xf, flag 0x219a4), the contacts, the
+##   visible list, the rendering, the presentation (depth 1: the host or present_bw_frame; otherwise present_spans_to_window
+##   or the span filler 0x26ff0, the span buffers swapped);
+## - in view 1 with the panels not drawn, _lay_out_view_panels; then the readouts, gauges, radar buttons, bomb and state
+##   lamps; the cursor hook (+0x2fe) around them when host word +0x76 is set and +0x9e clear;
+## - the window's span buffers stored back.
+func overlay_frame_step(step_mode: int, new_frame: int) -> void:
+	assert(memory != null, "overlay_frame_step requires original global memory")
+	assert(a7 != 0, "overlay_frame_step needs a7 (its frame holds the matrix, vector and span cursors)")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x64
+	var a6: int = entry_a7 - 4
+	var host: int = memory.read_u32(0x207fc)
+	var hooks: bool = memory.read_u16(host + 0x76) != 0 and memory.read_u16(host + 0x9e) == 0
+	var frame: int = C68kScript.s32(new_frame)
+	if C68kScript.u32(new_frame) == 1:
+		var old_cur: int = memory.read_u32(0x23d94)
+		memory.write_u32(0x23d94, memory.read_u32(0x23d90))
+		memory.write_u32(0x23d90, old_cur)
+		var clear: int = memory.read_u32(0x23d94)
+		for i in range(0x40):
+			memory.write_u32(C68kScript.u32(clear + 4 * i), 0)
+		var slot: int = C68kScript.u32(memory.read_u32(0x23d94) + memory.read_s16(0x23fba))
+		memory.write_u8(slot, (memory.read_u8(slot) + 1) & 0xff)
+	a7 = body - 4
+	if memory.read_s32(0x2b22c) > 0x13:
+		reset_distance_base_globals()
+		memory.write_u32(0x2b22c, 0)
+	update_altitude_detail_bands()
+	a7 = entry_a7
+	var saved: Array = []
+	if C68kScript.u32(new_frame) != 1:
+		saved = [memory.read_u16(0x20b2e), memory.read_u16(0x2701a), memory.read_u16(0x27018), memory.read_u16(0x27016),
+				memory.read_u16(0x27014), memory.read_u16(0x27012), memory.read_u16(0x23d88), memory.read_u32(0x21590)]
+		memory.write_u32(0x21590, 0)
+		var bottom: int = memory.read_u16(0x20b30)
+		memory.write_u16(0x27014, bottom)
+		memory.write_u16(0x20b2e, bottom)
+		memory.write_u16(0x27012, memory.read_u16(0x21010))
+		memory.write_u16(0x23d88, 2)
+		var turn: int = -0xd43 if C68kScript.u32(new_frame) == 2 else 0xd43
+		memory.write_u32(0x23d30, C68kScript.u32(memory.read_u32(0x23d30) + turn) & 0x3fff)
+	memory.write_u32(0x23fac, memory.read_u32(C68kScript.u32(0x23f9c + frame * 4)))
+	memory.write_u32(0x20f7c, memory.read_u32(C68kScript.u32(0x20f6c + frame * 4)))
+	memory.write_u32(0x20f80, memory.read_u32(C68kScript.u32(0x20f5c + frame * 4)))
+	var record: int = C68kScript.u32(frame * 0x16 + memory.read_u32(0x207fc) + 0x1a)
+	memory.write_u32(0x23d8c, memory.read_u32(record + 4))
+	memory.write_u16(0x23d8a, memory.read_u16(record + 8))
+	var depth: int = memory.read_s16(0x2100e)
+	if depth == 8:
+		memory.write_u16(0x23fd0, memory.read_u16(memory.read_u32(0x23d8c) + 0x1a0))
+	elif depth == 4:
+		memory.write_u16(0x23fd0, memory.read_u16(memory.read_u32(0x23d8c) + 0x10))
+	if memory.read_s16(0x23d88) == 2:
+		var matrix: int = a6 - 0x1e
+		var vec: int = a6 - 0xc
+		a7 = body - 0x20
+		build_attitude_matrix_6ang(-memory.read_s16(0x23d40) & 0x3fff, 0, -memory.read_s16(0x23d3c) & 0x3fff,
+				-memory.read_s32(0x23d38) & 0x3fff, -memory.read_s32(0x23d34) & 0x3fff, -memory.read_s32(0x23d30) & 0x3fff, matrix)
+		memory.write_u16(vec + 6, 0)
+		memory.write_u16(a6 - 0xa, 0)
+		memory.write_u16(a6 - 2, 0x1000)
+		a7 = body - 0x30
+		transform_vecs12_by_matrix3(1, vec, vec, matrix)
+		memory.write_u16(0x23d28, memory.read_u16(a6 - 0xa))
+		memory.write_u16(0x23d26, memory.read_u16(a6 - 2))
+		a7 = body - 8
+		invoke_tagged_attitude_compose_neg_sins6(0x23c74)
+	else:
+		a7 = body - 8
+		var folded: int = C68kScript.s16(fold_angle_pm_0x2000(memory.read_u32(0x23d38)))
+		a7 = body - 0xc
+		var sin: int = C68kScript.s16(sin_fixed14(memory.read_s16(0x23d3c)))
+		a7 = body - 0x20
+		build_attitude_matrix_x_alt(memory.read_s16(0x23d40), C68kScript.asr32(folded * sin, 12) & 0x3fff,
+				memory.read_s16(0x23d3c), memory.read_s32(0x23d38), 0x23c74)
+	a7 = entry_a7
+	if memory.read_u16(memory.read_u32(0x207fc) + 0xaa) != 0:
+		var child1: int = memory.read_u32(0x21598)
+		_queue_visible(child1)
+		a7 = body - 0x14
+		transform_vecs12_by_matrix3(memory.read_s16(child1 + 0x38), memory.read_u32(child1 + 0x46), memory.read_u32(child1 + 0x4e), 0x23c74)
+		a7 = body - 0x1c
+		var banded: int = update_object_distance_band(memory.read_u32(0x21594), C68kScript.u32(C68kScript.lsl32(memory.read_u32(0x23d64), 1)))
+		if C68kScript.u32(banded) != 0:
+			a7 = body - 8
+			shade_object_faces(memory.read_u32(0x21594))
+		a7 = entry_a7
+	else:
+		_queue_visible(memory.read_u32(0x2159c))
+	var child: int = memory.read_u32(0x21594)
+	_queue_visible(child)
+	a7 = body - 0x14
+	transform_vecs12_by_matrix3(memory.read_s16(child + 0x38), memory.read_u32(child + 0x46), memory.read_u32(child + 0x4e), 0x23c74)
+	if memory.read_s16(0x23d88) == 2:
+		a7 = body - 0x20
+		build_attitude_matrix_6ang_alt(memory.read_s16(0x23d40), memory.read_s16(0x23d3e), memory.read_s16(0x23d3c),
+				memory.read_s32(0x23d38), memory.read_s32(0x23d34), memory.read_s32(0x23d30), 0x23c74)
+	else:
+		a7 = body - 0x18
+		build_attitude_matrix_x_alt(memory.read_s16(0x23d40), memory.read_s16(0x23d3e), memory.read_s16(0x23d3c),
+				memory.read_s32(0x23d38), 0x23c74)
+	a7 = body - 8
+	var n: int = C68kScript.s32(memory.read_u32(0x20f2c))
+	var cursor: int = 0x20b44
+	while true:
+		n = C68kScript.s32(n - 1)
+		if n == -1:
+			break
+		update_object_camera_metric(memory.read_u32(cursor))
+		cursor += 4
+	a7 = body - 4
+	update_ground_scatter_objects()
+	a7 = entry_a7
+	memory.write_u32(0x215a0, memory.read_u32(0x219bc))
+	_sort_far_objects(body)
+	a7 = body - 0xc
+	collect_near_objects(0x20b44, 0x20f2c)
+	memory.write_u32(0x219ac, 0)
+	memory.write_u16(0x219aa, memory.read_u16(0x219be))
+	a7 = body - 0x14
+	collect_far_objects(0x20804, 0x20b24)
+	if (memory.read_u32(0x21020) & 0xf) == 0:
+		memory.write_u16(0x219a4, 1)
+	if memory.read_u16(0x219a4) != 0:
+		a7 = body - 0xc
+		dispatch_overlap_collisions(0x219cc, 0x219ac)
+		memory.write_u16(0x219a4, 0)
+	a7 = body - 4
+	age_contact_records()
+	build_visible_object_list()
+	a7 = entry_a7
+	if memory.read_s16(0x2100e) == 1:
+		var bottom2: int = memory.read_s16(0x27014) if memory.read_u16(0x27010) != 0 else memory.read_s16(0x20b2e)
+		_frame_host(body, 0x84, [C68kScript.u32(bottom2 - memory.read_s16(0x27016))])
+	a7 = body - 4
+	render_visible_objects()
+	if memory.read_u16(0x23fd2) != 0:
+		noop_stub_2e12()
+		memory.write_u16(0x23fd2, 0)
+	if memory.read_s16(0x2100e) != 1:
+		scan_convert_edge_rows()
+	a7 = entry_a7
+	memory.write_u32(0x219bc, 0)
+	memory.write_u16(0x219a6, 0)
+	memory.write_u16(0x23d86, 0)
+	host = memory.read_u32(0x207fc)
+	if memory.read_u16(memory.read_u32(host + 0x72) + 6) != 0:
+		_frame_host(body, 0x29e, [])
+	if hooks:
+		_frame_host(body, 0x2fe, [])
+	if C68kScript.u32(new_frame) == 1:
+		a7 = body - 4
+		draw_distant_object_dots()
+		a7 = entry_a7
+	if memory.read_s16(0x2100e) == 1:
+		if memory.read_u16(memory.read_u32(0x207fc) + 0x9e) != 0:
+			a7 = body - 8
+			present_bw_frame(C68kScript.u32(new_frame))
+			a7 = entry_a7
+		else:
+			_frame_host(body, 0x80, [0])
+		_frame_host(body, 0x78, [])
+	else:
+		host = memory.read_u32(0x207fc)
+		var width: int = memory.read_s16(host + 0x10)
+		var ratio: int = C68kScript.s16(C68kScript.divs_trunc(8, memory.read_s16(0x2100e)))
+		var offset: int = C68kScript.s32(width - C68kScript.s16(C68kScript.divs_trunc(memory.read_s16(0x21012), ratio)))
+		if memory.read_u32(0x2101c) != 0:
+			offset = C68kScript.s32(offset + width)
+		if memory.read_u16(host + 0x9e) != 0:
+			a7 = body - 0x1c
+			present_spans_to_window(memory.read_u32(0x20f7c), memory.read_u32(0x20f80), C68kScript.u32(memory.read_s16(0x27012)),
+					memory.read_u32(host + 6), C68kScript.u32(offset), C68kScript.u32(new_frame))
+		else:
+			memory.write_u32(a6 - 0x22, memory.read_u32(0x20f7c))
+			memory.write_u32(a6 - 0x26, memory.read_u32(0x20f80))
+			a7 = body - 0x18
+			_jsr(memory.read_u32(0x26ff0), [a6 - 0x22, a6 - 0x26, C68kScript.u32(memory.read_s16(0x27012)), memory.read_u32(host + 6), C68kScript.u32(offset)])
+		a7 = entry_a7
+		var swap: int = memory.read_u32(0x20f7c)
+		memory.write_u32(0x20f7c, memory.read_u32(0x20f80))
+		memory.write_u32(0x20f80, swap)
+	if memory.read_u16(0x27010) == 0 and memory.read_s16(0x23d88) == 1:
+		_lay_out_view_panels(body, step_mode, new_frame, hooks)
+	if C68kScript.u32(step_mode) == 0:
+		if hooks:
+			_frame_host(body, 0x2fe, [])
+	elif memory.read_u16(0x27010) == 0:
+		if hooks:
+			_frame_host(body, 0x2fe, [])
+		a7 = body - 8
+		update_view_readouts_and_overlays(0)
+		a7 = entry_a7
+	else:
+		if memory.read_s16(0x2100e) == 1:
+			if hooks:
+				_frame_host(body, 0x2fe, [])
+			a7 = body - 8
+			update_view_readouts_and_overlays(0)
+		else:
+			a7 = body - 8
+			update_view_readouts_and_overlays(1 if hooks else 0)
+			a7 = entry_a7
+			if hooks:
+				_frame_host(body, 0x2fe, [])
+		a7 = body - 4
+		update_throttle_gauge()
+		update_radar_range_buttons()
+		update_bomb_indicator()
+		update_state_lamp()
+		mark_view_overlays_drawn()
+		a7 = entry_a7
+	if C68kScript.u32(new_frame) != 1:
+		memory.write_u16(0x20b2e, saved[0])
+		memory.write_u16(0x2701a, saved[1])
+		memory.write_u16(0x27018, saved[2])
+		memory.write_u16(0x27016, saved[3])
+		memory.write_u16(0x27014, saved[4])
+		memory.write_u16(0x23d88, saved[6])
+		memory.write_u16(0x27012, saved[5])
+		memory.write_u32(0x21590, saved[7])
+		var back: int = 0xd43 if C68kScript.u32(new_frame) == 2 else -0xd43
+		memory.write_u32(0x23d30, C68kScript.u32(memory.read_u32(0x23d30) + back) & 0x3fff)
+	memory.write_u32(C68kScript.u32(0x20f6c + frame * 4), memory.read_u32(0x20f7c))
+	memory.write_u32(C68kScript.u32(0x20f5c + frame * 4), memory.read_u32(0x20f80))
+
+## 0x16784 (1.0.3's test_proximity_collision 0x13e2e on Leyte's layout: flags long +0x14, position +4 / +8 / +0xc, radius
+## +0x20): two objects both flagged 0x100000 collide when 3/4 of their distance (asr 1 + asr 2, 0x24 below) is inside
+## either one's radius: dispatch_collision(a, b) (0x14 below).
+func test_proximity_collision(obj_a: int, obj_b: int) -> void:
+	assert(memory != null, "test_proximity_collision requires original global memory")
+	var entry_a7: int = a7
+	if (memory.read_u32(obj_a + 0x14) & memory.read_u32(obj_b + 0x14) & 0x100000) == 0:
+		return
+	a7 = entry_a7 - 0x24
+	var dist: int = approx_dist3_xyz(memory.read_s32(obj_a + 4), memory.read_s32(obj_a + 8), memory.read_s32(obj_a + 0xc),
+			memory.read_s32(obj_b + 4), memory.read_s32(obj_b + 8), memory.read_s32(obj_b + 0xc))
+	a7 = entry_a7
+	var near: int = C68kScript.s32(C68kScript.asr32(dist, 1) + C68kScript.asr32(dist, 2))
+	if near < memory.read_s32(obj_a + 0x20) or near < memory.read_s32(obj_b + 0x20):
+		a7 = entry_a7 - 0x14
+		dispatch_collision(obj_a, obj_b, C68kScript.asr32(dist, 2))
+		a7 = entry_a7
+
+## 0x167e4 (1.0.3's test_player_vs_type0e_proximity 0x13e8e): only the player (a's controller at +0 == player_object
+## 0x20b28) against an object whose controller's definition type is 0x14 (1.0.3: 0xe): test_proximity_collision (0x10
+## below).
+func test_player_vs_type0e_proximity(obj_a: int, obj_b: int) -> void:
+	assert(memory != null, "test_player_vs_type0e_proximity requires original global memory")
+	var entry_a7: int = a7
+	if memory.read_u32(obj_a) != memory.read_u32(0x20b28):
+		return
+	if memory.read_u16(memory.read_u32(memory.read_u32(obj_b) + 4)) != 0x14:
+		return
+	a7 = entry_a7 - 0x10
+	test_proximity_collision(obj_a, obj_b)
+	a7 = entry_a7
+
+## 0x1d4f6 (1.0.3's turret_pre_render 0x19374, the same 10 instructions on the turret controller): an aimed turret
+## (+0x36) not firing (word +0x46 == 0) shows its aim heading (+0x4e & 0x3fff in +0x22). Returns 0.
+func turret_pre_render(ctl: int, _phase: int = 0) -> int:
+	assert(memory != null, "turret_pre_render requires original global memory")
+	if memory.read_u32(ctl + 0x36) != 0 and memory.read_u16(ctl + 0x46) == 0:
+		memory.write_u16(ctl + 0x22, memory.read_u16(ctl + 0x4e) & 0x3fff)
+	return 0
+
+## 0x15ec0 (1.0.3's find_contact_record 0x13580; Leyte tests the probe count first): the contact record of (a, b) in the
+## 256-entry table 0x215a4, probing from contact_pair_hash(a, b) over at most 256 slots; 0 when absent.
+func find_contact_record(obj_a: int, obj_b: int) -> int:
+	assert(memory != null, "find_contact_record requires original global memory")
+	var slot: int = contact_pair_hash(obj_a, obj_b)
+	for _k in 0x100:
+		var rec: int = memory.read_u32(0x215a4 + slot * 4)
+		if rec != 0 and memory.read_u32(rec) == C68kScript.u32(obj_a) and memory.read_u32(rec + 4) == C68kScript.u32(obj_b):
+			return rec
+		slot = (slot + 1) & 0xff
+	return 0
+
+## 0x15f0e (1.0.3's create_shape_contact_record 0x135c8; link a6 -0xc and eight registers, body 0x30 below) on Leyte's
+## layout: b's metric +0x1c (for +0x10), faces +0x4a (word +0x3c of them, for +0x3a), radius +0x20 (for +0x14), scale
+## word +0x36 (for +0x34), vertices +0x46 and the face normals after word +0x38 of them; the table 0x215a4. The faces of
+## b whose extent (+0x1c) reaches half its metric (toward zero) are selected; the record (heap_alloc_cleared(6 * count +
+## 0x10), 8 below) holds a, b and the count (+0xa) and takes the first free slot from contact_pair_hash(a, b) (0x10
+## below). +0xe = the asr steps bringing (2 * b +0x20 + a +0x20) asl b's scale under 0x8000, +0xc = b's scale - that.
+## From +0x10: the selected face indices, then (after count words left 0) one axis word per face from its normal minus
+## vertex 0 (abs_int 8 / 0xc / 0x10 below): 0 when |x| is the largest, 1 for |y|, else 2 (ties to the later axis).
+func create_shape_contact_record(obj_a: int, obj_b: int) -> int:
+	assert(memory != null, "create_shape_contact_record requires original global memory")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x30
+	var half: int = memory.read_s32(obj_b + 0x1c)
+	if half < 0:
+		half += 1
+	half = half >> 1
+	var selected: Array = []
+	var face: int = memory.read_u32(obj_b + 0x4a)
+	for f in memory.read_u16(obj_b + 0x3c):
+		if half <= memory.read_s32(face + 0x1c):
+			selected.append(f)
+		face = C68kScript.u32(face + 0x20)
+	var count: int = C68kScript.s16(selected.size())
+	a7 = body - 8
+	var record: int = heap_alloc_cleared(C68kScript.s32(count * 6 + 0x10))
+	memory.write_u16(record + 0xa, C68kScript.u16(count))
+	memory.write_u32(record, C68kScript.u32(obj_a))
+	memory.write_u32(record + 4, C68kScript.u32(obj_b))
+	a7 = body - 0x10
+	var slot: int = contact_pair_hash(obj_a, obj_b)
+	a7 = entry_a7
+	while memory.read_u32(0x215a4 + slot * 4) != 0:
+		slot = (slot + 1) & 0xff
+	memory.write_u32(0x215a4 + slot * 4, record)
+	var extent: int = C68kScript.s32(C68kScript.lsl32(C68kScript.s32(C68kScript.lsl32(memory.read_u32(obj_b + 0x20), 1) + memory.read_u32(obj_a + 0x20)), memory.read_s16(obj_b + 0x36)))
+	var shift: int = 0
+	while (C68kScript.u32(extent) & 0xffff8000) != 0:
+		shift = C68kScript.s16(shift + 1)
+		extent = C68kScript.asr32(extent, 1)
+	memory.write_u16(record + 0xe, C68kScript.u16(shift))
+	memory.write_u16(record + 0xc, C68kScript.u16(memory.read_u16(obj_b + 0x36) - shift))
+	for k in selected.size():
+		memory.write_u16(record + 0x10 + 2 * k, C68kScript.u16(selected[k]))
+	var verts: int = memory.read_u32(obj_b + 0x46)
+	var normals: int = C68kScript.u32(verts + memory.read_s16(obj_b + 0x38) * 12)
+	var axis_p: int = record + 0x10 + count * 4
+	for k in selected.size():
+		var n: int = C68kScript.u32(normals + memory.read_s16(record + 0x10 + 2 * k) * 12)
+		a7 = body - 8
+		var ax: int = C68kScript.s16(abs_int(C68kScript.s32(memory.read_u32(n) - memory.read_u32(verts))))
+		a7 = body - 0xc
+		var ay: int = C68kScript.s16(abs_int(C68kScript.s32(memory.read_u32(n + 4) - memory.read_u32(verts + 4))))
+		a7 = body - 0x10
+		var az: int = C68kScript.s16(abs_int(C68kScript.s32(memory.read_u32(n + 8) - memory.read_u32(verts + 8))))
+		a7 = entry_a7
+		var axis: int
+		if ay < ax:
+			axis = 0 if az < ax else 2
+		else:
+			axis = 1 if az < ay else 2
+		memory.write_u16(axis_p, axis)
+		axis_p += 2
+	return record
+
+## 0x16be2 (1.0.3's handle_player_contact 0x1427c; four saved registers) on Leyte's layout: the player (a's controller at
+## +0 == player_object 0x20b28) touching b - within the radii sum (+0x20) of 3/4 of their distance (0x2c below): terrain
+## (b byte +0x16 bit 1) goes to handle_terrain_contact (0x1c below); otherwise the contact record is found or created
+## (0x1c below), its live word +8 = 1, and with b byte +0x16 bit 6 b's collision hook (its controller's definition +0x12)
+## runs as hook(b, a, record) (0x20 below).
+func handle_player_contact(obj_a: int, obj_b: int) -> void:
+	assert(memory != null, "handle_player_contact requires original global memory")
+	var entry_a7: int = a7
+	if memory.read_u32(obj_a) != memory.read_u32(0x20b28):
+		return
+	a7 = entry_a7 - 0x2c
+	var dist: int = approx_dist3_xyz(memory.read_s32(obj_a + 4), memory.read_s32(obj_a + 8), memory.read_s32(obj_a + 0xc),
+			memory.read_s32(obj_b + 4), memory.read_s32(obj_b + 8), memory.read_s32(obj_b + 0xc))
+	a7 = entry_a7
+	if C68kScript.s32(memory.read_u32(obj_a + 0x20) + memory.read_u32(obj_b + 0x20)) < C68kScript.s32(dist - C68kScript.asr32(dist, 2)):
+		return
+	if (memory.read_u8(obj_b + 0x16) & 2) != 0:
+		a7 = entry_a7 - 0x1c
+		handle_terrain_contact(obj_a, obj_b)
+		a7 = entry_a7
+		return
+	a7 = entry_a7 - 0x1c
+	var record: int = find_contact_record(obj_a, obj_b)
+	if record == 0:
+		record = create_shape_contact_record(obj_a, obj_b)
+	a7 = entry_a7
+	memory.write_u16(record + 8, 1)
+	if (memory.read_u8(obj_b + 0x16) & 0x40) != 0:
+		_shape_collision_hook(obj_a, obj_b, record, 0x20)
+
+## 0x1617e (1.0.3's create_fractal_contact_record 0x1381c; link a6 -0x100 and six registers, body 0x11c below) on Leyte's
+## layout: radii +0x20 (for +0x14), b's scale word +0x36 (for +0x34), the part index word +0x12 (1.0.3's byte +2) along the
+## parent chain (+0x24) into each parent's part table (+0x32, 0x18-byte entries, angle word +4); the table 0x215a4. A
+## contact record (0x3e bytes, heap_alloc - not cleared; 8 below) for object a over the fractal terrain b, in the contact
+## table from contact_pair_hash (0x10 below); +0xc = the asr steps bringing (2 * b +0x20 + a +0x20) asl b's scale under
+## 0x8000, +0xa = b's scale - that; with a non-zero heading (the part angles summed, & 0x3fff) the cell rotation +0xe =
+## cos + (-sin) / 2, +0x10 = -sin, +0x12 = sin + cos / 2, +0x14 = cos (cos 8 / sin 0xc below), else +0xe = +0x14 = 0; the
+## cell size +0x16 = (0x19c80 asl b's scale) asr +0xc; the cell bounds +0x18..+0x1e empty (1, -1, -1, 1).
+func create_fractal_contact_record(obj_a: int, obj_b: int) -> int:
+	assert(memory != null, "create_fractal_contact_record requires original global memory")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x11c
+	a7 = body - 8
+	var record: int = heap_alloc(0x3e)
+	memory.write_u32(record, C68kScript.u32(obj_a))
+	memory.write_u32(record + 4, C68kScript.u32(obj_b))
+	a7 = body - 0x10
+	var slot: int = contact_pair_hash(obj_a, obj_b)
+	a7 = entry_a7
+	while memory.read_u32(0x215a4 + slot * 4) != 0:
+		slot = (slot + 1) & 0xff
+	memory.write_u32(0x215a4 + slot * 4, record)
+	var extent: int = C68kScript.s32(C68kScript.lsl32(C68kScript.s32(C68kScript.lsl32(memory.read_u32(obj_b + 0x20), 1) + memory.read_u32(obj_a + 0x20)), memory.read_s16(obj_b + 0x36)))
+	var steps: int = 0
+	while (C68kScript.u32(extent) & 0xffff8000) != 0:
+		steps = C68kScript.s16(steps + 1)
+		extent = C68kScript.asr32(extent, 1)
+	memory.write_u16(record + 0xc, C68kScript.u16(steps))
+	memory.write_u16(record + 0xa, C68kScript.u16(memory.read_u16(obj_b + 0x36) - steps))
+	var angle: int = 0
+	var part: int = memory.read_s16(obj_b + 0x12)
+	var link: int = memory.read_u32(obj_b + 0x24)
+	while link != 0:
+		angle = (angle + memory.read_u16(C68kScript.u32(memory.read_u32(link + 0x32) + part * 0x18 + 4))) & 0x3fff
+		part = memory.read_s16(link + 0x12)
+		link = memory.read_u32(link + 0x24)
+	if angle != 0:
+		a7 = body - 8
+		var c: int = C68kScript.s16(cos_fixed14(angle))
+		a7 = body - 0xc
+		var sn: int = C68kScript.s16(sin_fixed14(angle))
+		a7 = entry_a7
+		var neg_sin: int = C68kScript.s16(-sn)
+		memory.write_u16(record + 0xe, C68kScript.u16(((neg_sin + 1 if neg_sin < 0 else neg_sin) >> 1) + c))
+		memory.write_u16(record + 0x10, C68kScript.u16(neg_sin))
+		memory.write_u16(record + 0x12, C68kScript.u16(((c + 1 if c < 0 else c) >> 1) + sn))
+		memory.write_u16(record + 0x14, C68kScript.u16(c))
+	else:
+		memory.write_u16(record + 0x14, 0)
+		memory.write_u16(record + 0xe, 0)
+	memory.write_u16(record + 0x16, C68kScript.u16(C68kScript.asr32(C68kScript.s32(C68kScript.lsl32(0x19c80, memory.read_s16(obj_b + 0x36))), memory.read_u16(record + 0xc))))
+	memory.write_u16(record + 0x18, 1)
+	memory.write_u16(record + 0x1a, 0xffff)
+	memory.write_u16(record + 0x1c, 0xffff)
+	memory.write_u16(record + 0x1e, 1)
+	return record
+
+## 0x162b8 (1.0.3's fractal_height_at 0x13960; link a6 -0x14 and ten registers, body 0x40 below), 1.0.3's code on Leyte's
+## layout and addresses: the terrain's class word +0x10 (1.0.3's byte +1) picks its template entry (mission root +0x2a list
+## + 0x1a), its vertex / face-centre counts words +0x38 / +0x3a, vertices +0x46, faces +0x4a, position +4 / +8 / +0xc (for
+## +0x18 / +0x1c / +0x20); the face pair 0x2707c / 0x2707e and the plane pointer 0x27080. Leyte tests the centre loop's
+## count first. Ground height of the fractal terrain at (x, z) relative to it, as 1.0.3: the point in cell coordinates,
+## the cell recomputed (and its two faces looked up) outside the cached bounds, the triangle remembered in +0x20 (a change
+## sets *changed = 1), height = p[5] + ((z - p[6]) * -p[3] - (x - p[4]) * p[1]) / p[2], 0 when p[2] is 0 or the height
+## negative.
+func fractal_height_at(rec: int, x: int, z: int, changed: int) -> int:
+	assert(memory != null, "fractal_height_at requires original global memory")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x40
+	x = C68kScript.s16(x)
+	z = C68kScript.s16(z)
+	var obj: int = memory.read_u32(rec + 4)
+	var u: int
+	var v: int
+	if memory.read_u16(rec + 0xe) != 0 or memory.read_u16(rec + 0x14) != 0:
+		u = C68kScript.s16(C68kScript.asr32(C68kScript.s32(x * memory.read_s16(rec + 0xe) + z * memory.read_s16(rec + 0x12)), 12))
+		v = C68kScript.s16(C68kScript.asr32(C68kScript.s32(x * memory.read_s16(rec + 0x10) + z * memory.read_s16(rec + 0x14)), 12))
+	else:
+		u = C68kScript.s16(x + ((z + 1 if z < 0 else z) >> 1))
+		v = z
+	if u < memory.read_s16(rec + 0x18) or u >= memory.read_s16(rec + 0x1a) or memory.read_s16(rec + 0x1c) > v or not (memory.read_s16(rec + 0x1e) > v):
+		memory.write_u16(rec + 0x20, 0xffff)
+		var n: int = memory.read_s16(rec + 0x16)
+		var half: int = (n + 1 if n < 0 else n) >> 1
+		var cu: int = C68kScript.s16(_cell_floor(u, n) * n)
+		var cv: int = C68kScript.s16(_cell_floor(v, n) * n)
+		memory.write_u16(rec + 0x18, C68kScript.u16(cu))
+		memory.write_u16(rec + 0x1a, C68kScript.u16(cu + n))
+		memory.write_u16(rec + 0x1c, C68kScript.u16(cv))
+		memory.write_u16(rec + 0x1e, C68kScript.u16(cv + n))
+		var centre_z: int = C68kScript.s32(half + cv)
+		var halved: int = (centre_z + 1 if centre_z < 0 else centre_z) >> 1
+		var centre_x: int = C68kScript.s32(half + cu - halved)
+		var shift: int = memory.read_s16(rec + 0xa)
+		if shift < 0:
+			centre_z = C68kScript.s32(C68kScript.lsl32(centre_z, -shift))
+			centre_x = C68kScript.s32(C68kScript.lsl32(centre_x, -shift))
+		else:
+			centre_x = C68kScript.asr32(centre_x, shift)
+			centre_z = C68kScript.asr32(centre_z, shift)
+		var entry: int = C68kScript.u32(memory.read_u32(C68kScript.u32(memory.read_u32(memory.read_u32(obj + 0x24) + 0x2a) + 0x1a + 0x14 + memory.read_u16(obj + 0x10) * 0x18)) + memory.read_u32(memory.read_u32(0x207fc) + 0x8c))
+		var centres: int = C68kScript.u32(entry + 0x22 + C68kScript.s32(memory.read_s16(obj + 0x38) - memory.read_s16(obj + 0x3a)) * 12)
+		memory.write_u16(0x2707c + 2, 0xffff)
+		memory.write_u16(0x2707c, 0xffff)
+		var centre: int = centres
+		for i in memory.read_u16(obj + 0x3a):
+			a7 = body - 8
+			var dx: int = abs_int(C68kScript.s32(memory.read_u32(centre) - centre_x))
+			a7 = body - 0xc
+			var dz: int = abs_int(C68kScript.s32(memory.read_u32(centre + 8) - centre_z))
+			a7 = entry_a7
+			if C68kScript.s32(dx + dz) <= 0xad3f:
+				var index: int = C68kScript.u16(C68kScript.divs_trunc(C68kScript.s32(centre - centres), 12))
+				if centre_z >= memory.read_s32(centre + 8):
+					memory.write_u16(0x2707c, index)
+				else:
+					memory.write_u16(0x2707c + 2, index)
+			centre = C68kScript.u32(centre + 12)
+		memory.write_u16(rec + 0x34, 0)
+		memory.write_u16(rec + 0x26, 0)
+		var verts: int = memory.read_u32(obj + 0x46)
+		for k in 2:
+			var face_index: int = memory.read_s16(0x2707c + 2 * k)
+			if face_index == -1:
+				continue
+			var v0: int = C68kScript.u32(verts + memory.read_s16(memory.read_u32(C68kScript.u32(memory.read_u32(obj + 0x4a) + face_index * 0x20) + 0x18)) * 12)
+			var nrm: int = C68kScript.u32(verts + memory.read_s16(obj + 0x38) * 12 + face_index * 12)
+			var plane: int = rec + 0x22 + 0xe * k
+			memory.write_u16(plane, C68kScript.u16(face_index))
+			memory.write_u16(plane + 2, C68kScript.u16(memory.read_u16(nrm + 2) - memory.read_u16(verts + 2)))
+			memory.write_u16(plane + 4, C68kScript.u16(memory.read_u16(nrm + 6) - memory.read_u16(verts + 6)))
+			memory.write_u16(plane + 6, C68kScript.u16(memory.read_u16(nrm + 0xa) - memory.read_u16(verts + 0xa)))
+			for j in 3:
+				memory.write_u16(plane + 8 + 2 * j, C68kScript.u16(C68kScript.asr32(C68kScript.s32(memory.read_u32(v0 + 4 * j) - memory.read_u32(obj + 4 + 4 * j)), memory.read_u16(rec + 0xc))))
+	var plane_used: int
+	if C68kScript.s32(v - memory.read_s16(rec + 0x1c)) < C68kScript.s32(u - memory.read_s16(rec + 0x18)):
+		plane_used = rec + 0x22
+		if memory.read_u16(rec + 0x20) != 0:
+			memory.write_u16(changed, 1)
+			memory.write_u16(rec + 0x20, 0)
+	else:
+		plane_used = rec + 0x30
+		if memory.read_s16(rec + 0x20) != 1:
+			memory.write_u16(changed, 1)
+			memory.write_u16(rec + 0x20, 1)
+	memory.write_u32(0x27080, C68kScript.u32(plane_used))
+	var p2: int = memory.read_s16(plane_used + 4)
+	if p2 == 0:
+		return 0
+	var num: int = C68kScript.s32(C68kScript.s32(-memory.read_s16(plane_used + 6) * C68kScript.s16(z - memory.read_u16(plane_used + 0xc))) - C68kScript.s16(x - memory.read_u16(plane_used + 8)) * memory.read_s16(plane_used + 2))
+	var height: int = C68kScript.s32(C68kScript.divs_trunc(num, p2) + memory.read_s16(plane_used + 0xa))
+	return 0 if height < 0 else height
+
+## 0x16ae6 (1.0.3's handle_terrain_contact 0x14178; link a6 -4 and five registers, body 0x1c below) on Leyte's layout: the
+## controller at +0 (for +8), b's terrain flag byte +0x16 bit 1, a's fractal reference +0x2e (for +0x2c), positions +4 /
+## +0xc (for +0x18 / +0x20), the live-play flag 0x21058. The contact record is found (0xc below) or, unless b is terrain
+## while a already holds a fractal reference, created (create_fractal_contact_record, 0xc below); its live word +8 = 1.
+## The ground height at a's position relative to b (shifted by +0xa; fractal_height_at, 0x14 below, its changed flag in
+## the frame at a6 - 2) goes to a's controller +0x2e (unshifted) when a has a controller and the height is non-zero, live
+## play also clearing its surface byte +0x2c; a's fractal reference is released (8 below) and the record's triangle
+## forgotten (+0x20 = -1).
+func handle_terrain_contact(obj_a: int, obj_b: int) -> void:
+	assert(memory != null, "handle_terrain_contact requires original global memory")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x1c
+	a7 = body - 0xc
+	var record: int = find_contact_record(obj_a, obj_b)
+	if record == 0:
+		if (memory.read_u8(obj_b + 0x16) & 2) != 0 and memory.read_u32(obj_a + 0x2e) != 0:
+			a7 = entry_a7
+			return
+		record = create_fractal_contact_record(obj_a, obj_b)
+	a7 = entry_a7
+	memory.write_u16(record + 8, 1)
+	var shift: int = memory.read_s16(record + 0xa)
+	var rx: int
+	var rz: int
+	if shift < 0:
+		rx = C68kScript.s16(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj_a + 4) - memory.read_u32(obj_b + 4)), -shift))
+		rz = C68kScript.s16(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj_a + 0xc) - memory.read_u32(obj_b + 0xc)), -shift))
+	else:
+		rx = C68kScript.s16(C68kScript.lsl32(C68kScript.s32(memory.read_u32(obj_a + 4) - memory.read_u32(obj_b + 4)), shift))
+		rz = C68kScript.s16(C68kScript.lsl32(C68kScript.s32(memory.read_u32(obj_a + 0xc) - memory.read_u32(obj_b + 0xc)), shift))
+	var changed: int = entry_a7 - 4 - 2
+	memory.write_u16(changed, 0)
+	a7 = body - 0x14
+	var ground: int = fractal_height_at(record, rx, rz, changed)
+	a7 = entry_a7
+	_store_terrain_ground(obj_a, record, ground)
+	if memory.read_u32(obj_a + 0x2e) != 0:
+		a7 = body - 8
+		release_fractal_reference(obj_a)
+		a7 = entry_a7
+	memory.write_u16(record + 0x20, 0xffff)
+
+## 0x15d8c (1.0.3's point_in_face_by_axis 0x1344c, the same 101 instructions with Leyte's position +4 / +8 / +0xc and a
+## larger frame: link a6 -0x708, ten registers, body 0x734 below): is object a's position (shifted by record word +0xc:
+## asr by its negation when negative, else asl) inside the face projected on the plane the axis word names (0 y/z, 1 x/z,
+## 2 x/y; others -> 0)? The face of b is projected with the record's vertex shift (+0xe) into the frame (a6 - 0x708;
+## project 0x1c below) and tested at (0, 0) (0x30 below). Returns 1 or 0.
+func point_in_face_by_axis(rec: int, obj_a: int, obj_b: int, face: int, _dot: int, _nx: int, _ny: int, _nz: int, axis: int) -> int:
+	assert(memory != null, "point_in_face_by_axis requires original global memory")
+	assert(a7 != 0, "point_in_face_by_axis needs a7 (its frame holds the projected vertices)")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x734
+	var projected: int = entry_a7 - 4 - 0x708
+	var shift: int = memory.read_s16(rec + 0xc)
+	var p: Array = []
+	for off in [4, 8, 0xc]:
+		if shift < 0:
+			p.append(C68kScript.asr32(memory.read_u32(obj_a + off), -shift))
+		else:
+			p.append(C68kScript.s32(C68kScript.lsl32(memory.read_u32(obj_a + off), shift)))
+	axis = C68kScript.s16(axis)
+	var vertex_shift: int = memory.read_s16(rec + 0xe)
+	var count: int = memory.read_s16(face + 0x14)
+	var idx: int = memory.read_u32(face + 0x18)
+	var inside: int
+	a7 = body - 0x1c
+	if axis == 0:
+		project_face_vertices_yz(obj_b, vertex_shift, face, p[1], p[2], projected)
+		a7 = body - 0x30
+		inside = point_in_polygon_yz(0, 0, projected, count, idx)
+	elif axis == 1:
+		project_face_vertices_xz(obj_b, vertex_shift, face, p[0], p[2], projected)
+		a7 = body - 0x30
+		inside = point_in_polygon_xz(0, 0, projected, count, idx)
+	elif axis == 2:
+		project_face_vertices_xy(obj_b, vertex_shift, face, p[0], p[1], projected)
+		a7 = body - 0x30
+		inside = point_in_polygon_xy(0, 0, projected, count, idx)
+	else:
+		a7 = entry_a7
+		return 0
+	a7 = entry_a7
+	return 1 if inside != 0 else 0
+
+## 0x16812 (1.0.3's test_object_collision 0x13ec0; link a6 -0x2c and ten registers, body 0x58 below), written from Leyte's
+## listing (registers reallocated): moving object a against shape b on Leyte's layout - positions +4 / +8 / +0xc, radii
+## +0x20, b's flag bytes +0x16 bits 1 (terrain) / 2 (bullet target) / 6 (collision hook), +0x15 bit 0 (no faces test),
+## the controller at +0, faces +0x4a, vertices +0x46 and the normals after word +0x38 of them. Beyond the radii sum of 3/4
+## of their distance (0x74 below) nothing happens. Terrain goes to test_terrain_collision (0x64 below); a bullet (a's
+## controller's definition type 0x14 - 1.0.3's 0xe - outside view mode 8) to bullet_hits_shape (0x64 below). Otherwise the
+## contact record is found or created (0x64 below; live word +8 = 1), b's collision hook runs as hook(b, a, record) (0x68
+## below) and, unless either object has +0x15 bit 0, each recorded face is checked - Leyte skips a face whose flags byte
+## +0x13 has bit 1 (its side word kept) -: a's position (shifted by +0xc) relative to the face's first vertex (asr +0xe),
+## dotted with the face normal minus vertex 0 (words, muls.w), gives the side (1 when <= 0). On an old record a side change
+## asks point_in_face_by_axis (0x80 below); inside -> dispatch_collision(a, b) (0x64 below) and return. The side is kept.
+## Returns D0 as the bytes leave it in the bullet and dispatch cases (callers ignore it).
+func test_object_collision(obj_a: int, obj_b: int) -> int:
+	assert(memory != null, "test_object_collision requires original global memory")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x58
+	a7 = body - 0x1c
+	var dist: int = approx_dist3_xyz(memory.read_s32(obj_a + 4), memory.read_s32(obj_a + 8), memory.read_s32(obj_a + 0xc),
+			memory.read_s32(obj_b + 4), memory.read_s32(obj_b + 8), memory.read_s32(obj_b + 0xc))
+	a7 = entry_a7
+	if C68kScript.s32(memory.read_u32(obj_a + 0x20) + memory.read_u32(obj_b + 0x20)) < C68kScript.s32(dist - C68kScript.asr32(dist, 2)):
+		return 0
+	if (memory.read_u8(obj_b + 0x16) & 2) != 0:
+		a7 = body - 0xc
+		test_terrain_collision(obj_a, obj_b)
+		a7 = entry_a7
+		return 0
+	if (memory.read_u8(obj_b + 0x16) & 4) != 0 and memory.read_u32(obj_a) != 0 \
+			and memory.read_u16(memory.read_u32(memory.read_u32(obj_a) + 4)) == 0x14 and memory.read_s16(0x23d88) != 8:
+		a7 = body - 0xc
+		var hit: int = bullet_hits_shape(obj_a, obj_b)
+		a7 = entry_a7
+		return hit
+	a7 = body - 0xc
+	var record: int = find_contact_record(obj_a, obj_b)
+	var created: bool = record == 0
+	if created:
+		record = create_shape_contact_record(obj_a, obj_b)
+	a7 = entry_a7
+	memory.write_u16(record + 8, 1)
+	if (memory.read_u8(obj_b + 0x16) & 0x40) != 0:
+		_shape_collision_hook(obj_a, obj_b, record, 0x68)
+	if (memory.read_u8(obj_a + 0x15) & 1) != 0 or (memory.read_u8(obj_b + 0x15) & 1) != 0:
+		return 0
+	var faces: int = memory.read_u32(obj_b + 0x4a)
+	var verts: int = memory.read_u32(obj_b + 0x46)
+	var normals: int = C68kScript.u32(verts + memory.read_s16(obj_b + 0x38) * 12)
+	var shift: int = memory.read_s16(record + 0xc)
+	var p: Array = []
+	for off in [4, 8, 0xc]:
+		if shift < 0:
+			p.append(C68kScript.s16(C68kScript.asr32(memory.read_u32(obj_a + off), -shift)))
+		else:
+			p.append(C68kScript.s16(C68kScript.lsl32(memory.read_u32(obj_a + off), shift)))
+	var count: int = memory.read_u16(record + 0xa)
+	var idx_p: int = record + 0x10
+	var side_p: int = idx_p + C68kScript.s16(count) * 2
+	var axis_p: int = side_p + C68kScript.s16(count) * 2
+	var vshift: int = memory.read_s16(record + 0xe)
+	while count != 0:
+		count -= 1
+		var fi: int = memory.read_s16(idx_p)
+		var face: int = C68kScript.u32(faces + fi * 0x20)
+		if (memory.read_u8(face + 0x13) & 2) == 0:
+			var v0: int = C68kScript.u32(verts + memory.read_s16(memory.read_u32(face + 0x18)) * 12)
+			var n: int = C68kScript.u32(normals + fi * 12)
+			var nx: int = C68kScript.s16(memory.read_u16(n + 2) - memory.read_u16(verts + 2))
+			var ny: int = C68kScript.s16(memory.read_u16(n + 6) - memory.read_u16(verts + 6))
+			var nz: int = C68kScript.s16(memory.read_u16(n + 0xa) - memory.read_u16(verts + 0xa))
+			var dx: int = C68kScript.s16(p[0] - C68kScript.asr32(memory.read_u32(v0), vshift))
+			var dy: int = C68kScript.s16(p[1] - C68kScript.asr32(memory.read_u32(v0 + 4), vshift))
+			var dz: int = C68kScript.s16(p[2] - C68kScript.asr32(memory.read_u32(v0 + 8), vshift))
+			var dot: int = C68kScript.s32(C68kScript.s32(dx * nx + dy * ny) + dz * nz)
+			var side: int = 1 if dot <= 0 else 0
+			if not created and (memory.read_u16(side_p) ^ side) != 0:
+				a7 = body - 0x28
+				var inside: int = point_in_face_by_axis(record, obj_a, obj_b, face, dot, nx, ny, nz, memory.read_s16(axis_p))
+				a7 = entry_a7
+				if inside != 0:
+					a7 = body - 0xc
+					var d0: int = dispatch_collision(obj_a, obj_b, inside)
+					a7 = entry_a7
+					return d0
+			memory.write_u16(side_p, side)
+		idx_p += 2
+		side_p += 2
+		axis_p += 2
+	return 0
+
+## 0x48e8 (1.0.3's segment_point_min_distance 0x3caa; Leyte tests the bisection count first, the same four steps):
+## approximate distance from the point to the segment start .. start + (word dx, dy, dz) (only the low words of the
+## deltas, sign-extended): both end distances (word results), then four bisection steps replacing the farther end by the
+## midpoint (add.l, asr.l #1); returns the smaller end distance as a sign-extended word (ties keep the far end).
+static func segment_point_min_distance(x0: int, y0: int, z0: int, dx: int, dy: int, dz: int, px: int, py: int, pz: int) -> int:
+	var sx: int = C68kScript.s32(x0)
+	var sy: int = C68kScript.s32(y0)
+	var sz: int = C68kScript.s32(z0)
+	var ex: int = C68kScript.s32(sx + C68kScript.s16(dx))
+	var ey: int = C68kScript.s32(sy + C68kScript.s16(dy))
+	var ez: int = C68kScript.s32(sz + C68kScript.s16(dz))
+	var dist_start: int = C68kScript.s16(approx_dist3_xyz(sx, sy, sz, px, py, pz))
+	var dist_end: int = C68kScript.s16(approx_dist3_xyz(ex, ey, ez, px, py, pz))
+	for _step in 4:
+		var mx: int = C68kScript.asr32(sx + ex, 1)
+		var my: int = C68kScript.asr32(sy + ey, 1)
+		var mz: int = C68kScript.asr32(sz + ez, 1)
+		var dist_mid: int = C68kScript.s16(approx_dist3_xyz(mx, my, mz, px, py, pz))
+		if dist_end < dist_start:
+			sx = mx
+			sy = my
+			sz = mz
+			dist_start = dist_mid
+		else:
+			ex = mx
+			ey = my
+			ez = mz
+			dist_end = dist_mid
+	if dist_start < dist_end:
+		dist_end = dist_start
+	return dist_end
+
+## bullet_hits_shape's segment (Leyte: the bullet's position +4 / +8 / +0xc less half its controller's velocity +8 / +0xc /
+## +0x10, C truncation; the target's position +4 / +8 / +0xc).
+func _bullet_segment_distance(bullet: int, bullet_ctl: int, target: int) -> int:
+	var vx: int = memory.read_s32(bullet_ctl + 8)
+	var vy: int = memory.read_s32(bullet_ctl + 0xc)
+	var vz: int = memory.read_s32(bullet_ctl + 0x10)
+	return segment_point_min_distance(
+			C68kScript.s32(memory.read_s32(bullet + 4) - C68kScript.divs_trunc(vx, 2)),
+			C68kScript.s32(memory.read_s32(bullet + 8) - C68kScript.divs_trunc(vy, 2)),
+			C68kScript.s32(memory.read_s32(bullet + 0xc) - C68kScript.divs_trunc(vz, 2)),
+			vx, vy, vz,
+			memory.read_s32(target + 4), memory.read_s32(target + 8), memory.read_s32(target + 0xc))
+
+## 0x1a64a (1.0.3's bullet_hits_shape 0x1663a; three saved registers) on Leyte's layout: the bullet's controller at +0
+## (for +8), the shape's radius +0x20 (for +0x14), flag byte +0x16 bit 2 (for +6), controller at +0; the target types 0x14
+## / 0x24 (1.0.3's 0xe / 0x1b). Within range of the bullet's path (0x34 below): a flagged shape latches into the bullet
+## controller's +0x3c 1 time in 8 (rng & 7 == 0, 0x10 below); else a type-0x14 target is ignored, a type-0x24 one gets its
+## controller word +0x46 = 1 when rng & 0xf == 0, and the bullet is retired (0x14 below). Returns D0 of each path.
+func bullet_hits_shape(bullet: int, shape: int) -> int:
+	assert(memory != null, "bullet_hits_shape requires original global memory")
+	var entry_a7: int = a7
+	var bullet_ctl: int = memory.read_u32(bullet)
+	a7 = entry_a7 - 0x34
+	var d0: int = _bullet_segment_distance(bullet, bullet_ctl, shape)
+	a7 = entry_a7
+	if d0 > memory.read_s32(shape + 0x20):
+		return d0
+	if (memory.read_u8(shape + 0x16) & 4) != 0:
+		a7 = entry_a7 - 0x10
+		var r: int = overlay_rng_next()
+		a7 = entry_a7
+		d0 = (r & 0xffff0000) | (r & 7)
+		if (r & 7) == 0:
+			memory.write_u32(bullet_ctl + 0x3c, shape)
+		return d0
+	var ctl: int = memory.read_u32(shape)
+	if ctl != 0:
+		var kind: int = memory.read_u16(memory.read_u32(ctl + 4))
+		d0 = (d0 & 0xffff0000) | kind
+		if kind == 0x14:
+			return d0
+		if kind == 0x24:
+			a7 = entry_a7 - 0x10
+			var r2: int = overlay_rng_next()
+			a7 = entry_a7
+			d0 = (r2 & 0xffff0000) | (r2 & 0xf)
+			if (r2 & 0xf) == 0:
+				memory.write_u16(ctl + 0x46, 1)
+	a7 = entry_a7 - 0x14
+	var result: int = retire_entity(bullet, d0)
+	a7 = entry_a7
+	return result
+
+## 0x171ba (1.0.3's lift_object_onto_terrain 0x14810; link a6 -4 and nine registers, body 0x2c below), written from
+## Leyte's listing on Leyte's layout: obj's y +8, range +0x18, metric +0x1c, flag byte +0x15 bits 3 / 4, scale word +0x36,
+## counts words +0x38 / +0x3c, vertices +0x46, faces +0x4a, support point +0x2e; the terrain's position +4 / +0xc, counts
+## +0x38 / +0x3a, vertices +0x46, support list +0x2e; deferred_free_flag 0x219a6 and the plane pointer 0x27080. An object
+## below the ground (height < ground) without a support point is raised by the ground (unscaled by the record shift
+## +0xa): y, and - unless +0x15 bit 4 - its vertices (translate_int3_vecs, dy asl the scale, 0x1c below); unless +0x15
+## bit 3 its range follows the new camera metric (update_object_camera_metric, 8 below) and its face extents +0x1c rise by
+## dy; +0x15 bit 3 is set and the height becomes the ground. The support point: with a usable plane (+4 of the plane
+## 0x27080 points to) the face centre of the record's triangle in the terrain's live vertices; otherwise a cell corner mix
+## ((2 corner + other) / 3 per axis, by triangle), unrotated u - v / 2, unscaled and offset by the terrain position. The
+## terrain's support list (count, capacity, pointers; created with capacity 5, 8 below) gets the point, matched by x / z or
+## created (heap_alloc_cleared 0x10, 8 below; the list grown by 5 through heap_realloc_grow_only, 0xc below); obj leaves
+## its old point (count - 1, deferred_free_flag) and holds the new one. Returns the height (word).
+func lift_object_onto_terrain(rec: int, ground: int, height: int, obj: int, terrain: int) -> int:
+	assert(memory != null, "lift_object_onto_terrain requires original global memory")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x2c
+	ground = C68kScript.s16(ground)
+	height = C68kScript.s32(height)
+	var shift: int = memory.read_s16(rec + 0xa)
+	if height < ground and memory.read_u32(obj + 0x2e) == 0:
+		var dy: int = C68kScript.s32(C68kScript.lsl32(ground, -shift)) if shift < 0 else C68kScript.asr32(ground, shift)
+		memory.write_u32(obj + 8, C68kScript.u32(memory.read_u32(obj + 8) + dy))
+		if (memory.read_u8(obj + 0x15) & 0x10) == 0:
+			a7 = body - 0x1c
+			translate_int3_vecs(C68kScript.s32(memory.read_s16(obj + 0x38) + memory.read_s16(obj + 0x3c)), memory.read_u32(obj + 0x46),
+					memory.read_u32(obj + 0x46), 0, C68kScript.s32(C68kScript.lsl32(dy, memory.read_s16(obj + 0x36))), 0)
+			a7 = entry_a7
+		if (memory.read_u8(obj + 0x15) & 8) == 0:
+			a7 = body - 8
+			var metric: int = update_object_camera_metric(obj)
+			a7 = entry_a7
+			memory.write_u32(obj + 0x18, C68kScript.u32(C68kScript.s32(metric - memory.read_u32(obj + 0x1c)) + memory.read_u32(obj + 0x18)))
+			var face: int = C68kScript.u32(memory.read_u32(obj + 0x4a) + 0x1c)
+			for _i in memory.read_u16(obj + 0x3c):
+				memory.write_u32(face, C68kScript.u32(memory.read_u32(face) + dy))
+				face = C68kScript.u32(face + 0x20)
+		memory.write_u8(obj + 0x15, memory.read_u8(obj + 0x15) | 8)
+		height = ground
+	var sx: int
+	var sz: int
+	if memory.read_u16(memory.read_u32(0x27080) + 4) != 0:
+		var centres: int = C68kScript.u32(memory.read_u32(terrain + 0x46) + C68kScript.s32(memory.read_s16(terrain + 0x38) - memory.read_s16(terrain + 0x3a)) * 12)
+		var fi: int = memory.read_s16(C68kScript.u32(rec + 0x22 + memory.read_s16(rec + 0x20) * 0xe))
+		sx = memory.read_u32(C68kScript.u32(centres + fi * 12))
+		sz = memory.read_u32(C68kScript.u32(centres + fi * 12 + 8))
+	else:
+		var su: int
+		var sv: int
+		if memory.read_u16(rec + 0x20) != 0:
+			su = C68kScript.s16(C68kScript.divs_trunc(C68kScript.s32(memory.read_s16(rec + 0x1a) + 2 * memory.read_s16(rec + 0x18)), 3))
+			sv = C68kScript.s16(C68kScript.divs_trunc(C68kScript.s32(memory.read_s16(rec + 0x1c) + 2 * memory.read_s16(rec + 0x1e)), 3))
+		else:
+			su = C68kScript.s16(C68kScript.divs_trunc(C68kScript.s32(memory.read_s16(rec + 0x18) + 2 * memory.read_s16(rec + 0x1a)), 3))
+			sv = C68kScript.s16(C68kScript.divs_trunc(C68kScript.s32(memory.read_s16(rec + 0x1e) + 2 * memory.read_s16(rec + 0x1c)), 3))
+		if memory.read_u16(rec + 0xe) == 0 and memory.read_u16(rec + 0x14) == 0:
+			su = C68kScript.s16(su - ((sv + 1 if sv < 0 else sv) >> 1))
+		if shift < 0:
+			sx = C68kScript.u32(C68kScript.lsl32(su, -shift) + memory.read_u32(terrain + 4))
+			sz = C68kScript.u32(C68kScript.lsl32(sv, -shift) + memory.read_u32(terrain + 0xc))
+		else:
+			sx = C68kScript.u32(C68kScript.asr32(su, shift) + memory.read_u32(terrain + 4))
+			sz = C68kScript.u32(C68kScript.asr32(sv, shift) + memory.read_u32(terrain + 0xc))
+	if memory.read_u32(terrain + 0x2e) == 0:
+		a7 = body - 8
+		var fresh: int = heap_alloc(0x1c)
+		a7 = entry_a7
+		memory.write_u16(fresh + 2, 5)
+		memory.write_u16(fresh, 0)
+		memory.write_u32(terrain + 0x2e, fresh)
+	var old: int = memory.read_u32(obj + 0x2e)
+	if old != 0:
+		memory.write_u16(old, C68kScript.u16(memory.read_u16(old) - 1))
+		memory.write_u16(0x219a6, 1)
+	var list: int = memory.read_u32(terrain + 0x2e)
+	var support: int = 0
+	var cursor: int = list + 4
+	for _i in memory.read_u16(list):
+		var candidate: int = memory.read_u32(cursor)
+		cursor += 4
+		if memory.read_u32(candidate + 4) == sx and memory.read_u32(candidate + 8) == sz:
+			support = candidate
+			break
+	if support == 0:
+		a7 = body - 8
+		support = heap_alloc_cleared(0x10)
+		a7 = entry_a7
+		memory.write_u32(support + 4, sx)
+		memory.write_u32(support + 8, sz)
+		if memory.read_u16(list + 2) == memory.read_u16(list):
+			memory.write_u16(list + 2, C68kScript.u16(memory.read_u16(list + 2) + 5))
+			a7 = body - 0xc
+			list = heap_realloc_grow_only(list, C68kScript.s32(memory.read_s16(list + 2) * 4 + 8))
+			a7 = entry_a7
+			memory.write_u32(terrain + 0x2e, list)
+		memory.write_u32(C68kScript.u32(list + 4 + memory.read_s16(list) * 4), support)
+		memory.write_u16(list, C68kScript.u16(memory.read_u16(list) + 1))
+	memory.write_u16(support, C68kScript.u16(memory.read_u16(support) + 1))
+	memory.write_u32(obj + 0x2e, support)
+	return C68kScript.s16(height)
+
+## 0x1661a (1.0.3's test_terrain_collision 0x13cbc; link a6 -4 and six registers, body 0x20 below) on Leyte's layout:
+## moving object a against fractal terrain b - positions +4 / +8 / +0xc, b's terrain flag +0x16 bit 1, a's support point
+## +0x2e, the controller at +0, live-play flag 0x21058. Only within 0x33900 of b (z, and x skewed by z / 2) - then as
+## handle_terrain_contact: record found or created (0xc below), height looked up (0x14 below) and stored through a's
+## controller. When the triangle changed, lift_object_onto_terrain (0x18 below) settles a and gives its height; a below
+## the ground (word compare) collides (dispatch_collision, 0xc below).
+func test_terrain_collision(obj_a: int, obj_b: int) -> void:
+	assert(memory != null, "test_terrain_collision requires original global memory")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x20
+	var dz: int = C68kScript.s32(memory.read_u32(obj_a + 0xc) - memory.read_u32(obj_b + 0xc))
+	var skew: int = C68kScript.s32(((dz + 1 if dz < 0 else dz) >> 1) + memory.read_u32(obj_a + 4) - memory.read_u32(obj_b + 4))
+	if skew < -0x33900 or skew > 0x33900 or dz < -0x33900 or dz > 0x33900:
+		return
+	a7 = body - 0xc
+	var record: int = find_contact_record(obj_a, obj_b)
+	if record == 0:
+		if (memory.read_u8(obj_b + 0x16) & 2) != 0 and memory.read_u32(obj_a + 0x2e) != 0:
+			a7 = entry_a7
+			return
+		record = create_fractal_contact_record(obj_a, obj_b)
+	a7 = entry_a7
+	memory.write_u16(record + 8, 1)
+	var shift: int = memory.read_s16(record + 0xa)
+	var rx: int
+	var ry: int
+	var rz: int
+	if shift < 0:
+		rx = C68kScript.s16(C68kScript.asr32(C68kScript.s32(memory.read_u32(obj_a + 4) - memory.read_u32(obj_b + 4)), -shift))
+		ry = C68kScript.s16(C68kScript.asr32(memory.read_u32(obj_a + 8), -shift))
+		rz = C68kScript.s16(C68kScript.asr32(dz, -shift))
+	else:
+		rx = C68kScript.s16(C68kScript.lsl32(C68kScript.s32(memory.read_u32(obj_a + 4) - memory.read_u32(obj_b + 4)), shift))
+		ry = C68kScript.s16(C68kScript.lsl32(memory.read_u32(obj_a + 8), shift))
+		rz = C68kScript.s16(C68kScript.lsl32(dz, shift))
+	var changed: int = entry_a7 - 4 - 2
+	memory.write_u16(changed, 0)
+	a7 = body - 0x14
+	var ground: int = C68kScript.s16(fractal_height_at(record, rx, rz, changed))
+	a7 = entry_a7
+	_store_terrain_ground(obj_a, record, ground)
+	if memory.read_u16(changed) != 0:
+		a7 = body - 0x18
+		ry = C68kScript.s16(lift_object_onto_terrain(record, ground, ry, obj_a, obj_b))
+		a7 = entry_a7
+	if ry < ground:
+		a7 = body - 0xc
+		dispatch_collision(obj_a, obj_b)
+		a7 = entry_a7
+
+## The ground height word written back to object a's controller (Leyte: at +0; its +0x2e, unscaled by the record's +0xa
+## shift) when a has a controller and the height is non-zero; live play (0x21058 clear) also clears its surface byte +0x2c
+## (inlined in handle_terrain_contact and test_terrain_collision).
+func _store_terrain_ground(obj_a: int, rec: int, ground: int) -> void:
+	var ctl: int = memory.read_u32(obj_a)
+	if ctl == 0 or C68kScript.s16(ground) == 0:
+		return
+	var shift: int = memory.read_s16(rec + 0xa)
+	var value: int = C68kScript.s32(C68kScript.lsl32(C68kScript.s16(ground), -shift)) if shift < 0 else C68kScript.asr32(C68kScript.s16(ground), shift)
+	memory.write_u32(ctl + 0x2e, C68kScript.u32(value))
+	if memory.read_u16(0x21058) == 0:
+		memory.write_u8(ctl + 0x2c, 0)
+
+## b's collision hook (its controller's - Leyte: at +0 - definition +0x12) as hook(b, a, record), entered depth below the
+## caller's entry a7 (inlined in handle_player_contact, 0x20, and test_object_collision, 0x68).
+func _shape_collision_hook(obj_a: int, obj_b: int, rec: int, depth: int) -> int:
+	var entry_a7: int = a7
+	a7 = entry_a7 - depth
+	var r = _jsr(memory.read_u32(memory.read_u32(memory.read_u32(obj_b) + 4) + 0x12), [obj_b, obj_a, rec])
+	a7 = entry_a7
+	return 0 if r == null else int(r)
+
+## 0x177d0 (Leyte only; six saved registers): the sink of obj at (ang1, ang2 + its controller's heading word +0x654,
+## ang3) (words; & 0x3fff on the second) through leyte_sink_body with the controller's cached composed chain (+0x630):
+## composed once (compose_template_chain, 0x24 below; byte +0x61b marks it), the body then entered 0x38 below (the
+## composer's arguments still pushed), else 0x30 below. Byte +0x61a is set first.
+func leyte_sink_with_cached_chain(obj: int, ang1: int, ang2: int, ang3: int) -> void:
+	assert(memory != null, "leyte_sink_with_cached_chain requires original global memory")
+	var entry_a7: int = a7
+	var ctl: int = memory.read_u32(obj)
+	memory.write_u8(ctl + 0x61a, 1)
+	var a1: int = C68kScript.s16(ang1)
+	var a2: int = C68kScript.s16((ang2 + memory.read_u16(ctl + 0x654)) & 0x3fff)
+	var a3: int = C68kScript.s16(ang3)
+	var chain: int = ctl + 0x630
+	if memory.read_u8(ctl + 0x61b) != 0:
+		a7 = entry_a7 - 0x30
+		leyte_sink_body(obj, a1, a2, a3, chain)
+	else:
+		a7 = entry_a7 - 0x24
+		compose_template_chain(obj, chain)
+		memory.write_u8(ctl + 0x61b, 1)
+		a7 = entry_a7 - 0x38
+		leyte_sink_body(obj, a1, a2, a3, chain)
+	a7 = entry_a7
+
+## 0x17d8c (Leyte only; one saved register): a controller's pending pose (byte +0x619) applied to its object (+0): with
+## +0x628 set the object is sunk again level (leyte_sink_with_cached_chain(obj, 0, 0, 0), 0x18 below), otherwise its
+## vertices (+0x46, words +0x38 + +0x3c of them) move by (+0x624, 0, +0x62c) shifted left by its scale word +0x36
+## (translate_int3_vecs, 0x20 below); then +0x619 / +0x624 / +0x628 / +0x62c are cleared.
+func leyte_apply_pending_pose(ctl: int) -> void:
+	assert(memory != null, "leyte_apply_pending_pose requires original global memory")
+	if memory.read_u8(ctl + 0x619) == 0:
+		return
+	var entry_a7: int = a7
+	var obj: int = memory.read_u32(ctl)
+	var scale: int = memory.read_s16(obj + 0x36)
+	if memory.read_u32(ctl + 0x628) != 0:
+		a7 = entry_a7 - 0x18
+		leyte_sink_with_cached_chain(obj, 0, 0, 0)
+	else:
+		a7 = entry_a7 - 0x20
+		translate_int3_vecs(C68kScript.s32(memory.read_s16(obj + 0x38) + memory.read_s16(obj + 0x3c)), memory.read_u32(obj + 0x46),
+				memory.read_u32(obj + 0x46), C68kScript.s32(C68kScript.lsl32(memory.read_u32(ctl + 0x624), scale)), 0,
+				C68kScript.s32(C68kScript.lsl32(memory.read_u32(ctl + 0x62c), scale)))
+	a7 = entry_a7
+	memory.write_u8(ctl + 0x619, 0)
+	memory.write_u32(ctl + 0x624, 0)
+	memory.write_u32(ctl + 0x628, 0)
+	memory.write_u32(ctl + 0x62c, 0)
+
+## 0x17dfa (Leyte only): a sinking ship's pre-render hook (controller definition +0xe, called (ctl, phase) by
+## transform_and_project_object): a pending pose (byte +0x619) is applied (leyte_apply_pending_pose, 8 below). Returns 0.
+func leyte_pending_pose_pre_render(ctl: int, _phase: int = 0) -> int:
+	assert(memory != null, "leyte_pending_pose_pre_render requires original global memory")
+	if memory.read_u8(ctl + 0x619) != 0:
+		var entry_a7: int = a7
+		a7 = entry_a7 - 8
+		leyte_apply_pending_pose(ctl)
+		a7 = entry_a7
+	return 0
+
+## 0x15bae (1.0.3's point_over_face_xz 0x132a8, the same 42 instructions with Leyte's position x +4 / z +0xc and frame:
+## link a6 -0x708 and four registers, body 0x71c below): is the record's object over the face (xz)? The origin is its x /
+## z shifted by word rec +0xc (asr by its negation when negative, else asl); the face is projected into the frame at a6 -
+## 0x708 (project_face_vertices_xz(rec +4 model, word rec +0xe, face, ...), 0x1c below) and tested at (0, 0)
+## (point_in_polygon_xz, 0x30 below), whose D0 is returned.
+func point_over_face_xz(rec: int, face: int) -> int:
+	assert(memory != null, "point_over_face_xz requires original global memory")
+	assert(a7 != 0, "point_over_face_xz needs a7 (its frame holds the projected vertices)")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x71c
+	var projected: int = entry_a7 - 4 - 0x708
+	var obj: int = memory.read_u32(rec)
+	var shift: int = memory.read_s16(rec + 0xc)
+	var origin_x: int
+	var origin_z: int
+	if shift < 0:
+		origin_x = C68kScript.asr32(memory.read_u32(obj + 4), -shift)
+		origin_z = C68kScript.asr32(memory.read_u32(obj + 0xc), -shift)
+	else:
+		origin_x = C68kScript.s32(C68kScript.lsl32(memory.read_u32(obj + 4), shift))
+		origin_z = C68kScript.s32(C68kScript.lsl32(memory.read_u32(obj + 0xc), shift))
+	a7 = body - 0x1c
+	project_face_vertices_xz(memory.read_u32(rec + 4), memory.read_s16(rec + 0xe), face, origin_x, origin_z, projected)
+	a7 = body - 0x30
+	var inside: int = point_in_polygon_xz(0, 0, projected, memory.read_s16(face + 0x14), memory.read_u32(face + 0x18))
+	a7 = entry_a7
+	return inside
+
+## 0x17e0e (Leyte only): a ship's collision hook (ship, other, record): with the other object's controller (+0) and a
+## record, a pending pose of the ship's controller (byte +0x619) is applied (leyte_apply_pending_pose, 8 below). D0 is
+## left as the record.
+func leyte_ship_collision_hook(ship: int, other: int, record: int) -> int:
+	assert(memory != null, "leyte_ship_collision_hook requires original global memory")
+	var ctl: int = memory.read_u32(ship)
+	if memory.read_u32(other) != 0 and record != 0 and memory.read_u8(ctl + 0x619) != 0:
+		var entry_a7: int = a7
+		a7 = entry_a7 - 8
+		leyte_apply_pending_pose(ctl)
+		a7 = entry_a7
+	return record
+
+## 0x17e54 (Leyte only; link a6 -4 and seven registers, body 0x24 below): a carrier's collision hook (carrier, other,
+## record). With the other object's controller (+0) and a record: a pending pose of the carrier's controller is applied (8
+## below); its deck faces are found once (face kind byte +0x17: 1 -> controller word +0x698, 3 -> +0x69a; no deck tag ->
+## overlay_printf "Can't find deck tag on carrier", 8 below) and the deck height kept (+0x696: the first deck vertex's y
+## asr the carrier's scale word +0x36). When the carrier's tilt (its controller word +0x20, folded, abs; 8 / 0xc below) is
+## within 0x4ff and it is over the deck (point_over_face_xz, 0xc below): for a kind <= 7 (its controller's definition
+## type), with the carrier moving (word +0x32) outside a replay (0x21058), the carrier's motion is recorded in the other's
+## controller (+0x632 = cos(folded heading difference) * word +0x676 asr 12, 8 / 0xc below; +0x636 / +0x638 = words +0xa /
+## +0x12, +0x63a = (+0x22 - +0x28) & 0x3fff); the other's ground (+0x2e) becomes the deck height and, live, its surface
+## byte +0x2c the deck face's +0x16. A kind <= 7 over the kind-3 face gets byte +0x64d = 1. With a positive deck height the
+## pair (carrier, other) joins the carried pairs (0x21048, count word 0x21046, capacity word 0x21044 grown by 4:
+## heap_alloc 8 below, heap_realloc_grow_only 0xc below).
+func leyte_carrier_deck_hook(carrier: int, other: int, record: int) -> int:
+	assert(memory != null, "leyte_carrier_deck_hook requires original global memory")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x24
+	var ctl: int = memory.read_u32(carrier)
+	var octl: int = memory.read_u32(other)
+	if octl == 0 or record == 0:
+		return record
+	if memory.read_u8(ctl + 0x619) != 0:
+		a7 = body - 8
+		leyte_apply_pending_pose(ctl)
+		a7 = entry_a7
+	if memory.read_s16(ctl + 0x698) == -1:
+		var face: int = memory.read_u32(carrier + 0x4a)
+		for _i in memory.read_u16(carrier + 0x3c):
+			var kind_byte: int = memory.read_u8(face + 0x17)
+			var index: int = C68kScript.u16(C68kScript.asr32(C68kScript.s32(face - memory.read_u32(carrier + 0x4a)), 5))
+			if kind_byte == 1:
+				memory.write_u16(ctl + 0x698, index)
+			if kind_byte == 3:
+				memory.write_u16(ctl + 0x69a, index)
+			face = C68kScript.u32(face + 0x20)
+		var first: int = C68kScript.u32(memory.read_s16(ctl + 0x698) * 0x20 + memory.read_u32(carrier + 0x4a))
+		if memory.read_s16(ctl + 0x698) == -1:
+			a7 = body - 8
+			overlay_printf(0x17e34, 0, 0, 0, 0, 0)   # only the format is pushed: the rest is whatever the stack holds
+			a7 = entry_a7
+		var v: int = C68kScript.u32(memory.read_u32(carrier + 0x46) + memory.read_s16(memory.read_u32(first + 0x18)) * 12)
+		memory.write_u16(ctl + 0x696, C68kScript.u16(C68kScript.asr32(memory.read_u32(v + 4), memory.read_s16(carrier + 0x36))))
+	var deck: int = C68kScript.u32(memory.read_s16(ctl + 0x698) * 0x20 + memory.read_u32(carrier + 0x4a))
+	a7 = body - 8
+	var folded: int = C68kScript.s16(fold_angle_pm_0x2000(memory.read_s16(ctl + 0x20)))
+	a7 = body - 0xc
+	var turned: int = abs_int(folded)
+	a7 = entry_a7
+	if turned <= 0x4ff:
+		a7 = body - 0xc
+		var over: int = point_over_face_xz(record, deck)
+		a7 = entry_a7
+		if over != 0:
+			var kind: int = memory.read_s16(memory.read_u32(octl + 4))
+			if memory.read_u16(ctl + 0x32) != 0 and memory.read_u16(0x21058) == 0 and kind <= 7:
+				a7 = body - 8
+				var diff: int = fold_angle_pm_0x2000(C68kScript.s32(memory.read_s16(ctl + 0x22) - memory.read_s16(octl + 0x22)))
+				a7 = body - 0xc
+				var c: int = cos_fixed14(diff & 0x3fff)
+				a7 = entry_a7
+				memory.write_u32(octl + 0x632, C68kScript.u32(C68kScript.asr32(C68kScript.s16(c) * memory.read_s16(ctl + 0x676), 12)))
+				memory.write_u16(octl + 0x636, memory.read_u16(ctl + 0xa))
+				memory.write_u16(octl + 0x638, memory.read_u16(ctl + 0x12))
+				memory.write_u16(octl + 0x63a, (memory.read_u16(ctl + 0x22) - memory.read_u16(ctl + 0x28)) & 0x3fff)
+			memory.write_u32(octl + 0x2e, C68kScript.u32(memory.read_s16(ctl + 0x696)))
+			if memory.read_u16(0x21058) == 0:
+				memory.write_u8(octl + 0x2c, memory.read_u8(deck + 0x16))
+	if memory.read_s16(memory.read_u32(octl + 4)) <= 7 and memory.read_s16(ctl + 0x69a) != -1:
+		a7 = body - 0xc
+		var over2: int = point_over_face_xz(record, C68kScript.u32(memory.read_s16(ctl + 0x69a) * 0x20 + memory.read_u32(carrier + 0x4a)))
+		a7 = entry_a7
+		if over2 != 0:
+			memory.write_u8(octl + 0x64d, 1)
+	if memory.read_s16(ctl + 0x696) > 0:
+		if memory.read_s16(0x21044) <= memory.read_s16(0x21046):
+			memory.write_u16(0x21044, C68kScript.u16(memory.read_u16(0x21044) + 4))
+			if memory.read_u32(0x21048) == 0:
+				a7 = body - 8
+				memory.write_u32(0x21048, C68kScript.u32(heap_alloc(C68kScript.s32(memory.read_s16(0x21044) * 8))))
+				a7 = entry_a7
+			else:
+				a7 = body - 0xc
+				memory.write_u32(0x21048, C68kScript.u32(heap_realloc_grow_only(memory.read_u32(0x21048), C68kScript.s32(memory.read_s16(0x21044) * 8))))
+				a7 = entry_a7
+		var at: int = C68kScript.u32(memory.read_u32(0x21048) + memory.read_s16(0x21046) * 8)
+		memory.write_u32(at + 4, C68kScript.u32(other))
+		memory.write_u32(at, C68kScript.u32(carrier))
+		memory.write_u16(0x21046, C68kScript.u16(memory.read_u16(0x21046) + 1))
+	return record
+
+## 0x13d60 (1.0.3's spawn_effect 0x11c38, on Leyte's addresses: the controller at +0 for +8; Leyte tests the debris loop's
+## count first, the same three calls, and pushes a fourth argument, 0, that spawn_debris_fragment does not read).
+## Effect spawn: live play (word 0x21058 == 0) logs the call in the 16-entry ring 0x2c69a + 24 * index (index word
+## 0x2c698); while replaying only state -1 or kind 1 continue, else 0. Kind != 1 in view modes <= 2 or 8 sets the
+## explosion sound timers by compute_camera_abs_metric (<= 9999 -> word 0x21034 = 0x1e, else <= 39999 -> word 0x21032 =
+## 0xf). Spawns effect_templates[kind] (0x2c81a) at (x, y, z) with spawn_mission_pool_object (null -> 0), stores the
+## arguments in its controller (+0x32, +0x34, +0x36, +0x39, +0x38), calls effect_init_table[kind] (0x205bc) on the object
+## and, with debris, spawn_debris_fragment three times; returns the controller. Frame link.w a6,#0 + nine saved
+## registers: the pool spawn is entered 0x4c below, the initialiser 0x30, each debris call 0x3c.
+func spawn_effect(kind: int, word_34: int, word_36: int, byte_38: int, debris: int, x: int, y: int, z: int) -> int:
+	assert(memory != null, "spawn_effect requires original global memory")
+	var entry_a7: int = a7
+	var entry: int
+	var tmp: int
+	var ctl: int
+	var left: int
+
+	kind = C68kScript.s32(kind)
+	if memory.read_s16(0x21058) == 0:
+		entry = 0x2c69a + memory.read_s16(0x2c698) * 0x18
+		memory.write_u8(entry, C68kScript.u8(kind))
+		memory.write_u16(entry + 4, C68kScript.u16(word_34))
+		memory.write_u16(entry + 6, C68kScript.u16(word_36))
+		memory.write_u8(entry + 2, C68kScript.u8(debris))
+		memory.write_u8(entry + 1, C68kScript.u8(byte_38))
+		memory.write_u32(entry + 8, C68kScript.u32(x))
+		memory.write_u32(entry + 0xc, C68kScript.u32(y))
+		memory.write_u32(entry + 0x10, C68kScript.u32(z))
+		memory.write_u32(entry + 0x14, memory.read_u32(0x21020))
+		memory.write_u16(0x2c698, (memory.read_u16(0x2c698) + 1) & 0xf)
+	elif memory.read_s16(0x21058) != -1 and kind != 1:
+		return 0
+	if kind != 1 and (memory.read_s16(0x23d88) <= 2 or memory.read_s16(0x23d88) == 8):
+		tmp = compute_camera_abs_metric(x, y, z)
+		if tmp <= 9999:
+			memory.write_u16(0x21034, 0x1e)
+		elif tmp <= 39999:
+			memory.write_u16(0x21032, 0xf)
+	a7 = entry_a7 - 0x4c
+	tmp = spawn_mission_pool_object(memory.read_u32(0x2c81a + kind * 4), x, y, z, 0, 0, 0, 0)
+	a7 = entry_a7
+	if tmp == 0:
+		return 0
+	ctl = memory.read_u32(tmp)
+	memory.write_u8(ctl + 0x32, C68kScript.u8(kind))
+	memory.write_u16(ctl + 0x34, C68kScript.u16(word_34))
+	memory.write_u16(ctl + 0x36, C68kScript.u16(word_36))
+	memory.write_u8(ctl + 0x39, C68kScript.u8(debris))
+	memory.write_u8(ctl + 0x38, C68kScript.u8(byte_38))
+	a7 = entry_a7 - 0x30
+	_jsr(memory.read_u32(0x205bc + kind * 4), [tmp])
+	a7 = entry_a7
+	if debris != 0:
+		left = 3
+		while true:
+			left = left - 1
+			if left == -1:
+				break
+			a7 = entry_a7 - 0x3c
+			spawn_debris_fragment(x, y, z, 0)
+			a7 = entry_a7
+	return ctl
+
+## 0x1b582 (1.0.3's spawn_debris_fragment 0x173de with the controller at +0): spawns the debris template (0x2cc10) at (x,
+## y, z); its controller gets +0x32 = frame + 0x2d, velocities +8 / +0xc / +0x10 = (rng & 0xff) - 0x7f, word +0x36 = word
+## +0xe asl 4 and angles +0x20 / +0x22 / +0x24 = (rng & 0xff) asl 6 (words). Returns the controller or 0. Frame link.w
+## a6,#0 + three saved registers: the pool spawn is entered 0x34 below. (Leyte's spawn_effect pushes a fourth argument,
+## not read.)
+func spawn_debris_fragment(x: int, y: int, z: int, _unused: int = 0) -> int:
+	assert(memory != null, "spawn_debris_fragment requires original global memory")
+	var entry_a7: int = a7
+	var obj: int
+	var ctl: int
+
+	a7 = entry_a7 - 0x34
+	obj = spawn_mission_pool_object(memory.read_u32(0x2cc10), x, y, z, 0, 0, 0, 0)
+	a7 = entry_a7
+	if obj == 0:
+		return 0
+	ctl = memory.read_u32(obj)
+	memory.write_u32(ctl + 0x32, C68kScript.u32(memory.read_u32(0x21020) + 0x2d))
+	memory.write_u32(ctl + 8, C68kScript.u32((overlay_rng_next() & 0xff) - 0x7f))
+	memory.write_u32(ctl + 0xc, C68kScript.u32((overlay_rng_next() & 0xff) - 0x7f))
+	memory.write_u32(ctl + 0x10, C68kScript.u32((overlay_rng_next() & 0xff) - 0x7f))
+	memory.write_u16(ctl + 0x36, C68kScript.u16(memory.read_u16(ctl + 0xe) << 4))
+	memory.write_u16(ctl + 0x20, C68kScript.u16((overlay_rng_next() & 0xff) << 6))
+	memory.write_u16(ctl + 0x22, C68kScript.u16((overlay_rng_next() & 0xff) << 6))
+	memory.write_u16(ctl + 0x24, C68kScript.u16((overlay_rng_next() & 0xff) << 6))
+	return ctl
+
+## 0x3e8 (1.0.3's any_mission_kills_recorded 0x314; Leyte's kill-count words are host +0xbe .. +0xd4, 1.0.3's +0xba ..
+## +0xd0): 1 when any of the twelve is non-zero, else 0.
+func any_mission_kills_recorded() -> int:
+	assert(memory != null, "any_mission_kills_recorded requires original global memory")
+	var world: int = memory.read_u32(0x207fc)
+	var last: int = C68kScript.u32(world + 0xd4)
+	var a0: int = C68kScript.u32(world + 0xbe)
+	while true:
+		if memory.read_u16(a0) != 0:
+			return 1
+		a0 = C68kScript.u32(a0 + 2)
+		if not (C68kScript.s32(last) >= C68kScript.s32(a0)):
+			return 0
+	return 0
+
+## 0x2a5a (Leyte's finalize_attitude_matrix_3ang_alt, 1.0.3's 0x2408 rewritten: no rotation bases and products, the
+## matrix written in closed form from the sines / cosines load_attitude_angle_sincos leaves - s1 / c1 0x23d2c / 0x23d2a,
+## s2 / c2 0x23d28 / 0x23d26, s3 / c3 0x23d24 / 0x23d22). With a = s1 s2 >> 12 and b = s1 c2 >> 12 (words): out = [c2 c3 -
+## a s3, a c3 + c2 s3, c1 s2 ; -c1 s3, c1 c3, -s1 ; -c3 s2 - b s3, b c3 - s2 s3, c1 c2], each product sum asr 12 (muls.w,
+## word results).
+func finalize_attitude_matrix_3ang_alt(out: int) -> void:
+	assert(memory != null, "finalize_attitude_matrix_3ang_alt requires original global memory")
+	var s1: int = memory.read_s16(0x23d2c)
+	var c1: int = memory.read_s16(0x23d2a)
+	var s2: int = memory.read_s16(0x23d28)
+	var c2: int = memory.read_s16(0x23d26)
+	var s3: int = memory.read_s16(0x23d24)
+	var c3: int = memory.read_s16(0x23d22)
+	var a: int = C68kScript.s16(C68kScript.asr32(s1 * s2, 12))
+	var b: int = C68kScript.s16(C68kScript.asr32(s1 * c2, 12))
+	var m: Array = [
+		C68kScript.asr32(C68kScript.s32(c2 * c3 - a * s3), 12),
+		C68kScript.asr32(C68kScript.s32(a * c3 + c2 * s3), 12),
+		C68kScript.asr32(c1 * s2, 12),
+		C68kScript.asr32(C68kScript.s32(-(c1 * s3)), 12),
+		C68kScript.asr32(c1 * c3, 12),
+		-s1,
+		C68kScript.asr32(C68kScript.s32(-(c3 * s2) - b * s3), 12),
+		C68kScript.asr32(C68kScript.s32(b * c3 - s2 * s3), 12),
+		C68kScript.asr32(c1 * c2, 12)]
+	for k in 9:
+		memory.write_u16(out + 2 * k, C68kScript.u16(m[k]))
+
+## 0x2b52 (1.0.3's build_attitude_matrix_3ang_alt 0x2444, the same 11 instructions): load_attitude_angle_sincos(angle1,
+## angle2, angle3, 0), then finalize_attitude_matrix_3ang_alt(out) (entered 0x1c below: link 4, four arguments + out, bsr).
+func build_attitude_matrix_3ang_alt(angle1: int, angle2: int, angle3: int, out: int) -> void:
+	assert(memory != null, "build_attitude_matrix_3ang_alt requires original global memory")
+	load_attitude_angle_sincos(angle1, angle2, angle3, 0)
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x1c
+	finalize_attitude_matrix_3ang_alt(out)
+	a7 = entry_a7
+
+## The forward vector (0, 0, 0x4000) turned by a controller's attitude words +0x20 / +0x22 / +0x24 (build_attitude_matrix_3ang
+## into a6 - 0x1e, build_depth below the body; transform_vecs12_by_matrix3 0x24 below), read back as words (inlined twice in
+## update_tracking_camera; the controller layout is unchanged in Leyte).
+func _tracking_forward(ctl: int, a6: int, body: int, build_depth: int) -> Array:
+	var entry_a7: int = a7
+	memory.write_u16(a6 - 0xa, 0)
+	memory.write_u16(a6 - 6, 0)
+	memory.write_u16(a6 - 2, 0x4000)
+	a7 = body - build_depth
+	build_attitude_matrix_3ang(memory.read_s16(ctl + 0x20), memory.read_s16(ctl + 0x22), memory.read_s16(ctl + 0x24), a6 - 0x1e)
+	a7 = body - 0x24
+	transform_vecs12_by_matrix3(1, a6 - 0xc, a6 - 0xc, a6 - 0x1e)
+	a7 = entry_a7
+	return [memory.read_s16(a6 - 0xa), memory.read_s16(a6 - 6), memory.read_s16(a6 - 2)]
+
+## 0x9d52 (1.0.3's update_tracking_camera 0x8c10, the same 249 instructions; held back only because its displacement 0x20
+## pairs two ways: the objects' z (+0x20 -> +0xc) and the controllers' first attitude word (+0x20, unchanged, in
+## _tracking_forward). Leyte's layout otherwise: positions +4 / +8 / +0xc, the shot's start frame +0x42, the player
+## controller's word +0x698 (for +0x684), host +0xd8 (for +0xd4); addresses through the map. The replay / end-sequence
+## camera, as 1.0.3: looking at a live player shot, else at the midpoint between the player and a designated or held
+## aircraft within 0x9ab0 (behind the player or, when the aircraft heads within 0x1000 of the player and is ahead, behind
+## it), else at the player with the camera gliding; replay_frames_left (0x21056) counts down to state 3 and the outcome.
+func update_tracking_camera() -> int:
+	assert(memory != null, "update_tracking_camera requires original global memory")
+	assert(a7 != 0, "update_tracking_camera needs a7 (its frame holds the forward vector)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var body: int = entry_a7 - 0x58
+	var result: int = 0
+	var look_obj: int = -1
+	var tracked: bool = false
+	var t: Array = [0, 0, 0]
+	var shot: int = memory.read_u32(0x21068)
+	if shot != 0 and memory.read_s32(memory.read_u32(shot) + 0x42) < memory.read_s32(0x21020):
+		look_obj = memory.read_u32(shot)
+	elif (memory.read_u32(0x21070) != 0 or memory.read_u32(0x2b258) != 0) and memory.read_s16(0x21058) != 3:
+		if memory.read_u32(0x2b258) == 0:
+			memory.write_u32(0x2106c, memory.read_u32(0x21070))
+			memory.write_u32(0x2b258, 0x14)
+		var follow: int = memory.read_u32(0x2106c)
+		if follow != 0:
+			var player_obj: int = memory.read_u32(memory.read_u32(0x20b28))
+			var target: int = memory.read_u32(follow)
+			if target != 0:
+				a7 = body - 0x1c
+				var dist: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(player_obj + 0x4), memory.read_s32(player_obj + 0x8), memory.read_s32(player_obj + 0xc), memory.read_s32(target + 0x4), memory.read_s32(target + 0x8), memory.read_s32(target + 0xc)))
+				a7 = entry_a7
+				if dist <= 0x9ab0:
+					tracked = true
+					for k in 3:
+						var m: int = C68kScript.s32(memory.read_u32(target + 0x4 + 4 * k) + memory.read_u32(player_obj + 0x4 + 4 * k))
+						t[k] = C68kScript.u32((m + 1 if m < 0 else m) >> 1)
+					var shift: int = 0
+					while (C68kScript.u32(dist) & 0xffff8000) != 0:
+						shift = C68kScript.s16(shift + 1)
+						dist = C68kScript.asr32(dist, 1)
+					var player_ctl: int = memory.read_u32(0x20b28)
+					a7 = body - 8
+					var turn: int = fold_angle_pm_0x2000(C68kScript.s32(memory.read_s16(follow + 0x22) - memory.read_s16(player_ctl + 0x22)))
+					a7 = entry_a7
+					var anchor: int = player_obj
+					if memory.read_u32(0x21070) != 0 and abs_int(turn) <= 0x1000:
+						var f: Array = _tracking_forward(player_ctl, a6, body, 0x14)
+						a7 = body - 0x1c
+						var player_ahead: int = C68kScript.s32(approx_dist3_xyz(C68kScript.s32(f[0] + memory.read_u32(player_obj + 0x4)), C68kScript.s32(f[1] + memory.read_u32(player_obj + 0x8)), C68kScript.s32(f[2] + memory.read_u32(player_obj + 0xc)), memory.read_s32(target + 0x4), memory.read_s32(target + 0x8), memory.read_s32(target + 0xc)))
+						a7 = entry_a7
+						var g: Array = _tracking_forward(memory.read_u32(0x2106c), a6, body, 0x2c)
+						a7 = body - 0x2c
+						var target_ahead: int = C68kScript.s32(approx_dist3_xyz(C68kScript.s32(g[0] + memory.read_u32(target + 0x4)), C68kScript.s32(g[1] + memory.read_u32(target + 0x8)), C68kScript.s32(g[2] + memory.read_u32(target + 0xc)), memory.read_s32(player_obj + 0x4), memory.read_s32(player_obj + 0x8), memory.read_s32(player_obj + 0xc)))
+						a7 = entry_a7
+						if target_ahead < player_ahead:
+							anchor = target
+					a7 = body - 0x18
+					place_camera_behind_object(anchor, t[0], t[1], t[2], shift)
+					a7 = entry_a7
+					if memory.read_u32(0x21070) != memory.read_u32(0x2106c):
+						memory.write_u32(0x2b258, C68kScript.u32(memory.read_u32(0x2b258) - 1))
+	if not tracked:
+		if look_obj == -1:
+			look_obj = memory.read_u32(memory.read_u32(0x20b28))
+		t = [memory.read_u32(look_obj + 0x4), memory.read_u32(look_obj + 0x8), memory.read_u32(look_obj + 0xc)]
+		if memory.read_s16(0x21058) != 3:
+			if memory.read_u32(0x2106c) != 0:
+				var frames: int = C68kScript.s32(memory.read_s16(0x21056) - 0x1e)
+				assert(frames != 0, "update_tracking_camera: divs.l by zero traps")
+				memory.write_u32(0x23d44 + 8, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(memory.read_u32(0x2b25c + 8) - memory.read_u32(0x23d68)), frames)))
+				memory.write_u32(0x23d44 + 4, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(memory.read_u32(0x2b25c + 4) - memory.read_u32(0x23d64)), frames)))
+				memory.write_u32(0x23d44, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(memory.read_u32(0x2b25c) - memory.read_u32(0x23d60)), frames)))
+				memory.write_u32(0x2106c, 0)
+				memory.write_u32(0x2b258, 0)
+			memory.write_u32(0x23d68, C68kScript.u32(memory.read_u32(0x23d68) + memory.read_u32(0x23d44 + 8)))
+			memory.write_u32(0x23d64, C68kScript.u32(memory.read_u32(0x23d64) + memory.read_u32(0x23d44 + 4)))
+			memory.write_u32(0x23d60, C68kScript.u32(memory.read_u32(0x23d60) + memory.read_u32(0x23d44)))
+	memory.write_u16(0x21056, C68kScript.u16(memory.read_u16(0x21056) - 1))
+	if memory.read_s16(0x21056) <= 0x1e:
+		memory.write_u16(0x21058, 3)
+		if memory.read_u16(0x21056) == 0:
+			var host: int = memory.read_u32(0x207fc)
+			if memory.read_s16(host + 0x98) != 2:
+				if (memory.read_u8(memory.read_u32(0x20b28) + 0x698) & 4) == 0:
+					result = -1
+				elif memory.read_u32(0x21064) == 0:
+					memory.write_u16(host + 0xd8, 1)
+					result = 1
+				else:
+					a7 = body - 4
+					result = C68kScript.s16(resolve_bailout_outcome())
+					a7 = entry_a7
+			memory.write_u16(memory.read_u32(0x207fc) + 0x98, 0)
+	a7 = body - 0x10
+	turn_camera_toward_point(t[0], t[1], t[2])
+	a7 = entry_a7
+	return C68kScript.s16(result)
+
+## A replay camera position: pose ring entry + the offset (vx, vy, vz) turned by the entry's heading word +0xe
+## (build_attitude_matrix_3ang(0, heading, 0) 0x14 below, transformed in the frame - vector a6 - 0xc, matrix a6 - 0x1e -
+## 0x24 below; inlined twice in begin_replay_view, the controller's pose ring unchanged in Leyte).
+func _replay_offset(pose: int, a6: int, body: int, vx: int, vy: int, vz: int) -> Array:
+	var entry_a7: int = a7
+	memory.write_u16(a6 - 6, C68kScript.u16(vy))
+	memory.write_u16(a6 - 0xa, C68kScript.u16(vx))
+	memory.write_u16(a6 - 2, C68kScript.u16(vz))
+	a7 = body - 0x14
+	build_attitude_matrix_3ang(0, memory.read_s16(pose + 0xe), 0, a6 - 0x1e)
+	a7 = body - 0x24
+	transform_vecs12_by_matrix3(1, a6 - 0xc, a6 - 0xc, a6 - 0x1e)
+	a7 = entry_a7
+	return [C68kScript.u32(memory.read_s16(a6 - 0xa) + memory.read_u32(pose)), C68kScript.u32(memory.read_s16(a6 - 6) + memory.read_u32(pose + 4)), C68kScript.u32(memory.read_s16(a6 - 2) + memory.read_u32(pose + 8))]
+
+## 0xa116 (1.0.3's begin_replay_view 0x8fd4, the same 144 instructions; held back only by the ambiguous displacement 4:
+## the player object's flags long +0x14 - its byte +0x17 bit 6, contact-tracked - for 1.0.3's +4 / +7, while the pose ring
+## entries keep their +4). Controller word +0x69c (for +0x688); addresses through the map. Start the instant replay, as
+## 1.0.3: view mode 8, the player untracked, the clip bounds, the camera 1000 behind the current pose entry and gliding in
+## 75 steps to the previous one offset to the side, the replay counters, the follow target designated, all sound stopped.
+func begin_replay_view() -> void:
+	assert(memory != null, "begin_replay_view requires original global memory")
+	assert(a7 != 0, "begin_replay_view needs a7 (its frame holds the offset and the matrix)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var body: int = entry_a7 - 0x38
+	memory.write_u16(0x23d88, 8)
+	var ctl: int = memory.read_u32(0x20b28)
+	var obj: int = memory.read_u32(ctl)
+	if (memory.read_u8(obj + 0x17) & 0x40) != 0:
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) & 0xffffffbf)
+		a7 = body - 8
+		drop_contact_records_for_object(obj)
+		a7 = entry_a7
+	a7 = body - 4
+	update_view_clip_bounds()
+	a7 = entry_a7
+	ctl = memory.read_u32(0x20b28)
+	var index: int = memory.read_s16(ctl + 0x612)
+	var cam: Array = _replay_offset(C68kScript.u32(ctl + 0x36 + index * 0x14), a6, body, 0, 0, -1000)
+	memory.write_u32(0x23d68, cam[0])
+	memory.write_u32(0x23d64, cam[1])
+	memory.write_u32(0x23d60, cam[2])
+	ctl = memory.read_u32(0x20b28)
+	var prev: int = C68kScript.s16(memory.read_s16(ctl + 0x612) - 1)
+	if prev < 0:
+		prev = 0x4a
+	var side: int = -0x513 if memory.read_s16(0x21054) == 1 else 0x513
+	var goal: Array = _replay_offset(C68kScript.u32(ctl + 0x36 + prev * 0x14), a6, body, -0x2ee, 0x183, side)
+	memory.write_u32(0x2b25c + 8, goal[0])
+	memory.write_u32(0x2b25c + 4, goal[1])
+	memory.write_u32(0x2b25c, goal[2])
+	var floor_y: int = C68kScript.s32(memory.read_u32(memory.read_u32(0x20b28) + 0x2e) + 0x280)
+	if floor_y > memory.read_s32(0x2b25c + 4):
+		memory.write_u32(0x2b25c + 4, C68kScript.u32(floor_y))
+	memory.write_u32(0x23d44 + 8, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(memory.read_u32(0x2b25c + 8) - memory.read_u32(0x23d68)), 0x4b)))
+	memory.write_u32(0x23d44 + 4, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(memory.read_u32(0x2b25c + 4) - memory.read_u32(0x23d64)), 0x4b)))
+	memory.write_u32(0x23d44, C68kScript.u32(C68kScript.divs_trunc(C68kScript.s32(memory.read_u32(0x2b25c) - memory.read_u32(0x23d60)), 0x4b)))
+	memory.write_u16(memory.read_u32(0x20b28) + 0x69c, 0)
+	memory.write_u16(0x23d88, 8)
+	memory.write_u16(0x2b254, 0xc001)
+	memory.write_u16(0x2b256, 0xc001)
+	memory.write_u16(0x21054, 0)
+	memory.write_u16(0x21056, 0x69)
+	memory.write_u16(0x21058, 1)
+	memory.write_u16(memory.read_u32(0x207fc) + 0x98, 1)
+	var follow: int = memory.read_u32(0x2106c)
+	if follow != 0 and memory.read_u32(follow) != 0:
+		memory.write_u32(0x21070, follow)
+	memory.write_u32(0x2106c, 0)
+	memory.write_u32(0x2b258, 0)
+	a7 = body - 4
+	stop_all_sound_channels()
+	a7 = entry_a7
+
+## 0x40c (Leyte's probe_nearest_facility_kind, 1.0.3's 0x334 rewritten; seven saved registers): the facility kind of the
+## nearest object of the near list (0x20804, count word 0x20b26; objects with a controller at +0) to obj, by
+## approx_dist3_xyz (positions +4 / +8 / +0xc), over these controller definition types: a carrier 0x1b (unless its deck
+## face +0x698 is known and its kind-3 face +0x69a is not) within 0x671f -> 0x200; types 0x1c / 0x20 within 0x671f ->
+## 0x100; types 0x18 / 0x19 within their range +0x18 -> 0x100 / 0x200. Nearer wins (signed); returns the kind (word,
+## sign-extended), 0 when none.
+func probe_nearest_facility_kind(obj: int) -> int:
+	assert(memory != null, "probe_nearest_facility_kind requires original global memory")
+	var best_dist: int = 0x7fffffff
+	var kind: int = 0
+	var slot: int = 0x20804
+	var left: int = memory.read_u16(0x20b26)
+	while left != 0:
+		left -= 1
+		var facility: int = memory.read_u32(slot)
+		slot += 4
+		var ctl: int = memory.read_u32(facility)
+		if ctl == 0:
+			continue
+		var t: int = memory.read_s16(memory.read_u32(ctl + 4))
+		if t != 0x1b and t != 0x1c and t != 0x20 and t != 0x19 and t != 0x18:
+			continue
+		if t == 0x1b and memory.read_s16(ctl + 0x698) != -1 and memory.read_s16(ctl + 0x69a) == -1:
+			continue
+		var dist: int = approx_dist3_xyz(memory.read_s32(obj + 4), memory.read_s32(obj + 8), memory.read_s32(obj + 0xc),
+				memory.read_s32(facility + 4), memory.read_s32(facility + 8), memory.read_s32(facility + 0xc))
+		if t == 0x18 or t == 0x19:
+			if dist >= memory.read_s32(facility + 0x18):
+				continue
+		elif dist > 0x671f:
+			continue
+		if dist >= best_dist:
+			continue
+		best_dist = dist
+		if t == 0x1c or t == 0x20 or t == 0x18:
+			kind = 0x100
+		else:
+			kind = 0x200
+	return C68kScript.s16(kind)
+
+## 0xce0 (Leyte only; link a6 -0x720 and six registers, body 0x73c below): a scene visitor (ctx, node, face, path, depth)
+## that collects the centroids of the type-0x80 faces (byte +9 & 0xf0) of nodes whose byte +1 is 0 into the cached table
+## 0x20b38 (count word 0x20b34, capacity word 0x20b32 grown by 10 through heap_realloc_grow_only, 0xc below): the node's
+## vertices placed through the path (transform_through_node_chain into the frame, a6 - 0x708, origins a6 - 0x718 / -0x71c /
+## -0x720; 0x20 below), the face's vertices (word indices from +0xe, count byte +8) asr.l word node +0x18 averaged
+## (divs.l, truncating; a zero count would trap) and 100 added to y. (1.0.3's nearest_type80_centroid_visitor kept only
+## the nearest.)
+func leyte_type80_centroid_visitor(_ctx: int, node: int, face: int, path: int, depth: int) -> void:
+	assert(memory != null, "leyte_type80_centroid_visitor requires original global memory")
+	assert(a7 != 0, "leyte_type80_centroid_visitor needs a7 (its frame holds the vertex buffer)")
+	if (memory.read_u8(face + 9) & 0xf0) != 0x80 or memory.read_u8(node + 1) != 0:
+		return
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var body: int = entry_a7 - 0x73c
+	var verts: int = a6 - 0x708
+	a7 = body - 0x20
+	transform_through_node_chain(path, C68kScript.s16(depth), node, a6 - 0x718, a6 - 0x71c, a6 - 0x720, verts)
+	a7 = entry_a7
+	var sums: Array = [0, 0, 0]
+	var count: int = memory.read_u8(face + 8)
+	var shift: int = memory.read_s16(node + 0x18)
+	for i in count:
+		var v: int = C68kScript.u32(verts + memory.read_s16(face + 0xe + 2 * i) * 0xc)
+		for k in 3:
+			sums[k] = C68kScript.s32(sums[k] + C68kScript.asr32(memory.read_u32(v + 4 * k), shift))
+	assert(count != 0, "leyte_type80_centroid_visitor: divs.l by zero traps")
+	var centroid: Array = [C68kScript.divs_trunc(sums[0], count), C68kScript.s32(C68kScript.divs_trunc(sums[1], count) + 100),
+			C68kScript.divs_trunc(sums[2], count)]
+	if memory.read_s16(0x20b32) == memory.read_s16(0x20b34):
+		memory.write_u16(0x20b32, C68kScript.u16(memory.read_u16(0x20b32) + 10))
+		a7 = body - 0xc
+		memory.write_u32(0x20b38, C68kScript.u32(heap_realloc_grow_only(memory.read_u32(0x20b38), C68kScript.s32(memory.read_s16(0x20b32) * 12))))
+		a7 = entry_a7
+	var at: int = C68kScript.u32(memory.read_u32(0x20b38) + memory.read_s16(0x20b34) * 12)
+	for k in 3:
+		memory.write_u32(at + 4 * k, C68kScript.u32(centroid[k]))
+	memory.write_u16(0x20b34, C68kScript.u16(memory.read_u16(0x20b34) + 1))
+
+## 0xe52 (Leyte only; six saved registers): the centroid of an object's first type-0x80 face (surface byte +0x16) into
+## out: none for an object hidden (+0x17 bit 1), for a face with +0x13 bit 1 or with a centroid sum y <= 0 (returns 0).
+## A ship (controller definition type 0x1b..0x22) applies its pending pose first (leyte_apply_pending_pose, 0x20 below).
+## The face's vertices (word indices from +0x18, count word +0x14) asr word +0x36 are averaged (divs.l) and 100 added to y.
+## Returns 1 with a centroid.
+func leyte_object_type80_centroid(obj: int, out: int) -> int:
+	assert(memory != null, "leyte_object_type80_centroid requires original global memory")
+	if (memory.read_u8(obj + 0x17) & 2) != 0:
+		return 0
+	var ctl: int = memory.read_u32(obj)
+	if ctl != 0:
+		var t: int = memory.read_s16(memory.read_u32(ctl + 4))
+		if t > 0x1a and t <= 0x22 and memory.read_u8(ctl + 0x619) != 0:
+			var entry_a7: int = a7
+			a7 = entry_a7 - 0x20
+			leyte_apply_pending_pose(ctl)
+			a7 = entry_a7
+	var face: int = memory.read_u32(obj + 0x4a)
+	var f: int = 0
+	while f < memory.read_s16(obj + 0x3c):
+		if memory.read_u8(face + 0x16) == 0x80:
+			if (memory.read_u8(face + 0x13) & 2) != 0:
+				return 0
+			memory.write_u32(out + 8, 0)
+			memory.write_u32(out + 4, 0)
+			memory.write_u32(out, 0)
+			var count: int = memory.read_s16(face + 0x14)
+			var shift: int = memory.read_s16(obj + 0x36)
+			for i in maxi(count, 0):
+				var v: int = C68kScript.u32(memory.read_u32(obj + 0x46) + memory.read_s16(memory.read_u32(face + 0x18) + 2 * i) * 12)
+				for k in 3:
+					memory.write_u32(out + 4 * k, C68kScript.u32(memory.read_s32(out + 4 * k) + C68kScript.asr32(memory.read_u32(v + 4 * k), shift)))
+			if memory.read_s32(out + 4) <= 0:
+				return 0
+			memory.write_u32(out, C68kScript.u32(C68kScript.divs_trunc(memory.read_s32(out), count)))
+			memory.write_u32(out + 4, C68kScript.u32(C68kScript.divs_trunc(memory.read_s32(out + 4), count) + 100))
+			memory.write_u32(out + 8, C68kScript.u32(C68kScript.divs_trunc(memory.read_s32(out + 8), count)))
+			return 1
+		face = C68kScript.u32(face + 0x20)
+		f += 1
+	return 0
+
+## 0xf7c (Leyte's point_near_camera_or_type80_object, 1.0.3's 0xbca rewritten; link a6 -0xc and seven registers, body 0x2c
+## below): the nearest "type 0x80" point to the camera goes into point: the mission scene's type-0x80 face centroids,
+## cached once (0x20b38, capacity 10 from heap_alloc 8 below, filled by for_each_mission_scene_object with
+## leyte_type80_centroid_visitor, 0x10 below), and the centroid of each near object's first type-0x80 face (0x20804, count
+## 0x20b24; leyte_object_type80_centroid 0xc below), whose object is remembered in 0x20b3c (cleared first). Nearer by
+## compute_camera_abs_metric (signed, from 1000000000); point is left as it was when nothing is nearer. Returns 1 when the
+## best metric is <= 0x4073f, else 0.
+func point_near_camera_or_type80_object(point: int) -> int:
+	assert(memory != null, "point_near_camera_or_type80_object requires original global memory")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x2c
+	if memory.read_u32(0x20b38) == 0:
+		memory.write_u16(0x20b32, 10)
+		a7 = body - 8
+		memory.write_u32(0x20b38, C68kScript.u32(heap_alloc(C68kScript.s32(memory.read_s16(0x20b32) * 12))))
+		a7 = body - 0x10
+		for_each_mission_scene_object(0xce0, point)
+		a7 = entry_a7
+	var best: int = 1000000000
+	var table: int = memory.read_u32(0x20b38)
+	var i: int = 0
+	while i < memory.read_s16(0x20b34):
+		var e: int = C68kScript.u32(table + 12 * i)
+		var m: int = compute_camera_abs_metric(memory.read_s32(e), memory.read_s32(e + 4), memory.read_s32(e + 8))
+		if m < best:
+			for k in 3:
+				memory.write_u32(point + 4 * k, memory.read_u32(e + 4 * k))
+			best = m
+		i += 1
+	memory.write_u32(0x20b3c, 0)
+	var tmp: int = entry_a7 - 4 - 0xc
+	var j: int = 0
+	while j < memory.read_s32(0x20b24):
+		var obj: int = memory.read_u32(0x20804 + 4 * j)
+		a7 = body - 0xc
+		var found: int = leyte_object_type80_centroid(obj, tmp)
+		a7 = entry_a7
+		if found != 0:
+			var m2: int = compute_camera_abs_metric(memory.read_s32(tmp), memory.read_s32(tmp + 4), memory.read_s32(tmp + 8))
+			if m2 < best:
+				for k in 3:
+					memory.write_u32(point + 4 * k, memory.read_u32(tmp + 4 * k))
+				best = m2
+				memory.write_u32(0x20b3c, obj)
+		j = C68kScript.s16(j + 1)
+	return 1 if best <= 0x4073f else 0
+
+## 0x123be (1.0.3's enqueue_control_inputs_avg4 0x10538 on Leyte's controller layout: the ring index +0x650, the aileron /
+## elevator / rudder slots +0x652 / +0x65a / +0x662, running sums +0x66a / +0x66c / +0x66e, outputs +0x674 / +0x670 / +0x672,
+## the damage byte +0x699; the aileron limit is the controller definition's word +0x4c, 1.0.3's constant 0x140): control
+## inputs into the 4-entry ring, clamped (aileron +-limit, elevator +-0x200, rudder +-0x40, by abs_int), the new values
+## added, the next slot's (written 3 calls ago) subtracted, and the outputs sum / 4 toward zero. Nothing when the damage
+## byte has bit 0.
+func enqueue_control_inputs_avg4(ctl: int, rudder: int, elevator: int, aileron: int) -> void:
+	assert(memory != null, "enqueue_control_inputs_avg4 requires original global memory")
+	if (memory.read_u8(ctl + 0x699) & 1) != 0:
+		return
+	var limit: int = memory.read_s16(memory.read_u32(ctl + 4) + 0x4c)
+	aileron = C68kScript.s16(aileron)
+	if abs_int(aileron) > limit:
+		aileron = C68kScript.s16(-limit) if aileron < 0 else limit
+	rudder = C68kScript.s16(rudder)
+	if abs_int(rudder) > 0x40:
+		rudder = -0x40 if rudder < 0 else 0x40
+	elevator = C68kScript.s16(elevator)
+	if abs_int(elevator) > 0x200:
+		elevator = -0x200 if elevator < 0 else 0x200
+	var inputs := [[aileron, 0x652, 0x66a, 0x674], [elevator, 0x65a, 0x66c, 0x670], [rudder, 0x662, 0x66e, 0x672]]
+	var ring: int = memory.read_s16(ctl + 0x650)
+	for c in inputs:
+		memory.write_u16(ctl + c[1] + ring * 2, C68kScript.u16(c[0]))
+		memory.write_u16(ctl + c[2], C68kScript.u16(memory.read_u16(ctl + c[2]) + c[0]))
+	ring = C68kScript.s16(ring + 1)
+	if ring == 4:
+		ring = 0
+	for c in inputs:
+		memory.write_u16(ctl + c[2], C68kScript.u16(memory.read_u16(ctl + c[2]) - memory.read_u16(ctl + c[1] + ring * 2)))
+		var sum: int = memory.read_s16(ctl + c[2])
+		if sum < 0:
+			sum += 3
+		memory.write_u16(ctl + c[3], C68kScript.u16(sum >> 2))
+	memory.write_u16(ctl + 0x650, C68kScript.u16(ring))
+
+## Replay visibility of one object (inlined twice in advance_frame_and_tick_controllers; Leyte's born +0x42 / dead +0x3e for
+## 1.0.3's +0x40 / +0x3c, flags long +0x14 with byte +0x17): not yet born (born after the frame) or already dead (dead set
+## and before the frame) -> hidden (+0x14 |= 0x40, 0x42 when dead); otherwise a hidden-by-flag one (+0x17 bit 1) loses
+## 0x42, and one born this frame loses 0x40.
+func _replay_visibility(obj: int, frame: int) -> void:
+	var born: int = memory.read_s32(obj + 0x42)
+	var dead: int = memory.read_s32(obj + 0x3e)
+	if born > frame or (dead != 0 and dead < frame):
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) | (0x42 if dead != 0 and dead < frame else 0x40))
+	elif (memory.read_u8(obj + 0x17) & 2) != 0:
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) & 0xffffffbd)
+	elif born == frame:
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) & 0xffffffbf)
+
+## 0xa406 (1.0.3's advance_frame_and_tick_controllers 0x92c4 on Leyte's addresses; five saved registers, calls 0x18 below,
+## ticks 0x1c): the next frame. The frame counter (0x21020) advances (a replay start, state 1 in 0x21058, steps back 0x4b
+## frames and marks the effect log end). While replaying, the pool objects (0x20804, count word 0x20b26) and the shapes
+## (type byte +0x28 == 2) of entity_array_1 (0x20b44, count word 0x20f2e) get their replay visibility, and the logged effects
+## of this frame come back. Leyte then clears designated_entity_2 (0x21070) every frame. Every controller of
+## controller_list (0x21bd4, count word 0x219b6) still holding an object runs its definition tick (+2) while the list is
+## compacted (controllers appended by the ticks move down when some were dropped); live_controller_count (0x219b0) = the
+## kept count; apply_controller_velocities.
+func advance_frame_and_tick_controllers() -> void:
+	assert(memory != null, "advance_frame_and_tick_controllers requires original global memory")
+	var entry_a7: int = a7
+	memory.write_u32(0x21020, C68kScript.u32(memory.read_u32(0x21020) + 1))
+	if memory.read_s16(0x21058) == 1:
+		memory.write_u32(0x21020, C68kScript.u32(memory.read_u32(0x21020) - 0x4b))
+		a7 = entry_a7 - 0x18
+		mark_effect_log_end()
+		a7 = entry_a7
+	var old: int = memory.read_s16(0x219b6)
+	if memory.read_u16(0x21058) != 0:
+		var frame: int = memory.read_s32(0x21020)
+		for i in memory.read_u16(0x20b26):
+			_replay_visibility(memory.read_u32(0x20804 + 4 * i), frame)
+		for i in memory.read_u16(0x20f2e):
+			var obj: int = memory.read_u32(0x20b44 + 4 * i)
+			if memory.read_u8(obj + 0x28) == 2:
+				_replay_visibility(obj, frame)
+		a7 = entry_a7 - 0x18
+		replay_logged_effects()
+		a7 = entry_a7
+	memory.write_u32(0x21070, 0)
+	var dst: int = 0x21bd4
+	var src: int = 0x21bd4
+	for i in old & 0xffff:
+		var ctl: int = memory.read_u32(src)
+		src += 4
+		if memory.read_u32(ctl) == 0:
+			continue
+		memory.write_u32(dst, ctl)
+		dst += 4
+		var tick: int = memory.read_u32(memory.read_u32(ctl + 4) + 2)
+		if tick != 0:
+			a7 = entry_a7 - 0x1c
+			_jsr(tick, [ctl])
+			a7 = entry_a7
+	var kept: int = C68kScript.s16(C68kScript.asr32(dst - 0x21bd4, 2))
+	if old > kept:
+		if old < memory.read_s32(0x219b4):
+			for i in (memory.read_u16(0x219b6) - old) & 0xffff:
+				memory.write_u32(dst, memory.read_u32(src))
+				dst += 4
+				src += 4
+		memory.write_u32(0x219b4, C68kScript.u32(C68kScript.asr32(dst - 0x21bd4, 2)))
+	memory.write_u32(0x219b0, C68kScript.u32(kept))
+	a7 = entry_a7 - 0x18
+	apply_controller_velocities()
+	a7 = entry_a7
+
+## 0xa700 (1.0.3's play_game_sound 0x958c; Leyte decides the kind of play through a jump table over ids 1..100): play
+## sound id on channel 1 unless a sound of the same or higher priority (lower id, channel1_sound 0x2b24c) is playing. Ids up
+## to 99 need their record (*(host +0x296))[id]; id 100 plays the record at table +0x1c from offset 0x48c0 (a missing one
+## only claims the channel). Ids 1..4, 6, 8, 9, 12 and - Leyte's addition - 14 play once; the others (<= 0, 5, 7, 10, 11,
+## 13, 15..99, > 100) with the record's loop points (+0xc / +0x10). Host +0x2e6(1, record + 0x16, offset, size +4 - 0x172,
+## loop a, loop b) (0x24 below); channel1_sound = id. Ids above 100 never load the record: A1 is the caller's (a1_in).
+func play_game_sound(sound_id: int, a1_in: int = 0) -> void:
+	assert(memory != null, "play_game_sound requires original global memory")
+	var entry_a7: int = a7
+	sound_id = C68kScript.s32(sound_id)
+	var current: int = memory.read_s32(0x2b24c)
+	if current != 0 and sound_id >= current:
+		return
+	var host: int = memory.read_u32(0x207fc)
+	var rec: int = a1_in
+	if sound_id <= 99:
+		rec = memory.read_u32(C68kScript.u32(memory.read_u32(host + 0x296) + sound_id * 4))
+		if rec == 0:
+			return
+	var args: Array
+	if sound_id == 100:
+		rec = memory.read_u32(memory.read_u32(host + 0x296) + 0x1c)
+		if rec == 0:
+			memory.write_u32(0x2b24c, C68kScript.u32(sound_id))
+			return
+		args = [1, C68kScript.u32(rec + 0x16), 0x48c0, C68kScript.u32(memory.read_u32(rec + 4) - 0x172), 0, 0]
+	elif sound_id in [1, 2, 3, 4, 6, 8, 9, 12, 14]:
+		args = [1, C68kScript.u32(rec + 0x16), 0, C68kScript.u32(memory.read_u32(rec + 4) - 0x172), 0, 0]
+	else:
+		args = [1, C68kScript.u32(rec + 0x16), 0, C68kScript.u32(memory.read_u32(rec + 4) - 0x172), memory.read_u32(rec + 0xc), memory.read_u32(rec + 0x10)]
+	a7 = entry_a7 - 0x24
+	_jsr(memory.read_u32(memory.read_u32(0x207fc) + 0x2e6), args)
+	a7 = entry_a7
+	memory.write_u32(0x2b24c, C68kScript.u32(sound_id))
+
+## A host sound routine (host_world + offset: Leyte's +0x2e6 play, +0x2ee rate, +0x2f2 status, +0x2fa stop) called from
+## update_game_sounds (0x14 below its entry for one argument, 0x28 for six); returns its long result.
+func _sound_host(offset: int, args: Array) -> int:
+	var entry_a7: int = a7
+	a7 = entry_a7 - (0x28 if args.size() == 6 else 0x14)
+	var r = _jsr(memory.read_u32(memory.read_u32(0x207fc) + offset), args)
+	a7 = entry_a7
+	return C68kScript.u32(0 if r == null else int(r))
+
+## update_game_sounds: a pending near (8, word 0x21034) / distant (9, word 0x21032) explosion plays and its timer is cleared.
+func _play_pending_explosions() -> void:
+	var entry_a7: int = a7
+	for pair in [[0x21034, 8], [0x21032, 9]]:
+		if memory.read_u16(pair[0]) != 0:
+			a7 = entry_a7 - 0x14
+			play_game_sound(pair[1])
+			a7 = entry_a7
+			memory.write_u16(pair[0], 0)
+
+## update_game_sounds: play the sound when on, else stop it (0x14 below).
+func _play_or_stop(on: bool, sound_id: int) -> void:
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x14
+	if on:
+		play_game_sound(sound_id)
+	else:
+		stop_game_sound(sound_id)
+	a7 = entry_a7
+
+## update_game_sounds for the views that follow an aircraft (0..2, 5, 7), on Leyte's controller layout (gear +0x68a, flaps
+## +0x68c, damage byte +0x699, stalled byte +0x677, engine rate +0x678) and host routines. The one-shot sounds are now 100
+## (word 0x21030), 14 (0x2102e: channel 1 freed first when it already holds 14, so it restarts), 1 (0x2102c), 2 (0x2102a),
+## 3 (0x21024) and 4 (0x21026).
+func _update_view_sounds(entry_a7: int, view: int) -> void:
+	var ctl: int
+	if view == 7:
+		ctl = memory.read_u32(0x21070)
+	else:
+		ctl = memory.read_u32(0x20b28)
+		if memory.read_u16(0x21034) != 0:
+			memory.write_u16(0x21032, memory.read_u16(0x21034))
+			memory.write_u16(0x21034, 0)
+		var gear: int = abs_int(memory.read_s8(ctl + 0x68a))
+		memory.write_u16(0x21038, 1 if gear != 0 and gear != 0x2d and (memory.read_u8(ctl + 0x699) & 0x20) == 0 else 0)
+		var flaps: int = abs_int(memory.read_s8(ctl + 0x68c))
+		memory.write_u16(0x21036, 1 if flaps != 0 and flaps != 0xf else 0)
+	a7 = entry_a7
+	_play_or_stop(memory.read_u16(0x2103c) != 0, 5)
+	if memory.read_u16(0x21040) != 0:
+		a7 = entry_a7 - 0x14
+		play_game_sound(6)
+		a7 = entry_a7
+	_play_or_stop(memory.read_u16(0x21038) != 0 or memory.read_u16(0x21036) != 0, 7)
+	_play_or_stop(memory.read_u16(0x2103a) != 0, 0xb)
+	_play_or_stop(memory.read_u16(0x2103e) != 0, 0xc)
+	_play_pending_explosions()
+	a7 = entry_a7 - 0x14
+	if memory.read_u16(0x21030) != 0:
+		play_game_sound(100)
+	if memory.read_u16(0x2102e) != 0:
+		if memory.read_u32(0x2b24c) == 0xe:
+			memory.write_u32(0x2b24c, 0)
+		play_game_sound(0xe)
+	for pair in [[0x2102c, 1], [0x2102a, 2], [0x21024, 3], [0x21026, 4]]:
+		if memory.read_u16(pair[0]) != 0:
+			play_game_sound(pair[1])
+	a7 = entry_a7
+	var channel1: int = memory.read_u32(0x2b24c)
+	var host: int = memory.read_u32(0x207fc)
+	if (channel1 == 0 or (channel1 != 1 and channel1 != 3 and channel1 != 4)) and memory.read_u16(host + 0x9c) != 0:
+		var rate: int = memory.read_s32(ctl + 0x678)
+		var choice: int
+		var record: int
+		var stalled: bool
+		if view == 7:
+			stalled = memory.read_u8(memory.read_u32(0x21070) + 0x677) != 0
+		else:
+			stalled = memory.read_u8(memory.read_u32(0x20b28) + 0x677) != 0
+		if stalled:
+			choice = 0
+			record = memory.read_u32(memory.read_u32(host + 0x296))
+			rate = C68kScript.s32(rate + 0x10000)
+		elif rate > 0x2710:
+			choice = 10
+			record = memory.read_u32(memory.read_u32(host + 0x296) + 0x28)
+			rate = C68kScript.s32(C68kScript.divs_trunc(C68kScript.s32(C68kScript.lsl32(rate, 2)), 3) + 0x4000)
+		else:
+			choice = -1
+			record = 0
+		if record != 0:
+			if _sound_host(0x2f2, [0]) == 0 or C68kScript.u32(choice) != memory.read_u32(0x2b250):
+				var size: int = memory.read_u32(record + 4)
+				_sound_host(0x2e6, [0, C68kScript.u32(record + 0x16), 0, size, 0, size])
+			_sound_host(0x2ee, [C68kScript.u32(rate)])
+		elif _sound_host(0x2f2, [0]) != 0:
+			_sound_host(0x2fa, [0])
+		memory.write_u32(0x2b250, C68kScript.u32(choice))
+	else:
+		if _sound_host(0x2f2, [0]) != 0:
+			_sound_host(0x2fa, [0])
+		memory.write_u32(0x2b250, 0xffffffff)
+
+## 0xa8ea (1.0.3's update_game_sounds 0x96d4 on Leyte's addresses; three saved registers): the per-frame sound update.
+## Without sound (host word +0x9a) nothing plays; in views other than 0..2, 5, 7 and 8 all channels stop. Otherwise
+## channel 1 idle (host +0x2f2(1)) clears channel1_sound. View 8 plays the pending explosion sounds and - Leyte - sound 14
+## when its flag is up; the follow views run _update_view_sounds. The one-frame flags (now also 0x21024) are cleared and the
+## explosion timers count down.
+func update_game_sounds() -> void:
+	assert(memory != null, "update_game_sounds requires original global memory")
+	var entry_a7: int = a7
+	var view: int = memory.read_s16(0x23d88)
+	if memory.read_u16(memory.read_u32(0x207fc) + 0x9a) != 0:
+		if view <= 2 or view == 5 or view == 7 or view == 8:
+			if _sound_host(0x2f2, [1]) == 0:
+				memory.write_u32(0x2b24c, 0)
+			if view == 8 or view == 9:
+				_play_pending_explosions()
+				if memory.read_u16(0x2102e) != 0:
+					a7 = entry_a7 - 0x14
+					play_game_sound(0xe)
+					a7 = entry_a7
+			else:
+				_update_view_sounds(entry_a7, view)
+		else:
+			a7 = entry_a7 - 0x10
+			stop_all_sound_channels()
+			a7 = entry_a7
+	for flag in [0x21040, 0x2103c, 0x2103a, 0x2103e]:
+		memory.write_u16(flag, 0)
+	for timer in [0x21032, 0x21034]:
+		if memory.read_u16(timer) != 0:
+			memory.write_u16(timer, (memory.read_u16(timer) - 1) & 0xffff)
+	for flag in [0x21030, 0x2102e, 0x2102c, 0x2102a, 0x21026, 0x21024]:
+		memory.write_u16(flag, 0)
+
+## 0x1ddbe (1.0.3's find_nearest_runway_approach_ends 0x19c3e; link a6 -0x7c and ten registers, body 0xa8 below), written
+## from Leyte's listing on its layout: the aircraft's and objects' positions +4 / +8 / +0xc, the shape type byte +0x28, the
+## faces +0x4a (word +0x3c of them, 0x20 bytes each, surface byte +0x16, count word +0x14, index list +0x18), the vertices
+## +0x46 and the scale word +0x36. The object pool (0x20804, count words 0x20b24 / 0x20b26) then entity_array_1 (0x20b44,
+## 0x20f2c / 0x20f2e) are walked from the end (the count tested first). For a shape near a friendly facility
+## (probe_nearest_facility_kind 0x200, 8 below) nearer than the best object so far: each runway face (surface 0x70, four
+## corners) has its corners (store_xyz_asr by the scale) put in the frame (a6 - 0xc / - 0x18 / - 0x24 / - 0x30) and the best
+## object distance taken; when the second side (horizontal) is shorter than the first the corners rotate by one; the
+## midpoints of corners 1-2 and 3-4 are measured from the aircraft and the nearer one, beating the best end, goes to
+## *near_end and the other to *far_end. Returns 1 when nothing was found within 0x40740, else 0.
+func find_nearest_runway_approach_ends(own: int, near_end: int, far_end: int) -> int:
+	assert(memory != null, "find_nearest_runway_approach_ends requires original global memory")
+	assert(a7 != 0, "find_nearest_runway_approach_ends needs a7 (its frame holds the corners)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var body: int = entry_a7 - 0xa8
+	var best_end: int = 0x7fffffff
+	var best_obj: int = 0x7fffffff
+	var ox: int = memory.read_s32(own + 4)
+	var oy: int = memory.read_s32(own + 8)
+	var oz: int = memory.read_s32(own + 0xc)
+	var corners: Array = [a6 - 0xc, a6 - 0x18, a6 - 0x24, a6 - 0x30]
+	var tmp: int = a6 - 0x3c
+	var m12: int = a6 - 0x48
+	var m34: int = a6 - 0x54
+	for pass_index in 2:
+		var list: int = 0x20804 if pass_index == 0 else 0x20b44
+		var count_addr: int = 0x20b24 if pass_index == 0 else 0x20f2c
+		var slot: int = C68kScript.u32(memory.read_u32(count_addr) * 4 + list)
+		var count: int = memory.read_u16(count_addr + 2)
+		while count != 0:
+			count -= 1
+			slot = C68kScript.u32(slot - 4)
+			var cand: int = memory.read_u32(slot)
+			if memory.read_u8(cand + 0x28) != 2:
+				continue
+			a7 = body - 8
+			var kind: int = probe_nearest_facility_kind(cand)
+			a7 = entry_a7
+			if kind != 0x200:
+				continue
+			var obj_dist: int = approx_dist3_xyz(ox, oy, oz, memory.read_s32(cand + 4), memory.read_s32(cand + 8), memory.read_s32(cand + 0xc))
+			if obj_dist >= best_obj:
+				continue
+			var face: int = memory.read_u32(cand + 0x4a)
+			for _f in memory.read_u16(cand + 0x3c):
+				if memory.read_u8(face + 0x16) == 0x70 and memory.read_s16(face + 0x14) == 4:
+					var verts: int = memory.read_u32(cand + 0x46)
+					var vidx: int = memory.read_u32(face + 0x18)
+					best_obj = obj_dist
+					var shift: int = memory.read_s16(cand + 0x36)
+					for k in 4:
+						var v: int = C68kScript.u32(verts + memory.read_s16(vidx + 2 * k) * 12)
+						store_xyz_asr(memory.read_u32(v), memory.read_u32(v + 4), memory.read_u32(v + 8), shift, corners[k])
+					var side12: int = approx_dist3_xyz(memory.read_s32(a6 - 0xc), 0, memory.read_s32(a6 - 0x4), memory.read_s32(a6 - 0x18), 0, memory.read_s32(a6 - 0x10))
+					var side23: int = approx_dist3_xyz(memory.read_s32(a6 - 0x18), 0, memory.read_s32(a6 - 0x10), memory.read_s32(a6 - 0x24), 0, memory.read_s32(a6 - 0x1c))
+					if side23 < side12:
+						_copy_xyz(corners[0], tmp)
+						_copy_xyz(corners[1], corners[0])
+						_copy_xyz(corners[2], corners[1])
+						_copy_xyz(corners[3], corners[2])
+						_copy_xyz(tmp, corners[3])
+					_runway_midpoint(a6 - 0xc, a6 - 0x18, m12)
+					_runway_midpoint(a6 - 0x24, a6 - 0x30, m34)
+					var near_dist: int = approx_dist3_xyz(ox, oy, oz, memory.read_s32(m12), memory.read_s32(m12 + 4), memory.read_s32(m12 + 8))
+					var other: int = approx_dist3_xyz(ox, oy, oz, memory.read_s32(m34), memory.read_s32(m34 + 4), memory.read_s32(m34 + 8))
+					if near_dist > other:
+						near_dist = other
+						_copy_xyz(m12, tmp)
+						_copy_xyz(m34, m12)
+						_copy_xyz(tmp, m34)
+					if near_dist < best_end:
+						best_end = near_dist
+						_copy_xyz(m12, near_end)
+						_copy_xyz(m34, far_end)
+				face = C68kScript.u32(face + 0x20)
+	a7 = entry_a7
+	return 1 if best_end == 0x7fffffff or best_end > 0x40740 else 0
+
+## 0x121c4 (1.0.3's build_relative_steer_sample 0x10340, the same 171 instructions with registers reallocated; held back by
+## the displacement 0x20 pairing two ways: the object's z +0x20 -> +0xc, the controller's attitude words +0x20.. unchanged).
+## The target seen from the aircraft, as 1.0.3: height = obj y + 0x2d * vertical speed (+0xc) - ground (+0x2e); below 4000
+## the target is raised (and at or below 1000 the AI opens up fully), returning 1; far targets limit the climb; the vector
+## fits 15 bits, is turned by the inverse attitude and aimed at (pitch / heading errors, words).
+func build_relative_steer_sample(ctl: int, x: int, y: int, z: int, height_out: int, vec: int, pitch_err: int, heading_err: int) -> int:
+	assert(memory != null, "build_relative_steer_sample requires original global memory")
+	assert(a7 != 0, "build_relative_steer_sample needs a7 (its frame holds the matrix and angles)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var obj: int = memory.read_u32(ctl)
+	var height: int = C68kScript.s32(C68kScript.s32(0x2d * memory.read_s32(ctl + 0xc)) + memory.read_u32(obj + 0x8) - memory.read_u32(ctl + 0x2e))
+	memory.write_u32(height_out, C68kScript.u32(height))
+	var low: int = 0
+	var ty: int = C68kScript.s32(y)
+	if height <= 0xf9f:
+		ty = C68kScript.s32(ty + 0xfa0 - height)
+		if height <= 0x3e8:
+			a7 = entry_a7 - 0x4c
+			max_ai_throttle_maybe_invert_679(ctl)
+			a7 = entry_a7
+		low = 1
+	var dx: int = C68kScript.s32(C68kScript.s32(x) - memory.read_u32(obj + 0x4))
+	var horiz: int = abs_int(dx)
+	var dy: int = C68kScript.s32(ty - memory.read_u32(obj + 0x8))
+	var abs_dy: int = abs_int(dy)
+	var dz: int = C68kScript.s32(C68kScript.s32(z) - memory.read_u32(obj + 0xc))
+	horiz = C68kScript.s32(horiz + abs_int(dz))
+	if horiz > 0x8000:
+		var aim: int
+		if abs_dy > 0x800:
+			aim = horiz
+			if aim < 0:
+				aim += 3
+			aim = aim >> 2
+		else:
+			var h: int = horiz
+			if h < 0:
+				h += 0xff
+			aim = C68kScript.s32((h >> 8) * abs_dy)
+			if aim < 0:
+				aim += 0x1f
+			aim = aim >> 5
+		if dy < 0:
+			aim = -aim
+		if horiz <= 0xffff:
+			var t: int = C68kScript.s32((aim - dy) * (horiz - 0x8000))
+			if t < 0:
+				t += 0x7fff
+			dy = C68kScript.s32(dy + (t >> 15))
+		else:
+			dy = aim
+		abs_dy = abs_int(dy)
+	var span: int = C68kScript.u32(horiz + abs_dy)
+	var shift: int = 0
+	while (span & 0xffff8000) != 0:
+		shift += 1
+		span = C68kScript.u32(C68kScript.asr32(span, 1))
+	memory.write_u16(vec + 2, C68kScript.u16(C68kScript.asr32(dx, shift)))
+	memory.write_u16(vec + 6, C68kScript.u16(C68kScript.asr32(dy, shift)))
+	memory.write_u16(vec + 10, C68kScript.u16(C68kScript.asr32(dz, shift)))
+	var matrix: int = a6 - 0x12
+	a7 = entry_a7 - 0x58
+	build_attitude_matrix_3ang_alt((-memory.read_s16(ctl + 0x20)) & 0x3fff, (-memory.read_s16(ctl + 0x22)) & 0x3fff, (-memory.read_s16(ctl + 0x24)) & 0x3fff, matrix)
+	a7 = entry_a7
+	transform_vecs12_by_matrix3(1, vec, vec, matrix)
+	var sq: int = 0
+	for off in [2, 6, 10]:
+		sq = C68kScript.s32(sq + memory.read_s16(vec + off) * memory.read_s16(vec + off))
+	var length: int = isqrt_floor(sq)
+	attitude_from_velocity(memory.read_s16(vec + 2), memory.read_s16(vec + 6), memory.read_s16(vec + 10), C68kScript.s16(length), sq, a6 - 0x14, a6 - 0x16)
+	memory.write_u16(pitch_err, C68kScript.u16(fold_angle_pm_0x2000(memory.read_s16(a6 - 0x14))))
+	memory.write_u16(heading_err, C68kScript.u16(fold_angle_pm_0x2000(memory.read_s16(a6 - 0x16))))
+	return low
+
+## The caller's a5 when the host calls a hook (the overlay loader sets it; CODE 2 runs with A5). Leyte's
+## process_flight_input_and_outcome keeps the target 0x21070 in a5 (saved with movem) and stores a5 back
+## on every return, so a result taken before its controller tick stores this value there.
+var caller_a5: int = 0
+
+## process_flight_input_and_outcome (Leyte; 1.0.3's with the object flags long at +0x14): hide the player
+## object (long +0x14 |= 0x40, drop_contact_records_for_object, 8 below) unless already hidden (+0x17 bit 6).
+func _hide_player_object(body: int) -> void:
+	var saved: int = a7
+	var ctl: int = memory.read_u32(0x20b28)
+	var obj: int = memory.read_u32(ctl)
+	if (memory.read_u8(obj + 0x17) & 0x40) == 0:
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) | 0x40)
+		a7 = body - 8
+		drop_contact_records_for_object(memory.read_u32(ctl))
+	a7 = saved
+
+## process_flight_input_and_outcome 0x8bd2: show the player object again (when hidden: long +0x14 &=
+## ~0x40 and contact records dropped), then update_view_clip_bounds.
+func _show_player_object(body: int) -> void:
+	var saved: int = a7
+	var ctl: int = memory.read_u32(0x20b28)
+	var obj: int = memory.read_u32(ctl)
+	if (memory.read_u8(obj + 0x17) & 0x40) != 0:
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) & 0xffffffbf)
+		a7 = body - 8
+		drop_contact_records_for_object(memory.read_u32(ctl))
+	a7 = body - 4
+	update_view_clip_bounds()
+	a7 = saved
+
+## process_flight_input_and_outcome 0x8a40 ('V'): view 1, look offsets and targets cleared, the camera
+## on the player object (+4 / +8 / +0xc), the object hidden, update_view_clip_bounds.
+func _view_key_reset(body: int) -> void:
+	var saved: int = a7
+	memory.write_u16(0x23d88, 1)
+	for addr in [0x2b234, 0x23d34, 0x2b238, 0x23d30]:
+		memory.write_u32(addr, 0)
+	var obj: int = memory.read_u32(memory.read_u32(0x20b28))
+	memory.write_u32(0x23d68, memory.read_u32(obj + 4))
+	memory.write_u32(0x23d64, memory.read_u32(obj + 8))
+	memory.write_u32(0x23d60, memory.read_u32(obj + 0xc))
+	_hide_player_object(body)
+	a7 = body - 4
+	update_view_clip_bounds()
+	a7 = saved
+
+## process_flight_input_and_outcome: the key cases of the jump table at 0x86cc (key - 9, 0x76 words).
+## Leyte's are 1.0.3's at Leyte's addresses (look-down limit 0x3580, 1.0.3 0x3040) plus 'N' / 'n'
+## (0x8d2c: word +0x682 + 1 while its low two bits are <= 2). Returns 3 for ESC / '`' / '~' and 4 for
+## 'P', else 0.
+func _process_flight_key(body: int, key: int, event_kind: int) -> int:
+	var saved: int = a7
+	var down: bool = event_kind == 3
+	var view: int = memory.read_s16(0x23d88)
+	var ctl: int = memory.read_u32(0x20b28)
+	var bailed: bool = memory.read_u16(0x2105c) != 0
+	var slew: bool = memory.read_u32(ctl + 0x32) == 0x112a4
+	match key:
+		9:
+			a7 = body - 4
+			cycle_view_distance()
+		0x13:
+			memory.write_u8(ctl + 0x676, 0)
+			memory.write_u8(ctl + 0x689, 0)
+			memory.write_u32(ctl + 0x62a, 0)
+			memory.write_u32(ctl + 0x32, 0x112a4 if memory.read_u32(ctl + 0x32) == 0xfcf6 else 0xfcf6)
+		0x18:
+			var target: int = memory.read_u32(0x21070)
+			if target != 0:
+				memory.write_u16(target + 0x698, memory.read_u16(target + 0x698) | 0x100)
+		0x1b, 0x60, 0x7e:
+			return 3
+		0x1c, 0x1d:
+			if view <= 2:
+				var step: int = -0x800 if key == 0x1c else 0x800
+				memory.write_u32(0x2b238, C68kScript.u32(memory.read_u32(0x2b238) + step) & 0x3fff)
+		0x1e, 0x1f:
+			var limit: int = 0x3580 if key == 0x1e else 0xa80
+			if view <= 2 and memory.read_u32(0x2b234) != limit:
+				var step2: int = -0x540 if key == 0x1e else 0x540
+				memory.write_u32(0x2b234, C68kScript.u32(memory.read_u32(0x2b234) + step2) & 0x3fff)
+		0x20:
+			if not bailed:
+				if memory.read_u8(ctl + 0x64c) != 0:
+					memory.write_u8(ctl + 0x64f, 1 if down else 0)
+				elif memory.read_u16(0x2b270) != 0:
+					memory.write_u16(0x2b230, 1 if down else 0)
+		0x2b, 0x3d:
+			if view == 6 and memory.read_s16(0x27020) <= 7:
+				if down:
+					var i: int = memory.read_s16(0x27020)
+					memory.write_u16(C68kScript.u32(0x2703c + 2 * i), memory.read_u16(0x27050))
+					memory.write_u16(C68kScript.u32(0x27024 + 2 * i), memory.read_u16(0x2704e))
+					var sx: int = C68kScript.u16((memory.read_s16(0x27050) >> 1) + memory.read_u16(0x27050))
+					memory.write_u16(0x27050, sx)
+					var sy: int = C68kScript.u16((memory.read_s16(0x2704e) >> 1) + memory.read_u16(0x2704e))
+					memory.write_u16(0x2704e, sy)
+					memory.write_u16(0x27020, C68kScript.u16(memory.read_u16(0x27020) + 1))
+					i = memory.read_s16(0x27020)
+					memory.write_u16(C68kScript.u32(0x2703c + 2 * i), sx)
+					memory.write_u16(C68kScript.u32(0x27024 + 2 * i), sy)
+			elif view <= 5 and not bailed:
+				memory.write_u16(0x2b232, 1 if down else 0)
+		0x2d, 0x5f:
+			if view == 6 and memory.read_u16(0x27020) != 0:
+				if down:
+					memory.write_u16(0x27020, C68kScript.u16(memory.read_u16(0x27020) - 1))
+					var j: int = memory.read_s16(0x27020)
+					memory.write_u16(0x27050, memory.read_u16(C68kScript.u32(0x2703c + 2 * j)))
+					memory.write_u16(0x2704e, memory.read_u16(C68kScript.u32(0x27024 + 2 * j)))
+			elif view <= 5 and not bailed:
+				memory.write_u16(0x2b232, 0xffff if down else 0)
+		0x2e, 0x3e, 0x5a, 0x7a:
+			memory.write_u16(0x21042, 0x40 if down and (key == 0x5a or key == 0x3e) else 0)
+		0x2f, 0x3f, 0x58, 0x78:
+			memory.write_u16(0x21042, 0xffc0 if down and (key == 0x58 or key == 0x3f) else 0)
+		0x30, 0x31, 0x33, 0x37, 0x39:
+			if slew:
+				_slew_throttle_key(key)
+		0x32, 0x34, 0x36, 0x38:
+			if slew:
+				_slew_throttle_key(key)
+			else:
+				if key == 0x32 or key == 0x38:
+					memory.write_u16(0x2b268, (1 if key == 0x32 else 0xffff) if down else 0)
+				else:
+					memory.write_u16(0x2b26a, (1 if key == 0x36 else 0xffff) if down else 0)
+				memory.write_u16(0x2b270, 1)
+		0x35:
+			if slew:
+				_slew_throttle_key(key)
+			else:
+				var host: int = memory.read_u32(0x207fc)
+				memory.write_u16(host + 0x37a, memory.read_u16(0x27052))
+				memory.write_u16(0x2b26e, memory.read_u16(0x27052))
+				memory.write_u16(host + 0x37c, memory.read_u16(0x27054))
+				memory.write_u16(0x2b26c, memory.read_u16(0x27054))
+				memory.write_u16(0x2b268, 0)
+				memory.write_u16(0x2b26a, 0)
+				memory.write_u16(0x2b270, 1)
+		0x41, 0x61:
+			memory.write_u16(0x2105a, 1 if memory.read_u32(0x21070) != 0 and down else 0)
+		0x42, 0x62:
+			if not bailed and C68kScript.s32(memory.read_u32(memory.read_u32(ctl) + 8) - memory.read_u32(ctl + 0x2e)) > 0x43:
+				memory.write_u8(ctl + 0x684, 1)
+		0x43, 0x63:
+			if view == 5:
+				_view_key_reset(body)
+			else:
+				memory.write_u16(0x23d88, 5)
+				_show_player_object(body)
+		0x45, 0x65:
+			if memory.read_u32(0x21070) != 0 and view != 7 and memory.read_u8(ctl + 0x64c) == 0:
+				memory.write_u16(0x23d88, 7)
+				_show_player_object(body)
+			else:
+				_view_key_reset(body)
+		0x56, 0x76:
+			_view_key_reset(body)
+		0x46, 0x66:
+			if not bailed:
+				var flaps: int = memory.read_u8(ctl + 0x68c)
+				memory.write_u8(ctl + 0x68c, (-flaps) & 0xff if flaps != 0 else 1)
+		0x47, 0x67:
+			if not bailed and memory.read_u8(ctl + 0x64c) == 0:
+				var gear: int = memory.read_u8(ctl + 0x68a)
+				memory.write_u8(ctl + 0x68a, (-gear) & 0xff if gear != 0 else 1)
+				ctl = memory.read_u32(0x20b28)
+				if memory.read_s8(ctl + 0x68a) > 0 and memory.read_u16(memory.read_u32(0x207fc) + 0xa4) != 0:
+					a7 = body - 8
+					if C68kScript.u32(try_begin_landing_approach(ctl)) != 0:
+						memory.write_u16(0x21024, 1)
+					else:
+						memory.write_u16(0x21026, 1)
+				else:
+					memory.write_u32(ctl + 0x32, 0xfcf6)
+		0x4a, 0x6a:
+			if not bailed and memory.read_u8(ctl + 0x64c) == 0 and memory.read_u8(ctl + 0x688) == 0:
+				memory.write_u8(ctl + 0x688, 1)
+		0x4d, 0x6d:
+			memory.write_u8(ctl + 0x676, 0)
+			memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) | 0x4000)
+		0x4e, 0x6e:
+			if not bailed and (memory.read_u16(ctl + 0x682) & 3) <= 2:
+				memory.write_u16(ctl + 0x682, C68kScript.u16(memory.read_u16(ctl + 0x682) + 1))
+		0x50, 0x70:
+			return 4
+		0x52, 0x72:
+			if view <= 2:
+				memory.write_u32(0x2b238, C68kScript.u32(memory.read_u32(0x2b238) + 0x2000) & 0x3fff)
+			else:
+				memory.write_u32(0x2b238, 0x2000)
+				memory.write_u32(0x23d30, 0x2000)
+				memory.write_u16(0x23d88, 1)
+		0x54, 0x74:
+			if view == 6:
+				_view_key_reset(body)
+			else:
+				a7 = body - 8
+				var found: int = C68kScript.u32(point_near_camera_or_type80_object(0x23d54))
+				a7 = saved
+				if found != 0:
+					memory.write_u16(0x23d88, 6)
+					memory.write_u32(0x23d68, memory.read_u32(0x23d54))
+					memory.write_u32(0x23d64, memory.read_u32(0x23d58))
+					memory.write_u32(0x23d60, memory.read_u32(0x23d5c))
+					_show_player_object(body)
+	a7 = saved
+	return 0
+
+## process_flight_input_and_outcome 0x89d6: in slew mode a digit sets the throttle byte +0x676 = key -
+## '0' and switches the engine on (+0x698 &= 0xbfff); keyboard steering (0x2b270) goes off.
+func _slew_throttle_key(key: int) -> void:
+	var ctl: int = memory.read_u32(0x20b28)
+	memory.write_u16(0x2b270, 0)
+	memory.write_u8(ctl + 0x676, (key + 0xd0) & 0xff)
+	memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) & 0xbfff)
+
+## process_flight_input_and_outcome 0x8e2a: the throttle ramp 0x2b232 (|step| 1: engine off -> throttle
+## 0 and on again, else throttle +0x676 + the step's low byte, a clamp to 9 or 0 also ending the ramp
+## (Leyte; 1.0.3 kept it); then step <<= 1; else one step toward 0), the keyboard-steered mouse point
+## (as 1.0.3's: host +0x37a / +0x37c against the centre 0x27052 / 0x27054) and the gun trigger.
+func _update_keyboard_flight(body: int) -> void:
+	var saved: int = a7
+	if memory.read_u16(0x2b232) != 0:
+		a7 = body - 8
+		var mag: int = abs_int(memory.read_s16(0x2b232))
+		var ctl: int = memory.read_u32(0x20b28)
+		if mag == 1:
+			if (memory.read_u8(ctl + 0x698) & 0x40) != 0:
+				memory.write_u8(ctl + 0x676, 0)
+				memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) & 0xbfff)
+			else:
+				memory.write_u8(ctl + 0x676, (memory.read_u8(ctl + 0x676) + memory.read_u8(0x2b233)) & 0xff)
+				if memory.read_s8(ctl + 0x676) > 9:
+					memory.write_u8(ctl + 0x676, 9)
+					memory.write_u16(0x2b232, 0)
+				if memory.read_s8(ctl + 0x676) < 0:
+					memory.write_u8(ctl + 0x676, 0)
+					memory.write_u16(0x2b232, 0)
+			memory.write_u16(0x2b232, C68kScript.u16(memory.read_s16(0x2b232) << 1))
+		elif memory.read_s16(0x2b232) > 0:
+			memory.write_u16(0x2b232, C68kScript.u16(memory.read_u16(0x2b232) - 1))
+		else:
+			memory.write_u16(0x2b232, C68kScript.u16(memory.read_u16(0x2b232) + 1))
+	var host: int = memory.read_u32(0x207fc)
+	if memory.read_u16(0x2b26e) != memory.read_u16(host + 0x37a) or memory.read_u16(0x2b26c) != memory.read_u16(host + 0x37c):
+		memory.write_u16(0x2b270, 0)
+	if memory.read_u16(0x2b270) != 0:
+		var dh: int = C68kScript.s16(memory.read_u16(0x27052) - memory.read_u16(host + 0x37a))
+		var dv: int = C68kScript.s16(memory.read_u16(host + 0x37c) - memory.read_u16(0x27054))
+		var step_h: int
+		var dir_h: int = memory.read_s16(0x2b26a)
+		a7 = body - 8
+		if dir_h > 0:
+			step_h = 0x1e
+		elif dir_h < 0:
+			step_h = -0x1e
+		elif abs_int(dh) <= 0x1e:
+			step_h = dh
+		else:
+			step_h = 0x1e if dh > 0 else -0x1e
+		if abs_int(dh) > 0xd5:
+			memory.write_u16(host + 0x37a, C68kScript.u16(memory.read_u16(0x27052) + (-0xd5 if dh > 0 else 0xd5)))
+		var h: int = C68kScript.u16(step_h + memory.read_u16(host + 0x37a))
+		memory.write_u16(host + 0x37a, h)
+		memory.write_u16(0x2b26e, h)
+		var step_v: int
+		var dir_v: int = memory.read_s16(0x2b268)
+		if dir_v > 0:
+			step_v = 0x18
+		elif dir_v < 0:
+			step_v = -0x18
+		elif abs_int(dv) <= 0x18:
+			step_v = -dv
+		else:
+			step_v = -0x18 if dv > 0 else 0x18
+		if abs_int(dv) > 0xab:
+			memory.write_u16(host + 0x37c, C68kScript.u16(memory.read_u16(0x27054) + (0xab if dv > 0 else -0xab)))
+		var v: int = C68kScript.u16(step_v + memory.read_u16(host + 0x37c))
+		memory.write_u16(host + 0x37c, v)
+		memory.write_u16(0x2b26c, v)
+	else:
+		memory.write_u16(0x2b230, memory.read_u16(host + 0x37e))
+	var ctl2: int = memory.read_u32(0x20b28)
+	if memory.read_u16(0x2b230) != 0 and memory.read_s16(ctl2 + 0x696) > 1 and (memory.read_u8(ctl2 + 0x699) & 0x10) == 0 \
+			and memory.read_u16(0x2105c) == 0:
+		if memory.read_u8(ctl2 + 0x687) == 0:
+			memory.write_u8(ctl2 + 0x687, 1)
+		memory.write_u16(0x2103c, 1)
+	a7 = saved
+
+## 0x1330 (Leyte only; six saved registers): the nearest of an object's runway-deck points. A type-2 object
+## (+0x28) that probe_nearest_facility_kind places at a friendly facility (0x200): for each face (+0x4a,
+## +0x3c of them, 0x20 apart) with surface byte +0x16 0x70, each index word of its list (+0x18, +0x14 of
+## them) names a view vertex (+0x4e, 12 apart); best = min(best, approx_dist3_xyz(object +4 / +8 / +0xc,
+## vertex)). Returns best.
+func leyte_deck_point_min_distance(obj: int, best: int) -> int:
+	assert(memory != null, "leyte_deck_point_min_distance requires original global memory")
+	var entry_a7: int = a7
+	best = C68kScript.s32(best)
+	if memory.read_u8(obj + 0x28) != 2:
+		return C68kScript.u32(best)
+	a7 = entry_a7 - 0x20
+	var kind: int = C68kScript.u32(probe_nearest_facility_kind(obj))
+	a7 = entry_a7
+	if kind != 0x200:
+		return C68kScript.u32(best)
+	var face: int = memory.read_u32(obj + 0x4a)
+	var faces: int = memory.read_u16(obj + 0x3c)
+	while faces != 0:
+		faces -= 1
+		if memory.read_u8(face + 0x16) == 0x70:
+			var list: int = memory.read_u32(face + 0x18)
+			var n: int = memory.read_u16(face + 0x14)
+			while n != 0:
+				n -= 1
+				var vertex: int = C68kScript.u32(memory.read_s16(list) * 12 + memory.read_u32(obj + 0x4e))
+				var d: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(obj + 4), memory.read_s32(obj + 8), memory.read_s32(obj + 0xc),
+						memory.read_s32(vertex), memory.read_s32(vertex + 4), memory.read_s32(vertex + 8)))
+				if best > d:
+					best = d
+				list += 2
+		face += 0x20
+	return C68kScript.u32(best)
+
+## 0x13c8 (Leyte only): the nearest runway-deck point of every object in the pools 0x20804 (count word
+## 0x20b26) then 0x20b44 (count word 0x20f2e), from 0x7fffffff (leyte_deck_point_min_distance, 0x14 below).
+## Its argument (the player object) is not read.
+func leyte_nearest_deck_point_distance(_obj: int) -> int:
+	assert(memory != null, "leyte_nearest_deck_point_distance requires original global memory")
+	var entry_a7: int = a7
+	var best: int = 0x7fffffff
+	for pool in [[0x20804, 0x20b26], [0x20b44, 0x20f2e]]:
+		var slot: int = pool[0]
+		var n: int = memory.read_u16(pool[1])
+		while n != 0:
+			n -= 1
+			a7 = entry_a7 - 0x14
+			best = C68kScript.u32(leyte_deck_point_min_distance(memory.read_u32(slot), best))
+			a7 = entry_a7
+			slot += 4
+	return C68kScript.u32(best)
+
+## process_flight_input_and_outcome 0x90e2: a stopped aircraft on the ground (1.0.3's, host status at
+## +0xd8, RPM word +0x680), except one off the runway that is damaged or empty near a friendly facility
+## (kind 0x200): status 5 when (0x339000 / (leyte_nearest_deck_point_distance or 1)) < rng & 0x7f (1.0.3: rng
+## & 7 == 0). Returns [result, classified] (classified false -> the camera runs with result 0).
+func _classify_stopped_aircraft(body: int) -> Array:
+	var saved: int = a7
+	var ctl: int = memory.read_u32(0x20b28)
+	a7 = body - 8
+	var kind: int = C68kScript.u32(probe_nearest_facility_kind(memory.read_u32(ctl)))
+	a7 = saved
+	var host: int = memory.read_u32(0x207fc)
+	if memory.read_s16(host + 0xd8) == 1:
+		return [kind | 1, true]
+	ctl = memory.read_u32(0x20b28)
+	if (memory.read_u8(ctl + 0x698) & 0x10) != 0:
+		if (memory.read_u16(ctl + 0x698) & 0x3fe) == 0 and (memory.read_u8(ctl + 0x691) != 0 or memory.read_u8(ctl + 0x692) != 0):
+			memory.write_u16(memory.read_u32(0x207fc) + 0xd8, 4)
+		else:
+			_leyte_random_status(body, kind, 1, false)
+		return [kind | 6, true]
+	if memory.read_u16(ctl + 0x680) != 0:
+		return [0, false]
+	var runway: bool = memory.read_u8(ctl + 0x2c) in [0x30, 0x60, 0x70]
+	if memory.read_s16(0x21050) == 2:
+		memory.write_u16(0x21050, 0)
+		memory.write_u16(0x20b2c, 0)
+		host = memory.read_u32(0x207fc)
+		if memory.read_s16(host + 0xd2) > 0 and kind == 0x200 and runway and memory.read_u16(0x21052) == 0:
+			memory.write_u16(0x21052, 1)
+			return [kind | 1, true]
+		if runway and kind == 0x100:
+			memory.write_u16(memory.read_u32(0x207fc) + 0xd8, 3)
+			return [kind | 0xa, true]
+		if runway:
+			return [kind | 9, true]
+		if (memory.read_u16(ctl + 0x698) & 0x3fe) != 0 or (memory.read_u8(ctl + 0x691) == 0 and memory.read_u8(ctl + 0x692) == 0):
+			_leyte_random_status(body, kind, 5, true)
+			return [kind | 8, true]
+		if kind == 0x100:
+			a7 = body - 4
+			var r: int = overlay_rng_next()
+			a7 = saved
+			if (r & 3) == 0:
+				memory.write_u16(memory.read_u32(0x207fc) + 0xd8, 3)
+			return [kind | 9, true]
+		a7 = body - 4
+		var kills: int = C68kScript.u32(any_mission_kills_recorded())
+		a7 = saved
+		if kills == 0:
+			return [0, false]
+		return [kind | 9, true]
+	if runway and memory.read_u16(0x20b2c) == 0 and (memory.read_u8(ctl + 0x698) & 0x40) != 0:
+		var fuel: int = C68kScript.s32((memory.read_s8(ctl + 0x691) + memory.read_s8(ctl + 0x692)) * 100)
+		var capacity: int = memory.read_s16(memory.read_u32(ctl + 4) + 0x1c)
+		memory.write_u16(memory.read_u32(0x207fc) + 0xb6, C68kScript.u16(C68kScript.divs_trunc(fuel, capacity)))
+		memory.write_u16(memory.read_u32(0x207fc) + 0xb8, C68kScript.u16(memory.read_s8(ctl + 0x68d)))
+		memory.write_u16(0x20b2c, 1)
+		return [kind | 2, true]
+	return [0, false]
+
+## _classify_stopped_aircraft: host +0xd8 status odds. kind 0x100: rng bit 0 clear -> 3, else rng & 3 ==
+## 0 -> `first`; kind 0x200: rng & 7 == 0 -> `first` (the ditching odds), or with `by_distance` (0x92ba)
+## `first` when 0x339000 / (leyte_nearest_deck_point_distance or 1) < rng & 0x7f; neither: rng & 3 == 0 ->
+## `first`, else rng & 3 == 0 -> 3.
+func _leyte_random_status(body: int, kind: int, first: int, by_distance: bool) -> void:
+	var saved: int = a7
+	a7 = body - 4
+	var status: int = 0
+	if (kind & 0x100) != 0:
+		if (overlay_rng_next() & 1) == 0:
+			status = 3
+		elif (overlay_rng_next() & 3) == 0:
+			status = first
+	elif (kind & 0x200) != 0:
+		if by_distance:
+			a7 = body - 8
+			var near: int = C68kScript.s32(leyte_nearest_deck_point_distance(memory.read_u32(memory.read_u32(0x20b28))))
+			if near == 0:
+				near = 1
+			var ratio: int = C68kScript.divs_trunc(0x339000, near)
+			a7 = body - 4
+			if ratio < (overlay_rng_next() & 0x7f):
+				status = first
+		elif (overlay_rng_next() & 7) == 0:
+			status = first
+	elif (overlay_rng_next() & 3) == 0:
+		status = first
+	elif (overlay_rng_next() & 3) == 0:
+		status = 3
+	a7 = saved
+	if status != 0:
+		memory.write_u16(memory.read_u32(0x207fc) + 0xd8, status)
+
+## process_flight_input_and_outcome 0x93fa: the camera for the view (table at 0x9414). Views 1 / 2 and 6
+## as 1.0.3's; views 5 and 7 both take the pose ring entry 7 frames back, of the player (5) or of the
+## designated aircraft 0x21070 (7; 1.0.3 used its current pose); views 8 / 9: update_tracking_camera /
+## update_bailout_view, a non-zero value is the result.
+func _update_view_camera(body: int, a6: int) -> int:
+	var saved: int = a7
+	var result: int = 0
+	var view: int = memory.read_s16(0x23d88)
+	match view:
+		1, 2:
+			a7 = body - 4
+			copy_player_pose_to_camera()
+			a7 = saved
+			if memory.read_s16(0x23d88) == 1 and (memory.read_u32(0x2b234) != 0 or memory.read_u32(0x2b238) != 0):
+				memory.write_u16(0x23d88, 2)
+				_hide_player_object(body)
+				a7 = body - 4
+				update_view_clip_bounds()
+				a7 = saved
+			if memory.read_s16(0x23d88) == 2:
+				if memory.read_u16(memory.read_u32(0x207fc) + 0xa0) != 0:
+					a7 = body - 8
+					var d: int = C68kScript.s16(fold_angle_pm_0x2000(C68kScript.u32(memory.read_u32(0x2b234) - memory.read_u32(0x23d34))))
+					if d < 0:
+						d += 3
+					memory.write_u32(0x23d34, C68kScript.u32(C68kScript.s16(d >> 2) + memory.read_u32(0x23d34)) & 0x3fff)
+					a7 = body - 0xc
+					var e: int = C68kScript.s16(fold_angle_pm_0x2000(C68kScript.u32(memory.read_u32(0x2b238) - memory.read_u32(0x23d30))))
+					if e < 0:
+						e += 3
+					memory.write_u32(0x23d30, C68kScript.u32(C68kScript.s16(e >> 2) + memory.read_u32(0x23d30)) & 0x3fff)
+					a7 = saved
+				else:
+					memory.write_u32(0x23d34, memory.read_u32(0x2b234))
+					memory.write_u32(0x23d30, memory.read_u32(0x2b238))
+				var near_a: bool = memory.read_s32(0x23d34) <= 0x20 or memory.read_s32(0x23d34) > 0x3fdf
+				var near_b: bool = memory.read_s32(0x23d30) <= 0x20 or memory.read_s32(0x23d30) > 0x3fdf
+				if memory.read_u32(0x2b234) == 0 and memory.read_u32(0x2b238) == 0 and near_a and near_b:
+					memory.write_u16(0x23d88, 1)
+					_hide_player_object(body)
+					a7 = body - 4
+					update_view_clip_bounds()
+					a7 = saved
+		5, 7:
+			var ctl: int = memory.read_u32(0x20b28 if view == 5 else 0x21070)
+			var i: int = memory.read_s16(ctl + 0x612) - 7
+			if i < 0:
+				i += 0x4b
+			var rec: int = C68kScript.u32(ctl + i * 0x14 + 0x36)
+			memory.write_u32(0x23d68, memory.read_u32(rec))
+			memory.write_u32(0x23d64, memory.read_u32(rec + 4))
+			memory.write_u32(0x23d60, memory.read_u32(rec + 8))
+			memory.write_u16(0x23d40, (-memory.read_u16(rec + 0xc)) & 0x3fff)
+			memory.write_u16(0x23d3e, (-memory.read_u16(rec + 0xe)) & 0x3fff)
+			memory.write_u16(0x23d3c, (-memory.read_u16(rec + 0x10)) & 0x3fff)
+			memory.write_u32(0x23d38, 0)
+		6:
+			_update_external_camera(body, a6)
+		8, 9:
+			a7 = body - 4
+			var r: int = C68kScript.u32(update_tracking_camera() if view == 8 else update_bailout_view())
+			a7 = saved
+			if r != 0:
+				result = r
+	a7 = saved
+	return result
+
+## _update_view_camera, view 6 (0x967a): first, with an object remembered in 0x20b3c, the camera moves to
+## its type-0x80 face centroid (leyte_object_type80_centroid into 0x23d54; none: 0x20b3c cleared). Then
+## 1.0.3's: k = 1 + the asr steps while update_object_camera_metric(object) + object +0x20 has a bit
+## above bit 14 (andi.w #$8000 keeps the high word: the test is reach & 0xffff8000); d = (object -
+## camera) asr k; attitude_from_velocity(d, isqrt_floor(|d|^2), |d|^2, a6 - 0x20, a6 - 0x22); the
+## stored angles 0x2b23c / 0x2b240 snap when a folded delta exceeds 0x1000, else ease by a quarter; the
+## camera takes their negated low words, roll 0.
+func _update_external_camera(body: int, a6: int) -> void:
+	var saved: int = a7
+	var obj: int = memory.read_u32(memory.read_u32(0x20b28))
+	if memory.read_u32(0x20b3c) != 0:
+		a7 = body - 0xc
+		var found: int = C68kScript.u32(leyte_object_type80_centroid(memory.read_u32(0x20b3c), 0x23d54))
+		a7 = saved
+		if found != 0:
+			memory.write_u32(0x23d68, memory.read_u32(0x23d54))
+			memory.write_u32(0x23d64, memory.read_u32(0x23d58))
+			memory.write_u32(0x23d60, memory.read_u32(0x23d5c))
+		else:
+			memory.write_u32(0x20b3c, 0)
+	a7 = body - 8
+	var reach: int = C68kScript.s32(update_object_camera_metric(obj) + memory.read_u32(obj + 0x20))
+	var shift: int = 0
+	while (reach & 0xffff8000) != 0:
+		shift += 1
+		reach = C68kScript.asr32(reach, 1)
+	shift += 1
+	var dx: int = C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 4) - memory.read_u32(0x23d68)), shift & 0x3f)
+	var dy: int = C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 8) - memory.read_u32(0x23d64)), shift & 0x3f)
+	var dz: int = C68kScript.asr32(C68kScript.s32(memory.read_u32(obj + 0xc) - memory.read_u32(0x23d60)), shift & 0x3f)
+	var sq: int = C68kScript.s32(C68kScript.s32(C68kScript.s32(dx * dx) + C68kScript.s32(dy * dy)) + C68kScript.s32(dz * dz))
+	a7 = body - 8
+	var dist: int = C68kScript.s16(isqrt_floor(C68kScript.u32(sq)))
+	a7 = body - 0x24
+	attitude_from_velocity(C68kScript.u32(dx), C68kScript.u32(dy), C68kScript.u32(dz), C68kScript.u32(dist), C68kScript.u32(sq), a6 - 0x20, a6 - 0x22)
+	a7 = body - 8
+	var dp: int = C68kScript.s16(fold_angle_pm_0x2000(C68kScript.u32(memory.read_s16(a6 - 0x20) - memory.read_u32(0x2b23c))))
+	a7 = body - 0xc
+	var dh: int = C68kScript.s16(fold_angle_pm_0x2000(C68kScript.u32(memory.read_s16(a6 - 0x22) - memory.read_u32(0x2b240))))
+	a7 = saved
+	if abs_int(dp) > 0x1000 or abs_int(dh) > 0x1000:
+		memory.write_u32(0x2b23c, memory.read_u16(a6 - 0x20) & 0x3fff)
+		memory.write_u32(0x2b240, memory.read_u16(a6 - 0x22) & 0x3fff)
+	else:
+		if dp < 0:
+			dp += 3
+		memory.write_u32(0x2b23c, C68kScript.u32(C68kScript.asr32(dp, 2) + memory.read_u32(0x2b23c)) & 0x3fff)
+		if dh < 0:
+			dh += 3
+		memory.write_u32(0x2b240, C68kScript.u32(C68kScript.asr32(dh, 2) + memory.read_u32(0x2b240)) & 0x3fff)
+	memory.write_u16(0x23d40, (-memory.read_u16(0x2b23e)) & 0x3fff)
+	memory.write_u16(0x23d3e, (-memory.read_u16(0x2b242)) & 0x3fff)
+	memory.write_u16(0x23d3c, 0)
+	memory.write_u32(0x23d38, 0)
+	a7 = saved
+
+## 0x844e (hook 14; link -0x24, ten saved registers: the body runs 0x50 below the entry): one frame of
+## player input and its outcome, 1.0.3's 0x73ea with Leyte's addresses and these differences: the crash
+## replay camera turns by the controller's word +0x22 and sits on the object's +4 / +8 / +0xc; the key
+## table has 'N' (_process_flight_key); the controller tick may clear the target 0x21070, which is put
+## back for update_game_sounds and stored as the tick left it on return (a result taken before the tick
+## stores the caller's a5 there instead, as the original does); a stopped aircraft is classified on the
+## ground (+0x64c) when +0x62a is 0, or when +0x62e is 0 and the word +0x30 read before the tick is > 0.
+func process_flight_input_and_outcome(key: int, event_kind: int) -> int:
+	assert(memory != null, "process_flight_input_and_outcome requires original global memory")
+	assert(a7 != 0, "process_flight_input_and_outcome needs a7 (its frame holds the matrix and vectors)")
+	var entry_a7: int = a7
+	var body: int = entry_a7 - 0x50
+	var a6: int = entry_a7 - 4
+	var a5_target: int = C68kScript.u32(caller_a5)
+	key = C68kScript.u32(key)
+	event_kind = C68kScript.u32(event_kind)
+	var result: int = 0
+	var old_view: int = memory.read_u16(0x23d88)
+	var check_view8: bool = true
+	if memory.read_u16(0x21058) != 0:
+		if memory.read_u16(0x21056) != 0:
+			check_view8 = false
+			if memory.read_s16(0x21058) == 1:
+				memory.write_u16(0x21058, 2)
+		else:
+			memory.write_u16(0x21058, 0)
+	if check_view8 and memory.read_s16(0x23d88) == 8:
+		if memory.read_u32(0x21064) != 0:
+			memory.write_u16(0x23d88, 9)
+		else:
+			memory.write_u16(0x23d88, 1)
+			_hide_player_object(body)
+		a7 = body - 4
+		update_view_clip_bounds()
+		a7 = entry_a7
+		memory.write_u32(0x2106c, 0)
+	var host: int = memory.read_u32(0x207fc)
+	if memory.read_u16(host + 0x98) != 0:
+		if memory.read_s16(host + 0x98) == 2 and memory.read_u16(0x21058) == 0:
+			if memory.read_u32(host + 0x296) != 0:
+				a7 = body - 8
+				var playing: int = C68kScript.u32(_jsr(memory.read_u32(host + 0x2f2), [0]))
+				if playing != 0:
+					_jsr(memory.read_u32(memory.read_u32(0x207fc) + 0x2fa), [0])
+				a7 = entry_a7
+			a7 = body - 4
+			update_view_clip_bounds()
+			a7 = entry_a7
+			memory.write_u16(0x23d88, 8)
+			memory.write_u16(0x21058, 3)
+			memory.write_u16(0x21056, 0x1e)
+			var vec: int = a6 - 0xc
+			var matrix: int = a6 - 0x1e
+			memory.write_u16(a6 - 6, 0x183)
+			memory.write_u16(a6 - 0xa, 0xfd12)
+			memory.write_u16(a6 - 2, 0xfaed)
+			a7 = body - 0x14
+			build_attitude_matrix_3ang(0, memory.read_s16(memory.read_u32(0x20b28) + 0x22), 0, matrix)
+			a7 = body - 0x24
+			transform_vecs12_by_matrix3(1, vec, vec, matrix)
+			a7 = entry_a7
+			var obj: int = memory.read_u32(memory.read_u32(0x20b28))
+			memory.write_u32(0x23d68, C68kScript.u32(memory.read_s16(a6 - 0xa) + memory.read_u32(obj + 4)))
+			memory.write_u32(0x23d64, C68kScript.u32(memory.read_s16(a6 - 6) + memory.read_u32(obj + 8)))
+			memory.write_u32(0x23d60, C68kScript.u32(memory.read_s16(a6 - 2) + memory.read_u32(obj + 0xc)))
+		if memory.read_u16(0x21054) == 0 and memory.read_u16(0x21056) == 0:
+			a7 = body - 8
+			request_instant_replay(0 if memory.read_u8(memory.read_u32(0x20b28) + 0x64c) != 0 else 1)
+			a7 = entry_a7
+	if memory.read_u16(0x21054) != 0 and memory.read_u16(0x21056) == 0:
+		a7 = body - 4
+		begin_replay_view()
+		a7 = entry_a7
+	var stage: int = 0   # 0 key filter, 1 keyboard flight (0x8e2a), 2 per-frame calls (0x9078), 3 tail (0x9820)
+	var view: int = memory.read_s16(0x23d88)
+	if view == 7 and (memory.read_u32(0x21070) == 0 or memory.read_u8(memory.read_u32(0x20b28) + 0x64c) != 0):
+		_view_key_reset(body)
+		stage = 1
+	elif view == 8 or view == 9:
+		if event_kind == 3 and (key == 0x22 or key == 0x60 or key == 0x1b):
+			result = 3
+			stage = 3
+		else:
+			stage = 2
+	if stage == 0:
+		var passes: bool = event_kind == 3 or (event_kind == 4 and key == 0x20) or key in [0x61, 0x41, 0x2b, 0x2d, 0x3d, 0x5f,
+				0x32, 0x34, 0x36, 0x38, 0x5a, 0x7a, 0x3e, 0x2e, 0x58, 0x78, 0x3f, 0x2f]
+		if passes and C68kScript.u32(key - 9) <= 0x75:
+			result = _process_flight_key(body, key, event_kind)
+			stage = 3 if result != 0 else 1
+		else:
+			stage = 1
+	if stage == 1:
+		_update_keyboard_flight(body)
+		stage = 2
+	if stage == 2:
+		a7 = body - 4
+		apply_player_mouse_controls()
+		var ctl: int = memory.read_u32(0x20b28)
+		var old_30: int = memory.read_s16(ctl + 0x30)
+		var target: int = memory.read_u32(0x21070)
+		if memory.read_s16(0x21058) == 3:
+			tick_flagged_object_controllers()
+		else:
+			advance_frame_and_tick_controllers()
+		a5_target = memory.read_u32(0x21070)
+		if a5_target == 0:
+			memory.write_u32(0x21070, target)
+		update_game_sounds()
+		a7 = entry_a7
+		ctl = memory.read_u32(0x20b28)
+		var classified: bool = false
+		if memory.read_s16(0x23d88) <= 7 and memory.read_u8(ctl + 0x64c) != 0 \
+				and (memory.read_u32(ctl + 0x62a) == 0 or (memory.read_u32(ctl + 0x62e) == 0 and old_30 > 0)):
+			var outcome: Array = _classify_stopped_aircraft(body)
+			result = outcome[0]
+			classified = outcome[1]
+		if not classified:
+			result = _update_view_camera(body, a6)
+	if memory.read_s16(0x23d40) > 0x1000 and memory.read_s16(0x23d40) <= 0x2fff:
+		var mirror: int = 0x2000 if memory.read_s16(0x23d40) <= 0x2000 else 0x6000
+		memory.write_u16(0x23d40, C68kScript.u16(mirror - memory.read_u16(0x23d40)))
+		memory.write_u16(0x23d3e, (memory.read_u16(0x23d3e) + 0x2000) & 0x3fff)
+	if result != 0:
+		memory.write_u8(memory.read_u32(0x20b28) + 0x64f, 0)
+		memory.write_u16(0x2105a, 0)
+		memory.write_u16(0x2b232, 0)
+	if memory.read_u16(0x23d88) != old_view:
+		memory.write_u16(0x23d86, 1)
+	memory.write_u32(0x21070, a5_target)
+	return C68kScript.u32(result)
+
+## 0x9a94 (eight saved registers): the bail-out camera, 1.0.3's 0x8a30 with Leyte's offsets (the
+## parachute object's flag byte +0x17, its birth frame +0x42). Without a parachute controller 0x21064,
+## with its object gone (+0x17 bit 1) or its landing timer +0x61e running past +0x614 > 0x5a0:
+## resolve_bailout_outcome (0x24 below), whose result is returned. Else the camera looks at the
+## parachute: with a player controller and either the chute born within 0x4b frames or 0x373 above
+## the controller's ground +0x2e, within 0x9ab0 of the player's object the target is the midpoint and
+## the camera goes behind the chute (place_camera_behind_object with the distance's shift, 0x38 below);
+## otherwise the camera takes the chute's pose ring entry after +0x60e (0x14 apart from +0x32). Then
+## turn_camera_toward_point(target) (0x30 below); returns 0.
+func update_bailout_view() -> int:
+	assert(memory != null, "update_bailout_view requires original global memory")
+	var entry_a7: int = a7
+	var chute_ctl: int = memory.read_u32(0x21064)
+	if chute_ctl == 0 or (memory.read_u8(memory.read_u32(chute_ctl) + 0x17) & 2) != 0 \
+			or (memory.read_u16(chute_ctl + 0x61e) != 0 and memory.read_s16(chute_ctl + 0x614) > 0x5a0):
+		a7 = entry_a7 - 0x24
+		var outcome: int = resolve_bailout_outcome()
+		a7 = entry_a7
+		return outcome
+	var chute: int = memory.read_u32(chute_ctl)
+	var target: Array = [memory.read_u32(chute + 4), memory.read_u32(chute + 8), memory.read_u32(chute + 0xc)]
+	var placed: bool = false
+	if memory.read_u32(0x20b28) != 0 and (C68kScript.s32(memory.read_u32(0x21020) - 0x4b) <= memory.read_s32(chute + 0x42)
+			or C68kScript.s32(memory.read_u32(chute + 8) - memory.read_u32(chute_ctl + 0x2e)) > 0x373):
+		var plane: int = memory.read_u32(memory.read_u32(0x20b28))
+		var dist: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(plane + 4), memory.read_s32(plane + 8), memory.read_s32(plane + 0xc),
+				memory.read_s32(chute + 4), memory.read_s32(chute + 8), memory.read_s32(chute + 0xc)))
+		if dist <= 0x9ab0:
+			for k in 3:
+				var m: int = C68kScript.s32(memory.read_u32(plane + 4 + 4 * k) + memory.read_u32(chute + 4 + 4 * k))
+				target[k] = C68kScript.u32(C68kScript.asr32(m + 1 if m < 0 else m, 1))
+			var shift: int = 0
+			while (C68kScript.u32(dist) & 0xffff8000) != 0:
+				shift = C68kScript.s16(shift + 1)
+				dist = C68kScript.asr32(dist, 1)
+			a7 = entry_a7 - 0x38
+			place_camera_behind_object(chute, target[0], target[1], target[2], shift)
+			a7 = entry_a7
+			placed = true
+	if not placed:
+		var slot: int = (memory.read_u16(chute_ctl + 0x60e) + 1) & 0xffff
+		if slot > 0x4a:
+			slot = (slot - 0x4b) & 0xffff
+		var pose: int = C68kScript.u32(chute_ctl + 0x32 + C68kScript.s16(slot) * 0x14)
+		memory.write_u32(0x23d68, memory.read_u32(pose))
+		memory.write_u32(0x23d64, memory.read_u32(pose + 4))
+		memory.write_u32(0x23d60, memory.read_u32(pose + 8))
+	a7 = entry_a7 - 0x30
+	turn_camera_toward_point(target[0], target[1], target[2])
+	a7 = entry_a7
+	return 0
+
+## 0x1cb04 (three saved registers): a shadow follows its owner (+0x32): x / z = owner position + owner
+## controller +8 / +0x10, y = owner controller +0x2e (ground height), word +0x22 = owner controller word
+## +0x22. Leyte's owner controller is the owner's +0 (1.0.3: +8), its flags byte +0x17 and reference count
+## +0x29. When the owner is retired (+0x17 bit 1) and its controller's +0 cleared, the shadow is retired
+## (0x14 below), the owner's reference count drops and +0x32 = 0.
+func tick_shadow(ctl: int, d0_in: int = 0) -> void:
+	assert(memory != null, "tick_shadow requires original global memory")
+	var obj: int = memory.read_u32(ctl)
+	var owner: int = memory.read_u32(ctl + 0x32)
+	var owner_ctl: int = memory.read_u32(owner)
+	if (memory.read_u8(owner + 0x17) & 2) != 0 and memory.read_u32(owner_ctl) == 0:
+		var entry_a7: int = a7
+		a7 = entry_a7 - 0x14
+		retire_entity(obj, d0_in)
+		a7 = entry_a7
+		memory.write_u8(owner + 0x29, (memory.read_u8(owner + 0x29) - 1) & 0xff)
+		memory.write_u32(ctl + 0x32, 0)
+		return
+	memory.write_u32(obj + 4, C68kScript.u32(memory.read_u32(memory.read_u32(ctl + 0x32) + 4) + memory.read_u32(owner_ctl + 8)))
+	memory.write_u32(obj + 8, memory.read_u32(owner_ctl + 0x2e))
+	memory.write_u32(obj + 0xc, C68kScript.u32(memory.read_u32(memory.read_u32(ctl + 0x32) + 0xc) + memory.read_u32(owner_ctl + 0x10)))
+	memory.write_u16(ctl + 0x22, memory.read_u16(owner_ctl + 0x22))
+
+## 0x1dd1c: controller +8 / +0xc / +0x10 = camera - (object position +4 / +8 / +0xc + (0xdff, -0x133e,
+## 0x161d)); words +0x22 / +0x20 = the negated camera heading 0x23d3e / pitch 0x23d40 & 0x3fff.
+func tick_view_attached_object(ctl: int) -> void:
+	assert(memory != null, "tick_view_attached_object requires original global memory")
+	var obj: int = memory.read_u32(ctl)
+	memory.write_u32(ctl + 8, C68kScript.u32(memory.read_u32(0x23d68) - (memory.read_u32(obj + 4) + 0xdff)))
+	memory.write_u32(ctl + 0xc, C68kScript.u32(memory.read_u32(0x23d64) - (memory.read_u32(obj + 8) - 0x133e)))
+	memory.write_u32(ctl + 0x10, C68kScript.u32(memory.read_u32(0x23d60) - (memory.read_u32(obj + 0xc) + 0x161d)))
+	memory.write_u16(ctl + 0x22, (-memory.read_u16(0x23d3e)) & 0x3fff)
+	memory.write_u16(ctl + 0x20, (-memory.read_u16(0x23d40)) & 0x3fff)
+
+## 0x19bce (link a6 -0xc, two saved registers): 1.0.3's spawn_ordnance_scattered with the bullet's
+## controller at the object's +0 (1.0.3: +8). The velocity words (0, 0, word((speed asr 4) + 0x2015)) at
+## a6 - 0xc are turned by the matrix (transform_vecs12_by_matrix3, 0x2c below) and scattered by (rng & 0x3f)
+## - 0x20 each; spawn_mission_pool_object(0x2cbfe's template, position + v asr.w 2, 0, 0, 0, 0) (0x4c below);
+## null -> 0. The controller: +0x32 = ext(vy) << 4, +8 / +0xc / +0x10 = v asr.w 2, word +0x38 = 0, word
+## +0x3a = 2 with a mode, else 1, the 0x12-byte matrix copied to +0x40 (memmove_block, 0x28 below).
+func spawn_ordnance_scattered(speed: int, mode: int, x: int, y: int, z: int, matrix: int) -> int:
+	assert(memory != null, "spawn_ordnance_scattered requires original global memory")
+	assert(a7 != 0, "spawn_ordnance_scattered needs a7 (its frame holds the velocity record)")
+	var entry_a7: int = a7
+	var vel: int = entry_a7 - 4 - 0xc
+	memory.write_u16(vel + 6, 0)
+	memory.write_u16(vel + 2, 0)
+	memory.write_u16(vel + 10, C68kScript.u16(C68kScript.asr32(C68kScript.s32(speed), 4) + 0x2015))
+	a7 = entry_a7 - 0x2c
+	transform_vecs12_by_matrix3(1, vel, vel, matrix)
+	a7 = entry_a7
+	for off in [2, 6, 10]:
+		memory.write_u16(vel + off, C68kScript.u16(memory.read_u16(vel + off) - 0x20 + (overlay_rng_next() & 0x3f)))
+	var q := []
+	for off in [2, 6, 10]:
+		q.append(memory.read_s16(vel + off) >> 2)
+	a7 = entry_a7 - 0x4c
+	var obj: int = spawn_mission_pool_object(memory.read_u32(0x2cbfe), C68kScript.u32(x + q[0]), C68kScript.u32(y + q[1]), C68kScript.u32(z + q[2]), 0, 0, 0, 0)
+	a7 = entry_a7
+	if obj == 0:
+		return 0
+	var ctl: int = memory.read_u32(obj)
+	memory.write_u32(ctl + 0x32, C68kScript.u32(memory.read_s16(vel + 6) << 4))
+	memory.write_u32(ctl + 8, C68kScript.u32(q[0]))
+	memory.write_u32(ctl + 0xc, C68kScript.u32(q[1]))
+	memory.write_u32(ctl + 0x10, C68kScript.u32(q[2]))
+	memory.write_u16(ctl + 0x38, 0)
+	memory.write_u16(ctl + 0x3a, 2 if C68kScript.u32(mode) != 0 else 1)
+	a7 = entry_a7 - 0x28
+	memmove_block(matrix, ctl + 0x40, 0x12)
+	a7 = entry_a7
+	return ctl
+
+## 0x1d2e2 (eight saved registers): 1.0.3's tick_turret with Leyte's object layout (flags byte +0x17,
+## reference count +0x29, vertices +0x46, the carrier's controller at its +0 and that controller's burning
+## bit at +0x699 bit 4). Once (word +0x40), word +0x3e = probe_nearest_facility_kind (0x28 below). A
+## carrier (+0x32) that is retired, has no vertices or is burning is released and the turret cleaned up
+## (0x28 below); otherwise the turret takes its position. A live turret with a target (+0x36): a retired or
+## vertex-less target is released. Else, unless word +0x46 is set, +0x3a = approx_dist3_xyz(turret, target);
+## within the signed range +0x42 it aims (isqrt 0x28, attitude_from_velocity into +0x4c / +0x4e 0x44 below)
+## and, in live play, runs its bursts (spawn_ordnance_oriented_3ang, 0x44 below).
+func tick_turret(ctl: int) -> void:
+	assert(memory != null, "tick_turret requires original global memory")
+	var entry_a7: int = a7
+	var obj: int = memory.read_u32(ctl)
+	if memory.read_u16(ctl + 0x40) == 0:
+		a7 = entry_a7 - 0x28
+		memory.write_u16(ctl + 0x3e, C68kScript.u16(probe_nearest_facility_kind(obj)))
+		a7 = entry_a7
+		memory.write_u16(ctl + 0x40, 1)
+	var carrier: int = memory.read_u32(ctl + 0x32)
+	if carrier != 0:
+		var release: bool = (memory.read_u8(carrier + 0x17) & 2) != 0 or memory.read_u32(carrier + 0x46) == 0
+		if not release and memory.read_u32(carrier) != 0:
+			release = (memory.read_u8(memory.read_u32(carrier) + 0x699) & 0x10) != 0
+		if release:
+			memory.write_u8(carrier + 0x29, (memory.read_u8(carrier + 0x29) - 1) & 0xff)
+			memory.write_u32(ctl + 0x32, 0)
+			a7 = entry_a7 - 0x28
+			dispatch_entity_cleanup(obj)
+			a7 = entry_a7
+		else:
+			for k in range(3):
+				memory.write_u32(obj + 4 + 4 * k, memory.read_u32(carrier + 4 + 4 * k))
+	if (memory.read_u8(obj + 0x17) & 2) != 0 or memory.read_u32(ctl + 0x36) == 0:
+		return
+	var target: int = memory.read_u32(ctl + 0x36)
+	if (memory.read_u8(target + 0x17) & 2) != 0 or memory.read_u32(target + 0x46) == 0:
+		memory.write_u8(target + 0x29, (memory.read_u8(target + 0x29) - 1) & 0xff)
+		memory.write_u32(ctl + 0x36, 0)
+		return
+	if memory.read_u16(ctl + 0x46) != 0:
+		return
+	var dist: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(obj + 4), memory.read_s32(obj + 8), memory.read_s32(obj + 0xc),
+			memory.read_s32(target + 4), memory.read_s32(target + 8), memory.read_s32(target + 0xc)))
+	memory.write_u32(ctl + 0x3a, C68kScript.u32(dist))
+	if dist > memory.read_s32(ctl + 0x42):
+		return
+	var shift: int = 0
+	var d: int = C68kScript.u32(dist)
+	while (d & 0xffff8000) != 0:
+		shift = C68kScript.s16(shift + 1)
+		d = C68kScript.u32(C68kScript.asr32(C68kScript.s32(d), 1))
+	shift = C68kScript.s16(shift + 1)
+	var rel := []
+	for k in range(3):
+		rel.append(C68kScript.asr32(C68kScript.s32(memory.read_u32(target + 4 + 4 * k) - memory.read_u32(obj + 4 + 4 * k)), shift & 0x3f))
+	var sq: int = C68kScript.s32(C68kScript.s32(C68kScript.s32(rel[0] * rel[0]) + C68kScript.s32(rel[1] * rel[1])) + C68kScript.s32(rel[2] * rel[2]))
+	a7 = entry_a7 - 0x28
+	var len: int = isqrt_floor(C68kScript.u32(sq))
+	a7 = entry_a7 - 0x44
+	attitude_from_velocity(C68kScript.u32(rel[0]), C68kScript.u32(rel[1]), C68kScript.u32(rel[2]), C68kScript.u32(C68kScript.s16(len)),
+			C68kScript.u32(sq), ctl + 0x4c, ctl + 0x4e)
+	a7 = entry_a7
+	if memory.read_u16(0x21058) != 0:
+		return
+	if memory.read_u16(ctl + 0x4a) == 0:
+		if (overlay_rng_next() & 0xf) == 0:
+			memory.write_u16(ctl + 0x4a, (overlay_rng_next() & 7) + 7)
+			memory.write_u16(ctl + 0x50, C68kScript.u16(0x80 - (overlay_rng_next() & 0xff)))
+			memory.write_u16(ctl + 0x52, C68kScript.u16(0x80 - (overlay_rng_next() & 0xff)))
+		return
+	memory.write_u16(ctl + 0x48, C68kScript.u16(memory.read_u16(ctl + 0x48) - 1))
+	if memory.read_s16(ctl + 0x48) <= 0:
+		a7 = entry_a7 - 0x44
+		spawn_ordnance_oriented_3ang(0, 0, memory.read_u32(obj + 4), memory.read_u32(obj + 8), memory.read_u32(obj + 0xc),
+				C68kScript.u32(memory.read_s16(ctl + 0x4c) + memory.read_s16(ctl + 0x50)) & 0x3fff,
+				C68kScript.u32(memory.read_s16(ctl + 0x4e) + memory.read_s16(ctl + 0x52)) & 0x3fff, 0)
+		a7 = entry_a7
+		for off in [0x50, 0x52]:
+			var v: int = memory.read_s16(ctl + off) * 7
+			if v < 0:
+				v += 7
+			memory.write_u16(ctl + off, C68kScript.u16(v >> 3))
+		memory.write_u16(ctl + 0x48, 2)
+	memory.write_u16(ctl + 0x4a, C68kScript.u16(memory.read_u16(ctl + 0x4a) - 1))
+
+## 0xf692 (link 0, three saved registers): spawn_mission_pool_object(0x2c5ae's fighter template, the seven
+## arguments) (0x34 below); returns the new object's controller (its +0), or 0. Leyte also stores the three
+## angle arguments as the controller's words +0x60a / +0x60c / +0x60e.
+func spawn_enemy_fighter(x: int, y: int, z: int, angle_a: int, angle_b: int, angle_c: int, arg_word: int) -> int:
+	assert(memory != null, "spawn_enemy_fighter requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x34
+	var spawned: int = spawn_mission_pool_object(memory.read_u32(0x2c5ae), x, y, z, angle_a, angle_b, angle_c, arg_word)
+	a7 = entry_a7
+	if spawned == 0:
+		return 0
+	var ctl: int = memory.read_u32(spawned)
+	memory.write_u16(ctl + 0x60a, C68kScript.u16(angle_a))
+	memory.write_u16(ctl + 0x60c, C68kScript.u16(angle_b))
+	memory.write_u16(ctl + 0x60e, C68kScript.u16(angle_c))
+	return ctl
+
+## 0x1bf64 (link -0xc, ten saved registers): 1.0.3's tick_aircraft_spawner with Leyte's layout (flags byte
+## +0x17, reference count +0x29, controllers at the object's +0, the damage word +0x698, positions +4 / +0xc,
+## the spawner's range +0x18). Live play with aircraft left (word +0x32): slots (+0x34 + 4i, five) holding a
+## retired aircraft or one whose controller's +0 is clear are released; with no undamaged aircraft tracked
+## and one draw in 512, a group of (rng & 0xffff) rem min(left, 3) + 1 (divsl.l) launches toward the player
+## from the spawner's bearing (attitude_from_velocity, heading into a6 - 2, 0x5c below), each fighter
+## (spawn_enemy_fighter, 0x58 below) taking the next empty slot.
+func tick_aircraft_spawner(ctl: int) -> void:
+	assert(memory != null, "tick_aircraft_spawner requires original global memory")
+	assert(a7 != 0, "tick_aircraft_spawner needs a7 (its frame holds the heading word)")
+	if memory.read_u16(ctl + 0x32) == 0 or memory.read_u16(0x21058) != 0:
+		return
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var alive: int = 0
+	for slot in range(5):
+		var obj: int = memory.read_u32(ctl + 0x34 + 4 * slot)
+		if obj == 0:
+			continue
+		if (memory.read_u8(obj + 0x17) & 2) != 0 or memory.read_u32(memory.read_u32(obj)) == 0:
+			memory.write_u8(obj + 0x29, (memory.read_u8(obj + 0x29) - 1) & 0xff)
+			memory.write_u32(ctl + 0x34 + 4 * slot, 0)
+		elif (memory.read_u16(memory.read_u32(obj) + 0x698) & 0x3fe) == 0:
+			alive += 1
+	if alive != 0 or (overlay_rng_next() & 0x1ff) != 0:
+		return
+	var spawner: int = memory.read_u32(ctl)
+	var player: int = memory.read_u32(memory.read_u32(0x20b28))
+	var group: int = memory.read_s16(ctl + 0x32) if memory.read_s16(ctl + 0x32) <= 2 else 3
+	group = C68kScript.s16(C68kScript.s32(overlay_rng_next() & 0xffff) % group + 1)
+	var dx: int = C68kScript.s32(memory.read_u32(spawner + 4) - memory.read_u32(player + 4))
+	var dz: int = C68kScript.s32(memory.read_u32(spawner + 0xc) - memory.read_u32(player + 0xc))
+	var span: int = C68kScript.u32(abs_int(dx) + abs_int(dz))
+	var shift: int = 0
+	while (span & 0xffff8000) != 0:
+		shift = C68kScript.s16(shift + 1)
+		span = C68kScript.u32(C68kScript.asr32(C68kScript.s32(span), 1))
+	a7 = entry_a7 - 0x5c
+	attitude_from_velocity(C68kScript.u32(C68kScript.asr32(dx, shift & 0x3f)), 0, C68kScript.u32(C68kScript.asr32(dz, shift & 0x3f)), 0, 0, 0, a6 - 2)
+	a7 = entry_a7
+	memory.write_u16(a6 - 2, C68kScript.u16(memory.read_u16(a6 - 2) + (((overlay_rng_next() & 0x1f) - 0x10) << 6)) & 0x3fff)
+	var r: int = C68kScript.asr32(C68kScript.divs_trunc(C68kScript.s32(memory.read_u32(spawner + 0x18) << 1), 3), 5)
+	var heading: int = memory.read_s16(a6 - 2)
+	var x: int = C68kScript.s32(memory.read_u32(player + 4) - C68kScript.asr32(C68kScript.s16(r) * C68kScript.s16(sin_fixed14(heading)), 7))
+	var altitude: int = (overlay_rng_next() & 0xfff) * 10 + 30000
+	var z: int = C68kScript.s32(C68kScript.asr32(C68kScript.s16(r) * C68kScript.s16(cos_fixed14(heading)), 7) + memory.read_u32(player + 0xc))
+	memory.write_u16(a6 - 2, C68kScript.u16(memory.read_u16(a6 - 2) + (((overlay_rng_next() & 0x1f) - 0x10) << 6) + 0x2000) & 0x3fff)
+	var slot2: int = 0
+	var k: int = 0
+	while k < group:
+		while memory.read_u32(ctl + 0x34 + 4 * slot2) != 0:
+			slot2 = C68kScript.s16(slot2 + 1)
+		x = C68kScript.s32(x - 0x800 + (overlay_rng_next() & 0xfff))
+		z = C68kScript.s32(z - 0x800 + (overlay_rng_next() & 0xfff))
+		a7 = entry_a7 - 0x58
+		var fighter: int = spawn_enemy_fighter(C68kScript.u32(x), altitude, C68kScript.u32(z), 0, C68kScript.u32(memory.read_s16(a6 - 2)), 0, 1)
+		a7 = entry_a7
+		if fighter != 0:
+			memory.write_u16(ctl + 0x32, C68kScript.u16(memory.read_u16(ctl + 0x32) - 1))
+			var fobj: int = memory.read_u32(fighter)
+			memory.write_u32(ctl + 0x34 + 4 * slot2, fobj)
+			memory.write_u8(fobj + 0x29, (memory.read_u8(fobj + 0x29) + 1) & 0xff)
+		k += 1
+
+## 0x1cb66 (link a6 -8, ten saved registers; definition +0xe pre-render of the shadow). A retired owner
+## (+0x32, flags byte +0x17 bit 1) -> 4. An aircraft owner (its controller's +0, definition type word <= 7;
+## 1.0.3: <= 4) gets the first face's vertices stretched along x by |cos(owner bank +0x24)| (cos, abs): each
+## whose template x (host +0x8c + the scene entry +0x2e + 24 * word object +0x10, +0x22 + 12 i) exceeds the
+## half size word(0x32 << word +0x36) in magnitude takes word(x * cos asr 12), at least the half size with
+## its sign. Returns 0.
+func shadow_pre_render(ctl: int) -> int:
+	assert(memory != null, "shadow_pre_render requires original global memory")
+	var obj: int = memory.read_u32(ctl)
+	var owner: int = memory.read_u32(ctl + 0x32)
+	if (memory.read_u8(owner + 0x17) & 2) != 0:
+		return 4
+	if memory.read_s16(memory.read_u32(memory.read_u32(owner) + 4)) > 7:
+		return 0
+	var face: int = memory.read_u32(obj + 0x4a)
+	var entry: int = C68kScript.u32(memory.read_u32(memory.read_u32(obj + 0x24) + 0x2a) + 0x2e + memory.read_u16(obj + 0x10) * 0x18)
+	var template: int = C68kScript.u32(memory.read_u32(entry) + memory.read_u32(memory.read_u32(0x207fc) + 0x8c) + 0x22)
+	var verts: int = memory.read_u32(obj + 0x46)
+	var half: int = C68kScript.s16(C68kScript.lsl32(0x32, memory.read_u16(obj + 0x36) & 0x3f))
+	var stretch: int = C68kScript.s16(abs_int(C68kScript.s16(cos_fixed14(memory.read_s16(memory.read_u32(owner) + 0x24)))))
+	var idx: int = memory.read_u32(face + 0x18)
+	var left: int = memory.read_u16(face + 0x14)
+	while left != 0:
+		left -= 1
+		var vi: int = memory.read_s16(idx)
+		var tx: int = memory.read_s32(C68kScript.u32(template + vi * 12))
+		if abs_int(tx) > half:
+			var x: int = C68kScript.s16(C68kScript.asr32(C68kScript.s32(stretch * tx), 12))
+			var vert: int = C68kScript.u32(verts + vi * 12)
+			if abs_int(x) > half:
+				memory.write_u32(vert, C68kScript.u32(x))
+			else:
+				memory.write_u32(vert, C68kScript.u32(-half if x < 0 else half))
+		idx += 2
+	return 0

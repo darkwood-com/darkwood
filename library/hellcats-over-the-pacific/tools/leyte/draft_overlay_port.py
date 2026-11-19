@@ -168,7 +168,7 @@ def draft(name, listing=False, piece=None):
             if t is None:
                 flags.append("unmapped %s (0x%x)" % (m.group(0), v))
                 return m.group(0)
-            return "0x%x" % t
+            return "@0x%x@" % t   # already Leyte's: shielded from the literal pass below
         code = re.sub(r"\bDAT_[0-9a-f]+\b", dat, code)
 
         def field(m):
@@ -207,7 +207,8 @@ def draft(name, listing=False, piece=None):
             if 0x1000 <= v < IMAGE_END and v in amap:
                 return "0x%x" % amap[v]
             return m.group(0)
-        code = re.sub(r"(?<![\w$])0x([0-9a-fA-F]+)\b", literal, code)
+        code = re.sub(r"(?<![\w$@])0x([0-9a-fA-F]+)\b", literal, code)
+        code = re.sub(r"@(0x[0-9a-f]+)@", r"\1", code)
         out.append(code + sep + comment)
     print("## ---- draft: %s, 1.0.3 0x%x -> Leyte 0x%x; %d / %d instructions, %d matching (%s)" % (
         name, h, l, len(A), len(B), p["matching"], p["evidence"]))
