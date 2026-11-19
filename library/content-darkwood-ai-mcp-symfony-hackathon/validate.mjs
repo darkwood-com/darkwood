@@ -12,6 +12,7 @@ assert.ok(html.includes(`<link rel="canonical" href="${base}">`));
 assert.ok(html.includes(`<meta property="og:url" content="${base}">`));
 assert.ok(html.includes('library/content-darkwood-ai-mcp-symfony-hackathon'));
 assert.ok(!html.includes('content-darkwood-intent'));
+assert.ok(!html.includes('hackathon-review.md'), 'Internal review must not be linked publicly');
 const selection = html.split('id="selection"')[1].split('</section>')[0];
 assert.equal([...selection.matchAll(/<article\b/g)].length, 6);
 for (const [, raw] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {

@@ -54,14 +54,14 @@ puis relancer le même workflow. Le domaine et le dépôt de publication sont co
 
 ## Current verified iteration
 
-The main path is designer agent → official SDK client → existing SDK server → generation agent → PHP geometry validation → approved local artifacts. The current proof is public/hackathon/design-proof.json; mcp-proof.json remains available as a dated historical trace. docs/hackathon-review.md distinguishes observations from judgments and compares public entries. Video generation does not establish publication or submission.
+The main path is designer agent → official SDK client → existing SDK server → generation agent → PHP geometry validation → approved local artifacts. The current proof is public/hackathon/design-proof.json; mcp-proof.json remains available as a dated historical trace. Video generation does not establish publication or submission.
 
 ## Vidéos et narration continue — itération 4
 
 - [Darkwood MCP Experience](https://youtu.be/cNAtFOlZAVA), anglais, 85,47 s,
   non répertoriée ; source et résultat réellement enregistrés, attente condensée.
 - [Présentation française](https://youtu.be/vQe8ZhRjA7Y), narration continue,
-  134 s, non répertoriée.
+  78,37 s, non répertoriée.
 
 Les identifiants, la chaîne et les anciens chemins sont conservés dans
 `public/hackathon/experience-edit.json`. Les huit slides restent dans la card
@@ -80,10 +80,13 @@ Les références connues des anciennes vidéos ont été corrigées ; `404.html`
 fournit les nouvelles adresses si un ancien lien direct est utilisé. Les anciens
 films sont conservés localement dans le pilotage S47 et dans l’historique Git.
 Aucune réécriture d’historique : le déversionnement ne diminue pas l’historique
-existant. Les anciennes itérations sont décrites dans `docs/hackathon-review.md`.
+existant.
 
 Le jury peut toujours exécuter Mario indépendamment, avec sa propre clé. La
-candidature est préparée et **non soumise**. Aucun post social n’est déclenché.
+candidature **Darkwood MCP Experience a été soumise le 19 novembre 2026**,
+avec le statut officiel **Submitted** :
+<https://symfony.com/hackathon/projects/darkwood-mcp-experience>.
+Aucun post social n’est déclenché.
 
 ## Presentation sources (iteration 5)
 

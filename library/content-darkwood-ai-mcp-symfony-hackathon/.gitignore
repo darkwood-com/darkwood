@@ -5,3 +5,6 @@
 
 # Generated distribution movies are kept locally and hosted on YouTube.
 /public/hackathon/*.mp4
+
+# Internal contest review is archived in the private S47 task.
+/docs/hackathon-review.md

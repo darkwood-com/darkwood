@@ -91,7 +91,7 @@
     "independent_from_mario": true
   },
   "avatar": "Existing static MATYO91 portrait in Intent left column (256 px); slides 1664x936 at x=256 y=72. Visible on all scenes; no lip-sync or Replicate.",
-  "submission": "prepared, not submitted",
+  "submission": "Submitted on 2026-11-19: https://symfony.com/hackathon/projects/darkwood-mcp-experience",
   "rollback": "Previous MP4s preserved locally and in Git history; no history rewritten.",
   "audio": {
     "mode": "continuous",
