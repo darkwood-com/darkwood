@@ -99,13 +99,13 @@
     "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
   },
   "32e0ac94-aca0-4c2d-a9c4-520149df813e": {
-    "cover_title": null,
-    "subtitle": "Mais au lieu de juste comparer les modeles, j'ai voulu comprendre comment orchestrer des agents IA pour produire un jeu.",
-    "overline": "Video Darkwood / IA x Game Dev",
+    "cover_title": "Darkwood MCP Experience",
+    "subtitle": "One ecosystem. Multiple capabilities. One AI experience.",
+    "overline": "Darkwood · Symfony AI & MCP Hackathon 2026",
     "author": "@matyo91",
-    "footer_label": "01 | hook",
-    "date": null,
-    "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
+    "footer_label": null,
+    "date": "19-11-2026",
+    "date_note": "Guided experience; recorded execution dates labelled separately; not submitted."
   },
   "2ae239c4-47cc-44a9-ae68-39933ab8c722": {
     "cover_title": null,
@@ -256,5 +256,14 @@
     "subtitle": "Du logiciel à l’IA, des jeux vidéo à la musique et à l’image : ce que nous conservons pour continuer à créer.",
     "author": "@matyo91",
     "date": "2026-11-08"
+  },
+  "55ea6e1d-f9f8-4630-928f-e3f1445b09d4": {
+    "cover_title": "Darkwood MCP Experience",
+    "subtitle": "One ecosystem. Multiple capabilities. One AI experience.",
+    "overline": "Darkwood · Symfony AI & MCP Hackathon 2026",
+    "author": "@matyo91",
+    "footer_label": null,
+    "date": "19-11-2026",
+    "date_note": "Guided experience; recorded execution dates labelled separately; not submitted."
   }
 }

@@ -147,6 +147,8 @@ jobs:
           SOURCE: ${{ matrix.source }}
           EXPECTED_PACKAGE: ${{ matrix.composer }}
           PACKAGE_ID: ${{ matrix.package_id }}
+          # Symfony CLI uses this short-lived token to resolve/download Language Tools.
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           # shellcheck disable=SC2016
           actual_package=$(php -r 'echo json_decode(file_get_contents($argv[1]), true, 512, JSON_THROW_ON_ERROR)["name"];' "$SOURCE/composer.json")

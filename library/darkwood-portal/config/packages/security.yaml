@@ -30,6 +30,14 @@ security:
             stateless: true
             provider: oidc_subject_provider
             oauth2: true
+        # MCP accepts the same player JWT as Darkwood API. This separate context
+        # does not inherit partially authenticated website/2FA sessions.
+        darkwood_mcp:
+            pattern: ^/mcp$
+            host: '%api_host%'
+            stateless: false
+            provider: app_user_provider
+            jwt: ~
         # Darkwood API: stateful so DarkwoodGameService can use session (flash, combat state)
         darkwood_api:
             pattern: ^/api/darkwood

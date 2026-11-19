@@ -51,7 +51,7 @@ final class ProcessVideoScenesFlowTest extends TestCase
             })
         ;
 
-        $repo = $this->createStub(VideoProjectRepositoryInterface::class);
+        $repo = self::createStub(VideoProjectRepositoryInterface::class);
 
         $flow = new ProcessVideoScenesFlow(
             $sceneStep,

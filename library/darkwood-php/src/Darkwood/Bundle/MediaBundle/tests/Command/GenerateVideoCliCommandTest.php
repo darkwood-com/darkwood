@@ -50,7 +50,7 @@ final class GenerateVideoCliCommandTest extends TestCase
             ->willReturn(new VideoGenerationResult($project, null, null))
         ;
 
-        $kernel = $this->createStub(KernelInterface::class);
+        $kernel = self::createStub(KernelInterface::class);
         $kernel->method('getProjectDir')->willReturn('/tmp/dw-proj-root');
 
         $command = new GenerateVideoCliCommand($orchestrator, $kernel);
@@ -94,10 +94,10 @@ final class GenerateVideoCliCommandTest extends TestCase
         $project->addScene($scene);
         $project->complete();
 
-        $orchestrator = $this->createStub(VideoGenerationOrchestratorInterface::class);
+        $orchestrator = self::createStub(VideoGenerationOrchestratorInterface::class);
         $orchestrator->method('generateFromYaml')->willReturn(new VideoGenerationResult($project, null, null));
 
-        $kernel = $this->createStub(KernelInterface::class);
+        $kernel = self::createStub(KernelInterface::class);
         $kernel->method('getProjectDir')->willReturn('/tmp/dw-proj-root');
 
         $command = new GenerateVideoCliCommand($orchestrator, $kernel);

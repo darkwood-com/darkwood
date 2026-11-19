@@ -5294,7 +5294,7 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "DJ Matyo91 : guider l’énergie",
+                            "DJ Matyo : guider l’énergie",
                             "Explorer les sets",
                             "Ouverture, montée et pic orientent le tempo, la densité et la transition sans déterminer un résultat unique.",
                             "Ouvrir le Studio",
@@ -5316,7 +5316,7 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "DJ Matyo91",
+                            "DJ Matyo",
                             "Densifier sans saturer.",
                             "Entrée",
                             "Installer les repères.",
@@ -6355,30 +6355,202 @@
                 }
             ]
         },
+        "mario-ai-agents-hackathon": {
+            "count": 8,
+            "slides": [
+                {
+                    "id": "mario-ai-agents-hackathon-0",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience.",
+                            "Welcome to Darkwood · MATYO91 · Your guide"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "19-11-2026"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-1",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Code, articles and maturity of each card",
+                            "Company search · custom MCP",
+                            "Composio MCP",
+                            "Connect Flow",
+                            "Connectors · historical experiment",
+                            "Darkwood MCP Experience",
+                            "Discover the ecosystem",
+                            "Flowvox",
+                            "Generate original geometry",
+                            "MCP Apps",
+                            "Mario",
+                            "Orchestration · experiment",
+                            "Publishing prototype · simulated",
+                            "Recherche Entreprise",
+                            "Voice workflows · qualification needed"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/#selection"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "02 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-2",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Ask for a capability",
+                            "Darkwood MCP Experience",
+                            "MCP tool",
+                            "Symfony AI",
+                            "Your request",
+                            "“Create a small original forest level.”"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "03 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-3",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "A brief → checked geometry",
+                            "Choose a real path",
+                            "Darkwood MCP Experience",
+                            "DarkwoodGame",
+                            "Local API → read-only observation",
+                            "Mario",
+                            "Separate demos. No automatic hand-off between cards.",
+                            "generate_original_level",
+                            "get_darkwood_state"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "04 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-4",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "An original brief, then an approved local export",
+                            "Real Symfony AI → official SDK client → MCP server.",
+                            "Recorded execution · 18 November 2026",
+                            "Watch the tool work"
+                        ],
+                        "code": [
+                            "php bin/console app:mario:design \\\n  --prompt='Create a small original forest level' \\\n  --approve-export"
+                        ],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "05 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-5",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "A read-only Symfony AI agent interprets these exact fields.",
+                            "Darkwood MCP Experience",
+                            "Observe another capability",
+                            "Recorded local API · 19 November · synthetic player",
+                            "get_darkwood_state"
+                        ],
+                        "code": [
+                            "{\"user\":6,\"state\":\"main\",\"mode\":null,\"display\":\"web\"}"
+                        ],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "06 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-6",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "48 × 15 tiles · JSON + evidence + approved preview",
+                            "Checked geometry is not proof of playability.",
+                            "Darkwood MCP Experience",
+                            "Inspect the result"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/darkwood/hackathon/level-preview.png"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "07 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-7",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Darkwood MCP Experience",
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience.",
+                            "Prepared for the hackathon. Not yet submitted.",
+                            "Public code · Symfony AI + official PHP MCP SDK",
+                            "ai-mcp-symfony-hackathon-content.darkwood.com"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "08 | explore → use → inspect"
+                        ]
+                    }
+                }
+            ]
+        },
         "mario-ai-agents": {
-            "count": 15,
+            "count": 8,
             "slides": [
                 {
                     "id": "mario-ai-agents-0",
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Agents",
-                            "J'ai force 4 IA a recreer Mario de zero",
-                            "Jeu jouable",
-                            "Mais au lieu de juste comparer les modeles, j'ai voulu comprendre comment orchestrer des agents IA pour produire un jeu.",
-                            "Prompt",
-                            "Tests",
-                            "Video Darkwood / IA x Game Dev",
-                            "→",
-                            "→",
-                            "→"
+                            "Bienvenue dans Darkwood · MATYO91 · Votre guide",
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience."
                         ],
                         "code": [],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "01 | hook"
+                            "19-11-2026"
                         ]
                     }
                 },
@@ -6387,22 +6559,29 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Chaque patch casse autre chose.",
-                            "Collision bugs",
-                            "Dette technique immediate",
-                            "Le perso traverse le sol ou reste bloque.",
-                            "Le probleme du vibe coding classique",
-                            "Logique incoherente",
-                            "Niveaux impossibles",
-                            "Prompt unique → IA → code fragile",
-                            "Regles qui se contredisent d'un fichier a l'autre.",
-                            "Sauts injustes, progression cassee."
+                            "Code, articles et maturité de chaque card",
+                            "Composio MCP",
+                            "Connect Flow",
+                            "Connecteurs · expérience historique",
+                            "Darkwood MCP Experience",
+                            "Explorer l’écosystème",
+                            "Flowvox",
+                            "Générer une géométrie originale",
+                            "MCP Apps",
+                            "Mario",
+                            "Orchestration · expérimentation",
+                            "Prototype de publication · simulé",
+                            "Recherche Entreprise",
+                            "Recherche société · MCP personnalisé",
+                            "Workflows vocaux · à qualifier"
                         ],
                         "code": [],
-                        "links": [],
+                        "links": [
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/#selection"
+                        ],
                         "hooks": [],
                         "footer": [
-                            "02 | probleme"
+                            "02 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6411,26 +6590,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "AI Bundle",
-                            "Abstraction multi-modeles et streaming.",
-                            "Agent",
-                            "Configuration Symfony via YAML.",
-                            "Platform",
-                            "RAG, indexation et recherche semantique.",
-                            "Site:",
-                            "Stack IA",
-                            "Store",
-                            "Symfony AI: agents, tools, RAG, multi-modal pour PHP.",
-                            "Tool calling, subagents, orchestration.",
-                            "ai.symfony.com"
+                            "Darkwood MCP Experience",
+                            "Demander une capacité",
+                            "Outil MCP",
+                            "Symfony AI",
+                            "Votre demande",
+                            "« Créer un petit niveau de forêt original. »"
                         ],
                         "code": [],
-                        "links": [
-                            "https://ai.symfony.com/"
-                        ],
+                        "links": [],
                         "hooks": [],
                         "footer": [
-                            "03 | symfony-ai"
+                            "03 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6439,24 +6610,21 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "2D solide",
-                            "GDScript rapide a iterer.",
-                            "Godot: moteur open-source parfait pour prototyper vite.",
-                            "Moteur de jeu",
-                            "Nodes et scenes pour platformers.",
-                            "Open source",
-                            "Pipeline dev sans lock-in.",
-                            "Scriptable",
-                            "Site:",
-                            "godotengine.org"
+                            "API locale → observation en lecture seule",
+                            "Choisir un parcours réel",
+                            "Darkwood MCP Experience",
+                            "DarkwoodGame",
+                            "Démos indépendantes. Aucun enchaînement automatique entre cards.",
+                            "Mario",
+                            "Un brief → une géométrie vérifiée",
+                            "generate_original_level",
+                            "get_darkwood_state"
                         ],
                         "code": [],
-                        "links": [
-                            "https://godotengine.org/"
-                        ],
+                        "links": [],
                         "hooks": [],
                         "footer": [
-                            "04 | godot"
+                            "04 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6465,24 +6633,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Approche orchestration",
-                            "Gameplay Agent",
-                            "Generated Game / Level JSON",
-                            "Godot Export Agent",
-                            "Layout Agent",
-                            "Orchestrator Agent",
-                            "QA Agent",
-                            "Un agent chef route vers des agents specialises.",
-                            "User Prompt",
-                            "↓",
-                            "↓",
-                            "↓"
+                            "Exécution enregistrée · 18 novembre 2026",
+                            "Symfony AI réel → client SDK officiel → serveur MCP.",
+                            "Un brief original, puis un export local approuvé",
+                            "Voir l’outil travailler"
                         ],
-                        "code": [],
+                        "code": [
+                            "php bin/console app:mario:design \\\n  --prompt='Create a small original forest level' \\\n  --approve-export"
+                        ],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "05 | architecture"
+                            "05 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6491,17 +6653,19 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Idee cle: un agent chef route vers des agents specialises avec un contexte partage.",
-                            "Le script Symfony AI",
-                            "Pattern: Agent + Handoff + MultiAgent + MessageBag"
+                            "API locale enregistrée · 19 novembre · joueur synthétique",
+                            "Darkwood MCP Experience",
+                            "Observer une autre capacité",
+                            "Un agent Symfony AI en lecture seule explique ces champs exacts.",
+                            "get_darkwood_state"
                         ],
                         "code": [
-                            "$messages = MessageBag::of(Message::ofUser($prompt));\n\n$orchestrator = new Agent(...);\n$layout = new Agent(...);\n$gameplay = new Agent(...);\n$export = new Agent(...);\n$qa = new Agent(...);\n\n$flow = MultiAgent::of($orchestrator)\n    ->handoff($layout)\n    ->handoff($gameplay)\n    ->handoff($export)\n    ->handoff($qa);\n\n$result = $flow->run($messages);"
+                            "{\"user\":6,\"state\":\"main\",\"mode\":null,\"display\":\"web\"}"
                         ],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "06 | symfony-ai"
+                            "06 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6510,22 +6674,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "4 roles complementaires",
-                            "Ajoute les mecaniques.",
-                            "Construit le niveau.",
-                            "Gameplay Agent",
-                            "Genere les fichiers exploitables.",
-                            "Godot Export Agent",
-                            "Layout Agent",
-                            "Les agents",
-                            "QA Agent",
-                            "Verifie la jouabilite."
+                            "48 × 15 cases · JSON + preuve + aperçu approuvé",
+                            "Darkwood MCP Experience",
+                            "Inspecter le résultat",
+                            "La géométrie vérifiée ne prouve pas la jouabilité."
                         ],
                         "code": [],
-                        "links": [],
+                        "links": [
+                            "http://localhost/darkwood/hackathon/level-preview.png"
+                        ],
                         "hooks": [],
                         "footer": [
-                            "07 | agents"
+                            "07 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6534,154 +6694,20 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "ChatGPT",
-                            "Claude",
-                            "Gemini",
-                            "Grok",
-                            "Les 4 IA testees",
-                            "Meme prompt initial. Resultats tres differents.",
-                            "Objectif: comparer creativite, stabilite, cout et jouabilite."
-                        ],
-                        "code": [],
-                        "links": [],
-                        "hooks": [],
-                        "footer": [
-                            "08 | benchmark"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-8",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Export jeu",
-                            "Generation automatique",
-                            "La generation se fait en une seule commande Symfony.",
-                            "Multi-agent",
-                            "Prompt",
-                            "→",
-                            "→"
-                        ],
-                        "code": [
-                            "php bin/console app:mario:orchestrate"
-                        ],
-                        "links": [],
-                        "hooks": [],
-                        "footer": [
-                            "09 | commande"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-9",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "ChatGPT - bonne base, iteration rapide",
-                            "Demo ChatGPT"
+                            "Candidature préparée, non soumise.",
+                            "Code public · Symfony AI + SDK PHP MCP officiel",
+                            "Darkwood MCP Experience",
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience.",
+                            "ai-mcp-symfony-hackathon-content.darkwood.com"
                         ],
                         "code": [],
                         "links": [
-                            "http://localhost:8062/Super%20Mario%20Bros.html"
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/"
                         ],
                         "hooks": [],
                         "footer": [
-                            "10 | chatgpt"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-10",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Claude - meilleur raisonnement, plus cher",
-                            "Demo Claude"
-                        ],
-                        "code": [],
-                        "links": [
-                            "http://localhost:8061/Super%20mario%20bros.html"
-                        ],
-                        "hooks": [],
-                        "footer": [
-                            "11 | claude"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-11",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Demo Gemini",
-                            "Gemini - tres bon rendu visuel et creativite"
-                        ],
-                        "code": [],
-                        "links": [
-                            "http://localhost:8063/Solar%20Engine.html"
-                        ],
-                        "hooks": [],
-                        "footer": [
-                            "12 | gemini"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-12",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Demo Grok",
-                            "Grok - interessant, mais instable"
-                        ],
-                        "code": [],
-                        "links": [
-                            "http://localhost:8060/Platformer.html"
-                        ],
-                        "hooks": [],
-                        "footer": [
-                            "13 | grok"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-13",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Cadrer",
-                            "Ce que l'experience montre",
-                            "Corriger",
-                            "L'efficacite vient du systeme d'agents, pas d'un prompt unique.",
-                            "Le vrai sujet n'est pas \"quelle IA code le mieux\".",
-                            "Orchestrer",
-                            "Tester"
-                        ],
-                        "code": [],
-                        "links": [],
-                        "hooks": [],
-                        "footer": [
-                            "14 | enseignements"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-14",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Abonne-toi si tu veux voir la suite avec Godot, Symfony AI et orchestration d'agents.",
-                            "CTA",
-                            "Conclusion",
-                            "Le futur du vibe coding, c'est l'orchestration",
-                            "Un seul agent peut produire un prototype. Plusieurs agents bien cadres peuvent produire un systeme."
-                        ],
-                        "code": [],
-                        "links": [],
-                        "hooks": [],
-                        "footer": [
-                            "15 | conclusion"
+                            "08 | explore → use → inspect"
                         ]
                     }
                 }
@@ -7018,10 +7044,10 @@
                             "6",
                             "7",
                             "8",
-                            "DJMatyo",
+                            "DJ Matyo",
                             "Huit pas pour garder une idée",
                             "Notes, silences, tempo : un motif que l’on peut réécouter et modifier.",
-                            "Synthèse originale du navigateur, sans sample tiers. Un atelier de mémoire musicale, pas un morceau attribué à DJMatyo.",
+                            "Synthèse originale du navigateur, sans sample tiers. Un atelier de mémoire musicale, pas un morceau attribué à DJ Matyo.",
                             "—",
                             "—",
                             "—"
@@ -7041,7 +7067,7 @@
                         "text": [
                             "4 · — · 3 · — · 2 · 3 · 1 · —",
                             "Comparer ce qui reste reconnaissable quand la place des événements change.",
-                            "DJMatyo",
+                            "DJ Matyo",
                             "Initial",
                             "La variation de l’atelier décale la séquence d’un pas.",
                             "Le même motif, un autre départ",
@@ -7062,10 +7088,10 @@
                     "payload": {
                         "text": [
                             "Conserver une structure musicale",
-                            "DJMatyo",
+                            "DJ Matyo",
                             "La version gardée devient le point de comparaison d’une variante.",
                             "Le fichier JSON conserve notes et tempo, sans enregistrement audio.",
-                            "L’identité Happy Hardcore de DJMatyo ouvre une réflexion sur répétition, énergie et reconnaissance. L’atelier ne documente pas ses outils de studio.",
+                            "L’identité Happy Hardcore de DJ Matyo ouvre une réflexion sur répétition, énergie et reconnaissance. L’atelier ne documente pas ses outils de studio.",
                             "Rejouer",
                             "Transformer"
                         ],
@@ -7153,7 +7179,7 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "DJMatyo",
+                            "DJ Matyo",
                             "Darkwaar",
                             "Darkwood",
                             "Flow",

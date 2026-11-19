@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "public_source_repository": "https://github.com/darkwood-com/darkwood",
+  "public_source_commit": "e55d2593165b82cbb495d3c14341d610d85a63be",
+  "source_hashes": {
+    "README.md": "94b582662937bdf8e0c19aa7e6b5973aeb75912d43c72cc2c1813ca2d112e14e",
+    "bin/mcp.php": "b43c1823a98b8ef997e0df025dc660a1a0adcb1d130b0ad171c1b006e1d11976",
+    "src/Mario/Infrastructure/AI/MarioAgentOrchestrator.php": "6f6348da5cd8b8b03164f1b83a4e43036030184caeac2c1ff7bb61b6a142966c",
+    "src/Mario/Infrastructure/AI/McpLevelTool.php": "1897a2e4453838958e5edc767a8a7bbd237dd9a0fe22c48b3763f44b7ac4d85c",
+    "src/Mario/Infrastructure/Export/LevelPreviewExporter.php": "f04cdb8bc376d0a81eb9d2a75afb19f379d1c05ac22d0828feb764bbf54e117f",
+    "src/Mario/Application/Command/DesignLevelCommand.php": "dc0efed147bdb3d1ef1dd4f05f1803003fd81c443bc69f5fe1eb9b1fcbea0751",
+    "tests/design-regression.php": "6c30aaf55b6820db8b982406bd33baf7ce3ac1b02b33efe35c703cb7ded497f8",
+    "flake.nix": "b19d5a61d54ce527dfecbdc08eedb941a5a42ac79a39c44eeee4bf0c6b76abb6",
+    "flake.lock": "b5baef13d92747e3e86350af98530873962c944dadd9bed378906491ab9180aa",
+    "composer.json": "2c2c77b013d1bc44770b111f9be5a2994df4a6928d5129579e7c97225568df87",
+    "composer.lock": "ad07f81ab52d974f8dac502808e34d789da528f8e63a557f7c0949f9203ae2b8"
+  },
+  "versions": {
+    "mcp/sdk": "v0.10.0",
+    "symfony/ai-agent": "v1.0.0-BETA1",
+    "symfony/ai-platform": "v1.0.0-BETA1"
+  },
+  "execution": {
+    "mode": "real_ai",
+    "agent": "level_designer",
+    "sdk": "mcp/sdk",
+    "tool_calls": [
+      {
+        "tool": "generate_original_level",
+        "arguments": {
+          "prompt": "Small, original forest platformer level for a beginner. Level scale: short (one screen wide). Theme: peaceful forest clearing with soft ground, mossy low platforms. Layout: Start at left on flat ground; two low floating platforms between start and goal: Platform A (low, 1.0m above ground, 2m wide) positioned slightly right of start; Platform B (low, 1.2m above ground, 2m wide) positioned further right. Place three collectible glowing orbs: one on the ground path near the start, one centered on Platform A, one centered on Platform B. Goal: visible, clearly reachable stone arch on the right ground 1.5m past the last platform; final jump is short (<= player's max jump). Difficulty: beginner—jumps easy, wide margins. No enemies or hazards. Visual cues: glowing lights stand out; platforms mossy and low. No copyrighted characters or references."
+        },
+        "result": {
+          "mode": "real_ai",
+          "agent": "level_generator",
+          "level": {
+            "name": "Forest Clearing - Beginner",
+            "tile_size": 16,
+            "width": 48,
+            "height": 15,
+            "player_start": {
+              "x": 2,
+              "y": 11
+            },
+            "goal": {
+              "x": 20,
+              "y": 10
+            },
+            "terrain": [
+              {
+                "type": "ground",
+                "x": 0,
+                "y": 12,
+                "w": 48,
+                "h": 3
+              },
+              {
+                "type": "moss_platform",
+                "x": 6,
+                "y": 10,
+                "w": 4,
+                "h": 1
+              },
+              {
+                "type": "moss_platform",
+                "x": 12,
+                "y": 9,
+                "w": 4,
+                "h": 1
+              },
+              {
+                "type": "stone_arch",
+                "x": 19,
+                "y": 9,
+                "w": 3,
+                "h": 3
+              }
+            ],
+            "objects": [
+              {
+                "type": "glowing_orb",
+                "x": 4,
+                "y": 11
+              },
+              {
+                "type": "glowing_orb",
+                "x": 8,
+                "y": 9
+              },
+              {
+                "type": "glowing_orb",
+                "x": 14,
+                "y": 8
+              }
+            ],
+            "metadata": {
+              "theme": "peaceful forest clearing",
+              "difficulty": "beginner",
+              "description": "Short, single-screen level. Start on soft ground at left. Two low, mossy floating platforms (A slightly above ground, B slightly higher) lead to a visible stone arch goal on the right. Three glowing orbs: one near the start on the ground, one centered on Platform A, one centered on Platform B. No enemies or hazards. Jumps are gentle and wide for beginners.",
+              "visual_cues": "collectible orbs glow; platforms are mossy and low",
+              "recommended_player_max_jump_tiles": 4
+            }
+          },
+          "warnings": [
+            "Geometry checks do not establish playability or copyright clearance."
+          ]
+        }
+      }
+    ],
+    "summary": "Geometry: Single-screen forest clearing. Start left on ground; two low moss platforms at short intervals (one slightly above ground, second a bit higher); three glowing orbs placed: ground near start, centered on each platform; stone-arch goal clearly visible on right, just beyond last platform. Warnings: Geometry/playability not guaranteed; no copyright issues found but playability must be validated in engine.",
+    "duration_seconds": 47.558,
+    "generated_at": "2026-11-18T20:45:08+00:00"
+  },
+  "limits": [
+    "Actual model invocation, no fixture or response replay",
+    "Geometry validation does not prove playability, balance or legal clearance",
+    "Video and submission status are tracked separately"
+  ]
+}

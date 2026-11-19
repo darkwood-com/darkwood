@@ -14,7 +14,7 @@ final readonly class MemoryExamples
         'flow' => ['Flow', 'Trois durées de mémoire', 'Observer ce qui disparaît, se réutilise et reste disponible.', 'Exécution'],
         'uniflow' => ['Uniflow', 'La recette et son histoire', 'Mettre en pause un processus, puis reprendre la même exécution.', 'Processus'],
         'darkwaar' => ['Darkwaar', 'La chambre des retours', 'Le monde recommence. Ce que vous avez appris reste.', 'Jeu'],
-        'djmatyo' => ['DJMatyo', 'Un motif, plusieurs vies', 'Composer huit pas, les écouter et retrouver son motif.', 'Musique'],
+        'djmatyo' => ['DJ Matyo', 'Un motif, plusieurs vies', 'Composer huit pas, les écouter et retrouver son motif.', 'Musique'],
         'heroclip' => ['Heroclip', 'D’un plan à l’autre', 'Transmettre les repères d’un personnage à la scène suivante.', 'Récit'],
     ];
 

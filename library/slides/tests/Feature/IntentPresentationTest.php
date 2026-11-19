@@ -14,7 +14,7 @@ class IntentPresentationTest extends TestCase
         $slides = $compiler->flattenSlides($compiler->compile('intent')['slides']);
         $this->assertCount(17, $slides);
         $html = implode('', array_map(fn ($slide) => $slide->html, $slides));
-        foreach (['15-11-2026', 'Aftertrace', 'Heroclip', 'DJ Matyo91', 'Amp / Revolt', 'Aucun moteur durable', 'pas benchmark', 'https://darkwaar.com/games/aftertrace', 'https://heroclip.darkwood.com/clips/6e42bdb6-7ba2-42cf-91a1-cdb3b40b4fdc', 'https://djmatyo91.darkwood.com/studio'] as $term) {
+        foreach (['15-11-2026', 'Aftertrace', 'Heroclip', 'DJ Matyo', 'Amp / Revolt', 'Aucun moteur durable', 'pas benchmark', 'https://darkwaar.com/games/aftertrace', 'https://heroclip.darkwood.com/clips/6e42bdb6-7ba2-42cf-91a1-cdb3b40b4fdc', 'https://djmatyo91.darkwood.com/studio'] as $term) {
             $this->assertStringContainsString($term, $html);
         }
         $this->assertStringNotContainsString('OpenSwoole est validé', $html);

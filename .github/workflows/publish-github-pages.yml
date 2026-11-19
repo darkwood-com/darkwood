@@ -8,6 +8,7 @@ on:
       - library/content-darkwood-memory/**
       - library/content-darkwood-intent/**
       - library/content-darkwood-ai-mcp-symfony-hackathon/**
+      - library/content-mario-orquestration/**
       - library/darkwood-php/src/Darkwood/Component/Flow/docs/**
       - .github/workflows/publish-github-pages.yml
   workflow_dispatch:
@@ -103,6 +104,7 @@ jobs:
           filter: blob:none
           sparse-checkout: |
             ${{ matrix.source }}
+            ${{ matrix.id == 'content-darkwood-ai-mcp-symfony-hackathon' && 'library/content-mario-orquestration' || '' }}
             .github/distribution-cards.json
             .github/workflows/publish-github-pages.yml
           sparse-checkout-cone-mode: false
@@ -127,6 +129,10 @@ jobs:
           elif git diff --quiet "$BEFORE" "$CURRENT" -- "$SOURCE" .github/distribution-cards.json .github/workflows/publish-github-pages.yml; then
             selected=false
           else
+            selected=true
+          fi
+          if [[ "$EVENT_NAME" == "push" && "$TARGET" == "content-darkwood-ai-mcp-symfony-hackathon" ]] &&
+             ! git diff --quiet "$BEFORE" "$CURRENT" -- library/content-mario-orquestration; then
             selected=true
           fi
           echo "selected=$selected" >> "$GITHUB_OUTPUT"
@@ -154,9 +160,19 @@ jobs:
           test -s "$ARTIFACT_DIRECTORY/index.html"
           test "$(cat "$ARTIFACT_DIRECTORY/CNAME")" = "$DOMAIN"
 
-      - name: Set up Nix for PHP static sites
-        if: steps.select.outputs.selected == 'true' && matrix.builder == 'nix'
+      - name: Set up Nix for PHP static sites and the executable candidate
+        if: steps.select.outputs.selected == 'true' && (matrix.builder == 'nix' || matrix.id == 'content-darkwood-ai-mcp-symfony-hackathon')
         uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
+
+      - name: Verify the executable hackathon candidate without provider access
+        if: steps.select.outputs.selected == 'true' && matrix.id == 'content-darkwood-ai-mcp-symfony-hackathon'
+        working-directory: library/content-mario-orquestration
+        run: |
+          nix develop -c composer install --no-scripts --no-interaction --prefer-dist --no-progress
+          nix develop -c composer validate --no-check-publish
+          nix develop -c composer check-platform-reqs
+          nix develop -c php tests/generation-regression.php
+          nix develop -c php tests/design-regression.php
 
       - name: Test and export the PHP static site
         if: steps.select.outputs.selected == 'true' && matrix.builder == 'nix'
