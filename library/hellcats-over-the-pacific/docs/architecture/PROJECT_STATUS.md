@@ -4359,3 +4359,100 @@ Cycle 88 of job f19bd982:
 - Next: the damage system that tick_flak_gun and aircraft_tick share (6 routines, about 840 instructions):
   apply_blast_damage, apply_hit_to_sinkable_object, apply_random_aircraft_damage, spawn_destruction_effect,
   tally_destroyed_entity. Then tick_flak_gun, the Leyte ship tick 0x18f94, aircraft_tick, and CODE 2 $3e2 / $432.
+
+### Cycles 140-141 checkpoint — the damage system
+
+- Written from Leyte's listings: tally_destroyed_entity (0x5e2), apply_random_aircraft_damage (0x1a70c),
+  spawn_destruction_effect (0x13ec0), apply_hit_to_sinkable_object (0x17a2a), apply_blast_damage (0x15192), and
+  the Leyte-only leyte_destroy_entity (0x14fe6). Leyte's changes from 1.0.3:
+  - kills count at host +0xd6;
+  - near a friendly base, types 0x10 / 0x11 / 0x12 / 0x15 are not counted;
+  - random damage spares an aircraft when the first draw is above its definition's +0x50;
+  - aircraft are types <= 7 and ships 0x1b..0x22;
+  - new blast cases: type 0x12 (word +0x638), types 0x27 / 0x28, flagged 0x23 / 0x24 wrecks, and the hit_ships
+    mode 2;
+  - mission objectives: missions 2, 3 and 6 through host +0x90, counters 0x27062 / 0x27058 / 0x2705a, and the
+    objective word +0xd2;
+  - a sinkable hit by the anchor ship clears the anchor word; the last-hit angle starts at 0x200; a carrier with
+    its deck tag unknown gets a quarter of that angle.
+- Register state carried as arguments:
+  - D3 (the definition type) carries over in apply_blast_damage from the previous object when an object has no
+    controller (d3_in before the first);
+  - apply_hit_to_sinkable_object's unset drop register is D1. At its blast call sites that is always the D1
+    approx_dist3_xyz leaves (_approx_dist3_d1).
+- Cases: 1190 hand-written, 0 script errors. Uncovered: rounding adds for negative ranges, and the roll band
+  0x45..0x50.
+- Validation: Leyte suite (0 script errors), QA and git diff --check pass. Translated cases: 758 over 109
+  functions. Disk: 2.0 GiB free.
+- tick_flak_gun (0x1cdce), written from Leyte's listing. 1.0.3's port draft mixed both layouts.
+  - Leyte adds a one-time aim from the controller's heading, for gun objects with long +0x14 bit 20.
+  - The barrel face's normals follow the +0x38 vertices.
+  - The burst point is floored at the target's ground + 500.
+  - The bursts call apply_blast_damage with this routine's D3, which the barrel search leaves at 0xffff.
+  - 18 cases execute 319 of 320 instructions. Validation (1208 cases): Leyte suite, QA and git diff --check pass.
+- Next, Leyte's ship subsystem, about 1100 instructions, nearly all Leyte-only:
+  - the tick 0x18f94: live play runs the mover (+0x38), wake 0x18f08 / 0x1ec2e and the pose ring at +0x3c; a
+    replay runs reshape 0x18784;
+  - the movers 0x18e20 / 0x18376;
+  - 0x18d54 and 0x17cee;
+  - the route pick 0x1a936 / 0x1a8a2 and steering 0x18b34 (with 0x1869c, 0x17d2a, 0x18908);
+  - step_sinking_object 0x17850 (with 0x1756a);
+  - the kind-1 handler 0x18d1c;
+  - 0x1eda0.
+  Then aircraft_tick (update_aircraft_entity: 1593 instructions) and CODE 2 $3e2 / $432.
+- Disk: 1.9 GiB free (swap 7 GiB; nothing large from this project).
+
+### Cycles 142-143 checkpoint — the ship tick and the sinking step
+
+- Written from Leyte's bytes:
+  - leyte_ship_tick 0x18f94, registered as a controller code pointer:
+    - a pose ring of 75 records of 0x14 bytes at +0x3c, cursor +0x618;
+    - live play: the mover (+0x38) and the wake;
+    - a replay: drift into +0x624 / +0x62c, and a reshape on a heading change.
+  - The wake and spawners: leyte_update_ship_wake 0x18f08, leyte_spawn_wake_object 0x1ec2e,
+    leyte_spawn_tagged_object 0x1eda0.
+  - leyte_reshape_ship 0x18784. Its face-list copy reads the same word (index = the count) into every entry, and
+    it steps to the next record by the byte +8 of the advanced pointer; both come from the bytes.
+  - build_attitude_matrix 0x2ec4 and finalize_attitude_matrix_4ang 0x2d08: Leyte's closed form over 0x23d1e..0x23d2c.
+  - leyte_carry_attached_objects 0x1756a: five arguments; pool objects of type 0xa / 0xb, then the controller's list
+    at +0x67a.
+  - step_sinking_object 0x17850: the deck height lowers for types 0x1b..0x1c; the mission outcomes for 2 / 4 / 8 / 9
+    and type 0x20.
+- leyte_sink_with_cached_chain now returns leyte_sink_body's D0, which step_sinking_object tests.
+- Not checkable on the emulator: a failed wake spawn reads the long at address 0; realloc growth needs blocks inside
+  the heap.
+- Cases: 1244 hand-written, 0 script errors in the targeted runs.
+  - Uncovered in step_sinking_object: the carrier / type 0x20 / mission 9 outcomes, and the no-hits-left increment.
+  - The rest is fully executed: the ship tick 73 / 73, the reshape 120 / 123, carry 179 / 179, the matrix 122 / 122.
+- Next: the movers 0x18e20 / 0x18376, then 0x18d54 / 0x17cee, the route pick 0x1a936 / 0x1a8a2, steering 0x18b34
+  (0x1869c, 0x17d2a, 0x18908) and the kind-1 handler 0x18d1c.
+
+### Cycles 144-145 checkpoint — Leyte's ship movement
+
+- Written from Leyte's bytes and registered:
+  - the movers leyte_ship_mover 0x18e20 and leyte_landing_ship_mover 0x18376 (the controllers' +0x38);
+  - the kind-1 handler leyte_ship_kind1 0x18d1c (table 0x206ac);
+  - overlay_printf 0x189c (host +0x29a) and widen_printf_format 0x182e (buffer 0x27084), which also serve the
+    reconstruction's existing `_bsr_file(0x189c + 0x20)` call and the carrier hook's message.
+- Written alongside them:
+  - leyte_ship_first_move 0x18d54 (the AA-gun links and the cached template / chain) and leyte_attach_to_ship
+    0x17cee ("Too many AA guns on a ship");
+  - route making: leyte_make_route 0x1a8a2 (with apply_template_chain_xform_always 0x3604; slot index word +0x12)
+    and leyte_route_from_scene 0x1a936;
+  - steering: leyte_next_route_point 0x1869c and leyte_steer_ship 0x18b34. The states are 0 (speed 0x708 for type
+    0x21, else 0x980), 2 (move), 3 (aim; a turn beyond +-0x40 is clamped and the state becomes 8) and a countdown;
+  - leyte_turn_ship 0x18908 (carried guns, and aircraft on deck from 0x20674, turn with the ship) and
+    leyte_move_ship_attachments 0x17d2a.
+  - The landing ship probes the water ahead and beaches on land (type-1 faces toggle byte +0x13 bit 1); then it
+    lands class-0x27 troops 100 units off on dry ground.
+- Test helper: the call-log stand-ins now accept up to nine arguments and log their first n. Leyte's printf reads
+  six longs whatever its caller pushed; leyte_attach_to_ship pushes only the format, so the other five are the
+  caller's saved registers, and the printf stand-in logs the format alone.
+- Cases: 1283 hand-written. Uncovered: the turn's re-sink branch (the ship's y not 0, which needs the sink world).
+- Next: the start probe with the ship subsystem in place, then aircraft_tick (update_aircraft_entity) and CODE 2
+  $3e2 / $432.
+- Paused at the usage limit. Written but not yet in the port: aircraft_tick (0xf9f6), leyte_aircraft_flee (0xfc5c),
+  update_aircraft_damage_state (0x124c0), and spawn_trail / attach_smoke_trail / tick_trail / spawn_smoke_plume /
+  attach_trailing_plume / spawn_ground_fire_object / attach_ground_fire. They are in the session scratchpad
+  (aircraft_port.gd and aircraft_port2.gd), which is temporary. Next: append them, register 0xf9f6, write the
+  cases, then update_aircraft_entity (0xfcf6) and CODE 2 $3e2 / $432.

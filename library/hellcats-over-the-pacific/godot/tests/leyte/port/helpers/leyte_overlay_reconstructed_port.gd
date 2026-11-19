@@ -23,26 +23,10 @@ func install_call_logs(logs: Array) -> void:
 		var dn: int = int(entry[4]) if entry.size() > 4 else 0
 		var di2: int = int(entry[5]) if entry.size() > 5 else -1
 		var dn2: int = int(entry[6]) if entry.size() > 6 else 0
-		match int(entry[2]):
-			0:
-				code_table[int(entry[0])] = func() -> int: return log_call(base, [], di, dn, di2, dn2)
-			1:
-				code_table[int(entry[0])] = func(a: int) -> int: return log_call(base, [a], di, dn, di2, dn2)
-			2:
-				code_table[int(entry[0])] = func(a: int, b: int) -> int: return log_call(base, [a, b], di, dn, di2, dn2)
-			3:
-				code_table[int(entry[0])] = func(a: int, b: int, c: int) -> int: return log_call(base, [a, b, c], di, dn, di2, dn2)
-			4:
-				code_table[int(entry[0])] = func(a: int, b: int, c: int, d: int) -> int: return log_call(base, [a, b, c, d], di, dn, di2, dn2)
-			5:
-				code_table[int(entry[0])] = func(a: int, b: int, c: int, d: int, e: int) -> int: return log_call(base, [a, b, c, d, e], di, dn, di2, dn2)
-			6:
-				code_table[int(entry[0])] = func(a: int, b: int, c: int, d: int, e: int, f: int) -> int: return log_call(base, [a, b, c, d, e, f], di, dn, di2, dn2)
-			7:
-				code_table[int(entry[0])] = func(a: int, b: int, c: int, d: int, e: int, f: int, g: int) -> int: return log_call(base, [a, b, c, d, e, f, g], di, dn, di2, dn2)
-			8:
-				code_table[int(entry[0])] = func(a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int) -> int: return log_call(base, [a, b, c, d, e, f, g, h], di, dn, di2, dn2)
-			9:
-				code_table[int(entry[0])] = func(a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int) -> int: return log_call(base, [a, b, c, d, e, f, g, h, i], di, dn, di2, dn2)
+		var n: int = int(entry[2])
+		# a stand-in logs its first n longs; a caller may push more (the Leyte printf reads six longs whatever the
+		# caller pushed), which the original's stand-in never sees
+		code_table[int(entry[0])] = func(a: int = 0, b: int = 0, c: int = 0, d: int = 0, e: int = 0, f: int = 0, g: int = 0, h: int = 0, i: int = 0) -> int:
+			return log_call(base, [a, b, c, d, e, f, g, h, i].slice(0, n), di, dn, di2, dn2)
 
 ## Appends the arguments to the log at out (long call count, then the longs of each call).

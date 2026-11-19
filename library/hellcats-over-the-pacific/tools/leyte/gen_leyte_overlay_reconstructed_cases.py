@@ -120,7 +120,15 @@ ROUTINES = {"leyte_overlay_main_entry": 0x175A, "leyte_overlay_initialise": 0x1E
             "tally_destroyed_entity": 0x5E2, "apply_random_aircraft_damage": 0x1A70C,
             "spawn_destruction_effect": 0x13EC0,
             "apply_hit_to_sinkable_object": 0x17A2A,
-            "apply_blast_damage": 0x15192, "leyte_destroy_entity": 0x14FE6}
+            "apply_blast_damage": 0x15192, "leyte_destroy_entity": 0x14FE6,
+            "tick_flak_gun": 0x1CDCE,
+            "leyte_ship_tick": 0x18F94, "leyte_reshape_ship": 0x18784,
+            "build_attitude_matrix": 0x2EC4, "finalize_attitude_matrix_4ang": 0x2D08, "leyte_carry_attached_objects": 0x1756A,
+            "step_sinking_object": 0x17850, "overlay_printf": 0x189C, "leyte_attach_to_ship": 0x17CEE,
+            "leyte_ship_first_move": 0x18D54, "leyte_ship_mover": 0x18E20, "leyte_landing_ship_mover": 0x18376,
+            "leyte_steer_ship": 0x18B34, "leyte_turn_ship": 0x18908, "leyte_next_route_point": 0x1869C,
+            "leyte_move_ship_attachments": 0x17D2A, "leyte_make_route": 0x1A8A2, "leyte_route_from_scene": 0x1A936,
+            "leyte_ship_kind1": 0x18D1C, "apply_template_chain_xform_always": 0x3604}
 ## The host world's memory services ensure_handle_allocated calls (world +0x302 create, +0x30a
 ## reallocate, +0x31a make unpurgeable; 1.0.3: +0x2c6 / +0x2ce / +0x2de) as logging stand-ins at
 ## SERVICES; everything else runs as it is.
@@ -133,7 +141,10 @@ SERVICES = {0x302: (0x3A000, 1), 0x30A: (0x3A100, 2), 0x31A: (0x3A200, 1), 0x312
             0x2B6: (0x3AE00, 9), 0x2FE: (0x3AF00, 0),   # +0x2b6 / +0x2fe: depth-1 sky bands, cursor hook
             0x2D2: (0x3B000, 5), 0x2BA: (0x3B100, 4),   # +0x2d2: the strip copy; +0x2ba port setup,
             0x2BE: (0x3B200, 1), 0x2C2: (0x3B300, 1),
-            0x2AE: (0x3B700, 4)}                        # +0x2ae: the host rectangle routine (1-bit blips)   # +0x2be port switch, +0x2c2 port release
+            0x2AE: (0x3B700, 4),                        # +0x2ae: the host rectangle routine (1-bit blips)
+            0x29A: (0x3B800, 1)}                        # +0x29a: the host printf (overlay_printf); only the format is
+                                                        # logged: leyte_attach_to_ship pushes nothing else, so the other
+                                                        # five longs are its caller's saved registers on the stack                        # +0x2ae: the host rectangle routine (1-bit blips)   # +0x2be port switch, +0x2c2 port release
 ## Code pointers the needles reach (draw_gauge_needle: depth routines at 0x23fc8 / 0x23fcc), stood in
 ## the same way: pointer -> (stand-in, argument count).
 CODE_POINTERS = {0x23FC8: (0x3AA00, 8), 0x23FCC: (0x3AB00, 7),
@@ -198,7 +209,7 @@ def session_buffer_cases() -> list:
               0x20F48: 0x3B140, 0x20F4C: 0x3B150, 0x20F50: 0x3B160}),
         case("depth 1: the entry handle only", 1, 1, 0, {}),
         case("no entry flag, one screen", 0, 4, 0, {0x20F38: 0x3B200}),
-    ] + unlock_cases() + span_reset_cases() + clip_cases() + lock_cases() + trig_cases() + rotation_cases() + flight_rank_cases() + bomb_lamp_cases() + radar_button_cases() + state_lamp_cases() + readout_cases() + needle_cases() + more_needle_cases() + sky_cases() + frame_line_cases() + radar_scope_cases() + heading_tape_cases() + hook12_cases() + entity_retire_cases() + entity_tick_cases() + simulation_tick_cases() + object_alloc_cases() + attitude_cases() + translate_cases() + chain_xform_cases() + band_cases() + shade_cases() + poly_buffer_cases() + land_outline_cases() + contact_cases() + terrain_cases() + object_collision_cases() + bullet_cases() + pending_pose_cases() + carrier_cases() + effect_cases() + small_flight_cases() + tracking_camera_cases() + replay_view_cases() + facility_cases() + type80_point_cases() + control_input_cases() + frame_advance_cases() + sound_cases() + runway_cases() + steer_sample_cases() + flight_input_cases() + bailout_view_cases() + small_tick_cases() + turret_cases() + spawner_cases() + shadow_render_cases() + damage_small_cases() + destruction_effect_cases() + sinkable_hit_cases() + blast_cases() + sink_cases() + instantiate_cases() + cloud_cases() + scene_part_cases() + template_table_cases() + mission_part_cases() + hook0_cases() + depth8_cases() + erase_dot_cases() + face_colour_cases() + depth4_cases() + template_factory_cases() + aircraft_cases() + anchor_cases() + mission_factory_cases() + ship_factory_cases() + route_ship_cases() + frame_batch1_cases() + cloud_layer_cases() + frame_batch2_cases() + frame_batch3_cases() + polygon_cases() + surface_cases() + submit_cases() + transform_object_cases() + sort_parts_cases() + render_objects_cases() + far_objects_cases() + altitude_cases() + scatter_cases() + dot_cases() + frame_step_cases() + collision_test_cases() + contact_cases()
+    ] + unlock_cases() + span_reset_cases() + clip_cases() + lock_cases() + trig_cases() + rotation_cases() + flight_rank_cases() + bomb_lamp_cases() + radar_button_cases() + state_lamp_cases() + readout_cases() + needle_cases() + more_needle_cases() + sky_cases() + frame_line_cases() + radar_scope_cases() + heading_tape_cases() + hook12_cases() + entity_retire_cases() + entity_tick_cases() + simulation_tick_cases() + object_alloc_cases() + attitude_cases() + translate_cases() + chain_xform_cases() + band_cases() + shade_cases() + poly_buffer_cases() + land_outline_cases() + contact_cases() + terrain_cases() + object_collision_cases() + bullet_cases() + pending_pose_cases() + carrier_cases() + effect_cases() + small_flight_cases() + tracking_camera_cases() + replay_view_cases() + facility_cases() + type80_point_cases() + control_input_cases() + frame_advance_cases() + sound_cases() + runway_cases() + steer_sample_cases() + flight_input_cases() + bailout_view_cases() + small_tick_cases() + turret_cases() + spawner_cases() + shadow_render_cases() + damage_small_cases() + destruction_effect_cases() + sinkable_hit_cases() + blast_cases() + flak_cases() + ship_tick_cases() + sinking_step_cases() + ship_move_cases() + sink_cases() + instantiate_cases() + cloud_cases() + scene_part_cases() + template_table_cases() + mission_part_cases() + hook0_cases() + depth8_cases() + erase_dot_cases() + face_colour_cases() + depth4_cases() + template_factory_cases() + aircraft_cases() + anchor_cases() + mission_factory_cases() + ship_factory_cases() + route_ship_cases() + frame_batch1_cases() + cloud_layer_cases() + frame_batch2_cases() + frame_batch3_cases() + polygon_cases() + surface_cases() + submit_cases() + transform_object_cases() + sort_parts_cases() + render_objects_cases() + far_objects_cases() + altitude_cases() + scatter_cases() + dot_cases() + frame_step_cases() + collision_test_cases() + contact_cases()
 
 
 def unlock_cases() -> list:
@@ -3493,7 +3504,7 @@ def blast_cases() -> list:
         return w
     out = []
     for name, specs, args, extra in (
-            ("an aircraft inside, credited", [{"dx": 0x100, "type": 3}], (0x200, 1, 0, 0), []),
+            ("an aircraft inside, credited", [{"dx": 0x100, "type": 3}], (0x800, 1, 0, 0), []),
             ("an aircraft just outside, the draw", [{"dx": 0x500, "type": 3}], (0x800, 0, 0, 0), []),
             ("an aircraft outside, other draws", [{"dx": 0x600, "type": 7}], (0x800, 0, 0, 0), [[0x2C5B4, 4, 0x2C600]]),
             ("an aircraft outside, sure_hit: random damage", [{"dx": 0x500, "type": 3}], (0x800, 1, 1, 0), []),
@@ -3515,7 +3526,8 @@ def blast_cases() -> list:
             ("a large 0x20, hit_ships 2", [{"dx": 0x400, "type": 0x20, "range": 0xC00}], (0x200, 0, 0, 2), []),
             ("a large ship, hit_ships 0x10000", [{"dx": 0x400, "type": 0x1E, "range": 0xC00}], (0x200, 0, 0, 0x10000), []),
             ("a large aircraft, hit_ships 1", [{"dx": 0x400, "type": 3, "range": 0xC00}], (0x200, 0, 0, 1), []),
-            ("a wreck on the ground, credited (tally)", [{"dx": 0x100, "type": 0x30, "y": 0, "tally": 2}], (0x800, 1, 0, 0), []),
+            ("a wreck on the ground, credited (tally)", [{"dx": 0x100, "type": 0x30, "y": 0, "tally": 2, "range": 0x1800}], (0x2000, 1, 0, 0), []),
+            ("a flagged 0x23 wreck", [{"dx": 0x100, "type": 0x23, "flags": 0x10002, "range": -0x40}], (0x800, 0, 0, 0), []),
             ("mission 2: a type-10 target", [{"dx": 0x100, "type": 0x30, "tally": 10}], (0x800, 1, 0, 0),
              [[HOST + 0x90, 2, 2], [0x27062, 2, 2]]),
             ("mission 3: a type-10 target", [{"dx": 0x100, "type": 0x30, "tally": 10}], (0x800, 1, 0, 0), [[HOST + 0x90, 2, 3]]),
@@ -3531,6 +3543,233 @@ def blast_cases() -> list:
         w = common + [[E, 4, 0], [E + 4, 4, x & 0xFFFFFFFF], [E + 0xC, 4, z & 0xFFFFFFFF], [E + 0x52, 2, 10], [E + 0x10, 2, 1], [E + 0x12, 2, 1],
                       [HOST + 0x90, 2, mission], [0x27062, 2, 2], [0x20B26, 2, 0]]
         out.append({"name": "destroy entity: " + name, "method": "leyte_destroy_entity", "args": [0, E], "writes": w,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def flak_cases() -> list:
+    """tick_flak_gun: a retired gun (target released / none), the one-time aim (a gun object with bit 20: its heading; a
+    barrel face found after another, no barrel face), a replay, due bursts (spawn_effect into a retiring pool, a blast
+    over an empty pool) and one not yet due, a target released (no shells, retired, vertex-less), the 1-in-64 shot
+    draw failing and passing (out of range, pitch too low, heading off the barrel, all slots busy, fired: the burst
+    point with its ground floor)."""
+    dead = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    TMPL = 0x30600
+    common = dead + [[0x2C81A + 4 * k, 4, TMPL] for k in range(4)] + [[0x2CC10, 4, TMPL], [0x2C698, 2, 3], [0x21058, 2, 0],
+                     [0x23D88, 2, 3], [0x21020, 4, 0x200], [0x2C5B4, 4, 0x2C5B4], [0x20B28, 4, 0]]
+    common += [[0x2C5B8 + 4 * j, 4, (0x9E3779B1 * (j + 5)) & 0xFFFFFFFF] for j in range(55)]
+    shot = [[0x2C614, 4, 0x00150000], [0x2C690, 4, 0]]                  # the first draw: & 0x3f == 0x15
+    G, GO, T, TC, FACES, IDX, VERTS = 0x3C000, 0x3C700, 0x3C800, 0x41000, 0x3C900, 0x3CA00, 0x3CB00
+    w = common + [[G, 4, GO], [G + 0x40, 2, 1], [G + 0x36, 4, T], [G + 0x46, 2, 5], [G + 0x42, 4, 0x8000], [G + 0x56, 2, 0],
+                  [G + 0x22, 2, 0x1234], [GO + 4, 4, 0x10000], [GO + 8, 4, 0x100], [GO + 0xC, 4, 0x20000], [GO + 0x46, 4, VERTS],
+                  [GO + 0x4A, 4, FACES], [GO + 0x3C, 2, 2], [GO + 0x38, 2, 3], [GO + 0x36, 2, 1],
+                  [T, 4, TC], [T + 4, 4, 0x11000], [T + 8, 4, 0x3000], [T + 0xC, 4, 0x21000], [T + 0x46, 4, 0x3D000], [T + 0x29, 1, 2],
+                  [TC + 8, 4, 0x40], [TC + 0xC, 4, 0xFFFFFFF0], [TC + 0x10, 4, 0x20], [TC + 0x2E, 4, 0x2000],
+                  [FACES + 0x17, 1, 0], [FACES + 0x20 + 0x17, 1, 1], [FACES + 0x20 + 0x14, 2, 3], [FACES + 0x20 + 0x18, 4, IDX]]
+    for k, v in enumerate(((0x100, 0x40, 0x200), (0x180, 0x40, 0x220), (0x140, 0x60, 0x1E0), (0, 0, 0), (0x10, 0x300, 0x20), (0x20, 0x320, 0))):
+        w += [[VERTS + 12 * k + 4 * m, 4, v[m] & 0xFFFFFFFF] for m in range(3)]
+    w += [[IDX + 2 * k, 2, k] for k in range(3)]
+    out = []
+    for name, extra in (("retired, its target released", [[GO + 0x17, 1, 2]]), ("retired, no target", [[GO + 0x17, 1, 2], [G + 0x36, 4, 0]]),
+                        ("the aim from its heading (bit 20), a replay", [[G + 0x40, 2, 0], [GO + 0x15, 1, 0x10], [0x21058, 2, 1]]),
+                        ("the aim from its barrel face, a replay", [[G + 0x40, 2, 0], [0x21058, 2, 1]]),
+                        ("no barrel face, no target", [[G + 0x40, 2, 0], [FACES + 0x20 + 0x17, 1, 0], [G + 0x36, 4, 0]]),
+                        ("bursts due and not yet", [[G + 0xD2, 4, 0x1F0], [G + 0x5A, 4, 0x11000], [G + 0x5E, 4, 0x3000], [G + 0x62, 4, 0x21000],
+                                                    [G + 0xD2 + 12, 4, 0x300], [G + 0xD2 + 36, 4, 0x200], [G + 0x5A + 108, 4, 0x12000]]),
+                        ("out of shells", [[G + 0x46, 2, 0]]), ("the target retired", [[T + 0x17, 1, 2]]),
+                        ("the target without vertices", [[T + 0x46, 4, 0]]), ("the draw fails", []),
+                        ("the shot: out of range", shot + [[G + 0x42, 4, 0x100]]),
+                        ("the shot: pitch too low", shot + [[T + 8, 4, 0x100]]),
+                        ("the shot: heading 0", shot), ("the shot: heading 0x1800", shot + [[G + 0x56, 2, 0x1800]]),
+                        ("the shot: heading 0x3000", shot + [[G + 0x56, 2, 0x3000]]),
+                        ("the shot: all slots busy", shot + [[G + 0x56, 2, 0x3000]] + [[G + 0xD2 + 4 * k, 4, 0x900] for k in range(10)]),
+                        ("the shot: the burst floored", shot + [[G + 0x56, 2, 0x3000], [TC + 0x2E, 4, 0x8000]]),
+                        ("the shot: far, below", shot + [[G + 0x56, 2, 0x3000], [G + 0x42, 4, 0x7FFFFFFF], [T + 4, 4, 0xFFF00000], [T + 8, 4, 0x80000]])):
+        out.append({"name": "flak gun: " + name, "method": "tick_flak_gun", "args": [G], "writes": w + extra, "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def ship_tick_cases() -> list:
+    """leyte_ship_tick: live play (the mover stood in, the wake kept beside the ship or spawned into a pool without
+    room, no wake for a ship at rest, the ring cursor wrapping) and replay frames (sinking: nothing; the drift with the
+    heading unchanged; a heading change reshaping the ship, also with its buffers regrown on a fresh heap and its face
+    lists refilled; the ring's first record against the last)."""
+    dead = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    MOVER = STAND_INS["controller tick"][0]
+    S, O, D, W, WC = 0x41000, 0x3C000, 0x3C100, 0x3C200, 0x3C300
+    TM, VB, FACES = 0x3D000, 0x3D400, 0x3D600
+    w = dead + [[0x2CDD4 + 4, 4, 0x30600], [0x21058, 2, 0], [HOST + 0xB2, 2, 0], [S, 4, O], [S + 4, 4, D], [D, 2, 0x1C],
+                [S + 0x38, 4, MOVER], [S + 0x32, 2, 0x63], [S + 0x20, 2, 0x10], [S + 0x22, 2, 0x1234], [S + 0x24, 2, 0x20],
+                [S + 0x654, 2, 0x0200], [S + 0x692, 2, 7], [S + 0x618, 1, 5], [S + 0x68E, 4, W], [W, 4, WC],
+                [O + 4, 4, 0x10000], [O + 8, 4, 0x100], [O + 0xC, 4, 0x20000], [W + 4, 4, 0x10100], [W + 0xC, 4, 0x1FF00],
+                [S + 0x620, 4, TM], [TM + 0x1A, 2, 3], [TM + 0x1E, 2, 1], [O + 0x46, 4, VB], [O + 0x36, 2, 1], [O + 0x4A, 4, FACES],
+                [S + 0x14, 4, 0x100], [S + 0x18, 4, 0x80], [S + 0x1C, 4, 0x40], [S + 0x642, 4, 8], [S + 0x646, 4, 4], [S + 0x64A, 4, 2]]
+    w += [[S + 0x630 + 2 * k, 2, v] for k, v in enumerate((0x4000, 0, 0, 0, 0x4000, 0, 0, 0, 0x4000))]
+    for k, v in enumerate(((0x100, 0x20, 0x300), (-0x200, 0x40, 0x100), (0x50, -0x60, 0x70), (0x10, 0x20, 0x30))):
+        w += [[TM + 0x22 + 12 * k + 4 * m, 4, v[m] & 0xFFFFFFFF] for m in range(3)]
+    rec = TM + 0x22 + 0x30
+    w += [[rec + 8, 1, 2], [rec + 0xE, 2, 0], [rec + 0x10, 2, 1], [rec + 0x12, 2, 2], [rec + 0x14, 2, 3]]
+    for k in range(0x4B):
+        e = S + 0x3C + 0x14 * k
+        w += [[e, 4, 0x10000 + 0x40 * k], [e + 4, 4, 0x100], [e + 8, 4, 0x20000 - 0x20 * k], [e + 0xE, 2, 0x0200], [e + 0x12, 2, k]]
+    out = []
+    for name, extra in (("live: mover, wake kept", []), ("live: the cursor wraps", [[S + 0x618, 1, 0x4A]]),
+                        ("live: a wake without a controller", [[W, 4, 0]]),
+                        ("live: at rest, no wake", [[S + 0x32, 2, 0]]),
+                        ("replay: sinking", [[0x21058, 2, 2], [S + 0x670, 2, 1]]),
+                        ("replay: the drift, heading kept", [[0x21058, 2, 2]]),
+                        ("replay: the first record against the last", [[0x21058, 2, 2], [S + 0x618, 1, 0]]),
+                        ("replay: a heading change reshapes", [[0x21058, 2, 2], [S + 0x3C + 0x14 * 5 + 0xE, 2, 0x0A00]]),
+                        ("replay: reshaped, buffers kept (64-byte blocks), lists refilled", [[0x21058, 2, 2], [S + 0x3C + 0x14 * 5 + 0xE, 2, 0x3000],
+                                                                     [S + 0x61A, 1, 1], [VB - 4, 1, 6], [O + 0x4E, 4, 0x3D500], [0x3D500 - 4, 1, 6],
+                                                                     [FACES + 0x18, 4, 0x3D700], [0x3D700 - 4, 1, 6]]),
+                        ("replay: reshaped and shaded", [[0x21058, 2, 2], [S + 0x3C + 0x14 * 5 + 0xE, 2, 0x1000], [HOST + 0xB2, 2, 1]])):
+        out.append({"name": "ship tick: " + name, "method": "leyte_ship_tick", "args": [S], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def sinking_step_cases() -> list:
+    """build_attitude_matrix (Leyte's closed-form finalize) over angle sets; step_sinking_object on pending_pose_cases'
+    cached-chain world: not due, a retired object, a step afloat (the carry turning a pool object of type 0xa and a
+    controller-list object), the last step, a deck ship (0x1b) lowering its deck, sinking far enough to go under (the
+    carry removing, the credited tally, the mission outcomes 2 / 4 / 9 and type 0x20's count), no hits left."""
+    out = []
+    M = 0x3C000
+    for name, angles in (("zero", (0, 0, 0, 0)), ("each", (0x400, 0x800, 0xC00, 0x1000)), ("wide", (0x3F00, 0x2100, 0x1800, 0x3000)),
+                         ("halves", (0x2000, 0x2000, 0x2000, 0x2000)), ("mixed", (0x123, 0x3456, 0x2A00, 0x0FF0))):
+        out.append({"name": "attitude matrix 4: " + name, "method": "build_attitude_matrix", "args": list(angles) + [M],
+                    "writes": [[M + 2 * k, 2, 0x5555] for k in range(9)]})
+    base = next(c for c in pending_pose_cases() if c["name"] == "sink with a cached chain")["writes"]
+    OBJ, CTL, DEF = 0x30000, 0x3C000, 0x3C800
+    P, PC, PD, L = 0x41000, 0x41100, 0x41200, 0x41300
+    w = base + [[0x207FC, 4, HOST], [HOST + 0x90, 2, 0], [HOST + 0xD2, 2, 0], [0x21020, 4, 0x500], [CTL + 4, 4, DEF], [DEF, 2, 0x1D],
+                [CTL + 0x66C, 4, 0x4F0], [CTL + 0x658, 2, 0x10], [CTL + 0x65A, 2, 0x3FF0], [CTL + 0x65C, 2, 0x20], [CTL + 0x65E, 2, 0x8],
+                [CTL + 0x660, 2, 0xFFF8], [CTL + 0x662, 2, 0x4], [CTL + 0x666, 2, 0x10], [CTL + 0x66A, 2, 3], [CTL + 0x668, 2, 0x1E],
+                [CTL + 0x656, 2, 1], [CTL + 0x22, 2, 0x0800], [CTL + 0x18, 4, 0x40], [CTL + 0x14, 4, 0x20], [CTL + 0x1C, 4, 0x30],
+                [OBJ + 0x20, 4, 0x4000], [0x20B26, 2, 1], [0x20804, 4, P], [P, 4, PC], [PC + 4, 4, PD], [PD, 2, 0xA],
+                [P + 4, 4, 0x80], [P + 8, 4, 0x40], [P + 0xC, 4, 0x40], [P + 0x10, 2, 1], [P + 0x12, 2, 1],
+                [CTL + 0x678, 2, 1], [CTL + 0x67A, 4, L], [L + 4, 4, 0x60], [L + 8, 4, 0x50], [L + 0xC, 4, 0x20], [L + 0x10, 2, 1], [L + 0x12, 2, 1],
+                [0x27060, 2, 2], [0x27056, 2, 8],
+                [0x23C2C, 4, 0x30100], [0x2107A, 2, 3], [0x21078, 2, 9], [L + 0x24, 4, 0x30100]]   # retire_entity on the sink world's root
+    for name, extra in (("not due", [[CTL + 0x66C, 4, 0x600]]), ("a retired object", [[OBJ + 0x17, 1, 2]]),
+                        ("a step afloat", []), ("the last step", [[CTL + 0x66A, 2, 1]]),
+                        ("a carrier lowering its deck", [[DEF, 2, 0x1B], [CTL + 0x696, 2, 0x40]]),
+                        ("no hits left", [[CTL + 0x656, 2, 0]]),
+                        ("gone under, credited, the pool empty", [[CTL + 0x666, 2, 0x4000], [CTL + 0x672, 2, 1], [0x20B26, 2, 0]])) + tuple(
+                        ("gone under (drop 0x%x), %s" % (drop, label), extra2 + [[CTL + 0x666, 2, drop], [0x20B26, 2, 0]])
+                        for drop in (0x400, 0x4000)
+                        for label, extra2 in (("mission 2 carrier", [[DEF, 2, 0x1B], [HOST + 0x90, 2, 2]]),
+                                              ("mission 4", [[HOST + 0x90, 2, 4]]),
+                                              ("type 0x20", [[DEF, 2, 0x20], [CTL + 0x696, 2, 4]]),
+                                              ("mission 9 carrier", [[DEF, 2, 0x1B], [HOST + 0x90, 2, 9], [CTL + 0x69A, 2, 0xFFFF]]))):
+        out.append({"name": "sinking step: " + name, "method": "step_sinking_object", "args": [CTL], "writes": w + extra,
+                    "stack_guard": [0x3B800, 0x3F040]})
+    for name, args, extra in (("turned", [CTL, 0x10, 0x3FF0, 0x20, 0], []), ("level", [CTL, 0, 0, 0, 0], []),
+                              ("a type 0xb, a list object below the sea", [CTL, 0x100, 0x200, 0x300, 0], [[PD, 2, 0xB], [L + 8, 4, 0xFFFFF000]]),
+                              ("another type: skipped, the list object far", [CTL, 0, 0, 0, 0], [[PD, 2, 0xC], [L + 4, 4, 0x900000]]),
+                              ("removing", [CTL, 0, 0, 0, 1], [[0x20B26, 2, 0]]),
+                              ("flagged objects skipped", [CTL, 0, 0, 0, 0], [[P + 0x14, 4, 2], [L + 0x14, 4, 0x200]])):
+        out.append({"name": "carry attached: " + name, "method": "leyte_carry_attached_objects", "args": args, "writes": w + extra,
+                    "stack_guard": [0x3B800, 0x3F040]})
+    return out
+
+
+def ship_move_cases() -> list:
+    """The ship movers on ship_tick_cases' world (controller 0x41000, a template and cached chain; the ship at y 0 so a
+    turn reshapes it; a route block at 0x41800 already made): overlay_printf through the host printf stand-in (a plain
+    and a widened format); attaching to a ship's list (room, full: the message); the first move's links (a type-3
+    group with an AA gun of type 0x24 and another part); leyte_ship_mover (sinking not due, kind 0, kind 0x63 with a
+    route, kind 0x63 without one in a scene that has none, kind 1 through 0x206ac, a kind without a handler); the steering
+    states 0 (type 0x21 and other), 2 (point far / near, the index wrapping), 3 (a small and a clamped turn, an aircraft
+    on deck turned with the ship), a countdown state; the next point at both reach radii; the carried objects moving
+    (one retired and released); the landing ship (afloat: counting down, probing water / land ahead and at the bow,
+    beaching; beached: troops not due, landed on dry ground, none found on water, sinking)."""
+    base = next(c for c in ship_tick_cases() if c["name"] == "ship tick: live: mover, wake kept")["writes"]
+    S, O, D = 0x41000, 0x3C000, 0x3C100
+    R = 0x41800
+    G, GT, P3, P3T, GUN, GUNC, GUND, OTHER = 0x41900, 0x41940, 0x41A00, 0x41A40, 0x41B00, 0x41B80, 0x41BC0, 0x41C00
+    DFACE = 0x3E800
+    w = base + [[S + 0x61B, 1, 1], [S + 0x32, 2, 0x63], [S + 0x34, 4, R], [S + 0x674, 4, 0x980], [S + 0x68E, 4, 0], [S + 0x670, 2, 0],
+                [S + 0x66C, 4, 0x7FFFFFFF], [S + 0x678, 2, 0], [R, 2, 2], [R + 4, 2, 0], [R + 6, 2, 3], [0x21590, 4, DFACE],
+                [DFACE + 0x16, 1, 0x10], [0x20F2E, 2, 0], [0x20B26, 2, 0], [0x20674, 4, 0x41E00], [0x20678, 4, 0x41E04],
+                [0x41E00, 4, 0], [0x41E04, 4, 0], [0x21020, 4, 0x300], [S + 0x8, 4, 0x40], [S + 0x10, 4, 0xFFFFFF80], [O + 8, 4, 0]]
+    for k, (x, z) in enumerate(((0x12000, 0x20000), (0x10000, 0x24000), (0x10100, 0x20100))):
+        w += [[R + 8 + 12 * k, 4, x], [R + 0xC + 12 * k, 4, 0], [R + 0x10 + 12 * k, 4, z]]
+    w += [[0x207FC, 4, HOST], [HOST + 0x29A, 4, SERVICES[0x29A][0]]]
+    out = []
+    FMT = 0x41D00
+    fmt = b"a%db%xc%sd\0"
+    pw = [[FMT + k, 1, b] for k, b in enumerate(fmt)]
+    out.append({"name": "printf: widened", "method": "overlay_printf", "args": [FMT, 1, 2, 3, 4, 5], "writes": w + pw, "d0": True})
+    out.append({"name": "printf: the AA message", "method": "overlay_printf", "args": [0x17CD2, 0, 0, 0, 0, 0], "writes": w, "d0": True})
+    for name, n in (("room", 2), ("full", 4)):
+        out.append({"name": "attach to ship: " + name, "method": "leyte_attach_to_ship", "args": [S, GUN],
+                    "writes": w + [[S + 0x678, 2, n], [GUN + 0x29, 1, 1]]})
+    # the first move: the ship's group G holds a type-3 part P3 whose table lists the gun (type 0x24) and another part
+    fw = w + [[O + 0x24, 4, G], [G + 0x30, 2, 2], [G + 0x32, 4, GT], [GT + 0x14, 4, OTHER], [GT + 0x18 + 0x14, 4, P3],
+              [OTHER + 0x28, 1, 2], [P3 + 0x28, 1, 3], [P3 + 0x30, 2, 2], [P3 + 0x32, 4, P3T], [P3T + 0x14, 4, GUN],
+              [P3T + 0x18 + 0x14, 4, OTHER], [GUN, 4, GUNC], [GUNC + 4, 4, GUND], [GUND, 2, 0x24], [OTHER, 4, 0],
+              [G + 0x2A, 4, 0x41C80], [0x41C80 + 0x1A + 0x14 + 0x18, 4, 0x200], [O + 0x10, 2, 1], [S + 0x61B, 1, 0]]
+    out.append({"name": "ship first move", "method": "leyte_ship_first_move", "args": [S], "writes": fw, "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "ship first move: a group without a type-3 part", "method": "leyte_ship_first_move", "args": [S],
+                "writes": fw + [[P3 + 0x28, 1, 1]], "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("sinking, not due", [[S + 0x670, 2, 1], [S + 0x68E, 4, 0]]), ("kind 0", [[S + 0x32, 2, 0]]),
+                        ("kind 0x63 with its route", []),
+                        ("kind 0x63, no route in the scene", [[S + 0x34, 4, 0], [O + 0x24, 4, G], [G + 0x30, 2, 0], [G + 0x24, 4, 0]]),
+                        ("kind 1 (0x206ac)", [[S + 0x32, 2, 1]]), ("kind 2 (no handler)", [[S + 0x32, 2, 2]]),
+                        ("the first call links the ship", fw[len(w):] + [[S + 0x32, 2, 0]]),
+                        ("kind 1 without a route: one made from 0x2067c", [[S + 0x32, 2, 1], [S + 0x34, 4, 0], [O + 0x24, 4, G],
+                                                                           [O + 0x12, 2, 1], [G + 0x32, 4, GT], [G + 0x24, 4, 0],
+                                                                           [GT + 0x18 + 2, 2, 0x400], [GT + 0x18 + 4, 2, 0x100],
+                                                                           [GT + 0x18 + 8, 4, 0x100], [GT + 0x18 + 0x10, 4, 0x200]]),
+                        ("kind 0x63, a route in the scene", [[S + 0x34, 4, 0], [O + 0x24, 4, G], [G + 0x30, 2, 2], [G + 0x32, 4, GT],
+                                                             [G + 0x24, 4, 0], [GT + 0x14, 4, OTHER], [GT + 0x18 + 0x14, 4, P3],
+                                                             [OTHER + 0x28, 1, 2], [OTHER + 0x3C, 2, 2], [OTHER, 4, 0],
+                                                             [P3 + 0x28, 1, 2], [P3 + 0x3C, 2, 1], [P3, 4, 0], [P3 + 0x4A, 4, 0x41D40],
+                                                             [0x41D40 + 0x13, 1, 2], [0x41D40 + 0x14, 2, 3], [0x41D40 + 0x18, 4, 0x41D80],
+                                                             [0x41D80, 2, 2], [0x41D82, 2, 0], [0x41D84, 2, 1], [P3 + 0x46, 4, 0x41DA0],
+                                                             [P3 + 0x36, 2, 1]] + [[0x41DA0 + 12 * k + 4 * m, 4, v & 0xFFFFFFFF]
+                                                                                    for k, pt in enumerate(((0x20000, 0, 0x40000), (0x24000, 0, 0x40100), (0x30000, 0, 0x30000)))
+                                                                                    for m, v in enumerate(pt)])):
+        out.append({"name": "ship mover: " + name, "method": "leyte_ship_mover", "args": [S], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("state 0", [[R, 2, 0]]), ("state 0, type 0x21", [[R, 2, 0], [D, 2, 0x21]]),
+                        ("state 2, far", []), ("state 2, at the point", [[O + 4, 4, 0x11F00], [O + 0xC, 4, 0x20000]]),
+                        ("state 2, at the last point: the index wraps", [[R + 4, 2, 2], [O + 4, 4, 0x10100], [O + 0xC, 4, 0x20100]]),
+                        ("state 3, a small turn", [[R, 2, 3], [S + 0x22, 2, 0x3C00]]),
+                        ("state 3, a clamped turn", [[R, 2, 3], [S + 0x22, 2, 0x2000]]),
+                        ("state 3, the other way", [[R, 2, 3], [S + 0x22, 2, 0x0800]]),
+                        ("state 3, turning its carried guns", [[R, 2, 3], [S + 0x22, 2, 0x2000], [S + 0x678, 2, 2], [S + 0x67A, 4, GUN],
+                                                              [S + 0x67E, 4, 0], [GUN + 4, 4, 0x10400], [GUN + 8, 4, 0x80], [GUN + 0xC, 4, 0x1FE00]]),
+                        ("state 3, an aircraft on deck turns too", [[R, 2, 3], [S + 0x22, 2, 0x2000], [0x41E00, 4, 0x41F00],
+                                                                      [0x41F00, 4, 0x3C800], [0x41F00 + 0x64C, 1, 1], [0x3C800 + 4, 4, 0x10200],
+                                                                      [0x3C800 + 0xC, 4, 0x20100], [0x41F00 + 0x22, 2, 0x100], [O + 0x20, 4, 0x4000]]),
+                        ("state 8 counting down", [[R, 2, 8], [S + 0x678, 2, 2], [S + 0x67A, 4, GUN], [S + 0x67E, 4, OTHER],
+                                                   [GUN, 4, GUNC], [GUNC, 4, GUN], [OTHER + 0x17, 1, 2], [OTHER, 4, 0x41C40], [0x41C40, 4, 0],
+                                                   [OTHER + 0x29, 1, 3]])):
+        out.append({"name": "steer ship: " + name, "method": "leyte_steer_ship", "args": [S], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "chain xform always: the position", "method": "apply_template_chain_xform_always", "args": [O, 0, 0, 0],
+                "writes": w + [[O + 0x24, 4, G], [O + 0x12, 2, 1], [G + 0x32, 4, GT], [G + 0x24, 4, 0], [GT + 0x18 + 2, 2, 0x400],
+                               [GT + 0x18 + 8, 4, 0x100], [GT + 0x18 + 0x10, 4, 0x200]], "stack_guard": [0x3E000, 0x3F040]})
+    for name, speed in (("slow", 0x800), ("fast", 0x980)):
+        out.append({"name": "next route point: " + name, "method": "leyte_next_route_point", "args": [O, R + 4, 0x41D80, speed],
+                    "writes": w + [[O + 4, 4, 0x12000 + 0x1500], [O + 0xC, 4, 0x20000]], "d0": True})
+    L = [[S + 0x698, 2, 0], [S + 0x696, 2, 2], [S + 0x69C, 4, 0x200], [S + 0x64E, 2, 0x20], [S + 0x652, 2, 0xFFE0], [S + 0x32, 2, 0]]
+    land = [[DFACE + 0x16, 1, 0x20]]
+    dead = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    pool = dead + [[0x2CD68 + 4 * 0x27, 4, 0x30600]]
+    for name, extra in (("afloat, counting down", [[S + 0x69A, 2, 5]]), ("afloat, water ahead", [[S + 0x69A, 2, 0]]),
+                        ("afloat, land ahead", [[S + 0x69A, 2, 0]] + land), ("afloat, water at the bow", [[S + 0x69A, 2, 0xFFFF]]),
+                        ("afloat, beaching", [[S + 0x69A, 2, 0xFFFF], [O + 0x3C, 2, 2], [O + 0x4A, 4, 0x41C00 + 0x100]] + land +
+                         [[0x41D00 + 0x17, 1, 1], [0x41D00 + 0x13, 1, 2], [0x41D20 + 0x17, 1, 0]]),
+                        ("beached, sinking", [[S + 0x698, 2, 1], [S + 0x670, 2, 1]]),
+                        ("beached, no troops", [[S + 0x698, 2, 1], [S + 0x696, 2, 0]]),
+                        ("beached, not due", [[S + 0x698, 2, 1], [S + 0x69C, 4, 0x400]]),
+                        ("beached, troops land", pool + [[S + 0x698, 2, 1]] + land),
+                        ("beached, water all round", pool + [[S + 0x698, 2, 1]])):
+        out.append({"name": "landing ship: " + name, "method": "leyte_landing_ship_mover", "args": [S], "writes": w + L + extra,
                     "stack_guard": [0x3E000, 0x3F040]})
     return out
 

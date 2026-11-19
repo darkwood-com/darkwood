@@ -7,11 +7,11 @@
   "placed": 400,
   "unplaced": 28,
   "by_evidence": {
-   "calls": 41,
-   "cases": 117,
+   "calls": 35,
+   "cases": 127,
    "correspondence": 149,
    "map": 54,
-   "similarity": 39
+   "similarity": 35
   },
   "addresses_beyond_the_map": 518
  },
@@ -86,7 +86,7 @@
    "name": "tally_destroyed_entity",
    "hellcats_1_0_3": "0x468",
    "leyte": "0x5e2",
-   "evidence": "similarity:0.78",
+   "evidence": "cases",
    "instructions": [
     23,
     36
@@ -724,7 +724,7 @@
    "name": "finalize_attitude_matrix_4ang",
    "hellcats_1_0_3": "0x2542",
    "leyte": "0x2d08",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     21,
     111
@@ -735,7 +735,7 @@
    "name": "build_attitude_matrix",
    "hellcats_1_0_3": "0x2588",
    "leyte": "0x2ec4",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     13,
     11
@@ -911,7 +911,7 @@
    "name": "apply_template_chain_xform_always",
    "hellcats_1_0_3": "0x2cf0",
    "leyte": "0x3604",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     78,
     78
@@ -2891,7 +2891,7 @@
    "name": "spawn_destruction_effect",
    "hellcats_1_0_3": "0x11d94",
    "leyte": "0x13ec0",
-   "evidence": "similarity:0.77",
+   "evidence": "cases",
    "instructions": [
     118,
     130
@@ -3067,7 +3067,7 @@
    "name": "apply_blast_damage",
    "hellcats_1_0_3": "0x12b46",
    "leyte": "0x15192",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     139,
     198
@@ -3408,7 +3408,7 @@
    "name": "step_sinking_object",
    "hellcats_1_0_3": "0x14d66",
    "leyte": "0x17850",
-   "evidence": "similarity:0.64",
+   "evidence": "cases",
    "instructions": [
     122,
     129
@@ -3419,7 +3419,7 @@
    "name": "apply_hit_to_sinkable_object",
    "hellcats_1_0_3": "0x14f28",
    "leyte": "0x17a2a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     110,
     110
@@ -3639,7 +3639,7 @@
    "name": "apply_random_aircraft_damage",
    "hellcats_1_0_3": "0x16704",
    "leyte": "0x1a70c",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     56,
     50
@@ -4156,7 +4156,7 @@
    "name": "tick_flak_gun",
    "hellcats_1_0_3": "0x18c76",
    "leyte": "0x1cdce",
-   "evidence": "similarity:0.91",
+   "evidence": "cases",
    "instructions": [
     313,
     320
@@ -4625,10 +4625,6 @@
     [
      "0x18210",
      0.35
-    ],
-    [
-     "0x1cdce",
-     0.28
     ]
    ]
   },
@@ -6352,7 +6348,7 @@
   {
    "hellcats_1_0_3": "0x15742",
    "leyte": "0x19b32",
-   "votes": 1
+   "votes": 0
   },
   {
    "hellcats_1_0_3": "0x15b72",

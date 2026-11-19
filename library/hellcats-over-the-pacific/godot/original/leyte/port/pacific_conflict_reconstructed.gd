@@ -133,6 +133,13 @@ func _init(param_memory = null) -> void:
 	code_table[0x1d2e2] = Callable(self, "tick_turret")
 	code_table[0x1bf64] = Callable(self, "tick_aircraft_spawner")
 	code_table[0x1cb66] = Callable(self, "shadow_pre_render")
+	code_table[0x1cdce] = Callable(self, "tick_flak_gun")
+	code_table[0x18f94] = Callable(self, "leyte_ship_tick")
+	code_table[0x18e20] = Callable(self, "leyte_ship_mover")
+	code_table[0x18376] = Callable(self, "leyte_landing_ship_mover")
+	code_table[0x18d1c] = Callable(self, "leyte_ship_kind1")
+	# overlay_printf is reached by bsr with one to six longs (the format first)
+	code_table[0x189c] = func(fmt: int, b: int = 0, c: int = 0, d: int = 0, e: int = 0, f: int = 0) -> int: return overlay_printf(fmt, b, c, d, e, f)
 	code_table[0x2554] = Callable(self, "attitude_from_velocity")
 	## hook 0 (configure_renderer_for_display, 0x8032) and the renderer routines it installs for each depth
 	## (LEYTE_RENDERER_HOOKS_8 / _4 / _1), reached through those pointers.
@@ -6896,8 +6903,9 @@ func _shape_collision_hook(obj_a: int, obj_b: int, rec: int, depth: int) -> int:
 ## 0x177d0 (Leyte only; six saved registers): the sink of obj at (ang1, ang2 + its controller's heading word +0x654,
 ## ang3) (words; & 0x3fff on the second) through leyte_sink_body with the controller's cached composed chain (+0x630):
 ## composed once (compose_template_chain, 0x24 below; byte +0x61b marks it), the body then entered 0x38 below (the
-## composer's arguments still pushed), else 0x30 below. Byte +0x61a is set first.
-func leyte_sink_with_cached_chain(obj: int, ang1: int, ang2: int, ang3: int) -> void:
+## composer's arguments still pushed), else 0x30 below. Byte +0x61a is set first. Returns the body's D0
+## (step_sinking_object reads it: 0 means gone under).
+func leyte_sink_with_cached_chain(obj: int, ang1: int, ang2: int, ang3: int) -> int:
 	assert(memory != null, "leyte_sink_with_cached_chain requires original global memory")
 	var entry_a7: int = a7
 	var ctl: int = memory.read_u32(obj)
@@ -6906,16 +6914,18 @@ func leyte_sink_with_cached_chain(obj: int, ang1: int, ang2: int, ang3: int) -> 
 	var a2: int = C68kScript.s16((ang2 + memory.read_u16(ctl + 0x654)) & 0x3fff)
 	var a3: int = C68kScript.s16(ang3)
 	var chain: int = ctl + 0x630
+	var result: int
 	if memory.read_u8(ctl + 0x61b) != 0:
 		a7 = entry_a7 - 0x30
-		leyte_sink_body(obj, a1, a2, a3, chain)
+		result = leyte_sink_body(obj, a1, a2, a3, chain)
 	else:
 		a7 = entry_a7 - 0x24
 		compose_template_chain(obj, chain)
 		memory.write_u8(ctl + 0x61b, 1)
 		a7 = entry_a7 - 0x38
-		leyte_sink_body(obj, a1, a2, a3, chain)
+		result = leyte_sink_body(obj, a1, a2, a3, chain)
 	a7 = entry_a7
+	return result
 
 ## 0x17d8c (Leyte only; one saved register): a controller's pending pose (byte +0x619) applied to its object (+0): with
 ## +0x628 set the object is sunk again level (leyte_sink_with_cached_chain(obj, 0, 0, 0), 0x18 below), otherwise its
@@ -9376,3 +9386,1058 @@ func apply_blast_damage(x: int, y: int, z: int, radius: int, credit: int, sure_h
 			spawn_destruction_effect(obj, C68kScript.u32(size))
 			leyte_destroy_entity(credit, obj)
 			a7 = entry_a7
+
+## 0x1cdce (link a6 -0x1c, ten saved registers): the flak gun, Leyte's (1.0.3's 0x18c76 with Leyte's object
+## layout). A retired gun (flags byte +0x17 bit 1) releases its target (+0x36; reference count +0x29 - 1).
+## Once (word +0x40): a gun object with long +0x14 bit 20 aims along its controller heading (+0x54 = 0, +0x56 =
+## word +0x22, +0x58 = 0) from its position (+0x48.. = object +4 / +8 / +0xc); otherwise the first face (+0x4a,
+## +0x3c of them, 0x20 apart) whose byte +0x17 is 1 gives the barrel: the mean of its vertices (+0x46, each asr
+## word +0x36; divs.l by the word count +0x14) at +0x48 / +0x4c / +0x50, and the aim of its normal (the normals
+## follow the +0x38 vertices) minus vertex 0 (attitude_from_velocity with speed 0x4000 and 0x10000000 into a6 - 2
+## / a6 - 4, 0x68 below) at +0x54 / +0x56, +0x58 = 0; then word +0x3e = probe_nearest_facility_kind (0x50 below).
+## With a target in live play every due burst slot (long +0xd2 + 4i, 0..9, 0 < due <= frame) is cleared and
+## bursts at +0x5a + 12i: spawn_effect(2, 100, 0x1e, 0, 0) (0x6c below), apply_blast_damage(500, 0, 1, 0) (0x68
+## below; its D3 is this routine's, d3_in unless the barrel search above ran). No shells (word +0x46) or a retired
+## / vertex-less target releases it. Else one draw in 64 (& 0x3f == 0x15) tries a shot: distance +0x3a within
+## range +0x42; the offset, shifted below 0x8000 + 1, aimed from the low words' squares (isqrt 0x50 below,
+## attitude into a6 - 6 / a6 - 8, 0x68 below); a pitch above 0x3f and a heading within 0x1000 of word +0x56 fire
+## into the first free slot: shells - 1, due = frame + word(distance / 1024 toward zero), and the burst point =
+## target position + lead * the target controller's +8 / +0xc / +0x10 - 0x800 + (rng & 0xfff) each, lead = due
+## offset + (rng & 0x3f), y at least the target controller's ground +0x2e + 500.
+func tick_flak_gun(ctl: int, d3_in: int = 0) -> void:
+	assert(memory != null, "tick_flak_gun requires original global memory")
+	assert(a7 != 0, "tick_flak_gun needs a7 (its frame holds the attitude words)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var d3: int = C68kScript.u32(d3_in)
+	var obj: int = memory.read_u32(ctl)
+	if (memory.read_u8(obj + 0x17) & 2) != 0:
+		var t: int = memory.read_u32(ctl + 0x36)
+		if t != 0:
+			memory.write_u8(t + 0x29, (memory.read_u8(t + 0x29) - 1) & 0xff)
+			memory.write_u32(ctl + 0x36, 0)
+		return
+	if memory.read_u16(ctl + 0x40) == 0:
+		if (memory.read_u8(obj + 0x15) & 0x10) != 0:
+			memory.write_u16(ctl + 0x54, 0)
+			memory.write_u16(ctl + 0x56, memory.read_u16(ctl + 0x22))
+			memory.write_u16(ctl + 0x58, 0)
+			memory.write_u32(ctl + 0x48, memory.read_u32(obj + 4))
+			memory.write_u32(ctl + 0x4c, memory.read_u32(obj + 8))
+			memory.write_u32(ctl + 0x50, memory.read_u32(obj + 0xc))
+		else:
+			var normals: int = C68kScript.u32(memory.read_s16(obj + 0x38) * 12 + memory.read_u32(obj + 0x46))
+			var face: int = memory.read_u32(obj + 0x4a)
+			var i: int = 0
+			while i < memory.read_s16(obj + 0x3c):
+				if memory.read_u8(face + 0x17) == 1:
+					var sums := [0, 0, 0]
+					var idx: int = memory.read_u32(face + 0x18)
+					var left: int = memory.read_u16(face + 0x14)
+					var shift: int = memory.read_s16(obj + 0x36) & 0x3f
+					while left != 0:
+						left -= 1
+						var vert: int = C68kScript.u32(memory.read_u32(obj + 0x46) + memory.read_s16(idx) * 12)
+						idx += 2
+						for k in range(3):
+							sums[k] = C68kScript.s32(sums[k] + C68kScript.asr32(memory.read_s32(vert + 4 * k), shift))
+					d3 = (d3 & 0xffff0000) | 0xffff
+					var count: int = memory.read_s16(face + 0x14)
+					for k in range(3):
+						memory.write_u32(ctl + 0x48 + 4 * k, C68kScript.u32(C68kScript.divs_trunc(sums[k], count)))
+					var v0: int = memory.read_u32(obj + 0x46)
+					var rel := []
+					for k in range(3):
+						rel.append(C68kScript.s32(memory.read_u32(normals + i * 12 + 4 * k) - memory.read_u32(v0 + 4 * k)))
+					a7 = entry_a7 - 0x68
+					attitude_from_velocity(C68kScript.u32(rel[0]), C68kScript.u32(rel[1]), C68kScript.u32(rel[2]), 0x4000, 0x10000000, a6 - 2, a6 - 4)
+					a7 = entry_a7
+					memory.write_u16(ctl + 0x54, memory.read_u16(a6 - 2))
+					memory.write_u16(ctl + 0x56, memory.read_u16(a6 - 4))
+					memory.write_u16(ctl + 0x58, 0)
+					break
+				i += 1
+				face += 0x20
+		a7 = entry_a7 - 0x50
+		memory.write_u16(ctl + 0x3e, C68kScript.u16(probe_nearest_facility_kind(obj)))
+		a7 = entry_a7
+		memory.write_u16(ctl + 0x40, 1)
+	if memory.read_u32(ctl + 0x36) == 0 or memory.read_u16(0x21058) != 0:
+		return
+	for slot in range(10):
+		var due: int = memory.read_s32(ctl + 0xd2 + 4 * slot)
+		if due != 0 and due <= memory.read_s32(0x21020):
+			memory.write_u32(ctl + 0xd2 + 4 * slot, 0)
+			var p: int = ctl + 0x5a + 12 * slot
+			a7 = entry_a7 - 0x6c
+			spawn_effect(2, 100, 0x1e, 0, 0, memory.read_u32(p), memory.read_u32(p + 4), memory.read_u32(p + 8))
+			a7 = entry_a7 - 0x68
+			apply_blast_damage(memory.read_u32(p), memory.read_u32(p + 4), memory.read_u32(p + 8), 500, 0, 1, 0, d3 & 0xffff)
+			a7 = entry_a7
+	var target: int = memory.read_u32(ctl + 0x36)
+	if memory.read_u16(ctl + 0x46) == 0 or (memory.read_u8(target + 0x17) & 2) != 0 or memory.read_u32(target + 0x46) == 0:
+		memory.write_u8(target + 0x29, (memory.read_u8(target + 0x29) - 1) & 0xff)
+		memory.write_u32(ctl + 0x36, 0)
+		return
+	if (overlay_rng_next() & 0x3f) != 0x15:
+		return
+	var dist: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(obj + 4), memory.read_s32(obj + 8), memory.read_s32(obj + 0xc),
+			memory.read_s32(target + 4), memory.read_s32(target + 8), memory.read_s32(target + 0xc)))
+	memory.write_u32(ctl + 0x3a, C68kScript.u32(dist))
+	if dist > memory.read_s32(ctl + 0x42):
+		return
+	var shift2: int = 0
+	var dd: int = C68kScript.u32(dist)
+	while (dd & 0xffff8000) != 0:
+		shift2 = C68kScript.s16(shift2 + 1)
+		dd = C68kScript.u32(C68kScript.asr32(C68kScript.s32(dd), 1))
+	shift2 = C68kScript.s16(shift2 + 1)
+	var off := []
+	for k in range(3):
+		off.append(C68kScript.asr32(C68kScript.s32(memory.read_u32(target + 4 + 4 * k) - memory.read_u32(obj + 4 + 4 * k)), shift2 & 0x3f))
+	var sq: int = 0
+	for k in range(3):
+		sq = C68kScript.s32(sq + C68kScript.s16(off[k]) * C68kScript.s16(off[k]))
+	a7 = entry_a7 - 0x50
+	var len: int = isqrt_floor(C68kScript.u32(sq))
+	a7 = entry_a7 - 0x68
+	attitude_from_velocity(C68kScript.u32(C68kScript.s16(off[0])), C68kScript.u32(C68kScript.s16(off[1])), C68kScript.u32(C68kScript.s16(off[2])),
+			C68kScript.u32(C68kScript.s16(len)), C68kScript.u32(sq), a6 - 6, a6 - 8)
+	a7 = entry_a7
+	if memory.read_s16(a6 - 6) <= 0x3f:
+		return
+	a7 = entry_a7 - 0x50
+	var turn: int = C68kScript.s16(fold_angle_pm_0x2000(C68kScript.u32(memory.read_s16(a6 - 8) - memory.read_s16(ctl + 0x56))))
+	a7 = entry_a7
+	if abs_int(turn) > 0x1000:
+		return
+	var free_slot: int = -1
+	for slot2 in range(10):
+		if memory.read_u32(ctl + 0xd2 + 4 * slot2) == 0:
+			free_slot = slot2
+			break
+	if free_slot == -1:
+		return
+	memory.write_u16(ctl + 0x46, C68kScript.u16(memory.read_u16(ctl + 0x46) - 1))
+	var fuse_src: int = memory.read_s32(ctl + 0x3a)
+	if fuse_src < 0:
+		fuse_src = C68kScript.s32(fuse_src + 0x3ff)
+	var fuse: int = C68kScript.s16(fuse_src >> 10)
+	memory.write_u32(ctl + 0xd2 + 4 * free_slot, C68kScript.u32(fuse + memory.read_u32(0x21020)))
+	var lead: int = C68kScript.s16(fuse + (overlay_rng_next() & 0x3f))
+	var target_ctl: int = memory.read_u32(target)
+	var burst: int = ctl + 0x5a + 12 * free_slot
+	for k in range(3):
+		var jitter: int = overlay_rng_next() & 0xfff
+		memory.write_u32(burst + 4 * k, C68kScript.u32(C68kScript.s32(lead * memory.read_s32(target_ctl + 8 + 4 * k)) + memory.read_u32(target + 4 + 4 * k) - 0x800 + jitter))
+	if C68kScript.s32(memory.read_u32(burst + 4) - 500) < memory.read_s32(target_ctl + 0x2e):
+		memory.write_u32(burst + 4, C68kScript.u32(memory.read_u32(target_ctl + 0x2e) + 500))
+
+## 0x1ec2e (Leyte only; link 0): spawn_mission_pool_object(0x2cdd4[cls], x, y, z, a1, a2, a3, 0) (0x28 below);
+## the new object's long +0x18 = 1000000000; returns its controller (+0), 0 when nothing was spawned.
+func leyte_spawn_wake_object(x: int, y: int, z: int, a1: int, a2: int, a3: int, cls: int) -> int:
+	assert(memory != null, "leyte_spawn_wake_object requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x28
+	var obj: int = C68kScript.u32(spawn_mission_pool_object(memory.read_u32(C68kScript.u32(0x2cdd4 + C68kScript.s32(cls) * 4)), x, y, z, a1, a2, a3, 0))
+	a7 = entry_a7
+	if obj == 0:
+		return 0
+	memory.write_u32(obj + 0x18, 1000000000)
+	return memory.read_u32(obj)
+
+## 0x1eda0 (Leyte only; link 0): spawn_mission_pool_object(0x2cd68[cls], the six long arguments, 0) (0x28 below);
+## its controller's word +0x62a = the word argument; returns the controller, 0 when nothing was spawned.
+func leyte_spawn_tagged_object(cls: int, tag: int, x: int, y: int, z: int, a1: int, a2: int, a3: int) -> int:
+	assert(memory != null, "leyte_spawn_tagged_object requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x28
+	var obj: int = C68kScript.u32(spawn_mission_pool_object(memory.read_u32(C68kScript.u32(0x2cd68 + C68kScript.s32(cls) * 4)), x, y, z, a1, a2, a3, 0))
+	a7 = entry_a7
+	if obj == 0:
+		return 0
+	var ctl: int = memory.read_u32(obj)
+	memory.write_u16(ctl + 0x62a, C68kScript.u16(tag))
+	return ctl
+
+## 0x18f08 (Leyte only; three saved registers): a moving ship (word +0x32 set) keeps its wake object (+0x68e) at its
+## position: the wake controller's heading word +0x22 = the heading word, +8 / +0x10 = ship - wake x / z, +0xc = 0
+## (a wake without a controller is left alone). Without one, leyte_spawn_wake_object(ship x / y / z, word +0x20, the
+## heading, word +0x24, definition type - 0x1b) (0x2c below) gives it; its object's reference count +0x29 + 1. (A
+## failed spawn returns 0, and the code then reads the long at address 0 as the object, as the original does.)
+func leyte_update_ship_wake(ctl: int, heading: int) -> void:
+	assert(memory != null, "leyte_update_ship_wake requires original global memory")
+	var entry_a7: int = a7
+	if memory.read_u16(ctl + 0x32) == 0:
+		return
+	var obj: int = memory.read_u32(ctl)
+	var wake: int = memory.read_u32(ctl + 0x68e)
+	if wake != 0:
+		var wake_ctl: int = memory.read_u32(wake)
+		if wake_ctl == 0:
+			return
+		memory.write_u16(wake_ctl + 0x22, heading & 0xffff)
+		memory.write_u32(wake_ctl + 8, C68kScript.u32(memory.read_u32(obj + 4) - memory.read_u32(wake + 4)))
+		memory.write_u32(wake_ctl + 0xc, 0)
+		memory.write_u32(wake_ctl + 0x10, C68kScript.u32(memory.read_u32(obj + 0xc) - memory.read_u32(wake + 0xc)))
+		return
+	a7 = entry_a7 - 0x2c
+	var spawned: int = leyte_spawn_wake_object(memory.read_u32(obj + 4), memory.read_u32(obj + 8), memory.read_u32(obj + 0xc),
+			C68kScript.u32(memory.read_s16(ctl + 0x20)), C68kScript.u32(C68kScript.s16(heading)), C68kScript.u32(memory.read_s16(ctl + 0x24)),
+			C68kScript.u32(memory.read_s16(memory.read_u32(ctl + 4)) - 0x1b))
+	a7 = entry_a7
+	memory.write_u32(ctl + 0x68e, memory.read_u32(spawned))
+	var count: int = C68kScript.u32(memory.read_u32(ctl + 0x68e) + 0x29)
+	memory.write_u8(count, (memory.read_u8(count) + 1) & 0xff)
+
+## 0x18f94 (Leyte only; five saved registers): a ship's controller tick. The pose ring at +0x3c (75 records of 0x14:
+## x, y, z, heading word +0xe, word +0x12; cursor byte +0x618) advances. Live play: the mover (+0x38, jsr, 0x1c
+## below), the wake (leyte_update_ship_wake with heading word +0x22, 0x24 below), then the record takes word +0x654,
+## the object position and word +0x692. Replaying (and not sinking, word +0x670): the record's x / z drift goes
+## into +0x624 / +0x62c (byte +0x619 = 1) and the object moves there; a heading change from the previous record
+## reshapes the ship (0x18784, 0x20 below) and clears that drift; word +0x692 = the record's +0x12, the wake follows
+## heading (+0x22 - +0x654 + the record's) & 0x3fff (0x20 below), word +0x694 = that +0x692 too.
+func leyte_ship_tick(ctl: int) -> void:
+	assert(memory != null, "leyte_ship_tick requires original global memory")
+	var entry_a7: int = a7
+	var obj: int = memory.read_u32(ctl)
+	var idx: int = memory.read_u8(ctl + 0x618)
+	var rec: int = ctl + 0x3c + idx * 0x14
+	memory.write_u8(ctl + 0x618, (idx + 1) & 0xff)
+	if memory.read_u8(ctl + 0x618) == 0x4b:
+		memory.write_u8(ctl + 0x618, 0)
+	if memory.read_u16(0x21058) != 0:
+		if memory.read_u16(ctl + 0x670) != 0:
+			return
+		memory.write_u32(ctl + 0x624, C68kScript.u32(memory.read_u32(ctl + 0x624) + memory.read_u32(rec) - memory.read_u32(obj + 4)))
+		memory.write_u32(ctl + 0x62c, C68kScript.u32(memory.read_u32(ctl + 0x62c) + memory.read_u32(rec + 8) - memory.read_u32(obj + 0xc)))
+		memory.write_u8(ctl + 0x619, 1)
+		memory.write_u32(obj + 4, memory.read_u32(rec))
+		memory.write_u32(obj + 0xc, memory.read_u32(rec + 8))
+		var prev: int = ctl + 0x604 if rec == ctl + 0x3c else rec - 0x14
+		if memory.read_u16(prev + 0xe) != memory.read_u16(rec + 0xe):
+			a7 = entry_a7 - 0x20
+			leyte_reshape_ship(ctl, C68kScript.u32(memory.read_s16(rec + 0xe)))
+			a7 = entry_a7
+			memory.write_u32(ctl + 0x624, 0)
+			memory.write_u32(ctl + 0x628, 0)
+			memory.write_u32(ctl + 0x62c, 0)
+			memory.write_u8(ctl + 0x619, 0)
+		memory.write_u16(ctl + 0x692, memory.read_u16(rec + 0x12))
+		var tag: int = memory.read_u16(ctl + 0x692)
+		a7 = entry_a7 - 0x20
+		leyte_update_ship_wake(ctl, C68kScript.u32(memory.read_s16(ctl + 0x22) - memory.read_s16(ctl + 0x654) + memory.read_s16(rec + 0xe)) & 0x3fff)
+		a7 = entry_a7
+		memory.write_u16(ctl + 0x694, tag)
+		return
+	a7 = entry_a7 - 0x1c
+	_jsr(memory.read_u32(ctl + 0x38), [ctl])
+	a7 = entry_a7 - 0x24
+	leyte_update_ship_wake(ctl, C68kScript.u32(memory.read_s16(ctl + 0x22)))
+	a7 = entry_a7
+	memory.write_u16(rec + 0xe, memory.read_u16(ctl + 0x654))
+	memory.write_u32(rec, memory.read_u32(obj + 4))
+	memory.write_u32(rec + 4, memory.read_u32(obj + 8))
+	memory.write_u32(rec + 8, memory.read_u32(obj + 0xc))
+	memory.write_u16(rec + 0x12, memory.read_u16(ctl + 0x692))
+
+## 0x18784 (Leyte only; link a6 -0x24, eight saved registers): reshape a ship for a heading word (a replay heading
+## change). The template (+0x620; vertex + normal count = words +0x1a + +0x1e, vectors from +0x22) is turned by
+## (build_attitude_matrix_3ang(0, heading, 0) into a6 - 0x12, 0x5c below) * the cached chain +0x630 (matmul3x3_s16
+## into a6 - 0x24, 0x68 below) into the object's vertices +0x46 (transform_vecs12_to_int3_by_matrix3, 0x78 below),
+## then translated by (object position - controller +0x14 / +0x18 / +0x1c + +0x642 / +0x646 / +0x64a) << word +0x36
+## (translate_int3_vecs, 0x64 below). With byte +0x61a set, the object's buffers +0x4e / +0x46 grow to 12 per vector
+## (heap_realloc_grow_only, 0x54 / 0x5c below) and each of the template's +0x1e face records (after the vectors;
+## count byte +8, 0xe-byte head) resizes its face's list (+0x4a + 32 i: +0x18 to 2 * count, 0x54 below; +0x14 =
+## count) and fills it with the word at the record's list + 2 * count (D1 holds the count, not the index), the next
+## record lying 2 * the byte +8 of the advanced pointer further; word +0x38 = the vertex count, +0x61a = 0. Then
+## shade_object_faces when host +0xb2 (0x50 below) and drop_contact_records_for_object (0x50 below).
+func leyte_reshape_ship(ctl: int, heading: int) -> void:
+	assert(memory != null, "leyte_reshape_ship requires original global memory")
+	assert(a7 != 0, "leyte_reshape_ship needs a7 (its frame holds the matrices)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var obj: int = memory.read_u32(ctl)
+	var tmpl: int = memory.read_u32(ctl + 0x620)
+	var count: int = C68kScript.s16(memory.read_u16(tmpl + 0x1a) + memory.read_u16(tmpl + 0x1e))
+	var turn: int = a6 - 0x12
+	var frame: int = a6 - 0x24
+	a7 = entry_a7 - 0x5c
+	build_attitude_matrix_3ang(0, C68kScript.s16(heading), 0, turn)
+	a7 = entry_a7 - 0x68
+	matmul3x3_s16(ctl + 0x630, turn, frame)
+	a7 = entry_a7 - 0x78
+	transform_vecs12_to_int3_by_matrix3(C68kScript.u32(count), C68kScript.u32(tmpl + 0x22), memory.read_u32(obj + 0x46), frame)
+	var shift: int = memory.read_s16(obj + 0x36) & 0x3f
+	var tx: int = C68kScript.u32(C68kScript.lsl32(C68kScript.u32(memory.read_u32(obj + 4) - memory.read_u32(ctl + 0x14) + memory.read_u32(ctl + 0x642)), shift))
+	var ty: int = C68kScript.u32(C68kScript.lsl32(C68kScript.u32(memory.read_u32(obj + 8) - memory.read_u32(ctl + 0x18) + memory.read_u32(ctl + 0x646)), shift))
+	var tz: int = C68kScript.u32(C68kScript.lsl32(C68kScript.u32(memory.read_u32(obj + 0xc) - memory.read_u32(ctl + 0x1c) + memory.read_u32(ctl + 0x64a)), shift))
+	a7 = entry_a7 - 0x64
+	translate_int3_vecs(C68kScript.u32(count), memory.read_u32(obj + 0x46), memory.read_u32(obj + 0x46), tx, ty, tz)
+	a7 = entry_a7
+	if memory.read_u8(ctl + 0x61a) != 0:
+		var size: int = C68kScript.u32(count * 12)
+		a7 = entry_a7 - 0x54
+		memory.write_u32(obj + 0x4e, C68kScript.u32(heap_realloc_grow_only(memory.read_u32(obj + 0x4e), size)))
+		a7 = entry_a7 - 0x5c
+		memory.write_u32(obj + 0x46, C68kScript.u32(heap_realloc_grow_only(memory.read_u32(obj + 0x46), size)))
+		a7 = entry_a7
+		var rec: int = C68kScript.u32(tmpl + size + 0x22)
+		var i: int = 0
+		while i < memory.read_s16(memory.read_u32(ctl + 0x620) + 0x1e):
+			var n: int = memory.read_u8(rec + 8)
+			var face: int = C68kScript.u32(memory.read_u32(obj + 0x4a) + i * 32)
+			a7 = entry_a7 - 0x54
+			memory.write_u32(face + 0x18, C68kScript.u32(heap_realloc_grow_only(memory.read_u32(face + 0x18), n * 2)))
+			a7 = entry_a7
+			memory.write_u16(face + 0x14, n)
+			rec += 0xe
+			for k in range(n):
+				memory.write_u16(memory.read_u32(face + 0x18) + 2 * k, memory.read_u16(rec + 2 * n))
+			rec += memory.read_u8(rec + 8) * 2
+			i += 1
+		memory.write_u16(obj + 0x38, memory.read_u16(memory.read_u32(ctl + 0x620) + 0x1a))
+		memory.write_u8(ctl + 0x61a, 0)
+	if memory.read_u16(memory.read_u32(0x207fc) + 0xb2) != 0:
+		a7 = entry_a7 - 0x50
+		shade_object_faces(obj)
+		a7 = entry_a7
+	a7 = entry_a7 - 0x50
+	drop_contact_records_for_object(obj)
+	a7 = entry_a7
+
+## 0x2d08 (link a6 -0x20, six saved registers): Leyte's finalize_attitude_matrix_4ang, a closed form over the
+## sine / cosine words load_attitude_angle_sincos leaves at 0x23d1e..0x23d2c (1.0.3 multiplied three basis
+## matrices). Products are muls.w of the registers' low words, sums 32-bit, each term asr.l 12; the two
+## intermediates kept in the frame are re-read as their low words (a6 - 0x14 / - 0x1a).
+func finalize_attitude_matrix_4ang(out: int) -> void:
+	assert(memory != null, "finalize_attitude_matrix_4ang requires original global memory")
+	var g1e: int = memory.read_s16(0x23d1e)
+	var g20: int = memory.read_s16(0x23d20)
+	var g22: int = memory.read_s16(0x23d22)
+	var g24: int = memory.read_s16(0x23d24)
+	var g26: int = memory.read_s16(0x23d26)
+	var g28: int = memory.read_s16(0x23d28)
+	var g2a: int = memory.read_s16(0x23d2a)
+	var g2c: int = memory.read_s16(0x23d2c)
+	var d1: int = C68kScript.asr32(g2c * g28, 12)
+	var t14: int = C68kScript.s16(C68kScript.asr32(g20 * g28, 12))
+	var d0: int = C68kScript.asr32(g1e * g26, 12)
+	var d2: int = C68kScript.asr32(g2c * g24, 12)
+	var d5: int = C68kScript.asr32(g1e * g2a, 12)
+	var t1a: int = C68kScript.s16(C68kScript.asr32(g20 * g24, 12))
+	var v: int = C68kScript.s32(C68kScript.s16(d0) * g22 - t14 * g2a)
+	v = C68kScript.s32(v + C68kScript.s16(C68kScript.asr32(g1e * g24, 12)) * C68kScript.s16(d1))
+	memory.write_u16(out, C68kScript.u16(C68kScript.asr32(v, 12)))
+	v = C68kScript.s32(g20 * g2c + C68kScript.s16(d5) * g24)
+	memory.write_u16(out + 2, C68kScript.u16(C68kScript.asr32(v, 12)))
+	v = C68kScript.s32(C68kScript.s16(C68kScript.asr32(g2a * g26, 12)) * g20 - C68kScript.s16(d0) * C68kScript.s16(d2))
+	v = C68kScript.s32(v + C68kScript.s16(C68kScript.asr32(g1e * g22, 12)) * g28)
+	memory.write_u16(out + 4, C68kScript.u16(C68kScript.asr32(v, 12)))
+	v = C68kScript.s32(C68kScript.s16(d1) * g22 - g26 * g24)
+	memory.write_u16(out + 6, C68kScript.u16(C68kScript.asr32(v, 12)))
+	memory.write_u16(out + 8, C68kScript.u16(C68kScript.asr32(g2a * g22, 12)))
+	var d6: int = C68kScript.asr32(g26 * g22, 12)
+	v = C68kScript.s32(-(C68kScript.s16(d6) * g2c) - g28 * g24)
+	memory.write_u16(out + 0xa, C68kScript.u16(C68kScript.asr32(v, 12)))
+	v = C68kScript.s32(-(C68kScript.s16(d1) * t1a) - C68kScript.s16(d6) * g20)
+	v = C68kScript.s32(v - C68kScript.s16(d5) * g28)
+	memory.write_u16(out + 0xc, C68kScript.u16(C68kScript.asr32(v, 12)))
+	v = C68kScript.s32(g1e * g2c - t1a * g2a)
+	memory.write_u16(out + 0xe, C68kScript.u16(C68kScript.asr32(v, 12)))
+	v = C68kScript.s32(C68kScript.s16(d0) * g2a - t14 * g22)
+	v = C68kScript.s32(v + C68kScript.s16(C68kScript.asr32(C68kScript.s16(d2) * g26, 12)) * g20)
+	memory.write_u16(out + 0x10, C68kScript.u16(C68kScript.asr32(v, 12)))
+
+## 0x2ec4 (link 0): Leyte's build_attitude_matrix(angle4, angle1, angle2, angle3, out):
+## load_attitude_angle_sincos(angle1, angle2, angle3, angle4) (0x18 below), then finalize_attitude_matrix_4ang(out)
+## (0x1c below); 1.0.3's also filled the rotation bases in between.
+func build_attitude_matrix(angle4: int, angle1: int, angle2: int, angle3: int, out: int) -> void:
+	assert(a7 != 0, "build_attitude_matrix needs a7 (its callees are entered below it)")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x18
+	load_attitude_angle_sincos(angle1, angle2, angle3, angle4)
+	a7 = entry_a7 - 0x1c
+	finalize_attitude_matrix_4ang(out)
+	a7 = entry_a7
+
+## 0x1756a (link a6 -0x3c, ten saved registers): Leyte's carry_attached_objects(ctl, a1, a2, a3, remove), one argument fewer than 1.0.3's. With h =
+## the ship's heading word +0x22: matrix = build_attitude_matrix(-h & 0x3fff, a1, (a2 + h) & 0x3fff, a3) in a6 - 0x12
+## (0x80 below). Every live (long +0x14 & 0x202 clear) object_pool object within the ship object's range (+0x20;
+## approx_dist3_xyz from (ship x, controller +0x18, ship z)) whose controller's definition type is 0xa or 0xb, then
+## every live one in the controller's list (+0x67a, word count +0x678) within that range, is cleaned up when
+## removing (dispatch_entity_cleanup, 0x70 below), else placed again: position cleared, apply_template_chain_xform(
+## obj, 1, 0, 0) (0x7c below), the offset words (its position's low words - the ship's x / +0x18 / z low words, for the
+## list objects the controller's +0x16 / +0x1a / +0x1e) turned in the frame record (a6 - 0x1e, list: a6 - 0x2a; for
+## the list first by build_attitude_matrix_3ang(0, word +0x654, 0) into a6 - 0x3c, 0x8c below) by
+## transform_vecs12_by_matrix3 (0x8c / 0x7c below); x / z = ship + sext offset, y = sext offset + ship y - controller
+## +0x18; a negative y cleans the object up.
+func leyte_carry_attached_objects(ctl: int, a1: int, a2: int, a3: int, remove: int) -> void:
+	assert(memory != null, "leyte_carry_attached_objects requires original global memory")
+	assert(a7 != 0, "leyte_carry_attached_objects needs a7 (its frame holds the matrices)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var ship: int = memory.read_u32(ctl)
+	var sx: int = memory.read_u32(ship + 4)
+	var sy: int = memory.read_u32(ctl + 0x18)
+	var sz: int = memory.read_u32(ship + 0xc)
+	var h: int = memory.read_s16(ctl + 0x22)
+	var matrix: int = a6 - 0x12
+	a7 = entry_a7 - 0x80
+	build_attitude_matrix(C68kScript.u32(-h) & 0x3fff, C68kScript.u32(C68kScript.s16(a1)), C68kScript.u32(C68kScript.s16(a2) + h) & 0x3fff,
+			C68kScript.u32(C68kScript.s16(a3)), matrix)
+	a7 = entry_a7
+	var reach: int = memory.read_s32(ship + 0x20)
+	var left: int = memory.read_u16(0x20b26)
+	var slot: int = 0x20804
+	var rec: int = a6 - 0x1e
+	while left != 0:
+		left -= 1
+		var obj: int = memory.read_u32(slot)
+		slot += 4
+		if (memory.read_u32(obj + 0x14) & 0x202) != 0:
+			continue
+		if C68kScript.s32(approx_dist3_xyz(memory.read_s32(obj + 4), memory.read_s32(obj + 8), memory.read_s32(obj + 0xc),
+				C68kScript.s32(sx), C68kScript.s32(sy), C68kScript.s32(sz))) >= reach:
+			continue
+		var octl: int = memory.read_u32(obj)
+		if octl == 0:
+			continue
+		var kind: int = memory.read_u16(memory.read_u32(octl + 4))
+		if kind != 0xa and kind != 0xb:
+			continue
+		if C68kScript.u32(remove) != 0:
+			a7 = entry_a7 - 0x70
+			dispatch_entity_cleanup(obj)
+			a7 = entry_a7
+			continue
+		_carry_one(obj, entry_a7, rec, [sx, sy, sz], [sx, sy, sz], -1, matrix, ship)
+	var i: int = 0
+	var rec2: int = a6 - 0x2a
+	while i < memory.read_s16(ctl + 0x678):
+		var obj2: int = memory.read_u32(ctl + 0x67a + 4 * i)
+		i += 1
+		if obj2 == 0 or (memory.read_u32(obj2 + 0x14) & 0x202) != 0:
+			continue
+		if C68kScript.s32(approx_dist3_xyz(memory.read_s32(obj2 + 4), memory.read_s32(obj2 + 8), memory.read_s32(obj2 + 0xc),
+				C68kScript.s32(sx), C68kScript.s32(sy), C68kScript.s32(sz))) >= reach:
+			continue
+		if C68kScript.u32(remove) != 0:
+			a7 = entry_a7 - 0x70
+			dispatch_entity_cleanup(obj2)
+			a7 = entry_a7
+			continue
+		_carry_one(obj2, entry_a7, rec2, [memory.read_u32(ctl + 0x14), memory.read_u32(ctl + 0x18), memory.read_u32(ctl + 0x1c)],
+				[sx, sy, sz], memory.read_s16(ctl + 0x654), matrix, ship)
+
+## carry_attached_objects: one object placed again. The offsets are low words (suba.w) of its chain position
+## less `base`; a heading >= 0 (the controller list) first turns them by build_attitude_matrix_3ang(0, heading, 0)
+## into a6 - 0x3c.
+func _carry_one(obj: int, entry_a7: int, rec: int, base: Array, ship_xyz: Array, heading: int, matrix: int, ship: int) -> void:
+	memory.write_u32(obj + 0xc, 0)
+	memory.write_u32(obj + 8, 0)
+	memory.write_u32(obj + 4, 0)
+	a7 = entry_a7 - 0x7c
+	apply_template_chain_xform(obj, 1, 0, 0)
+	for k in range(3):
+		memory.write_u16(rec + 2 + 4 * k, C68kScript.u16(memory.read_s16(obj + 6 + 4 * k) - C68kScript.s16(base[k] & 0xffff)))
+	if heading != -1:
+		var turn: int = entry_a7 - 4 - 0x3c
+		a7 = entry_a7 - 0x8c
+		build_attitude_matrix_3ang(0, heading, 0, turn)
+		a7 = entry_a7 - 0x7c
+		transform_vecs12_by_matrix3(1, rec, rec, turn)
+		a7 = entry_a7 - 0x8c
+		transform_vecs12_by_matrix3(1, rec, rec, matrix)
+	else:
+		a7 = entry_a7 - 0x8c
+		transform_vecs12_by_matrix3(1, rec, rec, matrix)
+	a7 = entry_a7
+	memory.write_u32(obj + 4, C68kScript.u32(memory.read_s16(rec + 2) + ship_xyz[0]))
+	memory.write_u32(obj + 8, C68kScript.u32(memory.read_s16(rec + 6) + memory.read_u32(ship + 8) - ship_xyz[1]))
+	memory.write_u32(obj + 0xc, C68kScript.u32(memory.read_s16(rec + 0xa) + ship_xyz[2]))
+	if memory.read_s32(obj + 8) < 0:
+		a7 = entry_a7 - 0x70
+		dispatch_entity_cleanup(obj)
+		a7 = entry_a7
+
+## 0x17850 (three saved registers): step_sinking_object, Leyte's. When due (frame >= long +0x66c, signed) and the
+## object live (+0x17 bit 1 clear): angle words +0x658 / +0x65a / +0x65c += rates +0x65e / +0x660 / +0x662 (& 0x3fff),
+## +0x664 += +0x666 and the object sinks by it (y -= sext +0x666); types 0x1b..0x1c also lower their deck height
+## +0x696. Steps left +0x66a - 1: none -> next frame 1000000000, else frame + word +0x668. leyte_sink_with_cached_chain
+## (object, the three angles) (0x20 below) nonzero: carry_attached_objects(ctl, the angles, 0) (0x24 below); zero (gone
+## under): carry_attached_objects(ctl, 0, 0, 0, 1), a credited kill tallied (word +0x672; 0x14 below), the mission
+## outcomes (host +0x90 / +0xd2: a carrier (0x1b) lost in missions 8 / 2 -> -1 unless negative; in mission 4 the third
+## non-carrier sunk (0x27060) -> 1; type 0x20 adds its deck word +0x696 to 0x27056, 0xc of it -> 1; in mission 9 a
+## carrier whose deck tag +0x69a is unknown -> 1; each only from 0), and dispatch_entity_cleanup (0x14 below). With no
+## hits left (+0x656 == 0) the step count goes back up by one.
+func step_sinking_object(ctl: int) -> void:
+	assert(memory != null, "step_sinking_object requires original global memory")
+	var entry_a7: int = a7
+	var frame: int = memory.read_s32(0x21020)
+	if frame < memory.read_s32(ctl + 0x66c):
+		return
+	var obj: int = memory.read_u32(ctl)
+	if (memory.read_u8(obj + 0x17) & 2) != 0:
+		return
+	for k in range(3):
+		var at: int = ctl + 0x658 + 2 * k
+		memory.write_u16(at, (memory.read_u16(at) + memory.read_u16(ctl + 0x65e + 2 * k)) & 0x3fff)
+	memory.write_u16(ctl + 0x664, C68kScript.u16(memory.read_u16(ctl + 0x664) + memory.read_u16(ctl + 0x666)))
+	memory.write_u32(obj + 8, C68kScript.u32(memory.read_u32(obj + 8) - memory.read_s16(ctl + 0x666)))
+	var kind: int = memory.read_s16(memory.read_u32(ctl + 4))
+	if kind > 0x1a and kind <= 0x1c:
+		memory.write_u16(ctl + 0x696, C68kScript.u16(memory.read_u16(ctl + 0x696) - memory.read_u16(ctl + 0x666)))
+	memory.write_u16(ctl + 0x66a, C68kScript.u16(memory.read_u16(ctl + 0x66a) - 1))
+	if memory.read_u16(ctl + 0x66a) == 0:
+		memory.write_u32(ctl + 0x66c, 1000000000)
+	else:
+		memory.write_u32(ctl + 0x66c, C68kScript.u32(memory.read_s16(ctl + 0x668) + memory.read_u32(0x21020)))
+	a7 = entry_a7 - 0x20
+	var afloat: int = C68kScript.u32(leyte_sink_with_cached_chain(obj, memory.read_s16(ctl + 0x658), memory.read_s16(ctl + 0x65a), memory.read_s16(ctl + 0x65c)))
+	a7 = entry_a7
+	if afloat != 0:
+		a7 = entry_a7 - 0x24
+		leyte_carry_attached_objects(ctl, C68kScript.u32(memory.read_s16(ctl + 0x658)), C68kScript.u32(memory.read_s16(ctl + 0x65a)),
+				C68kScript.u32(memory.read_s16(ctl + 0x65c)), 0)
+		a7 = entry_a7
+	else:
+		a7 = entry_a7 - 0x24
+		leyte_carry_attached_objects(ctl, 0, 0, 0, 1)
+		a7 = entry_a7
+		if memory.read_u16(ctl + 0x672) != 0:
+			a7 = entry_a7 - 0x14
+			tally_destroyed_entity(obj, afloat)
+			a7 = entry_a7
+		var host: int = memory.read_u32(0x207fc)
+		kind = memory.read_s16(memory.read_u32(ctl + 4))
+		var mission: int = memory.read_s16(host + 0x90)
+		if kind == 0x1b and (mission == 8 or mission == 2) and memory.read_s16(host + 0xd2) >= 0:
+			memory.write_u16(host + 0xd2, 0xffff)
+		if memory.read_s16(host + 0x90) == 4 and kind != 0x1b:
+			memory.write_u16(0x27060, C68kScript.u16(memory.read_u16(0x27060) + 1))
+			if memory.read_s16(0x27060) == 3 and memory.read_u16(host + 0xd2) == 0:
+				memory.write_u16(host + 0xd2, 1)
+		if kind == 0x20:
+			memory.write_u16(0x27056, C68kScript.u16(memory.read_u16(0x27056) + memory.read_u16(ctl + 0x696)))
+			if memory.read_s16(0x27056) == 0xc and memory.read_u16(host + 0xd2) == 0:
+				memory.write_u16(host + 0xd2, 1)
+		if memory.read_s16(host + 0x90) == 9 and kind == 0x1b and memory.read_u16(ctl + 0x69a) == 0xffff and memory.read_u16(host + 0xd2) == 0:
+			memory.write_u16(host + 0xd2, 1)
+		a7 = entry_a7 - 0x14
+		dispatch_entity_cleanup(obj)
+		a7 = entry_a7
+	if memory.read_u16(ctl + 0x656) == 0:
+		memory.write_u16(ctl + 0x66a, C68kScript.u16(memory.read_u16(ctl + 0x66a) + 1))
+
+## 0x182e (Leyte; no frame): copy the format into the static buffer 0x27084 (1.0.3: 0x20b4c), widening "%d" to "%ld"
+## and "%x" to "%lx"; returns the buffer.
+func widen_printf_format(fmt: int) -> int:
+	assert(memory != null, "widen_printf_format requires original global memory")
+	var src: int = C68kScript.u32(fmt)
+	var dst: int = 0x27084
+	while memory.read_u8(src) != 0:
+		var c: int = memory.read_u8(src)
+		var n: int = memory.read_u8(C68kScript.u32(src + 1))
+		if c == 0x25 and (n == 0x64 or n == 0x78):
+			memory.write_u8(dst, 0x25)
+			memory.write_u8(dst + 1, 0x6c)
+			memory.write_u8(dst + 2, n)
+			dst += 3
+			src = C68kScript.u32(src + 2)
+		else:
+			memory.write_u8(dst, c)
+			dst += 1
+			src = C68kScript.u32(src + 1)
+	memory.write_u8(dst, 0)
+	return 0x27084
+
+## 0x189c (Leyte; link 0, a2 saved): the host printf (host world +0x29a; 1.0.3 +0x262) with the widened format and
+## the five following arguments (widen_printf_format and the printf both 0x24 below); returns its D0.
+func overlay_printf(fmt: int, a1: int, a2: int, a3_arg: int, a4: int, a5: int) -> int:
+	assert(memory != null, "overlay_printf requires original global memory")
+	var entry_a7: int = a7
+	var host: int = memory.read_u32(0x207fc)
+	a7 = entry_a7 - 0x24
+	var widened: int = widen_printf_format(fmt)
+	var r = _jsr(memory.read_u32(host + 0x29a), [widened, a1, a2, a3_arg, a4, a5])
+	a7 = entry_a7
+	return 0 if r == null else C68kScript.u32(int(r))
+
+## 0x17cee (Leyte only; two saved registers): attach an object to a ship's list (+0x67a, count word +0x678): with
+## fewer than four, it goes in (its reference count +0x29 + 1); a fifth prints "Too many AA guns on a ship" (0x17cd2,
+## overlay_printf, 0x10 below).
+func leyte_attach_to_ship(ctl: int, obj: int) -> void:
+	assert(memory != null, "leyte_attach_to_ship requires original global memory")
+	var entry_a7: int = a7
+	if memory.read_s16(ctl + 0x678) > 3:
+		a7 = entry_a7 - 0x10
+		overlay_printf(0x17cd2, 0, 0, 0, 0, 0)
+		a7 = entry_a7
+		return
+	var n: int = memory.read_s16(ctl + 0x678)
+	memory.write_u32(C68kScript.u32(ctl + 0x67a + n * 4), C68kScript.u32(obj))
+	memory.write_u16(ctl + 0x678, C68kScript.u16(memory.read_u16(ctl + 0x678) + 1))
+	memory.write_u8(obj + 0x29, (memory.read_u8(obj + 0x29) + 1) & 0xff)
+
+## 0x18d54 (Leyte only; six saved registers): a ship's first mover call. Its scene root's part table (+0x24 -> +0x32,
+## word count +0x30, 0x18 apart, the object at +0x14): the first part of type 3 (+0x28) with a table of its own is
+## searched, and each of that table's parts whose controller definition type is 0x23 / 0x24 attaches to the ship
+## (leyte_attach_to_ship, 0x24 below). Then +0x61c = the root's +0x2a record base + 0x1a, +0x620 = the host's +0x8c +
+## the template offset at +0x14 + 24 * word +0x10 of that base, byte +0x61b = 1, and the chain cache +0x630 is
+## composed (compose_template_chain, 0x24 below).
+func leyte_ship_first_move(ctl: int) -> void:
+	assert(memory != null, "leyte_ship_first_move requires original global memory")
+	var entry_a7: int = a7
+	var obj: int = memory.read_u32(ctl)
+	var group: int = memory.read_u32(obj + 0x24)
+	var i: int = 0
+	while i < memory.read_s16(group + 0x30):
+		var part: int = memory.read_u32(memory.read_u32(group + 0x32) + i * 0x18 + 0x14)
+		if part != 0 and memory.read_u8(part + 0x28) == 3:
+			group = part
+			if memory.read_u32(group + 0x32) == 0:
+				break
+			var k: int = 0
+			while k < memory.read_s16(group + 0x30):
+				var p: int = memory.read_u32(memory.read_u32(group + 0x32) + k * 0x18 + 0x14)
+				if p != 0 and memory.read_u32(p) != 0:
+					var kind: int = memory.read_s16(memory.read_u32(memory.read_u32(p) + 4))
+					if kind == 0x24 or kind == 0x23:
+						a7 = entry_a7 - 0x24
+						leyte_attach_to_ship(ctl, p)
+						a7 = entry_a7
+				k += 1
+			break
+		i += 1
+	var base: int = C68kScript.u32(memory.read_u32(memory.read_u32(obj + 0x24) + 0x2a) + 0x1a)
+	memory.write_u32(ctl + 0x61c, base)
+	memory.write_u32(ctl + 0x620, C68kScript.u32(memory.read_u32(base + 0x14 + memory.read_u16(obj + 0x10) * 0x18) + memory.read_u32(memory.read_u32(0x207fc) + 0x8c)))
+	memory.write_u8(ctl + 0x61b, 1)
+	a7 = entry_a7 - 0x24
+	compose_template_chain(obj, ctl + 0x630)
+	a7 = entry_a7
+
+## 0x3604 (link a6 -0x20, eight saved registers): apply_template_chain_xform_always, 1.0.3's 0x2cf0 with Leyte's layout
+## (the slot index is word +0x12, 1.0.3 byte +2; positions +4 / +8 / +0xc; the part table +0x32): every slot up the
+## parent chain (+0x24) rotates (build_attitude_matrix_3ang of the slot's words +2 / +4 / +6 into a6 - 0x12, 0x58 below)
+## and translates by its longs +8 / +0xc / +0x10, unshifted: the vectors src -> dst (then dst in place), or without both
+## the object's position (a6 - 0x1e), written back at the end.
+func apply_template_chain_xform_always(obj: int, vert_count: int, src: int, dst: int) -> void:
+	assert(memory != null, "apply_template_chain_xform_always requires original global memory")
+	assert(a7 != 0, "apply_template_chain_xform_always needs a7 (its frame holds pos and the matrix)")
+	var entry_a7: int = a7
+	var pos: int = entry_a7 - 0x22
+	var matrix: int = entry_a7 - 0x16
+	memory.write_u32(pos, memory.read_u32(obj + 4))
+	memory.write_u32(pos + 4, memory.read_u32(obj + 8))
+	memory.write_u32(pos + 8, memory.read_u32(obj + 0xc))
+	var parent: int = memory.read_u32(obj + 0x24)
+	var index: int = memory.read_u16(obj + 0x12)
+	while parent != 0:
+		var slot: int = C68kScript.u32(memory.read_u32(parent + 0x32) + index * 0x18)
+		a7 = entry_a7 - 0x58
+		build_attitude_matrix_3ang(memory.read_s16(slot + 2), memory.read_s16(slot + 4), memory.read_s16(slot + 6), matrix)
+		if src != 0 and dst != 0:
+			a7 = entry_a7 - 0x58
+			transform_int3_vecs_by_matrix3(vert_count, src, dst, matrix)
+			src = dst
+			a7 = entry_a7 - 0x70
+			translate_int3_vecs(vert_count, dst, dst, memory.read_s32(slot + 8), memory.read_s32(slot + 0xc), memory.read_s32(slot + 0x10))
+		else:
+			a7 = entry_a7 - 0x58
+			transform_int3_vecs_by_matrix3(1, pos, pos, matrix)
+			a7 = entry_a7 - 0x70
+			translate_int3_vecs(1, pos, pos, memory.read_s32(slot + 8), memory.read_s32(slot + 0xc), memory.read_s32(slot + 0x10))
+		a7 = entry_a7
+		index = memory.read_u16(parent + 0x12)
+		parent = memory.read_u32(parent + 0x24)
+	if src == 0 and dst == 0:
+		memory.write_u32(obj + 4, memory.read_u32(pos))
+		memory.write_u32(obj + 8, memory.read_u32(pos + 4))
+		memory.write_u32(obj + 0xc, memory.read_u32(pos + 8))
+
+## 0x1a8a2 (Leyte only; link 0, four saved registers): a route block of `count` points: heap_alloc_cleared(header + 12 *
+## count) (0x1c below), the count word at header - 2, and the points `src` placed through the object's chain into the
+## block after the header (apply_template_chain_xform_always, 0x2c below). Returns the block.
+func leyte_make_route(obj: int, header: int, count: int, src: int) -> int:
+	assert(memory != null, "leyte_make_route requires original global memory")
+	var entry_a7: int = a7
+	var n: int = C68kScript.s16(count)
+	a7 = entry_a7 - 0x1c
+	var block: int = C68kScript.u32(heap_alloc_cleared(C68kScript.u32(header + n * 12)))
+	a7 = entry_a7
+	memory.write_u16(C68kScript.u32(header + block - 2), n & 0xffff)
+	a7 = entry_a7 - 0x2c
+	apply_template_chain_xform_always(obj, C68kScript.u32(n), src, C68kScript.u32(header + block))
+	a7 = entry_a7
+	return block
+
+## 0x1a936 (Leyte only; link a6 -0xc, ten saved registers): a route from the scene. Up the object's groups (+0x24 and
+## their own +0x24), the first part of type 2 (+0x28) with a single face (+0x3c == 1), no controller and a face (+0x4a)
+## flagged at byte +0x13 bit 1 gives it: heap_alloc_cleared(header + 12 * the face's index count +0x14) (0x40 below),
+## the count word at header - 2, each indexed vertex (+0x46, asr the part's word +0x36) copied after the header, and
+## the index of the vertex nearest the object (approx_dist3_xyz) stored at `nearest`. Returns the block, else 0.
+func leyte_route_from_scene(obj: int, header: int, nearest: int) -> int:
+	assert(memory != null, "leyte_route_from_scene requires original global memory")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var group: int = memory.read_u32(obj + 0x24)
+	while group != 0:
+		var i: int = 0
+		while i < memory.read_s16(group + 0x30):
+			var part: int = memory.read_u32(memory.read_u32(group + 0x32) + i * 0x18 + 0x14)
+			i += 1
+			if part == 0 or memory.read_u8(part + 0x28) != 2 or memory.read_u16(part + 0x3c) != 1 or memory.read_u32(part) != 0:
+				continue
+			var face: int = memory.read_u32(part + 0x4a)
+			if face == 0 or (memory.read_u8(face + 0x13) & 2) == 0:
+				continue
+			var count: int = memory.read_s16(face + 0x14)
+			var shift: int = memory.read_s16(part + 0x36) & 0x3f
+			a7 = entry_a7 - 0x40
+			var block: int = C68kScript.u32(heap_alloc_cleared(C68kScript.u32(header + count * 12)))
+			a7 = entry_a7
+			memory.write_u16(C68kScript.u32(header + block - 2), count & 0xffff)
+			var best: int = 0x7fffffff
+			var points: int = C68kScript.u32(block + header)
+			var tmp: int = a6 - 0xc
+			for k in range(max(count, 0)):
+				var vi: int = memory.read_s16(memory.read_u32(face + 0x18) + 2 * k)
+				var v: int = C68kScript.u32(memory.read_u32(part + 0x46) + vi * 12)
+				for m in range(3):
+					memory.write_u32(tmp + 4 * m, C68kScript.u32(C68kScript.asr32(memory.read_s32(v + 4 * m), shift)))
+				var d: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(obj + 4), memory.read_s32(obj + 8), memory.read_s32(obj + 0xc),
+						memory.read_s32(tmp), memory.read_s32(tmp + 4), memory.read_s32(tmp + 8)))
+				if d < best:
+					best = d
+					memory.write_u16(nearest, k)
+				for m in range(3):
+					memory.write_u32(points + 12 * k + 4 * m, memory.read_u32(tmp + 4 * m))
+			return block
+		group = memory.read_u32(group + 0x24)
+	return 0
+
+## 0x1869c (Leyte only; five saved registers): a ship's next route point. `state` points at the route's index word
+## (the count word follows, the points at +4); within 10000 (speed word > 0x870) or 4320 of the current point (x / z,
+## approx_dist3_xyz) the index advances (wrapping at the count), *out = the new point and 1 is returned; otherwise *out =
+## the current point and 0.
+func leyte_next_route_point(obj: int, state: int, out: int, speed: int) -> int:
+	assert(memory != null, "leyte_next_route_point requires original global memory")
+	var point: int = C68kScript.u32(state + 4 + memory.read_s16(state) * 12)
+	var reach: int = 10000 if C68kScript.s16(speed) > 0x870 else 4320
+	var d: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(obj + 4), 0, memory.read_s32(obj + 0xc), memory.read_s32(point), 0, memory.read_s32(point + 8)))
+	if d < reach:
+		memory.write_u16(state, C68kScript.u16(memory.read_u16(state) + 1))
+		if memory.read_s16(state + 2) <= memory.read_s16(state):
+			memory.write_u16(state, 0)
+		memory.write_u32(out, C68kScript.u32(state + 4 + memory.read_s16(state) * 12))
+		return 1
+	memory.write_u32(out, point)
+	return 0
+
+## 0x17d2a (Leyte only; four saved registers): the objects a ship carries (+0x67a, count word +0x678, from the last)
+## move by (dx, dy, dz); one retired (+0x17 bit 1) whose controller's +0 is clear is released (+0x29 - 1, slot 0).
+func leyte_move_ship_attachments(ctl: int, dx: int, dy: int, dz: int) -> void:
+	assert(memory != null, "leyte_move_ship_attachments requires original global memory")
+	var k: int = memory.read_s16(ctl + 0x678) - 1
+	while k != -1:
+		var slot: int = C68kScript.u32(ctl + 0x67a + k * 4)
+		var obj: int = memory.read_u32(slot)
+		if obj != 0:
+			if (memory.read_u8(obj + 0x17) & 2) != 0 and memory.read_u32(memory.read_u32(obj)) == 0:
+				memory.write_u8(obj + 0x29, (memory.read_u8(obj + 0x29) - 1) & 0xff)
+				memory.write_u32(slot, 0)
+			else:
+				memory.write_u32(obj + 4, C68kScript.u32(memory.read_u32(obj + 4) + dx))
+				memory.write_u32(obj + 8, C68kScript.u32(memory.read_u32(obj + 8) + dy))
+				memory.write_u32(obj + 0xc, C68kScript.u32(memory.read_u32(obj + 0xc) + dz))
+		k -= 1
+
+## 0x18908 (Leyte only; link a6 -0x30, eight saved registers): turn a ship by a heading step. Word +0x654 += step; the
+## matrix build_attitude_matrix_3ang(0, step & 0x3fff, 0) (a6 - 0x12, 0x68 below) turns the carried objects' word offsets
+## from the ship (frame record a6 - 0x30; transform_vecs12_by_matrix3, 0x68 below) and, for the two aircraft of 0x20674
+## (their controllers via the pointers there) standing on deck (+0x64c) within the ship's range, the x / z offsets (the
+## record's y word left as it was) and their heading +0x22. Then the ship is sunk again level (leyte_sink_with_cached_chain,
+## 0x68 below) when its y is not 0, else reshaped for +0x654 (0x60 below); the carried objects move by the speed words
+## +0x64e / +0x650 / +0x652 (0x68 below), which also become +0x624 / +0x628 / +0x62c and move the ship; heading +0x22 +=
+## step; velocity +8 = (-speed +0x674 * sin) asr 18, +0x10 = (cos * speed) asr 18.
+func leyte_turn_ship(ctl: int, step: int) -> void:
+	assert(memory != null, "leyte_turn_ship requires original global memory")
+	assert(a7 != 0, "leyte_turn_ship needs a7 (its frame holds the matrix and the record)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var ship: int = memory.read_u32(ctl)
+	var d4: int = step & 0xffff
+	memory.write_u16(ctl + 0x654, (d4 + memory.read_u16(ctl + 0x654)) & 0x3fff)
+	var matrix: int = a6 - 0x12
+	var rec: int = a6 - 0x30
+	a7 = entry_a7 - 0x68
+	build_attitude_matrix_3ang(0, C68kScript.u32(step) & 0x3fff, 0, matrix)
+	var k: int = memory.read_s16(ctl + 0x678) - 1
+	while k >= 0:
+		var obj: int = memory.read_u32(C68kScript.u32(ctl + 0x67a + k * 4))
+		if obj != 0:
+			for m in range(3):
+				memory.write_u16(rec + 2 + 4 * m, C68kScript.u16(memory.read_u16(obj + 6 + 4 * m) - memory.read_u16(ship + 6 + 4 * m)))
+			a7 = entry_a7 - 0x68
+			transform_vecs12_by_matrix3(1, rec, rec, matrix)
+			for m in range(3):
+				memory.write_u32(obj + 4 + 4 * m, C68kScript.u32(memory.read_s16(rec + 2 + 4 * m) + memory.read_u32(ship + 4 + 4 * m)))
+		k -= 1
+	for j in range(2):
+		var actl: int = memory.read_u32(memory.read_u32(0x20674 + 4 * j))
+		if actl == 0 or memory.read_u8(actl + 0x64c) == 0:
+			continue
+		var plane: int = memory.read_u32(actl)
+		var d: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(plane + 4), memory.read_s32(plane + 8), memory.read_s32(plane + 0xc),
+				memory.read_s32(ship + 4), memory.read_s32(ship + 8), memory.read_s32(ship + 0xc)))
+		if d >= memory.read_s32(ship + 0x20):
+			continue
+		memory.write_u16(rec + 2, C68kScript.u16(memory.read_u16(plane + 6) - memory.read_u16(ship + 6)))
+		memory.write_u16(rec + 0xa, C68kScript.u16(memory.read_u16(plane + 0xe) - memory.read_u16(ship + 0xe)))
+		a7 = entry_a7 - 0x68
+		transform_vecs12_by_matrix3(1, rec, rec, matrix)
+		memory.write_u32(plane + 4, C68kScript.u32(memory.read_s16(rec + 2) + memory.read_u32(ship + 4)))
+		memory.write_u32(plane + 0xc, C68kScript.u32(memory.read_s16(rec + 0xa) + memory.read_u32(ship + 0xc)))
+		memory.write_u16(actl + 0x22, (d4 + memory.read_u16(actl + 0x22)) & 0x3fff)
+	if memory.read_u32(ship + 8) != 0:
+		a7 = entry_a7 - 0x68
+		leyte_sink_with_cached_chain(ship, 0, 0, 0)
+	else:
+		a7 = entry_a7 - 0x60
+		leyte_reshape_ship(ctl, C68kScript.u32(memory.read_s16(ctl + 0x654)))
+	a7 = entry_a7 - 0x68
+	var vx: int = memory.read_s16(ctl + 0x64e)
+	var vy: int = memory.read_s16(ctl + 0x650)
+	var vz: int = memory.read_s16(ctl + 0x652)
+	leyte_move_ship_attachments(ctl, C68kScript.u32(vx), C68kScript.u32(vy), C68kScript.u32(vz))
+	a7 = entry_a7
+	memory.write_u32(ctl + 0x624, C68kScript.u32(vx))
+	memory.write_u32(ctl + 0x628, C68kScript.u32(vy))
+	memory.write_u32(ctl + 0x62c, C68kScript.u32(vz))
+	memory.write_u32(ship + 4, C68kScript.u32(vx + memory.read_u32(ship + 4)))
+	memory.write_u32(ship + 8, C68kScript.u32(vy + memory.read_u32(ship + 8)))
+	memory.write_u32(ship + 0xc, C68kScript.u32(vz + memory.read_u32(ship + 0xc)))
+	memory.write_u16(ctl + 0x22, (d4 + memory.read_u16(ctl + 0x22)) & 0x3fff)
+	_ship_velocity(ctl)
+
+## The ship's velocity from its heading +0x22 and speed +0x674: +8 = (-speed * sext sin) asr 18, +0x10 = (sext cos *
+## speed) asr 18 (muls.l, 32-bit products).
+func _ship_velocity(ctl: int) -> void:
+	var speed: int = memory.read_s32(ctl + 0x674)
+	var h: int = memory.read_s16(ctl + 0x22)
+	memory.write_u32(ctl + 8, C68kScript.u32(C68kScript.asr32(C68kScript.s32(-speed * C68kScript.s16(sin_fixed14(h))), 18)))
+	memory.write_u32(ctl + 0x10, C68kScript.u32(C68kScript.asr32(C68kScript.s32(C68kScript.s16(cos_fixed14(h)) * speed), 18)))
+
+## 0x18b34 (Leyte only; link a6 -4, five saved registers): steer a ship along its route (+0x34; its state word first).
+## The speed words +0x64e / +0x650 / +0x652 take the velocity's low words and add to +0x624 / +0x628 / +0x62c (byte
+## +0x619 = 1). State 0: speed +0x674 = 0x708 for type 0x21, else 0x980; the velocity from the heading; the next point
+## (leyte_next_route_point into a6 - 4); state 3. State 2: the ship and its carried objects move by the speed words;
+## reaching the point -> 3. State 3: aim at the point (leyte_heading_to_point, fold_angle_pm_0x2000 of the difference
+## with +0x22): beyond +-0x40 the turn is clamped and the state becomes 8, else 2; leyte_turn_ship. Other states count
+## down by one while moving.
+func leyte_steer_ship(ctl: int) -> void:
+	assert(memory != null, "leyte_steer_ship requires original global memory")
+	assert(a7 != 0, "leyte_steer_ship needs a7 (its frame holds the point pointer)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var ship: int = memory.read_u32(ctl)
+	memory.write_u16(ctl + 0x64e, memory.read_u16(ctl + 0xa))
+	memory.write_u16(ctl + 0x650, memory.read_u16(ctl + 0xe))
+	memory.write_u16(ctl + 0x652, memory.read_u16(ctl + 0x12))
+	for k in range(3):
+		memory.write_u32(ctl + 0x624 + 4 * k, C68kScript.u32(memory.read_s16(ctl + 0x64e + 2 * k) + memory.read_u32(ctl + 0x624 + 4 * k)))
+	memory.write_u8(ctl + 0x619, 1)
+	var route: int = memory.read_u32(ctl + 0x34)
+	var st: int = memory.read_s16(route)
+	if st == 0:
+		memory.write_u32(ctl + 0x674, 0x708 if memory.read_s16(memory.read_u32(ctl + 4)) == 0x21 else 0x980)
+		_ship_velocity(ctl)
+		a7 = entry_a7 - 0x38
+		leyte_next_route_point(ship, route + 4, a6 - 4, memory.read_u32(ctl + 0x674))
+		a7 = entry_a7
+		memory.write_u16(route, 3)
+	elif st == 2:
+		_move_ship(ctl, ship, entry_a7)
+		a7 = entry_a7 - 0x40
+		if leyte_next_route_point(ship, route + 4, a6 - 4, memory.read_u32(ctl + 0x674)) != 0:
+			memory.write_u16(route, 3)
+		a7 = entry_a7
+	elif st == 3:
+		a7 = entry_a7 - 0x30
+		leyte_next_route_point(ship, route + 4, a6 - 4, memory.read_u32(ctl + 0x674))
+		var p: int = memory.read_u32(a6 - 4)
+		a7 = entry_a7 - 0x40
+		var h: int = C68kScript.s16(leyte_heading_to_point(ship, memory.read_u32(p), memory.read_u32(p + 4), memory.read_u32(p + 8)))
+		a7 = entry_a7 - 0x24
+		var turn: int = C68kScript.s16(fold_angle_pm_0x2000(C68kScript.u32(h - memory.read_s16(ctl + 0x22))))
+		a7 = entry_a7
+		if abs_int(turn) > 0x40:
+			turn = -0x40 if turn < 0 else 0x40
+			memory.write_u16(route, 8)
+		else:
+			memory.write_u16(route, 2)
+		a7 = entry_a7 - 0x28
+		leyte_turn_ship(ctl, C68kScript.u32(turn))
+		a7 = entry_a7
+	else:
+		memory.write_u16(route, C68kScript.u16(memory.read_u16(route) - 1))
+		_move_ship(ctl, ship, entry_a7)
+
+## leyte_steer_ship: the ship and its carried objects move by the speed words (leyte_move_ship_attachments, 0x30 below).
+func _move_ship(ctl: int, ship: int, entry_a7: int) -> void:
+	var vx: int = memory.read_s16(ctl + 0x64e)
+	var vy: int = memory.read_s16(ctl + 0x650)
+	var vz: int = memory.read_s16(ctl + 0x652)
+	memory.write_u32(ship + 4, C68kScript.u32(vx + memory.read_u32(ship + 4)))
+	memory.write_u32(ship + 8, C68kScript.u32(vy + memory.read_u32(ship + 8)))
+	memory.write_u32(ship + 0xc, C68kScript.u32(vz + memory.read_u32(ship + 0xc)))
+	a7 = entry_a7 - 0x30
+	leyte_move_ship_attachments(ctl, C68kScript.u32(vx), C68kScript.u32(vy), C68kScript.u32(vz))
+	a7 = entry_a7
+
+## 0x18d1c (Leyte only; a2 saved; the kind-1 handler of 0x206ac): a ship without a route (+0x34) gets one of the four
+## points at 0x2067c placed through its chain (leyte_make_route(object, 8, 4, 0x2067c), 0x18 below), then steers (0x10
+## below).
+func leyte_ship_kind1(ctl: int) -> void:
+	assert(memory != null, "leyte_ship_kind1 requires original global memory")
+	var entry_a7: int = a7
+	if memory.read_u32(ctl + 0x34) == 0:
+		a7 = entry_a7 - 0x18
+		memory.write_u32(ctl + 0x34, C68kScript.u32(leyte_make_route(memory.read_u32(ctl), 8, 4, 0x2067c)))
+		a7 = entry_a7
+	a7 = entry_a7 - 0x10
+	leyte_steer_ship(ctl)
+	a7 = entry_a7
+
+## 0x18e20 (Leyte only; link a6 -4, three saved registers; a ship controller's +0x38): sinking (+0x670) ->
+## step_sinking_object (0x1c below), the velocity / speed words / speed cleared and the wake cleaned up. Otherwise the
+## first call fills the ship's links (leyte_ship_first_move unless byte +0x61b); kind word +0x32: 0 stays; 0x63 follows
+## the scene's route (leyte_route_from_scene(object, 8, a6 - 2), 0x24 below, made once: none -> kind 0; the nearest
+## index into the block's +4 and the pose ring filled from the ship (fill_pose_history_angles / fill_pose_history, 0x28 /
+## 0x38 below)) by leyte_steer_ship (0x1c below); other kinds run the handler 0x206ac[kind] when set (0x1c below).
+func leyte_ship_mover(ctl: int) -> void:
+	assert(memory != null, "leyte_ship_mover requires original global memory")
+	assert(a7 != 0, "leyte_ship_mover needs a7 (its frame holds the nearest index)")
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var ship: int = memory.read_u32(ctl)
+	if memory.read_u16(ctl + 0x670) != 0:
+		a7 = entry_a7 - 0x1c
+		step_sinking_object(ctl)
+		a7 = entry_a7
+		memory.write_u32(ctl + 8, 0)
+		memory.write_u16(ctl + 0x64e, 0)
+		memory.write_u32(ctl + 0x10, 0)
+		memory.write_u16(ctl + 0x652, 0)
+		memory.write_u32(ctl + 0x674, 0)
+		if memory.read_u32(ctl + 0x68e) != 0:
+			a7 = entry_a7 - 0x1c
+			dispatch_entity_cleanup(memory.read_u32(ctl + 0x68e))
+			a7 = entry_a7
+		return
+	if memory.read_u8(ctl + 0x61b) == 0:
+		a7 = entry_a7 - 0x1c
+		leyte_ship_first_move(ctl)
+		a7 = entry_a7
+	var kind: int = memory.read_s16(ctl + 0x32)
+	if kind == 0:
+		return
+	if kind == 0x63:
+		if memory.read_u32(ctl + 0x34) == 0:
+			a7 = entry_a7 - 0x24
+			var block: int = C68kScript.u32(leyte_route_from_scene(ship, 8, a6 - 2))
+			a7 = entry_a7
+			memory.write_u32(ctl + 0x34, block)
+			if block == 0:
+				memory.write_u16(ctl + 0x32, 0)
+				return
+			memory.write_u16(block + 4, memory.read_u16(a6 - 2))
+			a7 = entry_a7 - 0x28
+			fill_pose_history_angles(ctl + 0x3c, 0, 0, 0)
+			a7 = entry_a7 - 0x38
+			fill_pose_history(ctl + 0x3c, memory.read_u32(ship + 4), memory.read_u32(ship + 8), memory.read_u32(ship + 0xc))
+			a7 = entry_a7
+		a7 = entry_a7 - 0x1c
+		leyte_steer_ship(ctl)
+		a7 = entry_a7
+		return
+	var handler: int = memory.read_u32(C68kScript.u32(0x206ac + kind * 4))
+	if handler != 0:
+		a7 = entry_a7 - 0x1c
+		_jsr(handler, [ctl])
+		a7 = entry_a7
+
+## 0x18376 (Leyte only; seven saved registers; a landing ship's +0x38). Afloat (+0x698 == 0): with the countdown +0x69a
+## > 0 it counts down and moves (leyte_ship_mover, 0x24 below); else it moves, then probes the surface ahead
+## (surface_type_at_point, 0x2c below): countdown negative -> at the bow offset (+0x64e / +0x652); land (not 0x10) beaches
+## it (+0x698 = 1, the wake cleaned up, each type-1 face's byte +0x13 bit 1 toggled); countdown 0 -> 0x2d steps ahead:
+## water -> 0x2d frames, land -> -1. Beached: sinking -> step_sinking_object (0x24 below) with the motion cleared; else
+## with troops left (+0x696) and due (frame >= +0x69c): up to 20 bearings (rng & 0x4ff + heading - 0x280) find dry land
+## 100 ahead (surface 0x34 below) where leyte_spawn_tagged_object(0x27, bearing, x, 0, z, 0, bearing, 0) lands one (0x40
+## below); one fewer either way, next due frame + 0x3c + (rng & 0x3f).
+func leyte_landing_ship_mover(ctl: int) -> void:
+	assert(memory != null, "leyte_landing_ship_mover requires original global memory")
+	var entry_a7: int = a7
+	var ship: int = memory.read_u32(ctl)
+	if memory.read_u16(ctl + 0x698) == 0:
+		if memory.read_s16(ctl + 0x69a) > 0:
+			memory.write_u16(ctl + 0x69a, C68kScript.u16(memory.read_u16(ctl + 0x69a) - 1))
+			a7 = entry_a7 - 0x24
+			leyte_ship_mover(ctl)
+			a7 = entry_a7
+			return
+		a7 = entry_a7 - 0x24
+		leyte_ship_mover(ctl)
+		a7 = entry_a7
+		if memory.read_s16(ctl + 0x69a) < 0:
+			a7 = entry_a7 - 0x2c
+			var s: int = C68kScript.u32(surface_type_at_point(C68kScript.u32(memory.read_s16(ctl + 0x64e) + memory.read_u32(ship + 4)), 0,
+					C68kScript.u32(memory.read_s16(ctl + 0x652) + memory.read_u32(ship + 0xc))))
+			a7 = entry_a7
+			if s == 0x10:
+				return
+			memory.write_u16(ctl + 0x698, 1)
+			if memory.read_u32(ctl + 0x68e) != 0:
+				a7 = entry_a7 - 0x24
+				dispatch_entity_cleanup(memory.read_u32(ctl + 0x68e))
+				a7 = entry_a7
+			var face: int = memory.read_u32(ship + 0x4a)
+			for k in range(memory.read_u16(ship + 0x3c)):
+				if memory.read_u8(face + 0x17) == 1:
+					memory.write_u8(face + 0x13, memory.read_u8(face + 0x13) ^ 2)
+				face += 0x20
+			return
+		a7 = entry_a7 - 0x2c
+		var ahead: int = C68kScript.u32(surface_type_at_point(C68kScript.u32(memory.read_s16(ctl + 0x64e) * 0x2d + memory.read_u32(ship + 4)), 0,
+				C68kScript.u32(memory.read_s16(ctl + 0x652) * 0x2d + memory.read_u32(ship + 0xc))))
+		a7 = entry_a7
+		memory.write_u16(ctl + 0x69a, 0x2d if ahead == 0x10 else 0xffff)
+		return
+	if memory.read_u16(ctl + 0x670) != 0:
+		a7 = entry_a7 - 0x24
+		step_sinking_object(ctl)
+		a7 = entry_a7
+		memory.write_u32(ctl + 8, 0)
+		memory.write_u16(ctl + 0x64e, 0)
+		memory.write_u32(ctl + 0x10, 0)
+		memory.write_u16(ctl + 0x652, 0)
+		memory.write_u32(ctl + 0x674, 0)
+		return
+	if memory.read_u16(ctl + 0x696) == 0 or memory.read_s32(0x21020) < memory.read_s32(ctl + 0x69c):
+		return
+	for tries in range(20):
+		var bearing: int = ((overlay_rng_next() & 0x4ff) + memory.read_u16(ctl + 0x22) + 0xfd80) & 0x3fff
+		var x: int = C68kScript.s32(memory.read_u32(ship + 4) - C68kScript.asr32(C68kScript.s16(sin_fixed14(bearing)) * 100, 12))
+		var z: int = C68kScript.s32(C68kScript.asr32(C68kScript.s16(cos_fixed14(bearing)) * 100, 12) + memory.read_u32(ship + 0xc))
+		a7 = entry_a7 - 0x34
+		var s2: int = C68kScript.u32(surface_type_at_point(C68kScript.u32(x), 0, C68kScript.u32(z)))
+		a7 = entry_a7
+		if s2 != 0x10:
+			a7 = entry_a7 - 0x40
+			leyte_spawn_tagged_object(0x27, bearing, C68kScript.u32(x), 0, C68kScript.u32(z), 0, bearing, 0)
+			a7 = entry_a7
+			break
+	memory.write_u16(ctl + 0x696, C68kScript.u16(memory.read_u16(ctl + 0x696) - 1))
+	memory.write_u32(ctl + 0x69c, C68kScript.u32((overlay_rng_next() & 0x3f) + 0x3c + memory.read_u32(0x21020)))
