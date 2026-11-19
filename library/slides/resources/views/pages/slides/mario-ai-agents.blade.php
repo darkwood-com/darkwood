@@ -1,5 +1,5 @@
 <x-darkwood.deck transition="fade">
-<x-darkwood.cover title="Symfony AI × MCP" subtitle="Un brief, un outil réel, une géométrie vérifiée" overline="Darkwood · Hackathon 2026" date="18-11-2026" />
+<x-darkwood.cover title="Symfony AI × MCP" subtitle="Un brief, un outil réel, une géométrie vérifiée" overline="Darkwood · Hackathon 2026" date="19-11-2026" />
 
 <x-darkwood.content title="Le problème" overline="Conception de niveaux" :top="false" label="02 | problème">
 <p>Un texte convaincant ne garantit pas un niveau exploitable.</p>
@@ -48,7 +48,24 @@ $command = "php bin/console app:mario:design \
 <p>Cette mesure isolée n’est pas un benchmark.</p>
 </x-darkwood.content>
 
-<x-darkwood.content title="Ce que la preuve établit" overline="Reproduction et limites" :top="false" label="09 | conclusion">
+<x-darkwood.content title="Des articles aux preuves" overline="Six cards, des maturités distinctes" :top="false" label="09 | écosystème">
+<ul><li>Mario : génération réelle ; MCP Apps : publication simulée</li><li>Composio → Connect Flow : connecteurs puis orchestration</li><li>Recherche Entreprise : protocole personnalisé ; Flowvox : voix et Flow</li></ul>
+<p>Les articles donnent le contexte historique. Le code et les essais déterminent ce qui fonctionne aujourd’hui.</p>
+<p><a href="https://ai-mcp-symfony-hackathon-content.darkwood.com/#selection">Dépôts, articles canoniques et limites de chaque card</a></p>
+</x-darkwood.content>
+
+<x-darkwood.content title="Observer DarkwoodGame" overline="Complément local · compte synthétique" :top="false" label="10 | DarkwoodGame">
+@php
+$observation = "Agent Symfony AI → client SDK MCP 0.10
+  → serveur Portal existant → API DarkwoodGame
+  → état réel de la base locale → interprétation";
+@endphp
+<x-darkwood.code :source="$observation" language="text" title="Observation séparée de toute action" />
+<p>4 outils qualifiés : état, liste d’archives, archive, action.</p>
+<p>L’agent ne reçoit que l’outil de lecture. Une action exige un accord client exact ; permissions et quotas restent appliqués.</p>
+</x-darkwood.content>
+
+<x-darkwood.content title="Ce que la preuve établit" overline="Reproduction et limites" :top="false" label="11 | conclusion">
 <ul><li>Agent → outil MCP → résultat réel vérifié</li><li>Installation publique sous Nix, clé personnelle</li><li>La géométrie ne prouve pas la jouabilité</li></ul>
 <p><a href="https://ai-mcp-symfony-hackathon-content.darkwood.com/">Atelier, code et instructions de reproduction</a></p>
 <p>Candidature en préparation. Aucune soumission ou sélection annoncée.</p>

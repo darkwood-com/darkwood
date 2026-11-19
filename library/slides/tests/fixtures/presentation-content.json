@@ -6371,7 +6371,7 @@
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "18-11-2026"
+                            "19-11-2026"
                         ]
                     }
                 },
@@ -6439,7 +6439,7 @@
             ]
         },
         "mario-ai-agents": {
-            "count": 9,
+            "count": 11,
             "slides": [
                 {
                     "id": "mario-ai-agents-0",
@@ -6454,7 +6454,7 @@
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "18-11-2026"
+                            "19-11-2026"
                         ]
                     }
                 },
@@ -6602,6 +6602,50 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
+                            "Composio → Connect Flow : connecteurs puis orchestration",
+                            "Des articles aux preuves",
+                            "Dépôts, articles canoniques et limites de chaque card",
+                            "Les articles donnent le contexte historique. Le code et les essais déterminent ce qui fonctionne aujourd’hui.",
+                            "Mario : génération réelle ; MCP Apps : publication simulée",
+                            "Recherche Entreprise : protocole personnalisé ; Flowvox : voix et Flow",
+                            "Six cards, des maturités distinctes"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/#selection"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "09 | écosystème"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-9",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "4 outils qualifiés : état, liste d’archives, archive, action.",
+                            "Complément local · compte synthétique",
+                            "L’agent ne reçoit que l’outil de lecture. Une action exige un accord client exact ; permissions et quotas restent appliqués.",
+                            "Observation séparée de toute action",
+                            "Observer DarkwoodGame"
+                        ],
+                        "code": [
+                            "Agent Symfony AI → client SDK MCP 0.10\n  → serveur Portal existant → API DarkwoodGame\n  → état réel de la base locale → interprétation"
+                        ],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "10 | DarkwoodGame"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-10",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
                             "Agent → outil MCP → résultat réel vérifié",
                             "Atelier, code et instructions de reproduction",
                             "Candidature en préparation. Aucune soumission ou sélection annoncée.",
@@ -6616,7 +6660,7 @@
                         ],
                         "hooks": [],
                         "footer": [
-                            "09 | conclusion"
+                            "11 | conclusion"
                         ]
                     }
                 }

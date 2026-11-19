@@ -22,7 +22,7 @@ nix --extra-experimental-features 'nix-command flakes' develop -c node build.mjs
 nix --extra-experimental-features 'nix-command flakes' develop -c node validate.mjs
 ```
 
-L'unique sortie publiable est `dist/`. Elle contient une page, neuf ressources,
+L'unique sortie publiable est `dist/`. Elle contient une page, douze ressources,
 `CNAME` et `.nojekyll`. Les sources et ressources ont été transférées depuis
 l'atelier existant ; aucun framework ou système de build supplémentaire n'est
 nécessaire. Les copies locales du thème permettent une génération autonome.
@@ -58,4 +58,20 @@ The main path is designer agent → official SDK client → existing SDK server 
 
 ## Recorded media
 
-`public/hackathon/actual-demo.mp4` is the reviewed 89.68-second real execution at source commit `e55d2593165b82cbb495d3c14341d610d85a63be`, with Navi narration. `workshop-fr.mp4` is the separate 282.5-second narrated pedagogical presentation. These static files do not execute a model. The contest entry has not been submitted.
+`public/hackathon/actual-demo.mp4` is the reviewed 89.68-second real execution at source commit `e55d2593165b82cbb495d3c14341d610d85a63be`, with Navi narration. `workshop-fr.mp4` is the separate 384.5-second narrated pedagogical presentation. These static files do not execute a model. The contest entry has not been submitted.
+
+## Iteration 2: dated evidence and avatar
+
+The six card summaries link their public articles and separate current execution,
+historical context and simulated behavior. `darkwood-game-proof.json` records a
+real Symfony AI observer calling the existing Portal server against isolated local
+synthetic data, all four tool checks, approval and quota refusals. Production
+checks are discovery and refusal without a key only. Mario remains independent.
+
+The 19 November presentation treatment reuses Navi's existing MATYO91 static
+portrait. The short film retains the entire actual 18 November execution, with
+the portrait only on intro/outro. This is not a new generation or talking head.
+Navi's existing command uses `--avatar=assets/images/avatar.jpg` and
+`--avatar-bottom-margin=124`. The French workshop has eleven slides; the English
+short version four. The previous media remain recoverable from commit
+`2d729174cf76a1baef2ab55ee9527c43a9613446` through a normal revert/republication.

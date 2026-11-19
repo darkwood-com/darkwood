@@ -132,3 +132,53 @@ ToolFactoryInterface; regression checks assert the bound and rejection of extra
 properties. The routing prompt asks for a concise brief, not level JSON. This was
 our adapter defect, not an asserted upstream SDK bug. Failed attempts were retained
 and never presented as successful captures.
+
+## Iteration 2 — 19 November 2026
+
+Complete original editorial notes were read for Mario, MCP Apps, Composio/Connect
+Flow and both Flowvox articles, plus related company-search context. Private
+note bodies and planning are not distributed. Public canonical references are
+linked from the six workshop cards. The company-search article is related
+context, not proof of every Astra/Arize/Langflow feature in that card. The
+RapidAPI scraping article concerns another card and was excluded.
+
+The historical four-agent/Godot Mario article does not prove the contest path;
+current evidence covers actual level geometry. MCP Apps still simulates drafting
+and publishing. No fresh complete external Composio/Ollama connector run or
+microphone/mobile Flowvox run is claimed. Recherche Entreprise uses custom
+JSON-RPC/SSE, not the official SDK. Canonical card statuses are unchanged.
+
+### Supplemental DarkwoodGame evidence
+
+Four tools were already declared on the existing Portal MCP server. This
+iteration qualified schemas, API forwarding, authentication, permissions, quotas
+and action approval without creating another server. A real Symfony AI observer
+and official SDK HTTP client read a synthetic player through the actual local
+API. Only `user`, `state`, `mode`, `display` are returned; no detailed inventory
+is claimed. The agent receives only the state tool. Public evidence:
+`public/hackathon/darkwood-game-proof.json`.
+
+All four operations were exercised locally. An unapproved action was refused;
+an approved main-menu request succeeded. A free-key quota of two accepted two
+requests then refused the third, with persisted count two. Premium archives were
+refused for the free key. No combat was executed. The approval digest binds user
+and sorted query within a request; it is not a secret, expiry, signature or
+replay protection. A trusted client must obtain consent per action and must not
+inject a global approval header or retry mutations automatically.
+
+Production retains SDK 0.8.1 and MCP Bundle 0.14.1; relevant APIs were checked
+without upgrading dependencies. Four-tool discovery and refusal without an API
+key passed. No authenticated production player read or game action was executed.
+OIDC metadata stayed identical and login/API docs remained accessible; a complete
+SSO authentication journey was not tested. Mario remains independently executable
+without private Portal access and is still the single contest candidate.
+
+### Avatar and recording provenance
+
+Navi reuses its existing MATYO91 portrait as a static overlay, not a talking head
+or lip-synced avatar. No Replicate call was made. In the short film it appears
+only in the narrated introduction/conclusion. The entire actual capture remains
+the 18 November run at commit `e55d2593165b82cbb495d3c14341d610d85a63be`.
+Slides and presentation treatment are updated on 19 November. This retained
+capture is not presented as a new generation. The supplementary real DarkwoodGame
+observer was independently run on 19 November in an isolated local database.

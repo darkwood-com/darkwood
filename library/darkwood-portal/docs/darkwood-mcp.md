@@ -43,3 +43,19 @@ The S47 isolated run boots this actual Portal kernel with a disposable SQLite da
 Unit regressions exercise the relay, secret-field removal, HTTP errors, marked-subrequest beta/quota checks, consumed approval, malformed actions and dates. Fixture data are explicitly separated from the real API code and a real provider interpretation. No production player data are modified and no production credentials are required for this qualification. The pre-existing quota initialization used MySQL-only INSERT IGNORE. It now keeps that branch for MySQL/MariaDB and uses ON CONFLICT DO NOTHING on PostgreSQL/SQLite, with the existing guarded atomic increment unchanged. A real in-memory SQLite regression verifies two accepted increments, a refused third increment and a single persisted row; the zero-quota subscriber path is also covered. These tests do not claim to benchmark production concurrency.
 
 The existing `content-mario-orquestration` card supplies a secondary `app:mario:observe-darkwood` command: a real Symfony AI agent uses the official SDK HTTP client and **only** the qualified state tool, then explains the actual response. The original level-design submission remains independent and executable without a Portal instance.
+
+## Production verification — 19 November 2026
+
+The scoped runtime update retained the production vendor set: API Platform 4.4.6,
+MCP SDK 0.8.1, MCP Bundle 0.14.1, FrameworkBundle 8.1.10. Local qualification
+used SDK 0.9.0 and MCP Bundle 0.15.0; the optional Mario HTTP client uses SDK 0.10.0.
+Relevant loader/handler APIs were checked before deployment. No Composer update
+or database migration was performed in production. Protocol initialization,
+four-tool discovery and refusal of state access without an API key passed.
+Authenticated player reads and game actions were not executed in production.
+
+A disposable local database independently exercised all four operations, an
+unapproved action refusal, an approved main-menu request and the free-key quota:
+two accepted requests, the third refused, persisted usage count two. Premium
+archive access was refused after downgrading the synthetic key. These are real
+local API responses from synthetic data, not observations of a production player.

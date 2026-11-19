@@ -1,0 +1,251 @@
+{
+  "verified_at": "2026-11-19T04:39:19.547565+00:00",
+  "public_source_commit": "4e0621930559abc442244fa25afebc14553e1576",
+  "environment": "Local Portal kernel and HTTP server, disposable SQLite, synthetic player and archive. Not production player data.",
+  "observer": {
+    "agent": "darkwood_observer",
+    "mode": "real_ai",
+    "transport": "official SDK HTTP client and existing Portal MCP server",
+    "observations": [
+      {
+        "user": 6,
+        "state": "main",
+        "mode": null,
+        "display": "web"
+      }
+    ],
+    "summary": "The API returned these fields exactly:\n\n- user: 6\n- state: \"main\"\n- mode: null\n- display: \"web\"\n\nSuggested next step (optional): request a more detailed player status or full game state (if you want me to fetch that, tell me to do so).",
+    "action_tool_exposed": false
+  },
+  "local_sdk_calls": [
+    {
+      "tool": "get_darkwood_state",
+      "http_status": 200,
+      "is_error": false,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"user\":6,\"state\":\"main\",\"mode\":null,\"display\":\"web\"}"
+            }
+          ],
+          "isError": false,
+          "structuredContent": {
+            "user": 6,
+            "state": "main",
+            "mode": null,
+            "display": "web"
+          }
+        }
+      }
+    },
+    {
+      "tool": "list_darkwood_archives",
+      "http_status": 200,
+      "is_error": false,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"archives\":[{\"id\":\"2026-11-19\",\"date\":\"2026-11-19\"},{\"id\":\"2026-03-08\",\"date\":\"2026-03-08\"},{\"id\":\"2026-02-01\",\"date\":\"2026-02-01\"}]}"
+            }
+          ],
+          "isError": false,
+          "structuredContent": {
+            "archives": [
+              {
+                "id": "2026-11-19",
+                "date": "2026-11-19"
+              },
+              {
+                "id": "2026-03-08",
+                "date": "2026-03-08"
+              },
+              {
+                "id": "2026-02-01",
+                "date": "2026-02-01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "tool": "get_darkwood_archive",
+      "http_status": 200,
+      "is_error": false,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 6,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"state\":\"not-logged\",\"user\":null,\"source\":\"isolated local archive, not production\"}"
+            }
+          ],
+          "isError": false,
+          "structuredContent": {
+            "state": "not-logged",
+            "user": null,
+            "source": "isolated local archive, not production"
+          }
+        }
+      }
+    },
+    {
+      "tool": "darkwood_action",
+      "http_status": 200,
+      "is_error": true,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 7,
+        "error": {
+          "code": -32603,
+          "message": "Explicit client approval for this exact action is required."
+        }
+      }
+    },
+    {
+      "tool": "darkwood_action",
+      "http_status": 200,
+      "is_error": false,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 8,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"user\":6,\"state\":\"main\",\"mode\":null,\"display\":\"web\"}"
+            }
+          ],
+          "isError": false,
+          "structuredContent": {
+            "user": 6,
+            "state": "main",
+            "mode": null,
+            "display": "web"
+          }
+        }
+      }
+    },
+    {
+      "tool": "get_darkwood_state",
+      "http_status": 200,
+      "is_error": true,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 9,
+        "error": {
+          "code": -32603,
+          "message": "A valid Darkwood API key and player authentication are required."
+        }
+      }
+    },
+    {
+      "tool": "darkwood_action",
+      "http_status": 200,
+      "is_error": false,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 20,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"user\":6,\"state\":\"main\",\"mode\":null,\"display\":\"web\"}"
+            }
+          ],
+          "isError": false,
+          "structuredContent": {
+            "user": 6,
+            "state": "main",
+            "mode": null,
+            "display": "web"
+          }
+        }
+      }
+    },
+    {
+      "tool": "darkwood_action",
+      "http_status": 200,
+      "is_error": false,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 21,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"user\":6,\"state\":\"main\",\"mode\":null,\"display\":\"web\"}"
+            }
+          ],
+          "isError": false,
+          "structuredContent": {
+            "user": 6,
+            "state": "main",
+            "mode": null,
+            "display": "web"
+          }
+        }
+      }
+    },
+    {
+      "tool": "darkwood_action",
+      "http_status": 200,
+      "is_error": true,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 22,
+        "error": {
+          "code": -32603,
+          "message": "Darkwood daily action limit reached."
+        }
+      }
+    },
+    {
+      "tool": "list_darkwood_archives",
+      "http_status": 200,
+      "is_error": true,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 24,
+        "error": {
+          "code": -32603,
+          "message": "Darkwood access denied; check active beta and premium permissions."
+        }
+      }
+    }
+  ],
+  "quota": {
+    "approved_menu_requests_accepted": 2,
+    "third_request_refused": true,
+    "persisted_count": 2,
+    "free_archive_refused": true,
+    "environment": "isolated local SQLite, synthetic account"
+  },
+  "production": {
+    "endpoint": "https://api.darkwood.com/mcp",
+    "discovery_verified": true,
+    "tools_count": 4,
+    "missing_key_refused": true,
+    "authenticated_game_reads": 0,
+    "game_actions": 0,
+    "portal_sdk": "0.8.1",
+    "portal_mcp_bundle": "0.14.1",
+    "dependency_upgrade": false
+  },
+  "limits": [
+    "The state endpoint returns user, state, mode and display, not a detailed character inventory.",
+    "The approved local action selects the main menu; no combat or production mutation was exercised.",
+    "The approval digest binds user and sorted query within one request; it is not a secret, signature, expiry or replay protection. A trusted client must obtain human consent for each action.",
+    "The observer agent is read only. The principal contest demonstration remains standalone Mario level design."
+  ]
+}

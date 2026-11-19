@@ -1,5 +1,5 @@
 <x-darkwood.deck transition="fade">
-<x-darkwood.cover title="Original level designer" subtitle="Symfony AI + the official PHP MCP SDK" overline="Darkwood · Hackathon 2026" date="18-11-2026" />
+<x-darkwood.cover title="Original level designer" subtitle="Symfony AI + the official PHP MCP SDK" overline="Darkwood · Hackathon 2026" date="19-11-2026" />
 <x-darkwood.content title="A real tool call" overline="Agent → MCP → checked JSON" :top="false" label="02 | execution">
 @php
 $command = "php bin/console app:mario:design \
