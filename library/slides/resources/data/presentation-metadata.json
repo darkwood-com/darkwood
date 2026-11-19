@@ -99,13 +99,13 @@
     "date_note": "No dedicated publication date in canonical metadata; footer labels are preserved separately."
   },
   "32e0ac94-aca0-4c2d-a9c4-520149df813e": {
-    "cover_title": "Symfony AI × MCP",
-    "subtitle": "Un brief, un outil réel, une géométrie vérifiée",
-    "overline": "Darkwood · Hackathon 2026",
+    "cover_title": "Darkwood MCP Experience",
+    "subtitle": "One ecosystem. Multiple capabilities. One AI experience.",
+    "overline": "Darkwood · Symfony AI & MCP Hackathon 2026",
     "author": "@matyo91",
     "footer_label": null,
-    "date": "18-11-2026",
-    "date_note": "Current verified hackathon iteration, not submission or acceptance."
+    "date": "19-11-2026",
+    "date_note": "Guided experience; recorded execution dates labelled separately; not submitted."
   },
   "2ae239c4-47cc-44a9-ae68-39933ab8c722": {
     "cover_title": null,
@@ -258,12 +258,12 @@
     "date": "2026-11-08"
   },
   "55ea6e1d-f9f8-4630-928f-e3f1445b09d4": {
-    "cover_title": "Original level designer",
-    "subtitle": "Symfony AI + the official PHP MCP SDK",
-    "overline": "Darkwood · Hackathon 2026",
+    "cover_title": "Darkwood MCP Experience",
+    "subtitle": "One ecosystem. Multiple capabilities. One AI experience.",
+    "overline": "Darkwood · Symfony AI & MCP Hackathon 2026",
     "author": "@matyo91",
     "footer_label": null,
-    "date": "18-11-2026",
-    "date_note": "Current verified hackathon iteration, not submission or acceptance."
+    "date": "19-11-2026",
+    "date_note": "Guided experience; recorded execution dates labelled separately; not submitted."
   }
 }

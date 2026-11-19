@@ -1,73 +1,48 @@
 <x-darkwood.deck transition="fade">
-<x-darkwood.cover title="Symfony AI × MCP" subtitle="Un brief, un outil réel, une géométrie vérifiée" overline="Darkwood · Hackathon 2026" date="19-11-2026" />
-
-<x-darkwood.content title="Le problème" overline="Conception de niveaux" :top="false" label="02 | problème">
-<p>Un texte convaincant ne garantit pas un niveau exploitable.</p>
-<ul><li>Interpréter le besoin du concepteur</li><li>Contrôler les coordonnées produites</li><li>Faire approuver l’export local</li></ul>
+<x-darkwood.cover title="Darkwood MCP Experience" subtitle="One ecosystem. Multiple capabilities. One AI experience." overline="Bienvenue dans Darkwood · MATYO91 · Votre guide" date="19-11-2026" />
+<x-darkwood.content title="Explorer l’écosystème" overline="Darkwood MCP Experience" :top="false" label="02 | explore → use → inspect">
+<x-darkwood.columns :count="3">
+<div class="sw-column"><h3>Mario</h3><p>Générer une géométrie originale</p></div>
+<div class="sw-column"><h3>MCP Apps</h3><p>Prototype de publication · simulé</p></div>
+<div class="sw-column"><h3>Composio MCP</h3><p>Connecteurs · expérience historique</p></div>
+<div class="sw-column"><h3>Recherche Entreprise</h3><p>Recherche société · MCP personnalisé</p></div>
+<div class="sw-column"><h3>Flowvox</h3><p>Workflows vocaux · à qualifier</p></div>
+<div class="sw-column"><h3>Connect Flow</h3><p>Orchestration · expérimentation</p></div>
+</x-darkwood.columns>
+<p><a href="https://ai-mcp-symfony-hackathon-content.darkwood.com/#selection">Code, articles et maturité de chaque card</a></p>
 </x-darkwood.content>
-
-<x-darkwood.content title="Un artefact vérifiable" overline="La solution retenue" :top="false" label="03 | solution">
-<p>Une seule card existante : Mario Orchestration.</p>
-<ul><li>Un brief original, un appel d’outil</li><li>Du JSON et une vue de sa géométrie</li><li>Aucun fichier écrit sans approbation</li></ul>
+<x-darkwood.content title="Demander une capacité" overline="Darkwood MCP Experience" :top="false" label="03 | explore → use → inspect">
+<p class="sw-lead">« Créer un petit niveau de forêt original. »</p>
+<div class="sw-process"><div class="sw-process-step">Votre demande</div><div class="sw-process-arrow"><x-darkwood.arrow /></div><div class="sw-process-step">Symfony AI</div><div class="sw-process-arrow"><x-darkwood.arrow /></div><div class="sw-process-step">Outil MCP</div></div>
 </x-darkwood.content>
-
-<x-darkwood.content title="Le parcours exécuté" overline="Architecture réelle" :top="false" label="04 | architecture">
+<x-darkwood.content title="Choisir un parcours réel" overline="Darkwood MCP Experience" :top="false" label="04 | explore → use → inspect">
+<x-darkwood.columns :count="2"><div class="sw-column"><h3>Mario</h3><p><code>generate_original_level</code></p><p>Un brief → une géométrie vérifiée</p></div><div class="sw-column"><h3>DarkwoodGame</h3><p><code>get_darkwood_state</code></p><p>API locale → observation en lecture seule</p></div></x-darkwood.columns>
+<p>Démos indépendantes. Aucun enchaînement automatique entre cards.</p>
+</x-darkwood.content>
+<x-darkwood.content title="Voir l’outil travailler" overline="Exécution enregistrée · 18 novembre 2026" :top="false" label="05 | explore → use → inspect">
 @php
-$pipeline = "Brief utilisateur
-  → Symfony AI : level_designer
-  → Toolbox : client MCP officiel
-  → Serveur MCP : level_generator
-  → Validation PHP → JSON + aperçu approuvé";
+$command = "php bin/console app:mario:design \\\n  --prompt='Create a small original forest level' \\\n  --approve-export";
 @endphp
-<x-darkwood.code :source="$pipeline" language="text" title="Même application Symfony, serveur stdio existant" />
+<x-darkwood.terminal :source="$command" title="Un brief original, puis un export local approuvé" />
+<p>Symfony AI réel → client SDK officiel → serveur MCP.</p>
 </x-darkwood.content>
-
-<x-darkwood.content title="Le rôle de Symfony AI" overline="Agent · Platform · Toolbox" :top="false" label="05 | Symfony AI">
-<ul><li>Interpréter le brief et appeler l’outil</li><li>Générer le niveau puis expliquer le résultat</li><li>Agent et Platform 1.0.0-BETA1, modèle gpt-5-mini</li></ul>
-<p>Les règles géométriques restent en PHP.</p>
-</x-darkwood.content>
-
-<x-darkwood.content title="Le rôle de MCP" overline="SDK PHP officiel 0.10.0" :top="false" label="06 | MCP">
-<ul><li>Client et serveur du SDK officiel</li><li>Découverte par tools/list, appel par tools/call</li><li>Un schéma SDK préservé : generate_original_level</li></ul>
-<p>Un adaptateur Toolbox relie les API existantes. Aucun protocole maison.</p>
-</x-darkwood.content>
-
-<x-darkwood.content title="Exécuter puis approuver" overline="Démonstration" :top="false" label="07 | exécution">
+<x-darkwood.content title="Observer une autre capacité" overline="Darkwood MCP Experience" :top="false" label="06 | explore → use → inspect">
 @php
-$command = "php bin/console app:mario:design \
-  --prompt='Un petit niveau de forêt original' \
-  --approve-export";
+$state = '{"user":6,"state":"main","mode":null,"display":"web"}';
 @endphp
-<x-darkwood.terminal :source="$command" title="Depuis library/content-mario-orquestration" />
-<p>Une nouvelle sortie locale : level.json, evidence.json et preview.html.</p>
+<x-darkwood.code :source="$state" language="json" title="get_darkwood_state" />
+<p>Un agent Symfony AI en lecture seule explique ces champs exacts.</p>
+<p>API locale enregistrée · 19 novembre · joueur synthétique</p>
 </x-darkwood.content>
-
-<x-darkwood.content title="Le résultat observé" overline="Essai réel du 18 novembre 2026" :top="false" label="08 | résultat">
-<img src="{{ asset('darkwood/hackathon/level-preview.png') }}" alt="Aperçu de la géométrie du niveau Forest Clearing - Beginner réellement généré" style="max-width:100%;max-height:340px;object-fit:contain" />
-<p>48 × 15 cases · 4 pièces de terrain · 3 objets · 47,6 s sur cet essai.</p>
-<p>Cette mesure isolée n’est pas un benchmark.</p>
+<x-darkwood.content title="Inspecter le résultat" overline="Darkwood MCP Experience" :top="false" label="07 | explore → use → inspect">
+<img src="{{ asset('darkwood/hackathon/level-preview.png') }}" alt="Forest Clearing - Beginner: actual generated geometry, not a playable game" style="max-width:100%;max-height:300px;object-fit:contain" />
+<p>48 × 15 cases · JSON + preuve + aperçu approuvé</p>
+<p>La géométrie vérifiée ne prouve pas la jouabilité.</p>
 </x-darkwood.content>
-
-<x-darkwood.content title="Des articles aux preuves" overline="Six cards, des maturités distinctes" :top="false" label="09 | écosystème">
-<ul><li>Mario : génération réelle ; MCP Apps : publication simulée</li><li>Composio → Connect Flow : connecteurs puis orchestration</li><li>Recherche Entreprise : protocole personnalisé ; Flowvox : voix et Flow</li></ul>
-<p>Les articles donnent le contexte historique. Le code et les essais déterminent ce qui fonctionne aujourd’hui.</p>
-<p><a href="https://ai-mcp-symfony-hackathon-content.darkwood.com/#selection">Dépôts, articles canoniques et limites de chaque card</a></p>
-</x-darkwood.content>
-
-<x-darkwood.content title="Observer DarkwoodGame" overline="Complément local · compte synthétique" :top="false" label="10 | DarkwoodGame">
-@php
-$observation = "Agent Symfony AI → client SDK MCP 0.10
-  → serveur Portal existant → API DarkwoodGame
-  → état réel de la base locale → interprétation";
-@endphp
-<x-darkwood.code :source="$observation" language="text" title="Observation séparée de toute action" />
-<p>4 outils qualifiés : état, liste d’archives, archive, action.</p>
-<p>L’agent ne reçoit que l’outil de lecture. Une action exige un accord client exact ; permissions et quotas restent appliqués.</p>
-</x-darkwood.content>
-
-<x-darkwood.content title="Ce que la preuve établit" overline="Reproduction et limites" :top="false" label="11 | conclusion">
-<ul><li>Agent → outil MCP → résultat réel vérifié</li><li>Installation publique sous Nix, clé personnelle</li><li>La géométrie ne prouve pas la jouabilité</li></ul>
-<p><a href="https://ai-mcp-symfony-hackathon-content.darkwood.com/">Atelier, code et instructions de reproduction</a></p>
-<p>Candidature en préparation. Aucune soumission ou sélection annoncée.</p>
+<x-darkwood.content title="Darkwood MCP Experience" overline="Darkwood MCP Experience" :top="false" label="08 | explore → use → inspect">
+<p class="sw-lead">One ecosystem. Multiple capabilities. One AI experience.</p>
+<p>Code public · Symfony AI + SDK PHP MCP officiel</p>
+<p><a href="https://ai-mcp-symfony-hackathon-content.darkwood.com/">ai-mcp-symfony-hackathon-content.darkwood.com</a></p>
+<p>Candidature préparée, non soumise.</p>
 </x-darkwood.content>
 </x-darkwood.deck>

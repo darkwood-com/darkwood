@@ -6356,16 +6356,16 @@
             ]
         },
         "mario-ai-agents-hackathon": {
-            "count": 4,
+            "count": 8,
             "slides": [
                 {
                     "id": "mario-ai-agents-hackathon-0",
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Darkwood · Hackathon 2026",
-                            "Original level designer",
-                            "Symfony AI + the official PHP MCP SDK"
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience.",
+                            "Welcome to Darkwood · MATYO91 · Your guide"
                         ],
                         "code": [],
                         "links": [],
@@ -6380,18 +6380,29 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "A real tool call",
-                            "Agent → MCP → checked JSON",
-                            "Existing Darkwood Symfony application",
-                            "The agent interprets the brief. The SDK client calls the real server."
+                            "Code, articles and maturity of each card",
+                            "Company search · custom MCP",
+                            "Composio MCP",
+                            "Connect Flow",
+                            "Connectors · historical experiment",
+                            "Darkwood MCP Experience",
+                            "Discover the ecosystem",
+                            "Flowvox",
+                            "Generate original geometry",
+                            "MCP Apps",
+                            "Mario",
+                            "Orchestration · experiment",
+                            "Publishing prototype · simulated",
+                            "Recherche Entreprise",
+                            "Voice workflows · qualification needed"
                         ],
-                        "code": [
-                            "php bin/console app:mario:design \\\n  --prompt='An original beginner forest level' \\\n  --approve-export"
+                        "code": [],
+                        "links": [
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/#selection"
                         ],
-                        "links": [],
                         "hooks": [],
                         "footer": [
-                            "02 | execution"
+                            "02 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6400,17 +6411,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Actual generated geometry",
-                            "Checked coordinates, structured JSON and execution evidence.",
-                            "Inspect the result"
+                            "Ask for a capability",
+                            "Darkwood MCP Experience",
+                            "MCP tool",
+                            "Symfony AI",
+                            "Your request",
+                            "“Create a small original forest level.”"
                         ],
                         "code": [],
-                        "links": [
-                            "http://localhost/darkwood/hackathon/level-preview.png"
-                        ],
+                        "links": [],
                         "hooks": [],
                         "footer": [
-                            "03 | evidence"
+                            "03 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6419,36 +6431,120 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Geometry is not proof of playability",
-                            "No hidden fixture or model-side publishing",
-                            "Public code and quickstart",
-                            "Public source · MIT · Nix",
-                            "Reproduce it",
-                            "Symfony AI 1.0.0-BETA1 + mcp/sdk 0.10.0"
+                            "A brief → checked geometry",
+                            "Choose a real path",
+                            "Darkwood MCP Experience",
+                            "DarkwoodGame",
+                            "Local API → read-only observation",
+                            "Mario",
+                            "Separate demos. No automatic hand-off between cards.",
+                            "generate_original_level",
+                            "get_darkwood_state"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "04 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-4",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "An original brief, then an approved local export",
+                            "Real Symfony AI → official SDK client → MCP server.",
+                            "Recorded execution · 18 November 2026",
+                            "Watch the tool work"
+                        ],
+                        "code": [
+                            "php bin/console app:mario:design \\\n  --prompt='Create a small original forest level' \\\n  --approve-export"
+                        ],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "05 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-5",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "A read-only Symfony AI agent interprets these exact fields.",
+                            "Darkwood MCP Experience",
+                            "Observe another capability",
+                            "Recorded local API · 19 November · synthetic player",
+                            "get_darkwood_state"
+                        ],
+                        "code": [
+                            "{\"user\":6,\"state\":\"main\",\"mode\":null,\"display\":\"web\"}"
+                        ],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "06 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-6",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "48 × 15 tiles · JSON + evidence + approved preview",
+                            "Checked geometry is not proof of playability.",
+                            "Darkwood MCP Experience",
+                            "Inspect the result"
                         ],
                         "code": [],
                         "links": [
-                            "https://github.com/darkwood-com/darkwood/tree/main/library/content-mario-orquestration"
+                            "http://localhost/darkwood/hackathon/level-preview.png"
                         ],
                         "hooks": [],
                         "footer": [
-                            "04 | limits"
+                            "07 | explore → use → inspect"
+                        ]
+                    }
+                },
+                {
+                    "id": "mario-ai-agents-hackathon-7",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Darkwood MCP Experience",
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience.",
+                            "Prepared for the hackathon. Not yet submitted.",
+                            "Public code · Symfony AI + official PHP MCP SDK",
+                            "ai-mcp-symfony-hackathon-content.darkwood.com"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "08 | explore → use → inspect"
                         ]
                     }
                 }
             ]
         },
         "mario-ai-agents": {
-            "count": 11,
+            "count": 8,
             "slides": [
                 {
                     "id": "mario-ai-agents-0",
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Darkwood · Hackathon 2026",
-                            "Symfony AI × MCP",
-                            "Un brief, un outil réel, une géométrie vérifiée"
+                            "Bienvenue dans Darkwood · MATYO91 · Votre guide",
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience."
                         ],
                         "code": [],
                         "links": [],
@@ -6463,18 +6559,29 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Conception de niveaux",
-                            "Contrôler les coordonnées produites",
-                            "Faire approuver l’export local",
-                            "Interpréter le besoin du concepteur",
-                            "Le problème",
-                            "Un texte convaincant ne garantit pas un niveau exploitable."
+                            "Code, articles et maturité de chaque card",
+                            "Composio MCP",
+                            "Connect Flow",
+                            "Connecteurs · expérience historique",
+                            "Darkwood MCP Experience",
+                            "Explorer l’écosystème",
+                            "Flowvox",
+                            "Générer une géométrie originale",
+                            "MCP Apps",
+                            "Mario",
+                            "Orchestration · expérimentation",
+                            "Prototype de publication · simulé",
+                            "Recherche Entreprise",
+                            "Recherche société · MCP personnalisé",
+                            "Workflows vocaux · à qualifier"
                         ],
                         "code": [],
-                        "links": [],
+                        "links": [
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/#selection"
+                        ],
                         "hooks": [],
                         "footer": [
-                            "02 | problème"
+                            "02 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6483,18 +6590,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Aucun fichier écrit sans approbation",
-                            "Du JSON et une vue de sa géométrie",
-                            "La solution retenue",
-                            "Un artefact vérifiable",
-                            "Un brief original, un appel d’outil",
-                            "Une seule card existante : Mario Orchestration."
+                            "Darkwood MCP Experience",
+                            "Demander une capacité",
+                            "Outil MCP",
+                            "Symfony AI",
+                            "Votre demande",
+                            "« Créer un petit niveau de forêt original. »"
                         ],
                         "code": [],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "03 | solution"
+                            "03 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6503,17 +6610,21 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Architecture réelle",
-                            "Le parcours exécuté",
-                            "Même application Symfony, serveur stdio existant"
+                            "API locale → observation en lecture seule",
+                            "Choisir un parcours réel",
+                            "Darkwood MCP Experience",
+                            "DarkwoodGame",
+                            "Démos indépendantes. Aucun enchaînement automatique entre cards.",
+                            "Mario",
+                            "Un brief → une géométrie vérifiée",
+                            "generate_original_level",
+                            "get_darkwood_state"
                         ],
-                        "code": [
-                            "Brief utilisateur\n  → Symfony AI : level_designer\n  → Toolbox : client MCP officiel\n  → Serveur MCP : level_generator\n  → Validation PHP → JSON + aperçu approuvé"
-                        ],
+                        "code": [],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "04 | architecture"
+                            "04 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6522,18 +6633,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Agent et Platform 1.0.0-BETA1, modèle gpt-5-mini",
-                            "Agent · Platform · Toolbox",
-                            "Générer le niveau puis expliquer le résultat",
-                            "Interpréter le brief et appeler l’outil",
-                            "Le rôle de Symfony AI",
-                            "Les règles géométriques restent en PHP."
+                            "Exécution enregistrée · 18 novembre 2026",
+                            "Symfony AI réel → client SDK officiel → serveur MCP.",
+                            "Un brief original, puis un export local approuvé",
+                            "Voir l’outil travailler"
                         ],
-                        "code": [],
+                        "code": [
+                            "php bin/console app:mario:design \\\n  --prompt='Create a small original forest level' \\\n  --approve-export"
+                        ],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "05 | Symfony AI"
+                            "05 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6542,18 +6653,19 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Client et serveur du SDK officiel",
-                            "Découverte par tools/list, appel par tools/call",
-                            "Le rôle de MCP",
-                            "SDK PHP officiel 0.10.0",
-                            "Un adaptateur Toolbox relie les API existantes. Aucun protocole maison.",
-                            "Un schéma SDK préservé : generate_original_level"
+                            "API locale enregistrée · 19 novembre · joueur synthétique",
+                            "Darkwood MCP Experience",
+                            "Observer une autre capacité",
+                            "Un agent Symfony AI en lecture seule explique ces champs exacts.",
+                            "get_darkwood_state"
                         ],
-                        "code": [],
+                        "code": [
+                            "{\"user\":6,\"state\":\"main\",\"mode\":null,\"display\":\"web\"}"
+                        ],
                         "links": [],
                         "hooks": [],
                         "footer": [
-                            "06 | MCP"
+                            "06 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6562,18 +6674,18 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "Depuis library/content-mario-orquestration",
-                            "Démonstration",
-                            "Exécuter puis approuver",
-                            "Une nouvelle sortie locale : level.json, evidence.json et preview.html."
+                            "48 × 15 cases · JSON + preuve + aperçu approuvé",
+                            "Darkwood MCP Experience",
+                            "Inspecter le résultat",
+                            "La géométrie vérifiée ne prouve pas la jouabilité."
                         ],
-                        "code": [
-                            "php bin/console app:mario:design \\\n  --prompt='Un petit niveau de forêt original' \\\n  --approve-export"
+                        "code": [],
+                        "links": [
+                            "http://localhost/darkwood/hackathon/level-preview.png"
                         ],
-                        "links": [],
                         "hooks": [],
                         "footer": [
-                            "07 | exécution"
+                            "07 | explore → use → inspect"
                         ]
                     }
                 },
@@ -6582,77 +6694,12 @@
                     "fragments": 0,
                     "payload": {
                         "text": [
-                            "48 × 15 cases · 4 pièces de terrain · 3 objets · 47,6 s sur cet essai.",
-                            "Cette mesure isolée n’est pas un benchmark.",
-                            "Essai réel du 18 novembre 2026",
-                            "Le résultat observé"
-                        ],
-                        "code": [],
-                        "links": [
-                            "http://localhost/darkwood/hackathon/level-preview.png"
-                        ],
-                        "hooks": [],
-                        "footer": [
-                            "08 | résultat"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-8",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Composio → Connect Flow : connecteurs puis orchestration",
-                            "Des articles aux preuves",
-                            "Dépôts, articles canoniques et limites de chaque card",
-                            "Les articles donnent le contexte historique. Le code et les essais déterminent ce qui fonctionne aujourd’hui.",
-                            "Mario : génération réelle ; MCP Apps : publication simulée",
-                            "Recherche Entreprise : protocole personnalisé ; Flowvox : voix et Flow",
-                            "Six cards, des maturités distinctes"
-                        ],
-                        "code": [],
-                        "links": [
-                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/#selection"
-                        ],
-                        "hooks": [],
-                        "footer": [
-                            "09 | écosystème"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-9",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "4 outils qualifiés : état, liste d’archives, archive, action.",
-                            "Complément local · compte synthétique",
-                            "L’agent ne reçoit que l’outil de lecture. Une action exige un accord client exact ; permissions et quotas restent appliqués.",
-                            "Observation séparée de toute action",
-                            "Observer DarkwoodGame"
-                        ],
-                        "code": [
-                            "Agent Symfony AI → client SDK MCP 0.10\n  → serveur Portal existant → API DarkwoodGame\n  → état réel de la base locale → interprétation"
-                        ],
-                        "links": [],
-                        "hooks": [],
-                        "footer": [
-                            "10 | DarkwoodGame"
-                        ]
-                    }
-                },
-                {
-                    "id": "mario-ai-agents-10",
-                    "fragments": 0,
-                    "payload": {
-                        "text": [
-                            "Agent → outil MCP → résultat réel vérifié",
-                            "Atelier, code et instructions de reproduction",
-                            "Candidature en préparation. Aucune soumission ou sélection annoncée.",
-                            "Ce que la preuve établit",
-                            "Installation publique sous Nix, clé personnelle",
-                            "La géométrie ne prouve pas la jouabilité",
-                            "Reproduction et limites"
+                            "Candidature préparée, non soumise.",
+                            "Code public · Symfony AI + SDK PHP MCP officiel",
+                            "Darkwood MCP Experience",
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience.",
+                            "ai-mcp-symfony-hackathon-content.darkwood.com"
                         ],
                         "code": [],
                         "links": [
@@ -6660,7 +6707,7 @@
                         ],
                         "hooks": [],
                         "footer": [
-                            "11 | conclusion"
+                            "08 | explore → use → inspect"
                         ]
                     }
                 }

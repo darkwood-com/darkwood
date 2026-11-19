@@ -22,7 +22,7 @@ nix --extra-experimental-features 'nix-command flakes' develop -c node build.mjs
 nix --extra-experimental-features 'nix-command flakes' develop -c node validate.mjs
 ```
 
-L'unique sortie publiable est `dist/`. Elle contient une page, douze ressources,
+L'unique sortie publiable est `dist/`. Elle contient une page, quatorze ressources,
 `CNAME` et `.nojekyll`. Les sources et ressources ont été transférées depuis
 l'atelier existant ; aucun framework ou système de build supplémentaire n'est
 nécessaire. Les copies locales du thème permettent une génération autonome.
@@ -58,9 +58,9 @@ The main path is designer agent → official SDK client → existing SDK server 
 
 ## Recorded media
 
-`public/hackathon/actual-demo.mp4` is the reviewed 89.68-second real execution at source commit `e55d2593165b82cbb495d3c14341d610d85a63be`, with Navi narration. `workshop-fr.mp4` is the separate 384.5-second narrated pedagogical presentation. These static files do not execute a model. The contest entry has not been submitted.
+`public/hackathon/actual-demo.mp4` is Darkwood MCP Experience, **80.8 seconds**, with English Navi narration, the workshop tour and the real execution at source commit `e55d2593165b82cbb495d3c14341d610d85a63be`. Idle waiting is explicitly condensed; no response is fabricated. `workshop-fr.mp4` is the complementary **203.2-second** French presentation. Both decks have eight slides. `experience-poster.jpg` comes from the actual film. These static assets do not execute a model. The contest entry has not been submitted.
 
-## Iteration 2: dated evidence and avatar
+## Historical iteration 2: dated evidence and avatar
 
 The six card summaries link their public articles and separate current execution,
 historical context and simulated behavior. `darkwood-game-proof.json` records a
@@ -75,3 +75,23 @@ Navi's existing command uses `--avatar=assets/images/avatar.jpg` and
 `--avatar-bottom-margin=124`. The French workshop has eleven slides; the English
 short version four. The previous media remain recoverable from commit
 `2d729174cf76a1baef2ab55ee9527c43a9613446` through a normal revert/republication.
+
+## Darkwood MCP Experience — iteration 3
+
+Eight-step guided story: welcome, workshop discovery, request, available capability,
+recorded execution, independent DarkwoodGame observation, inspected result, public
+invitation. Both existing SlideWire decks now have eight slides. Their canonical
+slugs and the workshop domain are retained; Navi owns the English/French scripts.
+
+The English candidate film uses the existing Navi command and an FFmpeg editorial
+assembly of its segments, the actual workshop browser tour and the dated real
+Mario capture. Idle waiting is condensed and disclosed in narration and on screen;
+the request and successful response are retained. `experience-edit.json` records
+the cut list and provenance. No automatic hand-off between cards is implemented
+or implied. MCP Apps remains simulated; other historical integrations are context.
+
+MATYO91 remains a static portrait at a consistent size and position. It accompanies
+the journey and transitions but is absent from technical execution frames. No
+lip-sync, Replicate generation or new renderer is used. Original iteration-2
+media remain in S47 and commit `58e9558a60f71cb93a57002953c3179c8ba04684`.
+The entry remains prepared, not submitted.

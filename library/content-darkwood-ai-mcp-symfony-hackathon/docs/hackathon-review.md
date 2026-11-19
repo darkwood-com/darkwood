@@ -182,3 +182,27 @@ the 18 November run at commit `e55d2593165b82cbb495d3c14341d610d85a63be`.
 Slides and presentation treatment are updated on 19 November. This retained
 capture is not presented as a new generation. The supplementary real DarkwoodGame
 observer was independently run on 19 November in an isolated local database.
+
+## Iteration 3 — Darkwood MCP Experience
+
+The audiovisual story now guides a visitor through the workshop, a request, a
+real MCP call and its result. The six selected cards remain distinct from the
+supplementary Portal/DarkwoodGame path. The latter is an independent read-only
+demonstration using synthetic local data, not a Mario-to-game integration. The
+existing canonical card statuses, sources and editorial references are preserved.
+
+The official English edit retains the actual request and successful result from
+18 November at `e55d2593165b82cbb495d3c14341d610d85a63be`. Unlike iteration 2, it
+condenses idle waiting, clearly disclosed in narration and recording captions.
+It does not describe the edited duration as generation latency. The original
+full capture and earlier film remain recoverable; the JSON evidence is unchanged.
+DarkwoodGame's recorded 19 November response is shown as such; no new live call
+or production player interaction is implied.
+
+Existing Navi scenes and narration are reused in the standard FFmpeg editing
+step, with short cross-dissolves and a real browser capture of workshop discovery.
+The fixed portrait is shown on guided scenes, removed over execution, and makes
+no claim of animation or lip synchronization. The extra fade treatment removes
+black-frame edges in this editorial copy without changing Navi's global defaults.
+No application runtime, SDK dependency, external account or game data is changed.
+Final contest submission is still reserved for owner approval.
