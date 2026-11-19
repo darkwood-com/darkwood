@@ -22,7 +22,8 @@ final readonly class DarkwoodBetaAccessSubscriber implements EventSubscriberInte
 
     public function __construct(
         private ApiKeyResolverService $apiKeyResolver,
-    ) {}
+    ) {
+    }
 
     public static function getSubscribedEvents(): array
     {
@@ -33,7 +34,7 @@ final readonly class DarkwoodBetaAccessSubscriber implements EventSubscriberInte
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMainRequest()) {
+        if (!$event->isMainRequest() && !$event->getRequest()->attributes->get(\App\Service\DarkwoodMcpForwarderService::FORWARDED_ATTRIBUTE, false)) {
             return;
         }
 

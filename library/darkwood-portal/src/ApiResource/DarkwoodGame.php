@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\McpTool;
 use ApiPlatform\Metadata\Post;
 use App\Dto\DarkwoodActionInput;
+use App\Dto\DarkwoodMcpActionInput;
 use App\Dto\DarkwoodArchiveIdInput;
 use App\State\DarkwoodActionHttpProcessor;
 use App\State\DarkwoodActionProcessor;
@@ -51,27 +52,37 @@ use App\State\Provider\DarkwoodStateProvider;
     ],
     mcp: [
         'get_darkwood_state' => new McpTool(
-            description: 'Get the current Darkwood game state for the authenticated user.',
+            description: 'Observe the current state for an existing player; requires an active beta API key. Never initializes a player.',
+            annotations: ['readOnlyHint' => true, 'destructiveHint' => false, 'idempotentHint' => true],
             structuredContent: true,
+            outputFormats: ['json' => ['application/json']],
             processor: DarkwoodStateProcessor::class,
         ),
         'darkwood_action' => new McpTool(
-            description: 'Execute a state-changing action in the Darkwood game. Optionally pass query parameters.',
+            description: 'Propose one validated game action. Execution requires authenticated player and exact, single-use transport-level client approval; never set approval from model arguments.',
+            annotations: ['readOnlyHint' => false, 'destructiveHint' => true, 'idempotentHint' => false],
             structuredContent: true,
-            input: DarkwoodActionInput::class,
+            outputFormats: ['json' => ['application/json']],
+            input: DarkwoodMcpActionInput::class,
             processor: DarkwoodActionProcessor::class,
         ),
         'list_darkwood_archives' => new McpTool(
-            description: 'List available Darkwood save archives (premium). Returns archive id and date.',
+            description: 'List available Darkwood save archives (active beta + premium key). Shared historical snapshots, not a per-user save.',
+            annotations: ['readOnlyHint' => true, 'destructiveHint' => false, 'idempotentHint' => true],
             structuredContent: true,
+            outputFormats: ['json' => ['application/json']],
             processor: DarkwoodArchivesProcessor::class,
         ),
         'get_darkwood_archive' => new McpTool(
-            description: 'Get a single Darkwood archive payload by date ID (Y-m-d format). Premium only.',
+            description: 'Read one shared historical archive by actual YYYY-MM-DD date. Active beta + premium key required.',
+            annotations: ['readOnlyHint' => true, 'destructiveHint' => false, 'idempotentHint' => true],
             structuredContent: true,
+            outputFormats: ['json' => ['application/json']],
             input: DarkwoodArchiveIdInput::class,
             processor: DarkwoodArchiveGetProcessor::class,
         ),
     ],
 )]
-final class DarkwoodGame {}
+final class DarkwoodGame
+{
+}

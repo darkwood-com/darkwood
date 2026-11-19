@@ -71,7 +71,14 @@ try {
     check(Command::INVALID === $command->getStatusCode(), 'Empty design accepted.');
     $command->execute(['--prompt' => 'Original level']);
     check(Command::FAILURE === $command->getStatusCode(), 'Missing key silently accepted.');
-    echo "PASS official SDK discovery/call via Symfony Toolbox, explicit fixture label, single call, safe unique preview, invalid geometry, empty prompt, missing-key failure\n";
+    $observer = new CommandTester(new App\Mario\Application\Command\ObserveDarkwoodCommand());
+    foreach (['http://example.invalid/mcp', 'https://user:fixture@example.invalid/mcp', 'https://example.invalid/mcp?token=fixture', 'https:missing-host'] as $endpoint) {
+        $observer->execute(['--endpoint' => $endpoint]);
+        check(Command::INVALID === $observer->getStatusCode(), 'Unsafe observation endpoint accepted.');
+    }
+    $observer->execute(['--endpoint' => 'https://example.invalid/mcp']);
+    check(Command::FAILURE === $observer->getStatusCode(), 'Missing observer credentials accepted.');
+    echo "PASS official SDK discovery/call via Symfony Toolbox, explicit fixture label, single call, safe unique preview, invalid geometry, empty prompt, missing-key failure, observer URL and missing-credential guards\n";
 } finally {
     $tool->disconnect();
     if (is_dir($temp)) {

@@ -82,3 +82,17 @@ Geometry checks cover required fields, coordinates, dimensions and terrain bound
 Suggested 90-second demonstration: show this quickstart and pinned packages, run a real design, observe MCP discovery/tool execution, open the resulting geometry and evidence, then show the approval boundary and playability limit. Record an actual run; do not present fixture tests or a replay as live execution. Submission status is reported separately; no registration or acceptance is implied by this repository.
 
 License: MIT, as declared in `composer.json` and `LICENSE`.
+
+## Optional existing DarkwoodGame observation
+
+This secondary demonstration uses the existing Darkwood Portal MCP server; it does not replace the independent level-design submission. No action tool is exposed to its Symfony AI observer.
+
+```sh
+# Supply these through the process environment or your own ignored .env.local:
+# OPENAI_API_KEY, DARKWOOD_GAME_API_KEY, DARKWOOD_GAME_JWT
+php bin/console app:mario:observe-darkwood --endpoint=https://YOUR_AUTHORIZED_API_HOST/mcp
+```
+
+The server must expose the qualified `get_darkwood_state` read-only tool. It refuses player initialization through observation and enforces existing beta/premium/action permissions. The command reports only returned facts and cannot approve or execute a game action. It makes a real provider call and has no fixture fallback. For an isolated local Portal demonstration, use an HTTP loopback endpoint; `DARKWOOD_GAME_LOCAL_HOST` can supply its configured local Host header. Never use production game mutations to test the integration. See the [Portal contract and consent boundary](../darkwood-portal/docs/darkwood-mcp.md).
+
+`nyholm/psr7` supplies the PSR-17 factories required by the official SDK HTTP transport, with Symfony's existing HTTP client as PSR-18 implementation. The existing AI and MCP versions are unchanged.

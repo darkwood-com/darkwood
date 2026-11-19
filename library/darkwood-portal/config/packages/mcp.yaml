@@ -8,6 +8,8 @@ mcp:
                 stdio: false
             http:
                 path: /mcp
+                # Keep DNS rebinding protection; permit only the configured API host and loopback.
+                allowed_hosts: ['%api_host%', localhost, 127.0.0.1]
             session:
                 store: file
                 directory: '%kernel.cache_dir%/mcp'

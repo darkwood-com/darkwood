@@ -10,6 +10,7 @@
         "darkwood/flow": "^8.1.6",
         "darkwood/navi": "^8.1.6",
         "mcp/sdk": "0.10.0",
+        "nyholm/psr7": "^1.8.2",
         "symfony/ai-agent": "1.0.0-BETA1",
         "symfony/ai-bundle": "1.0.0-BETA1",
         "symfony/ai-open-ai-platform": "1.0.0-BETA1",
