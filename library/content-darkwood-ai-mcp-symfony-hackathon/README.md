@@ -60,7 +60,7 @@ The main path is designer agent → official SDK client → existing SDK server 
 
 - [Darkwood MCP Experience](https://youtu.be/cNAtFOlZAVA), anglais, 85,47 s,
   non répertoriée ; source et résultat réellement enregistrés, attente condensée.
-- [Présentation française](https://youtu.be/vAHU-TKbo9Y), narration continue,
+- [Présentation française](https://youtu.be/vQe8ZhRjA7Y), narration continue,
   134 s, non répertoriée.
 
 Les identifiants, la chaîne et les anciens chemins sont conservés dans
