@@ -2,7 +2,7 @@
 
 Référentiel public des conventions graphiques effectivement partagées dans l'écosystème Darkwood.
 
-Ce dépôt ne fournit ni framework CSS ni dépendance runtime. Il documente le plus petit vocabulaire commun observé dans le portail Darkwood, Uniflow, Darkwaar, Heroclip, DJ Matyo91, Darkwood Flow, Memory, Intention et Slidewire. Un produit peut copier les tokens nécessaires ou les adapter à son contexte, à condition de conserver les rôles sémantiques et les garanties d'accessibilité.
+Ce dépôt ne fournit ni framework CSS ni dépendance runtime. Il documente le plus petit vocabulaire commun observé dans le portail Darkwood, Uniflow, Darkwaar, Heroclip, DJ Matyo, Darkwood Flow, Memory, Intention et Slidewire. Un produit peut copier les tokens nécessaires ou les adapter à son contexte, à condition de conserver les rôles sémantiques et les garanties d'accessibilité.
 
 ## Fondations canoniques
 
@@ -32,7 +32,7 @@ Les tokens de référence sont dans [`tokens.css`](tokens.css). La page [`exampl
 
 - **Darkwaar** conserve une interface plus visuelle et tactile autour des jeux.
 - **Heroclip Studio** conserve son environnement sombre cinématique et ses accents violets : ils servent le montage, pas l'identité générale du catalogue.
-- **DJ Matyo91 Studio** conserve les waveforms et contrôles audio, tout en adoptant les rôles de couleur, la typographie et les thèmes communs.
+- **DJ Matyo Studio** conserve les waveforms et contrôles audio, tout en adoptant les rôles de couleur, la typographie et les thèmes communs.
 - **Slidewire** conserve une échelle typographique propre au 16:9 et une navigation discrète.
 - **Flow** reste une documentation technique ; aucune dépendance graphique ne doit entrer dans son runtime.
 - **Uniflow** conserve Bootstrap et ses composants métier. Ses variables Sass correspondent déjà aux rôles Darkwood.

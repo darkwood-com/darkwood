@@ -2,7 +2,7 @@ export const darkwoodDecision = (intention, context) => {
   const choices = {
     game: { service: 'Darkwaar', execution: 'Définir la mécanique, construire le jeu et vérifier son artefact.', result: 'Un jeu testable avec ses sources indépendantes.' },
     clip: { service: 'Heroclip', execution: 'Composer les scènes et la timeline, puis rendre la vidéo.', result: 'Un clip reconstructible et exportable.' },
-    set: { service: 'DJ Matyo91', execution: 'Décrire la progression et les transitions, puis rejouer la timeline.', result: 'Un set versionné utilisant des sources autorisées.' },
+    set: { service: 'DJ Matyo', execution: 'Décrire la progression et les transitions, puis rejouer la timeline.', result: 'Un set versionné utilisant des sources autorisées.' },
     treatment: { service: 'Flow', execution: 'Composer les traitements et choisir une stratégie compatible avec le travail.', result: 'Un résultat d’exécution dont les limites restent explicites.' },
     process: { service: 'Uniflow', execution: 'Transformer le besoin en définition, règles et opérations.', result: 'Un processus explicite, sans prétendre exécuter un effet absent.' },
   };

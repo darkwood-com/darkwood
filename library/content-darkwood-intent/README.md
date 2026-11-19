@@ -25,7 +25,7 @@ Les démonstrations sont pédagogiques. Elles n’annoncent pas de nouvelles fon
 - **Uniflow** : un besoin et son contexte donnent une définition concise. Aucune exécution durable, paiement ou opération distante n’est simulée.
 - **Darkwaar** : explorer une rive ou transporter une braise ne conduit pas à la même décision. Aftertrace est la référence réelle ; le jeu n’est pas modifié.
 - **Heroclip** : l’objectif narratif et la contrainte de continuité déterminent trois plans locaux. Aucune vidéo ni API IA n’est utilisée.
-- **DJ Matyo91** : ouverture, montée ou pic produisent une courbe d’énergie et une transition. Le motif Web Audio est original et illustratif, sans morceau ni sample tiers.
+- **DJ Matyo** : ouverture, montée ou pic produisent une courbe d’énergie et une transition. Le motif Web Audio est original et illustratif, sans morceau ni sample tiers.
 
 ## Lancer localement
 
@@ -74,7 +74,7 @@ Le workflow canonique `.github/workflows/publish-github-pages.yml` construit et 
 
 ## Sources et limites
 
-Les médias Aftertrace proviennent de l’atelier Memory et renvoient uniquement vers la page officielle Darkwaar. Les polices Jost conservent leur licence OFL dans `public/fonts/OFL.txt`. L’atelier ne contacte ni Darkwaar, Heroclip, DJ Matyo91, Flow ni Uniflow pendant l’utilisation.
+Les médias Aftertrace proviennent de l’atelier Memory et renvoient uniquement vers la page officielle Darkwaar. Les polices Jost conservent leur licence OFL dans `public/fonts/OFL.txt`. L’atelier ne contacte ni Darkwaar, Heroclip, DJ Matyo, Flow ni Uniflow pendant l’utilisation.
 
 ## Atelier Symfony AI et MCP
 

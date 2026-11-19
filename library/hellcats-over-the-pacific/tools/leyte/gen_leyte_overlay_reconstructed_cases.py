@@ -24,7 +24,7 @@ from m68k_emu import Emulator  # noqa: E402
 from cases import log_call  # noqa: E402
 
 OUT = ROOT / "godot" / "tests" / "leyte" / "port" / "fixtures" / "overlay_reconstructed_cases.json"
-MEMORY_SIZE, STACK_TOP, STACK_GUARD = 0x40000, 0x3F000, [0x3F000 - 0x800, 0x3F040]
+MEMORY_SIZE, STACK_TOP, STACK_GUARD = 0x44000, 0x3F000, [0x3F000 - 0x800, 0x3F040]
 HOST = 0x2F000                      # a host world past the image
 LOGS = 0x38000                      # call logs, 0x100 bytes each (past the bss and the host world)
 ROUTINES = {"leyte_overlay_main_entry": 0x175A, "leyte_overlay_initialise": 0x1EF0,
@@ -89,7 +89,34 @@ ROUTINES = {"leyte_overlay_main_entry": 0x175A, "leyte_overlay_initialise": 0x1E
             "transform_int3_vecs_asr_by_1d744": 0x311E, "transform_vecs12_by_matrix3": 0x3200, "scale_int3_vecs": 0x22CA,
             "apply_controller_velocities": 0xA5BE, "tick_flagged_object_controllers": 0xA61A,
             "age_contact_records": 0x160B0, "build_visible_object_list": 0x6754, "emit_faces_in_order": 0xB14E,
-            "emit_faces_unnumbered": 0xB220}
+            "emit_faces_unnumbered": 0xB220,
+            "project_prepared_object": 0xB902, "transform_face_vertices": 0xB796, "project_face_vertices_xy": 0x15A06,
+            "project_face_vertices_xz": 0x15A6C, "project_face_vertices_yz": 0x15AD2, "emit_faces_bsp": 0xAFFC,
+            "collect_near_objects": 0x6250,
+            "lock_overlay_buffers": 0x14C6, "dispatch_collision": 0x16C8A, "dispatch_overlap_collisions": 0x66A6,
+            "point_in_polygon_xy": 0x1581A, "point_in_polygon_xz": 0x158BE, "point_in_polygon_yz": 0x15962, "surface_type_at_point": 0x15C2C,
+            "invoke_tagged_attitude_compose_neg_sins4": 0x30B8, "submit_object_faces": 0xB554, "transform_and_project_object": 0xB9F8, "sort_group_parts_by_distance": 0x16D7A, "render_visible_objects": 0xBF1E, "collect_far_objects": 0x63BA,
+            "update_altitude_detail_bands": 0x6882, "leyte_order_tracked_controllers": 0x525C, "leyte_move_type0f_shapes_last": 0x52B6,
+            "update_ground_scatter_objects": 0x6C9A, "draw_distant_object_dots": 0x1A296, "overlay_frame_step": 0x741E,
+            "test_proximity_collision": 0x16784, "test_player_vs_type0e_proximity": 0x167E4, "turret_pre_render": 0x1D4F6,
+            "find_contact_record": 0x15EC0, "create_shape_contact_record": 0x15F0E, "handle_player_contact": 0x16BE2,
+            "create_fractal_contact_record": 0x1617E, "fractal_height_at": 0x162B8, "handle_terrain_contact": 0x16AE6,
+            "point_in_face_by_axis": 0x15D8C, "test_object_collision": 0x16812,
+            "segment_point_min_distance": 0x48E8, "bullet_hits_shape": 0x1A64A,
+            "lift_object_onto_terrain": 0x171BA, "test_terrain_collision": 0x1661A,
+            "leyte_sink_with_cached_chain": 0x177D0, "leyte_apply_pending_pose": 0x17D8C, "leyte_pending_pose_pre_render": 0x17DFA,
+            "point_over_face_xz": 0x15BAE, "leyte_ship_collision_hook": 0x17E0E, "leyte_carrier_deck_hook": 0x17E54,
+            "spawn_effect": 0x13D60, "spawn_debris_fragment": 0x1B582,
+            "any_mission_kills_recorded": 0x3E8, "build_attitude_matrix_3ang_alt": 0x2B52, "finalize_attitude_matrix_3ang_alt": 0x2A5A,
+            "update_tracking_camera": 0x9D52, "begin_replay_view": 0xA116, "probe_nearest_facility_kind": 0x40C,
+            "leyte_type80_centroid_visitor": 0xCE0, "leyte_object_type80_centroid": 0xE52, "point_near_camera_or_type80_object": 0xF7C,
+            "enqueue_control_inputs_avg4": 0x123BE, "advance_frame_and_tick_controllers": 0xA406,
+            "play_game_sound": 0xA700, "update_game_sounds": 0xA8EA, "find_nearest_runway_approach_ends": 0x1DDBE, "try_begin_landing_approach": 0x1E132, "build_relative_steer_sample": 0x121C4,
+            "process_flight_input_and_outcome": 0x844E, "update_bailout_view": 0x9A94,
+            "tick_shadow": 0x1CB04, "tick_view_attached_object": 0x1DD1C,
+            "tick_turret": 0x1D2E2, "spawn_ordnance_scattered": 0x19BCE,
+            "tick_aircraft_spawner": 0x1BF64, "spawn_enemy_fighter": 0xF692,
+            "shadow_pre_render": 0x1CB66}
 ## The host world's memory services ensure_handle_allocated calls (world +0x302 create, +0x30a
 ## reallocate, +0x31a make unpurgeable; 1.0.3: +0x2c6 / +0x2ce / +0x2de) as logging stand-ins at
 ## SERVICES; everything else runs as it is.
@@ -107,14 +134,28 @@ SERVICES = {0x302: (0x3A000, 1), 0x30A: (0x3A100, 2), 0x31A: (0x3A200, 1), 0x312
 ## the same way: pointer -> (stand-in, argument count).
 CODE_POINTERS = {0x23FC8: (0x3AA00, 8), 0x23FCC: (0x3AB00, 7),
                  0x26FF0: (0x3AD00, 5),                 # the span filler draw_sky_and_ground calls
-                 0x23FC0: (0x3B500, 2), 0x23FC4: (0x3B600, 2)}   # the radar's erase / draw blip routines
-CALL_LOGS = [[at, LOGS + 0x100 * k, n] for k, (at, n) in enumerate([*SERVICES.values(), *CODE_POINTERS.values()])]
+                 0x23FC0: (0x3B500, 2), 0x23FC4: (0x3B600, 2),   # the radar's erase / draw blip routines
+                 0x205EC: (0x3BF00, 3),
+                 0x26FE4: (0x3BE00, 1)}                 # the face depth routine submit_object_faces calls                 # collision handlers (definition +0x12, the pair table 0x205ec)
+# routines reached through pointers a case lays out itself (a definition's pre-render hook +0xe)
+STAND_INS = {"pre-render hook": (0x3BD00, 2),
+             # the broad-phase tests collect_far_objects reaches (through code_table in the port), stood in where they are
+             "test_proximity_collision": (0x16784, 2), "test_player_vs_type0e_proximity": (0x167E4, 2),
+             "test_object_collision": (0x16812, 2), "handle_player_contact": (0x16BE2, 2),
+             "destroy hook": (0x3BC00, 1), "dot erase": (0x3BB00, 0), "dot plot": (0x3BA00, 4),
+             "shape collision hook": (0x3B900, 3), "effect initialiser": (0x3B480, 1), "controller tick": (0x3B400, 1),
+             "sound play": (0x3B380, 6), "sound rate": (0x3B300 + 0x40, 1), "sound status": (0x3B280, 1), "sound stop": (0x3B200 + 0x40, 1)}
+SOUND_HOST = tuple(STAND_INS[k][0] for k in ("sound play", "sound rate", "sound status", "sound stop"))
+LOGS_HIGH = 0x40000                 # call logs past the 32nd: above the stack, in the extra 0x4000 of the case memory
+CALL_LOGS = [[at, (LOGS + 0x100 * k) if k < 32 else (LOGS_HIGH + 0x100 * (k - 32)), n]
+             for k, (at, n) in enumerate([*SERVICES.values(), *CODE_POINTERS.values(), *STAND_INS.values()])]
 # The readout text routine's text (in the caller's frame, inside the stack guard) is logged through
 # its first argument: three longs, the 11-byte buffer and more.
 for entry in CALL_LOGS:
     if entry[0] == SERVICES[0x2B2][0]:
         entry += [0, 3]
-assert LOGS + 0x100 * len(CALL_LOGS) <= 0x3A000, "the call logs must stay below the stand-in addresses"
+assert LOGS + 0x100 * min(len(CALL_LOGS), 32) <= 0x3A000 and LOGS_HIGH + 0x100 * max(len(CALL_LOGS) - 32, 0) <= MEMORY_SIZE, \
+    "the call logs must stay below the stand-in addresses and inside the case memory"
 
 
 def build() -> list:
@@ -153,7 +194,7 @@ def session_buffer_cases() -> list:
               0x20F48: 0x3B140, 0x20F4C: 0x3B150, 0x20F50: 0x3B160}),
         case("depth 1: the entry handle only", 1, 1, 0, {}),
         case("no entry flag, one screen", 0, 4, 0, {0x20F38: 0x3B200}),
-    ] + unlock_cases() + span_reset_cases() + clip_cases() + lock_cases() + trig_cases() + rotation_cases() + flight_rank_cases() + bomb_lamp_cases() + radar_button_cases() + state_lamp_cases() + readout_cases() + needle_cases() + more_needle_cases() + sky_cases() + frame_line_cases() + radar_scope_cases() + heading_tape_cases() + hook12_cases() + entity_retire_cases() + entity_tick_cases() + simulation_tick_cases() + object_alloc_cases() + attitude_cases() + translate_cases() + chain_xform_cases() + band_cases() + shade_cases() + poly_buffer_cases() + land_outline_cases() + contact_cases() + sink_cases() + instantiate_cases() + cloud_cases() + scene_part_cases() + template_table_cases() + mission_part_cases() + hook0_cases() + depth8_cases() + erase_dot_cases() + face_colour_cases() + depth4_cases() + template_factory_cases() + aircraft_cases() + anchor_cases() + mission_factory_cases() + ship_factory_cases() + route_ship_cases() + frame_batch1_cases() + cloud_layer_cases()
+    ] + unlock_cases() + span_reset_cases() + clip_cases() + lock_cases() + trig_cases() + rotation_cases() + flight_rank_cases() + bomb_lamp_cases() + radar_button_cases() + state_lamp_cases() + readout_cases() + needle_cases() + more_needle_cases() + sky_cases() + frame_line_cases() + radar_scope_cases() + heading_tape_cases() + hook12_cases() + entity_retire_cases() + entity_tick_cases() + simulation_tick_cases() + object_alloc_cases() + attitude_cases() + translate_cases() + chain_xform_cases() + band_cases() + shade_cases() + poly_buffer_cases() + land_outline_cases() + contact_cases() + terrain_cases() + object_collision_cases() + bullet_cases() + pending_pose_cases() + carrier_cases() + effect_cases() + small_flight_cases() + tracking_camera_cases() + replay_view_cases() + facility_cases() + type80_point_cases() + control_input_cases() + frame_advance_cases() + sound_cases() + runway_cases() + steer_sample_cases() + flight_input_cases() + bailout_view_cases() + small_tick_cases() + turret_cases() + spawner_cases() + shadow_render_cases() + sink_cases() + instantiate_cases() + cloud_cases() + scene_part_cases() + template_table_cases() + mission_part_cases() + hook0_cases() + depth8_cases() + erase_dot_cases() + face_colour_cases() + depth4_cases() + template_factory_cases() + aircraft_cases() + anchor_cases() + mission_factory_cases() + ship_factory_cases() + route_ship_cases() + frame_batch1_cases() + cloud_layer_cases() + frame_batch2_cases() + frame_batch3_cases() + polygon_cases() + surface_cases() + submit_cases() + transform_object_cases() + sort_parts_cases() + render_objects_cases() + far_objects_cases() + altitude_cases() + scatter_cases() + dot_cases() + frame_step_cases() + collision_test_cases() + contact_cases()
 
 
 def unlock_cases() -> list:
@@ -1739,6 +1780,1598 @@ def cloud_layer_cases() -> list:
     return out
 
 
+def frame_batch2_cases() -> list:
+    """Batch 2 of the frame step's closure. The face projections (xy / xz / yz) over three vertices and none, the
+    shift word above 63 (mod 64). project_prepared_object over view vertices in front, on the near plane and behind,
+    and with none. transform_face_vertices with a vertex already done this frame and one ending behind the near
+    plane. emit_faces_bsp over a small tree (front and back subtrees, a chain) in and out of near mode. The near-list
+    sort: a visible shape (its detail shift halved twice, a view point), one without a view point (flags bit 2), one
+    kept off the visible list (flags bit 6), a non-shape, a hidden group and a far group (both deactivated to
+    entity_array_3), one beyond its range but within 0x19c7f, a far shape seen recently."""
+    out = []
+    MODEL, FACE, IDX, VB, OUT = 0x3C000, 0x3C100, 0x3C200, 0x3C300, 0x3C600
+    verts = [(0x12345, -0x2340, 0x56780), (-0x400, 0x800, -0xC00), (0x7FFF0, 0x10, -0x20)]
+    w = [[MODEL + 0x46, 4, VB], [FACE + 0x18, 4, IDX]] + [[IDX + 2 * k, 2, v] for k, v in enumerate((2, 0, 1))]
+    w += [[VB + 12 * k + 4 * m, 4, c & 0xFFFFFFFF] for k, v in enumerate(verts) for m, c in enumerate(v)]
+    for method in ("project_face_vertices_xy", "project_face_vertices_xz", "project_face_vertices_yz"):
+        for name, count, shift in (("three vertices", 3, 3), ("shift word mod 64", 3, 0x43), ("none", 0, 3)):
+            out.append({"name": "%s: %s" % (method.replace('_', ' '), name), "method": method,
+                        "args": [MODEL, shift, FACE, 0x123, (-0x45) & 0xFFFFFFFF, OUT], "writes": w + [[FACE + 0x14, 2, count]]})
+    # project_prepared_object
+    OBJ, VIEW, FACES, VB2 = 0x3C000, 0x3C100, 0x3C400, 0x3C800
+    w = [[0x2C0BA, 4, OBJ], [OBJ + 0x4E, 4, VIEW], [OBJ + 0x4A, 4, FACES], [OBJ + 0x3A, 2, 2], [OBJ + 0x34, 2, 3],
+         [OBJ + 0x46, 4, VB2], [0x27050, 2, 0x140], [0x2704E, 2, 0x120]]
+    w += [[VB2 + 4 * k, 4, v] for k, v in enumerate((0x1111, 0x2222, 0x3333, 0x4444))]
+    for k, (x, y, z) in enumerate(((0x40, -0x30, 0x100), (0x10, 0x10, 4), (0x22, 0x33, (-5) & 0xFFFF))):
+        w += [[VIEW + 12 * k + 2, 2, x & 0xFFFF], [VIEW + 12 * k + 6, 2, y & 0xFFFF], [VIEW + 12 * k + 0xA, 2, z]]
+    w += [[0x2BBF8 + 8 * k + m, 4, 0x77777777] for k in range(3) for m in (0, 4)]
+    w += [[FACES + 0x20 * k + 0x13, 1, (0x01, 0x80, 0x00, 0x1F)[k]] for k in range(4)]
+    for name, nv, nf in (("three view vertices, four faces", 3, 4), ("none", 0, 0)):
+        out.append({"name": "prepare object: " + name, "method": "project_prepared_object", "args": [],
+                    "writes": w + [[OBJ + 0x38, 2, nv], [OBJ + 0x3C, 2, nf]]})
+    # transform_face_vertices
+    FACE2, IDX2, VB3, VIEW2, MAT = 0x3C100, 0x3C140, 0x3C200, 0x3C400, 0x3C600
+    w = [[0x2C0BA, 4, OBJ], [OBJ + 0x46, 4, VB3], [0x2C0B6, 4, VIEW2], [FACE2 + 0x14, 2, 3], [FACE2 + 0x18, 4, IDX2],
+         [0x2B29C, 2, 0x10], [0x2B29A, 2, (-0x20) & 0xFFFF], [0x2B298, 2, 0x30], [0x2B296, 2, 1], [0x2B29E, 4, MAT],
+         [0x27050, 2, 0x140], [0x2704E, 2, 0x120], [0x2B2A2 + 2, 1, 1]]
+    w += [[IDX2 + 2 * k, 2, v] for k, v in enumerate((0, 2, 1))]
+    w += [[MAT + 2 * k, 2, v & 0xFFFF] for k, v in enumerate((0x1000, 0x10, -0x20, 0x300, 0xF00, 0x7FF, -0x1000, 0x123, 0x456))]
+    for k, v in enumerate(((0x2000, 0x400, 0x3000), (0x100, 0x200, 0x300), (0x40, -0x60, -0x2000))):
+        w += [[VB3 + 12 * k + 4 * m, 4, c & 0xFFFFFFFF] for m, c in enumerate(v)]
+    out.append({"name": "transform face vertices: one done, one behind", "method": "transform_face_vertices", "args": [FACE2], "writes": w})
+    # emit_faces_bsp: the root walks' face set (batch 1) with subtrees
+    OBJ3, FACES3, QUEUE, BACKQ, NORMALS, VERTS, IDX3 = 0x3C000, 0x3C100, 0x3C400, 0x3C500, 0x3C600, 0x3C700, 0x3C800
+    #        distance, flags +0x13, front +0x10, back +0x11, chain +0x12, normal
+    faces = [(0x500, 0x00, 1, 4, 3, (0, 0, 0x100)),          # emitted: its chain (3) follows
+             (0x500, 0x01, 5, 2, 3, (0, 0, -0x100)),          # back-facing: its front subtree (5) first
+             (0x500, 0x00, 0xFF, 0xFF, 0xFF, (0, 0, -0x100)),
+             (0x500, 0x00, 0xFF, 0xFF, 0xFF, (0, 0x100, 0)),
+             (0x100, 0x00, 5, 0xFF, 6, (0, 0x100, 0)),
+             (0x500, 0x02, 0xFF, 0xFF, 0xFF, (0, 0, 0x100)),
+             (0x500, 0x01, 0xFF, 0xFF, 0xFF, (0x100, 0, 0))]
+    w = [[0x2C0BA, 4, OBJ3], [OBJ3 + 0x1C, 4, 0x300], [OBJ3 + 0x46, 4, VERTS], [0x2C4C6, 4, FACES3], [0x2C2C2, 4, QUEUE],
+         [0x2C0BE, 4, BACKQ], [0x219A8, 2, 0x20], [0x2B286, 4, NORMALS], [0x2B296, 2, 0], [0x2B29C, 2, 0], [0x2B29A, 2, 0x10],
+         [0x2B298, 2, 0x40]]
+    for k, (dist, flags, front, back, chain, normal) in enumerate(faces):
+        f = FACES3 + 0x20 * k
+        w += [[f + 0x1C, 4, dist], [f + 0x13, 1, flags], [f + 0x10, 1, front], [f + 0x11, 1, back], [f + 0x12, 1, chain],
+              [f + 2, 2, 0xEEEE], [f + 0x18, 4, IDX3 + 2 * k], [IDX3 + 2 * k, 2, 0]]
+        w += [[NORMALS + 12 * k + 2 + 4 * m, 2, c & 0xFFFF] for m, c in enumerate(normal)]
+    for name, near in (("far mode", 0), ("near mode", 1)):
+        out.append({"name": "bsp faces: " + name, "method": "emit_faces_bsp", "args": [0], "writes": w + [[0x2C0AC, 2, near]],
+                    "stack_guard": [0x3D000, 0x3F040]})
+    # collect_near_objects
+    LIST, COUNT, T = 0x30000, 0x30080, 0x30F08
+    # the flags long +0x14: its low byte +0x17 holds bit 1 (hidden), bit 2 (no view point) and bit 6 (not listed visible)
+    objs = [  # type, flags long +0x14, metric, range, radius, scale +0x36, last seen +0x3e
+        (2, 0x00, 0x100, 0x1000, 0x80, 8, 0),
+        (2, 0x04, 0x100, 0x1000, 0x80, 0, 0),
+        (2, 0x40, 0x100, 0x1000, 0x80, 0, 0),
+        (1, 0x00, 0x100, 0x1000, 0x80, 0, 0),
+        (3, 0x02, 0x100, 0x1000, 0x80, 0, 0),
+        (2, 0x00, 0x2000, 0x1000, 0x80, 0, 0),
+        (2, 0x00, 0x40000, 0x1000, 0x80, 0, 0xFE0),
+        (3, 0x00, 0x40000, 0x1000, 0x80, 0, 0)]
+    w = [[0x207FC, 4, HOST], [COUNT, 4, len(objs)], [0x219B8, 4, 1], [0x219BC, 4, 0], [0x219C4, 4, 0], [0x21020, 4, 0x1000],
+         [0x23D68, 4, 0x5000], [0x23D64, 4, 0x100], [0x23D60, 4, (-0x3000) & 0xFFFFFFFF]] + [[0x2719C + 4 * k, 4, 0] for k in range(8)]
+    for k, (typ, flags, metric, rng, radius, scale, seen) in enumerate(objs):
+        o = 0x30100 + 0x100 * k
+        w += [[LIST + 4 * k, 4, o], [o + 0x28, 1, typ], [o + 0x14, 4, flags], [o + 0x1C, 4, metric],
+              [o + 0x18, 4, rng], [o + 0x20, 4, radius], [o + 0x36, 2, scale], [o + 0x3E, 4, seen], [o + 4, 4, 0x5100 + k],
+              [o + 8, 4, 0x180], [o + 0xC, 4, (-0x2F00) & 0xFFFFFFFF], [o, 4, 0]]
+        if typ == 3:
+            w += [[o + 0x30, 2, 0], [o + 0x32, 4, T + 0x10 * k], [T + 0x10 * k - 4, 1, 4]]
+    out.append({"name": "near list: every path but a retirement", "method": "collect_near_objects", "args": [LIST, COUNT], "writes": w,
+                "stack_guard": [0x3D000, 0x3F040]})
+    out.append({"name": "near list: empty", "method": "collect_near_objects", "args": [LIST, COUNT],
+                "writes": [[COUNT, 4, 0x10000], [0x219B8, 4, 0]]})
+    return out
+
+
+def frame_batch3_cases() -> list:
+    """Batch 3 of the frame step's closure. lock_overlay_buffers through the host's lock routine. dispatch_collision:
+    view mode 8, a flagged object, neither / one / both handlers, the pair table matched in order, reversed and not at
+    all (a's flag byte +0x16 bit 5 picks a's handler, else b's). dispatch_overlap_collisions: four objects sorted by
+    metric, two overlapping pairs (notice handlers on one side, both, none) and one far enough to end the back scan."""
+    out = []
+    w = [[0x207FC, 4, HOST]] + [[HOST + off, 4, at] for off, (at, _n) in SERVICES.items()]
+    w += [[HOST + off, 4, 0x11110000 + off] for off in (0x196, 0x1B0, 0x1B8, 0xDC)]
+    out.append({"name": "lock overlay buffers", "method": "lock_overlay_buffers", "args": [], "writes": w})
+    A, B, CA, CB, DA, DB, TABLE = 0x3C000, 0x3C100, 0x3C200, 0x3C300, 0x3C400, 0x3C500, 0x205EC
+    HANDLER = CODE_POINTERS[0x205EC][0]
+    base = [[A, 4, CA], [B, 4, CB], [CA + 4, 4, DA], [CB + 4, 4, DB], [DA, 2, 0x11], [DB, 2, 0x22], [0x23D88, 2, 1]]
+    table = []
+    for k in range(0x11):
+        table += [[TABLE + 8 * k, 2, 0x90 + k], [TABLE + 8 * k + 2, 2, 0xA0 + k], [TABLE + 8 * k + 4, 4, HANDLER]]
+    for name, extra in (("view mode 8", [[0x23D88, 2, 8], [DA + 0x12, 4, HANDLER]]),
+                        ("a flagged", [[A + 0x15, 1, 1], [DA + 0x12, 4, HANDLER]]),
+                        ("no handler", []),
+                        ("a's handler only", [[DA + 0x12, 4, HANDLER]]),
+                        ("b's handler only", [[DB + 0x12, 4, HANDLER]]),
+                        ("both, pair in order", [[DA + 0x12, 4, HANDLER], [DB + 0x12, 4, HANDLER], [TABLE + 8 * 16, 2, 0x11], [TABLE + 8 * 16 + 2, 2, 0x22]]),
+                        ("both, pair reversed", [[DA + 0x12, 4, HANDLER], [DB + 0x12, 4, HANDLER], [TABLE + 8 * 3, 2, 0x22], [TABLE + 8 * 3 + 2, 2, 0x11]]),
+                        ("both, no pair, a flagged bit 5", [[DA + 0x12, 4, HANDLER], [DB + 0x12, 4, HANDLER], [A + 0x16, 1, 0x20]]),
+                        ("both, no pair", [[DA + 0x12, 4, HANDLER], [DB + 0x12, 4, HANDLER]])):
+        out.append({"name": "collision: " + name, "method": "dispatch_collision", "args": [A, B], "writes": base + table + extra})
+    LIST, HEADER, NOTICE = 0x3C800, 0x3C900, SERVICES[0x30A][0]
+    #           metric, radius, controller, notice handler
+    # the last one, behind the others, reaches back only past objects that do not reach it (their running minimum decides)
+    objs = [(0x100, 0x100, True, True), (0x180, 0x40, True, False), (0x400, 0x10, False, False), (0x420, 0x30, True, True),
+            (0x50, 0x10, False, False)]
+    w = [[HEADER + 2, 2, len(objs)], [0x21058, 2, 0], [0x21070, 4, 0x5555]]
+    for k, (metric, radius, has_ctl, has_notice) in enumerate(objs):
+        o, c, d = 0x3C000 + 0x100 * k, 0x3D000 + 0x40 * k, 0x3D200 + 0x40 * k
+        w += [[LIST + 4 * k, 4, o], [o + 0x1C, 4, metric], [o + 0x18, 4, radius], [o + 0x2A, 4, 0x7777]]
+        if has_ctl:
+            w += [[o, 4, c], [c + 4, 4, d], [d + 0x16, 4, NOTICE if has_notice else 0]]
+    out.append({"name": "overlap sweep: pairs, a scan ended", "method": "dispatch_overlap_collisions", "args": [LIST, HEADER], "writes": w})
+    out.append({"name": "overlap sweep: empty", "method": "dispatch_overlap_collisions", "args": [LIST, HEADER], "writes": [[HEADER + 2, 2, 0]]})
+    return out
+
+
+def polygon_cases() -> list:
+    """The point-in-polygon tests over a concave pentagon (indices in rotated order): points inside, outside to either
+    side, on a vertex's row, past the edges both ways, and with no vertices; each pair of coordinates in turn (D0)."""
+    VERTS, IDX = 0x3C000, 0x3C100
+    poly = [(-0x40, 0x10, -0x30), (0x50, -0x20, -0x40), (0x30, 0x60, 0x10), (0, 0x20, 0x08), (-0x50, 0x40, 0x50)]
+    w = [[VERTS + 12 * k + 2 + 4 * m, 2, c & 0xFFFF] for k, v in enumerate(poly) for m, c in enumerate(v)]
+    w += [[IDX + 2 * k, 2, v] for k, v in enumerate((2, 3, 4, 0, 1))]
+    out = []
+    for method in ("point_in_polygon_xy", "point_in_polygon_xz", "point_in_polygon_yz"):
+        for a, b in ((0, 0), (0x10, 0x5), (-0x60, 0), (0x70, 0), (0x30, 0x60), (0, 0x20), (-0x10, -0x38), (0x20, 0x45), (0x20, 0), (0x30, 0x20)):
+            out.append({"name": "%s: (0x%x, 0x%x)" % (method.replace('_', ' '), a & 0xFFFF, b & 0xFFFF), "method": method,
+                        "args": [a & 0xFFFFFFFF, b & 0xFFFFFFFF, VERTS, 5, IDX], "writes": w, "d0": True})
+        out.append({"name": "%s: no vertices" % method.replace('_', ' '), "method": method, "args": [0, 0, VERTS, 0, IDX],
+                    "writes": w, "d0": True})
+    return out
+
+
+def surface_cases() -> list:
+    """surface_type_at_point over four objects walked from the last: one out of metric range, one flagged, one not a
+    shape, one beyond its approximate distance, and shapes whose faces (no surface byte, a miss, a hit) are projected at
+    scale shifts left, zero and right; the default face when nothing holds the point."""
+    DEFAULT, VB, IDX = 0x3E000, 0x3E100, 0x3E200
+    # a square around the origin in x / z, at vertex buffer scale 1 (the projection shifts it by detail + 1)
+    verts = [(-0x400, 0, -0x400), (0x400, 0, -0x400), (0x400, 0, 0x400), (-0x400, 0, 0x400), (0x4000, 0, 0x4000), (0x5000, 0, 0x4000), (0x5000, 0, 0x5000)]
+    w = [[0x21590, 4, DEFAULT], [DEFAULT + 0x16, 1, 0xF3]]
+    w += [[VB + 12 * k + 4 * m, 4, c & 0xFFFFFFFF] for k, v in enumerate(verts) for m, c in enumerate(v)]
+    w += [[IDX + 2 * k, 2, v] for k, v in enumerate((0, 1, 2, 3, 4, 5, 6))]
+    #  metric, range, flags, type, position, scale +0x36, detail +0x34, faces (surface byte, first index, count)
+    def obj(k, metric, rng, flags, typ, pos, scale, detail, faces):
+        o, fr = 0x3C000 + 0x200 * k, 0x3D000 + 0x200 * k
+        out = [[0x20B44 + 4 * k, 4, o], [o + 0x1C, 4, metric], [o + 0x20, 4, rng], [o + 0x14, 4, flags], [o + 0x28, 1, typ],
+               [o + 4, 4, pos[0] & 0xFFFFFFFF], [o + 8, 4, pos[1] & 0xFFFFFFFF], [o + 0xC, 4, pos[2] & 0xFFFFFFFF],
+               [o + 0x36, 2, scale & 0xFFFF], [o + 0x34, 2, detail & 0xFFFF], [o + 0x3C, 2, len(faces)], [o + 0x4A, 4, fr], [o + 0x46, 4, VB]]
+        for j, (surface, first, count) in enumerate(faces):
+            out += [[fr + 0x20 * j + 0x16, 1, surface], [fr + 0x20 * j + 0x14, 2, count], [fr + 0x20 * j + 0x18, 4, IDX + 2 * first]]
+        return out
+    hit = [(0x07, 0, 4), (0x00, 0, 4), (0x05, 4, 3)]      # from the last: a miss (the far triangle), none, a hit
+    out = []
+    for name, shift in (("scaled left", (3, 1)), ("unscaled", (1, 0)), ("scaled right", (0, 1)), ("scaled right twice", ((-1) & 0xFFFF, 0))):
+        scale, detail = shift
+        objs = (obj(0, 0x100, 0x10000, 0, 2, (0x10, 0, 0x20), scale, detail, hit)
+                + obj(1, 0x100, 0x10000, 0, 2, (0x10, 0, 0x20), 0, 0, [])
+                + obj(2, 0x100, 0x10000, 0x2000, 2, (0, 0, 0), 0, 0, hit)
+                + obj(3, 0x100, 0x10000, 0x40, 2, (0, 0, 0), 0, 0, hit)
+                + obj(4, 0x100, 0x10000, 0x2, 2, (0, 0, 0), 0, 0, hit)
+                + obj(5, 0x100, 0x10000, 0, 3, (0, 0, 0), 0, 0, hit)
+                + obj(6, 0x100, 0x200, 0, 2, (0x7000, 0, 0x7000), 0, 0, hit)
+                + obj(7, 0x7FFFFF, 0x40, 0, 2, (0, 0, 0), 0, 0, hit))
+        for px, pz in ((0x30, -0x30), (0x4800, 0x4900), (0x2600, 0x2100)):
+            out.append({"name": "surface at (0x%x, 0x%x): %s" % (px & 0xFFFF, pz & 0xFFFF, name), "method": "surface_type_at_point",
+                        "args": [px & 0xFFFFFFFF, 0x80, pz & 0xFFFFFFFF], "writes": w + objs + [[0x20F2C, 4, 8]], "d0": True})
+    out.append({"name": "surface: no objects", "method": "surface_type_at_point", "args": [0, 0, 0],
+                "writes": w + [[0x20F2C, 4, 0]], "d0": True})
+    return out
+
+
+def submit_cases() -> list:
+    """The transpose at 0x30b8; submit_object_faces over a queue of faces: transformed or not, a point behind the near
+    plane (clipped), forced clipping, no vertices, near modes 0 / 1 / 2 with the back-facing and inside flags differing or
+    not and face bit 1 set or not (a penetration hitting or missing), the depth routine drawing or not, and the back
+    queue's faces (inside, bit 1, transformed, hitting)."""
+    M = 0x3C000
+    out = [{"name": "transpose a word matrix", "method": "invoke_tagged_attitude_compose_neg_sins4", "args": [M],
+            "writes": [[M + 2 * k, 2, 0x1111 * (k + 1)] for k in range(9)]}]
+    OBJ, VIEW, IDX, FACES, VB, MAT, PLAYER, POBJ = 0x3C000, 0x3C200, 0x3C400, 0x3C500, 0x3C800, 0x3CA00, 0x3CB00, 0x3CC00
+    DRAW = next(e[1] for e in CALL_LOGS if e[0] == CODE_POINTERS[0x26FE4][0])
+    # a square around the view axis (the penetration point (0, 0) inside), and one beside it
+    view = [(-0x10, -0x10), (0x10, -0x10), (0x10, 0x10), (-0x10, 0x10), (0x40, 0x40), (0x60, 0x40), (0x60, 0x60)]
+    w = [[0x2C0BA, 4, OBJ], [OBJ + 0x14, 4, 0x0C], [OBJ + 0x46, 4, VB], [0x2C0B6, 4, VIEW], [0x20B28, 4, PLAYER], [PLAYER, 4, POBJ],
+         [0x2B29E, 4, MAT], [0x27050, 2, 0x140], [0x2704E, 2, 0x120], [0x26FE4, 4, CODE_POINTERS[0x26FE4][0]]]
+    w += [[MAT + 2 * k, 2, v] for k, v in enumerate((0x4000, 0, 0, 0, 0x4000, 0, 0, 0, 0x4000))]
+    w += [[VB + 12 * k + 8, 4, 0x100] for k in range(7)]
+    for k, (x, y) in enumerate(view):
+        w += [[VIEW + 12 * k + 2, 2, x & 0xFFFF], [VIEW + 12 * k + 6, 2, y & 0xFFFF], [VIEW + 12 * k + 0xA, 2, 0x100],
+              [0x2BBF8 + 8 * k, 4, 0x100 + x], [0x2BBF8 + 8 * k + 4, 4, 0x80 + y]]
+    w += [[IDX + 2 * k, 2, v] for k, v in enumerate((0, 1, 2, 3, 4, 5, 6))]
+    #        flags +0x13, first vertex, count
+    queue = [(0x60, 0, 4), (0x70, 0, 4), (0x68, 4, 3), (0x00, 4, 3), (0x72, 0, 4), (0x60, 0, 0), (0x78, 4, 3), (0x68, 0, 4)]
+    backq = [(0x60, 0, 4), (0x68, 0, 4), (0x62, 0, 4), (0x00, 4, 3)]
+    for k, (flags, first, count) in enumerate(queue + backq):
+        f = FACES + 0x20 * k
+        w += [[f + 0x13, 1, flags], [f + 0x14, 2, count], [f + 0x18, 4, IDX + 2 * first]]
+        slot = 0x2C2C6 + 4 * k if k < len(queue) else 0x2C0C2 + 4 * (k - len(queue))
+        w += [[slot, 4, f]]
+    w += [[0x2C2C2, 4, 0x2C2C6 + 4 * len(queue)], [0x2C0BE, 4, 0x2C0C2 + 4 * len(backq)]]
+    for near in (0, 1, 2):
+        for name, extra in (("drawn", [[DRAW - 4, 4, 1]]), ("none drawn", []),
+                            ("forced clip", [[0x2C0AA, 2, 1]]), ("a point behind", [[0x2BBF8 + 8 * 2, 4, 0x80000000]]),
+                            ("a vertex behind the near plane", [[0x2BBF8 + 8 * 2, 4, 0x80000000], [VIEW + 12 * 2 + 0xA, 2, 0]])):
+            out.append({"name": "submit faces, near mode %d: %s" % (near, name), "method": "submit_object_faces", "args": [],
+                        "writes": w + extra + [[0x2C0AC, 2, near]], "stack_guard": [0x3D000, 0x3F040]})
+    out.append({"name": "submit faces: empty queues", "method": "submit_object_faces", "args": [],
+                "writes": [[0x2C0BA, 4, OBJ], [OBJ + 0x14, 4, 0xFF], [0x2C2C2, 4, 0x2C2C6], [0x2C0BE, 4, 0x2C0C2], [0x2C0AC, 2, 1],
+                           [0x2C0A8, 2, 1]]})
+    return out
+
+
+def transform_object_cases() -> list:
+    """transform_and_project_object: no controller (its band and shade, or skipped by +0x16 bit 1), an unlinked controller,
+    no pre-render hook, the hook returning 4, an oriented object (its attitude built, or kept by the hook's bit 0; lit,
+    turning the light vector, or not; the hook called again on bit 1), the eye shifted left or right; faces marking their
+    vertices (0x20 not 0x40) or not, a vertex behind the near plane. Shading meets a retired object (+0x17 bit 1) and stops."""
+    OBJ, CTL, DEF, VB, VIEW, FACES, IDX = 0x3C000, 0x3C100, 0x3C180, 0x3C200, 0x3C300, 0x3C400, 0x3C500
+    HOOK = STAND_INS["pre-render hook"][0]
+    RET = next(e[1] for e in CALL_LOGS if e[0] == HOOK) - 4
+    verts = [(0x100, 0x80, 0x2000), (-0x200, 0x40, 0x1800), (0x300, -0x100, 0x2800), (0x10, 0x10, 0x10), (0x50, 0x60, 0x3000)]
+    w = [[0x207FC, 4, HOST], [0x2C0BA, 4, OBJ], [OBJ + 0x34, 2, 1], [OBJ + 4, 4, 0x1000], [OBJ + 8, 4, (-0x800) & 0xFFFFFFFF],
+         [OBJ + 0xC, 4, 0x3000], [OBJ + 0x1C, 4, 0x20000], [OBJ + 0x32, 2, 3], [OBJ + 0x17, 1, 2], [OBJ + 0x28, 1, 2],
+         [OBJ + 0x4E, 4, VIEW], [OBJ + 0x4A, 4, FACES], [OBJ + 0x3A, 2, 2], [OBJ + 0x38, 2, len(verts)], [OBJ + 0x46, 4, VB],
+         [OBJ + 0x3C, 2, 4], [0x23D68, 4, 0x2400], [0x23D64, 4, 0x300], [0x23D60, 4, (-0x5000) & 0xFFFFFFFF],
+         [0x27050, 2, 0x140], [0x2704E, 2, 0x120], [0x21574, 2, 0x0800], [0x21572, 2, 0xF800], [0x21570, 2, 0x0400],
+         [CTL, 4, 0x3F00], [CTL + 4, 4, DEF], [CTL + 0x20, 2, 0x100], [CTL + 0x22, 2, 0x2000], [CTL + 0x24, 2, 0xF000]]
+    w += [[0x23C74 + 2 * k, 2, v & 0xFFFF] for k, v in enumerate((0xF00, 0x100, -0x200, -0x100, 0xF00, 0x80, 0x200, -0x80, 0xF00))]
+    w += [[VB + 12 * k + 4 * m, 4, c & 0xFFFFFFFF] for k, v in enumerate(verts) for m, c in enumerate(v)]
+    w += [[0x2B2A2 + k, 1, 0xEE] for k in range(8)]
+    #        flags +0x13, vertices
+    faces = [(0x20, (0, 1, 2)), (0x60, (3,)), (0x00, (4,)), (0x21, (2, 3))]
+    for k, (flags, idx) in enumerate(faces):
+        f = FACES + 0x20 * k
+        w += [[f + 0x13, 1, flags], [f + 0x14, 2, len(idx)], [f + 0x18, 4, IDX + 0x10 * k]]
+        w += [[IDX + 0x10 * k + 2 * j, 2, v] for j, v in enumerate(idx)]
+    out = []
+    ctl = [[OBJ, 4, CTL]]
+    hook = [[DEF + 0xE, 4, HOOK]]
+    for name, extra in (("no controller", []),
+                        ("no controller, hazy", [[HOST + 0xAA, 2, 1]]),
+                        ("no controller, +0x16 bit 1", [[HOST + 0xAA, 2, 1], [OBJ + 0x16, 1, 2]]),
+                        ("unlinked controller", ctl + [[CTL, 4, 0]]),
+                        ("no hook, not oriented, hazy", ctl + [[HOST + 0xAA, 2, 1]]),
+                        ("no controller, hazy, band changed", [[HOST + 0xAA, 2, 1], [OBJ + 0x1C, 4, 0x80000]]),
+                        ("oriented, hazy, band changed", ctl + hook + [[OBJ + 0x15, 1, 0x10], [HOST + 0xAA, 2, 1], [OBJ + 0x1C, 4, 0x80000]]),
+                        ("oriented, hazy, band kept", ctl + hook + [[OBJ + 0x15, 1, 0x10], [HOST + 0xAA, 2, 1]]),
+                        ("hook says 4", ctl + hook + [[RET, 4, 4]]),
+                        ("oriented", ctl + hook + [[OBJ + 0x15, 1, 0x10]]),
+                        ("oriented, eye shifted right", ctl + hook + [[OBJ + 0x15, 1, 0x10], [OBJ + 0x36, 2, 0xFFFF]]),
+                        ("oriented, eye shifted left", ctl + hook + [[OBJ + 0x15, 1, 0x10], [OBJ + 0x36, 2, 3]]),
+                        ("oriented, attitude kept, called again", ctl + hook + [[OBJ + 0x15, 1, 0x10], [RET, 4, 3]]),
+                        ("oriented, lit, hazy", ctl + hook + [[OBJ + 0x15, 1, 0x10], [OBJ + 0x16, 1, 1], [HOST + 0xB2, 2, 1], [HOST + 0xAA, 2, 1]]),
+                        ("oriented, lit flag but no light", ctl + hook + [[OBJ + 0x15, 1, 0x10], [OBJ + 0x16, 1, 1]])):
+        out.append({"name": "transform object: " + name, "method": "transform_and_project_object", "args": [], "writes": w + extra,
+                    "d0": True})
+    out.append({"name": "transform object: no vertices, no faces", "method": "transform_and_project_object", "args": [],
+                "writes": w + [[OBJ + 0x38, 2, 0], [OBJ + 0x3C, 2, 0]], "d0": True})
+    return out
+
+
+def sort_parts_cases() -> list:
+    """sort_group_parts_by_distance on Leyte's layout (1.0.3's cases, tools/original/gen_sort_parts_cases.py, laid out
+    again): seeded part centres, unlit and lit (bands changed, faces recoloured, owned palette slots rewritten, others
+    dropped), no group list, groups before / between / after the parts (every merge exit), deferred frees of word-0
+    entries (small heap blocks, class 4)."""
+    import random
+    OBJ, VERTS, FACES, GROUPS, OWNERS, ENTRIES = 0x3C000, 0x3C100, 0x3C400, 0x3C800, 0x3C900, 0x3CA00
+    NF = 6
+    out = []
+
+    def case(name, seed, parts=5, lit=0, groups=None, deferred=0, owned=(), scale=1):
+        rnd = random.Random(seed)
+        nverts = 3 + parts
+        w = [[0x207FC, 4, HOST], [HOST + 0xAA, 2, lit], [HOST + 0xB4, 2, 0], [0x23FAC, 4, OWNERS], [0x219A8, 2, 10],
+             [0x219A6, 2, deferred], [0x23D68, 4, 4000], [0x23D64, 4, 777], [0x23D60, 4, (-2500) & 0xFFFFFFFF],
+             [OBJ + 0x36, 2, scale], [OBJ + 0x38, 2, nverts], [OBJ + 0x3A, 2, parts], [OBJ + 0x3C, 2, NF],
+             [OBJ + 0x46, 4, VERTS], [OBJ + 0x4A, 4, FACES]]
+        for i in range(nverts):
+            w += [[VERTS + 12 * i + 4 * c, 4, rnd.randint(-6000, 6000) & 0xFFFFFFFF] for c in range(3)]
+        lst = FACES + 32 * NF
+        order = list(range(parts))
+        rnd.shuffle(order)
+        w += [[lst + 2 * k, 2, p] for k, p in enumerate(order)]
+        colours = lst + 2 * parts
+        for p in range(parts):
+            w += [[colours + 6 * p + c, 1, rnd.randint(0, 255)] for c in range(3)]
+            w += [[colours + 6 * p + 4, 2, rnd.choice([0, 3, 9])], [FACES + 32 * p + 0xF, 1, 7 + p], [FACES + 32 * p + 2, 2, 0xEEEE]]
+            if p in owned:
+                w.append([OWNERS + 4 * (7 + p), 4, FACES + 32 * p])
+        if groups is not None:
+            w += [[OBJ + 0x2E, 4, GROUPS], [GROUPS, 2, len(groups)]]
+            for k, (count, gx, gz) in enumerate(groups):
+                e = ENTRIES + 0x40 * k
+                w += [[e - 4, 1, 4], [e, 2, count], [e + 4, 4, gx & 0xFFFFFFFF], [e + 8, 4, gz & 0xFFFFFFFF], [GROUPS + 4 + 4 * k, 4, e]]
+        out.append({"name": "sort parts: " + name, "method": "sort_group_parts_by_distance", "args": [OBJ], "writes": w,
+                    "stack_guard": [0x3E000, 0x3F040]})
+
+    case("unlit, no groups: parts numbered far to near", 1)
+    case("lit: bands, colours and owned slots", 2, lit=1, owned=(0, 2, 4))
+    case("lit, nothing owned: slots dropped", 3, lit=1)
+    case("groups before, between and after the parts", 4, groups=[(2, 8000, 0), (1, 1000, 500), (3, -100, 50)])
+    case("all groups farther than every part (early exit)", 5, groups=[(1, 40000, 0), (2, 30000, 9000)])
+    case("all groups nearer than every part", 6, groups=[(1, 10, 0), (4, 0, 20)])
+    case("deferred free: word-0 entries freed", 7, groups=[(0, 5000, 0), (2, 3000, 0), (0, 10, 10)], deferred=1)
+    case("deferred free: every entry freed", 8, groups=[(0, 5000, 0)], deferred=1)
+    case("one part, lit, scale 3", 9, parts=1, lit=1, owned=(0,), scale=3)
+    case("no parts", 10, parts=0)
+    case("groups at the (scaled) camera: after every part", 11, groups=[(1, 8000, -5000), (2, 8010, -4990), (1, 7990, -5010)])
+    return out
+
+
+def render_objects_cases() -> list:
+    """render_visible_objects over light objects (no vertices, two faces, no root chains): a pre-transformed object (its
+    faces through the BSP walk), then a far one, a group whose parts are sorted, one deferred under a parent, an unlinked
+    controller, near on first entry and again, far once more; a deferred object whose controller is unlinked; views 1
+    (the last object drawn) and 0, the view flag set, and an empty list."""
+    LIST, PARENT, CTL, DEAD = 0x22994, 0x3C080, 0x3C0C0, 0x3C0E0
+    w = [[0x207FC, 4, HOST], [0x26FE4, 4, CODE_POINTERS[0x26FE4][0]], [DEAD, 4, 0], [PARENT + 2, 2, 0x40]]
+
+    def obj(k, near=None, first=True, bsp=False, sort=False, parent=0, ctl=0):
+        o, faces = 0x3C200 + 0x100 * k, 0x3D000 + 0x80 * k
+        r = [[o + 0x4A, 4, faces], [o + 0x4E, 4, 0x3CF00], [o + 0x46, 4, 0x3CF80], [o + 0x3C, 2, 2], [o + 0x1C, 4, 0x100],
+             [o + 0x20, 4, 0x200 if near else 0x80], [o + 0x15, 1, 0 if first else 0x20], [o + 0x16, 1, 0x0B if sort else 0x08],
+             [o + 0x17, 1, 0x28 if bsp else 0x08], [o + 0x2E, 4, parent], [o, 4, ctl]]
+        for j in range(2):
+            r += [[faces + 0x20 * j + 0x13, 1, 0x68], [faces + 0x20 * j + 0x10, 2, 0xFFFF], [faces + 0x20 * j + 0x12, 1, 0xFF],
+                  [faces + 0x20 * j + 0x18, 4, 0x3CFF0]]
+        return o, r
+
+    kinds = [dict(bsp=True), dict(), dict(sort=True), dict(parent=PARENT), dict(ctl=DEAD), dict(near=True),
+             dict(near=True, first=False), dict(bsp=True), dict(parent=PARENT, ctl=DEAD), dict(parent=PARENT, near=True, bsp=True)]
+    for k, kw in enumerate(kinds):
+        o, r = obj(k, **kw)
+        w += r + [[LIST + 4 * k, 4, o]]
+    last, r = obj(len(kinds), bsp=True)
+    w += r + [[0x2158C, 4, last]]
+    base = w + [[0x215A0, 4, 1], [0x219BC, 4, len(kinds)], [0x219AA, 2, len(kinds) - 5]]
+    out = []
+    for name, extra in (("view 1", [[0x23D88, 2, 1]]), ("view 0", [[0x23D88, 2, 0]]), ("view 1, view flag", [[0x23D88, 2, 1], [0x23D86, 2, 1]]),
+                        ("view 1, near decided for all", [[0x23D88, 2, 1], [0x219AA, 2, 0]]),
+                        ("view 1, two pre-transformed, the last in order", [[0x23D88, 2, 1], [0x215A0, 4, 2], [last + 0x17, 1, 0x08]])):
+        out.append({"name": "render objects: " + name, "method": "render_visible_objects", "args": [], "writes": base + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "render objects: none, view 0", "method": "render_visible_objects", "args": [],
+                "writes": [[0x215A0, 4, 0], [0x219BC, 4, 0], [0x219AA, 2, 3]]})
+    return out
+
+
+def far_objects_cases() -> list:
+    """collect_far_objects over a far list in metric order: an overlap / proximity object scaled to a detail shift, a
+    hidden recent one (skipped by the scans), active ones (player and not) testing the kept objects behind them, a
+    passive one without a view point testing the actives, one out of range but within 0x19c7f, far ones kept for being
+    seen recently, deactivated (never seen) or retired, then a very low start lowering the running minimum so a passive
+    scan and an active scan each stop on an object's minimum (+0x2a). Every collision test is a logging stand-in."""
+    LIST, COUNT = 0x30000, 0x30080
+    #        metric, range, radius, flags +0x14, last seen +0x3e, scale +0x36, +0x2a
+    objs = [(0x100, 0x10000, 0x40, 0x108000, 0, 8, 0),
+            (0x120, 0x10000, 0x40, 0x000002, 0xFF0, 0, 0),
+            (0x130, 0x10000, 0x40, 0x000000, 0, 0, 0),
+            (0x150, 0x10000, 0x80, 0x402040, 0, 0, 0),
+            (0x180, 0x10000, 0x40, 0x000800, 0, 0, 0),
+            (0x1A0, 0x10000, 0x40, 0x100004, 0, 0, 0),
+            (0x20000, 0x10000, 0x40, 0x008000, 0, 0, 0),
+            (0x40000, 0x100, 0x40, 0, 0, 0, 0),
+            (0x40000, 0x100, 0x40, 0, 0xFF0, 0, 0x7FFFFFFF),
+            (0x40000, 0x100, 0x40, 0, 0x100, 0, 0),
+            (0x10, 0x10000, 0x200, 0, 0, 0, 0),
+            (0x60, 0x10000, 0x20, 0x000004, 0, 0, 0),
+            (0x70, 0x10000, 0x20, 0x002000, 0, 0, 0)]
+    w = [[0x207FC, 4, HOST], [COUNT, 4, len(objs)], [0x219B8, 4, 1], [0x219BC, 4, 0], [0x219C4, 4, 0], [0x219AC, 4, 0],
+         [0x21020, 4, 0x1000], [0x23D68, 4, 0x5000], [0x23D64, 4, 0x100], [0x23D60, 4, (-0x3000) & 0xFFFFFFFF]]
+    for k, (metric, rng, radius, flags, seen, scale, run) in enumerate(objs):
+        o = 0x30100 + 0x100 * k
+        w += [[LIST + 4 * k, 4, o], [o + 0x1C, 4, metric], [o + 0x18, 4, rng], [o + 0x20, 4, radius], [o + 0x14, 4, flags],
+              [o + 0x3E, 4, seen], [o + 0x36, 2, scale], [o + 0x2A, 4, run], [o + 4, 4, 0x5100 + 0x100 * k],
+              [o + 8, 4, 0x180], [o + 0xC, 4, (-0x2F00) & 0xFFFFFFFF], [o, 4, 0], [o + 0x28, 1, 1]]
+    out = [{"name": "far list: scans, collisions, kept, deactivated, retired", "method": "collect_far_objects", "args": [LIST, COUNT],
+            "writes": w, "stack_guard": [0x3D000, 0x3F040]},
+           {"name": "far list: empty", "method": "collect_far_objects", "args": [LIST, COUNT],
+            "writes": [[COUNT, 4, 0x10000], [0x219B8, 4, 2]]}]
+    return out
+
+
+def altitude_cases() -> list:
+    """update_altitude_detail_bands: the camera height inside its band (horizon only), across the 0xff band boundary,
+    at zero; the near reference moved (the far list re-sorted: hidden referenced kept, hidden unreferenced freed with
+    and without a controller and destroy hook, very far moved out, far kept, near activated; freed controllers
+    compacted; the controllers reordered and the type-0xf shapes moved last), and the far reference moved too (the very
+    far list as well). Plus the two Leyte-only routines on their own: controllers with a target before / after / absent,
+    and entity_array_1 partitions."""
+    HOR1, HOR2, VB1, VB2 = 0x3C000, 0x3C080, 0x3C100, 0x3C200
+    CAM = (0x100000, 0x400, 0x100000)
+    DEF8, DEF1, DEFF = 0x3C300, 0x3C310, 0x3C320
+    HOOK = STAND_INS["destroy hook"][0]
+    w = [[0x207FC, 4, HOST], [0x21594, 4, HOR1], [0x21598, 4, HOR2], [HOR1 + 0x46, 4, VB1], [HOR2 + 0x46, 4, VB2],
+         [0x23D68, 4, CAM[0]], [0x23D64, 4, CAM[1]], [0x23D60, 4, CAM[2]], [0x23C3C, 4, 0x400], [0x23C34, 2, 10],
+         [DEF8, 2, 8], [DEF1, 2, 1], [DEFF, 2, 0xF], [DEF1 + 0xA, 4, HOOK]]
+    # references at the camera: no move
+    refs = [[0x23C54, 4, CAM[0]], [0x23C50, 4, CAM[1]], [0x23C4C, 4, CAM[2]], [0x23C48, 4, CAM[0]], [0x23C44, 4, CAM[1]], [0x23C40, 4, CAM[2]]]
+    # controllers (small heap blocks, class 4): 0 type 8 targeting 2's object, 1 plain (freed), 2 plain, 3 type 8 without target
+    ctls = [0x3C400 + 0x40 * k for k in range(4)]
+    objs = {}
+    def obj(name, at, kind=1, flags=0, ref=0, ctl=0, dx=0, rng=0):
+        objs[name] = at
+        return [[at - 4, 1, 4], [at, 4, ctl], [at + 0x28, 1, kind], [at + 0x14, 4, flags], [at + 0x29, 1, ref], [at + 0x18, 4, rng],
+                [at + 4, 4, CAM[0] + dx], [at + 8, 4, CAM[1]], [at + 0xC, 4, CAM[2]]]
+    lists = []
+    lists += obj("kept", 0x3C800, flags=2, ref=1)
+    lists += obj("freed", 0x3C900, flags=2, ctl=ctls[1])
+    lists += obj("freed bare", 0x3CA00, flags=2)
+    lists += obj("very far", 0x3CB00, dx=0x200000)
+    lists += obj("far", 0x3CC00, dx=0x10000)
+    lists += obj("near", 0x3CD00, dx=0x100)
+    lists += obj("vf kept", 0x3CE00, dx=0x300000)
+    lists += obj("vf back", 0x3CF00, dx=0x20000)
+    lists += obj("vf hidden", 0x3D100, flags=2, ref=2)
+    lists += obj("shape f", 0x3D200, kind=2, ctl=ctls[2])
+    lists += obj("shape", 0x3D300, kind=2, ctl=ctls[0])
+    lists += [[ctls[0] - 4, 1, 4], [ctls[0], 4, objs["shape"]], [ctls[0] + 4, 4, DEF8], [ctls[0] + 0x32, 4, objs["shape f"]],
+              [ctls[1] - 4, 1, 4], [ctls[1], 4, objs["freed"]], [ctls[1] + 4, 4, DEF1],
+              [ctls[2] - 4, 1, 4], [ctls[2], 4, ctls[0]], [ctls[2] + 4, 4, DEFF],
+              [ctls[3] - 4, 1, 4], [ctls[3], 4, 0], [ctls[3] + 4, 4, DEF8], [ctls[3] + 0x32, 4, 0]]
+    # shape f's first long (its controller) is what controller 0 targets: entry 2 of the list is that controller
+    lists += [[objs["shape f"], 4, ctls[2]]]
+    lists += [[0x21BD4 + 4 * k, 4, c] for k, c in enumerate((ctls[0], ctls[1], ctls[2], ctls[3]))] + [[0x219B4, 4, 4]]
+    far = ["kept", "freed", "freed bare", "very far", "far", "near"]
+    lists += obj("vf freed", 0x3D400, flags=2, ctl=0x3C580)
+    lists += [[0x3C580 - 4, 1, 4], [0x3C580, 4, 0x3D400], [0x3C584, 4, DEF1]]   # a controller off the list, with a destroy hook
+    lists += obj("vf bare", 0x3D500, flags=2)
+    vfar = ["vf kept", "vf back", "vf hidden", "vf freed", "vf bare"]
+    lists += [[0x233BC + 4 * k, 4, objs[n]] for k, n in enumerate(far)] + [[0x219C4, 4, len(far)]]
+    lists += [[0x22D2C + 4 * k, 4, objs[n]] for k, n in enumerate(vfar)] + [[0x219C0, 4, len(vfar)]]
+    lists += [[0x20B44, 4, objs["shape f"]], [0x20B44 + 4, 4, objs["shape"]], [0x20F2C, 4, 2]]
+    # a land outline object (byte +0x16 bit 4) in entity_array_1: build_land_outline_at_detail's own near case
+    # (land_outline_cases), with the references at its camera so only the band crossing rebuilds it
+    lw = next(c for c in land_outline_cases() if c["name"] == "land outline: near, wide limit")["writes"]
+    LOBJ = 0x3A000
+    land = lw + [[0x23D64, 4, 0x80], [0x23C3C, 4, 0x400], [0x23C50, 4, 0x80], [0x23C48, 4, 0x5000], [0x23C44, 4, 0x80],
+                 [0x23C40, 4, 0x5000], [0x20B44, 4, LOBJ], [0x20F2C, 4, 1], [LOBJ + 0x16, 1, 0x10], [LOBJ + 0x28, 1, 2]]
+    out = []
+    for name, extra in (("height in its band", refs),
+                        ("height across 0xff", refs + [[0x23D64, 4, 0x80], [0x23C3C, 4, 0x400]]),
+                        ("height zero", refs + [[0x23D64, 4, 0]]),
+                        ("near reference moved", refs + [[0x23C54, 4, CAM[0] + 0x10000]] + lists),
+                        ("far reference moved", refs + [[0x23C48, 4, CAM[0] + 0x100000]] + lists),
+                        ("height across 0xff: a land outline rebuilt", land)):
+        out.append({"name": "altitude bands: " + name, "method": "update_altitude_detail_bands", "args": [], "writes": w + extra,
+                    "stack_guard": [0x3F000 - 0x2000, 0x3F040] if extra is land else [0x3E000, 0x3F040]})
+    out.append({"name": "order controllers", "method": "leyte_order_tracked_controllers", "args": [], "writes": w + lists})
+    out.append({"name": "order controllers: none", "method": "leyte_order_tracked_controllers", "args": [], "writes": [[0x219B4, 4, 0]]})
+    out.append({"name": "type-0xf shapes last", "method": "leyte_move_type0f_shapes_last", "args": [], "writes": w + lists,
+                "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "type-0xf shapes last: empty", "method": "leyte_move_type0f_shapes_last", "args": [], "writes": [[0x20F2C, 4, 0]]})
+    return out
+
+
+def scatter_cases() -> list:
+    """update_ground_scatter_objects in spawn_mission_pool_object's world (cloud_cases: its template without vertices, so a
+    spawn retires and returns 0; its mission root also gives the re-place path its descriptor and scene record). Points
+    in front of the camera (on screen), behind it, and far (re-placed in the square, or on the circle in view 5); cached
+    and computed surfaces (the default face's code 0x10 has a template, a cached 0x23 none); slots owned, flagged (+0x14
+    bit 1), re-placed in place (same class, vertices; translated), cleaned up and respawned (another class), empty; nothing
+    newly visible (hidden); above 0x26ac (slots cleared once); host +0xac off; the reset (view_flag)."""
+    spawn_world = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    ROOT, LIST, SLOTS, BASE, TMPL = 0x30000, 0x30100, 0x30200, 0x31000, 0x30600
+    REC = BASE + 0x40
+    CAM = 0x900000
+    PLAYER, DEFAULT, VB = 0x3C000, 0x3C100, 0x3C200
+    w = spawn_world + [[HOST + 0xAC, 2, 1], [0x23D88, 2, 6], [0x23D86, 2, 0], [0x2B228, 4, 1], [0x20B28, 4, PLAYER],
+         [PLAYER + 0x2E, 4, 0], [PLAYER + 0x22, 2, 0x1000], [0x2C5B4, 4, 0x2C5B8], [0x21590, 4, DEFAULT], [DEFAULT + 0x16, 1, 0x10],
+         [0x27050, 2, 0x140], [0x2704E, 2, 0x120], [0x2701A, 2, 0xFF60], [0x27018, 2, 0xA0], [0x27016, 2, 0xFF88],
+         [0x20B2E, 2, 0x78], [0x2140C + 4, 4, TMPL], [0x2140C + 8, 4, 0]]
+    w += [[0x2C5B8 + 4 * k, 4, (0x9E3779B9 * (k + 1)) & 0xFFFFFFFF] for k in range(0x37)]
+    w += [[0x23C74 + 2 * k, 2, 0x1000 if k in (0, 4, 8) else 0] for k in range(9)]
+    # the 64 points: by default near and behind the camera (off screen, kept)
+    pts = {i: (CAM + 0x100, -0x100) for i in range(0x40)}
+    pts.update({1: (CAM + 0x10, 0x800), 2: (CAM - 0x20, 0x600), 3: (CAM + 0x30, 0x900), 4: (CAM, 0x400),
+                5: (CAM + 0x6000, 0x100), 6: (CAM + 0x100, 0x7000)})
+    for i, (x, z) in pts.items():
+        w += [[0x2110C + 12 * i, 4, x & 0xFFFFFFFF], [0x2110C + 12 * i + 4, 4, 0], [0x2110C + 12 * i + 8, 4, z & 0xFFFFFFFF],
+              [0x210CC + i, 1, 0x3F]]
+    w += [[0x210CC + 2, 1, 0x7F], [0x2108C + 2, 1, 0x23],            # point 2: surface cached, no template
+          [0x210CC + 0, 1, 0xC0], [0x2107C, 2, 0],                   # slot 0 owns point 0
+          [0x210CC + 5, 1, 0xC3]]                                     # point 5 (far) named slot 3
+    #        slot object: class +0x10, flags +0x14, vertices
+    objs = {0: (1, 0, VB), 1: (1, 2, VB), 2: (1, 0, VB), 3: (2, 0, VB)}
+    for k, (cls, flags, vb) in objs.items():
+        o = 0x3C400 + 0x100 * k
+        w += [[0x2144C + 4 * k, 4, o], [o + 0x10, 2, cls], [o + 0x12, 2, 0], [o + 0x14, 4, flags], [o + 0x46, 4, vb],
+              [o + 0x38, 2, 1], [o + 0x3C, 2, 0], [o + 0x15, 1, 0x10 if k == 2 else 0], [o + 0x28, 1, 1],
+              [o + 0x32, 2, 3], [o + 0x2E, 4, 0], [o, 4, 0], [0x2107C + 2 * k, 2, 7 + k]]
+    w += [[0x210CC + 9, 1, 0x82],                                   # slot 2's point still names it (no 0xc0): detached
+          [0x3C600 + 0x2E, 4, 0x3C380], [0x3C380, 2, 2],              # slot 2's fractal reference released
+          [0x210CC + 3, 1, 0x7F], [0x2108C + 3, 1, 0x35], [0x2140C + 12, 4, TMPL]]   # point 3: a cached surface with a template
+    w += [[REC + 2, 4, 0x10], [REC + 6, 4, 0x20], [REC + 0xA, 4, 0x30], [REC + 0x22, 4, 0x100], [REC + 0x26, 4, 0x200], [REC + 0x2A, 4, 0x300]]
+    out = []
+    for name, extra in (("square placement", []),
+                        ("circle placement (view 5)", [[0x23D88, 2, 5]]),
+                        ("reset (view flag)", [[0x23D86, 2, 1]]),
+                        ("first use", [[0x2B228, 4, 0]]),
+                        ("nothing newly visible", [[0x210CC + i, 1, 0xBF] for i in range(1, 7)]),
+                        ("no surface with a template", [x for i in (1, 3, 4) for x in ([0x210CC + i, 1, 0x7F], [0x2108C + i, 1, 0x23])])):
+        out.append({"name": "ground scatter: " + name, "method": "update_ground_scatter_objects", "args": [], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "ground scatter: above 0x26ac, slots cleared", "method": "update_ground_scatter_objects", "args": [],
+                "writes": w + [[0x23D64, 4, 0x3000]], "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "ground scatter: above 0x26ac, not started", "method": "update_ground_scatter_objects", "args": [],
+                "writes": w + [[0x23D64, 4, 0x3000], [0x2B228, 4, 0]]})
+    out.append({"name": "ground scatter: off", "method": "update_ground_scatter_objects", "args": [], "writes": w + [[HOST + 0xAC, 2, 0]]})
+    return out
+
+
+def dot_cases() -> list:
+    """draw_distant_object_dots: the erase and plot routines stood in; queued objects that are trails (two vertices,
+    shifted left or right) or points, in front and on screen at every size, behind, off screen on each side; faces with
+    no palette slot, with one and the tally running, with one and the tally starting (assign_face_colour's own case world
+    is not needed: a tally already running covers the slot path, and a failing assignment is the second case); the host
+    line flag emptying the queue."""
+    ERASE, PLOT = STAND_INS["dot erase"][0], STAND_INS["dot plot"][0]
+    CTL_TRAIL, CTL_POINT, VB = 0x3C000, 0x3C040, 0x3C080
+    w = [[0x207FC, 4, HOST], [0x23FB4, 4, ERASE], [0x23FB0, 4, PLOT], [0x23D68, 4, 0x10000], [0x23D64, 4, 0x2000],
+         [0x23D60, 4, 0x30000], [0x27050, 2, 0x140], [0x2704E, 2, 0x120], [0x2701A, 2, 0xFF60], [0x27018, 2, 0xA0],
+         [0x27016, 2, 0xFF88], [0x27014, 2, 0x78], [CTL_TRAIL + 0x3B, 1, 2], [CTL_POINT + 0x3B, 1, 0], [0x23FBA, 2, 0x0105]]
+    w += [[0x23C74 + 2 * k, 2, 0x1000 if k in (0, 4, 8) else 0] for k in range(9)]
+    #         ctl, dz (ahead), dx, shift +0x34, scale +0x36, face slot
+    objs = [(CTL_POINT, 0x400, 0, 0, 0, 0xFF), (CTL_POINT, 0x1388, 0x100, 0, 0, 0x03), (CTL_POINT, 0x1D00, 0, 0, 0, 0xFF),
+            (CTL_POINT, 0x2700, 0, 0, 0, 0xFF), (CTL_POINT, 0x3000, 0, 0, 0, 0xFF), (CTL_POINT, -0x400, 0, 0, 0, 0xFF),
+            (CTL_POINT, 0x400, 0x2000, 0, 0, 0xFF), (CTL_POINT, 0x400, -0x2000, 0, 0, 0xFF), (CTL_POINT, 0x800, 0, 1, 0, 0xFF),
+            (CTL_TRAIL, 0x800, 0x10, 1, 3, 0xFF), (CTL_TRAIL, 0x800, -0x10, 2, 0, 0xFF),
+            (CTL_TRAIL, 0, 0, 0, 23, 0xFF)]                           # 5000 << 23 overflows: "near" negative
+    for k, (ctl, dz, dx, shift, scale, slot) in enumerate(objs):
+        o, f = 0x3C200 + 0x80 * k, 0x3D000 + 0x20 * k
+        w += [[0x2CB86 + 4 * k, 4, o], [o, 4, ctl], [o + 0x4A, 4, f], [o + 0x34, 2, shift], [o + 0x36, 2, scale],
+              [o + 4, 4, (0x10000 + dx) & 0xFFFFFFFF], [o + 8, 4, 0x2000], [o + 0xC, 4, (0x30000 + dz) & 0xFFFFFFFF], [o + 0x46, 4, VB],
+              [f + 0xF, 1, slot], [f + 6, 2, 0x4400 + k]]
+    w += [[VB + 4 * k, 4, v & 0xFFFFFFFF] for k, v in enumerate((0x20000, 0x4000, 0x60800, 0x20100, 0x4000, 0x60C00))]
+    # the overflowing trail sits at the camera (its offset 0 whatever the shift), its vertices just ahead
+    w += [[0x3C200 + 0x80 * 11 + 0x46, 4, 0x3C140]] + [[0x3C140 + 4 * k, 4, v] for k, v in enumerate((0, 0, 0x800, 0x10, 0, 0x900))]
+    out = [{"name": "distant dots: points and trails", "method": "draw_distant_object_dots", "args": [], "writes": w + [[0x2CB84, 2, len(objs)]],
+            "stack_guard": [0x3E000, 0x3F040]},
+           *[{"name": "distant dots: the tally starts (assign_face_colour: %s)" % name, "method": "draw_distant_object_dots",
+              "args": [], "stack_guard": [0x3E000, 0x3F040],
+              "writes": w + [[0x2CB84, 2, 2], [0x23FBA, 2, 0], [0x3D020 + 0xF, 1, 7], [HOST + 0xB4, 2, 0], [0x2100E, 2, 8],
+                             [0x23FAC, 4, 0x3D600], [0x23D90, 4, 0x3D400], [0x23D94, 4, 0x3D500], [0x21568, 4, 3], [0x23FD2, 2, 0]]
+                       + [[0x3D400 + k, 1, 1 if k in used else 0] for k in range(200)] + [[0x3D500 + k, 1, 0] for k in range(200)]}
+             for name, used in (("a free slot", (3, 4)), ("every slot used: the routine ends", tuple(range(200))))],
+           {"name": "distant dots: host line flag empties the queue", "method": "draw_distant_object_dots", "args": [],
+            "writes": w + [[0x2CB84, 2, len(objs)], [HOST + 0x9E, 2, 1], [0x23FBC, 2, 7]]}]
+    return out
+
+
+def frame_step_cases() -> list:
+    """overlay_frame_step (hook 10) over an empty scene: the two horizon objects light (no faces, a few vertices), no
+    entities, no far objects, no dots; the span filler (0x26ff0) and the dot erase routine stood in; host hooks off.
+    Window 1 in view 6 (the folded-angle camera), window 1 at the 16th frame (overlap collisions run), and window 2 (the
+    side view: bounds saved, view mode 2, heading turned and restored)."""
+    HOR1, HOR2, HOR3, VB, VIEW, MAP0, MAP1, PAL, REC = 0x3C000, 0x3C080, 0x3C100, 0x3C200, 0x3C300, 0x3C400, 0x3C500, 0x3C600, 0x3C800
+    w = [[0x207FC, 4, HOST], [HOST + 0x72, 4, REC], [REC + 6, 2, 0], [HOST + 0x10, 2, 0x40], [HOST + 6, 4, 0x1234],
+         [HOST + 0x1A + 0x16 + 4, 4, PAL], [HOST + 0x1A + 0x16 + 8, 2, 0x55], [HOST + 0x1A + 0x2C + 4, 4, PAL],
+         [HOST + 0x1A + 0x2C + 8, 2, 0x66], [PAL + 0x1A0, 2, 0x77], [0x23D94, 4, MAP0], [0x23D90, 4, MAP1], [0x23FBA, 2, 5],
+         [0x2100E, 2, 8], [0x23D88, 2, 6], [0x23FB4, 4, STAND_INS["dot erase"][0]], [0x26FF0, 4, CODE_POINTERS[0x26FF0][0]],
+         [0x23F9C + 4, 4, 0x3C900], [0x20F6C + 4, 4, 0x40800], [0x20F5C + 4, 4, 0x41000],
+         [0x23F9C + 8, 4, 0x3CA00], [0x20F6C + 8, 4, 0x41800], [0x20F5C + 8, 4, 0x42000],
+         [0x23D68, 4, 0x1000], [0x23D64, 4, 0x500], [0x23D60, 4, 0x2000], [0x23C3C, 4, 0x400], [0x23C34, 2, 10],
+         [0x23C54, 4, 0x1000], [0x23C50, 4, 0x500], [0x23C4C, 4, 0x2000], [0x23C48, 4, 0x1000], [0x23C44, 4, 0x500], [0x23C40, 4, 0x2000],
+         [0x23D40, 2, 0x100], [0x23D3E, 2, 0x200], [0x23D3C, 2, 0x300], [0x23D38, 4, 0x1400], [0x23D34, 4, 0x500], [0x23D30, 4, 0x600],
+         [0x21594, 4, HOR1], [0x21598, 4, HOR2], [0x2159C, 4, HOR3], [0x21021, 1, 0], [0x21023, 1, 3],
+         [0x27050, 2, 0x140], [0x2704E, 2, 0x120], [0x2701A, 2, 0xFFE0], [0x27018, 2, 0x20], [0x27016, 2, 0xFFF0],
+         [0x27014, 2, 0x10], [0x20B2E, 2, 0x10], [0x20B30, 2, 0x8], [0x27012, 2, 0x20], [0x21010, 2, 0x20], [0x21012, 2, 0x10]]
+    for o in (HOR1, HOR2, HOR3):
+        w += [[o + 0x46, 4, VB], [o + 0x4E, 4, VIEW], [o + 0x38, 2, 4], [o + 0x3C, 2, 0], [o + 0x3A, 2, 0], [o + 0x4A, 4, VIEW + 0x80],
+              [o + 0x32, 2, 3], [o + 0x1C, 4, 0x100], [o + 0x20, 4, 0x200], [o + 0x17, 1, 0x08]]
+    w += [[VB + 4 * k, 4, 0x100 * (k + 1)] for k in range(0x20)]
+    out = []
+    for name, args, extra in (("window 1, view 6", [0, 1], []), ("window 1, the 16th frame", [0, 1], [[0x21023, 1, 0x10]]),
+                              ("window 2, the side view", [0, 2], []),
+                              ("window 1, haze (the horizon re-banded and shaded, retired)",
+                               [0, 1], [[HOST + 0xAA, 2, 1], [HOR1 + 0x17, 1, 0x0A], [HOR1 + 0x32, 2, 0]])):
+        out.append({"name": "frame step: " + name, "method": "overlay_frame_step", "args": args, "writes": w + extra,
+                    "stack_guard": [0x3D000, 0x3F040]})
+    return out
+
+
+def collision_test_cases() -> list:
+    """The broad-phase proximity tests on dispatch_collision's no-handler world (frame_batch3_cases: both controllers'
+    definitions without a collision handler, so a dispatch only reads): unflagged pairs, near and far pairs either radius
+    deciding; the player test against a type-0x14 object, another type, and a non-player; turret_pre_render aimed and
+    idle, firing, unaimed."""
+    A, B, CA, CB, DA, DB, PLAYER = 0x3C000, 0x3C100, 0x3C200, 0x3C300, 0x3C400, 0x3C500, 0x3C200
+    UNSTUB = (0x16784, 0x167E4)
+    base = [[A, 4, CA], [B, 4, CB], [CA + 4, 4, DA], [CB + 4, 4, DB], [DA, 2, 0x11], [DB, 2, 0x14], [0x23D88, 2, 1],
+            [A + 4, 4, 0x1000], [A + 8, 4, 0x200], [A + 0xC, 4, 0x3000], [A + 0x20, 4, 0x80], [B + 0x20, 4, 0x80],
+            [B + 8, 4, 0x200], [B + 0xC, 4, 0x3000], [0x20B28, 4, PLAYER]]
+    out = []
+    for name, bx, fa, fb, ra in (("both flagged, near", 0x1040, 0x100000, 0x100000, 0x80), ("both flagged, far", 0x1400, 0x100000, 0x100000, 0x80),
+                                 ("both flagged, a's radius decides", 0x1400, 0x100000, 0x100000, 0x400),
+                                 ("one flagged", 0x1040, 0x100000, 0, 0x80)):
+        w = base + [[B + 4, 4, bx], [A + 0x14, 4, fa], [B + 0x14, 4, fb], [A + 0x20, 4, ra]]
+        out.append({"name": "proximity: " + name, "method": "test_proximity_collision", "args": [A, B], "writes": w, "unstub": UNSTUB})
+        if name == "both flagged, near":
+            out.append({"name": "player vs type 0x14: near", "method": "test_player_vs_type0e_proximity", "args": [A, B], "writes": w, "unstub": UNSTUB})
+            out.append({"name": "player vs type 0x14: another type", "method": "test_player_vs_type0e_proximity", "args": [A, B],
+                        "writes": w + [[DB, 2, 0xE]], "unstub": UNSTUB})
+            out.append({"name": "player vs type 0x14: not the player", "method": "test_player_vs_type0e_proximity", "args": [A, B],
+                        "writes": w + [[0x20B28, 4, 0x3EE00]], "unstub": UNSTUB})
+    T = 0x3C600
+    for name, aim, fire in (("aimed, idle", 0x3C700, 0), ("aimed, firing", 0x3C700, 1), ("unaimed", 0, 0)):
+        out.append({"name": "turret pre-render: " + name, "method": "turret_pre_render", "args": [T, 1], "d0": True,
+                    "writes": [[T + 0x36, 4, aim], [T + 0x46, 2, fire], [T + 0x4E, 2, 0xC123], [T + 0x22, 2, 0x1111]]})
+    return out
+
+
+def contact_cases() -> list:
+    """Contact records: find (present after probing past other pairs, absent with the table full of others), create on a
+    fresh heap (faces selected by extent, axes from the normals: each axis largest, ties, a large extent shifted), and
+    handle_player_contact: not the player, too far, a shape touched (record created, then found again), with b's
+    collision hook (stood in)."""
+    ARENA, A, B, CA, DB, VB, FACES = 0x32000, 0x3C000, 0x3C100, 0x3C200, 0x3C300, 0x3C400, 0x3C600
+    HOOK = STAND_INS["shape collision hook"][0]
+    out = []
+    hashv = lambda a, b: ((a & 0xFF) ^ (((b & 0xFF) if (b & 0xFF) < 0x80 else (b & 0xFF) - 0x100) << 2)) & 0xFF
+    h = hashv(A, B)
+    REC = 0x3C800
+    w = [[0x215A4 + 4 * ((h + k) & 0xFF), 4, 0x3CA00 + 0x10 * k] for k in range(3)] + [[0x215A4 + 4 * ((h + 3) & 0xFF), 4, REC],
+         [REC, 4, A], [REC + 4, 4, B]] + [[0x3CA00 + 0x10 * k, 4, 0x1111] for k in range(3)]
+    out.append({"name": "find contact: after three others", "method": "find_contact_record", "args": [A, B], "writes": w, "d0": True})
+    full = [[0x215A4 + 4 * k, 4, 0x3CA00] for k in range(0x100)] + [[0x3CA00, 4, 0x2222]]
+    out.append({"name": "find contact: absent, table full", "method": "find_contact_record", "args": [A, B], "writes": full, "d0": True})
+    # b: 5 vertices then 4 normals; 4 faces, extents 0x50 / 0x200 / 0x80 / 0x100 against half of metric 0x100
+    verts = [(0x10, 0x20, 0x30), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)]
+    normals = [(0x500, 0x40, 0x30), (0x10, -0x600, 0x20), (0x10, 0x20, 0x700), (0x210, 0x220, 0x30), (0, 0, 0)]
+    world = [[0x207FC, 4, HOST], [HOST + 0x384, 4, ARENA], [0x27188, 4, 0], [0x27198, 4, 0],
+             [B + 0x1C, 4, 0x100], [B + 0x4A, 4, FACES], [B + 0x3C, 2, 5], [B + 0x20, 4, 0x3000], [A + 0x20, 4, 0x2000],
+             [B + 0x36, 2, 2], [B + 0x46, 4, VB], [B + 0x38, 2, len(verts)]]
+    for k, v in enumerate(verts + normals):
+        world += [[VB + 12 * k + 4 * m, 4, c & 0xFFFFFFFF] for m, c in enumerate(v)]
+    for k, ext in enumerate((0x80, 0x200, 0x90, 0x100, 0x10)):
+        world += [[FACES + 0x20 * k + 0x1C, 4, ext]]
+    out.append({"name": "create contact: faces selected, axes", "method": "create_shape_contact_record", "args": [A, B], "writes": world,
+                "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "create contact: slots taken, a negative metric", "method": "create_shape_contact_record", "args": [A, B],
+                "writes": world + [[B + 0x1C, 4, (-0x101) & 0xFFFFFFFF]] + [[0x215A4 + 4 * ((h + k) & 0xFF), 4, 0x3CA00] for k in range(4)],
+                "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    pw = world + [[0x20B28, 4, CA], [A, 4, CA], [B, 4, 0x3C380], [0x3C380 + 4, 4, DB], [DB + 0x12, 4, HOOK],
+                  [A + 4, 4, 0x1000], [A + 8, 4, 0x200], [A + 0xC, 4, 0x3000], [B + 4, 4, 0x1100], [B + 8, 4, 0x200], [B + 0xC, 4, 0x3000]]
+    for name, extra in (("not the player", [[0x20B28, 4, 0x3EE00]]), ("too far", [[B + 4, 4, 0x40000]]),
+                        ("a shape touched: record created", []), ("a shape touched again: record found", w[3:6]),
+                        ("with b's collision hook", [[B + 0x16, 1, 0x40]])):
+        out.append({"name": "player contact: " + name, "method": "handle_player_contact", "args": [A, B], "writes": pw + extra,
+                    "stack_guard": [0x3E000, 0x3F040], "unstub": (0x16BE2,)})
+    return out
+
+
+def terrain_cases() -> list:
+    """The fractal terrain (1.0.3's tools/original/gen_terrain_cases.py world on Leyte's layout): two face centres around
+    one cell, two sloped faces, an optional part angle; a fresh heap for the records. create_fractal_contact_record
+    unrotated and rotated; handle_terrain_contact with a new record (unrotated, rotated), the point in the other
+    triangle, a negative cell, during a replay, terrain while holding a reference, no controller; fractal_height_at on a
+    prepared record (empty cell bounds) at several points."""
+    ARENA, A, B, CTL, PARENT, SCENE, PARTS, TEMPLATES, VERTS, FACES, IDX = (0x32000, 0x3C000, 0x3C080, 0x3C100, 0x3C200,
+                                                                            0x3C280, 0x3C380, 0x3C400, 0x3C600, 0x3C700, 0x3C780)
+    CHANGED = 0x3C7F0
+
+    def terrain(angle=0, a_pos=(1000, 500, 2000)):
+        w = [[0x207FC, 4, HOST], [HOST + 0x384, 4, ARENA], [0x27188, 4, 0], [0x27198, 4, 0], [HOST + 0x8C, 4, TEMPLATES],
+             [0x21058, 2, 0], [A, 4, CTL], [CTL, 4, A], [A + 0x20, 4, 0x8000], [B + 0x20, 4, 0x10000], [B + 0x24, 4, PARENT],
+             [B + 0x10, 2, 2], [B + 0x12, 2, 1], [PARENT + 0x2A, 4, SCENE], [PARENT + 0x32, 4, PARTS], [PARENT + 0x24, 4, 0],
+             [PARTS + 0x18 + 4, 2, angle], [SCENE + 0x2E + 2 * 0x18, 4, 0x10], [B + 0x38, 2, 6], [B + 0x3A, 2, 2], [B + 0x36, 2, 0],
+             [B + 0x46, 4, VERTS], [B + 0x4A, 4, FACES], [CHANGED, 2, 0]]
+        w += [[0x215A4 + 4 * k, 4, 0] for k in range(0x100)]
+        w += [[A + 4 + 4 * j, 4, v & 0xFFFFFFFF] for j, v in enumerate(a_pos)]
+        base = TEMPLATES + 0x10 + 0x22
+        for i, p in enumerate([(0, 0, 0)] * 4 + [(26400, 0, 40000), (26400, 0, 60000)]):
+            w += [[base + 12 * i + 4 * j, 4, v & 0xFFFFFFFF] for j, v in enumerate(p)]
+        for i, p in enumerate([(-400, 100, -800), (800, 300, 0), (0, 200, 900), (300, 0, 300), (0, 0, 0), (0, 0, 0),
+                               (-400 + 30, 100 + 200, -800 - 40), (-400 - 20, 100 + 150, -800 + 10)]):
+            w += [[VERTS + 12 * i + 4 * j, 4, v & 0xFFFFFFFF] for j, v in enumerate(p)]
+        for f, first in enumerate((1, 2)):
+            w += [[IDX + 8 * f, 2, first], [FACES + 0x20 * f + 0x18, 4, IDX + 8 * f]]
+        return w
+
+    out = []
+    hashv = ((A & 0xFF) ^ ((B & 0xFF) - (0x100 if (B & 0xFF) >= 0x80 else 0)) * 4) & 0xFF
+    for name, angle, extra in (("unrotated", 0, []), ("rotated 0x0800", 0x0800, []), ("rotated 0x2800 (cos negative)", 0x2800, []),
+                               ("slots taken", 0, [[0x215A4 + 4 * ((hashv + k) & 0xFF), 4, 0x3CFF0] for k in range(3)])):
+        out.append({"name": "create fractal record: " + name, "method": "create_fractal_contact_record", "args": [A, B],
+                    "writes": terrain(angle) + extra, "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    for name, angle, pos, extra in (("new record, unrotated", 0, (1000, 500, 2000), []), ("new record, rotated", 0x0800, (1000, 500, 2000), []),
+                                    ("point in the other triangle", 0, (9000, 500, 1000), []), ("negative cell", 0, (-50000, 500, -30000), []),
+                                    ("during a replay (surface byte kept)", 0, (1000, 500, 2000), [[0x21058, 2, 1]]),
+                                    ("terrain while holding a reference, no record", 0, (1000, 500, 2000), [[B + 0x16, 1, 2], [A + 0x2E, 4, 0x12345]]),
+                                    ("no controller", 0, (1000, 500, 2000), [[A, 4, 0]]),
+                                    ("small radii (a non-negative shift)", 0, (1000, 500, 2000), [[A + 0x20, 4, 0x100], [B + 0x20, 4, 0x100]]),
+                                    ("small radii, the other triangle", 0, (9000, 500, 1000), [[A + 0x20, 4, 0x100], [B + 0x20, 4, 0x100]]),
+                                    ("small radii, near the faces", 0, (-300, 500, -600), [[A + 0x20, 4, 0x100], [B + 0x20, 4, 0x100]]),
+                                    ("a holding a fractal reference (released)", 0, (1000, 500, 2000), [[A + 0x2E, 4, 0x3C7E0], [0x3C7E0, 2, 2]])):
+        out.append({"name": "terrain contact: " + name, "method": "handle_terrain_contact", "args": [A, B],
+                    "writes": terrain(angle, pos) + extra, "stack_guard": [0x3E000, 0x3F040], "unstub": (0x16BE2,)})
+    # test_terrain_collision (1.0.3's lifted object: a mesh of 3 vertices and two faces to raise; dispatch_collision's
+    # no-handler world for a below the ground: both controllers' definitions without a handler)
+    LV, LF, CB, DA, DB = 0x3CC00, 0x3CC40, 0x3CD00, 0x3CD40, 0x3CD80
+
+    def lifted(b5=0):
+        w = [[CTL + 4, 4, DA], [DA, 2, 1], [B, 4, CB], [CB + 4, 4, DB], [DB, 2, 2], [0x23D88, 2, 1], [A + 0x15, 1, b5],
+             [A + 0x46, 4, LV], [A + 0x4A, 4, LF], [A + 0x38, 2, 3], [A + 0x3C, 2, 2], [LF + 0x1C, 4, 500], [LF + 0x3C, 4, 700],
+             [0x219A6, 2, 0], [B + 0x2E, 4, 0], [A + 0x2E, 4, 0], [0x23D68, 4, 0], [0x23D64, 4, 0], [0x23D60, 4, 0]]
+        return w + [[LV + 4 * k, 4, (100 * k - 300) & 0xFFFFFFFF] for k in range(9)]
+
+    for name, pos, b5, angle in (("below the ground: lifted, support point, collision", (1000, -400, 2000), 0, 0),
+                                 ("above the ground: support point only", (1000, 9000, 2000), 0, 0),
+                                 ("frozen vertices and settled (+0x15 bits 4, 3)", (1000, -400, 2000), 0x18, 0),
+                                 ("out of range", (0x40000, 0, 0), 0, 0), ("rotated terrain", (1000, -400, 2000), 0, 0x0800)):
+        out.append({"name": "terrain collision: " + name, "method": "test_terrain_collision", "args": [A, B],
+                    "writes": terrain(angle, pos) + lifted(b5), "stack_guard": [0x3E000, 0x3F040], "unstub": (0x16812,)})
+    SUP, LIST, P1 = 0x3CE00, 0x3CE40, 0x3CE80
+    held = [[SUP - 4, 1, 4], [SUP, 2, 1], [A + 0x2E, 4, SUP]]
+    full = [[LIST - 4, 1, 4], [LIST, 2, 1], [LIST + 2, 2, 1], [LIST + 4, 4, P1], [P1, 2, 1], [P1 + 4, 4, 0x777], [P1 + 8, 4, 0x888], [B + 0x2E, 4, LIST]]
+    flat = [[VERTS + 12 * 6 + 4, 4, 100], [VERTS + 12 * 7 + 4, 4, 100]]
+    for name, pos, extra in (("holding a support point, below: collides", (1000, -400, 2000), held),
+                             ("a full support list: grown", (1000, -400, 2000), full),
+                             ("a flat plane: the cell corners", (1000, -400, 2000), flat),
+                             ("a flat plane, the other triangle", (9000, -400, 1000), flat),
+                             ("small radii (a non-negative shift)", (1000, -400, 2000), [[A + 0x20, 4, 0x100], [B + 0x20, 4, 0x100]]),
+                             ("a negative z offset", (1000, -400, -2000), []),
+                             ("terrain, holding a support point, no record", (1000, -400, 2000), held + [[B + 0x16, 1, 2]])):
+        out.append({"name": "terrain collision: " + name, "method": "test_terrain_collision", "args": [A, B],
+                    "writes": terrain(0, pos) + lifted(0) + extra, "stack_guard": [0x3E000, 0x3F040], "unstub": (0x16812,)})
+    # a record as create_fractal_contact_record leaves it (unrotated, shifts 0, cell size 0x19c80 >> 2... kept small)
+    REC = 0x3C800
+    rec = [[REC, 4, A], [REC + 4, 4, B], [REC + 0xA, 2, 0], [REC + 0xC, 2, 2], [REC + 0xE, 2, 0], [REC + 0x14, 2, 0],
+           [REC + 0x16, 2, 0x6720], [REC + 0x18, 2, 1], [REC + 0x1A, 2, 0xFFFF], [REC + 0x1C, 2, 0xFFFF], [REC + 0x1E, 2, 1], [REC + 0x20, 2, 0]]
+    for name, x, z in (("first cell", 250, 250), ("other triangle", 1500, 100), ("far cell", -9000, 12000)):
+        out.append({"name": "height at " + name, "method": "fractal_height_at", "args": [REC, x & 0xFFFFFFFF, z & 0xFFFFFFFF, CHANGED],
+                    "writes": terrain() + rec, "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    cached = [[REC + 0x18, 2, 0], [REC + 0x1A, 2, 0x6720], [REC + 0x1C, 2, 0], [REC + 0x1E, 2, 0x6720], [REC + 0x20, 2, 1],
+              [REC + 0x22 + 4, 2, 0x40], [REC + 0x30 + 4, 2, 0x40], [REC + 0x30 + 2, 2, 0x10], [REC + 0x30 + 6, 2, 0xFFF0]]
+    for name, x, z in (("the cached cell, triangle b", 100, 900), ("the cached cell, outside its z", 100, 0x7000)):
+        out.append({"name": "height at " + name, "method": "fractal_height_at", "args": [REC, x & 0xFFFFFFFF, z & 0xFFFFFFFF, CHANGED],
+                    "writes": terrain() + rec + cached, "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def object_collision_cases() -> list:
+    """test_object_collision on contact_cases' shape world (b: five faces, normals per axis): too far; b terrain and b a
+    bullet target (test_terrain_collision and bullet_hits_shape have their own cases: here a is not of type 0x14 and
+    b's terrain flag stays clear);
+    a new record (sides stored); an old record whose sides flip for each face (point_in_face_by_axis on every axis, the
+    point inside one: dispatched - the no-handler world - and outside); a skipped face (+0x13 bit 1); +0x15 bit 0 on
+    either object; b's collision hook (stood in)."""
+    ARENA, A, B, CA, CB, DA, DB, VB, FACES, IDX = 0x32000, 0x3C000, 0x3C100, 0x3C200, 0x3C280, 0x3C300, 0x3C340, 0x3C400, 0x3C600, 0x3C780
+    HOOK = STAND_INS["shape collision hook"][0]
+    # b: a cube's 8 corners, faces x+ / y- / z+ (square), a diagonal one and a degenerate one
+    verts = [(0, 0, 0), (0x100, 0, 0), (0x100, 0x100, 0), (0, 0x100, 0), (0, 0, 0x100), (0x100, 0, 0x100), (0x100, 0x100, 0x100), (0, 0x100, 0x100)]
+    normals = [(0x100, 0, 0), (0, -0x100, 0), (0, 0, 0x100), (0x80, 0x80, 0x10), (0, 0, 0)]
+    w = [[0x207FC, 4, HOST], [HOST + 0x384, 4, ARENA], [0x27188, 4, 0], [0x27198, 4, 0], [0x23D88, 2, 1],
+         [A, 4, CA], [B, 4, CB], [CA + 4, 4, DA], [CB + 4, 4, DB], [DA, 2, 0x11], [DB, 2, 0x22], [DB + 0x12, 4, HOOK],
+         [A + 4, 4, 0x80], [A + 8, 4, 0x80], [A + 0xC, 4, 0x80], [A + 0x20, 4, 0x2000],
+         [B + 4, 4, 0], [B + 8, 4, 0], [B + 0xC, 4, 0], [B + 0x20, 4, 0x3000], [B + 0x1C, 4, 0x100], [B + 0x36, 2, 0],
+         [B + 0x46, 4, VB], [B + 0x4A, 4, FACES], [B + 0x38, 2, len(verts)], [B + 0x3C, 2, len(normals)]]
+    w += [[0x215A4 + 4 * k, 4, 0] for k in range(0x100)]
+    for k, v in enumerate(verts + normals):
+        w += [[VB + 12 * k + 4 * m, 4, c & 0xFFFFFFFF] for m, c in enumerate(v)]
+    quads = [(1, 2, 6, 5), (0, 1, 5, 4), (4, 5, 6, 7), (0, 1, 2, 3), (0, 0, 0, 0)]
+    for k, q in enumerate(quads):
+        f = FACES + 0x20 * k
+        w += [[f + 0x1C, 4, 0x400], [f + 0x14, 2, 4], [f + 0x18, 4, IDX + 8 * k]] + [[IDX + 8 * k + 2 * j, 2, v] for j, v in enumerate(q)]
+    # an old record for these five faces (axes y/z, x/z, x/y, then 3 - none - and x/z); the stored sides match what the
+    # point at the cube's centre gives (1, 1, 1, 0, 1) except where a case flips one
+    REC = 0x3C800
+    hashv = ((A & 0xFF) ^ ((B & 0xFF) - (0x100 if (B & 0xFF) >= 0x80 else 0)) * 4) & 0xFF
+
+    def old(sides, shift=0):
+        r = [[0x215A4 + 4 * hashv, 4, REC], [REC, 4, A], [REC + 4, 4, B], [REC + 0xA, 2, 5], [REC + 0xC, 2, shift & 0xFFFF], [REC + 0xE, 2, 0]]
+        r += [[REC + 0x10 + 2 * k, 2, k] for k in range(5)] + [[REC + 0x1A + 2 * k, 2, s] for k, s in enumerate(sides)]
+        return r + [[REC + 0x24 + 2 * k, 2, a] for k, a in enumerate((0, 1, 2, 3, 1))]
+    out = []
+    for name, extra in (("too far", [[A + 4, 4, 0x40000]]),
+                        ("a new record", []),
+                        ("an old record, no side flips", old((1, 1, 1, 0, 1))),
+                        ("the x+ face flips: inside on y/z, dispatched", old((0, 1, 1, 0, 1))),
+                        ("the y- face flips: inside on x/z, dispatched", old((1, 0, 1, 0, 1))),
+                        ("the z+ face flips: inside on x/y, dispatched", old((1, 1, 0, 0, 1))),
+                        ("the diagonal face flips: no axis", old((1, 1, 1, 1, 1))),
+                        ("the diagonal face flips: a negative axis word", old((1, 1, 1, 1, 1)) + [[REC + 0x24 + 6, 2, 0xFFFF]]),
+                        ("the x+ face flips, a shifted right", old((0, 1, 1, 0, 1), -1)),
+                        ("the x+ face flips, a outside its square", old((0, 1, 1, 0, 1)) + [[A + 8, 4, 0x900]]),
+                        ("a skipped face", old((0, 1, 1, 0, 1)) + [[FACES + 0x13, 1, 2]]),
+                        ("a without the faces test", old((0, 1, 1, 0, 1)) + [[A + 0x15, 1, 1]]),
+                        ("b without the faces test", old((0, 1, 1, 0, 1)) + [[B + 0x15, 1, 1]]),
+                        ("b's collision hook", [[B + 0x16, 1, 0x40]]),
+                        ("a bullet target, a not a bullet", [[B + 0x16, 1, 4]])):
+        out.append({"name": "object collision: " + name, "method": "test_object_collision", "args": [A, B], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040], "unstub": (0x16812,)})
+    return out
+
+
+def bullet_cases() -> list:
+    """segment_point_min_distance (D0) for points beside, beyond either end and on a long segment; bullet_hits_shape: out
+    of range; a flagged shape (latched or not, by the ring's draw); targets of type 0x14 (ignored), 0x24 (its controller
+    marked or not) and another type, and no controller (the bullet retired: entity_retire_cases' plain world)."""
+    out = []
+    for name, seg, p in (("beside the middle", (0, 0, 0, 0x1000, 0, 0), (0x800, 0x100, 0)), ("beyond the end", (0, 0, 0, 0x1000, 0, 0), (0x3000, 0, 0)),
+                         ("before the start", (0x1000, 0x200, -0x300, 0x800, 0x100, 0), (-0x2000, 0, 0)),
+                         ("a long segment, words wrapping", (0x10000, 0, 0, 0x9000, 0x7000, -0x5000), (0x14000, 0x3000, -0x2000))):
+        out.append({"name": "segment distance: " + name, "method": "segment_point_min_distance", "args": [v & 0xFFFFFFFF for v in seg + p],
+                    "writes": [], "d0": True})
+    BUL, BCTL, SHAPE, SCTL, SDEF = 0x3C000, 0x3C100, 0x3C200, 0x3C300, 0x3C380
+    w = [[BUL, 4, BCTL], [BUL + 4, 4, 0x1000], [BUL + 8, 4, 0x200], [BUL + 0xC, 4, 0x3000], [BCTL + 8, 4, 0x100],
+         [BCTL + 0xC, 4, 0xFFFFFFC0], [BCTL + 0x10, 4, 0x81], [SHAPE + 4, 4, 0x1080], [SHAPE + 8, 4, 0x200], [SHAPE + 0xC, 4, 0x3000],
+         [SHAPE + 0x20, 4, 0x80], [SHAPE, 4, SCTL], [SCTL + 4, 4, SDEF], [SDEF, 2, 0x11], [0x2C5B4, 4, 0x2C5B8],
+         [BUL + 0x28, 1, 1], [BUL + 0x3E, 4, 0]]
+    w += [[0x2C5B8 + 4 * k, 4, (0x9E3779B9 * (k + 1)) & 0xFFFFFFFF] for k in range(0x37)]
+    for name, extra in (("out of range", [[SHAPE + 4, 4, 0x9000]]), ("a flagged shape", [[SHAPE + 0x16, 1, 4]]),
+                        ("a flagged shape, another draw", [[SHAPE + 0x16, 1, 4], [0x2C5B4, 4, 0x2C5C0]]),
+                        ("a type-0x14 target", [[SDEF, 2, 0x14]]), ("a type-0x24 target", [[SDEF, 2, 0x24]]),
+                        ("a type-0x24 target, another draw", [[SDEF, 2, 0x24], [0x2C5B4, 4, 0x2C5C4]]),
+                        ("another type: retired", []), ("no controller: retired", [[SHAPE, 4, 0]]),
+                        ("a type-0x24 target, a zero draw (marked)", [[SDEF, 2, 0x24]] + [[0x2C5B8 + 4 * k, 4, 0] for k in range(0x37)]),
+                        ("odd negative velocities", [[BCTL + 8, 4, 0xFFFFFF01], [BCTL + 0x10, 4, 0xFFFFFF7F]])):
+        out.append({"name": "bullet hits shape: " + name, "method": "bullet_hits_shape", "args": [BUL, SHAPE], "writes": w + extra})
+    return out
+
+
+def pending_pose_cases() -> list:
+    """The sinking ship's pose (Leyte only) on sink_cases' world (a square face crossing the waterline, a triangle below
+    it): the pre-render hook with nothing pending, a pending shift (vertices moved), a pending re-sink with the chain to
+    compose and with it cached (+0x61b), the heading word +0x654 turning the second angle."""
+    base = next(c for c in sink_cases() if c["name"] == "sink at waterline: tilted, no re-shade")["writes"]
+    OBJ, CTL = 0x30000, 0x3C000
+    w = base + [[OBJ, 4, CTL], [CTL, 4, OBJ], [CTL + 0x654, 2, 0x300], [OBJ + 0x38, 2, 6], [OBJ + 0x3C, 2, 2]]
+    out = []
+    for name, extra in (("nothing pending", []), ("a pending shift", [[CTL + 0x619, 1, 1], [CTL + 0x624, 4, 0x10], [CTL + 0x62C, 4, 0xFFFFFFF8]]),
+                        ("a pending re-sink, the chain composed", [[CTL + 0x619, 1, 1], [CTL + 0x628, 4, 1]])):
+        out.append({"name": "pending pose: " + name, "method": "leyte_pending_pose_pre_render", "args": [CTL, 1], "writes": w + extra,
+                    "d0": True, "stack_guard": [0x3B800, 0x3F040]})
+    # a cached chain: the identity matrix with a translation, as compose_template_chain leaves it
+    chain = [[CTL + 0x630 + 2 * k, 2, 0x1000 if k in (0, 4, 8) else 0] for k in range(9)] + [[CTL + 0x642, 4, 0x100], [CTL + 0x646, 4, 0], [CTL + 0x64A, 4, 0x80]]
+    out.append({"name": "sink with a cached chain", "method": "leyte_sink_with_cached_chain", "args": [OBJ, 0x100, 0x200, 0],
+                "writes": w + chain + [[CTL + 0x61B, 1, 1]], "stack_guard": [0x3B800, 0x3F040]})
+    return out
+
+
+def carrier_cases() -> list:
+    """The carrier's collision hook (Leyte only) on a fresh heap: a carrier with a deck face (kind 1), a kind-3 face and a
+    plain one (square in x / z), an aircraft whose controller (kind 1) heads along the deck: over the deck with the carrier
+    moving (motion recorded, ground and surface byte set, the pair added: the table created), not moving, during a
+    replay, the carrier tilted (its +0x20 beyond 0x4ff), off the deck, over the kind-3 face; the deck already found; a full pair table
+    (grown); no aircraft controller. The ship's hook: a pending shift applied, nothing pending."""
+    ARENA, C, CTL, A, OCTL, DEF, VB, FACES, IDX, R = 0x32000, 0x3C000, 0x3C100, 0x3C800, 0x3C900, 0x3CA00, 0x3CB00, 0x3CC00, 0x3CD00, 0x3CE00
+    verts = [(0, 0x40, 0), (0x400, 0x40, 0), (0x400, 0x40, 0x400), (0, 0x40, 0x400), (0, 0x40, 0x800), (0x400, 0x40, 0x800),
+             (0x800, 0, 0x800), (0x900, 0, 0x800)]
+    w = [[0x207FC, 4, HOST], [HOST + 0x384, 4, ARENA], [0x27188, 4, 0], [0x27198, 4, 0], [0x21058, 2, 0],
+         [0x21044, 2, 0], [0x21046, 2, 0], [0x21048, 4, 0],
+         [C, 4, CTL], [CTL, 4, C], [C + 0x4A, 4, FACES], [C + 0x3C, 2, 3], [C + 0x46, 4, VB], [C + 0x36, 2, 0], [C + 0x38, 2, len(verts)],
+         [CTL + 0x698, 2, 0xFFFF], [CTL + 0x69A, 2, 0xFFFF], [CTL + 0x32, 2, 0x40], [CTL + 0x22, 2, 0x1000], [CTL + 0x28, 2, 0x0F00],
+         [CTL + 0x676, 2, 0x300], [CTL + 0xA, 2, 0x1111], [CTL + 0x12, 2, 0x2222],
+         [A, 4, OCTL], [A + 4, 4, 0x200], [A + 8, 4, 0x60], [A + 0xC, 4, 0x200], [OCTL + 4, 4, DEF], [DEF, 2, 1],
+         [OCTL + 0x20, 2, 0x100], [OCTL + 0x22, 2, 0x1100],
+         [R, 4, A], [R + 4, 4, C], [R + 0xC, 2, 0], [R + 0xE, 2, 0]]
+    w += [[VB + 12 * k + 4 * m, 4, c & 0xFFFFFFFF] for k, v in enumerate(verts) for m, c in enumerate(v)]
+    for k, (kind, q) in enumerate(((1, (0, 1, 2, 3)), (3, (3, 2, 5, 4)), (0, (6, 7, 6, 7)))):
+        f = FACES + 0x20 * k
+        w += [[f + 0x17, 1, kind], [f + 0x16, 1, 0x30 + k], [f + 0x14, 2, 4], [f + 0x18, 4, IDX + 8 * k]]
+        w += [[IDX + 8 * k + 2 * j, 2, v] for j, v in enumerate(q)]
+    out = []
+    for name, extra in (("over the deck, the carrier moving", []), ("over the deck, the carrier still", [[CTL + 0x32, 2, 0]]),
+                        ("over the deck, during a replay", [[0x21058, 2, 1]]), ("the carrier tilted (beyond 0x4ff)", [[CTL + 0x20, 2, 0x900]]),
+                        ("off the deck", [[A + 4, 4, 0x2000]]), ("over the kind-3 face", [[A + 0xC, 4, 0x600]]),
+                        ("the deck already found", [[CTL + 0x698, 2, 0], [CTL + 0x69A, 2, 1], [CTL + 0x696, 2, 0x40]]),
+                        ("a full pair table: grown", [[0x21044, 2, 1], [0x21046, 2, 1], [0x21048, 4, 0x3CF00], [0x3CF00 - 8, 4, 0x2],
+                                                      [0x3CF00 - 4, 1, 0xFF], [0x3CF00, 4, 0x5555], [0x3CF04, 4, 0x6666]]),
+                        ("a deck at or below the waterline (no pair)", [[VB + 4, 4, 0]]),
+                        ("no aircraft controller", [[A, 4, 0]]),
+                        ("a record shifted right", [[R + 0xC, 2, 0xFFFF]]),
+                        ("a pending pose applied first", [[CTL + 0x619, 1, 1], [CTL + 0x62C, 4, 0x8]])):
+        out.append({"name": "carrier deck: " + name, "method": "leyte_carrier_deck_hook", "args": [C, A, R], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("a pending shift", [[CTL + 0x619, 1, 1], [CTL + 0x624, 4, 0x10]]), ("nothing pending", []),
+                        ("no record", [[CTL + 0x619, 1, 1]])):
+        args = [C, A, R if name != "no record" else 0]
+        out.append({"name": "ship hook: " + name, "method": "leyte_ship_collision_hook", "args": args, "writes": w + extra})
+    return out
+
+
+def effect_cases() -> list:
+    """spawn_effect and spawn_debris_fragment in spawn_mission_pool_object's worlds (cloud_cases): a template that gets a
+    slot (an object, its controller filled, the initialiser - stood in - called, three debris fragments) and one that
+    retires (0). Live play (logged in the ring), a replay (state -1 continues, another state stops unless kind 1), the
+    explosion sound timers near and far in view mode 1, none in view 3."""
+    free = next(c for c in cloud_cases() if c["name"] == "spawn pool object: a free slot")["writes"]
+    dead = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    TMPL = 0x30600
+    INIT = STAND_INS["effect initialiser"][0]
+    common = [[0x2C81A + 4 * k, 4, TMPL] for k in range(4)] + [[0x205BC + 4 * k, 4, INIT] for k in range(4)] + \
+             [[0x2CC10, 4, TMPL], [0x2C698, 2, 0xF], [0x21058, 2, 0], [0x23D88, 2, 1], [0x21020, 4, 0x77], [0x2C5B4, 4, 0x2C5B8],
+              [0x23D68, 4, 0], [0x23D64, 4, 0], [0x23D60, 4, 0]]
+    out = []
+    for name, world, args, extra in (
+            ("an object, debris, near", free, [2, 0x1234, 0x5678, 0x9A, 1, 0x100, 0x200, 0x300], []),
+            ("retired, far", dead, [2, 1, 2, 3, 0, 0x8000, 0, 0], []),
+            ("retired, between", dead, [3, 1, 2, 3, 0, 0x20000, 0, 0], []),
+            ("kind 1, no sound", dead, [1, 1, 2, 3, 0, 0x100, 0, 0], []),
+            ("view 3, no sound", dead, [2, 1, 2, 3, 0, 0x100, 0, 0], [[0x23D88, 2, 3]]),
+            ("replaying, state -1", dead, [2, 1, 2, 3, 0, 0x100, 0, 0], [[0x21058, 2, 0xFFFF]]),
+            ("replaying, stopped", dead, [2, 1, 2, 3, 0, 0x100, 0, 0], [[0x21058, 2, 1]]),
+            ("replaying, kind 1 continues", dead, [1, 1, 2, 3, 0, 0x100, 0, 0], [[0x21058, 2, 1]])):
+        out.append({"name": "spawn effect: " + name, "method": "spawn_effect", "args": [a & 0xFFFFFFFF for a in args],
+                    "writes": world + common + extra, "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    for name, world in (("an object", free), ("retired", dead)):
+        out.append({"name": "debris fragment: " + name, "method": "spawn_debris_fragment", "args": [0x100, 0x200, 0x300, 0],
+                    "writes": world + common, "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def small_flight_cases() -> list:
+    """any_mission_kills_recorded (D0) with no kills, the first and the last of the twelve words set, the word past them;
+    build_attitude_matrix_3ang_alt over several angle sets (signs, quadrants, the sine products' word truncation) and
+    finalize_attitude_matrix_3ang_alt on sines / cosines written directly."""
+    out = []
+    for name, extra in (("none", []), ("the first", [[HOST + 0xBE, 2, 1]]), ("the last", [[HOST + 0xD4, 2, 3]]),
+                        ("only the word past them", [[HOST + 0xD6, 2, 5]])):
+        out.append({"name": "kills recorded: " + name, "method": "any_mission_kills_recorded", "args": [],
+                    "writes": [[0x207FC, 4, HOST]] + [[HOST + 0xBE + 2 * k, 2, 0] for k in range(12)] + extra, "d0": True})
+    M = 0x3C000
+    for a in ((0, 0, 0), (0x400, 0x800, 0xC00), (0x3F00, 0x1234, 0x2F00), (0x2000, 0x1000, 0x3000), (0x1555, 0x2AAA, 0x0123)):
+        out.append({"name": "attitude 3ang alt: (0x%x, 0x%x, 0x%x)" % a, "method": "build_attitude_matrix_3ang_alt",
+                    "args": list(a) + [M], "writes": []})
+    for sc in ((0x1000, 0, 0x1000, 0, 0x1000, 0), (0xB50, 0xB50, 0xF000 & 0xFFFF, 0x800, 0x7FF, 0x8000 & 0xFFFF),
+               (0x7FFF, 0x8001 & 0xFFFF, 0x7FFF, 0x7FFF, 0x8000, 0x8000)):
+        w = [[0x23D2C - 2 * k, 2, v] for k, v in enumerate(sc)]
+        out.append({"name": "finalize 3ang alt: %s" % ",".join("%x" % v for v in sc), "method": "finalize_attitude_matrix_3ang_alt",
+                    "args": [M], "writes": w})
+    return out
+
+
+def tracking_camera_cases() -> list:
+    """update_tracking_camera (D0, the word result): a live player shot past its start frame; a designated aircraft near
+    (a new 20-frame hold; behind the player, or behind the aircraft when it heads with the player and is ahead) and far;
+    a hold running on a followed aircraft that is no longer designated; the glide with a follow just ended (re-aimed) and
+    plain; replay state 3; the countdown reaching 0x1e (state 3) and 0 (not crashed -1, crashed without a parachute 1,
+    host +0x98 == 2, bailed out: resolve_bailout_outcome over an empty near list)."""
+    PLAYER, POBJ, TARGET, TOBJ, SHOT, SOBJ = 0x3C000, 0x3C100, 0x3C200, 0x3C300, 0x3C400, 0x3C500
+    w = [[0x207FC, 4, HOST], [0x20B28, 4, PLAYER], [PLAYER, 4, POBJ], [TARGET, 4, TOBJ], [SHOT, 4, SOBJ],
+         [POBJ + 4, 4, 0x10000], [POBJ + 8, 4, 0x2000], [POBJ + 0xC, 4, 0x30000], [PLAYER + 0x20, 2, 0x100], [PLAYER + 0x22, 2, 0x1000],
+         [PLAYER + 0x24, 2, 0], [TOBJ + 4, 4, 0x10800], [TOBJ + 8, 4, 0x2100], [TOBJ + 0xC, 4, 0x30400], [TARGET + 0x22, 2, 0x1100],
+         [TARGET + 0x20, 2, 0], [TARGET + 0x24, 2, 0x80], [SOBJ + 4, 4, 0x11000], [SOBJ + 8, 4, 0x2200], [SOBJ + 0xC, 4, 0x31000],
+         [SOBJ + 0x42, 4, 5], [0x21020, 4, 10], [0x21068, 4, 0], [0x21070, 4, 0], [0x2B258, 4, 0], [0x2106C, 4, 0],
+         [0x21056, 2, 0x50], [0x21058, 2, 1], [0x23D68, 4, 0xF000], [0x23D64, 4, 0x2400], [0x23D60, 4, 0x2F000],
+         [0x23D44, 4, 0x10], [0x23D48, 4, 0xFFFFFFF0], [0x23D4C, 4, 0x20], [0x2B25C, 4, 0x2F800], [0x2B260, 4, 0x2500],
+         [0x2B264, 4, 0xF400], [HOST + 0x98, 2, 0], [0x21064, 4, 0]]
+    out = []
+    for name, extra in [("a live player shot", [[0x21068, 4, SHOT]]),
+                        ("a shot before its start frame", [[0x21068, 4, SHOT], [SOBJ + 0x42, 4, 0x20]]),
+                        ("a designated aircraft near: a new hold", [[0x21070, 4, TARGET]]),
+                        ("a designated aircraft turned away", [[0x21070, 4, TARGET], [TARGET + 0x22, 2, 0x3000]]),
+                        ("a designated aircraft far", [[0x21070, 4, TARGET], [TOBJ + 4, 4, 0x30000]]),
+                        ("a hold on an aircraft no longer designated", [[0x2B258, 4, 5], [0x2106C, 4, TARGET]]),
+                        ("the glide, a follow just ended", [[0x2106C, 4, TARGET], [0x2B258, 4, 0], [0x21070, 4, 0]]),
+                        ("the glide", []), ("replay state 3", [[0x21058, 2, 3]]),
+                        ("the countdown at 0x1f", [[0x21056, 2, 0x1F]]),
+                        ("the countdown ends: not crashed", [[0x21056, 2, 1]]),
+                        ("the countdown ends: crashed, no parachute", [[0x21056, 2, 1], [PLAYER + 0x698, 1, 4]]),
+                        ("the countdown ends: host +0x98 2", [[0x21056, 2, 1], [HOST + 0x98, 2, 2]]),
+                        ("the countdown ends: bailed out", [[0x21056, 2, 1], [PLAYER + 0x698, 1, 4], [0x21064, 4, 0x3C600], [0x20B26, 2, 0]]),
+                        ("a designated aircraft at negative coordinates, 0x8800 away",
+                         [[0x21070, 4, TARGET], [POBJ + 4, 4, 0xFFFF0001], [POBJ + 0xC, 4, 0xFFFE0003], [TOBJ + 4, 4, 0xFFFF8801],
+                          [TOBJ + 8, 4, 0x2001], [TOBJ + 0xC, 4, 0xFFFE0001]])] + [
+                        ("a designated aircraft ahead (%s)" % label, [[0x21070, 4, TARGET], [TOBJ + 4, 4, (0x10000 + dx) & 0xFFFFFFFF],
+                                                                     [TOBJ + 0xC, 4, (0x30000 + dz) & 0xFFFFFFFF], [TARGET + 0x22, 2, 0x1000]])
+                        for label, dx, dz in (("+x", 0x6000, 0), ("-x", -0x6000, 0), ("+z", 0, 0x6000), ("-z", 0, -0x6000))]:
+        out.append({"name": "tracking camera: " + name, "method": "update_tracking_camera", "args": [], "writes": w + extra,
+                    "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def replay_view_cases() -> list:
+    """begin_replay_view on a player controller with a pose ring (75 entries of 0x14 bytes): entry 5 and entry 0 (the
+    previous wrapping to 0x4a), the side by replay_request, the goal raised to 0x280 above the player's ground, a
+    contact-tracked player object (its records dropped), a live follow target (designated) and a dead one. The clip
+    bounds and the sound stop run as ported."""
+    PLAYER, POBJ, FOLLOW, FOBJ = 0x3C000, 0x3CA00, 0x3CB00, 0x3CC00
+    w = [[0x207FC, 4, HOST], [0x20B28, 4, PLAYER], [PLAYER, 4, POBJ], [PLAYER + 0x2E, 4, 0x100], [0x21054, 2, 0],
+         [0x2106C, 4, 0], [0x21070, 4, 0], [0x2B258, 4, 7], [0x23D68, 4, 0], [0x23D64, 4, 0], [0x23D60, 4, 0]]
+    w += [[0x215A4 + 4 * k, 4, 0] for k in range(256)]
+    for k in range(0x4b):
+        e = PLAYER + 0x36 + 0x14 * k
+        w += [[e, 4, 0x10000 + 0x100 * k], [e + 4, 4, 0x800 + 0x10 * k], [e + 8, 4, 0x30000 - 0x80 * k], [e + 0xE, 2, (0x200 * k) & 0x3FFF]]
+    out = []
+    for name, extra in (("entry 5", [[PLAYER + 0x612, 2, 5]]), ("entry 0, the previous wrapping", [[PLAYER + 0x612, 2, 0]]),
+                        ("the other side", [[PLAYER + 0x612, 2, 5], [0x21054, 2, 1]]),
+                        ("the goal raised above the ground", [[PLAYER + 0x612, 2, 5], [PLAYER + 0x2E, 4, 0x5000]]),
+                        ("a contact-tracked player", [[PLAYER + 0x612, 2, 5], [POBJ + 0x14, 4, 0x40]]),
+                        ("a live follow target", [[PLAYER + 0x612, 2, 5], [0x2106C, 4, FOLLOW], [FOLLOW, 4, FOBJ]]),
+                        ("a dead follow target", [[PLAYER + 0x612, 2, 5], [0x2106C, 4, FOLLOW], [FOLLOW, 4, 0]])):
+        out.append({"name": "replay view: " + name, "method": "begin_replay_view", "args": [], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def facility_cases() -> list:
+    """probe_nearest_facility_kind (D0): a near list with a carrier (deck tags unknown, both known, only the deck known:
+    skipped), types 0x1c / 0x20 within and beyond 0x671f, types 0x18 / 0x19 within and beyond their range, an object
+    without a controller and one of another type; the nearest wins."""
+    OBJ = 0x3C000
+    base = [[OBJ + 4, 4, 0x10000], [OBJ + 8, 4, 0x1000], [OBJ + 0xC, 4, 0x20000]]
+
+    def facility(k, t, dx, rng=0x4000, deck=(0xFFFF, 0xFFFF), ctl=True):
+        o, c, d = 0x3C100 + 0x40 * k, 0x3C800 + 0x40 * k, 0x3CF00 + 4 * k
+        w = [[0x20804 + 4 * k, 4, o], [o + 4, 4, (0x10000 + dx) & 0xFFFFFFFF], [o + 8, 4, 0x1000], [o + 0xC, 4, 0x20000], [o + 0x18, 4, rng]]
+        if ctl:
+            w += [[o, 4, c], [c + 4, 4, d], [d, 2, t], [c + 0x698, 2, deck[0]], [c + 0x69A, 2, deck[1]]]
+        else:
+            w += [[o, 4, 0]]
+        return w
+
+    out = []
+    for name, objs in (("nothing", []),
+                       ("a carrier near", [(0x1B, 0x3000)]), ("a carrier with both deck tags", [(0x1B, 0x3000, 0x4000, (0, 1))]),
+                       ("a carrier with only its deck tag: skipped", [(0x1B, 0x3000, 0x4000, (0, 0xFFFF))]),
+                       ("a carrier beyond 0x671f", [(0x1B, 0x7000)]),
+                       ("type 0x1c near, type 0x20 nearer", [(0x1C, 0x5000), (0x20, 0x1000)]),
+                       ("type 0x18 within its range", [(0x18, 0x1000, 0x4000)]), ("type 0x19 within its range", [(0x19, 0x1000, 0x4000)]),
+                       ("type 0x19 beyond its range", [(0x19, 0x5000, 0x4000)]),
+                       ("no controller, another type, then a carrier", [(0x1C, 0x100, 0x4000, (0xFFFF, 0xFFFF), False), (0x11, 0x100), (0x1B, 0x2000)]),
+                       ("the nearer first", [(0x19, 0x500, 0x4000), (0x1C, 0x2000)])):
+        w = base + [[0x20B26, 2, len(objs)]]
+        for k, spec in enumerate(objs):
+            w += facility(k, *spec)
+        out.append({"name": "facility kind: " + name, "method": "probe_nearest_facility_kind", "args": [OBJ], "writes": w, "d0": True})
+    return out
+
+
+def type80_point_cases() -> list:
+    """point_near_camera_or_type80_object: the cached table built through the scene (for_each_mission_scene_object with
+    Leyte's visitor: a kind-0 leaf's type-0x80 face collected, a kind-1 leaf's skipped, a 0x20 face ignored) on a fresh heap,
+    a prebuilt table (no scene walk), near objects with a type-0x80 face (nearer: taken, remembered in 0x20b3c) or hidden,
+    a best point beyond 0x4073f (0). leyte_object_type80_centroid on its own: a centroid, a hidden object, the face flagged
+    (+0x13 bit 1), a centroid at or below 0 (y), no type-0x80 face."""
+    BASE, GROUP, L1, L2, ARENA, POINT, T = 0x30000, 0x30100, 0x30300, 0x30500, 0x32000, 0x3C000, 0x3C100
+    OBJ, VB, FACES, IDX = 0x3C400, 0x3C500, 0x3C600, 0x3C700
+
+    def leaf(w, addr, kind, verts, faces):
+        w += [[addr, 1, 2], [addr + 1, 1, kind], [addr + 0x18, 2, 0], [addr + 0x1A, 2, len(verts)], [addr + 0x1E, 2, len(faces)]]
+        for k, (x, y, z) in enumerate(verts):
+            w += [[addr + 0x22 + 12 * k + 4 * m, 4, v & 0xFFFFFFFF] for m, v in enumerate((x, y, z))]
+        face = addr + 0x22 + 12 * len(verts) + 12 * len(faces)
+        for ftype, idx in faces:
+            w += [[face + 8, 1, len(idx)], [face + 9, 1, ftype]] + [[face + 0xE + 2 * i, 2, v] for i, v in enumerate(idx)]
+            face += 0xE + 2 * len(idx)
+
+    w = [[a, 4, 0] for a in range(BASE, 0x31000, 4)]
+    w += [[0x207FC, 4, HOST], [HOST + 0x8C, 4, BASE], [HOST + 0x90, 2, 1], [BASE + 0x18 + 0x8E, 4, GROUP - BASE],
+          [GROUP, 1, 3], [GROUP + 0x18, 2, 2], [HOST + 0x384, 4, ARENA], [0x27188, 4, 0], [0x27198, 4, 0],
+          [0x23D68, 4, 0], [0x23D64, 4, 0], [0x23D60, 4, 0], [0x20B38, 4, 0], [0x20B34, 2, 0], [0x20B32, 2, 0], [0x20B24, 4, 0]]
+    w += [[GROUP + 0x1A + 0x14, 4, L1 - BASE], [GROUP + 0x1A + 8, 4, 0x1000], [GROUP + 0x1A + 0x10, 4, 0x2000]]
+    w += [[GROUP + 0x1A + 0x18 + 0x14, 4, L2 - BASE], [GROUP + 0x1A + 0x18 + 8, 4, 0x300]]
+    leaf(w, L1, 0, [(0, 0, 0), (0x40, 0, 0), (0, 0, 0x40)], [(0x80, [0, 1, 2]), (0x20, [0, 1, 2])])
+    leaf(w, L2, 1, [(0, 0, 0), (0x40, 0, 0), (0, 0, 0x40)], [(0x80, [0, 1, 2])])
+    many = list(w)
+    leaf(many, L1, 0, [(0, 0, 0), (0x40, 0, 0), (0, 0, 0x40)], [(0x80, [0, 1, 2])] * 11)
+    w += [[POINT + 4 * k, 4, 0x7777] for k in range(3)]
+    obj = [[OBJ + 0x46, 4, VB], [OBJ + 0x4A, 4, FACES], [OBJ + 0x3C, 2, 2], [OBJ + 0x36, 2, 0], [OBJ, 4, 0],
+           [FACES + 0x16, 1, 0x20], [FACES + 0x20 + 0x16, 1, 0x80], [FACES + 0x20 + 0x14, 2, 3], [FACES + 0x20 + 0x18, 4, IDX]]
+    obj += [[IDX + 2 * k, 2, k] for k in range(3)]
+    obj += [[VB + 12 * k + 4 * m, 4, c] for k, p in enumerate(((0x100, 0x10, 0x100), (0x140, 0x20, 0x100), (0x100, 0x30, 0x140))) for m, c in enumerate(p)]
+    near = [[0x20804, 4, OBJ], [0x20B24, 4, 1]]
+    prebuilt = [[0x20B38, 4, T], [0x20B34, 2, 2], [0x20B32, 2, 10], [T, 4, 0x5000], [T + 4, 4, 0x100], [T + 8, 4, 0x5000],
+                [T + 12, 4, 0x2000], [T + 16, 4, 0x80], [T + 20, 4, 0x1000]]
+    out = []
+    for name, extra in (("the table built from the scene", []), ("the table built, a nearer object", obj + near),
+                        ("a prebuilt table", prebuilt), ("a prebuilt table, a hidden object", prebuilt + obj + near + [[OBJ + 0x17, 1, 2]]),
+                        ("everything beyond 0x4073f", prebuilt + [[0x23D68, 4, 0x200000]])):
+        out.append({"name": "type-0x80 point: " + name, "method": "point_near_camera_or_type80_object", "args": [POINT],
+                    "writes": w + extra, "d0": True, "stack_guard": [0x3D000, 0x3F040]})
+    out.append({"name": "type-0x80 point: eleven faces (the table grown)", "method": "point_near_camera_or_type80_object",
+                "args": [POINT], "writes": many + [[POINT + 4 * k, 4, 0x7777] for k in range(3)], "d0": True, "stack_guard": [0x3D000, 0x3F040]})
+    for name, extra in (("a centroid", []), ("hidden", [[OBJ + 0x17, 1, 2]]), ("the face flagged", [[FACES + 0x20 + 0x13, 1, 2]]),
+                        ("a centroid at or below 0", [[VB + 4 + 12 * k, 4, (-0x40) & 0xFFFFFFFF] for k in range(3)]),
+                        ("no type-0x80 face", [[FACES + 0x20 + 0x16, 1, 0x20]]),
+                        ("a ship with a pending shift", [[OBJ, 4, 0x3C800], [0x3C800, 4, OBJ], [0x3C804, 4, 0x3C900], [0x3C900, 2, 0x1B],
+                                                         [0x3C800 + 0x619, 1, 1], [0x3C800 + 0x624, 4, 0x10], [OBJ + 0x38, 2, 3]]),
+                        ("a ship with nothing pending", [[OBJ, 4, 0x3C800], [0x3C804, 4, 0x3C900], [0x3C900, 2, 0x1B]]),
+                        ("another controller type", [[OBJ, 4, 0x3C800], [0x3C804, 4, 0x3C900], [0x3C900, 2, 0x23]])):
+        out.append({"name": "object type-0x80 centroid: " + name, "method": "leyte_object_type80_centroid", "args": [OBJ, POINT],
+                    "writes": w + obj + extra, "d0": True})
+    return out
+
+
+def control_input_cases() -> list:
+    """enqueue_control_inputs_avg4: inputs within and beyond each limit (both signs; the aileron's from the definition word
+    +0x4c), the ring wrapping from slot 3, negative sums rounded toward zero, the damage bit (nothing)."""
+    CTL, DEF = 0x3C000, 0x3C800
+    w = [[CTL + 4, 4, DEF], [DEF + 0x4C, 2, 0x180], [CTL + 0x699, 1, 0]]
+    w += [[CTL + 0x652 + 2 * k, 2, (0x10 * (k + 1)) & 0xFFFF] for k in range(4)] + [[CTL + 0x65A + 2 * k, 2, (-0x20 * (k + 1)) & 0xFFFF] for k in range(4)]
+    w += [[CTL + 0x662 + 2 * k, 2, (0x5 * (k + 1)) & 0xFFFF] for k in range(4)] + [[CTL + 0x66A, 2, 0x100], [CTL + 0x66C, 2, (-0x140) & 0xFFFF],
+                                                                                 [CTL + 0x66E, 2, 0x32]]
+    out = []
+    for name, ring, args in (("within the limits", 0, (0x10, 0x100, 0x100)), ("beyond, positive", 1, (0x80, 0x300, 0x200)),
+                             ("beyond, negative", 2, (-0x80, -0x300, -0x200)), ("the ring wrapping", 3, (-0x3, -0x7, -0x101)),
+                             ("the limits exactly", 0, (0x40, 0x200, 0x180))):
+        out.append({"name": "control inputs: " + name, "method": "enqueue_control_inputs_avg4", "args": [CTL] + [a & 0xFFFFFFFF for a in args],
+                    "writes": w + [[CTL + 0x650, 2, ring]]})
+    out.append({"name": "control inputs: damaged", "method": "enqueue_control_inputs_avg4", "args": [CTL, 1, 2, 3], "writes": w + [[CTL + 0x699, 1, 1]]})
+    return out
+
+
+def frame_advance_cases() -> list:
+    """advance_frame_and_tick_controllers: live play (controllers ticked - stood in - or dropped, the list compacted, ticks
+    appending controllers moved down), a replay frame (visibility of pool objects and shapes: born later, dead, alive with
+    the hidden flag, born this frame; the logged effects of an empty log), a replay start (state 1)."""
+    TICK = STAND_INS["controller tick"][0]
+    DEF, NODEF = 0x3C000, 0x3C010
+    w = [[DEF + 2, 4, TICK], [NODEF + 2, 4, 0], [0x21020, 4, 0x100], [0x21058, 2, 0], [0x21070, 4, 0x5555],
+         [0x2C698, 2, 0], [0x20B26, 2, 0], [0x20F2E, 2, 0]]
+    w += [[0x2C69A + 0x18 * k + 0x14, 4, 0x7FFFFFFF] for k in range(16)]      # the effect log: every entry an end mark
+    ctls = [(True, DEF), (False, DEF), (True, NODEF), (True, DEF)]
+    for k, (live, d) in enumerate(ctls):
+        c = 0x3C100 + 0x40 * k
+        w += [[0x21BD4 + 4 * k, 4, c], [c, 4, 0x3CF00 if live else 0], [c + 4, 4, d]]
+    w += [[0x219B4, 4, 5], [0x219B6, 2, 4], [0x21BD4 + 16, 4, 0x3C300], [0x3C300, 4, 0x3CF00], [0x3C304, 4, DEF]]
+    objs = []
+    for k, (born, dead, flags, typ) in enumerate(((0x200, 0, 0, 2), (0x50, 0x80, 0, 2), (0x50, 0, 2, 2), (0x101, 0, 0x40, 2),
+                                                  (0x50, 0, 0, 1))):
+        for base, table in ((0x3C400, 0x20804), (0x3CA00, 0x20B44)):      # the pool's objects, then entity_array_1's own
+            o = base + 0x80 * k
+            objs += [[o + 0x42, 4, born], [o + 0x3E, 4, dead], [o + 0x14, 4, flags | 0x40], [o + 0x17, 1, flags], [o + 0x28, 1, typ]]
+            objs += [[table + 4 * k, 4, o]]
+    out = []
+    for name, extra in (("live play", []), ("a replay frame", objs + [[0x21058, 2, 2], [0x20B26, 2, 5], [0x20F2E, 2, 5]]),
+                        ("a replay start", [[0x21058, 2, 1]])):
+        out.append({"name": "frame advance: " + name, "method": "advance_frame_and_tick_controllers", "args": [], "writes": w + extra})
+    return out
+
+
+def sound_cases() -> list:
+    """play_game_sound over every kind (once, looped, 100 with and without its record, > 100 with the caller's A1, a lower
+    priority refused, a missing record) and update_game_sounds across views (no sound, a stopped view, 8 with explosions and
+    sound 14, the follow views with each flag, the engine stalled / fast / idle, engine sound off, a voice on channel 1);
+    the host's play / rate / status / stop routines stood in through SERVICES-like stand-ins."""
+    PLAY, RATE, STATUS, STOP = SOUND_HOST
+    TABLE, RECS, PLAYER = 0x3C000, 0x3C200, 0x3C800
+    w = [[0x207FC, 4, HOST], [HOST + 0x296, 4, TABLE], [HOST + 0x2E6, 4, PLAY], [HOST + 0x2EE, 4, RATE], [HOST + 0x2F2, 4, STATUS],
+         [HOST + 0x2FA, 4, STOP], [HOST + 0x9A, 2, 1], [HOST + 0x9C, 2, 1], [0x2B24C, 4, 0], [0x2B250, 4, 0xFFFFFFFF],
+         [0x20B28, 4, PLAYER], [0x21070, 4, PLAYER]]
+    for k in range(16):
+        r = RECS + 0x20 * k
+        w += [[TABLE + 4 * k, 4, r], [r + 4, 4, 0x200 + k], [r + 0xC, 4, 0x10 * k], [r + 0x10, 4, 0x20 * k]]
+    w += [[TABLE + 4 * 13, 4, 0]]
+    out = []
+    for name, sid, extra in (("once (1)", 1, []), ("looped (5)", 5, []), ("once (14, Leyte)", 14, []), ("looped (15)", 15, []),
+                             ("100", 100, []), ("100 without its record", 100, [[TABLE + 0x1C, 4, 0]]),
+                             ("a missing record (13)", 13, []), ("a lower priority refused", 6, [[0x2B24C, 4, 3]]),
+                             ("above 100", 0x70, []), ("zero", 0, [])):
+        out.append({"name": "play sound: " + name, "method": "play_game_sound", "args": [sid], "writes": w + extra})
+    flags = [[f, 2, 1] for f in (0x2103C, 0x21040, 0x2103A, 0x2103E, 0x21030, 0x2102E, 0x2102C, 0x2102A, 0x21024, 0x21026)]
+    busy = [[next(e[1] for e in CALL_LOGS if e[0] == STATUS) - 4, 4, 1]]      # the status routine says busy
+    for name, extra in [("no sound", [[HOST + 0x9A, 2, 0], [0x21032, 2, 4], [0x21034, 2, 2]] + flags), ("view 3: everything stops", [[0x23D88, 2, 3]]),
+                        ("view 8: explosions and 14", [[0x23D88, 2, 8], [0x21034, 2, 5], [0x21032, 2, 3], [0x2102E, 2, 1]]),
+                        ("view 1: every flag", [[0x23D88, 2, 1], [PLAYER + 0x68A, 1, 0x10], [PLAYER + 0x68C, 1, 0x5], [0x21034, 2, 2]] + flags),
+                        ("view 1: 14 already playing", [[0x23D88, 2, 1], [0x2102E, 2, 1], [0x2B24C, 4, 14]]),
+                        ("view 1: engine stalled", [[0x23D88, 2, 1], [PLAYER + 0x677, 1, 1], [PLAYER + 0x678, 4, 0x3000]]),
+                        ("view 1: engine fast", [[0x23D88, 2, 1], [PLAYER + 0x678, 4, 0x5000], [0x2B250, 4, 10]]),
+                        ("view 1: engine idle", [[0x23D88, 2, 1], [PLAYER + 0x678, 4, 0x100]]),
+                        ("view 7: engine sound off", [[0x23D88, 2, 7], [HOST + 0x9C, 2, 0]]),
+                        ("view 2: a voice on channel 1", [[0x23D88, 2, 2], [0x2B24C, 4, 3]])] + [
+                        (name, extra + busy) for name, extra in (
+                            ("busy: view 1, 14 already playing", [[0x23D88, 2, 1], [0x2102E, 2, 1], [0x2B24C, 4, 14]]),
+                            ("busy: view 1, engine fast, the same choice", [[0x23D88, 2, 1], [PLAYER + 0x678, 4, 0x5000], [0x2B250, 4, 10]]),
+                            ("busy: view 1, engine idle", [[0x23D88, 2, 1], [PLAYER + 0x678, 4, 0x100]]),
+                            ("busy: view 2, a voice on channel 1", [[0x23D88, 2, 2], [0x2B24C, 4, 3]]),
+                            ("busy: view 7, the designated aircraft stalled", [[0x23D88, 2, 7], [PLAYER + 0x677, 1, 1]]),
+                            ("busy: view 8, 14 playing", [[0x23D88, 2, 8], [0x2102E, 2, 1], [0x2B24C, 4, 14]]),
+                            ("busy: view 1, explosion timers running", [[0x23D88, 2, 1], [0x21032, 2, 7], [0x21034, 2, 0]]),
+                            ("busy: view 7, a near explosion", [[0x23D88, 2, 7], [0x21034, 2, 3]]))]:
+        out.append({"name": "game sounds: " + name, "method": "update_game_sounds", "args": [], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def runway_cases() -> list:
+    """find_nearest_runway_approach_ends and try_begin_landing_approach (kept by the generated port: its cases check it
+    end to end): runway shapes next to a type-0x19 facility (so the facility probe says 0x200) in the pool and in
+    entity_array_1, a runway face with its long side first and one turned (corners rotated), a nearer second runway, a
+    non-runway face; the aircraft near (an approach starts), too near / far (refused) and with no runway (1)."""
+    OWN, NEAR, FAR, PLAYER = 0x3C000, 0x3C010, 0x3C020, 0x3C040
+    out = []
+
+    def runway(k, at_x, at_z, turned, typ=2):
+        o, faces, verts, idx = 0x3C200 + 0x100 * k, 0x3C800 + 0x80 * k, 0x3CC00 + 0x80 * k, 0x3D000 + 0x10 * k
+        quad = [(0, 0, 0), (0x200, 0, 0), (0x200, 0, 0x2000), (0, 0, 0x2000)]
+        if turned:
+            quad = quad[1:] + quad[:1]
+        w = [[o + 0x28, 1, typ], [o + 4, 4, at_x], [o + 8, 4, 0], [o + 0xC, 4, at_z], [o + 0x4A, 4, faces], [o + 0x3C, 2, 2],
+             [o + 0x46, 4, verts], [o + 0x36, 2, 0], [o, 4, 0], [o + 0x18, 4, 0x100],
+             [faces + 0x16, 1, 0x20], [faces + 0x20 + 0x16, 1, 0x70], [faces + 0x20 + 0x14, 2, 4], [faces + 0x20 + 0x18, 4, idx]]
+        w += [[idx + 2 * j, 2, j] for j in range(4)]
+        w += [[verts + 12 * j + 4 * m, 4, (c + (at_x if m == 0 else at_z if m == 2 else 0)) & 0xFFFFFFFF] for j, p in enumerate(quad) for m, c in enumerate(p)]
+        return o, w
+
+    def facility(k, at_x, at_z):
+        o, c, d = 0x3D400 + 0x40 * k, 0x3D600 + 0x40 * k, 0x3D800 + 4 * k
+        return o, [[o, 4, c], [c + 4, 4, d], [d, 2, 0x19], [o + 4, 4, at_x], [o + 8, 4, 0], [o + 0xC, 4, at_z], [o + 0x18, 4, 0x8000]]
+
+    def world(runways, own_xz):
+        w = [[OWN + 4, 4, own_xz[0] & 0xFFFFFFFF], [OWN + 8, 4, 0x400], [OWN + 0xC, 4, own_xz[1] & 0xFFFFFFFF]]
+        pool, ents = [], []
+        for k, (at_x, at_z, turned, in_pool) in enumerate(runways):
+            o, rw = runway(k, at_x, at_z, turned)
+            f, fw = facility(k, at_x + 0x100, at_z)
+            w += rw + fw
+            (pool if in_pool else ents).append(o)
+            pool.append(f)
+        w += [[0x20804 + 4 * k, 4, o] for k, o in enumerate(pool)] + [[0x20B24, 4, len(pool)]]
+        w += [[0x20B44 + 4 * k, 4, o] for k, o in enumerate(ents)] + [[0x20F2C, 4, len(ents)]]
+        return w
+
+    for name, runways, own in (("none", [], (0, 0)), ("one runway in the pool", [(0x10000, 0x10000, False, True)], (0x10100, 0x20000)),
+                               ("a turned runway in entity_array_1", [(0x10000, 0x10000, True, False)], (0x10100, 0x5000)),
+                               ("two runways, the second nearer", [(0x10000, 0x10000, False, True), (0x30000, 0x10000, False, True)], (0x30100, 0x18000)),
+                               ("too far", [(0x10000, 0x10000, False, True)], (0x80000, 0x80000)),
+                               ("a runway at negative coordinates", [(-0x10001, -0x10001, False, True)], (-0xFF01, -0x20001))):
+        w = world(runways, own)
+        out.append({"name": "runway ends: " + name, "method": "find_nearest_runway_approach_ends", "args": [OWN, NEAR, FAR], "writes": w,
+                    "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+        if runways:
+            lw = w + [[PLAYER, 4, OWN], [PLAYER + 0x68C, 1, 5], [PLAYER + 0x698, 2, 0x4000], [PLAYER + 0x32, 4, 0x12345678]]
+            out.append({"name": "landing approach: " + name, "method": "try_begin_landing_approach", "args": [PLAYER], "writes": lw,
+                        "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def steer_sample_cases() -> list:
+    """build_relative_steer_sample (D0): targets near and far (beyond 0x8000 and 0xffff horizontally, steep and shallow,
+    above and below), the aircraft low (raised; at or below 1000 the throttle maximised) and high, attitudes turned."""
+    CTL, OBJ, H, VEC, PE, HE = 0x3C000, 0x3C800, 0x3C900, 0x3C910, 0x3C920, 0x3C924
+    w = [[CTL, 4, OBJ], [OBJ + 4, 4, 0x10000], [OBJ + 8, 4, 0x3000], [OBJ + 0xC, 4, 0x20000], [CTL + 0xC, 4, 0x10],
+         [CTL + 0x2E, 4, 0x100], [CTL + 0x20, 2, 0x100], [CTL + 0x22, 2, 0x1200], [CTL + 0x24, 2, 0x3F00]]
+    out = []
+    for name, target, extra in (("near, level", (0x10400, 0x3000, 0x20300), []),
+                                ("far, steep", (0x1A000, 0x5000, 0x20000), []),
+                                ("far, shallow", (0x19000, 0x3400, 0x21000), []),
+                                ("very far, below", (0x30000, 0x1000, 0x30000), []),
+                                ("far, below, steep", (0x18800, 0x1000, 0x20000), []),
+                                ("far, below, shallow", (0x18800, 0x2E00, 0x20000), []),
+                                ("far behind, below, shallow", (0x7800, 0x2E00, 0x20000), []),
+                                ("low (raised)", (0x10400, 0x1000, 0x20300), [[OBJ + 8, 4, 0x900], [CTL + 0xC, 4, 0]]),
+                                ("very low (throttle)", (0x10400, 0x100, 0x20300), [[OBJ + 8, 4, 0x200], [CTL + 0xC, 4, 0]]),
+                                ("behind and below, turned", (0xF000, 0x2000, 0x1E000), [[CTL + 0x22, 2, 0x2A00], [CTL + 0x20, 2, 0x3E00]])):
+        out.append({"name": "steer sample: " + name, "method": "build_relative_steer_sample",
+                    "args": [CTL] + [v & 0xFFFFFFFF for v in target] + [H, VEC, PE, HE], "writes": w + extra, "d0": True,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def flight_input_cases() -> list:
+    """process_flight_input_and_outcome (hook 14, D0 the result) on a quiet frame (sound off, no controllers, the mouse
+    controls off by +0x685 bit 0): the key cases of the table at 0x86cc (views, look offsets, keyboard steering, throttle
+    keys and slew, gear / flaps / brakes / 'N' / 'J' / 'M', the target keys), the results 3 / 4 taken before the controller
+    tick (the caller's A5 stored into 0x21070), the throttle ramp (clamps, engine off, decay), the gun trigger, the pitch
+    mirror, the stopped-aircraft outcomes (status, ditching, touchdown on and off a runway, the deck-distance odds near a
+    friendly carrier, the refuel record) and the view cameras 1 / 2 / 5 / 7."""
+    PLAYER, POBJ, DEFN, TARGET, TOBJ = 0x3C000, 0x3C700, 0x3C780, 0x3C800, 0x3CF00
+    CARRIER, CCTL, CDEF, FACE, LIST, VERTS = 0x3D000, 0x3D100, 0x3D7A0, 0x3D7C0, 0x3D7E0, 0x3D800
+    w = [[0x207FC, 4, HOST], [HOST + 0x9A, 2, 0], [HOST + 0x98, 2, 0], [HOST + 0xA0, 2, 0], [HOST + 0xA4, 2, 0],
+         [HOST + 0xD8, 2, 0], [HOST + 0xD2, 2, 0], [HOST + 0x37A, 2, 0x100], [HOST + 0x37C, 2, 0xA0], [HOST + 0x37E, 2, 0],
+         [0x27052, 2, 0x100], [0x27054, 2, 0xA0], [0x2B26E, 2, 0x100], [0x2B26C, 2, 0xA0],
+         [0x20B28, 4, PLAYER], [PLAYER, 4, POBJ], [PLAYER + 4, 4, DEFN], [DEFN + 0x1C, 2, 100], [DEFN + 0x46, 2, 0x123],
+         [PLAYER + 0x20, 2, 0x100], [PLAYER + 0x22, 2, 0x1200], [PLAYER + 0x24, 2, 0x3F00], [PLAYER + 0x2E, 4, 0x100],
+         [PLAYER + 0x32, 4, 0xFCF6], [PLAYER + 0x612, 2, 5], [PLAYER + 0x626, 2, 0x20], [PLAYER + 0x685, 1, 1],
+         [PLAYER + 0x696, 2, 3], [PLAYER + 0x676, 1, 4], [PLAYER + 0x680, 2, 0x200],
+         [POBJ + 4, 4, 0x10000], [POBJ + 8, 4, 0x2000], [POBJ + 0xC, 4, 0x30000],
+         [TARGET, 4, TOBJ], [TARGET + 0x612, 2, 2], [TOBJ + 4, 4, 0x11000], [TOBJ + 8, 4, 0x2100], [TOBJ + 0xC, 4, 0x31000],
+         [0x23D88, 2, 3], [0x21020, 4, 0x100], [0x219B6, 2, 0], [0x21070, 4, 0], [0x2C5B4, 4, 0x2C5B8]]
+    w += [[0x2C5B8 + 4 * k, 4, (0x9E3779B1 * (k + 3)) & 0xFFFFFFFF] for k in range(55)]
+    w += [[0x2C698, 2, 0]] + [[0x2C69A + 0x18 * k + 0x14, 4, 0x7FFFFFFF] for k in range(16)]      # the effect log: end marks
+    for ctl in (PLAYER, TARGET):
+        for k in range(0x4B):
+            e = ctl + 0x36 + 0x14 * k
+            w += [[e, 4, 0x10000 + 0x100 * k + ctl], [e + 4, 4, 0x800 + 0x10 * k], [e + 8, 4, 0x30000 - 0x80 * k],
+                  [e + 0xC, 2, (0x100 * k) & 0x3FFF], [e + 0xE, 2, (0x200 * k) & 0x3FFF], [e + 0x10, 2, (0x300 * k + 1) & 0x3FFF]]
+    target = [[0x21070, 4, TARGET]]
+    ground = [[PLAYER + 0x64C, 1, 1], [PLAYER + 0x680, 2, 0]]
+    runway = [[PLAYER + 0x2C, 1, 0x30]]
+    touchdown = [[0x21050, 2, 2]]
+    fuel = [[PLAYER + 0x691, 1, 20], [PLAYER + 0x692, 1, 30], [PLAYER + 0x68D, 1, 0xFE]]
+    # a friendly carrier (type 0x1b, both deck tags unknown) at the player, its deck face 0x70 over two view vertices
+    carrier = [[0x20B26, 2, 1], [0x20804, 4, CARRIER], [CARRIER, 4, CCTL], [CCTL + 4, 4, CDEF], [CDEF, 2, 0x1B],
+               [CCTL + 0x698, 2, 0xFFFF], [CCTL + 0x69A, 2, 0xFFFF], [CARRIER + 4, 4, 0x10100], [CARRIER + 8, 4, 0x2000],
+               [CARRIER + 0xC, 4, 0x30000], [CARRIER + 0x28, 1, 2], [CARRIER + 0x3C, 2, 2], [CARRIER + 0x4A, 4, FACE],
+               [CARRIER + 0x4E, 4, VERTS], [FACE + 0x16, 1, 0x60], [FACE + 0x20 + 0x16, 1, 0x70], [FACE + 0x20 + 0x14, 2, 2],
+               [FACE + 0x20 + 0x18, 4, LIST], [LIST, 2, 1], [LIST + 2, 2, 0]]
+
+    # a friendly field (type 0x1c) near the player, after the carrier in the pool when both are there
+    fac100 = [[0x20B26, 2, 1], [0x20804, 4, 0x3DA00], [0x3DA00, 4, 0x3DA80], [0x3DA80 + 4, 4, 0x3DB80], [0x3DB80, 2, 0x1C],
+              [0x3DA00 + 4, 4, 0x10800], [0x3DA00 + 8, 4, 0x2000], [0x3DA00 + 0xC, 4, 0x30000]]
+
+    def verts(near):
+        return [[VERTS, 4, 0x10100 + near], [VERTS + 4, 4, 0x2000], [VERTS + 8, 4, 0x30000],
+                [VERTS + 12, 4, 0x10100 + 2 * near], [VERTS + 16, 4, 0x2000], [VERTS + 20, 4, 0x30000 + near]]
+    damaged = [[PLAYER + 0x698, 2, 0x2]]
+    down, up, none = 3, 4, 0
+    out = []
+    for name, key, ev, extra, a5 in [
+            ("'P' pauses (4), A5 stored", 0x50, down, target, 0xC0000), ("'`' quits (3)", 0x60, down, [], 0x0C1234),
+            ("ESC in a replay's view 8 (3)", 0x1B, down, [[0x23D88, 2, 8], [0x21058, 2, 2], [0x21056, 2, 5]], 0),
+            ("'V': view 1, the object hidden", 0x56, down, [], 0), ("'C': view 5, the object shown", 0x43, down, [[POBJ + 0x14, 4, 0x41]], 0),
+            ("'C' in view 5: back to view 1", 0x43, down, [[0x23D88, 2, 5]], 0),
+            ("'E' with a target: view 7 on its ring", 0x45, down, target, 0), ("'E' without a target", 0x45, down, [], 0),
+            ("view 7 on the ground: reset", 0, none, target + [[0x23D88, 2, 7], [PLAYER + 0x64C, 1, 1]], 0),
+            ("left arrow in view 1, eased", 0x1C, down, [[0x23D88, 2, 1], [HOST + 0xA0, 2, 1], [0x23D30, 4, 0x3FF0]], 0),
+            ("right arrow in view 2, snapped back", 0x1D, down, [[0x23D88, 2, 2], [0x2B238, 4, 0x3800], [0x23D30, 4, 0x3FF0]], 0),
+            ("up arrow at the 0x3580 limit", 0x1E, down, [[0x23D88, 2, 1], [0x2B234, 4, 0x3580]], 0),
+            ("up arrow", 0x1E, down, [[0x23D88, 2, 1], [0x2B234, 4, 0x200]], 0),
+            ("down arrow", 0x1F, down, [[0x23D88, 2, 2], [0x2B234, 4, 0x200], [HOST + 0xA0, 2, 1]], 0),
+            ("'R' in view 1", 0x52, down, [[0x23D88, 2, 1]], 0), ("'R' in view 4", 0x52, down, [[0x23D88, 2, 4]], 0),
+            ("'T' in view 6: reset", 0x54, down, [[0x23D88, 2, 6]], 0),
+            ("space on the ground (brakes)", 0x20, down, ground + [[PLAYER + 0x680, 2, 1]], 0),
+            ("space released while steering", 0x20, up, [[0x2B270, 2, 1], [0x2B230, 2, 1]], 0),
+            ("'G' gear down, no approach host", 0x47, down, [], 0), ("'G' gear up", 0x47, down, [[PLAYER + 0x68A, 1, 1]], 0),
+            ("'F' flaps", 0x46, down, [[PLAYER + 0x68C, 1, 2]], 0), ("'F' flaps from 0", 0x46, down, [], 0),
+            ("'N' (Leyte)", 0x4E, down, [[PLAYER + 0x682, 2, 0x11]], 0), ("'n' at 3: no change", 0x6E, down, [[PLAYER + 0x682, 2, 0x13]], 0),
+            ("'N' bailed out: ignored", 0x4E, down, [[PLAYER + 0x682, 2, 1], [0x2105C, 2, 1]], 0),
+            ("'J'", 0x4A, down, [], 0), ("'M' engine off", 0x4D, down, [], 0), ("'B' high enough", 0x42, down, [], 0),
+            ("'B' too low", 0x42, down, [[PLAYER + 0x2E, 4, 0x1FD0]], 0),
+            ("ctrl-S slew on", 0x13, down, [], 0), ("ctrl-S slew off", 0x13, down, [[PLAYER + 0x32, 4, 0x112A4]], 0),
+            ("ctrl-X marks the target", 0x18, down, target, 0), ("tab cycles the view distance", 9, down, [[0x2CC1E, 4, 0xCE40]], 0),
+            ("'7' in slew", 0x37, down, [[PLAYER + 0x32, 4, 0x112A4], [PLAYER + 0x698, 2, 0x4002]], 0),
+            ("'7' not in slew", 0x37, down, [], 0),
+            ("'5' centres the stick", 0x35, down, [[HOST + 0x37A, 2, 0x150], [0x2B26E, 2, 0x150]], 0),
+            ("'4' steers left", 0x34, down, [], 0), ("'6' released", 0x36, up, [[0x2B270, 2, 1], [0x2B26A, 2, 1]], 0),
+            ("'8' steers up, far off centre", 0x38, down, [[HOST + 0x37C, 2, 0x10], [0x2B26C, 2, 0x10]], 0),
+            ("'2' steers down", 0x32, down, [[HOST + 0x37A, 2, 0x1F0], [0x2B26E, 2, 0x1F0]], 0),
+            ("steering back to centre", 0, none, [[0x2B270, 2, 1], [HOST + 0x37A, 2, 0x110], [0x2B26E, 2, 0x110],
+                                                  [HOST + 0x37C, 2, 0x70], [0x2B26C, 2, 0x70]], 0),
+            ("steering ended by the mouse", 0, none, [[0x2B270, 2, 1], [HOST + 0x37A, 2, 0x110], [HOST + 0x37E, 2, 1]], 0),
+            ("'A' with a target", 0x61, down, target, 0), ("'z' rudder released", 0x7A, up, [[0x21042, 2, 0x40]], 0),
+            ("'Z' rudder", 0x5A, down, [], 0), ("'?' rudder", 0x3F, down, [], 0),
+            ("'+' starts the throttle ramp", 0x2B, down, [], 0), ("'-' released", 0x2D, up, [[0x2B232, 2, 0xFFFF]], 0),
+            ("'+' at 9: clamped, the ramp ends", 0x3D, down, [[PLAYER + 0x676, 1, 9]], 0),
+            ("'-' at 0: clamped, the ramp ends", 0x5F, down, [[PLAYER + 0x676, 1, 0]], 0),
+            ("'+' with the engine off", 0x2B, down, [[PLAYER + 0x698, 2, 0x4000]], 0),
+            ("the ramp decays", 0, none, [[0x2B232, 2, 4]], 0), ("the ramp decays (negative)", 0, none, [[0x2B232, 2, 0xFFFC]], 0),
+            ("'+' in view 6: a zoom step", 0x2B, down, [[0x23D88, 2, 6], [0x27020, 2, 2], [0x27050, 2, 0x40], [0x2704E, 2, 0x30]], 0),
+            ("'-' in view 6: a zoom step back", 0x2D, down, [[0x23D88, 2, 6], [0x27020, 2, 2], [0x2703E, 2, 0x20], [0x27026, 2, 0x18]], 0),
+            ("the gun trigger", 0, none, [[HOST + 0x37E, 2, 1]], 0),
+            ("the gun trigger, no ammo", 0, none, [[HOST + 0x37E, 2, 1], [PLAYER + 0x696, 2, 1]], 0),
+            ("the pitch mirrored", 0, none, [[0x23D40, 2, 0x1800], [0x23D3E, 2, 0x3000]], 0),
+            ("the pitch mirrored past 0x2000", 0, none, [[0x23D40, 2, 0x2800]], 0),
+            ("a key-up filtered out", 0x51, up, [], 0), ("a key beyond the table", 0x80, down, [], 0),
+            ("stopped: host status 1", 0, none, ground + [[HOST + 0xD8, 2, 1]], 0),
+            ("stopped: rolling (RPM)", 0, none, ground + [[PLAYER + 0x680, 2, 1]], 0),
+            ("stopped: +0x62a set, the word +0x30 positive", 0, none, ground + [[PLAYER + 0x62A, 4, 1], [PLAYER + 0x30, 2, 1]], 0),
+            ("stopped: +0x62a and +0x62e set", 0, none, ground + [[PLAYER + 0x62A, 4, 1], [PLAYER + 0x62E, 4, 1], [PLAYER + 0x30, 2, 1]], 0),
+            ("stopped: +0x62a set, the word +0x30 0", 0, none, ground + [[PLAYER + 0x62A, 4, 1]], 0),
+            ("stopped: ditched intact", 0, none, ground + fuel + [[PLAYER + 0x698, 2, 0x1000]], 0),
+            ("stopped: ditched damaged", 0, none, ground + [[PLAYER + 0x698, 2, 0x1002]], 0),
+            ("stopped: ditched near a carrier", 0, none, ground + carrier + verts(0x40) + [[PLAYER + 0x698, 2, 0x1002]], 0),
+            ("touchdown on a runway", 0, none, ground + runway + touchdown, 0),
+            ("touchdown on a runway by a friendly carrier, scored", 0, none, ground + runway + touchdown + carrier + verts(0x40) + [[HOST + 0xD2, 2, 1]], 0),
+            ("touchdown off the runway, damaged", 0, none, ground + touchdown + damaged + fuel, 0),
+            ("touchdown off the runway, empty", 0, none, ground + touchdown, 0),
+            ("touchdown off the runway intact, no kills", 0, none, ground + touchdown + fuel, 0),
+            ("touchdown by a carrier, damaged, the deck near", 0, none, ground + touchdown + damaged + fuel + carrier + verts(0x10), 0),
+            ("touchdown by a carrier, damaged, the deck far", 0, none, ground + touchdown + damaged + fuel + carrier + verts(0x6000), 0),
+            ("touchdown by a carrier, damaged, the deck far, other odds", 0, none, ground + touchdown + damaged + fuel + carrier
+             + verts(0x6000) + [[0x2C5B4, 4, 0x2C5D8]], 0),
+            ("touchdown by a carrier, damaged, the deck far, more odds", 0, none, ground + touchdown + damaged + fuel + carrier
+             + verts(0x6000) + [[0x2C5B4, 4, 0x2C620]], 0),
+            ("stopped on a runway, engine off: refuel record", 0, none, ground + runway + fuel + [[PLAYER + 0x698, 2, 0x4000]], 0),
+            ("stopped on a runway, recorded already", 0, none, ground + runway + fuel + [[PLAYER + 0x698, 2, 0x4000], [0x20B2C, 2, 1]], 0),
+            ("stopped on a runway, engine running", 0, none, ground + runway + fuel, 0),
+            ("view 5 camera", 0, none, [[0x23D88, 2, 5], [PLAYER + 0x612, 2, 3]], 0),
+            ("a replay running: state 1 -> 2", 0, none, [[0x21058, 2, 1], [0x21056, 2, 5]], 0),
+            ("a replay ended in view 8: view 1, hidden", 0, none, [[0x21058, 2, 1], [0x23D88, 2, 8]], 0),
+            ("a replay ended in view 8, bailed out: view 9", 0, none, [[0x21058, 2, 0], [0x23D88, 2, 8], [0x21064, 4, 0x3D900]], 0),
+            ("replay state 3: flagged controllers only", 0, none, [[0x21058, 2, 3], [0x21056, 2, 5]], 0),
+            ("view 9 without a parachute: the outcome", 0, none, [[0x21058, 2, 2], [0x21056, 2, 5], [0x23D88, 2, 9]], 0),
+            ("instant replay requested in the air", 0, none, [[HOST + 0x98, 2, 1], [0x21054, 2, 0], [0x21056, 2, 0]], 0),
+            ("instant replay requested on the ground", 0, none, ground + [[PLAYER + 0x680, 2, 1], [HOST + 0x98, 2, 1]], 0),
+            ("'A' released", 0x41, up, target, 0), ("'.' rudder off", 0x2E, down, [[0x21042, 2, 0x40]], 0),
+            ("'G' gear down, an approach host", 0x47, down, [[HOST + 0xA4, 2, 1]], 0),
+            ("space released on the ground", 0x20, up, ground + [[PLAYER + 0x680, 2, 1], [PLAYER + 0x64F, 1, 1]], 0),
+            ("space pressed while steering", 0x20, down, [[0x2B270, 2, 1]], 0),
+            ("'6' held: steering right", 0, none, [[0x2B270, 2, 1], [0x2B26A, 2, 1]], 0),
+            ("steering far right of centre", 0, none, [[0x2B270, 2, 1], [HOST + 0x37A, 2, 0x10], [0x2B26E, 2, 0x10]], 0),
+            ("steering far below centre", 0, none, [[0x2B270, 2, 1], [HOST + 0x37C, 2, 0x1A0], [0x2B26C, 2, 0x1A0]], 0),
+            ("'8' released", 0x38, up, [[0x2B268, 2, 0xFFFF]], 0), ("'2' released", 0x32, up, [[0x2B268, 2, 1]], 0),
+            ("'4' released", 0x34, up, [[0x2B26A, 2, 0xFFFF]], 0),
+            ("view 2 eased back near 0", 0, none, [[0x23D88, 2, 2], [0x23D34, 4, 0x3FF0], [0x23D30, 4, 0x10]], 0),
+            ("view 2 eased back, not yet", 0, none, [[0x23D88, 2, 2], [0x23D34, 4, 0x10], [0x23D30, 4, 0x3000]], 0),
+            ("view 2 easing, negative steps", 0, none, [[0x23D88, 2, 2], [HOST + 0xA0, 2, 1], [0x2B234, 4, 0x3F00], [0x2B238, 4, 0x3E00]], 0),
+            ("view 6 camera, eased", 0, none, [[0x23D88, 2, 6], [POBJ + 0x20, 4, 0x50], [0x2B23C, 4, 0x20], [0x2B240, 4, 0x3F80]], 0),
+            ("view 6 camera, snapped", 0, none, [[0x23D88, 2, 6], [POBJ + 0x20, 4, 0x50], [0x2B23C, 4, 0x2000], [0x2B240, 4, 0x1000]], 0),
+            ("view 6 camera, a remembered object without its face", 0, none, [[0x23D88, 2, 6], [0x20B3C, 4, TOBJ], [0x2B23C, 4, 0x3000]], 0),
+            ("view 6 camera, far (shifted)", 0, none, [[0x23D88, 2, 6], [0x23D68, 4, 0xFFF00000], [0x23D60, 4, 0x200000]], 0),
+            ("stopped: ditched by a friendly field", 0, none, ground + fac100 + [[PLAYER + 0x698, 2, 0x1002]], 0),
+            ("stopped: ditched, only the second tank", 0, none, ground + [[PLAYER + 0x698, 2, 0x1000], [PLAYER + 0x692, 1, 5]], 0),
+            ("touchdown on a field's runway", 0, none, ground + runway + touchdown + fac100, 0),
+            ("touchdown off a field's runway, damaged", 0, none, ground + touchdown + damaged + fac100, 0),
+            ("touchdown off a field's runway, intact", 0, none, ground + touchdown + fuel + fac100, 0),
+            ("touchdown on a deck (0x70) by a carrier, scored", 0, none, ground + touchdown + carrier + verts(0x40) + [[HOST + 0xD2, 2, 1], [PLAYER + 0x2C, 1, 0x70]], 0),
+            ("touchdown on a deck (0x60), scored once already", 0, none, ground + touchdown + carrier + verts(0x40) + [[HOST + 0xD2, 2, 1], [PLAYER + 0x2C, 1, 0x60], [0x21052, 2, 1]], 0),
+            ("touchdown by a carrier, damaged, on its deck point", 0, none, ground + touchdown + damaged + carrier + verts(0), 0),
+            ("touchdown by a carrier, damaged, the deck very far", 0, none, ground + touchdown + damaged + carrier + verts(0x40000), 0),
+            ("touchdown by a carrier, damaged, the deck very far, other odds", 0, none, ground + touchdown + damaged + carrier + verts(0x40000) + [[0x2C5B4, 4, 0x2C640]], 0),
+            ("view 7 camera, in the air", 0, none, target + [[0x23D88, 2, 7]], 0)]:
+        c = {"name": "flight input: " + name, "method": "process_flight_input_and_outcome", "args": [key, ev], "writes": w + extra,
+             "d0": True, "stack_guard": [0x3E000, 0x3F040]}
+        if a5:
+            c["a5_in"] = a5
+        out.append(c)
+    return out
+
+
+def bailout_view_cases() -> list:
+    """update_bailout_view (D0): no parachute, its object gone (+0x17 bit 1), its landing timer past 0x5a0 (each through
+    resolve_bailout_outcome over an empty near list, landed low: status 1), a chute born this frame near the player
+    (behind it), one high above its ground but far (its pose ring entry after +0x60e, wrapping), one low and old (the
+    ring), no player controller."""
+    PLAYER, POBJ, CH, CO = 0x3C000, 0x3C700, 0x3C800, 0x3CF00
+    w = [[0x207FC, 4, HOST], [HOST + 0xD8, 2, 0], [0x20B28, 4, PLAYER], [PLAYER, 4, POBJ], [POBJ + 4, 4, 0x10000],
+         [POBJ + 8, 4, 0x2000], [POBJ + 0xC, 4, 0x30000], [0x21064, 4, CH], [CH, 4, CO], [CH + 0x2E, 4, 0x100],
+         [CH + 0x60E, 2, 0x10], [CO + 4, 4, 0x10400], [CO + 8, 4, 0x1800], [CO + 0xC, 4, 0x30200], [CO + 0x42, 4, 0x100],
+         [0x21020, 4, 0x100], [0x20B26, 2, 0], [0x23D68, 4, 0xF000], [0x23D64, 4, 0x2400], [0x23D60, 4, 0x2F000],
+         [0x2C5B4, 4, 0x2C5B8]]
+    w += [[0x2C5B8 + 4 * k, 4, (0x9E3779B1 * (k + 5)) & 0xFFFFFFFF] for k in range(55)]
+    for k in range(0x4B):
+        e = CH + 0x32 + 0x14 * k
+        w += [[e, 4, 0x10000 + 0x100 * k], [e + 4, 4, 0x800 + 0x10 * k], [e + 8, 4, 0x30000 - 0x80 * k]]
+    out = []
+    for name, extra in (("no parachute", [[0x21064, 4, 0]]), ("the chute object gone", [[CO + 0x17, 1, 2]]),
+                        ("landed: the timer past 0x5a0", [[CH + 0x61E, 2, 1], [CH + 0x614, 2, 0x5A1], [CO + 8, 4, 0x300]]),
+                        ("the timer running, not past", [[CH + 0x61E, 2, 1], [CH + 0x614, 2, 0x5A0]]),
+                        ("born this frame, near: behind the chute", []),
+                        ("high above its ground, far: the ring", [[CO + 0x42, 4, 0], [CO + 4, 4, 0x30000]]),
+                        ("low and old: the ring, wrapping", [[CO + 0x42, 4, 0], [CO + 8, 4, 0x400], [CH + 0x60E, 2, 0x4A]]),
+                        ("no player controller", [[0x20B28, 4, 0]])):
+        out.append({"name": "bailout view: " + name, "method": "update_bailout_view", "args": [], "writes": w + extra,
+                    "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def small_tick_cases() -> list:
+    """tick_shadow following a live owner and retiring with a retired owner whose controller's +0 is clear (an owner
+    retired but still controlled follows on); tick_view_attached_object at two camera poses."""
+    SH, SOBJ, OWNER, OCTL = 0x3C000, 0x3C100, 0x3C200, 0x3C300
+    w = [[SH, 4, SOBJ], [SH + 0x32, 4, OWNER], [OWNER, 4, OCTL], [OWNER + 4, 4, 0x12345], [OWNER + 0xC, 4, 0xFFFE0000],
+         [OWNER + 0x29, 1, 3], [OCTL, 4, OWNER], [OCTL + 8, 4, 0x40], [OCTL + 0x10, 4, 0xFFFFFF00], [OCTL + 0x2E, 4, 0x777],
+         [OCTL + 0x22, 2, 0x1234], [SOBJ + 0x10, 2, 5], [SOBJ + 0x12, 2, 5]]
+    out = []
+    for name, extra in (("following", []), ("owner retired, still controlled", [[OWNER + 0x17, 1, 2]]),
+                        ("owner retired: the shadow retires", [[OWNER + 0x17, 1, 2], [OCTL, 4, 0]])):
+        out.append({"name": "tick shadow: " + name, "method": "tick_shadow", "args": [SH], "writes": w + extra})
+    VA, VOBJ = 0x3C400, 0x3C500
+    for name, cam in (("camera ahead", (0x20000, 0x3000, 0x10000, 0x1234, 0x0567)), ("camera behind, angles 0", (0, 0, 0, 0, 0))):
+        out.append({"name": "tick view attached: " + name, "method": "tick_view_attached_object", "args": [VA],
+                    "writes": [[VA, 4, VOBJ], [VOBJ + 4, 4, 0x11000], [VOBJ + 8, 4, 0x2000], [VOBJ + 0xC, 4, 0xFFF00000],
+                               [0x23D68, 4, cam[0]], [0x23D64, 4, cam[1]], [0x23D60, 4, cam[2]], [0x23D3E, 2, cam[3]],
+                               [0x23D40, 2, cam[4]]]})
+    return out
+
+
+def _ordnance_pool_world(free: bool) -> list:
+    """The mission pool cloud_cases builds, with 0x2cbfe's bullet template: a free slot whose object gets vertices
+    (free) or one whose object gets none and retires (spawn_mission_pool_object returns 0)."""
+    ROOT, LIST, SLOTS, BASE, ARENA, TMPL = 0x30000, 0x30100, 0x30200, 0x31000, 0x32000, 0x30600
+    REC_OFF, TYPE = 0x40, 1
+    REC = BASE + REC_OFF
+    count, used, nverts = (3, (0, 1), 3) if free else (3, (), 0)
+    w = [[0x207FC, 4, HOST], [HOST + 0x384, 4, ARENA], [0x27188, 4, 0], [0x27198, 4, 0], [HOST + 0x8C, 4, BASE],
+         [HOST + 0xA8, 2, 0], [HOST + 0xE, 2, 8], [HOST + 0xAA, 2, 0], [0x2100E, 2, 8], [0x23FAC, 4, 0x30800],
+         [0x20F2C, 4, 0], [0x20B24, 4, 0], [0x219C4, 4, 0], [0x219B4, 4, 0], [0x2B22C, 4, 0], [0x21068, 4, 0],
+         [0x2107A, 2, 0], [0x21078, 2, 9], [0x23D68, 4, 0x900000], [0x23D64, 4, 0], [0x23D60, 4, 0], [0x23C2C, 4, ROOT],
+         [ROOT + 0x24, 4, 0], [ROOT + 0x2A, 4, LIST], [ROOT + 0x32, 4, SLOTS + 8], [ROOT + 0x30, 2, count], [ROOT + 0x2E, 2, 3],
+         [SLOTS, 4, 0x10], [SLOTS + 4, 1, 0xFF], [LIST + 0x1A + 0x14 + 0x18 * TYPE, 4, REC_OFF], [TMPL + 0x10, 2, TYPE],
+         [0x2CBFE, 4, TMPL]]
+    for k in range(count):
+        w += [[SLOTS + 8 + 0x18 * k + m, 1, 0] for m in range(0x18)]
+        if k in used:
+            w.append([SLOTS + 8 + 0x18 * k + 0x14, 4, 0x3FF00])
+    w += [[REC, 1, 2], [REC + 1, 1, 0], [REC + 0x16, 2, 0], [REC + 0x18, 2, 0], [REC + 0x1A, 2, nverts], [REC + 0x1C, 2, 0],
+          [REC + 0x1E, 2, 0], [REC + 0x20, 2, 0]]
+    return w
+
+
+def turret_cases() -> list:
+    """spawn_ordnance_scattered (D0) into an empty and a free pool; tick_turret: the facility probe once, a carrier
+    followed / released (retired, without vertices, burning), a target released (retired, without vertices),
+    word +0x46 holding fire, out of range, aiming in a replay, bursts (none started, one started, counting down,
+    firing into the pool with scatter of either sign), a distance needing several shift steps."""
+    MATRIX = 0x3C800
+    rng = [[0x2C5B4, 4, 0x2C5B8]] + [[0x2C5B8 + 4 * k, 4, (0x9E3779B1 * (k + 7)) & 0xFFFFFFFF] for k in range(55)]
+    mat = [[MATRIX + 2 * k, 2, v & 0xFFFF] for k, v in enumerate((0x4000, 0, 0, 0, 0x3000, -0x2000, 0, 0x2000, 0x3000))]
+    out = []
+    for name, free in (("into a pool without room", False), ("into a free slot", True)):
+        out.append({"name": "scattered ordnance: " + name, "method": "spawn_ordnance_scattered",
+                    "args": [0x1234, 1 if free else 0, 0x10000, 0x2000, 0x30000, MATRIX], "writes": _ordnance_pool_world(free) + rng + mat,
+                    "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    T, TOBJ, CAR, CCTL, TGT = 0x3C000, 0x3C100, 0x3C200, 0x3C300, 0x3CA00
+    w = [[T, 4, TOBJ], [T + 0x40, 2, 1], [T + 0x32, 4, CAR], [T + 0x36, 4, TGT], [T + 0x42, 4, 0x8000], [CAR, 4, CCTL],
+         [CAR + 4, 4, 0x10000], [CAR + 8, 4, 0x2000], [CAR + 0xC, 4, 0x30000], [CAR + 0x46, 4, 0x3D000], [CAR + 0x29, 1, 2],
+         [TGT + 4, 4, 0x13000], [TGT + 8, 4, 0x2800], [TGT + 0xC, 4, 0x31000], [TGT + 0x46, 4, 0x3D000], [TGT + 0x29, 1, 2],
+         [0x21058, 2, 0], [0x20B26, 2, 0], [TOBJ + 0x10, 2, 5], [TOBJ + 0x12, 2, 5]]
+    w += rng
+    for name, extra in (("the facility probe, once", [[T + 0x40, 2, 0], [0x21058, 2, 1]]),
+                        ("following its carrier, aiming in a replay", [[0x21058, 2, 1]]),
+                        ("the carrier retired", [[CAR + 0x17, 1, 2]]), ("the carrier without vertices", [[CAR + 0x46, 4, 0]]),
+                        ("the carrier burning", [[CCTL + 0x699, 1, 0x10]]),
+                        ("the carrier without a controller", [[CAR, 4, 0], [0x21058, 2, 1]]),
+                        ("no carrier, the turret retired", [[T + 0x32, 4, 0], [TOBJ + 0x17, 1, 2]]),
+                        ("no target", [[T + 0x36, 4, 0]]), ("the target retired", [[TGT + 0x17, 1, 2]]),
+                        ("the target without vertices", [[TGT + 0x46, 4, 0]]), ("holding fire", [[T + 0x46, 2, 1]]),
+                        ("out of range", [[T + 0x42, 4, 0x100]]), ("far, several shifts", [[T + 0x42, 4, 0x7FFFFFFF], [TGT + 4, 4, 0x200000]]),
+                        ("no burst: the draw", []), ("no burst: other draws", [[0x2C5B4, 4, 0x2C5D0]]),
+                        ("no burst: more draws", [[0x2C5B4, 4, 0x2C600]]), ("no burst: a start", [[0x2C5B4, 4, 0x2C5E4]]), ("no burst: another start", [[0x2C5B4, 4, 0x2C620]]),
+                        ("a burst counting down", [[T + 0x4A, 2, 5], [T + 0x48, 2, 3]]),
+                        ("a burst firing, positive scatter", _ordnance_pool_world(False) + [[T + 0x4A, 2, 5], [T + 0x48, 2, 1],
+                                                                                           [T + 0x50, 2, 0x45], [T + 0x52, 2, 0x13]]),
+                        ("a burst firing, negative scatter", _ordnance_pool_world(False) + [[T + 0x4A, 2, 1], [T + 0x48, 2, 0],
+                                                                                           [T + 0x50, 2, 0xFFBB], [T + 0x52, 2, 0xFFF1]])):
+        out.append({"name": "tick turret: " + name, "method": "tick_turret", "args": [T], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def spawner_cases() -> list:
+    """spawn_enemy_fighter (D0) into the pool without room; tick_aircraft_spawner: none left, a replay, slots released
+    (retired, controller cleared), an undamaged aircraft holding launches, the 1-in-512 draw failing, and launches
+    of one, two and three (the bearing from either side, the pool taking none) with a damaged aircraft in a slot."""
+    rng = [[0x2C5B4, 4, 0x2C5B4]] + [[0x2C5B8 + 4 * k, 4, (0x9E3779B1 * (k + 7)) & 0xFFFFFFFF] for k in range(55)]
+    launch = [[0x2C614, 4, 0x12000000], [0x2C690, 4, 0]]          # the first draw: & 0x1ff == 0
+    pool = _ordnance_pool_world(False) + [[0x2C5AE, 4, 0x30600]]
+    out = [{"name": "enemy fighter: into a pool without room", "method": "spawn_enemy_fighter",
+            "args": [0x10000, 0x8000, 0x30000, 0x10, 0x2000, 0x30, 1], "writes": pool, "d0": True, "stack_guard": [0x3E000, 0x3F040]}]
+    SP, SPOBJ, PLAYER, POBJ = 0x3C000, 0x3C100, 0x3C200, 0x3C300
+    A, AC, B, BC = 0x3C400, 0x3C500, 0x3C600, 0x3C700
+    w = pool + rng + [[SP, 4, SPOBJ], [SP + 0x32, 2, 5], [SPOBJ + 4, 4, 0x50000], [SPOBJ + 0xC, 4, 0x60000], [SPOBJ + 0x18, 4, 0x30000],
+                      [0x20B28, 4, PLAYER], [PLAYER, 4, POBJ], [POBJ + 4, 4, 0x10000], [POBJ + 0xC, 4, 0x20000], [0x21058, 2, 0],
+                      [A, 4, AC], [AC, 4, A], [A + 0x29, 1, 2], [B, 4, BC], [BC, 4, B], [B + 0x29, 1, 2]]
+    for name, extra in (("none left", [[SP + 0x32, 2, 0]]), ("a replay", [[0x21058, 2, 2]]),
+                        ("an undamaged aircraft holds", [[SP + 0x34, 4, A]]),
+                        ("slots released: retired, controller cleared", [[SP + 0x34, 4, A], [A + 0x17, 1, 2], [SP + 0x40, 4, B], [BC, 4, 0]]),
+                        ("the draw fails", [[SP + 0x34, 4, A], [AC + 0x698, 2, 4]]),
+                        ("a launch, a damaged aircraft in slot 0", launch + [[SP + 0x34, 4, A], [AC + 0x698, 2, 4]]),
+                        ("a launch with two left", launch + [[SP + 0x32, 2, 2]]),
+                        ("a launch with one left, the spawner west", launch + [[SP + 0x32, 2, 1], [SPOBJ + 4, 4, 0xFFFF0000]]),
+                        ("a launch, the spawner south, far", launch + [[SPOBJ + 0xC, 4, 0xFF000000], [SPOBJ + 0x18, 4, 0x7FFFF]]),
+                        ("a launch, other draws", launch + [[0x2C5C0, 4, 0x55555555], [0x2C61C, 4, 0x12345678]])):
+        out.append({"name": "aircraft spawner: " + name, "method": "tick_aircraft_spawner", "args": [SP], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def shadow_render_cases() -> list:
+    """shadow_pre_render (D0): a retired owner (4), a ship owner (type 8: untouched), an aircraft owner banked by
+    0, 0x800 and 0xc00 (template x beyond and within the half size, either sign, a stretched x clamped to it), a
+    larger scale word +0x36, an empty face."""
+    SH, SOBJ, OWNER, OCTL, ODEF = 0x3C000, 0x3C100, 0x3C200, 0x3C300, 0x3C400
+    ROOT, LIST, BASE, FACE, IDX, VERTS = 0x3C500, 0x3C600, 0x3C800, 0x3CC00, 0x3CC40, 0x3CD00
+    TYPE, OFF = 2, 0x100
+    xs = (0x400, -0x500, 0x20, -0x10, 0x3C, -0x33, 0x7FFF, 0x40)
+    w = [[SH, 4, SOBJ], [SH + 0x32, 4, OWNER], [OWNER, 4, OCTL], [OCTL + 4, 4, ODEF], [ODEF, 2, 3], [OCTL + 0x24, 2, 0],
+         [SOBJ + 0x4A, 4, FACE], [SOBJ + 0x24, 4, ROOT], [ROOT + 0x2A, 4, LIST], [LIST + 0x2E + 0x18 * TYPE, 4, OFF],
+         [SOBJ + 0x10, 2, TYPE], [0x207FC, 4, HOST], [HOST + 0x8C, 4, BASE], [SOBJ + 0x46, 4, VERTS], [SOBJ + 0x36, 2, 0],
+         [FACE + 0x18, 4, IDX], [FACE + 0x14, 2, len(xs)]]
+    for k, x in enumerate(xs):
+        w += [[BASE + OFF + 0x22 + 12 * k, 4, x & 0xFFFFFFFF], [IDX + 2 * k, 2, k], [VERTS + 12 * k, 4, 0x11111111]]
+    out = []
+    for name, extra in (("a retired owner", [[OWNER + 0x17, 1, 2]]), ("a ship owner", [[ODEF, 2, 8]]),
+                        ("an aircraft level", []), ("an aircraft banked 0x800", [[OCTL + 0x24, 2, 0x800]]),
+                        ("an aircraft banked 0xc00", [[OCTL + 0x24, 2, 0xC00]]), ("an aircraft banked 0xfc0", [[OCTL + 0x24, 2, 0xFC0]]),
+                        ("type 7, scale 2", [[ODEF, 2, 7], [SOBJ + 0x36, 2, 2], [OCTL + 0x24, 2, 0x900]]),
+                        ("an empty face", [[FACE + 0x14, 2, 0]])):
+        out.append({"name": "shadow render: " + name, "method": "shadow_pre_render", "args": [SH], "writes": w + extra, "d0": True})
+    return out
+
+
 def text() -> str:
     fork = hfs.find(ROOT / "sources" / "mac-os-9" / "LeyteGulf.dsk", "Leyte Gulf:Leyte Gulf").data
     text, data = struct.unpack(">II", fork[4:12])
@@ -1751,21 +3384,30 @@ def text() -> str:
         emu.mem[0:len(image)] = image
         for a, s, v in c["writes"]:
             emu.write(a, s, v)
-        for address, base, nargs, *deref in CALL_LOGS:
+        # a case running one of the stood-in routines itself drops that stand-in ("unstub")
+        logs = [e for e in CALL_LOGS if e[0] not in c.get("unstub", ())]
+        for address, base, nargs, *deref in logs:
             emu.stubs[address] = lambda e, b=base, n=nargs, d=tuple(deref): log_call(e, b, n, *d)
         # a routine that reads a register its caller left (find_anchor_point's D5) gets it here, and the port the
         # same value as an extra argument (pushed but unread by the original)
         emu.d[5] = c.get("d5_in", 0) & 0xFFFFFFFF
+        # a hook that stores its caller's A5 (process_flight_input_and_outcome) gets it here, and the port as caller_a5
+        emu.a[5] = c.get("a5_in", 0) & 0xFFFFFFFF
         before = bytes(emu.mem)
-        d0 = emu.call(ROUTINES[c["method"]], c["args"], STACK_TOP)
+        try:
+            d0 = emu.call(ROUTINES[c["method"]], c["args"], STACK_TOP)
+        except (RuntimeError, IndexError) as e:
+            raise RuntimeError("%s: %s" % (c["name"], e)) from None
         guard = c.get("stack_guard", STACK_GUARD)
         changes = [[a, emu.mem[a]] for a in range(MEMORY_SIZE) if not (guard[0] <= a < guard[1]) and emu.mem[a] != before[a]]
         cases.append({"name": c["name"], "method": c["method"], "args": c["args"], "zero": [], "writes": c["writes"],
-                      "call_logs": CALL_LOGS, "changes": changes})
+                      "call_logs": logs, "changes": changes})
         if "stack_guard" in c:
             cases[-1]["stack_guard"] = c["stack_guard"]
         if c.get("d0"):
             cases[-1]["d0"] = d0 & 0xFFFFFFFF
+        if "a5_in" in c:
+            cases[-1]["a5_in"] = c["a5_in"]
         if "d5_in" in c:
             cases[-1]["d5_in"] = c["d5_in"]          # what the emulator's D5 held at entry (overlay_case_coverage.py reruns it)
     doc = {"schema": 1, "generated_by": "tools/leyte/gen_leyte_overlay_reconstructed_cases.py", "memory_size": MEMORY_SIZE,

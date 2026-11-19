@@ -3940,3 +3940,422 @@ Cycle 88 of job f19bd982:
 - The autonomous loop was cancelled at the user's request. Prepared but NOT applied (session scratchpad): hook 10
   batch 2 (project_prepared_object, transform_face_vertices, the face projections, emit_faces_bsp,
   collect_near_objects) and the own-routine label rule, which in a trial build keeps scan_convert_edge_rows.
+
+### Cycles 103-105 checkpoint — hook 10 batches 2-4, the own-routine label rule
+
+- gen_overlay_port.py: a literal inside a function's own 1.0.3 routine is a position in it (the port's state-machine
+  labels). When both routines are laid out alike (every instruction pair the same size), it maps to the same offset
+  in Leyte's routine; one that is also an immediate number of the function refuses it. This keeps
+  scan_convert_edge_rows (377 instructions, labels +0xb00). 162 functions kept.
+- Hook 10 (overlay_frame_step) closure, written from drafts (tools/leyte/draft_overlay_port.py) settled against
+  Leyte's listing:
+  - batch 2: project_prepared_object (object fields +2), transform_face_vertices, the shared
+    _project_face_vertices with project_face_vertices_xy / _xz / _yz (vertex buffer +0x46), and _project_view_vertex
+    (Leyte inlines it; scales 0x27050 / 0x2704e). Also emit_faces_bsp (prepared object's distance +0x1c) and
+    collect_near_objects (type byte +0x28; flags long +0x14, whose low byte holds the hidden, no-view-point and
+    not-listed bits; detail +0x34, scale word +0x36);
+  - batch 3: lock_overlay_buffers (host handles +4, lock routine +0x30e), dispatch_collision (controller at +0, flag
+    bytes +0x15 / +0x16, pair table 0x205ec of 17 entries) and dispatch_overlap_collisions (Leyte no longer clears
+    designated_entity_2; running minimum +0x2a);
+  - batch 4: point_in_polygon_xy / _xz / _yz. Leyte reorders the comparisons, but every path computes 1.0.3's
+    result (the three listings are equal with offsets masked), so they are 1.0.3's entry points over the kept
+    _point_in_polygon.
+- Coverage (overlay_case_coverage.py): every new routine is fully executed, except:
+  - emit_faces_bsp's chain call in the back-facing branch, which is unreachable in Leyte's own code (every
+    back-facing path sets the skip flag first);
+  - collect_near_objects' retirement call, which needs a full shape to retire (a known gap).
+  - A collision stand-in logging 3 arguments was added (0x3bf00).
+- Fixtures: 576 hand-written cases; 504 cases translated from 1.0.3 over 88 functions. Batch 3: Leyte suite, start
+  probe (clean through the flight loop; hooks 10 / 14 missing), QA and git diff --check all pass.
+- Hook 10's closure (176 functions): 86 kept, 69 reconstructed, 21 missing. Next: surface_type_at_point. It has real changes: flags mask
+  0x2042, shapes only, and the point scaled by the scale word +0x36 minus the detail shift +0x34, left or right.
+  Then render_visible_objects, collect_far_objects, update_altitude_detail_bands, transform_and_project_object,
+  overlay_frame_step itself.
+
+### Cycles 106-107 checkpoint — hook 10 batches 5-6
+
+- surface_type_at_point (0x15c2c): Leyte's version on its layout: metric +0x1c, range +0x20, position +4 / +8 / +0xc,
+  flags long +0x14 & 0x2042, shapes only (type byte +0x28 == 2), faces +0x3c / +0x4a, frame -0x708. It also changes
+  the point's scale: (scale word +0x36 - 1 - detail word +0x34) shifts it left, or right by the magnitude when
+  negative; the projection shift is detail + 1.
+- submit_object_faces (0xb554) and _face_penetration: 1.0.3's code with the object flags long at +0x14. A face with
+  +0x13 bit 1 skips near mode's penetration test and inside-flag update; in the back-face pass it is not tested but
+  still becomes inside.
+- Leyte's routine at 1.0.3's invoke_tagged_attitude_compose_neg_sins4 (0x30b8) is different: it transposes the 3x3
+  word matrix in place (the inverse rotation), where 1.0.3 negated the sines and recomposed. It is reconstructed
+  under the placed name.
+- Cases: 612 hand-written (a face depth-routine stand-in at 0x3be00 behind 0x26fe4, which the image leaves at 0).
+  Every instruction of the three routines is executed. 511 translated 1.0.3 cases over 90 functions, including
+  1.0.3's own cases for the new routines.
+- Validation: Leyte suite, QA and git diff --check all pass.
+- Hook 10's closure: 17 missing. Next: transform_and_project_object (draft in hand; Leyte's controller at +0, loops
+  tested first, faces +0x3c), sort_group_parts_by_distance, then render_visible_objects and its pieces.
+- Disk: 8.5 GiB free. The session scratchpad holds 2.2 GiB of rebuildable output (the iOS build tree and Godot
+  sources).
+
+### Cycles 108-110 checkpoint — hook 10 batches 7-9, the object renderer
+
+- transform_and_project_object (0xb9f8) and _band_and_shade: 1.0.3's code on Leyte's layout:
+  - controller at +0;
+  - position +4 / +8 / +0xc for the eye (1.0.3 read +0x18 / +8 / +0x20);
+  - flag bytes +0x15 / +0x16;
+  - band metric +0x1c;
+  - face count +0x3c.
+  The inverse attitude goes through Leyte's transpose (0x30b8). The pre-render hook is a stand-in at 0x3bd00
+  (STAND_INS, its return value set per case).
+- sort_group_parts_by_distance (0x16d7a): 1.0.3's code with scale +0x36, parts +0x3a (kept in the frame), groups
+  +0x2e and draw order 0x219a8. 1.0.3's cases are laid out again, plus a case with the groups after every part.
+  Capstone shows the indexed stores as `$2(a4, a1.l)`, but the extension words (0x9a02, 0x8a02) encode scale x2.
+- render_visible_objects (0xbf1e) with _render_near_mode and _render_object_faces, which Leyte inlines. Near mode
+  reads metric +0x1c against range +0x20; its flag is byte +0x15 bit 5 (bit 21 of long +0x14). The face pass reads
+  word +0x16 & 8 and BSP byte +0x17 bit 5. Group sort is byte +0x16 bit 1, the parent +0x2e. The loops test their
+  long counts first. Cases use light objects: two faces each, no root chains, index lists at a zeroed area.
+- Coverage: every instruction is executed except transform_and_project_object's rounding for a negative vertex
+  count, which cannot occur.
+- Validation for batches 7-8: Leyte suite, QA and git diff --check pass. Translated 1.0.3 cases are 530 over 92
+  functions, including 1.0.3's transform and sort-parts cases. Hand-written cases: 645.
+- Hook 10's closure: 11 missing.
+  - Next: collect_far_objects with _sort_far_objects / _free_far_object / _far_collision / _queue_visible, then
+    update_altitude_detail_bands, update_ground_scatter_objects, draw_distant_object_dots, _camera_transform_words /
+    _lay_out_view_panels, and overlay_frame_step.
+
+### Cycles 111-112 checkpoint — hook 10 batches 10-11: the far lists and the altitude bands
+
+- collect_far_objects (0x63ba): 1.0.3's code on Leyte's layout:
+  - flags long +0x14 (the active word +0x16, other objects' bytes +0x15 / +0x17);
+  - metric +0x1c, range +0x18, radius +0x20, running minimum +0x2a.
+  _far_collision reaches the four broad-phase tests through code_table at their Leyte addresses (0x16784 / 0x167e4 /
+  0x16812 / 0x16be2), as 1.0.3's port does; the cases stand them in (STAND_INS). The tests themselves are not ported
+  for Leyte yet: hook 10's closure does not count them, and live gameplay needs them.
+- update_altitude_detail_bands (0x6882), with Leyte's _free_far_object (controller at +0). After a reference move,
+  Leyte calls two routines of its own:
+  - leyte_order_tracked_controllers (0x525c): a type-8 controller's target (*(+0x32)) found later in
+    controller_list is swapped ahead of it;
+  - leyte_move_type0f_shapes_last (0x52b6, frame buffer a6 - 0x190): shapes whose controller definition is type 0xf
+    move to the end of entity_array_1, both parts kept in their order.
+  The draft's near reference store was wrong: Leyte's near reference is x / y / z 0x23c54 / 0x23c50 / 0x23c4c, and
+  the far one is 0x23c48 / 0x23c44 / 0x23c40.
+- Cases: 656 hand-written. They include a land-outline rebuild (build_land_outline_at_detail's own near case in
+  entity_array_1) and frees in both lists, with and without a controller or destroy hook (stand-in 0x3bc00). Every
+  instruction is executed except the tolerance rounding for a negative table value, which the image's table never
+  holds.
+- Validation for batches 9-10: Leyte suite, QA and git diff --check pass. Translated cases: 538 over 94 functions.
+- Hook 10's closure: 7 missing. They are update_ground_scatter_objects, draw_distant_object_dots, _sort_far_objects,
+  _queue_visible, _camera_transform_words, _lay_out_view_panels and overlay_frame_step.
+- Disk: 8.2 GiB free.
+
+### Cycles 113-114 checkpoint — hook 10 batches 12-13: ground scatter, distant dots
+
+- update_ground_scatter_objects (0x6c9a), written from Leyte's listing on 1.0.3's structure. The draft could not
+  be used: its address substitution chained (1.0.3's player pointer 0x1b738 became 0x20b28, then 0x27050). Leyte's
+  layout:
+  - class word +0x10 and scene index word +0x12 (1.0.3's bytes +1 / +2);
+  - flags long +0x14 (byte +0x15, word +0x16);
+  - band metric +0x1c;
+  - descriptors at the mission root's +0x2a list + 0x1a;
+  - frame -0x38c, body 0x3b4.
+  A cached surface is zero-extended, a computed one sign-extended (its word); the template index is surface asr.w
+  4. The cases run in spawn_mission_pool_object's world (cloud_cases) and cover every path. The only instructions
+  not executed are five rounding adds after unsigned multiplies, which cannot run.
+- draw_distant_object_dots (0x1a296) and _camera_transform_words (matrix 0x23c74): 1.0.3's code on Leyte's layout.
+  Leyte's trail loop tests its count first, so it transforms 2 vertices; 1.0.3's ran a third record. The cases
+  cover:
+  - the erase and plot stand-ins;
+  - every size, behind and off screen on each side;
+  - the tally running, starting (assign_face_colour), and failing;
+  - a trail scaled until "near" overflows negative.
+- Case memory is now 0x44000. Call logs past the 32nd go at 0x40000 (LOGS_HIGH), above the stack; the first 32
+  keep their addresses.
+- Validation for batches 11-12: Leyte suite, QA and git diff --check pass. Translated cases: 547 over 95 functions.
+  Hand-written cases: 670.
+- Hook 10's closure: 4 missing. They are overlay_frame_step (Leyte 0x741e, 652 instructions) and its pieces
+  _queue_visible, _sort_far_objects and _lay_out_view_panels.
+- Disk: 8.0 GiB free.
+
+### Cycles 115-116 checkpoint — hook 10 registered: Leyte's frame step
+
+- overlay_frame_step (0x741e, hook 10), written from Leyte's listing (frame -0x38, ten registers, body 0x64), with
+  Leyte's _queue_visible, _sort_far_objects, _lay_out_view_panels and _frame_host. It is registered in code_table, so
+  hook 10's closure is complete: 176 functions, 0 missing. What differs from 1.0.3:
+  - extra windows: for new_frame != 1 the screen bounds, view mode, palette face and bottom rows are saved; the
+    window uses view mode 2 with the heading turned -0xd43 (window 2) or +0xd43, and everything is restored after;
+  - per-window colour owners (0x23f9c[n]), span buffers (0x20f6c / 0x20f5c[n]) and host records (+0x1a + 0x16 n);
+  - overlap collisions only every 16th frame (0x21020 & 0xf, flag 0x219a4);
+  - the carried-pair sort: level from the carrier controller's +0x696, the rider's height + 100, carrier +0x20, rider
+    +0x1c saved in +0x2a;
+  - host routines +0x29e / +0x2a2 / +0x2a6 / +0x2fe (1.0.3 +0x266 / +0x26a / +0x26e / +0x2c2), and Leyte's state lamp
+    in the readout sequence.
+- Cases: 4 frame-step cases over an empty scene (window 1, the 16th frame, window 2, haze) execute about half the
+  routine. Panels, readouts, depth 1 and carried pairs still need richer case worlds.
+- The case generator takes a per-case "unstub" list, so a case can run a routine that other cases stand in for.
+- The runtime closure has begun with test_proximity_collision, test_player_vs_type0e_proximity (Leyte checks
+  definition type 0x14 where 1.0.3 checked 0xe) and turret_pre_render, all registered in code_table and fully
+  executed.
+- Start probe (with hook 10): the frame step runs inside the real flight loop and renders, then stops on routines
+  reached through pointers, all still to port:
+  - broad-phase tests: 0x16812 test_object_collision (closure 13 missing) and 0x16be2 handle_player_contact
+    (closure 8 missing: contact records, terrain contact, shape collision hooks);
+  - pre-render hooks: 0x1d4f6 turret (now ported) and 0x17dfa, which exists only in Leyte. When controller byte
+    +0x619 is set it calls 0x17d8c, which applies a pending pose (+0x624 / +0x62c, or 0x177d0 through 0x36fa and
+    0x1970a: about 480 instructions found only in Leyte);
+  - CODE 2 jump-table entries $3e2 and $432 once the flight returns, and hook 14.
+- overlay_status.py: 66 pointer targets 1.0.3 registers still lack a Leyte port (controller ticks, pre-render,
+  destroy and collision handlers). Hooks 3 / 5 / 6 / 14 / 20 are missing.
+
+### Cycle 117 checkpoint — contact records, the player contact
+
+- Validation for batches 13-15 (overlay_frame_step and the proximity tests): Leyte suite, QA and git diff --check
+  pass. Translated cases: 555 over 98 functions.
+- find_contact_record (0x15ec0) and create_shape_contact_record (0x15f0e): 1.0.3's code on Leyte's layout. b's
+  metric +0x1c, face count +0x3c, radius +0x20, scale +0x36; the table 0x215a4. The draft carried 1.0.3's
+  +0x10 / +0x3a / +0x34.
+- handle_player_contact (0x16be2, registered): the controller at +0 against the player; b's terrain / shape-hook bits
+  +0x16 bits 1 / 6; the hook is called as hook(b, a, record), stood in at 0x3b900.
+- Cases: 695 hand-written. Every instruction is executed except the terrain branch (handle_terrain_contact, not yet
+  ported).
+- Next for the collision closure:
+  - handle_terrain_contact (84 instructions) with create_fractal_contact_record (105), fractal_height_at (268) and
+    _store_terrain_ground;
+  - test_object_collision (214) with point_in_face_by_axis, segment_point_min_distance, bullet_hits_shape,
+    test_terrain_collision and lift_object_onto_terrain;
+  - then Leyte's aircraft pre-render chain (0x17dfa).
+
+### Cycles 118-119 checkpoint — terrain contact, the object collision test
+
+- Validation for batches 16-17 (contact records, terrain contact): Leyte suite, QA and git diff --check pass.
+  Translated cases: 559 over 100 functions.
+- create_fractal_contact_record (0x1617e), fractal_height_at (0x162b8) and handle_terrain_contact (0x16ae6) on
+  Leyte's layout:
+  - the terrain's class word +0x10 and part index word +0x12 (1.0.3's bytes +1 / +2);
+  - the parent's scene list +0x2a and part table +0x32;
+  - counts +0x38 / +0x3a, positions +4 / +8 / +0xc, radii +0x20;
+  - a's fractal reference +0x2e;
+  - the ground stored through the controller at +0 (its +0x2e / +0x2c), live-play flag 0x21058.
+  The cases are 1.0.3's terrain world (tools/original/gen_terrain_cases.py) laid out again. One branch is not
+  executed: the ground stored with a right shift (5 instructions; no case gives a non-zero ground at shift >= 0).
+- test_object_collision (0x16812, registered; written from Leyte's listing) and point_in_face_by_axis (0x15d8c,
+  frame -0x708). Leyte skips a face whose +0x13 has bit 1 (its side word kept); a bullet is a controller definition of
+  type 0x14 (1.0.3: 0xe); b's flag bytes are +0x16 / +0x15. The cases use a cube-faced shape: one face's side flips per
+  case, inside on each axis (dispatched), outside, no axis, a negative axis word. Every instruction is executed except
+  the terrain and bullet branches, whose routines (test_terrain_collision, bullet_hits_shape) are not ported yet.
+- All four broad-phase tests collect_far_objects reaches are now ported and registered. Hand-written cases: 730.
+- Next:
+  - test_terrain_collision (121 instructions) with lift_object_onto_terrain (209);
+  - bullet_hits_shape (61) with segment_point_min_distance (73) and _bullet_segment_distance;
+  - Leyte's aircraft pre-render chain (0x17dfa);
+  - a probe rerun.
+
+### Cycles 120-121 checkpoint — the collision closure, the sinking ship's pre-render hook
+
+- Validation for batches 18-20 (object / bullet / terrain collisions): Leyte suite and git diff --check pass.
+  Translated cases: 562 over 102 functions. QA flagged one stale-wording docstring ("not ported yet"), which is now
+  reworded; QA reruns with the probe.
+- Bullets and terrain:
+  - bullet_hits_shape (0x1a64a), segment_point_min_distance (0x48e8) and _bullet_segment_distance;
+  - test_terrain_collision (0x1661a) and lift_object_onto_terrain (0x171ba), both from Leyte's listing;
+  - _store_terrain_ground and _shape_collision_hook as Leyte pieces.
+  What Leyte changes:
+  - bullet target types 0x14 / 0x24 (1.0.3: 0xe / 0x1b);
+  - the lift writes y +8 and range +0x18, with the support point offset by the terrain's +4 / +0xc;
+  - lift's body is 0x2c below the entry (nine saved registers).
+  test_object_collision's closure (44 functions) and handle_player_contact's (32) now have none missing.
+- The sinking ship's pre-render hook (0x17dfa, registered) with 0x17d8c and 0x177d0, all three Leyte only, on the
+  already ported compose_template_chain (0x36fa) and leyte_sink_body (0x1970a):
+  - leyte_pending_pose_pre_render applies a pending pose (controller byte +0x619);
+  - leyte_apply_pending_pose re-sinks level when +0x628 is set, else shifts the vertices by (+0x624, 0, +0x62c)
+    times the scale, then clears the pending fields;
+  - leyte_sink_with_cached_chain composes the chain once into controller +0x630 (+0x61b marks it) and adds the
+    heading word +0x654 to the second angle.
+- Cases: 760 hand-written. The new routines are fully executed except two small terrain branches (the ground
+  stored at shift >= 0, a support point matching x only).
+- The start probe reruns now that the probe's six missing pointer targets are ported.
+- Disk: 7.6 GiB free.
+
+### Cycle 122 checkpoint — the carrier deck
+
+- Probe after cycle 121: the frame step and collisions run frame after frame. The run now reaches the 50-minute
+  timeout instead of ending: the posted Command-Q needs hook 14 (the flight input), which is still missing. What it
+  reached that was not ported:
+  - 0x17e54, 11 calls;
+  - 0x17e0e, 1 call;
+  - CODE 2 jump-table entries $3e2 and $432;
+  - hook 14.
+- Ported (all three registered):
+  - point_over_face_xz (0x15bae): 1.0.3's 42 instructions with x +4 / z +0xc and frame -0x708 (body 0x71c);
+  - leyte_ship_collision_hook (0x17e0e): a pending pose applied when the other object has a controller and a record;
+  - leyte_carrier_deck_hook (0x17e54).
+- How the carrier deck hook works:
+  - the deck faces are found once (face kind byte +0x17: 1 -> controller +0x698, 3 -> +0x69a); with no deck tag,
+    overlay_printf("Can't find deck tag on carrier"), not yet ported;
+  - the deck height is kept in controller +0x696, scaled;
+  - with the carrier's tilt (its controller +0x20, folded) within 0x4ff and the other object over the deck: its
+    controller gets the deck height (+0x2e) and the deck face's surface byte (+0x2c, live play only); a kind <= 7 on a
+    moving carrier outside a replay records the carrier's motion (+0x632..+0x63a);
+  - a kind <= 7 over the kind-3 face gets byte +0x64d set;
+  - a positive deck height adds (carrier, other) to the carried pairs (0x21048, count 0x21046, capacity 0x21044, grown
+    by 4). The frame step's far sort reads that table.
+  The first draft took the tilt from the other object's controller; the emulator case caught it.
+- Cases: 775 hand-written. Every instruction is executed except the missing-deck message. Full validation and a
+  probe rerun are running.
+
+### Cycle 123 checkpoint — the flight loop runs clean; a5 in the overlay generator
+
+- Validation for cycle 122 (carrier deck): Leyte suite, QA and git diff --check pass. Translated cases: 562 over 102
+  functions.
+- Start probe with hook 10 and its runtime closure: the 50-minute run raised no overlay assertion. The real flight
+  loop renders, collides and sinks frame after frame. What is left: hook 14 (process_flight_input_and_outcome), which
+  is also what honours the probe's Command-Q, so the run ends on the timeout, and CODE 2 jump-table entries $3e2 /
+  $432.
+- gen_overlay_port.py: the overlay reaches the host through its own global (host_world), never through A5. a5 is now
+  an ordinary address register there:
+  - its displacements are record fields;
+  - the A5-world check and masking, copied from the host CODE rules, are gone.
+  try_begin_landing_approach (hook 14) is now kept, 163 functions in all. Its translated 1.0.3 cases run in the
+  suite. update_tracking_camera now stops on an ordinary ambiguous displacement.
+- spawn_effect (0x13d60) and spawn_debris_fragment (0x1b582) for hook 14: 1.0.3's code with the controller at +0.
+  Leyte's debris loop tests its count first and pushes a fourth argument, which is not read. Cases: 785 hand-written.
+- Next: hook 14's closure, 30 missing, smallest first. Candidates are any_mission_kills_recorded,
+  build_attitude_matrix_3ang_alt, begin_replay_view, update_tracking_camera (both ambiguous displacements to settle),
+  enqueue_control_inputs_avg4, play_game_sound / update_game_sounds, then process_flight_input_and_outcome.
+- Disk: 7.4 GiB free.
+
+### Cycles 124-126 checkpoint — hook 14: the replay camera and small pieces
+
+- any_mission_kills_recorded (0x3e8): Leyte's twelve kill words are host +0xbe..+0xd4 (1.0.3's +0xba..+0xd0).
+- finalize_attitude_matrix_3ang_alt (0x2a5a): Leyte drops the rotation bases and products and writes the matrix in
+  closed form from the six sine / cosine words (0x23d22..0x23d2c), with the same word truncations.
+  build_attitude_matrix_3ang_alt (0x2b52) uses it.
+- update_tracking_camera (0x9d52) and begin_replay_view (0xa116), with Leyte's _tracking_forward and _replay_offset.
+  Both match 1.0.3 instruction for instruction and were held back only by an ambiguous displacement:
+  - update_tracking_camera: objects' z +0x20 -> +0xc, while the controllers' attitude +0x20 is unchanged;
+  - begin_replay_view: the player object's flags +4 / +7 -> +0x14 / +0x17, while the pose-ring entries keep +4.
+  1.0.3's own tracking-camera cases now translate and pass (581 over 104 functions).
+- Verification rule: in headless Godot, a refusing stub's assert only prints SCRIPT ERROR, so a case can pass by
+  coincidence. Every Godot verification now also counts SCRIPT ERROR (0 required). Earlier suite logs were all 0.
+  The tracking camera's bail-out case waits for probe_nearest_facility_kind.
+- Validation through cycle 125: Leyte suite (0 script errors), QA and git diff --check pass. Cycle 126:
+  822 hand-written cases pass with 0 script errors; the full suite runs with the next batch.
+- Hook 14's closure (121 functions): 61 kept, 40 reconstructed, 20 missing.
+
+### Cycles 127-131 checkpoint — hook 14: facilities, points, controls, frame advance, sounds
+
+- probe_nearest_facility_kind (0x40c), rewritten by Leyte:
+  - carriers (type 0x1b, skipped when only the deck tag is known) and types 0x1c / 0x20 count within 0x671f;
+  - types 0x18 / 0x19 count within their range;
+  - kinds 0x100 / 0x200.
+  The tracking camera's bail-out case runs again through resolve_bailout_outcome.
+- point_near_camera_or_type80_object (0xf7c), rewritten by Leyte, with two routines of its own:
+  - a scene visitor (0xce0, registered) caches the type-0x80 face centroids once (0x20b38, grown by 10);
+  - each near object's first type-0x80 face (0xe52) competes with them, and the winner's object is kept in 0x20b3c.
+- enqueue_control_inputs_avg4 (0x123be): the aileron limit is the controller definition's word +0x4c (1.0.3: 0x140).
+  The ring and sums sit 0xe further on.
+- advance_frame_and_tick_controllers (0xa406) with Leyte's _replay_visibility:
+  - pool objects get their replay visibility without a type check; entity_array_1 only for shapes;
+  - born / dead are +0x42 / +0x3e;
+  - designated_entity_2 is cleared every frame.
+  The copy of controllers appended by ticks is not executed: a stand-in tick cannot append.
+- play_game_sound (0xa700): a jump table over ids 1..100. Sound 14 now plays once.
+- update_game_sounds (0xa8ea) with Leyte's _sound_host / _play_pending_explosions / _play_or_stop / _update_view_sounds:
+  - host routines +0x2e6 play, +0x2ee rate, +0x2f2 status, +0x2fa stop; the record table +0x296;
+  - the one-shot flags map to sounds 100 / 14 / 1 / 2 / 3 / 4; 14 frees channel 1 to restart, and also plays in
+    view 8;
+  - the engine fields are +0x677 / +0x678, gear / flaps +0x68a / +0x68c.
+- Cases: 885 hand-written, 0 script errors; every instruction of the new routines is executed except as noted.
+  Validation through batch 30: Leyte suite (0 script errors), QA and git diff --check pass. Translated cases: 591
+  over 107 functions.
+- Hook 14's closure (121 functions): 59 kept, 51 reconstructed, 11 missing. Left:
+  - find_nearest_runway_approach_ends, which also unblocks testing try_begin_landing_approach;
+  - build_relative_steer_sample;
+  - nine private pieces of process_flight_input_and_outcome, and the routine itself (1224 instructions).
+- Disk: 7.3 GiB free.
+
+### Cycles 132-135 checkpoint — hook 14: runways, steering; one routine left
+
+- find_nearest_runway_approach_ends (0x1ddbe), written from Leyte's listing. The draft read positions +0x18,
+  the type byte 0, faces +0x48 / +0x3a and a face step of 0xc. Leyte's layout is positions +4 / +8 / +0xc, type
+  byte +0x28, faces +0x4a / +0x3c, 0x20 bytes each, and both lists walked from the end.
+- try_begin_landing_approach is kept by the generated port since the a5 fix. Its hand cases run it end to end
+  through the runway search, and the generated code matches the emulator.
+- build_relative_steer_sample (0x121c4): 1.0.3's 171 instructions, held back only by 0x20 pairing two ways (the
+  object's z +0xc, the controller's attitude +0x20).
+- Cases: 906 hand-written, 0 script errors. Uncovered: a few rounding adds for negative values, and the landing
+  approach's high-aim height floor.
+- Validation through batch 33: Leyte suite (0 script errors), QA and git diff --check pass. Translated cases: 615
+  over 108 functions.
+- Hook 14's closure (121 functions): 59 kept, 53 reconstructed, 9 missing. They are process_flight_input_and_outcome
+  (Leyte 0x844e, 1224 instructions, 1147 matching) and its eight private pieces: _process_flight_key,
+  _update_keyboard_flight, _slew_throttle_key, _update_view_camera, _update_external_camera, _view_key_reset,
+  _classify_stopped_aircraft, _random_status. Next: that routine, piece by piece against Leyte's listing.
+
+### Cycles 136-137 checkpoint — hook 14 complete; two generator bugs fixed
+
+- process_flight_input_and_outcome (Leyte 0x844e, hook 14) and its pieces are written from Leyte's listing and
+  registered. The body runs 0x50 below the entry, because a5 is saved too. Leyte's differences from 1.0.3:
+  - the key table at 0x86cc adds 'N' / 'n' (word +0x682 + 1 while its low two bits are <= 2);
+  - the look-down limit is 0x3580 (1.0.3: 0x3040);
+  - a throttle clamp at 9 or 0 ends the ramp;
+  - views 5 and 7 both use a pose-ring entry 7 frames back (view 7 on the target's ring);
+  - view 6 first follows a remembered type-0x80 object (0x20b3c);
+  - a stopped aircraft is classified when +0x62a is 0, or +0x62e is 0 and the word +0x30 read before the tick
+    is > 0;
+  - off a runway, damaged, near a friendly field (kind 0x200), the status-5 odds compare 0x339000 / the nearest
+    runway-deck point with rng & 0x7f. Two Leyte-only routines compute that distance:
+    leyte_deck_point_min_distance (0x1330) and leyte_nearest_deck_point_distance (0x13c8).
+- The target 0x21070 is held in a5. The controller tick may clear it; it is put back for update_game_sounds and
+  stored as the tick left it on return. The P / ESC results return before the tick, so they store the caller's
+  A5 there, as the original does. The overlay loader passes the host A5 as `caller_a5`, and the hand cases can
+  set it with `a5_in`.
+- Generator bug 1: gen_overlay_port.py, gen_host_ports.py and overlay_map.py treated `btst.b` / `bset.b` / ...
+  as branches. The check compared exact mnemonics, and Capstone adds the size suffix, so bit tests on record
+  fields were never proven or rewritten. Now fixed:
+  - apply_player_mouse_controls is now rewritten to +0x699 (it tested 1.0.3's +0x685);
+  - update_bailout_view is now refused (the chute object's flag byte moved +7 -> +0x17) and is written for
+    Leyte (0x9a94);
+  - _hide_player_object / _show_player_object (helpers carried with 1.0.3's object +4 / +7) are overridden with
+    +0x14 / +0x17;
+  - the CODE host ports, overlay map and names are unchanged under the fix.
+- Generator bug 2: draft_overlay_port.py mapped DAT_ constants twice (1.0.3 -> Leyte, then as a 1.0.3 literal),
+  so the controller pointer drafted as 0x27050 instead of 0x20b28. Now fixed.
+- Original fix: 1.0.3's _update_external_camera shift loop tested `reach & 0x8000`. The bytes at 0x85a4
+  (`andi.w #$8000, d0; tst.l d0`) and the .decomp.c test `& 0xffff8000`. A new 1.0.3 emulator case (reach
+  0x10000, bit 15 clear) failed before the fix and passes after it; flight_input_cases is 143 / 143.
+- Cases: 1033 hand-written, 0 script errors:
+  - 119 for hook 14, executing 1137 of 1328 instructions; of the 191 left, 90 are the key table's data words,
+    and the rest are the crash-end camera and the 'T' search;
+  - 8 for update_bailout_view (93 of 98 instructions).
+- Native: godot/native/state/routed_port.gd regenerated (tools/native/gen_routed_port.py); the one-line loop fix
+  is its only change. test_native_camera_angles passes with 0 script errors.
+- Validation: Leyte suite (0 script errors), QA and git diff --check pass. Translated cases: 758 over 109
+  functions. The port keeps 162 functions and refuses 321. Disk: 6.9 GiB free.
+- Next: the start probe with hook 14 (Command-Q from the flight loop, then the outcome path), then CODE 2's
+  host services $3e2 / $432 (A5 - 0x1130 / - 0x112c in the overlay's service table).
+
+### Cycles 138-139 checkpoint — the flight quits; controller ticks
+
+- Start probe with hook 14: Command-Q now leaves the flight loop and the program reaches ExitToShell (dialog 128 and
+  CautionAlert 257 on the way). ExitToShell parks the game thread (on the Mac the program ends there). The probe now
+  overrides that trap: it prints the missing list and ends the process (exit 137).
+- What the quitting run still reaches:
+  - controller ticks through advance_frame_and_tick_controllers:
+    - 0x18f94, a Leyte-only ship tick (73 instructions; calls 0x18784, 0x18f08 and the controller's +0x38);
+    - tick_flak_gun (0x1cdce);
+    - aircraft_tick (0xf9f6);
+  - CODE 2 host services $3e2 (4 arguments) and $432 (1 argument).
+- Written from Leyte's listings and registered as controller code pointers:
+  - tick_shadow (0x1cb04) and shadow_pre_render (0x1cb66). The owner's controller is at its +0 (1.0.3: +8), with
+    flags +0x17 and reference count +0x29. Aircraft owners are type <= 7 (1.0.3: <= 4). Their scale word is +0x36
+    and the scene entry is 24 * word +0x10; the extension words show the hidden scale factors (×8 and ×4).
+  - tick_view_attached_object (0x1dd1c).
+  - tick_turret (0x1d2e2) and spawn_ordnance_scattered (0x19bce).
+  - tick_aircraft_spawner (0x1bf64) and spawn_enemy_fighter (0xf692). Leyte's fighter also stores its three
+    angles at controller +0x60a / +0x60c / +0x60e. The group size is a divsl.l remainder: 0x1bffa is
+    `divsl.l d0,d0:d1`, which Capstone shows as divs.l.
+- Cases: 1080 hand-written, 0 script errors. Uncovered: the successful spawn paths. No case world yet makes
+  spawn_mission_pool_object succeed; that needs a descriptor with vertices and a class factory.
+- Validation: Leyte suite (0 script errors) and git diff --check pass. QA's placement check failed once because the
+  case ROUTINES changed during that run; it is being rerun after regenerating.
+- Disk: 2.0 GiB free. Swap has grown to 6 GiB (memory pressure during the Godot runs); no new large files. Godot
+  runs now go one at a time.
+- Next: the damage system that tick_flak_gun and aircraft_tick share (6 routines, about 840 instructions):
+  apply_blast_damage, apply_hit_to_sinkable_object, apply_random_aircraft_damage, spawn_destruction_effect,
+  tally_destroyed_entity. Then tick_flak_gun, the Leyte ship tick 0x18f94, aircraft_tick, and CODE 2 $3e2 / $432.

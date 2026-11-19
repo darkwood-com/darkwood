@@ -5,7 +5,7 @@ import { darkwoodDecision, darkwaarDecision, heroclipDecision, djDecision, flowD
 test('Darkwood orients each intention without merging service responsibilities', () => {
   assert.equal(darkwoodDecision('game', 'clarify').decision, 'Orienter vers Darkwaar');
   assert.equal(darkwoodDecision('clip', 'deliver').decision, 'Orienter vers Heroclip');
-  assert.equal(darkwoodDecision('set', 'deliver').decision, 'Orienter vers DJ Matyo91');
+  assert.equal(darkwoodDecision('set', 'deliver').decision, 'Orienter vers DJ Matyo');
   assert.equal(darkwoodDecision('treatment', 'deliver').decision, 'Orienter vers Flow');
   assert.equal(darkwoodDecision('process', 'deliver').decision, 'Orienter vers Uniflow');
   assert.notEqual(darkwoodDecision('game', 'clarify').context, darkwoodDecision('game', 'deliver').context);

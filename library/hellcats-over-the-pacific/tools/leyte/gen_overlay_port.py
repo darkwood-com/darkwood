@@ -9,9 +9,10 @@ overlay_placement.json finds by following the code (tools/leyte/overlay_placemen
 - the same count and mnemonics; branches' targets move with the code;
 - every relocated long (an image address: the a.out relocation records of each overlay) at the same
   place in both, paired through sources/leyte-gulf-1-0/overlay_map.json (tools/leyte/overlay_map.py);
-- every A5-relative operand (the host's globals and jump-table slots) paired through a5_map.json;
-- every other operand equal (the relocated longs and A5 displacements masked).
-- a record-field displacement d16(An) (An not A5 / A7) that differs is accepted only through the
+- every other operand equal (the relocated longs masked). The overlay reaches the host through its own global
+  (host_world), never through A5: a5 is an ordinary address register here (1.0.3's update_tracking_camera keeps an
+  object in it), its displacements record fields like any other's.
+- a record-field displacement d16(An) (An not A7) that differs is accepted only through the
   record-layout pairs: a 1.0.3 displacement every aligned instruction pair of the two overlays (the
   same count and mnemonics, the same address register) pairs with one and the same Leyte displacement.
   A displacement seen paired two ways (0x4 -> 0x4 and -> 0x14: different records) is ambiguous: a
@@ -39,7 +40,10 @@ What the port keeps (build): a verified function whose own GDScript body is soun
   one these readings place two ways, refuses the function, and so does a moved displacement that is
   also an immediate number of its arithmetic (stack adjustments left out);
 - the proof covers the whole routine: an inventory entry the code runs past (a forward branch over it,
-  or no return before it) is a false entry inside the routine and does not end it.
+  or no return before it) is a false entry inside the routine and does not end it;
+- a literal inside the function's own 1.0.3 routine is a position in it (the port's state-machine labels):
+  when the two routines are laid out alike (every instruction pair the same size) it moves to the same
+  offset in Leyte's routine; one that is also an immediate number of the function is refused.
 The port's call closure is NOT required: a function it calls that is not kept stays a refusing stub
 (assert) in the generated port, so reaching it stops the run with its name - never a silent success -
 until that function is verified here or written for Leyte in pacific_conflict_reconstructed.gd, which
@@ -82,7 +86,7 @@ A5_DISP = re.compile(r"-?\$[0-9a-f]+\(a5")
 ABS = re.compile(r"\$[0-9a-f]+(\.[wl])?")
 
 
-DISP = re.compile(r"(-?)\$([0-9a-f]+)\((a[0-46])")
+DISP = re.compile(r"(-?)\$([0-9a-f]+)\((a[0-6])")
 PC_REL = re.compile(r"\$([0-9a-f]+)\(pc")
 
 
@@ -96,7 +100,7 @@ def _operands(ins) -> str:
 
 
 def _mask(ins, relocated: bool, layout: dict | None = None, used: dict | None = None) -> str:
-    ops = PC_REL.sub("PC(pc", A5_DISP.sub("A5", _operands(ins)))
+    ops = PC_REL.sub("PC(pc", _operands(ins))
     if layout is not None:
         def sub(m):
             v = (-1 if m.group(1) else 1) * int(m.group(2), 16)
@@ -200,10 +204,7 @@ def verify() -> dict:
                 if omap.get(hv) != lv and not _learn(learn, hv, lv):
                     return "+%#x: image address %#x -> %#x not in the map (%s)" % (
                         a.address, hv, lv, "unpaired" if hv not in omap else "maps to %#x" % omap[hv]), used
-            for hv, lv in zip(a5_operands(a), a5_operands(b)):
-                if a5map.get(hv) != lv and not (hv == lv and hv not in a5map):
-                    return "+%#x: A5 %s -> %s not in the A5 map" % (a.address, hex(hv), hex(lv)), used
-            branch = a.mnemonic.startswith(("b", "j", "db")) and a.mnemonic not in ("bset", "bclr", "btst", "bchg")
+            branch = a.mnemonic.startswith(("b", "j", "db")) and not a.mnemonic.startswith(("bset", "bclr", "btst", "bchg"))
             # A PC-relative operand reaches an image address: through the map, then masked.
             pa, pb = PC_REL.findall(a.op_str), PC_REL.findall(b.op_str)
             if not branch and pa and (len(pa) != len(pb) or any(omap.get(int(x, 16)) != int(y, 16)
@@ -358,15 +359,25 @@ def verify() -> dict:
     referenced = {struct.unpack(">I", himage[HEADER + off:HEADER + off + 4])[0] for off in hrel}
     for k, h0 in enumerate(starts):
         for a in MD.disasm(hcode[h0:starts[k + 1] if k + 1 < len(starts) else hsize], h0):
-            if not (a.mnemonic.startswith(("b", "j", "db")) and a.mnemonic not in ("bset", "bclr", "btst", "bchg")):
+            if not (a.mnemonic.startswith(("b", "j", "db")) and not a.mnemonic.startswith(("bset", "bclr", "btst", "bchg"))):
                 referenced |= {int(x, 16) for x in PC_REL.findall(a.op_str)}
+    # The routine pairs laid out alike (the same instruction sizes, pair by pair): a position inside one is the
+    # same offset inside the other (the port's own labels: scan_convert_edge_rows' state machine).
+    own_routine = {}
+    for name, at in verified.items():
+        h0, h1 = extent[name]
+        l0 = int(at, 16) - HEADER
+        his = list(MD.disasm(hcode[h0:h1], h0))
+        lis = list(MD.disasm(lcode[l0:l0 + (h1 - h0) + 0x400], l0))[:len(his)]
+        if his and len(his) == len(lis) and all(a.size == b.size for a, b in zip(his, lis)):
+            own_routine[name] = (h0, his[-1].address + his[-1].size, l0)
     image_refs, plain_numbers, displacements, immediates = {}, {}, {}, {}
     for name in verified:
         refs, nums, disps, imms = set(), set(), set(), set()
         for a in MD.disasm(hcode[extent[name][0]:extent[name][1]], extent[name][0]):
             vals = {struct.unpack(">I", hcode[a.address + k:a.address + k + 4])[0] for k in range(a.size) if a.address + k in hrel}
             refs |= vals
-            branch = a.mnemonic.startswith(("b", "j", "db")) and a.mnemonic not in ("bset", "bclr", "btst", "bchg")
+            branch = a.mnemonic.startswith(("b", "j", "db")) and not a.mnemonic.startswith(("bset", "bclr", "btst", "bchg"))
             pcs = {int(x, 16) for x in PC_REL.findall(a.op_str)}
             if not branch:
                 refs |= pcs
@@ -378,7 +389,7 @@ def verify() -> dict:
         displacements[name], immediates[name] = sorted(disps), sorted(imms)
     return {"verified": verified, "refused": refused, "layout_used": uses, "relocated": relocated, "placed": placed,
             "image_refs": image_refs, "plain_numbers": plain_numbers, "referenced": sorted(referenced),
-            "displacements": displacements, "immediates": immediates,
+            "displacements": displacements, "immediates": immediates, "own_routine": own_routine,
             "layout_pairs": layout, "ambiguous": ambiguous,
             "learned": {"0x%x" % k: "0x%x" % v for k, v in sorted(learned.items())},
             "layout": {"consistent": len(layout), "ambiguous": len(ambiguous)}}
@@ -452,12 +463,22 @@ def build() -> dict:
         hits = [m for m in LITERAL.finditer(body) if int(m.group(1), 16) == x]
         return bool(hits) and all(body[max(0, m.start() - 2):m.start()] == "& " for m in hits)
 
+    own_routine = v["own_routine"]
+
+    def own_position(n: str, x: int):
+        """x as a position inside n's own routine, at the same offset in Leyte's (None outside it, or when x is
+        also a plain number of n's instructions: then it is refused as two things under one number)."""
+        r = own_routine.get(n)
+        if not r or not (r[0] <= x < r[1]) or x in nums.get(n, ()):
+            return None
+        return r[2] + (x - r[0])
+
     def unmapped(n: str, owners: list) -> list:
         """The literals of n's body inside the image the map does not reach and no owner's instructions
         show as a plain number (owners: the verified functions whose code the body is a piece of)."""
         out = []
         for x in sorted(values(bodies[n])):
-            if not (0x1000 <= x < image_end) or x in omap:
+            if not (0x1000 <= x < image_end) or x in omap or own_position(n, x) is not None:
                 continue
             literal = any(int(m.group(1), 16) == x for m in LITERAL.finditer(bodies[n]))
             number = literal and owners and all(x in nums[f] and x not in refs[f] for f in owners)
@@ -630,8 +651,11 @@ def build() -> dict:
                 x = int(m.group(2), 16)
                 return "%s0x%x" % (m.group(1), _p[x]) if x in _p else m.group(0)
             code = re.sub(r"(_host_memory_call\([^,()]+,\s*[^,()]+,\s*)0x([0-9a-fA-F]+)\b", host, code)
-        def sub(m):
+        def sub(m, _n=current):
             x = int(m.group(1), 16)
+            own = own_position(_n, x) if _n in own_routine else None
+            if own is not None:
+                return "0x%x" % own
             return "0x%x" % omap[x] if 0x1000 <= x < image_end and x in omap else m.group(0)
         lines.append(LITERAL.sub(sub, code) + sep + comment)
     header = ("## GENERATED by tools/leyte/gen_overlay_port.py from original/port/pacific_conflict.gd for Leyte Gulf's\n"

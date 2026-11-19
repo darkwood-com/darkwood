@@ -17075,8 +17075,8 @@ func _update_view_camera(body: int, a6: int) -> int:
 	a7 = saved
 	return result
 
-## _update_view_camera, view 6 (0x85a2): k = 1 + the asr steps that clear bit 15 of
-## update_object_camera_metric(object) + object +0x14 (the low word tested, as in the original);
+## _update_view_camera, view 6 (0x85a2): k = 1 + the asr steps while update_object_camera_metric(object)
+## + object +0x14 has a bit above bit 14 (andi.w #$8000 keeps d0's high word: tst.l sees reach & 0xffff8000);
 ## d = (object - camera) asr k; attitude_from_velocity(d, ext isqrt_floor(|d|^2), |d|^2, a6 -
 ## 0x20, a6 - 0x22); the stored angles (0x24d00 / 0x24d04) snap when a folded delta exceeds
 ## 0x1000, else ease by a quarter; the camera takes their negated low words, roll 0.
@@ -17086,7 +17086,7 @@ func _update_external_camera(body: int, a6: int) -> void:
 	a7 = body - 8
 	var reach: int = C68kScript.s32(update_object_camera_metric(obj) + memory.read_u32(obj + 0x14))
 	var shift: int = 0
-	while (reach & 0x8000) != 0:
+	while (reach & 0xffff8000) != 0:
 		shift += 1
 		reach = C68kScript.asr32(reach, 1)
 	shift += 1

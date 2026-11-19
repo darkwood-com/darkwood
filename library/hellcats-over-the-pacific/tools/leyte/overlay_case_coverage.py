@@ -84,6 +84,7 @@ def main() -> int:
             for at, base, nargs, *deref in c.get("call_logs", []):
                 emu.stubs[at] = lambda e, b=base, n=nargs, d=tuple(deref): log_call(e, b, n, *d)
             emu.d[5] = c.get("d5_in", 0) & 0xFFFFFFFF
+            emu.a[5] = c.get("a5_in", 0) & 0xFFFFFFFF
             count[c["method"]] = count.get(c["method"], 0) + 1
             step = emu.step
 

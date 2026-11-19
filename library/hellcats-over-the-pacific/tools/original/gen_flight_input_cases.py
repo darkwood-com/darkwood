@@ -223,6 +223,9 @@ CASES = [
     case("external camera snaps on a large change", view=6, extra=[(0x1D838, 4, 99000), (0x1D834, 4, 2800), (0x1D830, 4, -41000),
                                                                    (0x24D00, 4, 0x2000), (0x24D04, 4, 0x0100)]),
     case("external camera far away (shifted)", view=6, extra=[(0x1D838, 4, 20000), (0x1D834, 4, 9000), (0x1D830, 4, 30000)]),
+    # andi.w #$8000, d0 / tst.l d0 (0x85a4): the shift loop runs while any bit above bit 14 is set, not only bit 15
+    case("external camera, reach 0x10000 (bit 15 clear)", view=6, extra=[(OBJ + 0x14, 4, 0x10000), (0x1D838, 4, 0), (0x1D834, 4, 0),
+                                                                          (0x1D830, 4, 0)]),
     case("pitch past the vertical is mirrored", view=5, extra=[(PLAYER + 0x36 + 0x14 * 23 + 0xC, 2, -0x1800)]),
     case("pitch mirrored the other side", view=5, extra=[(PLAYER + 0x36 + 0x14 * 23 + 0xC, 2, -0x2800)]),
     case("stopped: host status 1 already set", ground=True, extra=STOPPED + [(WORLD + 0xD4, 2, 1)]),

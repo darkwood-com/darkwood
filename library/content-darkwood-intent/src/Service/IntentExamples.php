@@ -12,6 +12,6 @@ final readonly class IntentExamples
         'uniflow' => ['Uniflow', 'De l’intention métier au processus', 'Transformer un objectif métier en définition et en opérations explicites.', 'Processus'],
         'darkwaar' => ['Darkwaar', 'Explorer ou transporter', 'Une même rive, deux intentions et des décisions différentes.', 'Jeu'],
         'heroclip' => ['Heroclip', 'Orienter un récit', 'Modifier l’objectif narratif, le storyboard et les contraintes de continuité.', 'Récit'],
-        'djmatyo' => ['DJ Matyo91', 'Construire une progression', 'Ouverture, montée ou pic : l’intention transforme rythme et transitions.', 'Musique'],
+        'djmatyo' => ['DJ Matyo', 'Construire une progression', 'Ouverture, montée ou pic : l’intention transforme rythme et transitions.', 'Musique'],
     ];
 }
