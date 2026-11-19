@@ -37,8 +37,8 @@ final class ExportStaticCommand extends Command
         if (is_link($directory)) {
             throw new \RuntimeException('dist/ must not be a symlink.');
         }
-        $assets = ['style.css', 'app.js', 'themes.js', 'static.js', 'memory-model.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'aftertrace/teaser.mp4', 'aftertrace/remembered-route.png'];
-        $allowed = array_merge(['index.html', '.nojekyll'], $assets);
+        $assets = ['style.css', 'app.js', 'themes.js', 'static.js', 'memory-model.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'aftertrace/remembered-route.png'];
+        $allowed = array_merge(['index.html', '404.html', '.nojekyll'], $assets);
         foreach (array_keys(MemoryExamples::DEMOS) as $slug) {
             $allowed[] = 'demo/'.$slug.'/index.html';
         }
@@ -55,7 +55,7 @@ final class ExportStaticCommand extends Command
             'decisions' => json_decode(file_get_contents($this->projectDir.'/data/decisions.json'), true, flags: JSON_THROW_ON_ERROR),
             'workflow' => json_decode(file_get_contents($this->projectDir.'/data/workflow.json'), true, flags: JSON_THROW_ON_ERROR),
         ];
-        $pages = ['index.html' => ['home.html.twig', $context]];
+        $pages = ['404.html' => ['video-moved.html.twig', $context], 'index.html' => ['home.html.twig', $context]];
         foreach (MemoryExamples::DEMOS as $slug => $demo) {
             $pages['demo/'.$slug.'/index.html'] = ['demo.html.twig', $context + ['slug' => $slug, 'demo' => $demo]];
         }

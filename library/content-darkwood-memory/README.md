@@ -96,3 +96,11 @@ Le thème sombre reprend les tokens Uniflow (`#091a28`, `#0e2233`, `#0f2b3d`, bl
 Aftertrace est intégré par iframe vers une release immuable vérifiée sur Darkwaar ; les mises à jour du jeu demandent d’actualiser cette URL. Seuls une capture et le teaser sont copiés dans ce dépôt. La page renvoie exclusivement vers [la page officielle du jeu sur Darkwaar](https://darkwaar.com/games/aftertrace).
 
 Les liens éditoriaux et médias de Memory privilégient les domaines officiels Darkwood. Les seules exceptions de navigation vers une plateforme tierce sont les dépôts sources officiels Memory et Flow sur GitHub. Les plateformes de distribution externes ne sont pas liées depuis cette vitrine.
+
+## Hébergement du teaser — S47
+
+Le teaser original Aftertrace est conservé localement mais exclu du suivi Git.
+Les deux expériences utilisent le même [upload non répertorié](https://www.youtube.com/watch?v=Mm7xHmnJnKo).
+Le composant commun Darkwood Design charge le lecteur nocookie après un clic,
+avec un lien direct de secours. Les exports ne dépendent plus du MP4 local.
+L’ancienne URL de fichier est signalée comme déplacée par la page 404.

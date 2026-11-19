@@ -1,0 +1,9 @@
+{% macro video(id, title, poster) %}
+<div data-youtube-id="{{ id }}" data-youtube-title="{{ title }}" style="width:100%;max-width:960px">
+  <button type="button" data-youtube-load aria-label="Charger le lecteur YouTube : {{ title }}" style="display:block;width:100%;max-width:100%">
+    {% if poster %}<img src="{{ poster }}" alt="" loading="lazy" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain">{% endif %}
+    Charger le lecteur YouTube (contenu externe)
+  </button>
+</div>
+<p><a href="https://www.youtube.com/watch?v={{ id }}" target="_blank" rel="noopener noreferrer">{{ title }} — ouvrir sur YouTube ↗</a></p>
+{% endmacro %}

@@ -82,3 +82,11 @@ L’atelier est maintenu dans [content-darkwood-ai-mcp-symfony-hackathon](../con
 et publié sur <https://ai-mcp-symfony-hackathon-content.darkwood.com/>.
 Son build ne dépend plus d’Intention. La vidéo et la soumission au concours restent
 un chantier distinct soumis à validation.
+
+## Hébergement du teaser — S47
+
+Le teaser original Aftertrace est conservé localement mais exclu du suivi Git.
+Les deux expériences utilisent le même [upload non répertorié](https://www.youtube.com/watch?v=Mm7xHmnJnKo).
+Le composant commun Darkwood Design charge le lecteur nocookie après un clic,
+avec un lien direct de secours. Les exports ne dépendent plus du MP4 local.
+L’ancienne URL de fichier est signalée comme déplacée par la page 404.

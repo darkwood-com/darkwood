@@ -47,12 +47,13 @@ final class StaticExportTest extends KernelTestCase
                         $url = $element->getAttribute($attribute);
                         if (!str_starts_with($url, 'https://') && !str_starts_with($url, 'http://') && !str_starts_with($url, '//')) continue;
                         $host = parse_url($url, PHP_URL_HOST);
-                        $officialRepository = in_array($url, [
+                        $approvedLink = in_array($url, [
                             'https://github.com/matyo91/darkwood-memory',
                             'https://github.com/darkwood-com/flow',
+                            'https://www.youtube.com/watch?v=Mm7xHmnJnKo',
                         ], true);
                         self::assertTrue(
-                            str_starts_with($url, 'https://') && ($officialRepository || in_array($host, ['darkwaar.com', 'flow.darkwood.com', 'intent-content.darkwood.com', 'memory-content.darkwood.com'], true)),
+                            str_starts_with($url, 'https://') && ($approvedLink || in_array($host, ['darkwaar.com', 'flow.darkwood.com', 'intent-content.darkwood.com', 'memory-content.darkwood.com'], true)),
                             'Unexpected external destination in '.$file.': '.$url,
                         );
                     }
@@ -66,8 +67,9 @@ final class StaticExportTest extends KernelTestCase
             $game = new Crawler($gameHtml);
             self::assertCount(1, $game->filter('iframe[title="Jouer à Aftertrace — Darkwaar"]'));
             self::assertStringContainsString('https://darkwaar.com/games/aftertrace', $gameHtml);
-            self::assertStringContainsString('src="'.$prefix.'/aftertrace/teaser.mp4"', $gameHtml);
-            self::assertFileExists(self::$kernel->getProjectDir().'/dist/aftertrace/teaser.mp4');
+            self::assertStringContainsString('data-youtube-id="Mm7xHmnJnKo"', $gameHtml);
+            self::assertStringContainsString('youtube-nocookie.com/embed/', $gameHtml);
+            self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/aftertrace/teaser.mp4');
         }
         self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/index.php');
         self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/.env');

@@ -2,3 +2,6 @@
 /result
 /.direnv/
 /node_modules/
+
+# Generated distribution movies are kept locally and hosted on YouTube.
+/public/hackathon/*.mp4

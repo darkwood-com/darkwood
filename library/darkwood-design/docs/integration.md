@@ -15,3 +15,15 @@ Un package runtime n'est pas justifié aujourd'hui. Les applications utilisent d
 ## Compatibilité
 
 Les produits peuvent exposer leurs anciens noms de variables comme alias vers les rôles `--dw-*`. Cette stratégie permet une migration progressive sans réécrire les composants métier.
+
+## YouTube video embeds
+
+`youtube.js` is the small shared browser helper for `[data-youtube-id]` blocks.
+A `[data-youtube-load]` button explicitly requests the third-party player; no
+YouTube network request occurs before that action. Keep a direct HTTPS watch
+link next to the player as a no-JavaScript/error fallback.
+
+The helper validates the video ID, uses `youtube-nocookie.com`, lazy loading,
+an accessible title, 16:9 sizing and `strict-origin-when-cross-origin`. It never
+enables audible autoplay. Include the same source in static exports/Twig pages
+instead of duplicating iframe configuration in each card.

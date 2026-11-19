@@ -1,10 +1,10 @@
-import { copyFile, lstat, mkdir, readdir, writeFile } from 'node:fs/promises';
+import { copyFile, lstat, mkdir, readdir, writeFile, readFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 
 const card = import.meta.dirname;
 const output = resolve(card, 'dist');
-const assets = ['style.css', 'themes.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'hackathon/experience-edit.json', 'hackathon/experience-poster.jpg', 'hackathon/darkwood-game-proof.json', 'hackathon/mcp-proof.json', 'hackathon/design-proof.json', 'hackathon/level-preview.png', 'hackathon/actual-demo.mp4', 'hackathon/workshop-fr.mp4'];
-const allowed = new Set(['index.html', 'CNAME', '.nojekyll', ...assets]);
+const assets = ['style.css', 'themes.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'hackathon/experience-edit.json', 'hackathon/experience-poster.jpg', 'hackathon/darkwood-game-proof.json', 'hackathon/mcp-proof.json', 'hackathon/design-proof.json', 'hackathon/level-preview.png'];
+const allowed = new Set(['index.html', '404.html', 'CNAME', '.nojekyll', ...assets]);
 
 // Refuse unexpected output or symlinks rather than deleting user files.
 async function inspect(directory, prefix = '') {
@@ -21,7 +21,7 @@ async function inspect(directory, prefix = '') {
 try { if ((await lstat(output)).isSymbolicLink()) throw new Error('dist/ must not be a symlink'); }
 catch (error) { if (error.code !== 'ENOENT') throw error; }
 await inspect(output);
-for (const [source, target] of [['src/index.html', 'index.html'], ['CNAME', 'CNAME'], ...assets.map(asset => [`public/${asset}`, asset])]) {
+for (const [source, target] of [['src/index.html', 'index.html'], ['src/404.html', '404.html'], ['CNAME', 'CNAME'], ...assets.map(asset => [`public/${asset}`, asset])]) {
   // Check every source component, including its parent directories.
   let component = card;
   for (const part of source.split('/')) {
@@ -30,7 +30,12 @@ for (const [source, target] of [['src/index.html', 'index.html'], ['CNAME', 'CNA
   }
   const destination = resolve(output, target);
   await mkdir(dirname(destination), { recursive: true });
-  await copyFile(resolve(card, source), destination);
+  if (source === 'src/index.html') {
+    const helper = await readFile(resolve(card, '../darkwood-design/youtube.js'), 'utf8');
+    const html = await readFile(resolve(card, source), 'utf8');
+    if (!html.includes('<!-- darkwood-youtube-helper -->')) throw new Error('Missing shared player marker');
+    await writeFile(destination, html.replace('<!-- darkwood-youtube-helper -->', `<script>${helper}</script>`));
+  } else await copyFile(resolve(card, source), destination);
 }
 await writeFile(resolve(output, '.nojekyll'), '');
-console.log('Exported workshop from this card only: dist/ (1 page, 14 assets, CNAME, .nojekyll).');
+console.log('Exported workshop from this card only: dist/ (2 pages, 12 assets, CNAME, .nojekyll).');

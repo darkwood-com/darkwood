@@ -1,9 +1,9 @@
 {
   "title": "Darkwood MCP Experience",
   "signature": "One ecosystem. Multiple capabilities. One AI experience.",
-  "edited_at": "2026-11-19T09:06:36.100089+00:00",
-  "duration_seconds": 80.8,
-  "sha256": "94053fb1ba9e187a76fe9edab7986ea6fd812a1ef53e8697050b0cfada5611e1",
+  "edited_at": "2026-11-19T10:09:44.109742+00:00",
+  "duration_seconds": 86.21,
+  "sha256": "b1d9ec58531b382c240e13c062a7aa045e3e37845cb875519e2966c6018c70d9",
   "probe": {
     "programs": [],
     "stream_groups": [],
@@ -21,69 +21,61 @@
       }
     ],
     "format": {
-      "duration": "80.800000",
-      "size": "5559658"
+      "duration": "86.210000",
+      "size": "3574278"
     }
   },
   "timeline": [
     {
       "scene": 1,
       "start_seconds": 0,
-      "duration_seconds": 12.68,
-      "source": "Navi SlideWire scene",
+      "duration_seconds": 11.6,
       "avatar": true
     },
     {
       "scene": 2,
-      "start_seconds": 12.5,
-      "duration_seconds": 7.6,
-      "source": "actual browser tour + Navi slide",
+      "start_seconds": 11.6,
+      "duration_seconds": 9.9,
       "avatar": true
     },
     {
       "scene": 3,
-      "start_seconds": 19.92,
-      "duration_seconds": 5.64,
-      "source": "Navi SlideWire scene",
+      "start_seconds": 21.5,
+      "duration_seconds": 6.300000000000001,
       "avatar": true
     },
     {
       "scene": 4,
-      "start_seconds": 25.38,
-      "duration_seconds": 8.68,
-      "source": "Navi SlideWire scene",
+      "start_seconds": 27.8,
+      "duration_seconds": 8.3,
       "avatar": true
     },
     {
       "scene": 5,
-      "start_seconds": 33.88,
-      "duration_seconds": 24.0,
-      "source": "recorded real MCP execution",
+      "start_seconds": 36.1,
+      "duration_seconds": 19.699999999999996,
       "avatar": false
     },
     {
       "scene": 6,
-      "start_seconds": 57.7,
-      "duration_seconds": 8.88,
-      "source": "Navi SlideWire scene",
+      "start_seconds": 55.8,
+      "duration_seconds": 13.900000000000006,
       "avatar": true
     },
     {
       "scene": 7,
-      "start_seconds": 66.4,
-      "duration_seconds": 6.04,
-      "source": "Navi SlideWire scene",
+      "start_seconds": 69.7,
+      "duration_seconds": 7.299999999999997,
       "avatar": true
     },
     {
       "scene": 8,
-      "start_seconds": 72.26,
-      "duration_seconds": 8.52,
-      "source": "Navi SlideWire scene",
+      "start_seconds": 77,
+      "duration_seconds": 9.209999999999994,
       "avatar": true
     }
   ],
-  "cross_dissolve_seconds": 0.18,
+  "cross_dissolve_seconds": 0,
   "actual_execution": {
     "date": "2026-11-18",
     "commit": "e55d2593165b82cbb495d3c14341d610d85a63be",
@@ -105,5 +97,43 @@
   },
   "avatar": "Existing static MATYO91 portrait; no lip-sync or Replicate. Same size/position, removed over technical execution.",
   "submission": "prepared, not submitted",
-  "rollback": "previous-actual-demo.mp4 retained in S47 and commit58e9558a6"
+  "rollback": "Previous MP4s preserved locally and in Git history; no history rewritten.",
+  "audio": {
+    "mode": "continuous",
+    "tts_requests_for_final_take": 1,
+    "rate_change": false,
+    "audio_crossfades": false,
+    "alignment": "ASR segment timestamps; within-segment cue interpolation",
+    "master_sha256": "cecd6bceacc78b27be195563e13d72e1bcb0daa1860d08c7ae807f5c321eced9",
+    "cue_scores": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "hosting": {
+    "provider": "youtube",
+    "channel_id": "UCFaUxC_03oC3MGYiiCPl3pw",
+    "channel_name": "Mathieu Ledru",
+    "official": {
+      "id": "IbljHH4wj0s",
+      "url": "https://youtu.be/IbljHH4wj0s",
+      "privacy": "unlisted"
+    },
+    "french": {
+      "id": "Ytts4XFgTxI",
+      "url": "https://youtu.be/Ytts4XFgTxI",
+      "privacy": "unlisted"
+    }
+  },
+  "legacy_video_urls": {
+    "/hackathon/actual-demo.mp4": "https://youtu.be/IbljHH4wj0s",
+    "/hackathon/workshop-fr.mp4": "https://youtu.be/Ytts4XFgTxI"
+  },
+  "legacy_url_handling": "GitHub Pages has no native per-path HTTP redirects; known active links updated, custom404 provides explicit YouTube alternatives."
 }

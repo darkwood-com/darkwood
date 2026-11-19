@@ -5,7 +5,7 @@
   <p class="mode-note">Trois rives, deux traversées par rive. La carte survit aux retours dans la même partie ; recharger le jeu efface cette connaissance. Le bouton Forget efface aussi les découvertes de la rive courante.</p>
   <div class="game-presentation">
     <figure><img src="{{ base_path|default('') }}/aftertrace/remembered-route.png" alt="Carte d’Aftertrace : une fissure et le chemin sûr restent connus après le retour au départ" width="648" height="1152" loading="lazy"><figcaption>La position et les pas repartent de zéro, la carte reste connue.</figcaption></figure>
-    <figure><video controls playsinline preload="none" poster="{{ base_path|default('') }}/aftertrace/remembered-route.png" aria-label="Teaser de gameplay réel d’Aftertrace"><source src="{{ base_path|default('') }}/aftertrace/teaser.mp4" type="video/mp4"></video><figcaption>Une tentative, un échec, une découverte, puis la livraison.</figcaption></figure>
+    <figure>{% import '@darkwood_design/youtube.html.twig' as youtube %}{{ youtube.video('Mm7xHmnJnKo', 'Aftertrace — teaser de gameplay réel', (base_path|default('')) ~ '/aftertrace/remembered-route.png') }}<figcaption>Une tentative, un échec, une découverte, puis la livraison.</figcaption></figure>
   </div>
   <details class="play-aftertrace"><summary>Jouer à Aftertrace ici</summary><iframe src="https://darkwaar.com/game-runtime/01a1bb07-9a00-7003-ae28-1fc114ba6e92/releases/82ceed3e6163ad870df188edc3ee3e2a/index.html" title="Jouer à Aftertrace — Darkwaar" loading="lazy" allow="fullscreen; autoplay" allowfullscreen></iframe></details>
   <p><a href="https://darkwaar.com/games/aftertrace" target="_blank" rel="noopener noreferrer">Jouer sur Darkwaar ↗</a></p>

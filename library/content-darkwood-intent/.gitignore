@@ -14,3 +14,6 @@
 
 /dist/
 /node_modules/
+
+# Generated distribution teaser, preserved locally and hosted on YouTube.
+/public/aftertrace/*.mp4

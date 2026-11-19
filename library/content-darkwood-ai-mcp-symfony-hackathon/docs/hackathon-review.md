@@ -206,3 +206,20 @@ no claim of animation or lip synchronization. The extra fade treatment removes
 black-frame edges in this editorial copy without changing Navi's global defaults.
 No application runtime, SDK dependency, external account or game data is changed.
 Final contest submission is still reserved for owner approval.
+
+## Iteration 4 — continuous narration and YouTube
+
+Previous sections describe their dated iterations. The current English film is
+[Darkwood MCP Experience](https://youtu.be/IbljHH4wj0s), 86.21 seconds, unlisted;
+the [French companion](https://youtu.be/Ytts4XFgTxI) is 232.88 seconds. One complete
+TTS take supplies the master audio. ASR segment timestamps align slide cues;
+within-segment positions are interpolated and ambiguous cues fail. Silent visuals
+are muxed around the intact master, without audio crossfades or voice acceleration.
+The actual recorded Mario request/response and local DarkwoodGame provenance
+remain unchanged. No final contest submission or promotional social post occurred.
+
+The workshop no longer deploys local MP4s. IDs, canonical links and legacy-path
+mapping are in `experience-edit.json`. GitHub Pages has no native custom HTTP
+redirects for those file paths; known active references are updated and the 404
+page gives explicit YouTube alternatives. Original local films and Git history
+are preserved. Untracking artifacts does not shrink historical Git objects.

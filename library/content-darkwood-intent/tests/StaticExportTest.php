@@ -39,7 +39,7 @@ final class StaticExportTest extends KernelTestCase
                 self::assertStringNotContainsString('app_secret', strtolower($html));
             }
             self::assertFileExists(self::$kernel->getProjectDir().'/dist/intent-model.js');
-            self::assertFileExists(self::$kernel->getProjectDir().'/dist/aftertrace/teaser.mp4');
+            self::assertFileDoesNotExist(self::$kernel->getProjectDir().'/dist/aftertrace/teaser.mp4');
             $home = file_get_contents(self::$kernel->getProjectDir().'/dist/index.html');
             self::assertStringContainsString('Les six démonstrations', $home);
             self::assertStringContainsString('De l’intention à l’écosystème', $home);

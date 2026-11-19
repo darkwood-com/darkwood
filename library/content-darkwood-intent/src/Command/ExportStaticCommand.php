@@ -38,8 +38,8 @@ final class ExportStaticCommand extends Command
         if (is_link($directory)) {
             throw new \RuntimeException('dist/ must not be a symlink.');
         }
-        $assets = ['style.css', 'themes.js', 'static.js', 'intent-model.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'aftertrace/teaser.mp4', 'aftertrace/remembered-route.png'];
-        $allowed = array_merge(['index.html', '.nojekyll'], $assets);
+        $assets = ['style.css', 'themes.js', 'static.js', 'intent-model.js', 'logo-darkwood.png', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'aftertrace/remembered-route.png'];
+        $allowed = array_merge(['index.html', '404.html', '.nojekyll'], $assets);
         foreach (array_keys(IntentExamples::DEMOS) as $slug) {
             $allowed[] = 'demo/'.$slug.'/index.html';
         }
@@ -52,7 +52,7 @@ final class ExportStaticCommand extends Command
         }
 
         $context = ['static_mode' => true, 'base_path' => $prefix, 'demos' => IntentExamples::DEMOS];
-        $pages = ['index.html' => ['home.html.twig', $context]];
+        $pages = ['404.html' => ['video-moved.html.twig', $context], 'index.html' => ['home.html.twig', $context]];
         foreach (IntentExamples::DEMOS as $slug => $demo) {
             $pages['demo/'.$slug.'/index.html'] = ['demo.html.twig', $context + ['slug' => $slug, 'demo' => $demo]];
         }

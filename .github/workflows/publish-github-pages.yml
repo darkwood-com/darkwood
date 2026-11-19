@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - .github/distribution-cards.json
+      - library/darkwood-design/**
       - library/content-darkwood-memory/**
       - library/content-darkwood-intent/**
       - library/content-darkwood-ai-mcp-symfony-hackathon/**
@@ -104,6 +105,7 @@ jobs:
           filter: blob:none
           sparse-checkout: |
             ${{ matrix.source }}
+            library/darkwood-design
             ${{ matrix.id == 'content-darkwood-ai-mcp-symfony-hackathon' && 'library/content-mario-orquestration' || '' }}
             .github/distribution-cards.json
             .github/workflows/publish-github-pages.yml
@@ -126,7 +128,7 @@ jobs:
             fi
           elif [[ "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
             selected=true
-          elif git diff --quiet "$BEFORE" "$CURRENT" -- "$SOURCE" .github/distribution-cards.json .github/workflows/publish-github-pages.yml; then
+          elif git diff --quiet "$BEFORE" "$CURRENT" -- "$SOURCE" library/darkwood-design .github/distribution-cards.json .github/workflows/publish-github-pages.yml; then
             selected=false
           else
             selected=true

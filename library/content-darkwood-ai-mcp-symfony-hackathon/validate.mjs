@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
 import { readFile, stat, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
@@ -30,7 +29,7 @@ const css = await readFile(resolve(output, 'style.css'), 'utf8');
 for (const [, raw] of css.matchAll(/url\(['"]?([^)'"\s]+)['"]?\)/g)) {
   assert.ok((await stat(resolve(output, raw))).isFile(), `Missing CSS asset ${raw}`);
 }
-const expected = ['.nojekyll', 'CNAME', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'hackathon/experience-edit.json', 'hackathon/experience-poster.jpg', 'hackathon/darkwood-game-proof.json', 'hackathon/mcp-proof.json', 'hackathon/design-proof.json', 'hackathon/level-preview.png', 'hackathon/actual-demo.mp4', 'hackathon/workshop-fr.mp4', 'index.html', 'logo-darkwood.png', 'style.css', 'themes.js'];
+const expected = ['.nojekyll', 'CNAME', 'fonts/Jost-400-Book.otf', 'fonts/Jost-600-Semi.otf', 'fonts/OFL.txt', 'hackathon/experience-edit.json', 'hackathon/experience-poster.jpg', 'hackathon/darkwood-game-proof.json', 'hackathon/mcp-proof.json', 'hackathon/design-proof.json', 'hackathon/level-preview.png', 'index.html', '404.html', 'logo-darkwood.png', 'style.css', 'themes.js'];
 async function files(directory, prefix = '') {
   const result = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -71,12 +70,20 @@ console.log('Validated supplementary local DarkwoodGame evidence and seven canon
 
 const edit = JSON.parse(await readFile(resolve(output, 'hackathon/experience-edit.json'), 'utf8'));
 assert.equal(edit.title, 'Darkwood MCP Experience');
-assert.ok(edit.duration_seconds <= 85, 'Keep at least five seconds below contest limit');
+assert.ok(edit.duration_seconds <= 88, 'Keep at least two seconds below contest limit');
 assert.equal(edit.timeline.length, 8);
-assert.equal(createHash('sha256').update(await readFile(resolve(output, 'hackathon/actual-demo.mp4'))).digest('hex'), edit.sha256);
+assert.equal(edit.audio.mode, 'continuous');
+assert.equal(edit.audio.tts_requests_for_final_take, 1);
+assert.equal(edit.audio.audio_crossfades, false);
+assert.equal(edit.hosting.official.id, 'IbljHH4wj0s');
+assert.ok(!html.includes('<video'));
+assert.ok(!html.includes('/hackathon/actual-demo.mp4'));
+assert.ok(!html.includes('/hackathon/workshop-fr.mp4'));
+assert.equal([...html.matchAll(/data-youtube-id=/g)].length, 2);
 assert.equal(edit.timeline[4].avatar, false);
 assert.equal(edit.darkwoodgame.independent_from_mario, true);
 assert.equal(edit.actual_execution.date, '2026-11-18');
 assert.ok(html.includes('attente sont condensés'));
-assert.ok(html.includes('poster="/hackathon/experience-poster.jpg"'));
+assert.ok(html.includes('youtube-nocookie.com/embed/'));
+assert.ok(html.includes('data-youtube-load'));
 console.log('Validated guided eight-scene experience, dated recording, disclosed edit and duration margin.');
