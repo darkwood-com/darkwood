@@ -301,11 +301,22 @@ final class McpServer
         throw new \InvalidArgumentException("Unknown resource: {$uri}");
     }
 
+    private function getDesignPresentation(): string
+    {
+        // Self-contained MCP UI: no remote font request or host asset route is required.
+        $resources = dirname(__DIR__, 2).'/resources/';
+        $css = file_get_contents($resources.'design.css');
+        $font = base64_encode(file_get_contents($resources.'Jost-400-Book.otf'));
+        $script = file_get_contents($resources.'theme.js');
+
+        return '<style>'.$css.'@font-face{font-family:Jost;src:url(data:font/otf;base64,'.$font.') format("opentype");font-weight:400;font-display:swap}</style><script>'.$script.'</script>';
+    }
+
     private function getHelloHtml(): string
     {
-        return <<<'HTML'
+        return str_replace('<!-- Darkwood presentation -->', $this->getDesignPresentation(), <<<'HTML'
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -372,16 +383,17 @@ final class McpServer
   });
 })();
   </script>
+<!-- Darkwood presentation -->
 </body>
 </html>
-HTML;
+HTML);
     }
 
     private function getArticleHtml(): string
     {
-        return <<<'HTML'
+        return str_replace('<!-- Darkwood presentation -->', $this->getDesignPresentation(), <<<'HTML'
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -577,9 +589,10 @@ HTML;
   });
 })();
   </script>
+<!-- Darkwood presentation -->
 </body>
 </html>
-HTML;
+HTML);
     }
 
     private function log(string $method, array $params): void
