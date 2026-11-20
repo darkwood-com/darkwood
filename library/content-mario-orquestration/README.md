@@ -11,9 +11,9 @@ Requirements: Git, Nix with flakes, network access and your own OpenAI API key w
 ```sh
 git clone --depth=1 --filter=blob:none --sparse https://github.com/darkwood-com/darkwood.git
 cd darkwood
-git sparse-checkout set library/content-mario-orquestration
+git sparse-checkout set library/content-mario-orquestration library/darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix
 cd library/content-mario-orquestration
-nix --extra-experimental-features 'nix-command flakes' develop
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix
 composer install --no-scripts --no-interaction
 composer check-platform-reqs
 php tests/generation-regression.php
@@ -96,3 +96,11 @@ php bin/console app:mario:observe-darkwood --endpoint=https://YOUR_AUTHORIZED_AP
 The server must expose the qualified `get_darkwood_state` read-only tool. It refuses player initialization through observation and enforces existing beta/premium/action permissions. The command reports only returned facts and cannot approve or execute a game action. It makes a real provider call and has no fixture fallback. For an isolated local Portal demonstration, use an HTTP loopback endpoint; `DARKWOOD_GAME_LOCAL_HOST` can supply its configured local Host header. Never use production game mutations to test the integration. See the [Portal contract and consent boundary](../darkwood-portal/docs/darkwood-mcp.md).
 
 `nyholm/psr7` supplies the PSR-17 factories required by the official SDK HTTP transport, with Symfony's existing HTTP client as PSR-18 implementation. The existing AI and MCP versions are unchanged.
+
+## Shared development shell
+
+`flake.nix` and the native `shell.nix` entry point use the canonical Navi PHP
+shell builder. This card keeps its own Nixpkgs lock and mbstring requirement.
+Prefer `nix develop --file ./shell.nix` to avoid taking the monorepo as a flake
+source. No application, vendor directory or secret is passed to the builder.
+The submitted execution, Composer manifests and recorded evidence are unchanged.

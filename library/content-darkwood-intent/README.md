@@ -90,3 +90,11 @@ Les deux expériences utilisent le même [upload non répertorié](https://www.y
 Le composant commun Darkwood Design charge le lecteur nocookie après un clic,
 avec un lien direct de secours. Les exports ne dépendent plus du MP4 local.
 L’ancienne URL de fichier est signalée comme déplacée par la page 404.
+
+## Environnement PHP partagé
+
+Les entrées `flake.nix` et `shell.nix` réutilisent le constructeur canonique Navi
+(`library/darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix`). Le verrou
+Nixpkgs de cette card et son outil Node sont conservés. Depuis la card, privilégier
+`nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix`
+pour ne pas capturer le monorepo comme source de flake. Aucun service n'est démarré.

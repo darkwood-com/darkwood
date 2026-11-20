@@ -7,7 +7,6 @@
       devShells = nixpkgs.lib.genAttrs systems (system:
         let
           pkgs = import nixpkgs { inherit system; };
-          php = pkgs.php85.buildEnv { extensions = { enabled, all }: pkgs.lib.unique (enabled ++ [ all.mbstring ]); };
-        in { default = pkgs.mkShellNoCC { packages = [ php php.packages.composer ]; }; });
+        in { default = import ./shell.nix { inherit pkgs; }; });
     };
 }

@@ -6,6 +6,7 @@ on:
     paths:
       - .github/distribution-cards.json
       - library/darkwood-design/**
+      - library/darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix
       - library/content-darkwood-memory/**
       - library/content-darkwood-intent/**
       - library/content-darkwood-ai-mcp-symfony-hackathon/**
@@ -106,6 +107,7 @@ jobs:
           sparse-checkout: |
             ${{ matrix.source }}
             library/darkwood-design
+            library/darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix
             ${{ matrix.id == 'content-darkwood-ai-mcp-symfony-hackathon' && 'library/content-mario-orquestration' || '' }}
             .github/distribution-cards.json
             .github/workflows/publish-github-pages.yml
@@ -135,6 +137,10 @@ jobs:
           fi
           if [[ "$EVENT_NAME" == "push" && "$TARGET" == "content-darkwood-ai-mcp-symfony-hackathon" ]] &&
              ! git diff --quiet "$BEFORE" "$CURRENT" -- library/content-mario-orquestration; then
+            selected=true
+          fi
+          if [[ "$EVENT_NAME" == "push" && ( "$TARGET" == "content-darkwood-memory" || "$TARGET" == "content-darkwood-intent" || "$TARGET" == "content-darkwood-ai-mcp-symfony-hackathon" ) ]] &&
+             ! git diff --quiet "$BEFORE" "$CURRENT" -- library/darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix; then
             selected=true
           fi
           echo "selected=$selected" >> "$GITHUB_OUTPUT"

@@ -8,9 +8,7 @@
     in {
       devShells = each (system:
         let pkgs = import nixpkgs { inherit system; }; in {
-          default = pkgs.mkShellNoCC {
-            packages = [ pkgs.php85 pkgs.php85.packages.composer pkgs.nodejs ];
-          };
+          default = import ./shell.nix { inherit pkgs; };
         });
     };
 }
