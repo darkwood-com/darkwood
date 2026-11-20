@@ -10,4 +10,5 @@ import(__DIR__ . '/env/castor.php');
 import(__DIR__ . '/php-cs-fixer/castor.php');
 import(__DIR__ . '/phpstan/castor.php');
 import(__DIR__ . '/phpunit/castor.php');
+import(__DIR__ . '/rector/castor.php');
 import(__DIR__ . '/symfony-lsp/castor.php');

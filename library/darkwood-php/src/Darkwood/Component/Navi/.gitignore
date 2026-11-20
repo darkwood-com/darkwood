@@ -1,5 +1,6 @@
 vendor/
 composer.lock
+!/tools/*/composer.lock
 var/
 
 ###> symfony/framework-bundle ###

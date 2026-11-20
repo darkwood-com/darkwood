@@ -24,19 +24,22 @@ let
     extensions = available: packageSet.lib.unique (available.enabled ++ extraExtensions available);
     inherit extraConfig;
   };
-  psalm = packageSet.fetchurl {
-    url = "https://github.com/vimeo/psalm/releases/download/7.12.0/psalm.phar";
-    sha256 = "6d632443537a38d7089983d16b14d7e798434a578e501dd8342f35656136d17b";
-  };
+  phpTool = name: url: sha256:
+    let phar = packageSet.fetchurl { inherit url sha256; };
+    in packageSet.writeShellScriptBin name ''
+      exec ${runtime}/bin/php ${phar} "$@"
+    '';
   qualityTools = with packageSet; [
     symfony-cli
     runtime.packages.castor
-    (phpstan.override { php = runtime; withTurbo = false; })
-    (writeShellScriptBin "psalm" ''
-      exec ${runtime}/bin/php ${psalm} "$@"
-    '')
-    runtime.packages.php-cs-fixer
-    (phpunit.override { php = runtime; })
+    (phpTool "phpstan" "https://github.com/phpstan/phpstan/releases/download/2.3.7/phpstan.phar"
+      "87fa9aa451bb9b61d7c65d40ec7d14d5bab67e3ad74ce75a09b3140d6f22631a")
+    (phpTool "psalm" "https://github.com/vimeo/psalm/releases/download/7.12.0/psalm.phar"
+      "6d632443537a38d7089983d16b14d7e798434a578e501dd8342f35656136d17b")
+    (phpTool "php-cs-fixer" "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v3.95.32/php-cs-fixer.phar"
+      "5c5358423ee19cc73e436da1bf0f0171bf3ce99efd2e323fe5e312795f7763b1")
+    (phpTool "phpunit" "https://phar.phpunit.de/phpunit-13.4.8.phar"
+      "260c6fb64aa6172a42f3b72e382441b8d80ed19d2e976bb7da0bed92c9deaaf0")
   ];
   additions = if builtins.isFunction extraPackages then extraPackages packageSet else extraPackages;
 in packageSet.mkShellNoCC {
