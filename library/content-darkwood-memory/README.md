@@ -15,19 +15,19 @@ Prérequis : Nix avec `nix-command` et `flakes`. Le flake épinglé fournit PHP 
 ```sh
 git clone git@github.com:matyo91/darkwood-memory.git
 cd darkwood-memory
-nix develop -c composer install
-nix develop -c php -S 127.0.0.1:8097 -t public
+nix develop --file ./shell.nix -c composer install
+nix develop --file ./shell.nix -c php -S 127.0.0.1:8097 -t public
 ```
 
-Ouvrir `http://127.0.0.1:8097`. Si les fonctionnalités Nix ne sont pas activées, utiliser `nix --extra-experimental-features 'nix-command flakes' develop -c ...`.
+Ouvrir `http://127.0.0.1:8097`. Si les fonctionnalités Nix ne sont pas activées, utiliser `nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c ...`.
 
 Symfony Skeleton 8.1, Twig, formulaires et validation natifs. Aucun compte, base de données, modèle téléchargé, clé API ou dépendance à une application de production.
 
 ## Générer et essayer la version statique
 
 ```sh
-nix develop -c php bin/console app:export-static
-nix develop -c node bin/serve-static.mjs
+nix develop --file ./shell.nix -c php bin/console app:export-static
+nix develop --file ./shell.nix -c node bin/serve-static.mjs
 ```
 
 Ouvrir `http://127.0.0.1:8098`. Ce serveur de fichiers n’exécute aucun PHP. Le dossier `dist/`, ignoré par Git, contient sept pages HTML et uniquement les assets publics autorisés. L’export refuse les fichiers inattendus et les liens symboliques dans son dossier de sortie.
@@ -35,8 +35,8 @@ Ouvrir `http://127.0.0.1:8098`. Ce serveur de fichiers n’exécute aucun PHP. L
 Pour vérifier une publication sous le chemin d’un projet GitHub Pages :
 
 ```sh
-nix develop -c php bin/console app:export-static --base-path=/darkwood-memory
-nix develop -c node bin/serve-static.mjs /darkwood-memory 8099
+nix develop --file ./shell.nix -c php bin/console app:export-static --base-path=/darkwood-memory
+nix develop --file ./shell.nix -c node bin/serve-static.mjs /darkwood-memory 8099
 ```
 
 Le domaine personnalisé utilise l’export sans préfixe. Chaque démonstration possède son propre `demo/<service>/index.html` : la navigation et le rechargement direct ne nécessitent aucune réécriture de route côté serveur.
@@ -63,10 +63,10 @@ Les classes `theme-light`, `theme-dark` et `theme-sepia`, la clé locale `theme`
 ## Vérifier
 
 ```sh
-nix develop -c php bin/console lint:container
-nix develop -c php bin/console lint:twig templates
-nix develop -c php bin/phpunit
-nix develop -c node --test tests/content-darkwood-memory.test.mjs
+nix develop --file ./shell.nix -c php bin/console lint:container
+nix develop --file ./shell.nix -c php bin/console lint:twig templates
+nix develop --file ./shell.nix -c php bin/phpunit
+nix develop --file ./shell.nix -c node --test tests/content-darkwood-memory.test.mjs
 ```
 
 Les tests couvrent les routes PHP, les sessions et leur isolation, la protection CSRF, la reprise d’exécution, le carnet, le storyboard, les modèles navigateur et l’export avec et sans préfixe. Les thèmes, le responsive et la synthèse audio nécessitent aussi une vérification navigateur.
@@ -86,7 +86,7 @@ Le logo officiel noir est repris sans modification de l’asset Darkwood `public
 ## Exécuter Flow en PHP
 
 ```sh
-nix develop -c php examples/flow-memory.php
+nix develop --file ./shell.nix -c php examples/flow-memory.php
 ```
 
 `FlowFactory`, `Ip` et `await()` transmettent un état entre trois closures. Entrée `[4,7,9]`, total `20`, moyenne `20/3`, reste `80`, un seul calcul du total. Chaque invocation recrée son état. PHP 8.5 minimum est requis par le package.

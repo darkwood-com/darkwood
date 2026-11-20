@@ -3,6 +3,7 @@
 , lockFile ? null
 , system ? builtins.currentSystem
 , php ? null
+, phpVersion ? "85"
 , extraExtensions ? (_: [])
 , extraConfig ? ""
 , extraPackages ? []
@@ -18,7 +19,10 @@ let
       input = lock.nodes.${lock.nodes.${lock.root}.inputs.nixpkgs}.locked;
       source = builtins.fetchTree { inherit (input) type owner repo rev narHash; };
     in import source.outPath { inherit system; config = {}; overlays = []; };
-  basePhp = if php == null then packageSet.php85 else php;
+  basePhp = if php == null then
+    assert builtins.elem phpVersion [ "85" "86" ];
+    packageSet."php${phpVersion}"
+  else php;
   runtime = basePhp.buildEnv {
     extensions = available: packageSet.lib.unique (available.enabled ++ extraExtensions available);
     inherit extraConfig;

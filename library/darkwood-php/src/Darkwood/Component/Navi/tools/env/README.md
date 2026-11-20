@@ -5,9 +5,10 @@ Ce répertoire est le socle de développement PHP Darkwood. Il ne lance aucun se
 ## Utilisation
 
 ```sh
-nix --extra-experimental-features 'nix-command flakes' develop path:.
-nix --extra-experimental-features 'nix-command flakes' develop .#php86
-nix --extra-experimental-features 'nix-command flakes' develop .#quality
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix --arg lockFile ./flake.lock
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix --arg lockFile ./flake.lock --argstr phpVersion 86
+# Optional tools, from this dedicated environment directory only:
+nix --extra-experimental-features 'nix-command flakes' develop path:.#quality
 ```
 
 `default` et `php85` utilisent PHP 8.5.13. `php86` est une variante expérimentale PHP 8.6.0. Les versions sont celles de la révision Nixpkgs du `flake.lock`, distinctes de la version du client ou du daemon Nix. Aucun runtime FrankenPHP n'est modifié par ce shell.
@@ -32,7 +33,7 @@ L'API est aussi exposée par `lib.mkPhpShell` du flake Navi. Un dépôt extérie
 
 Une card peut aussi fournir un `shell.nix` fin appelant ce même constructeur avec `lockFile = ./flake.lock`. `nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix` évite de capturer le monorepo applicatif comme source de flake. Le constructeur lit uniquement le lock et récupère sa révision Nixpkgs avec vérification du `narHash` ; il ne transmet aucun répertoire applicatif à Nix. `extraPackages` accepte une liste ou une fonction de `pkgs`.
 
-Paramètres : `pkgs`, `lockFile`, `system`, `php`, `extraExtensions`, `extraConfig`, `extraPackages`, `shellHook` et `name`. Pas de source applicative, de secrets ou de liste générique de services. FFmpeg, PostgreSQL, Godot, SDK mobiles et outils ML restent des ajouts explicites de la card concernée.
+Paramètres : `pkgs`, `lockFile`, `system`, `php`, `phpVersion` (`85` ou `86`), `extraExtensions`, `extraConfig`, `extraPackages`, `shellHook` et `name`. Pas de source applicative, de secrets ou de liste générique de services. FFmpeg, PostgreSQL, Godot, SDK mobiles et outils ML restent des ajouts explicites de la card concernée.
 
 Les lanceurs Castor utilisent l’entrée native `--file shell.nix --arg lockFile ...`, qui ne capture pas le répertoire comme source de flake. `extraConfig` est réservé aux réglages PHP non sensibles : ne jamais y injecter de credential, car la configuration générée appartient au store lisible.
 

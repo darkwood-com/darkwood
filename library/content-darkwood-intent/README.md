@@ -32,8 +32,8 @@ Les démonstrations sont pédagogiques. Elles n’annoncent pas de nouvelles fon
 Prérequis : Nix avec `nix-command` et `flakes`. Le flake épinglé fournit PHP 8.5, Composer et Node.
 
 ```sh
-nix --extra-experimental-features 'nix-command flakes' develop -c composer install
-nix --extra-experimental-features 'nix-command flakes' develop -c php -S 127.0.0.1:8097 -t public
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c composer install
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php -S 127.0.0.1:8097 -t public
 ```
 
 Ouvrir `http://127.0.0.1:8097`.
@@ -44,8 +44,8 @@ Cet export appartient uniquement à Intention et produit ses sept pages dans `di
 L’atelier Symfony AI MCP possède désormais sa [propre card](../content-darkwood-ai-mcp-symfony-hackathon/) et sa distribution indépendante.
 
 ```sh
-nix --extra-experimental-features 'nix-command flakes' develop -c php bin/console app:export-static
-nix --extra-experimental-features 'nix-command flakes' develop -c node bin/serve-static.mjs
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php bin/console app:export-static
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c node bin/serve-static.mjs
 ```
 
 Ouvrir `http://127.0.0.1:8098`. Le serveur ne lance aucun PHP. Les routes directes sont matérialisées par `demo/<domaine>/index.html`.
@@ -53,17 +53,17 @@ Ouvrir `http://127.0.0.1:8098`. Le serveur ne lance aucun PHP. Les routes direct
 Pour simuler un chemin GitHub Pages :
 
 ```sh
-nix --extra-experimental-features 'nix-command flakes' develop -c php bin/console app:export-static --base-path=/darkwood-intent
-nix --extra-experimental-features 'nix-command flakes' develop -c node bin/serve-static.mjs /darkwood-intent 8099
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php bin/console app:export-static --base-path=/darkwood-intent
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c node bin/serve-static.mjs /darkwood-intent 8099
 ```
 
 ## Vérifier
 
 ```sh
-nix --extra-experimental-features 'nix-command flakes' develop -c php bin/console lint:container
-nix --extra-experimental-features 'nix-command flakes' develop -c php bin/console lint:twig templates
-nix --extra-experimental-features 'nix-command flakes' develop -c php bin/phpunit
-nix --extra-experimental-features 'nix-command flakes' develop -c node --test tests/content-darkwood-intent.test.mjs
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php bin/console lint:container
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php bin/console lint:twig templates
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php bin/phpunit
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c node --test tests/content-darkwood-intent.test.mjs
 ```
 
 Les tests couvrent les routes, les limites éditoriales, les décisions déterministes, les préfixes d’URL et la composition de l’artefact statique. Le responsive, le clavier, les thèmes et Web Audio demandent également une vérification navigateur.
