@@ -8,8 +8,8 @@
   --line:var(--dw-border);
   --line-strong:var(--dw-primary);
   --accent:var(--dw-primary);
-  --accent-soft: rgba(201, 168, 106, 0.18);
-  --shadow: 0 24px 90px rgba(0, 0, 0, 0.42);
+  --accent-soft: color-mix(in srgb,var(--dw-primary) 18%,transparent);
+  --shadow: 0 24px 90px color-mix(in srgb,var(--dw-surface) 42%,transparent);
   --radius-xl: 34px;
   --radius-lg: 24px;
   --radius-md: 18px;
@@ -31,7 +31,7 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    radial-gradient(circle at top, rgba(201, 168, 106, 0.12), transparent 30%),
+    radial-gradient(circle at top, color-mix(in srgb,var(--dw-primary) 12%,transparent), transparent 30%),
     linear-gradient(180deg, #111419 0%, #07090b 42%, #050607 100%);
   color: var(--text);
   font-family: var(--dw-font-sans);
@@ -42,8 +42,8 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    linear-gradient(90deg, transparent 0, rgba(255, 255, 255, 0.02) 50%, transparent 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 35%);
+    linear-gradient(90deg, transparent 0, color-mix(in srgb,var(--dw-text) 2%,transparent) 50%, transparent 100%),
+    linear-gradient(180deg, color-mix(in srgb,var(--dw-text) 3%,transparent), transparent 35%);
   mix-blend-mode: screen;
   opacity: 0.65;
   pointer-events: none;
@@ -58,8 +58,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb,var(--dw-text) 2.8%,transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb,var(--dw-text) 2.8%,transparent) 1px, transparent 1px);
   background-size: 100% 120px, 120px 100%;
   opacity: 0.26;
   mask-image: radial-gradient(circle at center, black 55%, transparent 100%);
@@ -118,7 +118,7 @@ body::before {
   padding: 0.85rem 1rem;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(10, 12, 14, 0.72);
+  background: color-mix(in srgb,var(--dw-surface) 72%,transparent);
   color: var(--text);
   cursor: pointer;
   transition: border-color 180ms ease, transform 180ms ease, background 180ms ease;
@@ -127,7 +127,7 @@ body::before {
 .audio-toggle:hover,
 .audio-toggle:focus-visible {
   border-color: var(--line-strong);
-  background: rgba(17, 19, 24, 0.92);
+  background: color-mix(in srgb,var(--dw-surface) 92%,transparent);
   transform: translateY(-1px);
 }
 
@@ -154,8 +154,8 @@ body::before {
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 24%),
-    linear-gradient(180deg, rgba(14, 17, 22, 0.96), rgba(8, 9, 12, 0.92));
+    linear-gradient(180deg, color-mix(in srgb,var(--dw-text) 2%,transparent), transparent 24%),
+    linear-gradient(180deg, color-mix(in srgb,var(--dw-surface) 96%,transparent), color-mix(in srgb,var(--dw-surface) 92%,transparent));
   box-shadow: var(--shadow);
   overflow: hidden;
 }
@@ -174,7 +174,7 @@ body::before {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(201, 168, 106, 0.09), transparent 42%);
+  background: linear-gradient(135deg, color-mix(in srgb,var(--dw-primary) 9%,transparent), transparent 42%);
   pointer-events: none;
 }
 
@@ -278,7 +278,7 @@ body::before {
   display: block;
   min-height: 5.5rem;
   border-radius: 999px;
-  background: linear-gradient(180deg, rgba(201, 168, 106, 0.82), rgba(201, 168, 106, 0.08));
+  background: linear-gradient(180deg, color-mix(in srgb,var(--dw-primary) 82%,transparent), color-mix(in srgb,var(--dw-primary) 8%,transparent));
   transform-origin: bottom center;
 }
 
@@ -303,8 +303,8 @@ body::before {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(135deg, rgba(201, 168, 106, 0.18), transparent 38%),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.04), transparent 50%);
+    linear-gradient(135deg, color-mix(in srgb,var(--dw-primary) 18%,transparent), transparent 38%),
+    linear-gradient(0deg, color-mix(in srgb,var(--dw-text) 4%,transparent), transparent 50%);
   pointer-events: none;
 }
 
@@ -383,7 +383,7 @@ body::before {
   margin-top: 2rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  background: linear-gradient(180deg, rgba(16, 19, 24, 0.94), rgba(7, 9, 12, 0.98));
+  background: linear-gradient(180deg, color-mix(in srgb,var(--dw-surface) 94%,transparent), color-mix(in srgb,var(--dw-surface) 98%,transparent));
   overflow: hidden;
 }
 
@@ -391,8 +391,8 @@ body::before {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb,var(--dw-text) 3%,transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb,var(--dw-text) 3%,transparent) 1px, transparent 1px);
   background-size: 100% 18%, 12% 100%;
   opacity: 0.3;
 }
@@ -461,7 +461,7 @@ body::before {
 .chain-link {
   height: 1px;
   min-width: 90px;
-  background: linear-gradient(90deg, rgba(201, 168, 106, 0.08), rgba(201, 168, 106, 0.72), rgba(201, 168, 106, 0.08));
+  background: linear-gradient(90deg, color-mix(in srgb,var(--dw-primary) 8%,transparent), color-mix(in srgb,var(--dw-primary) 72%,transparent), color-mix(in srgb,var(--dw-primary) 8%,transparent));
   transform-origin: left center;
 }
 
@@ -543,7 +543,7 @@ body::before {
     width: 1px;
     height: 60px;
     justify-self: center;
-    background: linear-gradient(180deg, rgba(201, 168, 106, 0.08), rgba(201, 168, 106, 0.72), rgba(201, 168, 106, 0.08));
+    background: linear-gradient(180deg, color-mix(in srgb,var(--dw-primary) 8%,transparent), color-mix(in srgb,var(--dw-primary) 72%,transparent), color-mix(in srgb,var(--dw-primary) 8%,transparent));
   }
 
   .signature__footer {
@@ -609,3 +609,7 @@ body::before {
 /* Motion composition remains 16:9; shell follows the three Darkwood themes. */
 body{background:var(--dw-background)}
 .dw-theme-switcher{padding:.5rem .75rem;min-height:44px;min-width:44px;background:var(--dw-input);color:var(--dw-text);border:1px solid var(--dw-border);border-radius:var(--dw-radius);font:inherit;cursor:pointer}
+
+.topbar,.reel-chrome{mix-blend-mode:normal}
+
+.topbar,.reel-chrome{gap:12px;flex-wrap:wrap}.dw-theme-switcher{flex-shrink:0}.topbar .brand-lockup{flex:1;min-width:100px}
