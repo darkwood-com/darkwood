@@ -3,18 +3,8 @@
 namespace App\Tool;
 
 use App\Bridge\Replicate\Client;
-use PhpLlm\LlmChain\Chain\Toolbox\Attribute\AsTool;
+use Mcp\Capability\Attribute\McpTool;
 
-#[AsTool(
-    name: 'generate_thumbnail_image',
-    description: 'Generate a thumbnail image',
-    method: 'generateThumbnailImage',
-)]
-#[AsTool(
-    name: 'generate_ghibli_image',
-    description: 'Generate a Ghibli image',
-    method: 'generateGhibliImage',
-)]
 final class ThumbnailTool
 {
     private const MATYO91_MODEL_ID = 'matyo91/lora-matyo91:66f13aade1670ece01ae5f0c93955e22decce93f3d60cf6344b096bfbffcf405';
@@ -29,6 +19,7 @@ final class ThumbnailTool
      * @param string  $prompt 
      * @return string 
      */
+    #[McpTool(name: 'generate_thumbnail_image', description: 'Generate a thumbnail image')]
     public function generateThumbnailImage(string $prompt): string
     {
         try {
@@ -71,6 +62,7 @@ final class ThumbnailTool
         }
     }
     
+    #[McpTool(name: 'generate_ghibli_image', description: 'Generate a Ghibli image')]
     public function generateGhibliImage(string $prompt): string
     {
         try {

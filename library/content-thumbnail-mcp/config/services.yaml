@@ -31,19 +31,3 @@ services:
             $httpClient: '@Symfony\Contracts\HttpClient\HttpClientInterface'
             $clock: '@Symfony\Component\Clock\ClockInterface'
             $apiKey: '%replicate.api_key%'
-
-    # Add the toolbox interface implementation
-    PhpLlm\LlmChain\Chain\Toolbox\ToolboxInterface:
-        class: PhpLlm\LlmChain\Chain\Toolbox\Toolbox
-        factory: ['PhpLlm\LlmChain\Chain\Toolbox\Toolbox', 'create']
-        arguments: 
-            - '@App\Tool\ThumbnailTool'
-
-    # Tag our tool 
-    App\Tool\ThumbnailTool:
-        autowire: true
-        arguments:
-            - '@App\Bridge\Replicate\Client'
-
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones

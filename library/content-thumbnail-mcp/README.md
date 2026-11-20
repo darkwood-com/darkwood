@@ -38,16 +38,16 @@ This is the most realistic test as it uses the Symfony DI container:
 bin/console app:test-thumbnail "Your Name"
 ```
 
-## Tool Usage in MCP
+## MCP clients
 
-The tool is registered via the `AsTool` attribute and will be available in the MCP toolbox with the name `mcp_thumbnail`. It takes a single string parameter `name` that will be used in the prompt.
+The STDIO entry point is `php bin/console mcp:server`. For Streamable HTTP use
+`/mcp` with a client that supports that transport. Clients using the legacy
+SSE handshake at `/sse` and `/messages/{id}` must switch to Streamable
+HTTP or STDIO. The HTTP allow-list defaults to localhost. Configure specific
+hostnames in `mcp.servers.thumbnail_generator.http.allowed_hosts` when hosting
+the server remotely.
 
-Example usage:
+Both tools accept a required string `prompt`.
 
-```json
-{
-  "name": "John Doe"
-}
-```
-
-The tool will return a string with the URL of the generated thumbnail image. 
+- `generate_thumbnail_image` returns the original and styled image URLs.
+- `generate_ghibli_image` returns the styled image URL.
