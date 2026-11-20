@@ -1,13 +1,13 @@
 :root {
-  --bg: #07090b;
-  --bg-deep: #040506;
-  --panel: rgba(14, 17, 22, 0.92);
-  --panel-soft: rgba(18, 22, 27, 0.78);
-  --text: #f2eee7;
-  --muted: rgba(242, 238, 231, 0.62);
-  --line: rgba(242, 238, 231, 0.12);
-  --line-strong: rgba(201, 168, 106, 0.42);
-  --accent: #c9a86a;
+  --bg:var(--dw-background);
+  --bg-deep:var(--dw-background);
+  --panel:var(--dw-surface);
+  --panel-soft:var(--dw-subtle);
+  --text:var(--dw-text);
+  --muted:var(--dw-muted);
+  --line:var(--dw-border);
+  --line-strong:var(--dw-primary);
+  --accent:var(--dw-primary);
   --accent-soft: rgba(201, 168, 106, 0.18);
   --shadow: 0 36px 90px rgba(0, 0, 0, 0.44);
   --radius-xl: 30px;
@@ -34,7 +34,7 @@ body {
     radial-gradient(circle at bottom right, rgba(201, 168, 106, 0.08), transparent 24%),
     linear-gradient(180deg, #111419 0%, #07090b 45%, #040506 100%);
   color: var(--text);
-  font-family: "Manrope", sans-serif;
+  font-family: var(--dw-font-sans);
 }
 
 body::before {
@@ -259,7 +259,7 @@ body::before {
 .scene-title,
 .closing-title {
   margin: 0.8rem 0 0;
-  font-family: "Cormorant Garamond", serif;
+  font-family: var(--dw-font-sans);
   font-weight: 600;
   line-height: 0.88;
 }
@@ -566,7 +566,7 @@ body::before {
 
 .start-overlay__panel h2 {
   margin: 0.5rem 0 0;
-  font-family: "Cormorant Garamond", serif;
+  font-family: var(--dw-font-sans);
   font-size: clamp(2.6rem, 4vw, 3.8rem);
   line-height: 0.94;
 }
@@ -753,3 +753,8 @@ body::before {
     position: relative;
   }
 }
+
+@font-face{font-family:Jost;src:url('assets/fonts/Jost-400-Book.otf') format('opentype');font-weight:400;font-display:swap}
+/* Motion composition remains 16:9; shell follows the three Darkwood themes. */
+body{background:var(--dw-background)}
+.dw-theme-switcher{padding:.5rem .75rem;min-height:44px;min-width:44px;background:var(--dw-input);color:var(--dw-text);border:1px solid var(--dw-border);border-radius:var(--dw-radius);font:inherit;cursor:pointer}
