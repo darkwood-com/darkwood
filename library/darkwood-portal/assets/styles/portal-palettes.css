@@ -1,0 +1,126 @@
+.portal-theme-picker {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-inline: .25rem;
+  color: var(--dw-text);
+  font: 400 .875rem/1.2 var(--dw-font-sans);
+}
+
+.portal-theme-picker select {
+  min-height: 44px;
+  padding: .25rem .4rem;
+  border: 1px solid var(--dw-border);
+  border-radius: var(--dw-radius);
+  color: inherit;
+  background: var(--dw-input);
+  font: inherit;
+  cursor: pointer;
+}
+
+.portal-theme-picker__icon {
+  position: absolute;
+  inset-inline-start: .45rem;
+  width: 1em;
+  height: 1em;
+  background: currentColor;
+  mask: var(--portal-theme-icon) center / contain no-repeat;
+  pointer-events: none;
+}
+
+.portal-theme-picker__icon:not([hidden]) + select { padding-inline-start: 1.65rem; }
+
+.portal-theme-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: .25rem 1rem;
+}
+
+/* Opt-in palettes only. The original skin styles own the default rendering. */
+html[data-theme] .layout {
+  --theme-layout-background-color: var(--dw-background);
+  --theme-layout-footer-background-color: var(--dw-surface);
+  --theme-layout-footer-color: var(--dw-muted);
+  --theme-layout-footer-link-color: var(--dw-primary-hover);
+  --theme-layout-footer-link-hover-color: var(--dw-text);
+  --theme-nav-background: var(--dw-navbar);
+  --theme-nav-brand-color: var(--dw-text);
+  --theme-nav-brand-hover-color: var(--dw-primary-hover);
+  --theme-nav-link-color: var(--dw-text);
+  --theme-nav-link-hover-color: var(--dw-primary-hover);
+  --theme-nav-profile-color: var(--dw-text);
+  --theme-nav-dropdown-background: var(--dw-surface);
+  --theme-nav-button-background: var(--dw-input);
+  --theme-nav-button-color: var(--dw-text);
+  --theme-nav-auth-button-background: var(--dw-primary);
+  --theme-nav-auth-button-color: var(--dw-on-primary);
+  --theme-nav-auth-button-hover-background: var(--dw-subtle);
+  --theme-nav-auth-button-hover-color: var(--dw-text);
+  --theme-mobile-nav-background: var(--dw-navbar);
+  --theme-mobile-nav-link-color: var(--dw-text);
+  --theme-mobile-nav-link-hover-color: var(--dw-primary-hover);
+  --theme-mobile-nav-dropdown-background: var(--dw-surface);
+  --bs-body-color: var(--dw-text);
+  --bs-body-bg: var(--dw-background);
+  --bs-emphasis-color: var(--dw-text);
+  --bs-secondary-color: var(--dw-muted);
+  --bs-secondary-bg: var(--dw-subtle);
+  --bs-tertiary-bg: var(--dw-surface);
+  --bs-border-color: var(--dw-border);
+  --bs-link-color: var(--dw-primary-hover);
+  --bs-link-hover-color: var(--dw-text);
+  color: var(--dw-text);
+  background: var(--dw-background);
+}
+
+html[data-theme] .layout .theme {
+  --darkwood-accent: var(--dw-primary-hover);
+  color: var(--dw-text);
+  background: var(--dw-background);
+}
+
+html[data-theme] .theme :is(.theme-body, .theme-body-top, .theme-content-top) {
+  background: transparent;
+}
+
+html[data-theme] .theme .theme-content,
+html[data-theme] .theme :is(ul.itemlist > li, ul.comments .content, .article-reactions),
+html[data-theme] .layout-podcasts .card {
+  color: var(--dw-text);
+  background: var(--dw-surface);
+  border-color: var(--dw-border);
+}
+
+html[data-theme] .theme ul.itemlist :is(h2, h3),
+html[data-theme] .theme .theme-content table :is(thead, th, td) {
+  color: var(--dw-text);
+  background: var(--dw-subtle);
+  border-color: var(--dw-border);
+}
+
+html[data-theme] .theme:not(.theme-hello) :is(h1, h2, h3, h4, h5, h6, p, label, legend) {
+  color: var(--dw-text);
+}
+
+html[data-theme] .theme:not(.theme-hello) .theme-content a:not(.btn) {
+  color: var(--dw-primary-hover);
+}
+
+html[data-theme] .theme form :is(input:not([type=checkbox], [type=radio], [type=submit]), textarea, select) {
+  color: var(--dw-text);
+  background: var(--dw-input);
+  border-color: var(--dw-border);
+}
+
+html[data-theme] .theme-hello :is(.main-nav, .main-nav.navbar-shrink, .hello-mobile-nav) {
+  background: var(--dw-navbar);
+}
+
+html[data-theme] .theme-hello :is(.main-nav, .main-nav.navbar-shrink, .hello-mobile-nav) :is(a, .navbar-toggler) {
+  color: var(--dw-text);
+}
+
+@media (max-width: 767px) {
+  .theme-nav__actions:has(.portal-theme-picker) { flex-wrap: wrap; }
+}
