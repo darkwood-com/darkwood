@@ -69,11 +69,11 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" aria-label="Theme" id="theme-switcher">
-                <span id="theme-icon">
+            <button type="button" class="nav-link border-0 bg-transparent" aria-label="Theme" id="theme-switcher">
+                <span id="theme-icon" aria-hidden="true">
                     <!-- Theme icon will be inserted by JavaScript -->
                 </span>
-            </a>
+            </button>
         </li>
         {% if not app.user %}
         <li class="nav-item">
@@ -93,46 +93,55 @@
 </header>
 
 <!-- Mobile Bottom Navigation -->
-<ul class="nav nav-bar-bottom fixed-bottom justify-content-center d-flex d-md-none">
+<nav class="d-md-none" aria-label="Mobile navigation">
+<ul class="nav nav-bar-bottom fixed-bottom d-flex">
     <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') == 'app_shop_flows' ? ' active' : '' }}" href="{{ path('app_shop_flows') }}">
-            Flows
+        <a class="nav-link{{ app.request.get('_route') == 'app_shop_flows' ? ' active' : '' }}" href="{{ path('app_shop_flows') }}"{% if app.request.get('_route') == 'app_shop_flows' %} aria-current="page"{% endif %}>
+            <span aria-hidden="true">↝</span>Flows
         </a>
     </li>
     {% if app.user and is_granted('ROLE_USER') %}
     <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') == 'app_shop_feed' ? ' active' : '' }}" href="{{ path('app_shop_feed') }}">
-            Dashboard
+        <a class="nav-link{{ app.request.get('_route') == 'app_shop_feed' ? ' active' : '' }}" href="{{ path('app_shop_feed') }}"{% if app.request.get('_route') == 'app_shop_feed' %} aria-current="page"{% endif %}>
+            <span aria-hidden="true">▥</span>Dashboard
         </a>
     </li>
     {% endif %}
     <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') == 'app_shop_library' ? ' active' : '' }}" href="{{ path('app_shop_library') }}">
-            Library
+        <a class="nav-link{{ app.request.get('_route') == 'app_shop_library' ? ' active' : '' }}" href="{{ path('app_shop_library') }}"{% if app.request.get('_route') == 'app_shop_library' %} aria-current="page"{% endif %}>
+            <span aria-hidden="true">▦</span>Library
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') == 'app_shop_doc' ? ' active' : '' }}" href="{{ path('app_shop_doc') }}">
-            Docs
-        </a>
-    </li>
-    {% if app.user and is_granted('ROLE_USER') %}
-    <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') == 'app_shop_settings' ? ' active' : '' }}" href="{{ path('app_shop_settings') }}">
-            Settings
-        </a>
-    </li>
-    {% endif %}
-    {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
-    <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') == 'app_shop_admin' ? ' active' : '' }}" href="{{ path('app_shop_admin') }}">
-            Admin
-        </a>
-    </li>
-    {% endif %}
-    <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') starts with 'app_shop_blog' ? ' active' : '' }}" href="{{ path('app_shop_blog') }}">
-            Blog
-        </a>
+        <details class="mobile-more">
+            <summary class="nav-link"><span aria-hidden="true">…</span>More</summary>
+            <ul class="mobile-more__links">
+            <li class="nav-item">
+                <a class="nav-link{{ app.request.get('_route') == 'app_shop_doc' ? ' active' : '' }}" href="{{ path('app_shop_doc') }}"{% if app.request.get('_route') == 'app_shop_doc' %} aria-current="page"{% endif %}>
+                    <span aria-hidden="true">≡</span>Docs
+                </a>
+            </li>
+            {% if app.user and is_granted('ROLE_USER') %}
+            <li class="nav-item">
+                <a class="nav-link{{ app.request.get('_route') == 'app_shop_settings' ? ' active' : '' }}" href="{{ path('app_shop_settings') }}"{% if app.request.get('_route') == 'app_shop_settings' %} aria-current="page"{% endif %}>
+                    <span aria-hidden="true">⚙</span>Settings
+                </a>
+            </li>
+            {% endif %}
+            {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link{{ app.request.get('_route') == 'app_shop_admin' ? ' active' : '' }}" href="{{ path('app_shop_admin') }}"{% if app.request.get('_route') == 'app_shop_admin' %} aria-current="page"{% endif %}>
+                    <span aria-hidden="true">⚙</span>Admin
+                </a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link{{ app.request.get('_route') starts with 'app_shop_blog' ? ' active' : '' }}" href="{{ path('app_shop_blog') }}"{% if app.request.get('_route') starts with 'app_shop_blog' %} aria-current="page"{% endif %}>
+                    <span aria-hidden="true">≡</span>Blog
+                </a>
+            </li>
+            </ul>
+        </details>
     </li>
 </ul>
+</nav>

@@ -1,6 +1,6 @@
 body {
   padding-top: 60px;
-  padding-bottom: 60px;
+  padding-bottom: calc(66px + env(safe-area-inset-bottom));
 
   @include media-breakpoint-up(md) {
     padding-bottom: 0;

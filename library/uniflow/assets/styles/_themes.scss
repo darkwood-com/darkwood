@@ -122,3 +122,20 @@ body[class*="theme-"] {
 code,pre{font-family:var(--dw-font-mono)}
 .btn{min-height:44px}
 .btn-primary,.btn-primary:hover{color:#fff;background:color-mix(in srgb,var(--dw-primary) 85%,#000);border-color:var(--dw-primary)}
+
+// The existing shop palette remains the single source for Bootstrap components.
+body[data-bs-theme] {
+  --bs-body-color: var(--dw-text);
+  --bs-body-bg: var(--dw-background);
+  --bs-emphasis-color: var(--dw-text);
+  --bs-secondary-color: var(--dw-muted);
+  --bs-secondary-bg: var(--dw-subtle);
+  --bs-tertiary-bg: var(--dw-surface);
+  --bs-border-color: var(--dw-border);
+  --bs-primary: var(--dw-primary);
+  --bs-link-color: var(--dw-primary);
+  --bs-link-hover-color: var(--dw-primary-hover);
+  --bs-success-text-emphasis: var(--dw-success);
+  --bs-warning-text-emphasis: var(--dw-warning);
+  --bs-danger-text-emphasis: var(--dw-danger);
+}

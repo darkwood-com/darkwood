@@ -1,21 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Theme switcher functionality
     const themeSwitcher = document.getElementById('theme-switcher');
-    if (themeSwitcher) {
-        themeSwitcher.addEventListener('click', function(e) {
-            e.preventDefault();
-            const currentTheme = document.body.className.match(/theme-(\w+)/)?.[1] || 'light';
-            const themes = ['light', 'dark', 'sepia'];
-            const currentIndex = themes.indexOf(currentTheme);
-            const nextTheme = themes[(currentIndex + 1) % themes.length];
+    const themes = ['light', 'dark', 'sepia'];
+    const labels = { light: 'Light', dark: 'Dark', sepia: 'Sepia' };
+    let activeTheme;
 
-            document.body.className = document.body.className.replace(/theme-\w+/, `theme-${nextTheme}`);
-            localStorage.setItem('theme', nextTheme);
-
-            // Update theme switcher icon
-            updateThemeIcon(nextTheme);
-        });
+    function apply(theme) {
+        activeTheme = theme;
+        document.body.classList.remove(...themes.map(value => 'theme-' + value));
+        document.body.classList.add('theme-' + theme);
+        document.body.dataset.theme = theme;
+        document.body.dataset.bsTheme = theme;
+        themeSwitcher?.setAttribute('aria-label', 'Color theme: ' + labels[theme] + '. Activate for next theme.');
+        updateThemeIcon(theme);
     }
+
+    themeSwitcher?.addEventListener('click', () => {
+        const next = themes[(themes.indexOf(activeTheme) + 1) % themes.length];
+        apply(next);
+        try { localStorage.setItem('theme', next); } catch {}
+    });
 
     function updateThemeIcon(theme) {
         const iconContainer = document.getElementById('theme-icon');
@@ -54,8 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         iconContainer.innerHTML = iconHTML;
     }
 
-    // Initialize theme from localStorage
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.body.className = document.body.className.replace(/theme-\w+/, `theme-${savedTheme}`);
-    updateThemeIcon(savedTheme);
+    let savedTheme;
+    try { savedTheme = localStorage.getItem('theme'); } catch {}
+    apply(themes.includes(savedTheme) ? savedTheme : 'light');
 });
