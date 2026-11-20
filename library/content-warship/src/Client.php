@@ -179,7 +179,7 @@ class Client {
         return $coord;
     }
 
-    public function shot(string $coord = null): string {
+    public function shot(?string $coord = null): string {
         if($coord === null) {
             $coord = $this->iaShot();
         }

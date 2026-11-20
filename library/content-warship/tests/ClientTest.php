@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Warship\Client;
 
@@ -6,18 +7,14 @@ final class ClientTest extends TestCase
 {
     protected Client $client;
 
-    /**
-     * @dataProvider coordsProvider
-     */
+    #[DataProvider('coordsProvider')]
     public function testCoords($x, $y, $coord): void
     {
         $clientCoord = Client::getCoord($x, $y);
         $this->assertEquals($coord, $clientCoord);
     }
 
-    /**
-     * @dataProvider coordsProvider
-     */
+    #[DataProvider('coordsProvider')]
     public function testPositions($x, $y, $coord): void
     {
         $clientPosition = Client::getPosition($coord);
@@ -25,9 +22,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($y, $clientPosition['y']);
     }
 
-    /**
-     * @dataProvider playProvider
-     */
+    #[DataProvider('playProvider')]
     public function testPlacement(array $plays)
     {
         foreach($plays as $play) {
@@ -46,9 +41,7 @@ final class ClientTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider playProvider
-     */
+    #[DataProvider('playProvider')]
     public function testPlays(array $plays)
     {
         foreach($plays as $play) {
@@ -77,7 +70,7 @@ final class ClientTest extends TestCase
         }
     }
 
-    public function playProvider()
+    public static function playProvider(): array
     {
         return [
             [
@@ -101,7 +94,7 @@ final class ClientTest extends TestCase
         ];
     }
 
-    public function coordsProvider()
+    public static function coordsProvider(): array
     {
         return [
             [0, 0, 'A1'],
