@@ -2,4 +2,3 @@ ai:
     platform:
         ollama:
             endpoint: '%env(OLLAMA_BASE_URL)%'
-            api_catalog: true
