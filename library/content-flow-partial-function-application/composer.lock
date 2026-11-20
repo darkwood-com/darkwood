@@ -4,19 +4,19 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2ef9eab1bd951a7e6106245564bac05",
+    "content-hash": "5818d670edab65171a13fc186d063de6",
     "packages": [
         {
             "name": "darkwood/flow",
-            "version": "8.1.x-dev",
+            "version": "v8.1.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/darkwood-com/flow.git",
+                "url": "https://github.com/darkwood-com/darkwood-php-component-flow.git",
                 "reference": "f3102a75850040da4cba89b09b01af96cb912c1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/flow/zipball/f3102a75850040da4cba89b09b01af96cb912c1c",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-component-flow/zipball/f3102a75850040da4cba89b09b01af96cb912c1c",
                 "reference": "f3102a75850040da4cba89b09b01af96cb912c1c",
                 "shasum": ""
             },
@@ -45,7 +45,6 @@
                 "spatie/async": "Provide asynchronous with Spatie",
                 "symfony/messenger": "Provide Symfony Messenger support"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -70,10 +69,10 @@
             ],
             "support": {
                 "issues": "https://github.com/darkwood-com/flow/issues",
-                "source": "https://github.com/darkwood-com/flow/tree/8.1"
+                "source": "https://github.com/darkwood-com/flow/tree/v8.1.6"
             },
             "time": "2026-09-01T15:19:05+00:00",
-            "published-time": "2026-09-01T15:35:18+00:00"
+            "published-time": "2026-09-01T15:35:27+00:00"
         },
         {
             "name": "psr/cache",
@@ -2695,9 +2694,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "darkwood/flow": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
