@@ -1,33 +1,63 @@
+import palette from '../../../darkwood-design/icons/original.svg';
 import sun from '../../../darkwood-design/icons/light.svg';
 import moon from '../../../darkwood-design/icons/dark.svg';
 import cup from '../../../darkwood-design/icons/sepia.svg';
 
 const body = document.body;
 const portal = body.matches('.layout-darkwood, .layout-paper, .layout-sky, .layout-photos, .layout-hello, .layout-api, .layout-podcasts');
-const icons = { light: sun, dark: moon, sepia: cup };
+const icons = { original: palette, light: sun, dark: moon, sepia: cup };
 const copy = {
-    fr: ['Thème', 'Original', 'Clair', 'Sombre', 'Sépia'],
-    en: ['Theme', 'Original', 'Light', 'Dark', 'Sepia'],
-    de: ['Design', 'Original', 'Hell', 'Dunkel', 'Sepia'],
+    fr: ['Changer de thème', 'Original', 'Clair', 'Sombre', 'Sépia'],
+    en: ['Change theme', 'Original', 'Light', 'Dark', 'Sepia'],
+    de: ['Design wechseln', 'Original', 'Hell', 'Dunkel', 'Sepia'],
 };
 
 if (portal) {
     const [label, ...options] = copy[document.documentElement.lang.split('-')[0]] ?? copy.en;
     const themes = ['original', 'light', 'dark', 'sepia'];
     const preferenceKey = 'darkwood-portal-palette';
-    const picker = document.createElement('label');
-    picker.className = 'portal-theme-picker';
-    const icon = document.createElement('span');
-    icon.className = 'portal-theme-picker__icon';
-    icon.setAttribute('aria-hidden', 'true');
-    const select = document.createElement('select');
-    select.setAttribute('aria-label', label);
-    themes.forEach((theme, index) => select.add(new Option(options[index], theme)));
-    picker.append(icon, select);
+    const picker = document.createElement('div');
+    picker.className = 'portal-theme-picker dropdown';
+
+    function makeIcon(theme) {
+        const icon = document.createElement('span');
+        icon.className = 'portal-theme-picker__icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.style.setProperty('--portal-theme-icon', `url("${icons[theme]}")`);
+        return icon;
+    }
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'portal-theme-picker__toggle';
+    toggle.dataset.bsToggle = 'dropdown';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', 'portal-theme-menu');
+
+    const menu = document.createElement('ul');
+    menu.id = 'portal-theme-menu';
+    menu.className = 'dropdown-menu dropdown-menu-end';
+    const choices = themes.map((theme, index) => {
+        const item = document.createElement('li');
+        const choice = document.createElement('button');
+        choice.type = 'button';
+        choice.className = 'dropdown-item';
+        choice.dataset.palette = theme;
+        choice.append(makeIcon(theme), options[index]);
+        item.append(choice);
+        menu.append(item);
+        return choice;
+    });
+    picker.append(toggle, menu);
 
     const actions = document.querySelector('.theme-nav__actions, .main-nav > .container');
     if (actions) {
-        actions.append(picker);
+        const locales = actions.querySelector('.theme-nav__locales');
+        if (locales) {
+            locales.before(picker);
+        } else {
+            actions.append(picker);
+        }
     } else {
         const toolbar = document.createElement('div');
         toolbar.className = 'portal-theme-toolbar';
@@ -36,7 +66,15 @@ if (portal) {
     }
 
     const apply = (theme) => {
-        select.value = theme;
+        const activeLabel = options[themes.indexOf(theme)];
+        toggle.replaceChildren(makeIcon(theme));
+        toggle.setAttribute('aria-label', `${label} · ${activeLabel}`);
+        toggle.title = activeLabel;
+        for (const choice of choices) {
+            const active = choice.dataset.palette === theme;
+            choice.classList.toggle('active', active);
+            choice.setAttribute('aria-pressed', String(active));
+        }
         const root = document.documentElement;
         if (theme === 'original') {
             delete root.dataset.theme;
@@ -45,19 +83,17 @@ if (portal) {
             root.dataset.theme = theme;
             root.dataset.bsTheme = theme;
         }
-        icon.hidden = theme === 'original';
-        if (theme === 'original') {
-            icon.style.removeProperty('--portal-theme-icon');
-        } else {
-            icon.style.setProperty('--portal-theme-icon', `url("${icons[theme]}")`);
-        }
     };
 
     let saved;
     try { saved = localStorage.getItem(preferenceKey); } catch {}
     apply(themes.includes(saved) ? saved : 'original');
-    select.addEventListener('change', () => {
-        apply(select.value);
-        try { localStorage.setItem(preferenceKey, select.value); } catch {}
-    });
+    for (const choice of choices) {
+        choice.addEventListener('click', () => {
+            const theme = choice.dataset.palette;
+            apply(theme);
+            try { localStorage.setItem(preferenceKey, theme); } catch {}
+            toggle.focus();
+        });
+    }
 }

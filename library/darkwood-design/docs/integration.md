@@ -44,7 +44,8 @@ utilisée par le produit et valider la valeur relue. Reprendre les icônes SVG d
 [soleil pour Light](../icons/light.svg), la [lune pour Dark](../icons/dark.svg)
 et la [tasse pour Sepia](../icons/sepia.svg). Insérer le SVG dans le document
 pour qu’il hérite de la couleur du bouton et garder le nom accessible sur le
-bouton.
+bouton. La [palette pour Original](../icons/original.svg) représente
+l’habillage personnalisé du site.
 
 La palette sépia demande des déclarations CSS locales. Mapper `--bs-body-color`
 et `--bs-emphasis-color` vers `--dw-text`, `--bs-body-bg` vers
