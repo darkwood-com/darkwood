@@ -20,6 +20,33 @@
   cursor: pointer;
 }
 
+/* Original has no data-theme attribute. Keep its control on the site header. */
+html:not([data-theme]) .portal-theme-picker__toggle {
+  color: var(--theme-nav-brand-color, var(--dw-text));
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+html:not([data-theme]) .layout-sky .portal-theme-picker__toggle {
+  color: color-mix(in srgb, var(--theme-nav-brand-color) 70%, var(--dw-text));
+}
+
+html:not([data-theme]) .portal-theme-picker__toggle:hover {
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+html:not([data-theme]) .portal-theme-picker__toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+@media (min-width: 992px) {
+  html:not([data-theme]) .theme-hello .main-nav:not(.navbar-shrink) .portal-theme-picker__toggle {
+    color: var(--dw-on-primary);
+  }
+}
+
 .portal-theme-picker__icon {
   display: inline-block;
   flex: 0 0 auto;
