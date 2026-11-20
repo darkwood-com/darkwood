@@ -34,6 +34,7 @@ const server = http.createServer((req,res) => {
   assert.match(await page.locator('#article').inputValue(),/Nouveau texte français/);
   assert.match(await page.locator('.editor-count').textContent(),/mots.*caractères/);
   await page.locator('.trumbowyg-viewHTML-button').click();
+  await page.waitForSelector('.trumbowyg-editor-hidden');
   await page.locator('#article').fill('<p>Source <strong>conservée</strong></p>');
   const html=await page.evaluate(()=>{document.querySelector('#sample').addEventListener('submit',e=>e.preventDefault());document.querySelector('#sample').requestSubmit();return new FormData(document.querySelector('#sample')).get('article[body]');});
   assert.match(html,/<strong>conservée<\/strong>/);
