@@ -18,12 +18,14 @@
 
 @font-face {
     font-family: 'Jost';
+    font-display: swap;
     src: url('/darkwood/fonts/Jost/Jost-400-Book.otf') format('opentype');
     font-weight: 400;
 }
 
 @font-face {
     font-family: 'Jost';
+    font-display: swap;
     src: url('/darkwood/fonts/Jost/Jost-700-Bold.otf') format('opentype');
     font-weight: 700;
 }

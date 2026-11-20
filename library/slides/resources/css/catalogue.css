@@ -1,12 +1,87 @@
+/* Darkwood semantic roles are scoped to the catalogue, never to 16:9 decks. */
+.sw-library {
+  color-scheme: light;
+  --dw-font-sans: Jost, system-ui, sans-serif;
+  --dw-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --dw-text: #000000;
+  --dw-background: #ffffff;
+  --dw-surface: #ffffff;
+  --dw-input: #ffffff;
+  --dw-border: #eff2f7;
+  --dw-primary: #007bff;
+  --dw-primary-hover: #0056b3;
+  --dw-on-primary: #ffffff;
+  --dw-muted: #6c757d;
+  --dw-subtle: #f8f9fa;
+  --dw-success: #198754;
+  --dw-warning: #997300;
+  --dw-danger: #dc3545;
+  --dw-info: #0b7285;
+  --dw-navbar: rgba(255, 255, 255, .88);
+  --dw-shadow: rgba(18, 38, 63, .08);
+  --dw-radius-sm: .25rem;
+  --dw-radius: .375rem;
+  --dw-radius-lg: .5rem;
+  --dw-space-1: .25rem;
+  --dw-space-2: .5rem;
+  --dw-space-3: 1rem;
+  --dw-space-4: 1.5rem;
+  --dw-space-5: 2rem;
+  --dw-space-6: 3rem;
+  --dw-space-7: 5rem;
+  --dw-container: 1140px;
+  --dw-header-height: 60px;
+  --dw-transition: .2s ease;
+}
+
+.sw-library.theme-dark {
+  color-scheme: dark;
+  --dw-text: #ebf4f1;
+  --dw-background: #091a28;
+  --dw-surface: #0b1e2e;
+  --dw-input: #0e2233;
+  --dw-border: #0f2b3d;
+  --dw-primary: #0d7fe8;
+  --dw-primary-hover: #5ca8ee;
+  --dw-muted: #9bb0bd;
+  --dw-subtle: #0e2233;
+  --dw-success: #4fc48a;
+  --dw-warning: #d3ad55;
+  --dw-danger: #ff7b85;
+  --dw-info: #67c7d5;
+  --dw-navbar: rgba(9, 26, 40, .88);
+  --dw-shadow: rgba(0, 0, 0, .22);
+}
+
+.sw-library.theme-sepia {
+  color-scheme: light;
+  --dw-text: #433422;
+  --dw-background: #f1e7d0;
+  --dw-surface: #f1e7d0;
+  --dw-input: #eadec2;
+  --dw-border: #ded0bf;
+  --dw-primary: #0066cc;
+  --dw-primary-hover: #004080;
+  --dw-muted: #765f42;
+  --dw-subtle: #eadec2;
+  --dw-success: #087f5b;
+  --dw-warning: #856400;
+  --dw-danger: #9f2030;
+  --dw-info: #176b78;
+  --dw-navbar: rgba(241, 231, 208, .88);
+  --dw-shadow: rgba(67, 52, 34, .1);
+}
+
+
 /* Library shell: Uniflow navbar, sidebar dimensions, Jost and theme tokens.
    Scoped to the home page; embedded decks keep their own presentation theme. */
-.sw-library { --text-color:#000; --bg-color:#fff; --border-color:#eff2f7; --primary-color:#007bff; --secondary-color:#6c757d; --navbar-top-color:rgba(255,255,255,.8); margin:0; background:var(--bg-color); color:var(--text-color); font-family:Jost,Verdana,sans-serif; font-weight:400; font-size:16px; line-height:1.5; }
-.sw-library.theme-dark { --text-color:#ebf4f1; --bg-color:#091a28; --border-color:#0f2b3d; --primary-color:#0066cc; --secondary-color:#bdbdbd; --navbar-top-color:rgba(9,26,40,.8); }
-.sw-library.theme-sepia { --text-color:#433422; --bg-color:#f1e7d0; --border-color:#ded0bf; --primary-color:#0066cc; --secondary-color:#876944; --navbar-top-color:rgba(241,231,208,.8); }
+.sw-library { --text-color:var(--dw-text); --bg-color:var(--dw-background); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --secondary-color:var(--dw-muted); --navbar-top-color:var(--dw-navbar); margin:0; background:var(--bg-color); color:var(--text-color); font-family:Jost,Verdana,sans-serif; font-weight:400; font-size:16px; line-height:1.5; }
+.sw-library.theme-dark { --text-color:var(--dw-text); --bg-color:var(--dw-background); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --secondary-color:var(--dw-muted); --navbar-top-color:var(--dw-navbar); }
+.sw-library.theme-sepia { --text-color:var(--dw-text); --bg-color:var(--dw-background); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --secondary-color:var(--dw-muted); --navbar-top-color:var(--dw-navbar); }
 .sw-library *, .sw-library *::before, .sw-library *::after { box-sizing:border-box; }
 .sw-library a { color:var(--primary-color); text-decoration:none; }
 .sw-library button { font:inherit; cursor:pointer; }
-.sw-library :is(a,button):focus-visible { outline:2px solid var(--primary-color); outline-offset:4px; }
+.sw-library :is(a,button):focus-visible { outline:3px solid var(--primary-color); outline-offset:4px; }
 .library-header { position:fixed; inset:0 0 auto; height:61px; padding:0 24px; display:flex; align-items:center; gap:32px; z-index:20; background:var(--navbar-top-color); border-bottom:1px solid var(--border-color); backdrop-filter:blur(4px); }
 .sw-library .library-brand { display:flex; align-items:center; gap:12px; color:var(--text-color); font-size:22px; }
 .library-logo { display:grid; place-items:center; width:36px; height:36px; background:white; border-radius:4px; }
@@ -53,3 +128,6 @@
 
 /* Keep small linked text readable against the dark Uniflow surface. */
 .sw-library.theme-dark :is(.library-sidebar a[aria-current],.library-heading a) { color:var(--text-color); }
+
+.sw-library code,.sw-library pre{font-family:var(--dw-font-mono)}
+@media(prefers-reduced-motion:reduce){.sw-library,.sw-library *{transition-duration:.01ms!important;scroll-behavior:auto!important}}
