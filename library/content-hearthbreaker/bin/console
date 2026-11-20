@@ -28,7 +28,13 @@ if ($input->hasParameterOption('--no-debug', true)) {
     putenv('APP_DEBUG='.$_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
 }
 
-(new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
+$envFile = dirname(__DIR__).'/.env';
+if (is_file($envFile) || is_file($envFile.'.local.php')) {
+    (new Dotenv())->bootEnv($envFile);
+} else {
+    $_SERVER['APP_ENV'] ??= $_ENV['APP_ENV'] ?? 'dev';
+    $_SERVER['APP_DEBUG'] ??= $_ENV['APP_DEBUG'] ?? ('prod' === $_SERVER['APP_ENV'] ? '0' : '1');
+}
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
