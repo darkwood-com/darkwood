@@ -11,13 +11,14 @@
 }:
 let
   # The native --file entry point reads only the lock, never the application tree.
-  packageSet = if pkgs != null then pkgs else
+  lockedSource =
     assert lockFile != null && builtins.baseNameOf lockFile == "flake.lock";
     let
       lock = builtins.fromJSON (builtins.readFile lockFile);
       input = lock.nodes.${lock.nodes.${lock.root}.inputs.nixpkgs}.locked;
-      source = builtins.fetchTree { inherit (input) type owner repo rev narHash; };
-    in import source.outPath { inherit system; config = {}; overlays = []; };
+    in builtins.fetchTree { inherit (input) type owner repo rev narHash; };
+  packageSet = if pkgs != null then pkgs else
+    import lockedSource.outPath { inherit system; config = {}; overlays = []; };
   basePhp = packageSet.php86;
   runtime = assert basePhp.version == "8.6.0"; basePhp.buildEnv {
     extensions = available: packageSet.lib.unique (available.enabled ++ extraExtensions available);
@@ -40,10 +41,12 @@ let
   additions = if builtins.isFunction extraPackages then extraPackages packageSet else extraPackages;
 in packageSet.mkShellNoCC {
   inherit name;
-  packages = [ runtime runtime.packages.composer ]
+  packages = [ runtime runtime.packages.composer packageSet.bashInteractive packageSet.bashInteractive.man ]
     ++ packageSet.lib.optionals withQualityTools qualityTools
     ++ additions;
   COMPOSER_MEMORY_LIMIT = "-1";
+  # Keep the pinned package definitions reachable from an offline shell profile.
+  DARKWOOD_NIXPKGS_SOURCE = if pkgs == null then lockedSource.outPath else null;
   shellHook = ''
     # Do not inherit a scan directory from a different PHP installation.
     export PHP_INI_SCAN_DIR="${runtime}/lib''${DARKWOOD_PHP_INI_DIR:+:$DARKWOOD_PHP_INI_DIR}"

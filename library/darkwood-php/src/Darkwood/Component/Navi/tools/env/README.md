@@ -37,6 +37,14 @@ Les lanceurs Castor utilisent l’entrée native `--file shell.nix --arg lockFil
 
 Dans le shell, Symfony CLI utilise le binaire PHP de Navi via `SYMFONY_CLI_PHP_BINARY_PATH`, y compris avec une autre version installée sur la machine. Le shell neutralise un `PHP_INI_SCAN_DIR` hérité d'un autre PHP. Une extension opérateur peut être ajoutée explicitement via `DARKWOOD_PHP_INI_DIR`. Aucun fichier de configuration système n'est réécrit.
 
+## Profil hors ligne
+
+Pour conserver le shell qualité hors ligne, ajouter
+`--profile ~/.local/state/nix/profiles/darkwood-navi` à la commande native
+du shell qualité. Cette racine couvre les exécutables du shell, Bash interactif
+et la source Nixpkgs du verrou. Le profil référence cette source existante
+sans la recopier. Le constructeur ne référence aucune source applicative.
+
 ## Sources et sécurité du store
 
 Ne pas utiliser `path:.` pour capturer une application. Ne pas transmettre `self`, `vendor`, `node_modules`, `var`, builds ou données privées à un constructeur de sources. `shell.nix` n'accepte aucune source applicative et ne construit que le runtime.
