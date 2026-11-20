@@ -6,7 +6,7 @@
     {% if delete_form is defined %}{% form_theme delete_form "admin/partials/form_div_layout.html.twig" %}{% endif %}
 {% endblock %}
 <!DOCTYPE html>
-<html>
+<html lang="fr" data-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <title>Administration</title>
@@ -48,6 +48,8 @@
     <script src="{{ asset('/build/admin/vendor/trumbowyg/dist/langs/fr.min.js') }}"></script>
     <script src="{{ asset('/admin/js/apps.js') }}"></script>
     <script src="{{ asset('/admin/js/main.js') }}"></script>
+<link href="{{ asset('/admin/css/design.css') }}" rel="stylesheet" />
+    <script type="module" src="{{ asset('/admin/js/theme.js') }}"></script>
 </head>
 <body>
 
