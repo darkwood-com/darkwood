@@ -2,8 +2,8 @@
 .theme-darkwood
 {
 	--darkwood-accent: #ffffff;
-	color: #808080;
-	background: #000000;
+	color: var(--dw-text);
+	background: var(--dw-surface);
 }
 
 .theme-darkwood .theme-header
@@ -49,7 +49,7 @@
 	.theme-darkwood .theme-content
 	{
 		/*max-width: 820px;*/
-		background: #202020 url('../../public/common/images/components/theme-dark/site/body/content/ground_content.jpg') repeat-y top;
+		background: var(--dw-surface) url('../../public/common/images/components/theme-dark/site/body/content/ground_content.jpg') repeat-y top;
 		background-size: 100% auto;
 	}
 
@@ -82,7 +82,7 @@
 	margin: 20px 0px 20px 0px;
 	font-size: 32px;
 	text-align: center;
-	color: #A0A0A0;
+	color: var(--dw-text);
 }
 
 .theme-darkwood h2
@@ -90,7 +90,7 @@
 	margin: 18px 0px 18px 0px;
 	font-size: 24px;
 	text-align: left;
-	color: #909090;
+	color: var(--dw-text);
 }
 
 .theme-darkwood h3
@@ -98,19 +98,19 @@
 	margin: 16px 0px 10px 0px;
 	font-size: 20px;
 	text-align: center;
-	color: #909090;
+	color: var(--dw-text);
 }
 
 .theme-darkwood h4
 {
 	margin: 5px 0px 5px 0px;
 	font-size: 16px;
-	color: #909090;
+	color: var(--dw-text);
 }
 
 .theme-darkwood a
 {
-	color: #808080;
+	color: var(--dw-text);
 	text-decoration: none;
 }
 
@@ -161,26 +161,26 @@
 /* -> pagination */
 .theme-darkwood ul.pagination a
 {
-	background-color: #404040;
-	border: 1px solid #909090;
+	background-color: var(--dw-surface);
+	border: 1px solid var(--dw-border);
 	text-decoration: none !important;
-	color: #C0C0C0;
+	color: var(--dw-text);
 }
 
 .theme-darkwood ul.pagination a.current,
 .theme-darkwood ul.pagination a:active,
 .theme-darkwood ul.pagination a:hover
 {
-	border-color: #909090;
+	border-color: var(--dw-border);
 	font-weight: bold;
-	background: #606060 none;
-	color: #FFFFFF;
+	background: var(--dw-surface) none;
+	color: var(--dw-text);
 }
 
 .theme-darkwood ul.pagination .disabled
 {
-	border: 1px solid #606060;
-	color: #808080;
+	border: 1px solid var(--dw-border);
+	color: var(--dw-text);
 }
 
 /* -> comments */
@@ -207,8 +207,8 @@
 {
 	margin: 0px 0px 0px 100px;
 	padding: 10px;
-	background: #101010;
-	border: 1px solid #303030;
+	background: var(--dw-surface);
+	border: 1px solid var(--dw-border);
 }
 
 .theme-darkwood ul.comments div.content div.arrow
@@ -237,7 +237,7 @@
 {
 	margin: 10px;
 	padding: 10px;
-	border: #303030 1px solid;
+	border: var(--dw-border) 1px solid;
 }
 
 .theme-darkwood form fieldset legend
@@ -248,9 +248,9 @@
 	width: auto;
 	border-top: none;
 	border-bottom: none;
-	border-left: #303030 1px solid;
-	border-right: #303030 1px solid;
-	color: #303030;
+	border-left: var(--dw-border) 1px solid;
+	border-right: var(--dw-border) 1px solid;
+	color: var(--dw-text);
 }
 
 .theme-darkwood form fieldset li
@@ -286,10 +286,10 @@
 
 .theme-darkwood form input, .theme-darkwood form textarea
 {
-    color: #000000;
+    color: var(--dw-text);
 	margin: 2px 0px 2px 0px;
-	border: 0px solid #FFFFFF;
-	background-color: #909090;
+	border: 0px solid var(--dw-border);
+	background-color: var(--dw-surface);
 	width: 50%;
 	float: right;
 	clear: right;
@@ -297,7 +297,7 @@
 
 .theme-darkwood form .g-recaptcha {
 	margin: 2px 0px 2px 0px;
-	border: 0px solid #FFFFFF;
+	border: 0px solid var(--dw-border);
 	width: 50%;
 	float: right;
 	clear: right;
@@ -305,7 +305,7 @@
 
 .theme-darkwood form .g-recaptcha.centered {
 	margin: auto;
-	border: 0px solid #FFFFFF;
+	border: 0px solid var(--dw-border);
 	width: 50%;
 	float: none;
 	clear: both;
@@ -324,7 +324,7 @@
 
 .theme-darkwood form input:focus, .theme-darkwood form textarea:focus
 {
-	background-color: #FFFFFF;
+	background-color: var(--dw-surface);
 }
 
 .theme-darkwood form input[type=submit]
@@ -335,13 +335,13 @@
 
 .theme-darkwood form input[type=submit]:hover
 {
-	background-color: #FFFFFF;
+	background-color: var(--dw-surface);
 	cursor:pointer;
 }
 
 .theme-darkwood form input[type=submit]:active
 {
-	background-color:#505050;
+	background-color:var(--dw-surface);
 }
 
 /* -> list */
@@ -356,15 +356,15 @@
 {
 	margin: 15px 0px 15px 0px;
 	padding: 0;
-	background: #101010 none;
-	border: 2px solid #202020;
+	background: var(--dw-surface) none;
+	border: 2px solid var(--dw-border);
 }
 
 .theme-darkwood ul.itemlist li h3
 {
 	margin: 0;
 	padding: 2px;
-	background: #202020 none;
+	background: var(--dw-surface) none;
 }
 
 .theme-darkwood ul.itemlist li p
@@ -376,8 +376,8 @@
 .theme-darkwood fieldset.tree
 {
 	float: left;
-	border-top: 2px solid #303030;
-	border-left: 2px solid #303030;
+	border-top: 2px solid var(--dw-border);
+	border-left: 2px solid var(--dw-border);
 }
 
 .theme-darkwood .tree legend
@@ -388,9 +388,9 @@
 	width: auto;
 	border-top: none;
 	border-bottom: none;
-	border-left: #303030 2px solid;
-	border-right: #303030 2px solid;
-	color: #303030;
+	border-left: var(--dw-border) 2px solid;
+	border-right: var(--dw-border) 2px solid;
+	color: var(--dw-text);
 }
 
 .theme-darkwood .tree ul.root
@@ -404,7 +404,7 @@
 {
 	margin:  0px 0px 0px 24px;
 	padding: 0px;
-	border-left: 2px solid #303030;
+	border-left: 2px solid var(--dw-border);
 }
 
 .theme-darkwood .tree li
@@ -416,14 +416,14 @@
 
 .theme-darkwood .tree li .folder
 {
-	background-color: #303030;
+	background-color: var(--dw-surface);
 }
 
 .theme-darkwood .tree li span
 {
 	margin:  0px 5px 0px 0px;
 	padding: 0px 8px 0px 8px;
-	border-top: 2px solid #303030;
+	border-top: 2px solid var(--dw-border);
 }
 
 .theme-darkwood .tree li a
@@ -431,15 +431,15 @@
 	position: relative;
 	top: -8px;
 	padding: 2px;
-	border: 2px solid #303030;
-	color: #999999;
-	background-color: #505050;
+	border: 2px solid var(--dw-border);
+	color: var(--dw-text);
+	background-color: var(--dw-surface);
 }
 
 .theme-darkwood .tree li a:hover
 {
-	color: #FFFFFF;
-	border: 2px solid #AAAAAA;
+	color: var(--dw-text);
+	border: 2px solid var(--dw-border);
 }
 
 /*** css specific to the site ***/
@@ -447,7 +447,7 @@
 /* -> links */
 .theme-darkwood .theme-content a.no_link
 {
-	color: #808080;
+	color: var(--dw-text);
 	cursor: default;
 }
 
@@ -460,7 +460,7 @@
 .theme-darkwood .theme-content table
 {
 	margin: 10px 0px 10px 0px;
-	background: #101010;
+	background: var(--dw-surface);
 	width: 100%;
 	text-align: center;
 }
@@ -468,18 +468,18 @@
 .theme-darkwood .theme-content table thead
 {
 	font-size: 18px;
-	background: #303030;
-	border: 1px solid #303030;
+	background: var(--dw-surface);
+	border: 1px solid var(--dw-border);
 }
 
 .theme-darkwood .theme-content table tbody
 {
-	border: 1px solid #303030;
+	border: 1px solid var(--dw-border);
 }
 
 .theme-darkwood .theme-content table th, .theme-darkwood .theme-content table td
 {
-    color: #808080;
+    color: var(--dw-text);
 	padding: 0;
 	vertical-align: middle;
 }
@@ -488,12 +488,12 @@
 {
 	padding: 2px;
 	text-align: center;
-	background: #303030;
+	background: var(--dw-surface);
 }
 
 .theme-darkwood .theme-content table td
 {
-	background: #101010;
+	background: var(--dw-surface);
 }
 
 .theme-darkwood .theme-content table td.spaced
@@ -515,8 +515,8 @@
 
 .theme-darkwood .theme-content #actions a:hover
 {
-	background-color:#101010;
-	border:1px solid #303030;
+	background-color:var(--dw-surface);
+	border:1px solid var(--dw-border);
 }
 
 .theme-darkwood .theme-content #actions a.left
@@ -547,8 +547,8 @@
 
 .theme-darkwood .theme-content #actions a.selected
 {
-	background-color:#101010;
-	border:1px solid #303030;
+	background-color:var(--dw-surface);
+	border:1px solid var(--dw-border);
 }
 
 .theme-darkwood .theme-content #actions a.selected.icon
@@ -654,7 +654,7 @@
 
 .theme-darkwood .theme-content .hello ul.itemlist li h2
 {
-	background: #101010 none;
+	background: var(--dw-surface) none;
 	text-align: center;
 }
 
@@ -668,8 +668,8 @@
 {
 	margin: 1rem 0;
 	padding: 0.75rem 1rem;
-	background: #303030;
-	border: 1px solid #505050;
+	background: var(--dw-surface);
+	border: 1px solid var(--dw-border);
 }
 
 .theme-darkwood .article-reactions--compact
@@ -720,8 +720,8 @@
 
 .theme-darkwood .article-reactions__button
 {
-	border: 1px solid #606060;
-	background: #404040;
+	border: 1px solid var(--dw-border);
+	background: var(--dw-surface);
 	border-radius: 999px;
 	min-width: 2.5rem;
 	min-height: 2.5rem;
@@ -742,8 +742,8 @@
 .theme-darkwood .article-reactions__button:hover,
 .theme-darkwood .article-reactions__button.is-active
 {
-	background: #505050;
-	border-color: #909090;
+	background: var(--dw-surface);
+	border-color: var(--dw-border);
 	transform: scale(1.05);
 }
 
@@ -762,12 +762,12 @@
 	gap: 0.25rem;
 	padding: 0.15rem 0.5rem;
 	border-radius: 999px;
-	background: #404040;
-	border: 1px solid #606060;
+	background: var(--dw-surface);
+	border: 1px solid var(--dw-border);
 }
 
 .theme-darkwood .article-reactions__count.is-active
 {
-	border-color: #909090;
-	background: #505050;
+	border-color: var(--dw-border);
+	background: var(--dw-surface);
 }

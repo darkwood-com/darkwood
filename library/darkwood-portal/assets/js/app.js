@@ -37,3 +37,8 @@ import './play.js'
 import './hello.js'
 import './mermaid.js'
 import './article-reactions.js'
+
+// Semantic roles are applied after the historical product skins.
+import '../styles/darkwood-tokens.css';
+import '../styles/darkwood-design.css';
+import './design-theme.js';

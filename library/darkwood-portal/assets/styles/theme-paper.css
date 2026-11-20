@@ -1,7 +1,7 @@
 .theme-paper
 {
-    color: #692D00;
-    background: #9b5638 url('../../public/common/images/components/theme-paper/site/paper_pattern.jpg') center repeat;
+    color: var(--dw-text);
+    background: var(--dw-surface) url('../../public/common/images/components/theme-paper/site/paper_pattern.jpg') center repeat;
 }
 
 @media(max-width:767px) {
@@ -89,7 +89,7 @@
     margin: 20px 0px 20px 0px;
     font-size: 32px;
     text-align: center;
-    color: #692D00;
+    color: var(--dw-text);
 }
 
 .theme-paper h2
@@ -97,7 +97,7 @@
     margin: 18px 0px 18px 0px;
     font-size: 24px;
     text-align: left;
-    color: #692D00;
+    color: var(--dw-text);
 }
 
 .theme-paper h3
@@ -105,19 +105,19 @@
     margin: 16px 0px 10px 0px;
     font-size: 20px;
     text-align: center;
-    color: #692D00;
+    color: var(--dw-text);
 }
 
 .theme-paper h4
 {
     margin: 5px 0px 5px 0px;
     font-size: 16px;
-    color: #692D00;
+    color: var(--dw-text);
 }
 
 .theme-paper a
 {
-    color: #692D00;
+    color: var(--dw-text);
     text-decoration: none;
 
     /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
@@ -140,7 +140,7 @@
 
 .theme-paper a:hover
 {
-    color: #a95e00;
+    color: var(--dw-text);
     cursor: pointer;
 }
 
@@ -183,9 +183,9 @@
     max-width: 100%;
     margin: 15px 0px 15px 0px;
     border-collapse: collapse;
-    border: 2px solid #f3c790;
-    background: #ffeac4 none;
-    color: #692D00;
+    border: 2px solid var(--dw-border);
+    background: var(--dw-surface) none;
+    color: var(--dw-text);
     font-size: 0.95em;
     box-sizing: border-box;
 }
@@ -195,16 +195,16 @@
     padding: 2px 10px;
     text-align: left;
     font-weight: bold;
-    color: #692D00;
-    background: #f3c790 none;
+    color: var(--dw-text);
+    background: var(--dw-surface) none;
     vertical-align: bottom;
 }
 
 .theme-paper .theme-content tbody td
 {
     padding: 10px;
-    background: #ffeac4 none;
-    border: 1px solid #f3c790;
+    background: var(--dw-surface) none;
+    border: 1px solid var(--dw-border);
     vertical-align: top;
     overflow-wrap: break-word;
     word-break: break-word;
@@ -259,26 +259,26 @@
 /* -> pagination */
 .theme-paper ul.pagination a
 {
-    background-color: #ffeac4;
-    border: 1px solid #f3c790;
+    background-color: var(--dw-surface);
+    border: 1px solid var(--dw-border);
     text-decoration: none !important;
-    color: #692d00;
+    color: var(--dw-text);
 }
 
 .theme-paper ul.pagination a.current,
 .theme-paper ul.pagination a:active,
 .theme-paper ul.pagination a:hover
 {
-    border-color: #f3c790;
+    border-color: var(--dw-border);
     font-weight: bold;
-    background: #f3c790 none;
-    color: #692d00;
+    background: var(--dw-surface) none;
+    color: var(--dw-text);
 }
 
 .theme-paper ul.pagination .disabled
 {
-    border: 1px solid #929292;
-    color: #929292;
+    border: 1px solid var(--dw-border);
+    color: var(--dw-text);
 }
 
 /* -> comments */
@@ -305,8 +305,8 @@
 {
     margin: 0px 0px 0px 100px;
     padding: 10px;
-    background: #ffeac4;
-    border: 1px solid #975231;
+    background: var(--dw-surface);
+    border: 1px solid var(--dw-border);
 }
 
 .theme-paper ul.comments div.content div.arrow
@@ -335,7 +335,7 @@
 {
     margin: 10px;
     padding: 10px;
-    border: #975231 1px solid;
+    border: var(--dw-border) 1px solid;
 }
 
 .theme-paper form fieldset legend
@@ -346,9 +346,9 @@
     width: auto;
     border-top: none;
     border-bottom: none;
-    border-left: #975231 1px solid;
-    border-right: #975231 1px solid;
-    color: #975231;
+    border-left: var(--dw-border) 1px solid;
+    border-right: var(--dw-border) 1px solid;
+    color: var(--dw-text);
 }
 
 .theme-paper form fieldset li
@@ -385,9 +385,9 @@
 .theme-paper form input, .theme-paper form textarea
 {
     margin: 2px 0px 2px 0px;
-    border: 0px solid #FFFFFF;
-    color: #FFFFFF;
-    background-color: #975231;
+    border: 0px solid var(--dw-border);
+    color: var(--dw-text);
+    background-color: var(--dw-surface);
     width: 50%;
     float: right;
     clear: right;
@@ -395,8 +395,8 @@
 
 .theme-paper form .g-recaptcha {
     margin: 2px 0px 2px 0px;
-    border: 0px solid #FFFFFF;
-    color: #FFFFFF;
+    border: 0px solid var(--dw-border);
+    color: var(--dw-text);
     width: 50%;
     float: right;
     clear: right;
@@ -404,7 +404,7 @@
 
 .theme-paper form .g-recaptcha.centered {
     margin: auto;
-    border: 0px solid #FFFFFF;
+    border: 0px solid var(--dw-border);
     width: 50%;
     float: none;
     clear: both;
@@ -423,7 +423,7 @@
 
 .theme-paper form input:focus, .theme-paper form textarea:focus
 {
-    background-color: #713e25;
+    background-color: var(--dw-surface);
 }
 
 .theme-paper form input[type=submit]
@@ -434,13 +434,13 @@
 
 .theme-paper form input[type=submit]:hover
 {
-    background-color: #713e25;
+    background-color: var(--dw-surface);
     cursor:pointer;
 }
 
 .theme-paper form input[type=submit]:active
 {
-    background-color:#633800;
+    background-color:var(--dw-surface);
 }
 
 /* -> list */
@@ -455,15 +455,15 @@
 {
     margin: 15px 0px 15px 0px;
     padding: 0;
-    background:  #ffeac4 none;
-    border: 2px solid #f3c790;
+    background:  var(--dw-surface) none;
+    border: 2px solid var(--dw-border);
 }
 
 .theme-paper ul.itemlist li h3
 {
     margin: 0;
     padding: 2px;
-    background: #f3c790 none;
+    background: var(--dw-surface) none;
 }
 
 .theme-paper ul.itemlist li p
@@ -476,8 +476,8 @@
 {
     margin: 1rem 0;
     padding: 0.75rem 1rem;
-    background: #fff4df;
-    border: 2px solid #f3c790;
+    background: var(--dw-surface);
+    border: 2px solid var(--dw-border);
 }
 
 .theme-paper .article-reactions--compact
@@ -528,8 +528,8 @@
 
 .theme-paper .article-reactions__button
 {
-    border: 2px solid #f3c790;
-    background: #ffeac4;
+    border: 2px solid var(--dw-border);
+    background: var(--dw-surface);
     border-radius: 999px;
     min-width: 2.5rem;
     min-height: 2.5rem;
@@ -550,8 +550,8 @@
 .theme-paper .article-reactions__button:hover,
 .theme-paper .article-reactions__button.is-active
 {
-    background: #f3c790;
-    border-color: #975231;
+    background: var(--dw-surface);
+    border-color: var(--dw-border);
     transform: scale(1.05);
 }
 
@@ -570,22 +570,22 @@
     gap: 0.25rem;
     padding: 0.15rem 0.5rem;
     border-radius: 999px;
-    background: #ffeac4;
-    border: 1px solid #f3c790;
+    background: var(--dw-surface);
+    border: 1px solid var(--dw-border);
 }
 
 .theme-paper .article-reactions__count.is-active
 {
-    border-color: #975231;
-    background: #f3c790;
+    border-color: var(--dw-border);
+    background: var(--dw-surface);
 }
 
 /* -> trees */
 .theme-paper fieldset.tree
 {
 	float: left;
-	border-top: 2px solid #975231;
-	border-left: 2px solid #975231;
+	border-top: 2px solid var(--dw-border);
+	border-left: 2px solid var(--dw-border);
 }
 
 .theme-paper .tree legend
@@ -596,9 +596,9 @@
 	width: auto;
 	border-top: none;
 	border-bottom: none;
-	border-left: #975231 2px solid;
-	border-right: #975231 2px solid;
-	color: #975231;
+	border-left: var(--dw-border) 2px solid;
+	border-right: var(--dw-border) 2px solid;
+	color: var(--dw-text);
 }
 
 .theme-paper .tree ul.root
@@ -612,7 +612,7 @@
 {
 	margin:  0px 0px 0px 24px;
 	padding: 0px;
-	border-left: 2px solid #975231;
+	border-left: 2px solid var(--dw-border);
 }
 
 .theme-paper .tree li
@@ -624,14 +624,14 @@
 
 .theme-paper .tree li .folder
 {
-	background-color: #975231;
+	background-color: var(--dw-surface);
 }
 
 .theme-paper .tree li span
 {
 	margin:  0px 5px 0px 0px;
 	padding: 0px 8px 0px 8px;
-	border-top: 2px solid #975231;
+	border-top: 2px solid var(--dw-border);
 }
 
 .theme-paper .tree li a
@@ -639,15 +639,15 @@
 	position: relative;
 	top: -8px;
 	padding: 2px;
-	border: 2px solid #975231;
-	color: #351700;
-	background-color: #f3c790;
+	border: 2px solid var(--dw-border);
+	color: var(--dw-text);
+	background-color: var(--dw-surface);
 }
 
 .theme-paper .tree li a:hover
 {
-	color: #000000;
-	border: 2px solid #663721;
+	color: var(--dw-text);
+	border: 2px solid var(--dw-border);
 }
 
 /*** css specific to the site ***/
@@ -655,7 +655,7 @@
 /* -> links */
 .theme-paper .theme-content a.no_link
 {
-    color: #692D00;
+    color: var(--dw-text);
     cursor: default;
 }
 
