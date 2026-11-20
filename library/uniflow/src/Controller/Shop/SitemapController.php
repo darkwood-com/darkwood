@@ -19,9 +19,9 @@ final readonly class SitemapController
     public function __invoke(UrlGeneratorInterface $urlGenerator): Response
     {
         $urls = [
-            $urlGenerator->generate('app_shop_home', referenceType: UrlGeneratorInterface::ABSOLUTE_URL),
-            $urlGenerator->generate('app_shop_blog', referenceType: UrlGeneratorInterface::ABSOLUTE_URL),
-            $urlGenerator->generate('app_shop_tags', referenceType: UrlGeneratorInterface::ABSOLUTE_URL),
+            $urlGenerator->generate('app_shop_home', referenceType: UrlGeneratorInterface::ABSOLUTE_PATH),
+            $urlGenerator->generate('app_shop_blog', referenceType: UrlGeneratorInterface::ABSOLUTE_PATH),
+            $urlGenerator->generate('app_shop_tags', referenceType: UrlGeneratorInterface::ABSOLUTE_PATH),
         ];
 
         $blogDirectory = $this->projectDir . '/assets/docs/blog';
@@ -32,7 +32,7 @@ final readonly class SitemapController
                 $urls[] = $urlGenerator->generate(
                     'app_shop_article',
                     ['slug' => $directory->getFilename()],
-                    UrlGeneratorInterface::ABSOLUTE_URL,
+                    UrlGeneratorInterface::ABSOLUTE_PATH,
                 );
             }
         }
@@ -45,7 +45,7 @@ final readonly class SitemapController
 
         foreach (array_unique($urls) as $url) {
             $xml->startElement('url');
-            $xml->writeElement('loc', $url);
+            $xml->writeElement('loc', 'https://uniflow.io' . $url);
             $xml->endElement();
         }
 
