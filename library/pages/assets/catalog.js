@@ -1,7 +1,5 @@
 const themes = ["light", "dark", "sepia"];
 const themeLabels = { light: "Light", dark: "Dark", sepia: "Sepia" };
-const themeIcons = { light: "☼", dark: "☾" };
-const sepiaIcon = document.getElementById("sepia-theme-icon");
 
 const updateThemeControls = () => {
   const theme = themes.includes(document.documentElement.dataset.theme) ? document.documentElement.dataset.theme : "light";
@@ -9,11 +7,8 @@ const updateThemeControls = () => {
     control.setAttribute("aria-label", `Color theme: ${themeLabels[theme]}. Activate for next theme.`);
     control.title = `${themeLabels[theme]} theme`;
     const icon = control.querySelector("[data-theme-icon]");
-    if (theme === "sepia") {
-      icon.replaceChildren(sepiaIcon.content.cloneNode(true));
-    } else {
-      icon.textContent = themeIcons[theme];
-    }
+    const template = document.getElementById(`${theme}-theme-icon`);
+    icon.replaceChildren(template.content.cloneNode(true));
   }
 };
 
