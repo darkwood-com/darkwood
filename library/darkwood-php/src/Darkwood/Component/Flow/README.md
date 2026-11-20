@@ -20,6 +20,22 @@ Flow requires PHP 8.6 or later in the PHP 8 series. Install the library with [Co
 composer require darkwood/flow
 ```
 
+## Upgrade from Flow 8.1
+
+Flow `v8.1.6` is the latest published release whose manifest allows PHP 8.5. Keep `darkwood/flow: ^8.1.6` and the existing lockfile in PHP 8.5
+applications. The PHP 8.6 line requires a new major release.
+
+When upgrading an application to PHP 8.6, update its Composer PHP platform,
+resolve dependencies with the target binary, and run
+`composer check-platform-reqs` in the deployment runtime. Existing jobs, `Ip` payloads,
+error handlers and the default Fiber driver use the same API. Partial
+applications and `PollDriver` are opt-in. For the generator stream drivers,
+pass positive intervals to `tick()` in seconds, including fractional values.
+
+If an aggregate declares `replace: darkwood/flow`, Composer can satisfy the
+requirement without reading Flow's own manifest. Verify that the aggregate's
+PHP constraint also requires 8.6 before publishing it with this version of Flow.
+
 ## Usage
 
 ```php

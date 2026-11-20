@@ -51,6 +51,19 @@ extension needed by the dev-only IDE helper. For a standalone checkout, set
 `DARKWOOD_NAVI_ENV_DIR` to the absolute `tools/env` path of a pinned Navi
 checkout. Library installation via Composer does not need Nix or Navi.
 
+## Upgrade from Flow 8.1
+
+Keep `darkwood/flow: ^8.1.6` and its lockfile for PHP 8.5 deployments. Flow
+`v8.1.6` is the latest published release compatible with PHP 8.5. The PHP 8.6
+code is intended for a new major release.
+
+Validate PHP and extension requirements on the target machine with
+`composer check-platform-reqs`. Existing pipelines can keep their jobs and
+drivers. When switching to `PollDriver`, confirm the underlying streams expose
+pollable descriptors. Generator driver `tick()` intervals are measured in
+seconds. If an aggregate replaces `darkwood/flow`, check that its PHP
+constraint matches the included Flow version before publishing.
+
 ## Build a pipeline with PHP 8.6
 
 ```php
