@@ -323,6 +323,12 @@ class PageService
         }
 
         $pageLinks = $this->getPageLinks($ref, $entity, $host, null, UrlGeneratorInterface::ABSOLUTE_URL);
+        if ($currentLocale !== null) {
+            return isset($pageLinks[$currentLocale])
+                ? ['locale' => $currentLocale, 'url' => $pageLinks[$currentLocale]]
+                : null;
+        }
+
         foreach ($pageLinks as $locale => $url) {
             return ['locale' => $locale, 'url' => $url];
         }

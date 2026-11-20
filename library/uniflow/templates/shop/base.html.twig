@@ -9,7 +9,12 @@
 
         <meta property="og:title" content="{{ page.title }}" />
         <meta property="og:description" content="{{ page.description }}" />
-        <meta property="og:url" content="{{ app.request.uri }}" />
+        {% set editorialRoutes = ['app_shop_home', 'app_shop_blog', 'app_shop_tags', 'app_shop_tag', 'app_shop_article', 'app_shop_doc', 'app_shop_library', 'app_shop_changelog'] %}
+        {% set canonical = app.request.attributes.get('_route') in editorialRoutes ? 'https://uniflow.io' ~ app.request.pathInfo : null %}
+        {% if canonical %}
+            <link rel="canonical" href="{{ canonical }}">
+        {% endif %}
+        <meta property="og:url" content="{{ canonical ?? app.request.uri }}" />
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="en" />
         <meta property="og:site_name" content="Uniflow" />
