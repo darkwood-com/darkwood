@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Study;
 
-use Symfony\AI\Platform\Bridge\Jev\Output\EvaluationResult;
+use Darkwood\AI\Platform\Bridge\Jev\Output\EvaluationResult;
 use Symfony\AI\Platform\PlatformInterface;
 
 final class JevInvoke

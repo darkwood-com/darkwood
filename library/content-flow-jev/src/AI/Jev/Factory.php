@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\AI\Jev;
 
-use Symfony\AI\Platform\Bridge\Jev\Factory as JevFactory;
+use Darkwood\AI\Platform\Bridge\Jev\Factory as JevFactory;
 use Symfony\AI\Platform\Platform;
 use Symfony\AI\Platform\Test\Replay\CassetteHttpClient;
 use Symfony\AI\Platform\Test\Replay\HttpCassette;
