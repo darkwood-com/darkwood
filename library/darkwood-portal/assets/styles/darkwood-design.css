@@ -1,46 +1,54 @@
-/* Darkwood's public shell. Product artwork, article media and admin remain independent. */
-@font-face{font-family:Jost;src:url('../fonts/Jost-400-Book.otf') format('opentype');font-weight:400;font-display:swap}
-.layout-darkwood,.layout-paper{font-family:var(--dw-font-sans);color:var(--dw-text);background:var(--dw-background);--bs-body-color:var(--dw-text);--bs-body-bg:var(--dw-background);--bs-border-color:var(--dw-border);--bs-link-color:var(--dw-primary);--bs-link-hover-color:var(--dw-primary-hover)}
-.layout-darkwood{--theme-layout-background-color:var(--dw-background);--theme-layout-footer-background-color:var(--dw-surface);--theme-layout-footer-color:var(--dw-muted);--theme-layout-footer-link-color:var(--dw-primary);--theme-layout-footer-link-hover-color:var(--dw-primary-hover);--theme-layout-footer-social-color:var(--dw-muted);--theme-layout-footer-social-hover-color:var(--dw-primary);--theme-footer-border-top:1px solid var(--dw-border);--theme-menu-background:var(--dw-surface);--theme-nav-background:var(--dw-surface);--theme-nav-border-bottom:1px solid var(--dw-border);--theme-nav-brand-color:var(--dw-text);--theme-nav-brand-hover-color:var(--dw-primary);--theme-nav-link-color:var(--dw-text);--theme-nav-link-hover-color:var(--dw-primary);--theme-nav-profile-color:var(--dw-text);--theme-nav-profile-hover-color:var(--dw-primary);--theme-nav-flag-border:1px solid var(--dw-border);--theme-nav-dropdown-background:var(--dw-surface);--theme-nav-dropdown-border:1px solid var(--dw-border);--theme-nav-dropdown-item-hover-background:var(--dw-surface);--theme-nav-dropdown-item-hover-color:var(--dw-text);--theme-nav-button-border:1px solid var(--dw-border);--theme-nav-button-background:var(--dw-surface);--theme-nav-button-color:var(--dw-text);--theme-nav-button-hover-border:1px solid var(--dw-border);--theme-nav-button-hover-background:var(--dw-surface);--theme-nav-button-hover-color:var(--dw-primary);--theme-nav-button-ghost-color:var(--dw-muted);--theme-nav-auth-button-border:1px solid var(--dw-border);--theme-nav-auth-button-background:var(--dw-primary);--theme-nav-auth-button-color:var(--dw-on-primary);--theme-nav-auth-button-hover-border:1px solid var(--dw-border);--theme-nav-auth-button-hover-background:var(--dw-primary-hover);--theme-nav-auth-button-hover-color:var(--dw-on-primary);--theme-nav-auth-button-active-border:1px solid var(--dw-border);--theme-nav-auth-button-active-background:var(--dw-primary-hover);--theme-nav-auth-button-active-color:var(--dw-on-primary);--theme-nav-profile-image-border:1px solid var(--dw-border);--theme-mobile-nav-background:var(--dw-surface);--theme-mobile-nav-border-top:1px solid var(--dw-border);--theme-mobile-nav-link-color:var(--dw-text);--theme-mobile-nav-link-hover-color:var(--dw-primary);--theme-mobile-nav-active-border-top:1px solid var(--dw-border);--theme-mobile-nav-dropdown-background:var(--dw-surface);--theme-mobile-nav-dropdown-border:1px solid var(--dw-border);--theme-mobile-nav-dropdown-item-hover-background:var(--dw-surface);--theme-mobile-nav-dropdown-item-hover-color:var(--dw-text);}
-.layout-paper{--theme-layout-background-color:var(--dw-background);--theme-layout-footer-background-color:var(--dw-surface);--theme-layout-footer-color:var(--dw-muted);--theme-layout-footer-link-color:var(--dw-primary);--theme-layout-footer-link-hover-color:var(--dw-primary-hover);--theme-layout-footer-social-color:var(--dw-muted);--theme-layout-footer-social-hover-color:var(--dw-primary);--theme-footer-border-top:1px solid var(--dw-border);--theme-menu-background:var(--dw-surface);--theme-nav-background:var(--dw-surface);--theme-nav-border-bottom:1px solid var(--dw-border);--theme-nav-brand-color:var(--dw-text);--theme-nav-brand-hover-color:var(--dw-primary);--theme-nav-link-color:var(--dw-text);--theme-nav-link-hover-color:var(--dw-primary);--theme-nav-profile-color:var(--dw-text);--theme-nav-profile-hover-color:var(--dw-primary);--theme-nav-flag-border:1px solid var(--dw-border);--theme-nav-dropdown-background:var(--dw-surface);--theme-nav-dropdown-border:1px solid var(--dw-border);--theme-nav-dropdown-item-hover-background:var(--dw-surface);--theme-nav-dropdown-item-hover-color:var(--dw-text);--theme-nav-button-border:1px solid var(--dw-border);--theme-nav-button-background:var(--dw-surface);--theme-nav-button-color:var(--dw-text);--theme-nav-button-hover-border:1px solid var(--dw-border);--theme-nav-button-hover-background:var(--dw-surface);--theme-nav-button-hover-color:var(--dw-primary);--theme-nav-button-ghost-color:var(--dw-muted);--theme-nav-auth-button-border:1px solid var(--dw-border);--theme-nav-auth-button-background:var(--dw-primary);--theme-nav-auth-button-color:var(--dw-on-primary);--theme-nav-auth-button-hover-border:1px solid var(--dw-border);--theme-nav-auth-button-hover-background:var(--dw-primary-hover);--theme-nav-auth-button-hover-color:var(--dw-on-primary);--theme-nav-auth-button-active-border:1px solid var(--dw-border);--theme-nav-auth-button-active-background:var(--dw-primary-hover);--theme-nav-auth-button-active-color:var(--dw-on-primary);--theme-nav-profile-image-border:1px solid var(--dw-border);--theme-mobile-nav-background:var(--dw-surface);--theme-mobile-nav-border-top:1px solid var(--dw-border);--theme-mobile-nav-link-color:var(--dw-text);--theme-mobile-nav-link-hover-color:var(--dw-primary);--theme-mobile-nav-active-border-top:1px solid var(--dw-border);--theme-mobile-nav-dropdown-background:var(--dw-surface);--theme-mobile-nav-dropdown-border:1px solid var(--dw-border);--theme-mobile-nav-dropdown-item-hover-background:var(--dw-surface);--theme-mobile-nav-dropdown-item-hover-color:var(--dw-text);}
-.theme-darkwood{--darkwood-accent:var(--dw-primary);color:var(--dw-text);background:var(--dw-background)}
-.theme-darkwood .theme-content,.theme-paper .theme-content{background:var(--dw-surface);border:1px solid var(--dw-border)}
-.theme-darkwood .theme-content-top,.theme-paper .theme-content-top{background:transparent}
-.theme-darkwood :is(h1,h2,h3,h4,h5,h6,label),.theme-paper :is(h1,h2,h3,h4,h5,h6,label){color:var(--dw-text)}
-.theme-darkwood :is(p,li,td,th),.theme-paper :is(p,li,td,th){color:inherit}
-.theme-darkwood a,.theme-paper a{color:var(--dw-primary)}
-.theme-nav a,.theme-nav__button{min-height:44px;align-content:center}
-.layout-darkwood :is(input:not([type=submit]):not([type=checkbox]):not([type=radio]),textarea,select),.layout-paper :is(input:not([type=submit]):not([type=checkbox]):not([type=radio]),textarea,select){background:var(--dw-input);color:var(--dw-text);border-color:var(--dw-border);min-height:44px}
-.layout-darkwood :is(.card,.list-group-item,.table),.layout-paper :is(.card,.list-group-item,.table){background:var(--dw-surface);color:var(--dw-text);border-color:var(--dw-border);--bs-table-bg:var(--dw-surface);--bs-table-color:var(--dw-text)}
-.layout-darkwood :is(pre,code),.layout-paper :is(pre,code){font-family:var(--dw-font-mono)}
-.dw-theme-switcher{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:.5rem .75rem;font:inherit;color:var(--dw-text);background:var(--dw-input);border:1px solid var(--dw-border);border-radius:var(--dw-radius);cursor:pointer}
-@media(max-width:767px){.theme-nav__actions{flex-wrap:wrap}.theme-content{overflow-wrap:anywhere}.theme-content pre{max-width:100%;overflow:auto}}
-
-/* Editorial surfaces remain readable in every palette, including nested article lists. */
-.theme-paper{color:var(--dw-text);background:var(--dw-background)}
-.theme-paper .theme-body{background:none}
-.layout-darkwood input[type=submit],.layout-paper input[type=submit],.theme-darkwood .theme-content button:not(.article-reactions__button),.theme-paper .theme-content button:not(.article-reactions__button){min-height:44px;padding:.5rem .75rem;border:1px solid var(--dw-primary);background:color-mix(in srgb,var(--dw-primary) 80%,#000);color:#fff;border-radius:var(--dw-radius)}
-
-.dw-theme-switcher { gap: .35rem; }
-@media (max-width: 767px) {
-  :is(.layout-darkwood, .layout-paper) { --theme-mobile-content-offset: env(safe-area-inset-bottom); }
-  :is(.layout-darkwood, .layout-paper) .theme-mobile-nav { padding-bottom: env(safe-area-inset-bottom); }
-  :is(.layout-darkwood, .layout-paper):has(input:not([type=hidden]):focus, select:focus, textarea:focus) .theme-mobile-nav { display: none; }
-  :is(.layout-darkwood, .layout-paper) .theme-mobile-nav a:focus-visible { outline-offset: -4px; }
+@font-face {
+  font-family: Jost;
+  src: url('../fonts/Jost-400-Book.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
 }
 
+/* The portal skins own their palettes, artwork and component states. */
 :is(.layout-darkwood, .layout-paper) {
-  --bs-emphasis-color: var(--dw-text);
-  --bs-secondary-color: var(--dw-muted);
-  --bs-secondary-bg: var(--dw-subtle);
-  --bs-tertiary-bg: var(--dw-surface);
-  --bs-primary: var(--dw-primary);
-  --bs-success-text-emphasis: var(--dw-success);
-  --bs-warning-text-emphasis: var(--dw-warning);
-  --bs-danger-text-emphasis: var(--dw-danger);
+  font-family: var(--dw-font-sans);
+}
+
+:is(.layout-darkwood, .layout-paper) :is(pre, code) {
+  font-family: var(--dw-font-mono);
+}
+
+:is(.layout-darkwood, .layout-paper) .theme-nav :is(a, .theme-nav__button) {
+  min-height: 44px;
+  align-content: center;
 }
 
 @media (max-width: 767px) {
+  :is(.layout-darkwood, .layout-paper) {
+    --theme-mobile-content-offset: env(safe-area-inset-bottom);
+  }
+
+  :is(.layout-darkwood, .layout-paper) .theme-nav__actions {
+    flex-wrap: wrap;
+  }
+
+  :is(.layout-darkwood, .layout-paper) .theme-content {
+    overflow-wrap: anywhere;
+  }
+
+  :is(.layout-darkwood, .layout-paper) .theme-content pre {
+    max-width: 100%;
+    overflow: auto;
+  }
+
+  :is(.layout-darkwood, .layout-paper) .theme-mobile-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  :is(.layout-darkwood, .layout-paper):has(input:not([type=hidden]):focus, select:focus, textarea:focus) .theme-mobile-nav {
+    display: none;
+  }
+
+  :is(.layout-darkwood, .layout-paper) .theme-mobile-nav a:focus-visible {
+    outline-offset: -4px;
+  }
+
   .layout:is(.layout-darkwood, .layout-paper) .theme-mobile-nav > li > a {
     flex-wrap: wrap;
     row-gap: .1rem;
