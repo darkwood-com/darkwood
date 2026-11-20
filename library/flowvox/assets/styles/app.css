@@ -1,19 +1,102 @@
 :root {
-    --bg: #0f1419;
-    --surface: #1a2332;
-    --text: #e7ecf3;
-    --muted: #8b9cb3;
-    --accent: #3d8bfd;
-    --recording: #e74c3c;
-    --idle: #2ecc71;
-    --error: #f39c12;
+  color-scheme: light;
+  --dw-font-sans: Jost, system-ui, sans-serif;
+  --dw-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --dw-text: #000000;
+  --dw-background: #ffffff;
+  --dw-surface: #ffffff;
+  --dw-input: #ffffff;
+  --dw-border: #eff2f7;
+  --dw-primary: #007bff;
+  --dw-primary-hover: #0056b3;
+  --dw-on-primary: #ffffff;
+  --dw-muted: #6c757d;
+  --dw-subtle: #f8f9fa;
+  --dw-success: #198754;
+  --dw-warning: #997300;
+  --dw-danger: #dc3545;
+  --dw-info: #0b7285;
+  --dw-navbar: rgba(255, 255, 255, .88);
+  --dw-shadow: rgba(18, 38, 63, .08);
+  --dw-radius-sm: .25rem;
+  --dw-radius: .375rem;
+  --dw-radius-lg: .5rem;
+  --dw-space-1: .25rem;
+  --dw-space-2: .5rem;
+  --dw-space-3: 1rem;
+  --dw-space-4: 1.5rem;
+  --dw-space-5: 2rem;
+  --dw-space-6: 3rem;
+  --dw-space-7: 5rem;
+  --dw-container: 1140px;
+  --dw-header-height: 60px;
+  --dw-transition: .2s ease;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --dw-text: #ebf4f1;
+  --dw-background: #091a28;
+  --dw-surface: #0b1e2e;
+  --dw-input: #0e2233;
+  --dw-border: #0f2b3d;
+  --dw-primary: #0d7fe8;
+  --dw-primary-hover: #5ca8ee;
+  --dw-muted: #9bb0bd;
+  --dw-subtle: #0e2233;
+  --dw-success: #4fc48a;
+  --dw-warning: #d3ad55;
+  --dw-danger: #ff7b85;
+  --dw-info: #67c7d5;
+  --dw-navbar: rgba(9, 26, 40, .88);
+  --dw-shadow: rgba(0, 0, 0, .22);
+}
+
+:root[data-theme="sepia"] {
+  color-scheme: light;
+  --dw-text: #433422;
+  --dw-background: #f1e7d0;
+  --dw-surface: #f1e7d0;
+  --dw-input: #eadec2;
+  --dw-border: #ded0bf;
+  --dw-primary: #0066cc;
+  --dw-primary-hover: #004080;
+  --dw-muted: #765f42;
+  --dw-subtle: #eadec2;
+  --dw-success: #087f5b;
+  --dw-warning: #856400;
+  --dw-danger: #9f2030;
+  --dw-info: #176b78;
+  --dw-navbar: rgba(241, 231, 208, .88);
+  --dw-shadow: rgba(67, 52, 34, .1);
+}
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--dw-primary) 48%, transparent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
+@font-face{font-family:Jost;src:url('../fonts/Jost-400-Book.otf') format('opentype');font-weight:400;font-display:swap}
+:root {
+    --bg: var(--dw-background);
+    --surface: var(--dw-surface);
+    --text: var(--dw-text);
+    --muted: var(--dw-muted);
+    --accent: var(--dw-primary);
+    --recording: var(--dw-danger);
+    --idle: var(--dw-success);
+    --error: var(--dw-danger);
 }
 
 * { box-sizing: border-box; }
 
 body {
     margin: 0;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: var(--dw-font-sans);
     background: var(--bg);
     color: var(--text);
     line-height: 1.5;
@@ -25,7 +108,7 @@ body {
     justify-content: space-between;
     padding: 1rem 1.5rem;
     background: var(--surface);
-    border-bottom: 1px solid #2a3544;
+    border-bottom: 1px solid var(--dw-border);
 }
 
 .brand { font-weight: 700; color: var(--text); text-decoration: none; }
@@ -47,7 +130,7 @@ body {
 .table th, .table td {
     padding: 0.6rem 0.75rem;
     text-align: left;
-    border-bottom: 1px solid #2a3544;
+    border-bottom: 1px solid var(--dw-border);
 }
 
 .badge {
@@ -56,7 +139,7 @@ body {
     border-radius: 4px;
     font-size: 0.75rem;
     text-transform: uppercase;
-    background: #2a3544;
+    background: var(--dw-border);
 }
 
 .badge-idle, .badge-recording_started { background: var(--idle); color: #000; }
@@ -98,16 +181,16 @@ body {
 }
 
 .list { list-style: none; padding: 0; }
-.list li { padding: 0.5rem 0; border-bottom: 1px solid #2a3544; }
+.list li { padding: 0.5rem 0; border-bottom: 1px solid var(--dw-border); }
 
 .flash { padding: 0.75rem; border-radius: 4px; margin-bottom: 1rem; }
-.flash-success, .flash-info { background: #1e3a5f; }
-.flash-warning { background: #5f4a1e; }
+.flash-success, .flash-info { background: color-mix(in srgb,var(--dw-info) 10%,var(--dw-surface)); }
+.flash-warning { background: color-mix(in srgb,var(--dw-warning) 10%,var(--dw-surface)); }
 
 .input {
     padding: 0.5rem 0.75rem;
     border-radius: 4px;
-    border: 1px solid #2a3544;
+    border: 1px solid var(--dw-border);
     background: var(--surface);
     color: var(--text);
     min-width: 240px;
@@ -119,7 +202,7 @@ body {
 
 .partial { opacity: 0.7; font-style: italic; }
 
-code { background: #2a3544; padding: 0.1rem 0.3rem; border-radius: 3px; }
+code { background: var(--dw-border); padding: 0.1rem 0.3rem; border-radius: 3px; }
 
 body.native-app {
     padding-top: env(safe-area-inset-top);
@@ -129,3 +212,17 @@ body.native-app {
 body.native-app .main {
     padding-top: 0.5rem;
 }
+
+/* Shell controls follow Darkwood; rendered canvases, audio and image data are untouched. */
+.dw-theme-switcher{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:8px 12px;border:1px solid var(--dw-border);border-radius:var(--dw-radius);color:var(--dw-text);background:var(--dw-input);font:inherit;cursor:pointer;margin:0 0 12px}
+input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea{color:var(--dw-text);background-color:var(--dw-input);border-color:var(--dw-border)}
+button,select{min-height:44px}code,pre{font-family:var(--dw-font-mono)}
+@media(max-width:680px){.header{flex-wrap:wrap;gap:12px}.header nav{display:flex;gap:12px;flex-wrap:wrap}}
+
+.badge{background:var(--dw-subtle);color:var(--dw-text)}
+.badge-idle,.badge-recording_started{background:var(--dw-surface);color:var(--dw-success);border:1px solid currentColor}
+.badge-recording,.badge-error{background:var(--dw-surface);color:var(--dw-danger);border:1px solid currentColor}
+.btn-start{background:color-mix(in srgb,var(--dw-success) 55%,#000);color:#fff}.btn-stop{background:color-mix(in srgb,var(--dw-danger) 55%,#000);color:#fff}
+code{background:var(--dw-subtle)}
+
+.main{min-width:0;overflow-wrap:anywhere}.controls,.search-form{flex-wrap:wrap}.input{min-width:0;max-width:100%}.table{display:block;overflow-x:auto;white-space:nowrap;overflow-wrap:normal}pre{max-width:100%;overflow-x:auto}
