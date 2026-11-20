@@ -88,8 +88,9 @@ final class SceneClipFfmpegRendererTest extends TestCase
 
     public function testClassifySkipsWhenVideoAssetNotDecodablePerFfprobe()
     {
-        if (!is_executable('/bin/false')) {
-            self::markTestSkipped('/bin/false not available');
+        $failingExecutable = is_executable('/bin/false') ? '/bin/false' : '/usr/bin/false';
+        if (!is_executable($failingExecutable)) {
+            self::markTestSkipped('The false executable is not available.');
         }
 
         $tmp = sys_get_temp_dir() . '/dw-scene-clip-' . bin2hex(random_bytes(4));
@@ -103,7 +104,7 @@ final class SceneClipFfmpegRendererTest extends TestCase
             file_put_contents($videoPath, 'not-a-video');
 
             $storage = new LocalArtifactStorage(new VideoPathResolver($tmp));
-            $renderer = new SceneClipFfmpegRenderer($storage, '/bin/false', '/bin/false');
+            $renderer = new SceneClipFfmpegRenderer($storage, $failingExecutable, $failingExecutable);
 
             $scene = new Scene(id: 'moon', number: 1, title: 'Moon');
             $scene->addAsset(new Asset(

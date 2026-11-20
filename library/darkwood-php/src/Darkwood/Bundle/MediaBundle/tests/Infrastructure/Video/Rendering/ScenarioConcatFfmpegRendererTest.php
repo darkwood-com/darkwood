@@ -22,8 +22,9 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
 {
     public function testConcatListsOnlyValidClipsIncludedFfprobeNeverSucceeds()
     {
-        if (!is_executable('/bin/false')) {
-            self::markTestSkipped('/bin/false not available');
+        $failingExecutable = is_executable('/bin/false') ? '/bin/false' : '/usr/bin/false';
+        if (!is_executable($failingExecutable)) {
+            self::markTestSkipped('The false executable is not available.');
         }
 
         $tmp = sys_get_temp_dir() . '/dw-scenario-concat-' . bin2hex(random_bytes(4));
@@ -39,7 +40,7 @@ final class ScenarioConcatFfmpegRendererTest extends TestCase
             file_put_contents($base . '/3-c/scene.mp4', 'garbage');
 
             $storage = new LocalArtifactStorage(new VideoPathResolver($tmp));
-            $renderer = new ScenarioConcatFfmpegRenderer($storage, '/bin/false', '/bin/false');
+            $renderer = new ScenarioConcatFfmpegRenderer($storage, $failingExecutable, $failingExecutable);
 
             $project = new VideoProject($projectId, '/x.yaml', 'T');
             $project->addScene(new Scene(id: 'a', number: 1, title: 'A', status: SceneStatus::Completed));
