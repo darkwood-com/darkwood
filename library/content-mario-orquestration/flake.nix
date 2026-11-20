@@ -1,6 +1,6 @@
 {
   description = "Darkwood original level designer — Symfony AI and official MCP SDK";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/4ae25df2c68d889251c436d487553bc8f4e12030";
   outputs = { nixpkgs, ... }:
     let systems = [ "aarch64-darwin" "aarch64-linux" "x86_64-darwin" "x86_64-linux" ];
     in {

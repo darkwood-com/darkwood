@@ -95,6 +95,6 @@ L’ancienne URL de fichier est signalée comme déplacée par la page 404.
 
 Les entrées `flake.nix` et `shell.nix` réutilisent le constructeur canonique Navi
 (`library/darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix`). Le verrou
-Nixpkgs de cette card et son outil Node sont conservés. Depuis la card, privilégier
+Nixpkgs suit la même révision que Navi ; les outils spécifiques restent explicites. Depuis la card, privilégier
 `nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix`
 pour ne pas capturer le monorepo comme source de flake. Aucun service n'est démarré.

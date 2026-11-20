@@ -17,7 +17,7 @@ Le socle minimal apporte PHP, ses extensions natives par défaut et Composer. Le
 
 ## Composition dans une card
 
-Dans le même monorepo, importer `shell.nix` depuis le flake de la card et fournir son `pkgs` verrouillé :
+Dans le même monorepo, importer `shell.nix` depuis le flake de la card et fournir son `pkgs` verrouillé sur la même révision que Navi :
 
 ```nix
 let mkPhpShell = import ../darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix;
@@ -29,7 +29,7 @@ in mkPhpShell {
 }
 ```
 
-L'API est aussi exposée par `lib.mkPhpShell` du flake Navi. Un dépôt extérieur doit épingler une révision publiée du composant public Navi existant, avec `?dir=tools/env`, et faire suivre son entrée `nixpkgs` à sa propre révision lorsque la conservation de son runtime est nécessaire. Ne pas enregistrer un chemin absolu `/Users/...` dans un lockfile portable.
+L'API est aussi exposée par `lib.mkPhpShell` du flake Navi. Un dépôt extérieur doit épingler une révision publiée du composant public Navi existant, avec `?dir=tools/env`, et faire suivre son entrée `nixpkgs` à sa propre révision pour conserver la même révision canonique de runtime. Ne pas enregistrer un chemin absolu `/Users/...` dans un lockfile portable.
 
 Une card peut aussi fournir un `shell.nix` fin appelant ce même constructeur avec `lockFile = ./flake.lock`. `nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix` évite de capturer le monorepo applicatif comme source de flake. Le constructeur lit uniquement le lock et récupère sa révision Nixpkgs avec vérification du `narHash` ; il ne transmet aucun répertoire applicatif à Nix. `extraPackages` accepte une liste ou une fonction de `pkgs`.
 
@@ -49,4 +49,14 @@ Les fichiers Compose existants décrivent un PostgreSQL local optionnel historiq
 
 ## Repli
 
-Les consommateurs conservent leur révision Nixpkgs et leurs manifests Composer. Revenir au commit précédent de leur flake suffit pour annuler l'adoption. Pour quitter PHP 8.6 expérimental, sortir du shell puis rouvrir `default`/`php85`. Aucun changement de daemon, profil système ou runtime de production n'est nécessaire.
+Les consommateurs alignent leur révision Nixpkgs sur celle de Navi et conservent leurs manifests Composer. Revenir au commit précédent de leur flake suffit pour annuler l'adoption. Pour quitter PHP 8.6 expérimental, sortir du shell puis rouvrir `default`/`php85`. Aucun changement de daemon, profil système ou runtime de production n'est nécessaire.
+
+## Politique de versions
+
+La référence PHP maintient uniquement **PHP 8.5.13** (défaut) et **PHP 8.6.0**
+(expérimental), depuis une même révision Nixpkgs. Le constructeur refuse les
+anciens runtimes ; une card adoptée doit aligner son lock avant de l’utiliser.
+Actualiser ensemble le verrou canonique et cette vérification à la prochaine
+version stable, après validation. Les anciens PHP encore utilisés par un
+processus ou une racine existante ne sont jamais supprimés avec une option
+ignorant la vivacité. Les exceptions non encore migrées restent recensées.

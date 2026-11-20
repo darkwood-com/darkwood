@@ -100,7 +100,7 @@ The server must expose the qualified `get_darkwood_state` read-only tool. It ref
 ## Shared development shell
 
 `flake.nix` and the native `shell.nix` entry point use the canonical Navi PHP
-shell builder. This card keeps its own Nixpkgs lock and mbstring requirement.
+shell builder. This card shares the canonical Navi Nixpkgs revision and keeps its mbstring requirement.
 Prefer `nix develop --file ./shell.nix` to avoid taking the monorepo as a flake
 source. No application, vendor directory or secret is passed to the builder.
 The submitted execution, Composer manifests and recorded evidence are unchanged.

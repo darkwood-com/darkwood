@@ -23,7 +23,8 @@ let
     assert builtins.elem phpVersion [ "85" "86" ];
     packageSet."php${phpVersion}"
   else php;
-  runtime = basePhp.buildEnv {
+  runtime = assert builtins.elem basePhp.version [ "8.5.13" "8.6.0" ];
+    basePhp.buildEnv {
     extensions = available: packageSet.lib.unique (available.enabled ++ extraExtensions available);
     inherit extraConfig;
   };
