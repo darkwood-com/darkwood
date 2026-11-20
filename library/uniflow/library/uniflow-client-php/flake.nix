@@ -2,7 +2,7 @@
   description = "Example flake for PHP development";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/4ae25df2c68d889251c436d487553bc8f4e12030";
     nix-shell.url = "github:loophp/nix-shell";
     systems.url = "github:nix-systems/default";
   };
@@ -12,41 +12,7 @@
 
     perSystem = { config, self', inputs', pkgs, system, lib, ... }:
       let
-        # Define PHP extensions to include
-        phpExtensions = [
-          # Core extensions
-          "filter"
-          "openssl"
-          "curl"
-          "simplexml"
-          "tokenizer"
-          "dom"
-          "mbstring"
-          "xmlwriter"
-          "zip"
-        ];
-
-        # Helper function to get PHP extensions
-        getPhpExtensions = php: extensions:
-          map (ext: php.extensions.${ext})
-              (builtins.filter (ext: php.extensions ? ${ext}) extensions);
-
-        php = pkgs.api.buildPhpFromComposer {
-          src = inputs.self;
-          php = pkgs.php83.withExtensions ({ all, ... }: with all; [
-            # v8js
-            filter
-            openssl
-            curl
-            simplexml
-            tokenizer
-            dom
-            mbstring
-            xmlwriter
-            zip
-            session
-          ]);
-        };
+        php = pkgs.php86;
       in
       {
         _module.args.pkgs = import self.inputs.nixpkgs {
@@ -57,26 +23,7 @@
           config.allowUnfree = true;
         };
 
-        devShells.default = pkgs.mkShellNoCC {
-          name = "php-devshell";
-          buildInputs = [
-            php
-            php.packages.composer
-            php.packages.phpstan
-            php.packages.psalm
-            pkgs.phpunit
-            self'.packages.satis
-            # pkgs.v8
-            # pkgs.v8.dev  # Add V8 development files
-            pkgs.pkg-config  # Required for finding V8
-          ];
-
-          # shellHook = '''
-          #   export PKG_CONFIG_PATH="${pkgs.v8}/lib/pkgconfig:$PKG_CONFIG_PATH"
-          #   export V8_INCLUDE_PATH="$\{pkgs.v8.dev}/include"
-          #   export V8_LIB_PATH="${pkgs.v8}/lib"
-          # '';
-        };
+        devShells.default = import ./shell.nix { inherit pkgs; };
 
         checks = {
           inherit (self'.packages) drupal satis symfony-demo;
@@ -307,11 +254,11 @@
 
                 runtimeInputs = [
                   php
-                  php.packages.phpstan
+                  pkgs.phpstan
                 ];
 
                 text = ''
-                  ${lib.getExe php.packages.phpstan} "$@"
+                  ${lib.getExe pkgs.phpstan} "$@"
                 '';
               });
             };

@@ -2,7 +2,7 @@
   description = "Example flake for PHP development";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/4ae25df2c68d889251c436d487553bc8f4e12030";
     nix-shell.url = "github:loophp/nix-shell";
     systems.url = "github:nix-systems/default";
   };
@@ -12,10 +12,7 @@
 
     perSystem = { config, self', inputs', pkgs, system, lib, ... }:
       let
-        php = pkgs.api.buildPhpFromComposer {
-          src = inputs.self;
-          php = pkgs.php83; # Change to php56, php70, ..., php81, php82, php83 etc.
-        };
+        php = pkgs.php86;
       in
       {
         _module.args.pkgs = import self.inputs.nixpkgs {
@@ -26,18 +23,10 @@
           config.allowUnfree = true;
         };
 
-        devShells.default = pkgs.mkShellNoCC {
-          name = "php-devshell";
-          buildInputs = [
-            php
-            php.packages.composer
-            php.packages.phpstan
-            php.packages.psalm
-            pkgs.phpunit
-            self'.packages.satis
-          ];
-
-          shellHook = '''';
+        devShells.default = import ./shell.nix { inherit pkgs; };
+        devShells.quality = (import ../darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix) {
+          inherit pkgs;
+          withQualityTools = true;
         };
 
         checks = {

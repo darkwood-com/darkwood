@@ -205,3 +205,11 @@ Mercure live transcription: from a physical device, use a reachable host (not `1
 - **Workers** (`voice:worker`) — Flow pipeline: Messenger control → record (ffmpeg batch or whisper-stream) → transcribe
 - **UI** — Twig + UX Turbo + Mercure (observe + control only)
 - **Application layer** — `SendVoiceControl`, `RecordWorkerEvent`, transcription providers
+
+## Shell PHP de développement
+
+Depuis cette card dans le monorepo Darkwood, ouvrir le shell Navi PHP 8.6 avec FFmpeg :
+
+```sh
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix
+```

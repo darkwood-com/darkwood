@@ -14,7 +14,7 @@
 
     perSystem = { config, self', inputs', pkgs, system, lib, ... }:
       let
-        php = pkgs.php85;
+        php = pkgs.php86;
         mkPhpShell = import ./shell.nix;
       in
       {
@@ -27,12 +27,10 @@
         };
 
         devShells = {
-          default = mkPhpShell { inherit pkgs php; };
-          php85 = mkPhpShell { inherit pkgs php; };
-          php86 = mkPhpShell { inherit pkgs; php = pkgs.php86; name = "darkwood-php86-experimental"; };
+          default = mkPhpShell { inherit pkgs; };
           quality = mkPhpShell {
-            inherit pkgs php;
-            extraPackages = [ pkgs.symfony-cli pkgs.castor pkgs.phpstan php.packages.psalm pkgs.phpunit ];
+            inherit pkgs;
+            withQualityTools = true;
           };
         };
 
@@ -41,7 +39,6 @@
         };
 
         packages = {
-          php85 = pkgs.php85;
           php86 = pkgs.php86;
           composer = php.packages.composer;
           satis = php.buildComposerProject {

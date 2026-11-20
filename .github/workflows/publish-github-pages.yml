@@ -176,11 +176,11 @@ jobs:
         if: steps.select.outputs.selected == 'true' && matrix.id == 'content-darkwood-ai-mcp-symfony-hackathon'
         working-directory: library/content-mario-orquestration
         run: |
-          nix develop -c composer install --no-scripts --no-interaction --prefer-dist --no-progress
-          nix develop -c composer validate --no-check-publish
-          nix develop -c composer check-platform-reqs
-          nix develop -c php tests/generation-regression.php
-          nix develop -c php tests/design-regression.php
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c composer install --no-scripts --no-interaction --prefer-dist --no-progress
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c composer validate --no-check-publish
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c composer check-platform-reqs
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php tests/generation-regression.php
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php tests/design-regression.php
 
       - name: Test and export the PHP static site
         if: steps.select.outputs.selected == 'true' && matrix.builder == 'nix'
@@ -188,11 +188,11 @@ jobs:
         env:
           ARTIFACT_DIRECTORY: ${{ github.workspace }}/${{ matrix.artifact }}
         run: |
-          nix develop -c composer install --no-interaction --prefer-dist --no-progress
-          nix develop -c php bin/console lint:twig templates
-          nix develop -c php bin/phpunit
-          nix develop -c node --test "tests/${{ matrix.node_test }}.test.mjs"
-          nix develop -c php bin/console app:export-static
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c composer install --no-interaction --prefer-dist --no-progress
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php bin/console lint:twig templates
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php bin/phpunit
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c node --test "tests/${{ matrix.node_test }}.test.mjs"
+          nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c php bin/console app:export-static
           test -s "$ARTIFACT_DIRECTORY/index.html"
 
       - name: Create a repository-scoped publication token

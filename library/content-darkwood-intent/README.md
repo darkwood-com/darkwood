@@ -29,7 +29,7 @@ Les démonstrations sont pédagogiques. Elles n’annoncent pas de nouvelles fon
 
 ## Lancer localement
 
-Prérequis : Nix avec `nix-command` et `flakes`. Le flake épinglé fournit PHP 8.5, Composer et Node.
+Prérequis : Nix avec `nix-command` et `flakes`. Le flake épinglé fournit PHP 8.6, Composer et Node.
 
 ```sh
 nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix -c composer install

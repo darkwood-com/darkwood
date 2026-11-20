@@ -1,7 +1,7 @@
 {
   description = "Nolife Tracker development environment";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/4ae25df2c68d889251c436d487553bc8f4e12030";
 
   outputs = { nixpkgs, ... }:
     let
@@ -18,17 +18,9 @@
         system:
         let
           pkgs = import nixpkgs { inherit system; };
-          php = pkgs.php84.buildEnv {
-            extensions = ({ enabled, all }: enabled ++ [ all.pdo_sqlite ]);
-          };
         in
         {
-          default = pkgs.mkShell {
-            packages = [
-              php
-              pkgs.php84Packages.composer
-            ];
-          };
+          default = import ./shell.nix { inherit pkgs; };
         }
       );
     };

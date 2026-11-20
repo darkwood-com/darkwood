@@ -1,0 +1,6 @@
+{ pkgs ? null }:
+import ../darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix {
+  inherit pkgs;
+  lockFile = ./flake.lock;
+  extraExtensions = { all, ... }: [ all.pdo_sqlite ];
+}

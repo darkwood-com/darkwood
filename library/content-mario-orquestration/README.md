@@ -6,7 +6,7 @@ This is a level design and inspection workflow, **not a playable game**. No Nint
 
 ## Five-minute quickstart
 
-Requirements: Git, Nix with flakes, network access and your own OpenAI API key with provider credit. Nix supplies PHP 8.5, Composer and required extensions; no Docker, database, private package, Navi installation or system PHP is needed.
+Requirements: Git, Nix with flakes, network access and your own OpenAI API key with provider credit. Nix supplies PHP 8.6, Composer and required extensions; no Docker, database, private package, Navi installation or system PHP is needed.
 
 ```sh
 git clone --depth=1 --filter=blob:none --sparse https://github.com/darkwood-com/darkwood.git

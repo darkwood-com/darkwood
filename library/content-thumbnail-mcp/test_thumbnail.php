@@ -1,42 +1,27 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+declare(strict_types=1);
 
+require_once __DIR__.'/vendor/autoload.php';
+
+use App\Bridge\Replicate\Client;
 use App\Tool\ThumbnailTool;
-use PhpLlm\LlmChain\Model\Model;
-use PhpLlm\LlmChain\Platform;
-use PhpLlm\LlmChain\Model\Response\ResponseInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface as HttpResponse;
+use Symfony\Component\Clock\MockClock;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
 
-// Create a mock implementation for the Platform
-class TestPlatform extends Platform
-{
-    public function __construct()
-    {
-        // Override constructor to avoid dependencies
-    }
+$original = 'https://example.com/thumbnail.webp';
+$styled = 'https://example.com/styled.webp';
+$http = new MockHttpClient([
+    new MockResponse(json_encode(['status' => 'succeeded', 'output' => [$original]], JSON_THROW_ON_ERROR)),
+    new MockResponse(json_encode(['status' => 'succeeded', 'output' => [$styled]], JSON_THROW_ON_ERROR)),
+]);
 
-    public function request(Model $model, array|string|object $input, array $options = []): ResponseInterface
-    {
-        echo "Model ID: " . $model->getId() . PHP_EOL;
-        echo "Input options: " . json_encode($input, JSON_PRETTY_PRINT) . PHP_EOL;
-        
-        return new class() implements ResponseInterface {
-            public function getContent()
-            {
-                // Mock response with a fake image URL
-                return ['https://replicate.delivery/example/thumbnail-image.webp'];
-            }
-        };
-    }
+$tool = new ThumbnailTool(new Client($http, new MockClock(), 'fixture'));
+$result = $tool->generateThumbnailImage('John Doe');
+
+if ($http->getRequestsCount() !== 2 || !str_contains($result, $original) || !str_contains($result, $styled)) {
+    throw new RuntimeException("Unexpected thumbnail fixture result: ".$result);
 }
 
-// Create the tool with our mock platform
-$platform = new TestPlatform();
-$thumbnailTool = new ThumbnailTool($platform);
-
-// Test the tool with a name
-$result = $thumbnailTool('John Doe');
-
-// Output the result
-echo "Result: " . $result . PHP_EOL; 
+echo $result.PHP_EOL;

@@ -10,11 +10,11 @@ Migration du 18 novembre 2026 validée : DNS uniquement vers GitHub Pages, certi
 
 ## Lancer le projet Symfony
 
-Prérequis : Nix avec `nix-command` et `flakes`. Le flake épinglé fournit PHP 8.5, Composer et Node pour les tests et la prévisualisation, sans Docker ni installation système supplémentaire.
+Prérequis : Nix avec `nix-command` et `flakes`. Le flake épinglé fournit PHP 8.6, Composer et Node pour les tests et la prévisualisation, sans Docker ni installation système supplémentaire.
 
 ```sh
-git clone git@github.com:matyo91/darkwood-memory.git
-cd darkwood-memory
+git clone https://github.com/darkwood-com/darkwood.git
+cd darkwood/library/content-darkwood-memory
 nix develop --file ./shell.nix -c composer install
 nix develop --file ./shell.nix -c php -S 127.0.0.1:8097 -t public
 ```

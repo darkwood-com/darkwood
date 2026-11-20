@@ -6,14 +6,13 @@ Ce répertoire est le socle de développement PHP Darkwood. Il ne lance aucun se
 
 ```sh
 nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix --arg lockFile ./flake.lock
-nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix --arg lockFile ./flake.lock --argstr phpVersion 86
 # Optional tools, from this dedicated environment directory only:
 nix --extra-experimental-features 'nix-command flakes' develop path:.#quality
 ```
 
-`default` et `php85` utilisent PHP 8.5.13. `php86` est une variante expérimentale PHP 8.6.0. Les versions sont celles de la révision Nixpkgs du `flake.lock`, distinctes de la version du client ou du daemon Nix. Aucun runtime FrankenPHP n'est modifié par ce shell.
+`default` et le profil qualité utilisent PHP 8.6.0. La version vient du verrou Nixpkgs, indépendamment de celle du client et du daemon Nix.
 
-Le socle minimal apporte PHP, ses extensions natives par défaut et Composer. Le profil `quality` ajoute Symfony CLI, PHPStan, Psalm et PHPUnit de Nixpkgs. Les outils isolés sous `tools/` et leurs lockfiles restent prioritaires pour les contrôles propres au projet ; les versions globales ne remplacent pas les contraintes Composer de ces outils. Satis et les exemples préexistants restent des sorties optionnelles : ils ne sont plus requis pour ouvrir le shell minimal.
+Le socle minimal apporte PHP, ses extensions natives par défaut et Composer. Le profil `quality` ajoute Symfony CLI, Castor, PHPStan, Psalm et PHPUnit de Nixpkgs. Les outils isolés sous `tools/` et leurs lockfiles restent prioritaires pour les contrôles propres au projet ; les versions globales ne remplacent pas les contraintes Composer de ces outils. Satis et les exemples préexistants restent des sorties optionnelles : ils ne sont plus requis pour ouvrir le shell minimal.
 
 ## Composition dans une card
 
@@ -23,7 +22,6 @@ Dans le même monorepo, importer `shell.nix` depuis le flake de la card et fourn
 let mkPhpShell = import ../darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix;
 in mkPhpShell {
   inherit pkgs;
-  php = pkgs.php85;
   extraExtensions = { all, ... }: [ all.mbstring ];
   extraPackages = [ pkgs.nodejs_22 ];
 }
@@ -33,7 +31,7 @@ L'API est aussi exposée par `lib.mkPhpShell` du flake Navi. Un dépôt extérie
 
 Une card peut aussi fournir un `shell.nix` fin appelant ce même constructeur avec `lockFile = ./flake.lock`. `nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix` évite de capturer le monorepo applicatif comme source de flake. Le constructeur lit uniquement le lock et récupère sa révision Nixpkgs avec vérification du `narHash` ; il ne transmet aucun répertoire applicatif à Nix. `extraPackages` accepte une liste ou une fonction de `pkgs`.
 
-Paramètres : `pkgs`, `lockFile`, `system`, `php`, `phpVersion` (`85` ou `86`), `extraExtensions`, `extraConfig`, `extraPackages`, `shellHook` et `name`. Pas de source applicative, de secrets ou de liste générique de services. FFmpeg, PostgreSQL, Godot, SDK mobiles et outils ML restent des ajouts explicites de la card concernée.
+Paramètres : `pkgs`, `lockFile`, `system`, `extraExtensions`, `extraConfig`, `extraPackages`, `withQualityTools`, `shellHook` et `name`. Pas de source applicative, de secrets ou de liste générique de services. FFmpeg, PostgreSQL, Godot, SDK mobiles et outils ML restent des ajouts explicites de la card concernée.
 
 Les lanceurs Castor utilisent l’entrée native `--file shell.nix --arg lockFile ...`, qui ne capture pas le répertoire comme source de flake. `extraConfig` est réservé aux réglages PHP non sensibles : ne jamais y injecter de credential, car la configuration générée appartient au store lisible.
 
@@ -47,16 +45,9 @@ Le fetcher Git d'un flake copie néanmoins les fichiers suivis nécessaires à s
 
 Les fichiers Compose existants décrivent un PostgreSQL local optionnel historique. Ils sont conservés pour compatibilité, ne sont jamais démarrés par les shells et ne constituent pas une dépendance des autres cards.
 
-## Repli
-
-Les consommateurs alignent leur révision Nixpkgs sur celle de Navi et conservent leurs manifests Composer. Revenir au commit précédent de leur flake suffit pour annuler l'adoption. Pour quitter PHP 8.6 expérimental, sortir du shell puis rouvrir `default`/`php85`. Aucun changement de daemon, profil système ou runtime de production n'est nécessaire.
-
 ## Politique de versions
 
-La référence PHP maintient uniquement **PHP 8.5.13** (défaut) et **PHP 8.6.0**
-(expérimental), depuis une même révision Nixpkgs. Le constructeur refuse les
-anciens runtimes ; une card adoptée doit aligner son lock avant de l’utiliser.
-Actualiser ensemble le verrou canonique et cette vérification à la prochaine
-version stable, après validation. Les anciens PHP encore utilisés par un
-processus ou une racine existante ne sont jamais supprimés avec une option
-ignorant la vivacité. Les exceptions non encore migrées restent recensées.
+PHP 8.6.0 est l’unique runtime de développement du socle. Les consommateurs
+alignent leur révision Nixpkgs sur celle de Navi. Les projets incompatibles
+conservent temporairement leur environnement propre, documenté dans le bilan
+S47. Le retour au verrou et au shell précédents reste possible par Git.

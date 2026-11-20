@@ -2,11 +2,10 @@
 { pkgs ? null
 , lockFile ? null
 , system ? builtins.currentSystem
-, php ? null
-, phpVersion ? "85"
 , extraExtensions ? (_: [])
 , extraConfig ? ""
 , extraPackages ? []
+, withQualityTools ? false
 , shellHook ? ""
 , name ? "darkwood-php"
 }:
@@ -19,19 +18,24 @@ let
       input = lock.nodes.${lock.nodes.${lock.root}.inputs.nixpkgs}.locked;
       source = builtins.fetchTree { inherit (input) type owner repo rev narHash; };
     in import source.outPath { inherit system; config = {}; overlays = []; };
-  basePhp = if php == null then
-    assert builtins.elem phpVersion [ "85" "86" ];
-    packageSet."php${phpVersion}"
-  else php;
-  runtime = assert builtins.elem basePhp.version [ "8.5.13" "8.6.0" ];
-    basePhp.buildEnv {
+  basePhp = packageSet.php86;
+  runtime = assert basePhp.version == "8.6.0"; basePhp.buildEnv {
     extensions = available: packageSet.lib.unique (available.enabled ++ extraExtensions available);
     inherit extraConfig;
   };
+  qualityTools = with packageSet; [
+    symfony-cli
+    runtime.packages.castor
+    (phpstan.override { php = runtime; })
+    runtime.packages.psalm
+    (phpunit.override { php = runtime; })
+  ];
   additions = if builtins.isFunction extraPackages then extraPackages packageSet else extraPackages;
 in packageSet.mkShellNoCC {
   inherit name;
-  packages = [ runtime runtime.packages.composer ] ++ additions;
+  packages = [ runtime runtime.packages.composer ]
+    ++ packageSet.lib.optionals withQualityTools qualityTools
+    ++ additions;
   COMPOSER_MEMORY_LIMIT = "-1";
   shellHook = ''
     # Do not inherit a scan directory from a different PHP installation.
