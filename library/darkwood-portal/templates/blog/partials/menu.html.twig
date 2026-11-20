@@ -63,30 +63,37 @@
     </div>
 </nav>
 
+<nav aria-label="{{ app.request.locale == 'fr' ? 'Navigation mobile' : 'Mobile navigation' }}">
 <ul class="theme-mobile-nav">
     <li class="theme-mobile-nav__home">
-        <a href="{{ path('blog_home') }}" class="{% if currentRoute == 'blog_home' %}active{% endif %}">
+        <a href="{{ path('blog_home') }}" class="{% if currentRoute == 'blog_home' %}active{% endif %}"{% if currentRoute == 'blog_home' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">⌂</span>
             Blog
         </a>
     </li>
     <li>
-        <a href="{{ path('blog_home') }}" class="{% if activeRoute == 'blog_home' %}active{% endif %}">
+        <a href="{{ path('blog_home') }}" class="{% if activeRoute == 'blog_home' %}active{% endif %}"{% if activeRoute == 'blog_home' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">▦</span>
             {{ 'blog.menu.articles'|trans }}
         </a>
     </li>
     <li>
-        <a href="{{ path('blog_watch') }}" class="{% if activeRoute == 'blog_watch' %}active{% endif %}">
+        <a href="{{ path('blog_watch') }}" class="{% if activeRoute == 'blog_watch' %}active{% endif %}"{% if activeRoute == 'blog_watch' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">◷</span>
             {{ 'blog.menu.watch'|trans }}
         </a>
     </li>
     <li>
-        <a href="{{ path('blog_release') }}" class="{% if activeRoute == 'blog_release' %}active{% endif %}">
+        <a href="{{ path('blog_release') }}" class="{% if activeRoute == 'blog_release' %}active{% endif %}"{% if activeRoute == 'blog_release' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">↑</span>
             {{ 'blog.menu.release'|trans }}
         </a>
     </li>
     <li>
-        <a href="{{ path('blog_creator') }}" class="{% if activeRoute == 'blog_creator' %}active{% endif %}">
+        <a href="{{ path('blog_creator') }}" class="{% if activeRoute == 'blog_creator' %}active{% endif %}"{% if activeRoute == 'blog_creator' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">♙</span>
             {{ 'blog.menu.creator'|trans }}
         </a>
     </li>
 </ul>
+</nav>

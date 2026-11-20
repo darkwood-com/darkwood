@@ -102,19 +102,23 @@
     </div>
 </nav>
 
+<nav aria-label="{{ app.request.locale == 'fr' ? 'Navigation mobile' : 'Mobile navigation' }}">
 <ul class="theme-mobile-nav">
     <li class="theme-mobile-nav__home">
-        <a href="{{ path('darkwood_home') }}" class="{% if currentRoute == 'darkwood_home' %}active{% endif %}">
+        <a href="{{ path('darkwood_home') }}" class="{% if currentRoute == 'darkwood_home' %}active{% endif %}"{% if currentRoute == 'darkwood_home' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">⌂</span>
             {{ 'darkwood.menu.home'|trans }}
         </a>
     </li>
     <li>
-        <a href="{{ path('darkwood_play') }}" class="{% if currentRoute == 'darkwood_play' %}active{% endif %}">
+        <a href="{{ path('darkwood_play') }}" class="{% if currentRoute == 'darkwood_play' %}active{% endif %}"{% if currentRoute == 'darkwood_play' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">▶</span>
             {{ 'darkwood.menu.play'|trans }}
         </a>
     </li>
     <li class="dropup">
         <a href="#" class="dropdown-toggle{% if communityActive %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="dw-mobile-icon" aria-hidden="true">▦</span>
             {{ 'darkwood.menu.community'|trans }}
         </a>
         <ul class="dropdown-menu">
@@ -137,6 +141,7 @@
     </li>
     <li class="dropup">
         <a href="#" class="dropdown-toggle{% if rankActive %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="dw-mobile-icon" aria-hidden="true">▥</span>
             {{ 'darkwood.menu.leaderboard'|trans }}
         </a>
         <ul class="dropdown-menu">
@@ -158,8 +163,10 @@
         </ul>
     </li>
     <li>
-        <a href="{{ path('darkwood_rules') }}" class="{% if currentRoute == 'darkwood_rules' %}active{% endif %}">
+        <a href="{{ path('darkwood_rules') }}" class="{% if currentRoute == 'darkwood_rules' %}active{% endif %}"{% if currentRoute == 'darkwood_rules' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">≡</span>
             {{ 'darkwood.menu.rules_short'|trans }}
         </a>
     </li>
 </ul>
+</nav>

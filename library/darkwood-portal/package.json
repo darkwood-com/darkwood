@@ -21,7 +21,7 @@
         "test:admin-assets": "node tests/browser/admin-assets.cjs"
     },
     "dependencies": {
-        "bootstrap": "^5.3.5",
+        "bootstrap": "5.3.9",
         "mermaid": "^12.2.0"
     },
     "devDependencies": {
