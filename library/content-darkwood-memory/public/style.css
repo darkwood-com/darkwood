@@ -1,9 +1,92 @@
+/* Darkwood Design semantic contract; product layouts and theme controls stay local. */
+:root {
+  color-scheme: light;
+  --dw-font-sans: Jost, system-ui, sans-serif;
+  --dw-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --dw-text: #000000;
+  --dw-background: #ffffff;
+  --dw-surface: #ffffff;
+  --dw-input: #ffffff;
+  --dw-border: #eff2f7;
+  --dw-primary: #007bff;
+  --dw-primary-hover: #0056b3;
+  --dw-on-primary: #ffffff;
+  --dw-muted: #6c757d;
+  --dw-subtle: #f8f9fa;
+  --dw-success: #198754;
+  --dw-warning: #997300;
+  --dw-danger: #dc3545;
+  --dw-info: #0b7285;
+  --dw-navbar: rgba(255, 255, 255, .88);
+  --dw-shadow: rgba(18, 38, 63, .08);
+  --dw-radius-sm: .25rem;
+  --dw-radius: .375rem;
+  --dw-radius-lg: .5rem;
+  --dw-space-1: .25rem;
+  --dw-space-2: .5rem;
+  --dw-space-3: 1rem;
+  --dw-space-4: 1.5rem;
+  --dw-space-5: 2rem;
+  --dw-space-6: 3rem;
+  --dw-space-7: 5rem;
+  --dw-container: 1140px;
+  --dw-header-height: 60px;
+  --dw-transition: .2s ease;
+}
+
+body.theme-dark {
+  color-scheme: dark;
+  --dw-text: #ebf4f1;
+  --dw-background: #091a28;
+  --dw-surface: #0b1e2e;
+  --dw-input: #0e2233;
+  --dw-border: #0f2b3d;
+  --dw-primary: #0d7fe8;
+  --dw-primary-hover: #5ca8ee;
+  --dw-muted: #9bb0bd;
+  --dw-subtle: #0e2233;
+  --dw-success: #4fc48a;
+  --dw-warning: #d3ad55;
+  --dw-danger: #ff7b85;
+  --dw-info: #67c7d5;
+  --dw-navbar: rgba(9, 26, 40, .88);
+  --dw-shadow: rgba(0, 0, 0, .22);
+}
+
+body.theme-sepia {
+  color-scheme: light;
+  --dw-text: #433422;
+  --dw-background: #f1e7d0;
+  --dw-surface: #f1e7d0;
+  --dw-input: #eadec2;
+  --dw-border: #ded0bf;
+  --dw-primary: #0066cc;
+  --dw-primary-hover: #004080;
+  --dw-muted: #765f42;
+  --dw-subtle: #eadec2;
+  --dw-success: #087f5b;
+  --dw-warning: #856400;
+  --dw-danger: #9f2030;
+  --dw-info: #176b78;
+  --dw-navbar: rgba(241, 231, 208, .88);
+  --dw-shadow: rgba(67, 52, 34, .1);
+}
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--dw-primary) 48%, transparent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
 @font-face { font-family:Jost; font-weight:400; font-style:normal; font-display:swap; src:url('fonts/Jost-400-Book.otf') format('opentype'); }
 /* Theme names, palette tokens and sidebar breakpoints follow Darkwaar. */
-:root { --display: Jost,system-ui,-apple-system,'Segoe UI',sans-serif; --mono: ui-monospace,SFMono-Regular,Consolas,monospace; }
-body.theme-light { --secondary-color:#6c757d; --text-color:#000000; --bg-color:#ffffff; --input-color:#ffffff; --border-color:#eff2f7; --primary-color:#0066cc; --primary-hover-color:#004080; --muted:#576068; --accent:#0066cc; --soft:#eff2f7; --nav-color:#ffffff; color-scheme:light; }
-body.theme-sepia { --secondary-color:#876944; --text-color:#433422; --bg-color:#f1e7d0; --input-color:#eadec2; --border-color:#ded0bf; --primary-color:#0066cc; --primary-hover-color:#004080; --muted:#695236; --accent:#0066cc; --soft:#eadec2; --nav-color:#f1e7d0; color-scheme:light; }
-body.theme-dark { --secondary-color:#bdbdbd; --text-color:#ebf4f1; --bg-color:#091a28; --input-color:#0e2233; --border-color:#0f2b3d; --primary-color:#0066cc; --primary-hover-color:#004080; --muted:#adb5bd; --accent:var(--primary-color); --soft:#0e2233; --nav-color:var(--bg-color); color-scheme:dark; }
+:root { --display:var(--dw-font-sans); --mono:var(--dw-font-mono); }
+body.theme-light { --secondary-color:#6c757d; --text-color:var(--dw-text); --bg-color:var(--dw-background); --input-color:var(--dw-input); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --primary-hover-color:var(--dw-primary-hover); --muted:var(--dw-muted); --accent:var(--dw-primary); --soft:var(--dw-subtle); --nav-color:var(--dw-surface); color-scheme:light; }
+body.theme-sepia { --secondary-color:#876944; --text-color:var(--dw-text); --bg-color:var(--dw-background); --input-color:var(--dw-input); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --primary-hover-color:var(--dw-primary-hover); --muted:var(--dw-muted); --accent:var(--dw-primary); --soft:var(--dw-subtle); --nav-color:var(--dw-surface); color-scheme:light; }
+body.theme-dark { --secondary-color:#bdbdbd; --text-color:var(--dw-text); --bg-color:var(--dw-background); --input-color:var(--dw-input); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --primary-hover-color:var(--dw-primary-hover); --muted:var(--dw-muted); --accent:var(--dw-primary); --soft:var(--dw-subtle); --nav-color:var(--dw-surface); color-scheme:dark; }
 body { --paper:var(--bg-color); --white:var(--input-color); --ink:var(--text-color); --line:var(--border-color); }
 * {
   box-sizing:border-box;
@@ -13,7 +96,7 @@ body {
   margin:0;
   background:var(--paper);
   color:var(--ink);
-  font:16px/1.6 system-ui,sans-serif;
+  font:16px/1.6 var(--dw-font-sans);
 }
 a {
   color:inherit;
@@ -67,7 +150,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
   font-weight:400;
 }
 .hero h1 {
-  font:400 clamp(38px,6vw,80px)/1.08 system-ui,sans-serif;
+  font:400 clamp(38px,6vw,80px)/1.08 var(--dw-font-sans);
   letter-spacing:-.055em;
   margin:26px 0 20px;
 }
@@ -314,7 +397,7 @@ form ul {
   padding:0 0 22px;
 }
 .timeline h3 {
-  font:18px/1.5 system-ui,sans-serif;
+  font:18px/1.5 var(--dw-font-sans);
   margin:8px 0;
 }
 .timeline p {
@@ -380,7 +463,7 @@ form ul {
   display:grid;
   place-items:center;
   color:#8ed6fb;
-  font:60px system-ui;
+  font:60px var(--dw-font-sans);
 }
 .door-art.opened {
   background:#8ed6fb;
@@ -728,3 +811,8 @@ summary { cursor:pointer; padding:12px 0; }
 @media(max-width:420px) { .game-presentation { grid-template-columns:1fr; max-width:280px; } }
 
 .note-cell[aria-pressed=true] { color:#ffffff; }
+
+/* Use the existing darker blue for readable small labels and filled actions. */
+body.theme-light,body.theme-sepia{--accent-text:var(--dw-primary-hover)}
+button:not(.secondary):not(.text-button):not(.icon-control){background:color-mix(in srgb,var(--dw-primary) 85%,#000)}
+code,pre{font-family:var(--dw-font-mono)}
