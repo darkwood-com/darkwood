@@ -25,6 +25,7 @@ jobs:
           sparse-checkout: |
             .github/distribution-cards.json
             library/pages
+            library/darkwood-design/icons/sepia.svg
             .github/scripts/validate-publication-domains.mjs
             .github/scripts/validate-publication-domains.test.mjs
             README.md
