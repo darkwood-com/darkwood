@@ -9,7 +9,7 @@
     },
     "require-dev": {
         "amphp/amp": "^3.1",
-        "phpunit/phpunit": "^11.5"
+        "phpunit/phpunit": "^13.4.8"
     },
     "autoload": {
         "psr-4": {
