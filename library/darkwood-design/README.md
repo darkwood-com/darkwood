@@ -13,7 +13,7 @@ Ce dépôt ne fournit ni framework CSS ni dépendance runtime. Il documente le p
 - **Interaction** : cible minimale de 44 px, focus visible de 3 px, état désactivé perceptible autrement que par la couleur.
 - **Mouvement** : transitions courtes de 200 ms et respect de `prefers-reduced-motion`.
 
-Les tokens de référence sont dans [`tokens.css`](tokens.css). La page [`examples.html`](examples.html) montre les composants sans JavaScript ni infrastructure. Le [guide d'intégration](docs/integration.md) définit la méthode d'adoption et [`docs/decisions.md`](docs/decisions.md) conserve les décisions.
+Les tokens de référence sont dans [`tokens.css`](tokens.css). La page [`examples.html`](examples.html) montre les composants sans JavaScript ni infrastructure. Le [guide d'intégration](docs/integration.md) définit la méthode d'adoption. Les conventions applicables sont maintenues dans ces documents canoniques, sans journal de décisions.
 
 ## Composants de référence
 

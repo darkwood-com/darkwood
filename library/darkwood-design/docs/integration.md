@@ -27,3 +27,9 @@ The helper validates the video ID, uses `youtube-nocookie.com`, lazy loading,
 an accessible title, 16:9 sizing and `strict-origin-when-cross-origin`. It never
 enables audible autoplay. Include the same source in static exports/Twig pages
 instead of duplicating iframe configuration in each card.
+
+## Adoption sans dépendance runtime
+
+Les feuilles locales peuvent reprendre les déclarations de `tokens.css` et exposer les anciennes variables comme alias. Adapter uniquement les sélecteurs de thème au mécanisme déjà utilisé (`data-theme` ou `body.theme-*`). Conserver les composants et leurs exceptions fonctionnelles. Les ateliers et Pages suivent cette méthode ; leur source CSS reste celle qui est assemblée par leur build existant.
+
+Le bleu d’action ne garantit pas à lui seul le contraste d’un petit texte. Utiliser le rôle `--dw-primary-hover` pour les libellés bleus sur fond clair. Pour un bouton à petit texte blanc, assombrir localement le bleu d’action si nécessaire (`color-mix(in srgb, var(--dw-primary) 85%, #000)` dans les ateliers), puis vérifier le contraste dans chaque thème. Le bleu de survol du thème sombre est clair : il ne convient pas comme fond sous un petit texte blanc. Les polices locales conservent leur licence OFL.
