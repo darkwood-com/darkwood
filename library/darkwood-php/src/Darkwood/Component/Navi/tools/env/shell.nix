@@ -23,11 +23,18 @@ let
     extensions = available: packageSet.lib.unique (available.enabled ++ extraExtensions available);
     inherit extraConfig;
   };
+  psalm = packageSet.fetchurl {
+    url = "https://github.com/vimeo/psalm/releases/download/7.12.0/psalm.phar";
+    sha256 = "6d632443537a38d7089983d16b14d7e798434a578e501dd8342f35656136d17b";
+  };
   qualityTools = with packageSet; [
     symfony-cli
     runtime.packages.castor
-    (phpstan.override { php = runtime; })
-    runtime.packages.psalm
+    (phpstan.override { php = runtime; withTurbo = false; })
+    (writeShellScriptBin "psalm" ''
+      exec ${runtime}/bin/php ${psalm} "$@"
+    '')
+    runtime.packages.php-cs-fixer
     (phpunit.override { php = runtime; })
   ];
   additions = if builtins.isFunction extraPackages then extraPackages packageSet else extraPackages;
@@ -40,6 +47,7 @@ in packageSet.mkShellNoCC {
   shellHook = ''
     # Do not inherit a scan directory from a different PHP installation.
     export PHP_INI_SCAN_DIR="${runtime}/lib''${DARKWOOD_PHP_INI_DIR:+:$DARKWOOD_PHP_INI_DIR}"
+    export SYMFONY_CLI_PHP_BINARY_PATH="${runtime}/bin/php"
     ${shellHook}
   '';
 }

@@ -6,13 +6,13 @@ Ce répertoire est le socle de développement PHP Darkwood. Il ne lance aucun se
 
 ```sh
 nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix --arg lockFile ./flake.lock
-# Optional tools, from this dedicated environment directory only:
-nix --extra-experimental-features 'nix-command flakes' develop path:.#quality
+# Outils qualité optionnels
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix --arg lockFile ./flake.lock --arg withQualityTools true
 ```
 
 `default` et le profil qualité utilisent PHP 8.6.0. La version vient du verrou Nixpkgs, indépendamment de celle du client et du daemon Nix.
 
-Le socle minimal apporte PHP, ses extensions natives par défaut et Composer. Le profil `quality` ajoute Symfony CLI, Castor, PHPStan, Psalm et PHPUnit de Nixpkgs. Les outils isolés sous `tools/` et leurs lockfiles restent prioritaires pour les contrôles propres au projet ; les versions globales ne remplacent pas les contraintes Composer de ces outils. Satis et les exemples préexistants restent des sorties optionnelles : ils ne sont plus requis pour ouvrir le shell minimal.
+Le socle minimal apporte PHP, ses extensions natives par défaut et Composer. Le profil `quality` ajoute Symfony CLI, Castor, PHPStan, Psalm, PHPUnit et PHP-CS-Fixer. Psalm utilise le PHAR officiel vérifié par empreinte. Rector reste fourni par le verrou Composer de `tools/rector`. Les outils isolés sous `tools/` et leurs lockfiles restent prioritaires pour les contrôles propres au projet ; les versions globales ne remplacent pas les contraintes Composer de ces outils. Satis et les exemples préexistants restent des sorties optionnelles : ils ne sont plus requis pour ouvrir le shell minimal.
 
 ## Composition dans une card
 
@@ -35,7 +35,7 @@ Paramètres : `pkgs`, `lockFile`, `system`, `extraExtensions`, `extraConfig`, `e
 
 Les lanceurs Castor utilisent l’entrée native `--file shell.nix --arg lockFile ...`, qui ne capture pas le répertoire comme source de flake. `extraConfig` est réservé aux réglages PHP non sensibles : ne jamais y injecter de credential, car la configuration générée appartient au store lisible.
 
-Le shell neutralise un `PHP_INI_SCAN_DIR` hérité d'un autre PHP. Une extension opérateur peut être ajoutée explicitement via `DARKWOOD_PHP_INI_DIR`. Aucun fichier de configuration système n'est réécrit.
+Dans le shell, Symfony CLI utilise le binaire PHP de Navi via `SYMFONY_CLI_PHP_BINARY_PATH`, y compris avec une autre version installée sur la machine. Le shell neutralise un `PHP_INI_SCAN_DIR` hérité d'un autre PHP. Une extension opérateur peut être ajoutée explicitement via `DARKWOOD_PHP_INI_DIR`. Aucun fichier de configuration système n'est réécrit.
 
 ## Sources et sécurité du store
 

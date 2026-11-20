@@ -159,3 +159,11 @@ Out of scope for the current phase:
 The goal right now is a credible, executable foundation around:
 
 `Lambda -> Capability -> Execution`
+
+## Environnement de développement
+
+Depuis cette card dans le monorepo Darkwood, ouvrir le shell Navi PHP 8.6.
+
+```sh
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix
+```

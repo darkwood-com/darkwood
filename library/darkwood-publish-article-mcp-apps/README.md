@@ -219,3 +219,11 @@ darkwood-publish-article-mcp-apps/
 
 - MCP Apps: `specification/2026-01-26/apps.mdx` in the [ext-apps](https://github.com/modelcontextprotocol/ext-apps) repo.
 - Quickstart (concept: tool + UI resource, View in iframe): [MCP Apps Quickstart](https://apps.extensions.modelcontextprotocol.io/api/documents/Quickstart.html).
+
+## Environnement de développement
+
+Depuis cette card dans le monorepo Darkwood, ouvrir le shell Navi PHP 8.6.
+
+```sh
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix
+```

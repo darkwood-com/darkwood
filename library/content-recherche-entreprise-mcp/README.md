@@ -67,3 +67,10 @@ You must call a tool to answer the question.
 
 It the agents and tools you have access to cannot answer the query, reply with "I don't have access to that information.". Do not answer from internal knowledge.
 ```
+## Environnement de développement
+
+Depuis cette card dans le monorepo Darkwood, ouvrir le shell Navi PHP 8.6.
+
+```sh
+nix --extra-experimental-features 'nix-command flakes' develop --file ./shell.nix
+```
