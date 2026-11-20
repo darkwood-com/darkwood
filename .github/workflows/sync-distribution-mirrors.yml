@@ -159,19 +159,33 @@ jobs:
           composer validate --strict --no-check-publish "$SOURCE/composer.json"
           library/darkwood-php/.github/ci-run-package.sh "$PACKAGE_ID"
 
-      - name: Set up Nix for Flow
+      - name: Set up Nix for PHP 8.6
         if: steps.select.outputs.selected == 'true' && matrix.php_version == '8.6'
         uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
 
-      - name: Validate Flow on stable PHP 8.6
+      - name: Validate package on stable PHP 8.6
         if: steps.select.outputs.selected == 'true' && matrix.php_version == '8.6'
         working-directory: ${{ matrix.source }}
         env:
           EXPECTED_PACKAGE: ${{ matrix.composer }}
+          PACKAGE_ID: ${{ matrix.package_id }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
+          case "$PACKAGE_ID" in
+            flow)
+              shell_args=(--argstr naviEnv "$(cd ../Navi/tools/env && pwd -P)" --arg withOpenSwoole true)
+              ;;
+            navi)
+              shell_args=(--argstr lockFile "$PWD/tools/env/flake.lock" --arg withQualityTools true
+                --arg extraExtensions '{ all, ... }: [ all.openswoole ]')
+              ;;
+            *)
+              echo "No pinned PHP 8.6 shell configured for $PACKAGE_ID" >&2
+              exit 1
+              ;;
+          esac
           nix --extra-experimental-features 'nix-command flakes' develop --file tools/env/shell.nix \
-            --argstr naviEnv "$(cd ../Navi/tools/env && pwd -P)" \
-            --arg withOpenSwoole true -c bash -euo pipefail -c '
+            "${shell_args[@]}" -c bash -euo pipefail -c '
               test "$(jq -r .name composer.json)" = "$EXPECTED_PACKAGE"
               php -v
               composer install --no-progress --no-interaction
@@ -180,8 +194,13 @@ jobs:
               composer -d tools/phpstan install --no-progress --no-interaction
               composer -d tools/phpunit install --no-progress --no-interaction
               # PHP CS Fixer 3.95.32 does not support PHP 8.6 syntax.
-              phpstan analyse -c tools/phpstan/phpstan.neon --memory-limit=1024M
+              phpstan analyse -c tools/phpstan/phpstan.neon --memory-limit=1024M \
+                --autoload-file tools/phpunit/vendor/autoload.php
               phpunit -c tools/phpunit/phpunit.dist.xml
+              # Run Symfony project diagnostics when Navi ships an application entry point.
+              if [[ "$PACKAGE_ID" == navi && -f bin/console ]]; then
+                tools/symfony-lsp/check.sh github
+              fi
             '
 
       - name: Create a repository-scoped publication token

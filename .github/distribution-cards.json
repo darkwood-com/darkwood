@@ -49,6 +49,7 @@
         "branch": "8.1",
         "composer": "darkwood/navi",
         "packageId": "navi",
+        "phpVersion": "8.6",
         "phpExtensions": "xsl, openswoole",
         "mysql": true
       }
