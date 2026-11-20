@@ -26,6 +26,24 @@ The official Uniflow documentation can be found under: [https://uniflow.io/docs]
 
 Additional information and example workflows on the uniflow.io website: [https://uniflow.io/flows](https://uniflow.io/flows)
 
+## Building shop assets
+
+Run these commands in the existing Nix environment, after installing Composer
+dependencies. The npm lockfile includes packages from Composer's `vendor/`
+directory.
+
+```sh
+npm ci --ignore-scripts
+npm run build:prod -- --config-name app.shop
+php bin/console sass:build
+php bin/console asset-map:compile
+```
+
+The shop Sass loads Bootstrap through the `bootstrap-shop` npm alias.
+Its version is pinned separately from the Bootstrap dependencies of Sylius and
+Tabler. Source packages stay in `node_modules/` and the public shop uses the
+compiled CSS.
+
 ## Support
 
 If you have problems or questions go to our contact page, we will then try to help you as soon as possible:
