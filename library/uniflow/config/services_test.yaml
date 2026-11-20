@@ -3,3 +3,8 @@ imports:
 
 sylius_api:
     enabled: true
+
+services:
+    App\Tests\Behat\ManagingPromotionsContext:
+        decorates: sylius.behat.context.domain.managing_promotions
+        arguments: ['@.inner']

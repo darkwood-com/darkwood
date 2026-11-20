@@ -44,6 +44,24 @@ Its version is pinned separately from the Bootstrap dependencies of Sylius and
 Tabler. Source packages stay in `node_modules/` and the public shop uses the
 compiled CSS.
 
+## Domain BDD tests
+
+Run `behat.dist.php` with PHP 8.5 and Behat 4.0.0. The PHP 8.5 exception
+applies to BDD tooling because this Behat release excludes PHP 8.6.
+Use the existing development dependencies and a fresh PostgreSQL 15 database
+with the project's Doctrine schema and test configuration. Set
+`APP_ENV=test` and `DATABASE_URL` to that database before running the tests.
+The product and coupon scenarios exercise foreign keys and row locking, so
+SQLite cannot validate all six suites.
+
+```sh
+php vendor/bin/behat --config=behat.dist.php
+php vendor/bin/behat --config=behat.dist.php --suite=domain_managing_shipping_methods
+```
+
+The PHP configuration runs the Sylius domain scenarios. The historical browser
+configuration remains in `behat.yml.dist` and requires its browser drivers.
+
 ## Support
 
 If you have problems or questions go to our contact page, we will then try to help you as soon as possible:

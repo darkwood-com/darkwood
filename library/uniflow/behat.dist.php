@@ -12,16 +12,28 @@ use FriendsOfBehat\VariadicExtension\ServiceContainer\VariadicExtension;
 
 $sylius = __DIR__.'/vendor/sylius/sylius';
 
-return (new Config())
-    ->import($sylius.'/src/Sylius/Behat/Resources/config/suites/domain/shipping/managing_shipping_methods.php')
-    ->withProfile(
-        (new Profile('default'))
-            ->withSuite(
-                (new Suite('domain_managing_shipping_methods'))
-                    ->withPaths($sylius.'/features/domain/shipping'),
-            )
-            ->withExtension(new Extension(SymfonyExtension::class, [
-                'kernel' => ['class' => Kernel::class, 'environment' => 'test'],
-            ]))
-            ->withExtension(new Extension(VariadicExtension::class)),
+$suites = [
+    'order/managing_orders',
+    'product/managing_products',
+    'product/managing_product_variants',
+    'promotion/managing_promotion_coupons',
+    'promotion/managing_promotions',
+    'shipping/managing_shipping_methods',
+];
+
+$config = new Config();
+$profile = (new Profile('default'))
+    ->withExtension(new Extension(SymfonyExtension::class, [
+        'kernel' => ['class' => Kernel::class, 'environment' => 'test'],
+    ]))
+    ->withExtension(new Extension(VariadicExtension::class));
+
+foreach ($suites as $suite) {
+    $config = $config->import($sylius.'/src/Sylius/Behat/Resources/config/suites/domain/'.$suite.'.php');
+    $profile = $profile->withSuite(
+        (new Suite('domain_'.basename($suite)))
+            ->withPaths($sylius.'/features/domain/'.dirname($suite)),
     );
+}
+
+return $config->withProfile($profile);
