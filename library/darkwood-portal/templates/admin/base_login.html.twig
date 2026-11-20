@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}">
+<html lang="{{ app.request.locale }}" data-theme="dark">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=1280px">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 
     {% block css %}
@@ -17,6 +17,9 @@
         <script type="text/javascript" src="{{ asset('/build/admin/vendor/jquery/dist/jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/build/admin/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     {% endblock %}
+
+    <link href="{{ asset('/admin/css/design.css') }}" rel="stylesheet" />
+    <script type="module" src="{{ asset('/admin/js/theme.js') }}"></script>
 
     <!-- Matomo -->
     <script>
