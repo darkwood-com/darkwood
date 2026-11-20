@@ -1,21 +1,21 @@
 {
-  description = "Example flake for PHP development";
+  description = "Darkwood Navi — shared PHP development shells and optional examples";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/4ae25df2c68d889251c436d487553bc8f4e12030";
+    flake-parts.url = "github:hercules-ci/flake-parts/c9afaba3dfa4085dbd2ccb38dfade5141e33d9d4";
     nix-shell.url = "github:loophp/nix-shell";
     systems.url = "github:nix-systems/default";
   };
 
   outputs = inputs@{ self, flake-parts, systems, ... }: flake-parts.lib.mkFlake { inherit inputs; } {
     systems = import systems;
+    flake.lib.mkPhpShell = import ./shell.nix;
 
     perSystem = { config, self', inputs', pkgs, system, lib, ... }:
       let
-        php = pkgs.api.buildPhpFromComposer {
-          src = inputs.self;
-          php = pkgs.php85;
-        };
+        php = pkgs.php85;
+        mkPhpShell = import ./shell.nix;
       in
       {
         _module.args.pkgs = import self.inputs.nixpkgs {
@@ -26,20 +26,14 @@
           config.allowUnfree = true;
         };
 
-        devShells.default = pkgs.mkShellNoCC {
-          name = "php-devshell";
-          buildInputs = [
-            php
-            php.packages.composer
-            pkgs.phpstan
-            php.packages.psalm
-            pkgs.phpunit
-            self'.packages.satis
-          ];
-
-          shellHook = ''
-            export COMPOSER_MEMORY_LIMIT=-1
-          '';
+        devShells = {
+          default = mkPhpShell { inherit pkgs php; };
+          php85 = mkPhpShell { inherit pkgs php; };
+          php86 = mkPhpShell { inherit pkgs; php = pkgs.php86; name = "darkwood-php86-experimental"; };
+          quality = mkPhpShell {
+            inherit pkgs php;
+            extraPackages = [ pkgs.symfony-cli pkgs.castor pkgs.phpstan php.packages.psalm pkgs.phpunit ];
+          };
         };
 
         checks = {
@@ -47,6 +41,9 @@
         };
 
         packages = {
+          php85 = pkgs.php85;
+          php86 = pkgs.php86;
+          composer = php.packages.composer;
           satis = php.buildComposerProject {
             pname = "satis";
             version = "3.0.0-dev";
@@ -157,22 +154,9 @@
             vendorHash = "sha256-Nv9pRQJ2Iij1IxPNcCk732Q79FWB/ARJRvjPVVyLMEc=";
           };
 
-          apps = {
-            mezzio-skeleton = {
-              type = "app";
-              program = lib.getExe (pkgs.writeShellApplication {
-                name = "mezzio-skeleton-demo";
+        };
 
-                runtimeInputs = [
-                  php
-                ];
-
-                text = ''
-                  ${lib.getExe php} -S 0.0.0.0:8080 -t ${self'.packages.mezzio}/share/php/${self'.packages.mezzio.pname}/public/
-                '';
-              });
-            };
-
+        apps = {
             symfony-demo = {
               type = "app";
               program = lib.getExe (pkgs.writeShellApplication {
@@ -271,11 +255,11 @@
 
                 runtimeInputs = [
                   php
-                  php.packages.phpstan
+                  pkgs.phpstan
                 ];
 
                 text = ''
-                  ${lib.getExe php.packages.phpstan} "$@"
+                  ${lib.getExe pkgs.phpstan} "$@"
                 '';
               });
             };
@@ -296,7 +280,6 @@
                 '';
               });
             };
-          };
         };
       };
   };

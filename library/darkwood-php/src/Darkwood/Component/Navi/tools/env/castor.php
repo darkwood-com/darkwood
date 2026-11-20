@@ -9,11 +9,11 @@ use Castor\Attribute\AsTask;
 use function Castor\context;
 use function Castor\run;
 
-#[AsTask(description: 'Start dev server', aliases: ['env-dev'])]
+#[AsTask(name: 'env', namespace: 'app:tools', description: 'Open the locked Navi PHP development shell', aliases: ['env-dev'])]
 function envDev(): int
 {
     return run(
-        ['nix shell github:loophp/nix-shell#env-php85 --extra-experimental-features nix-command --extra-experimental-features flakes'],
+        ['nix', '--extra-experimental-features', 'nix-command flakes', 'develop', '--file', __DIR__.'/shell.nix', '--arg', 'lockFile', json_encode(__DIR__.'/flake.lock', JSON_THROW_ON_ERROR)],
         context()->withAllowFailure()->withTty(true),
     )->getExitCode();
 }

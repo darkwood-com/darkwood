@@ -44,8 +44,10 @@
         "type": "github"
       },
       "original": {
-        "id": "flake-parts",
-        "type": "indirect"
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "c9afaba3dfa4085dbd2ccb38dfade5141e33d9d4",
+        "type": "github"
       }
     },
     "flake-parts_2": {
@@ -229,17 +231,17 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1773389992,
-        "narHash": "sha256-wvfdLLWJ2I9oEpDd9PfMA8osfIZicoQ5MT1jIwNs9Tk=",
+        "lastModified": 1795173816,
+        "narHash": "sha256-CvNWU/83xjmVpfMw5OFGAcLLM5EZNFATYe6w/7V9ipc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c06b4ae3d6599a672a6210b7021d699c351eebda",
+        "rev": "4ae25df2c68d889251c436d487553bc8f4e12030",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "rev": "4ae25df2c68d889251c436d487553bc8f4e12030",
         "type": "github"
       }
     },
