@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2598be75f9c5733bee69351dca166add",
+    "content-hash": "85b9204a120f8b599a6bd933cc048603",
     "packages": [
         {
             "name": "darkwood/flow",
@@ -2661,16 +2661,16 @@
     "packages-dev": [
         {
             "name": "blackfire/php-sdk",
-            "version": "v2.6.0",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blackfireio/php-sdk.git",
-                "reference": "5d3b0e80fd7a77fd49832bdd6425d38ddd567991"
+                "reference": "81d24ca56e12f2c837ddb72ca89decb6458e8d76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blackfireio/php-sdk/zipball/5d3b0e80fd7a77fd49832bdd6425d38ddd567991",
-                "reference": "5d3b0e80fd7a77fd49832bdd6425d38ddd567991",
+                "url": "https://api.github.com/repos/blackfireio/php-sdk/zipball/81d24ca56e12f2c837ddb72ca89decb6458e8d76",
+                "reference": "81d24ca56e12f2c837ddb72ca89decb6458e8d76",
                 "shasum": ""
             },
             "require": {
@@ -2704,7 +2704,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -2731,9 +2731,10 @@
             ],
             "support": {
                 "issues": "https://github.com/blackfireio/php-sdk/issues",
-                "source": "https://github.com/blackfireio/php-sdk/tree/v2.6.0"
+                "source": "https://github.com/blackfireio/php-sdk/tree/v3.0.3"
             },
-            "time": "2026-05-22T13:28:29+00:00"
+            "time": "2026-11-04T16:27:33+00:00",
+            "published-time": "2026-11-04T16:31:17+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -2805,7 +2806,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-29T14:10:42+00:00"
+            "time": "2026-10-29T14:10:42+00:00",
+            "published-time": "2026-10-29T14:45:12+00:00"
         }
     ],
     "aliases": [],
@@ -2819,5 +2821,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
