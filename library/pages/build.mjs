@@ -15,9 +15,11 @@ const repositoryUrl = "https://github.com/darkwood-com/darkwood";
 const sourceBaseUrl = `${repositoryUrl}/tree/main/`;
 const sourceAssets = resolve(root, "library/pages/assets");
 const sourceFonts = resolve(root, "library/pages/assets/fonts");
+const sepiaIcon = (await readFile(resolve(root, "library/darkwood-design/icons/sepia.svg"), "utf8")).trim();
 const assetRevision = createHash("sha256")
   .update(await readFile(resolve(sourceAssets, "catalog.css")))
   .update(await readFile(resolve(sourceAssets, "catalog.js")))
+  .update(sepiaIcon)
   .digest("hex").slice(0, 12);
 const cardRedirects = new Map([
   ["adventofcode", "content-adventofcode"],
@@ -112,6 +114,7 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
   <title>${escape(title)}</title>
 </head>
 <body class="${escape(pageClass)}">
+  <template id="sepia-theme-icon">${sepiaIcon}</template>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <a class="brand" href="${siteUrl}" aria-label="Darkwood home"><span class="brand__mark">D</span><span>Darkwood</span></a>
@@ -119,7 +122,7 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
       <a href="${siteUrl}#projects">Projects</a>
       <a href="${siteUrl}#catalogue">Catalogue</a>
       <a href="${repositoryUrl}">GitHub ${icon("external")}</a>
-      <button class="theme-switcher" type="button" data-theme-switcher aria-label="Change color theme"><span data-theme-icon aria-hidden="true">◐</span></button>
+      <button class="theme-switcher" type="button" data-theme-switcher aria-label="Change color theme"><span data-theme-icon aria-hidden="true">☼</span></button>
     </nav>
   </header>
   ${body}

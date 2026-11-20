@@ -240,6 +240,7 @@ svg { width: 1em; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-li
 }
 .site-header nav a:hover, .theme-switcher:hover { color: var(--primary-color); border-bottom-color: var(--primary-color); }
 .theme-switcher { font-size: 1.25rem; }
+.theme-switcher svg { display: block; width: 1em; height: 1em; }
 .mobile-nav { display: none; }
 
 main > section, .site-footer { width: min(var(--container), calc(100% - 2rem)); margin-inline: auto; }
