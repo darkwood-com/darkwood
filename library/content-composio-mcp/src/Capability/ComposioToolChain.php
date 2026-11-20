@@ -1,243 +1,167 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace App\Capability;
 
 use App\ComposioSdk\Composio;
-use Symfony\AI\McpSdk\Capability\Tool\CollectionInterface;
-use Symfony\AI\McpSdk\Capability\Tool\IdentifierInterface;
-use Symfony\AI\McpSdk\Capability\Tool\MetadataInterface;
-use Symfony\AI\McpSdk\Capability\Tool\ToolCall;
-use Symfony\AI\McpSdk\Capability\Tool\ToolCallResult;
-use Symfony\AI\McpSdk\Capability\Tool\ToolExecutorInterface;
-use Symfony\AI\McpSdk\Exception\InvalidCursorException;
-use Symfony\AI\McpSdk\Exception\ToolExecutionException;
-use Symfony\AI\McpSdk\Exception\ToolNotFoundException;
-use App\ComposioSdk\ComposioToolSet;
-use Exception;
-use Symfony\AI\Agent\Toolbox\ToolFactoryInterface;
+use Mcp\Capability\Registry\Loader\LoaderInterface;
+use Mcp\Capability\RegistryInterface;
+use Mcp\Schema\Request\CallToolRequest;
+use Mcp\Schema\Tool as McpTool;
+use Mcp\Server\RequestContext;
+use Symfony\AI\Agent\Toolbox\Exception\ToolExecutionException;
+use Symfony\AI\Agent\Toolbox\Exception\ToolNotFoundException;
+use Symfony\AI\Agent\Toolbox\ToolboxInterface;
+use Symfony\AI\Agent\Toolbox\ToolResult;
+use Symfony\AI\Platform\Result\ToolCall;
 use Symfony\AI\Platform\Tool\ExecutionReference;
 use Symfony\AI\Platform\Tool\Tool;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
-/**
- * A collection of tools. All tools need to implement IdentifierInterface.
- */
-class ComposioToolChain implements ToolExecutorInterface, CollectionInterface, ToolFactoryInterface
+final class ComposioToolChain implements ToolboxInterface, LoaderInterface
 {
+    private ?array $tools = null;
+
     public function __construct(
-        private Composio $composio,
-        private string $entityId,
-        private string $actions,
+        private readonly Composio $composio,
+        private readonly string $entityId,
+        private readonly string $actions,
     ) {
     }
 
-    public function getMetadata(int $count, ?string $lastIdentifier = null): iterable
+    public function load(RegistryInterface $registry): void
     {
-        $actions = $this->getActions();
-        $found = null === $lastIdentifier;
-        $result = [];
-        
-        foreach ($actions as $action) {
-            $item = $this->generateItem($action);
+        foreach ($this->actionsByToolName() as $name => $action) {
+            $registry->registerTool(
+                McpTool::fromArray([
+                    'name' => $name,
+                    'description' => $action['description'],
+                    'inputSchema' => $action['schema'],
+                ]),
+                function (RequestContext $context) use ($action): string {
+                    $request = $context->getRequest();
+                    if (!$request instanceof CallToolRequest) {
+                        throw new \LogicException('Expected an MCP tool call.');
+                    }
 
-            if (false === $found) {
-                $found = $item->getName() === $lastIdentifier;
-                continue;
-            }
-
-            $result[] = $item;
-            if (count($result) >= $count) {
-                break;
-            }
-        }
-
-        if (!$found && null !== $lastIdentifier) {
-            throw new InvalidCursorException($lastIdentifier);
-        }
-        
-        return $result;
-    }
-
-    public function call(ToolCall $input): ToolCallResult
-    {
-        $actions = $this->getActions();
-        foreach ($actions as $action) {
-            $item = $this->generateItem($action);
-            if ($item instanceof ToolExecutorInterface && $input->name === $item->getName()) {
-                try {
-                    return $item->call($input);
-                } catch (\Throwable $e) {
-                    throw new ToolExecutionException($input, $e);
-                }
-            }
-        }
-
-        throw new ToolNotFoundException($input);
-    }
-
-    /**
-     * @return iterable<Tool>
-     *
-     * @throws ToolException if the metadata for the given reference is not found
-     */
-    public function getTool(string $reference): iterable
-    {
-        $actions = $this->getActions();
-        $actions = array_filter($actions, function($action) use ($reference) {
-            return $action === $reference;
-        });
-            
-        $tools = [];
-        
-        $slugger = new AsciiSlugger();
-        foreach ($actions as $action) {
-            $item = $this->generateItem($action);
-            $name = $item->getName();
-            
-            $tool = new Tool(
-                new ExecutionReference(self::class, 'execute'),
-                $slugger->slug($name),
-                $item->getDescription(),
-                $item->getInputSchema(),
+                    return $this->run($action['id'], $request->arguments);
+                },
             );
-            $tools[] = $tool;
         }
-        
+    }
+
+    public function getTools(): array
+    {
+        $tools = [];
+        foreach ($this->actionsByToolName() as $name => $action) {
+            $tools[] = new Tool(new ExecutionReference(self::class, 'execute'), $name, $action['description'], $action['schema']);
+        }
+
         return $tools;
     }
 
-    public function getActions(): array {
-        return explode(',', $this->actions);
-    }
-
-    public function execute()
+    public function execute(ToolCall $toolCall): ToolResult
     {
-        $name = func_get_args()[0];
-
-        $actions = array_map(function($action) {
-            return $this->generateItem($action);
-        }, $this->getActions());
-        $items = [];
-        foreach($actions as $item) {
-            $slugger = new AsciiSlugger();
-            $slug = $slugger->slug($item->getName())->toString();
-
-            if($slug === $name) {
-                $items[] = $item;
-            }
-        };
-
-        $item = $items[0];
-        return $item->call(new ToolCall(uniqid(), $name, []));
-    }
-
-    private function generateItem(string $action) {
-        // Get action data from Composio
-        $actionData = $this->composio->actions->get(['actionName' => $action]);
-        if (!$actionData) {
-            throw new \RuntimeException("Action '{$action}' not found");
+        $action = $this->actionsByToolName()[$toolCall->getName()] ?? null;
+        if (null === $action) {
+            throw ToolNotFoundException::notFoundForToolCall($toolCall);
         }
 
-        $name = $actionData['name'] ?? 'unknownAction';
-        $description = $actionData['description'] ?? '';
-        $parameters = $actionData['input_parameters']['properties'] ?? [];
-        $composioToolSet = new ComposioToolSet($this->composio->http, $this->composio->apiKey, $this->composio->baseUrl, null, $this->entityId);
+        try {
+            return new ToolResult($toolCall, $this->run($action['id'], $toolCall->getArguments()));
+        } catch (\Throwable $error) {
+            throw ToolExecutionException::executionFailed($toolCall, $error);
+        }
+    }
 
-        return new class($action, $name, $description, $parameters, $this->composio, $composioToolSet, $this->entityId) implements MetadataInterface, ToolExecutorInterface {
-            public function __construct(
-                private string $action,
-                private string $name,
-                private string $description,
-                private array $parameters,
-                private Composio $composio,
-                private ComposioToolSet $composioToolSet,
-                private string $entityId
-            ) {}
+    private function actionsByToolName(): array
+    {
+        if (null !== $this->tools) {
+            return $this->tools;
+        }
 
-            public function getName(): string
-            {
-                return strtolower($this->name);
+        $tools = [];
+        foreach (explode(',', $this->actions) as $id) {
+            $id = trim($id);
+            if ('' === $id) {
+                continue;
             }
 
-            public function getDescription(): string
-            {
-                return $this->description;
+            $data = $this->composio->actions->get(['actionName' => $id]);
+            if (null === $data) {
+                throw new \RuntimeException(sprintf('Unknown Composio action "%s".', $id));
             }
 
-            public function getInputSchema(): array
-            {
-                $properties = [];
-                $required = [];
+            $tools[strtolower($data['name'] ?? 'unknownAction')] = [
+                'id' => $id,
+                'description' => $data['description'] ?? '',
+                'schema' => self::schema($data['input_parameters']['properties'] ?? []),
+            ];
+        }
 
-                foreach ($this->parameters as $paramName => $paramData) {
-                    $property = [
-                        'type' => $paramData['type'] ?? 'string',
-                        'description' => $paramData['description'] ?? '',
-                    ];
+        return $this->tools = $tools;
+    }
 
-                    if (isset($paramData['default'])) {
-                        $property['default'] = $paramData['default'];
-                    }
+    private function run(string $id, array $arguments): string
+    {
+        return json_encode(
+            $this->composio->getEntity($this->entityId)->execute($id, $arguments),
+            JSON_THROW_ON_ERROR,
+        );
+    }
 
-                    if (isset($paramData['examples'])) {
-                        $property['examples'] = $paramData['examples'];
-                    }
+    private static function schema(array $parameters): array
+    {
+        $properties = [];
+        $required = [];
 
-                    if (isset($paramData['nullable']) && $paramData['nullable']) {
-                        $property['type'] = [$property['type'], 'null'];
-                    }
+        foreach ($parameters as $paramName => $paramData) {
+            $property = [
+                'type' => $paramData['type'] ?? 'string',
+                'description' => $paramData['description'] ?? '',
+            ];
 
-                    if (isset($paramData['items'])) {
-                        $property['items'] = $paramData['items'];
-                    }
+            if (isset($paramData['default'])) {
+                $property['default'] = $paramData['default'];
+            }
 
-                    if (isset($paramData['minimum'])) {
-                        $property['minimum'] = $paramData['minimum'];
-                    }
-                    if (isset($paramData['maximum'])) {
-                        $property['maximum'] = $paramData['maximum'];
-                    }
+            if (isset($paramData['examples'])) {
+                $property['examples'] = $paramData['examples'];
+            }
 
-                    $properties[$paramName] = $property;
+            if (isset($paramData['nullable']) && $paramData['nullable']) {
+                $property['type'] = [$property['type'], 'null'];
+            }
 
-                    if (!isset($paramData['nullable']) || !$paramData['nullable']) {
-                        if (!isset($paramData['default'])) {
-                            $required[] = $paramName;
-                        }
-                    }
+            if (isset($paramData['items'])) {
+                $property['items'] = $paramData['items'];
+            }
+
+            if (isset($paramData['minimum'])) {
+                $property['minimum'] = $paramData['minimum'];
+            }
+            if (isset($paramData['maximum'])) {
+                $property['maximum'] = $paramData['maximum'];
+            }
+
+            $properties[$paramName] = $property;
+
+            if (!isset($paramData['nullable']) || !$paramData['nullable']) {
+                if (!isset($paramData['default'])) {
+                    $required[] = $paramName;
                 }
-
-                $schema = [
-                    'type' => 'object',
-                    'properties' => $properties,
-                ];
-
-                if (!empty($required)) {
-                    $schema['required'] = $required;
-                }
-
-                return $schema;
             }
+        }
 
-            public function call(ToolCall $input): ToolCallResult
-            {
-                // Extract parameters from the tool call
-                $params = $input->arguments ?? [];
-                
-                // Execute the action using Composio
-                $result = $this->composioToolSet->execute_action($this->action, $params, $this->entityId);
-                
-                return new ToolCallResult(json_encode($result));
-            }
-        };
+        $schema = [
+            'type' => 'object',
+            'properties' => $properties,
+        ];
+
+        if (!empty($required)) {
+            $schema['required'] = $required;
+        }
+
+        return $schema;
     }
 }

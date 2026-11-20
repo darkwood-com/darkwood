@@ -1,77 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Capability\ComposioToolChain;
-use App\Toolbox\Toolbox;
+use Symfony\AI\Agent\Agent;
+use Symfony\AI\Platform\Bridge\Anthropic\Claude;
+use Symfony\AI\Platform\Bridge\Anthropic\Factory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\AI\Agent\Agent;
-use Symfony\AI\Agent\Toolbox\AgentProcessor;
-use Symfony\AI\Agent\Toolbox\Tool\Wikipedia;
-use Symfony\AI\Agent\Toolbox\ToolFactory\MemoryToolFactory;
-use Symfony\AI\Platform\Bridge\Anthropic\Claude;
-use Symfony\AI\Platform\Bridge\Anthropic\PlatformFactory;
-use Symfony\AI\Platform\Message\Message;
-use Symfony\AI\Platform\Message\MessageBag;
-use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\HttpClient\HttpClient;
-use Flow\Flow\Flow;
-use Flow\FlowFactory;
-use Flow\Ip;
 
-#[AsCommand(
-    name: 'app:composio',
-    description: 'Add a short description for your command',
-)]
-class ComposioCommand extends Command
+#[AsCommand('app:composio', 'Fetch the latest Gmail email through Composio')]
+final class ComposioCommand
 {
     public function __construct(
-        private ComposioToolChain $composioToolChain,
-        private string $anthropicApiKey,
-    )
-    {
-        parent::__construct();
+        private readonly ComposioToolChain $composioToolChain,
+        #[\SensitiveParameter] private readonly string $anthropicApiKey,
+    ) {
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(SymfonyStyle $io): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $agent = new Agent(
+            Factory::createPlatform($this->anthropicApiKey),
+            Claude::SONNET_37,
+            toolbox: $this->composioToolChain,
+        );
+        $content = $agent->call('Fetch my last Gmail email')->getContent();
+        if (!is_string($content)) {
+            $io->error('The assistant returned a non-text response.');
 
-        $flow = (new FlowFactory())->create(function() use ($io) {
-            yield function() {
-                $platform = PlatformFactory::create($this->anthropicApiKey);
-                $model = new Claude(Claude::SONNET_37);
-        
-                $metadataFactory = new MemoryToolFactory();
-                foreach($this->composioToolChain->getActions() as $action) {
-                    $tool = $this->composioToolChain->getTool($action)[0];
-                    $metadataFactory->addTool(ComposioToolChain::class, $tool->name, $tool->description, 'execute');
-                }
-                $toolbox = new Toolbox($metadataFactory, [$this->composioToolChain]);
-                $processor = new AgentProcessor($toolbox);
-                $agent = new Agent($platform, $model, [$processor], [$processor]);
-                return $agent;
-            };
-            yield function($agent) {
-                $messages = new MessageBag(Message::ofUser('Fetch my last Gmail email'));
-                $response = $agent->call($messages);
+            return Command::FAILURE;
+        }
 
-                return $response;
-            };
-            yield function($response) use ($io) {
-                $io->success($response->getContent());
-            };
-        });
-        
-        $ip = new Ip();
-        $flow($ip);
-        $flow->await();
+        $io->success($content);
 
         return Command::SUCCESS;
     }

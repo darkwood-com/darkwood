@@ -39,9 +39,3 @@ services:
         autowire: true
         arguments:
             $anthropicApiKey: '%env(ANTHROPIC_API_KEY)%'
-
-    Symfony\AI\McpSdk\Capability\Tool\ToolExecutorInterface:
-        alias: App\Capability\ComposioToolChain
-
-    Symfony\AI\McpSdk\Capability\Tool\CollectionInterface:
-        alias: App\Capability\ComposioToolChain

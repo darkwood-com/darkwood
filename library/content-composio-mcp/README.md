@@ -70,4 +70,14 @@ agent(prompt)
 ## Resources
 
 Composio PHP Sdk is inspired from the official Composio Javascript SDK : `https://github.com/ComposioHQ/composio-js`
+## MCP transports
 
+Launch the existing STDIO command with `php bin/console mcp:server`.
+For Streamable HTTP, use `/mcp`. Clients using the former SSE-only endpoints
+must select Streamable HTTP or STDIO. The HTTP host allow-list defaults to
+localhost. Specify exact hostnames in `mcp.servers.app.http.allowed_hosts`
+when exposing the endpoint.
+
+The actions set in `COMPOSIO_ACTIONS` remain the tools exposed by the server.
+Run `php test_mcp.php` to verify the handshake, discovery, successful execution
+and invalid input with an in-process HTTP fixture.
