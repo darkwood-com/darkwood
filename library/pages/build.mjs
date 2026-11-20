@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { validatePublicationDomains } from "../../.github/scripts/validate-publication-domains.mjs";
@@ -14,6 +15,10 @@ const repositoryUrl = "https://github.com/darkwood-com/darkwood";
 const sourceBaseUrl = `${repositoryUrl}/tree/main/`;
 const sourceAssets = resolve(root, "library/pages/assets");
 const sourceFonts = resolve(root, "library/pages/assets/fonts");
+const assetRevision = createHash("sha256")
+  .update(await readFile(resolve(sourceAssets, "catalog.css")))
+  .update(await readFile(resolve(sourceAssets, "catalog.js")))
+  .digest("hex").slice(0, 12);
 const cardRedirects = new Map([
   ["adventofcode", "content-adventofcode"],
   ["php-pipe-operator", "content-php-pipe-operator"],
@@ -102,8 +107,8 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
   <link rel="canonical" href="${escape(canonical)}">
   <link rel="icon" href="${siteUrl}assets/mark.svg" type="image/svg+xml">
   <script>try{document.documentElement.dataset.theme=localStorage.getItem("darkwood-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){document.documentElement.dataset.theme="light"}</script>
-  <link rel="stylesheet" href="${siteUrl}assets/catalog.css">
-  <script type="module" src="${siteUrl}assets/catalog.js"></script>
+  <link rel="stylesheet" href="${siteUrl}assets/catalog.css?v=${assetRevision}">
+  <script type="module" src="${siteUrl}assets/catalog.js?v=${assetRevision}"></script>
   <title>${escape(title)}</title>
 </head>
 <body class="${escape(pageClass)}">

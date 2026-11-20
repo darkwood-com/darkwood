@@ -1,3 +1,6 @@
+{% set docsPath = path('app_shop_doc') %}
+{% set docsActive = app.current_route == 'app_shop_doc' or app.request.pathInfo == docsPath or app.request.pathInfo starts with docsPath ~ '/' %}
+{% set moreActive = docsActive or app.current_route in ['app_shop_settings', 'app_shop_admin'] or app.current_route starts with 'app_shop_blog' %}
 <header class="navbar navbar-top navbar-expand flex-row">
     <!-- Logo/Brand -->
     <a class="navbar-brand mr-0 mr-md-2" href="{{ path('app_shop_home') }}" aria-label="Uniflow">
@@ -8,43 +11,43 @@
     <div class="navbar-nav-scroll d-none d-md-flex">
         <ul class="navbar-nav bd-navbar-nav flex-row">
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') == 'app_shop_flows' ? ' active' : '' }}" href="{{ path('app_shop_flows') }}">
+                <a class="nav-link{{ app.current_route == 'app_shop_flows' ? ' active' : '' }}" href="{{ path('app_shop_flows') }}">
                     Flows
                 </a>
             </li>
             {% if app.user and is_granted('ROLE_USER') %}
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') == 'app_shop_feed' ? ' active' : '' }}" href="{{ path('app_shop_feed') }}">
+                <a class="nav-link{{ app.current_route == 'app_shop_feed' ? ' active' : '' }}" href="{{ path('app_shop_feed') }}">
                     Dashboard
                 </a>
             </li>
             {% endif %}
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') == 'app_shop_library' ? ' active' : '' }}" href="{{ path('app_shop_library') }}">
+                <a class="nav-link{{ app.current_route == 'app_shop_library' ? ' active' : '' }}" href="{{ path('app_shop_library') }}">
                     Library
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') == 'app_shop_doc' ? ' active' : '' }}" href="{{ path('app_shop_doc') }}">
+                <a class="nav-link{{ docsActive ? ' active' : '' }}" href="{{ path('app_shop_doc') }}">
                     Docs
                 </a>
             </li>
             {% if app.user and is_granted('ROLE_USER') %}
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') == 'app_shop_settings' ? ' active' : '' }}" href="{{ path('app_shop_settings') }}">
+                <a class="nav-link{{ app.current_route == 'app_shop_settings' ? ' active' : '' }}" href="{{ path('app_shop_settings') }}">
                     Settings
                 </a>
             </li>
             {% endif %}
             {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') == 'app_shop_admin' ? ' active' : '' }}" href="{{ path('app_shop_admin') }}">
+                <a class="nav-link{{ app.current_route == 'app_shop_admin' ? ' active' : '' }}" href="{{ path('app_shop_admin') }}">
                     Admin
                 </a>
             </li>
             {% endif %}
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') starts with 'app_shop_blog' ? ' active' : '' }}" href="{{ path('app_shop_blog') }}">
+                <a class="nav-link{{ app.current_route starts with 'app_shop_blog' ? ' active' : '' }}" href="{{ path('app_shop_blog') }}">
                     Blog
                 </a>
             </li>
@@ -54,7 +57,7 @@
     <!-- Right Side Navigation -->
     <ul class="navbar-nav flex-row ms-auto">
         <li class="nav-item">
-            <a class="nav-item nav-link{{ app.request.get('_route') == 'app_shop_changelog' ? ' active' : '' }}" href="{{ path('app_shop_changelog') }}">
+            <a class="nav-item nav-link{{ app.current_route == 'app_shop_changelog' ? ' active' : '' }}" href="{{ path('app_shop_changelog') }}">
                 {{ display_version() }}
             </a>
         </li>
@@ -77,7 +80,7 @@
         </li>
         {% if not app.user %}
         <li class="nav-item">
-            <a class="nav-link{{ app.request.get('_route') == 'app_shop_login' ? ' active' : '' }}" href="{{ path('app_shop_login') }}">
+            <a class="nav-link{{ app.current_route == 'app_shop_login' ? ' active' : '' }}" href="{{ path('app_shop_login') }}">
                 Login
             </a>
         </li>
@@ -96,47 +99,47 @@
 <nav class="d-md-none" aria-label="Mobile navigation">
 <ul class="nav nav-bar-bottom fixed-bottom d-flex">
     <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') == 'app_shop_flows' ? ' active' : '' }}" href="{{ path('app_shop_flows') }}"{% if app.request.get('_route') == 'app_shop_flows' %} aria-current="page"{% endif %}>
+        <a class="nav-link{{ app.current_route == 'app_shop_flows' ? ' active' : '' }}" href="{{ path('app_shop_flows') }}"{% if app.current_route == 'app_shop_flows' %} aria-current="page"{% endif %}>
             <span aria-hidden="true">↝</span>Flows
         </a>
     </li>
     {% if app.user and is_granted('ROLE_USER') %}
     <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') == 'app_shop_feed' ? ' active' : '' }}" href="{{ path('app_shop_feed') }}"{% if app.request.get('_route') == 'app_shop_feed' %} aria-current="page"{% endif %}>
+        <a class="nav-link{{ app.current_route == 'app_shop_feed' ? ' active' : '' }}" href="{{ path('app_shop_feed') }}"{% if app.current_route == 'app_shop_feed' %} aria-current="page"{% endif %}>
             <span aria-hidden="true">▥</span>Dashboard
         </a>
     </li>
     {% endif %}
     <li class="nav-item">
-        <a class="nav-link{{ app.request.get('_route') == 'app_shop_library' ? ' active' : '' }}" href="{{ path('app_shop_library') }}"{% if app.request.get('_route') == 'app_shop_library' %} aria-current="page"{% endif %}>
+        <a class="nav-link{{ app.current_route == 'app_shop_library' ? ' active' : '' }}" href="{{ path('app_shop_library') }}"{% if app.current_route == 'app_shop_library' %} aria-current="page"{% endif %}>
             <span aria-hidden="true">▦</span>Library
         </a>
     </li>
     <li class="nav-item">
         <details class="mobile-more">
-            <summary class="nav-link"><span aria-hidden="true">…</span>More</summary>
+            <summary class="nav-link{{ moreActive ? ' active' : '' }}"><span aria-hidden="true">…</span>More</summary>
             <ul class="mobile-more__links">
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') == 'app_shop_doc' ? ' active' : '' }}" href="{{ path('app_shop_doc') }}"{% if app.request.get('_route') == 'app_shop_doc' %} aria-current="page"{% endif %}>
+                <a class="nav-link{{ docsActive ? ' active' : '' }}" href="{{ path('app_shop_doc') }}"{% if docsActive %} aria-current="page"{% endif %}>
                     <span aria-hidden="true">≡</span>Docs
                 </a>
             </li>
             {% if app.user and is_granted('ROLE_USER') %}
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') == 'app_shop_settings' ? ' active' : '' }}" href="{{ path('app_shop_settings') }}"{% if app.request.get('_route') == 'app_shop_settings' %} aria-current="page"{% endif %}>
+                <a class="nav-link{{ app.current_route == 'app_shop_settings' ? ' active' : '' }}" href="{{ path('app_shop_settings') }}"{% if app.current_route == 'app_shop_settings' %} aria-current="page"{% endif %}>
                     <span aria-hidden="true">⚙</span>Settings
                 </a>
             </li>
             {% endif %}
             {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') == 'app_shop_admin' ? ' active' : '' }}" href="{{ path('app_shop_admin') }}"{% if app.request.get('_route') == 'app_shop_admin' %} aria-current="page"{% endif %}>
+                <a class="nav-link{{ app.current_route == 'app_shop_admin' ? ' active' : '' }}" href="{{ path('app_shop_admin') }}"{% if app.current_route == 'app_shop_admin' %} aria-current="page"{% endif %}>
                     <span aria-hidden="true">⚙</span>Admin
                 </a>
             </li>
             {% endif %}
             <li class="nav-item">
-                <a class="nav-link{{ app.request.get('_route') starts with 'app_shop_blog' ? ' active' : '' }}" href="{{ path('app_shop_blog') }}"{% if app.request.get('_route') starts with 'app_shop_blog' %} aria-current="page"{% endif %}>
+                <a class="nav-link{{ app.current_route starts with 'app_shop_blog' ? ' active' : '' }}" href="{{ path('app_shop_blog') }}"{% if app.current_route starts with 'app_shop_blog' %} aria-current="page"{% endif %}>
                     <span aria-hidden="true">≡</span>Blog
                 </a>
             </li>
