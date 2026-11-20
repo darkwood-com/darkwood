@@ -25,9 +25,11 @@
       "source": "library/darkwood-php/src/Darkwood/Component/Flow",
       "repository": "darkwood-com/darkwood-php-component-flow",
       "git": {
-        "branch": "8.1",
+        "branch": "9.0",
+        "bootstrapBranch": "8.1",
         "composer": "darkwood/flow",
         "packageId": "flow",
+        "phpVersion": "8.6",
         "phpExtensions": "xsl, openswoole",
         "mysql": false
       },

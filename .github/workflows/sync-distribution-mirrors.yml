@@ -71,8 +71,10 @@ jobs:
             owner: (.repository | split("/")[0]),
             repository_name: (.repository | split("/")[1]),
             branch: .git.branch,
+            bootstrap_branch: (.git.bootstrapBranch // ""),
             composer: (.git.composer // ""),
             package_id: (.git.packageId // ""),
+            php_version: (.git.phpVersion // "8.5"),
             php_extensions: (.git.phpExtensions // ""),
             mysql: (.git.mysql // false)
           }]}' .github/distribution-cards.json)
@@ -107,6 +109,7 @@ jobs:
           sparse-checkout: |
             ${{ matrix.source }}
             library/darkwood-php/.github
+            library/darkwood-php/src/Darkwood/Component/Navi/tools/env
             .github/distribution-cards.json
             .github/workflows/sync-distribution-mirrors.yml
           sparse-checkout-cone-mode: false
@@ -133,16 +136,16 @@ jobs:
           echo "selected=$selected" >> "$GITHUB_OUTPUT"
 
       - name: Set up PHP
-        if: steps.select.outputs.selected == 'true' && matrix.composer != ''
+        if: steps.select.outputs.selected == 'true' && matrix.composer != '' && matrix.php_version != '8.6'
         uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
         with:
-          php-version: "8.5"
+          php-version: ${{ matrix.php_version }}
           extensions: ${{ matrix.php_extensions }}
           tools: composer, symfony-cli
           coverage: none
 
       - name: Validate Composer package
-        if: steps.select.outputs.selected == 'true' && matrix.composer != ''
+        if: steps.select.outputs.selected == 'true' && matrix.composer != '' && matrix.php_version != '8.6'
         env:
           SOURCE: ${{ matrix.source }}
           EXPECTED_PACKAGE: ${{ matrix.composer }}
@@ -155,6 +158,31 @@ jobs:
           test "$actual_package" = "$EXPECTED_PACKAGE"
           composer validate --strict --no-check-publish "$SOURCE/composer.json"
           library/darkwood-php/.github/ci-run-package.sh "$PACKAGE_ID"
+
+      - name: Set up Nix for Flow
+        if: steps.select.outputs.selected == 'true' && matrix.php_version == '8.6'
+        uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
+
+      - name: Validate Flow on stable PHP 8.6
+        if: steps.select.outputs.selected == 'true' && matrix.php_version == '8.6'
+        working-directory: ${{ matrix.source }}
+        env:
+          EXPECTED_PACKAGE: ${{ matrix.composer }}
+        run: |
+          nix --extra-experimental-features 'nix-command flakes' develop --file tools/env/shell.nix \
+            --argstr naviEnv "$(cd ../Navi/tools/env && pwd -P)" \
+            --arg withOpenSwoole true -c bash -euo pipefail -c '
+              test "$(jq -r .name composer.json)" = "$EXPECTED_PACKAGE"
+              php -v
+              composer install --no-progress --no-interaction
+              composer validate --strict --no-check-publish
+              composer check-platform-reqs
+              composer -d tools/phpstan install --no-progress --no-interaction
+              composer -d tools/phpunit install --no-progress --no-interaction
+              # PHP CS Fixer 3.95.32 does not support PHP 8.6 syntax.
+              phpstan analyse -c tools/phpstan/phpstan.neon --memory-limit=1024M
+              phpunit -c tools/phpunit/phpunit.dist.xml
+            '
 
       - name: Create a repository-scoped publication token
         if: steps.select.outputs.selected == 'true'
@@ -174,12 +202,24 @@ jobs:
           SOURCE: ${{ matrix.source }}
           REPOSITORY: ${{ matrix.repository }}
           BRANCH: ${{ matrix.branch }}
+          BOOTSTRAP_BRANCH: ${{ matrix.bootstrap_branch }}
           TARGET: ${{ matrix.id }}
           CANONICAL_SHA: ${{ github.sha }}
           APP_TOKEN: ${{ steps.publication-token.outputs.token }}
         run: |
           git config --global url."https://x-access-token:${APP_TOKEN}@github.com/".insteadOf "https://github.com/"
-          git clone --branch "$BRANCH" --single-branch "https://github.com/$REPOSITORY.git" mirror
+          mirror_url="https://github.com/$REPOSITORY.git"
+          clone_branch="$BRANCH"
+          if [[ -n "$BOOTSTRAP_BRANCH" ]]; then
+            status=0
+            git ls-remote --exit-code --heads "$mirror_url" "refs/heads/$BRANCH" >/dev/null || status=$?
+            if [[ "$status" == 2 ]]; then
+              clone_branch="$BOOTSTRAP_BRANCH"
+            elif [[ "$status" != 0 ]]; then
+              exit "$status"
+            fi
+          fi
+          git clone --branch "$clone_branch" --single-branch "$mirror_url" mirror
           staging=$(mktemp -d)
           git archive "$CANONICAL_SHA:$SOURCE" | tar -x -C "$staging"
           rsync -a --delete \
@@ -228,7 +268,7 @@ jobs:
         env:
           BRANCH: ${{ matrix.branch }}
         run: |
-          git -C mirror push origin "HEAD:$BRANCH"
+          git -C mirror push origin "HEAD:refs/heads/$BRANCH"
 
       - name: Report dry run
         if: >-
