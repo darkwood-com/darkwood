@@ -89,7 +89,7 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#080a0f">
   <meta name="description" content="${escape(description)}">
@@ -101,7 +101,7 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="${escape(canonical)}">
   <link rel="icon" href="${siteUrl}assets/mark.svg" type="image/svg+xml">
-  <script>try{document.documentElement.dataset.theme=localStorage.getItem("darkwood-theme")||"light"}catch(e){document.documentElement.dataset.theme="light"}</script>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("darkwood-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){document.documentElement.dataset.theme="light"}</script>
   <link rel="stylesheet" href="${siteUrl}assets/catalog.css">
   <script type="module" src="${siteUrl}assets/catalog.js"></script>
   <title>${escape(title)}</title>
@@ -119,10 +119,9 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
   </header>
   ${body}
   <nav class="mobile-nav" aria-label="Mobile navigation">
-    <a href="${siteUrl}">Home</a>
-    <a href="${siteUrl}#catalogue">Catalogue</a>
-    <a href="${repositoryUrl}">GitHub</a>
-    <button class="theme-switcher" type="button" data-theme-switcher aria-label="Change color theme"><span data-theme-icon aria-hidden="true">◐</span></button>
+    <a href="${siteUrl}" data-mobile-home><span aria-hidden="true">⌂</span>Home</a>
+    <a href="${siteUrl}#catalogue" data-mobile-catalogue><span aria-hidden="true">▦</span>Catalogue</a>
+    <a href="${repositoryUrl}">${icon("external")}GitHub</a>
   </nav>
   <footer class="site-footer">
     <div><span class="brand__mark">D</span><p>Built from the public Darkwood catalogue.<br><span>Schema v${escape(catalog.schemaVersion)} · ${plural(projects.length, "card")}</span></p></div>

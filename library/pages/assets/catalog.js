@@ -22,6 +22,19 @@ for (const control of document.querySelectorAll("[data-theme-switcher]")) {
 }
 updateThemeControls();
 
+function updateMobileNavigation() {
+  const home = document.querySelector("[data-mobile-home]");
+  const catalogue = document.querySelector("[data-mobile-catalogue]");
+  const onHome = location.pathname === new URL(home.href).pathname;
+  home.removeAttribute("aria-current");
+  catalogue.removeAttribute("aria-current");
+  if (onHome && !location.hash) home.setAttribute("aria-current", "page");
+  if (onHome && location.hash === "#catalogue") catalogue.setAttribute("aria-current", "location");
+}
+
+updateMobileNavigation();
+window.addEventListener("hashchange", updateMobileNavigation);
+
 const form = document.querySelector("[data-filters]");
 
 if (form) {

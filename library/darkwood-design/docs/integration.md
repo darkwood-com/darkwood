@@ -33,3 +33,28 @@ instead of duplicating iframe configuration in each card.
 Les feuilles locales peuvent reprendre les déclarations de `tokens.css` et exposer les anciennes variables comme alias. Adapter uniquement les sélecteurs de thème au mécanisme déjà utilisé (`data-theme` ou `body.theme-*`). Conserver les composants et leurs exceptions fonctionnelles. Les ateliers et Pages suivent cette méthode ; leur source CSS reste celle qui est assemblée par leur build existant.
 
 Le bleu d’action ne garantit pas à lui seul le contraste d’un petit texte. Utiliser le rôle `--dw-primary-hover` pour les libellés bleus sur fond clair. Pour un bouton à petit texte blanc, assombrir localement le bleu d’action si nécessaire (`color-mix(in srgb, var(--dw-primary) 85%, #000)` dans les ateliers), puis vérifier le contraste dans chaque thème. Le bleu de survol du thème sombre est clair : il ne convient pas comme fond sous un petit texte blanc. Les polices locales conservent leur licence OFL.
+
+## Bootstrap 5.3 et navigation
+
+Sur une interface Bootstrap 5.3, le sélecteur applique une seule valeur parmi
+`light`, `dark` et `sepia`. `data-theme` et `data-bs-theme` reflètent ce même
+choix. Une ancienne classe `theme-*` peut rester un alias pour les composants
+existants. Black correspond à `dark`. Conserver la clé de préférence déjà
+utilisée par le produit et valider la valeur relue.
+
+La palette sépia demande des déclarations CSS locales. Mapper `--bs-body-color`
+et `--bs-emphasis-color` vers `--dw-text`, `--bs-body-bg` vers
+`--dw-background`, `--bs-secondary-color` vers `--dw-muted`,
+`--bs-secondary-bg` vers `--dw-subtle` et `--bs-tertiary-bg` vers
+`--dw-surface`. Relier les bordures, les liens et le texte des états aux rôles
+Darkwood correspondants. Les utilitaires Bootstrap qui consomment des triplets
+RGB et les variables propres aux composants demandent une vérification
+distincte. Le champ de saisie utilise `--dw-input`, même lorsque la surface
+environnante utilise un autre token.
+
+Pages donne la référence pour la navigation. Le header regroupe l’identité du
+produit et les actions, dont le thème. Une barre mobile affiche les destinations
+principales avec icône décorative, libellé et `aria-current`. Réserver sa hauteur
+et la zone de sécurité du bas dans le contenu. Vérifier les champs avec le
+clavier ouvert, le focus, le zoom et les menus débordants. Une interface de jeu,
+de montage ou de lecture peut garder sa propre navigation.
