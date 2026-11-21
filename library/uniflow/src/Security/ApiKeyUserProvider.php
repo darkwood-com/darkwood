@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Entity\User\ShopUser;
+use App\Repository\User\ShopUserRepository;
 use App\Service\UserService;
 use Sylius\Component\User\Model\UserInterface as SyliusUserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -14,11 +15,11 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ApiKeyUserProvider implements UserProviderInterface
 {
-    public function __construct(protected UserService $userService) {}
+    public function __construct(protected UserService $userService, private readonly ShopUserRepository $shopUserRepository) {}
 
     public function loadUserByApiKey($apiKey): UserInterface
     {
-        $user = $this->userService->findOneByApiKey($apiKey);
+        $user = $this->shopUserRepository->findOneBy(['apiKey' => $apiKey, 'enabled' => true]);
         if (!$user instanceof SyliusUserInterface) {
             throw new UserNotFoundException();
         }

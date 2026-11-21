@@ -8,10 +8,10 @@ use App\Entity\Program;
 use App\Entity\User\ShopUser as User;
 use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
+use App\Repository\User\ShopUserRepository;
 use App\Service\FolderService;
 use App\Service\ProgramService;
 use App\Service\TagService;
-use App\Service\UserService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,7 +33,7 @@ class ProgramController extends AbstractController
         protected ProgramService $programService,
         protected ProgramRepository $programRepository,
         protected TagService $tagService,
-        protected UserService $userService,
+        protected ShopUserRepository $shopUserRepository,
         protected FolderService $folderService
     ) {}
 
@@ -50,7 +50,7 @@ class ProgramController extends AbstractController
         if ($user instanceof UserInterface && ($username === 'me' || $username === $user->getUsername())) {
             $fetchUser = $user;
         } else {
-            $fetchUser = $this->userService->findOneByUsername($username);
+            $fetchUser = $this->shopUserRepository->findOneByUidOrUsername($username);
             if (null === $fetchUser) {
                 throw new NotFoundHttpException();
             }
@@ -101,7 +101,7 @@ class ProgramController extends AbstractController
      * if ($user instanceof UserInterface && ($username === 'me' || $username === $user->getUsername())) {
      * $fetchUser = $user;
      * } else {
-     * $fetchUser = $this->userService->findOneByUsername($username);
+     * $fetchUser = $this->shopUserRepository->findOneByUidOrUsername($username);
      * if ($fetchUser === null) {
      * throw new NotFoundHttpException();
      * }
