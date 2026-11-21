@@ -65,7 +65,7 @@
     <x-darkwood.cover class="update-slide update-cover" id="update-cover" title="Darkwood Update"
         subtitle="Symfony AI · MCP · PHP 8.6" author="Darkwood" background="black"
         :date="$english ? '16–22 November 2026' : '16–22 novembre 2026'">
-        <link rel="stylesheet" href="{{ asset($media.'deck.css') }}?v=1">
+        <link rel="stylesheet" href="{{ asset($media.'deck.css') }}?v=2">
         <script defer src="{{ asset($media.'theme.js') }}?v=1"></script>
 
         <details class="update-theme" lang="{{ $language }}">
@@ -137,10 +137,10 @@
     </x-darkwood.content>
 
     <x-darkwood.content class="update-slide" id="update-poll" :title="$titles[6]" :page="8" :pages="12" label="Darkwood">
-        <p class="update-statement"><code>IoPoll</code></p>
+        <p class="update-statement"><code>Io&#92;Poll</code></p>
         <ul class="update-list">
             <li>{{ $english ? 'Waits for streams to become readable or writable' : 'Attend qu’un flux soit prêt en lecture ou en écriture' }}</li>
-            <li>{{ $english ? 'Times out using' : 'Gère les délais avec' }} <code>TimeDuration</code></li>
+            <li>{{ $english ? 'Times out using' : 'Gère les délais avec' }} <code>Time&#92;Duration</code></li>
             <li>{{ $english ? 'Reports structured stream errors' : 'Remonte des erreurs de flux structurées' }}</li>
         </ul>
         <p class="update-note">{{ $english ? 'FiberDriver remains the default.' : 'FiberDriver reste le pilote par défaut.' }} <a href="{{ $flow }}">{{ $english ? 'Driver documentation' : 'Documentation des pilotes' }}</a></p>

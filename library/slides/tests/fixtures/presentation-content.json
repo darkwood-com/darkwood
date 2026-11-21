@@ -2491,10 +2491,10 @@
                         "text": [
                             "Driver documentation",
                             "FiberDriver remains the default.",
-                            "IoPoll",
+                            "Io\\Poll",
                             "PollDriver listens for I/O",
                             "Reports structured stream errors",
-                            "TimeDuration",
+                            "Time\\Duration",
                             "Times out using",
                             "Waits for streams to become readable or writable"
                         ],
@@ -2828,10 +2828,10 @@
                             "Documentation des pilotes",
                             "FiberDriver reste le pilote par défaut.",
                             "Gère les délais avec",
-                            "IoPoll",
+                            "Io\\Poll",
                             "PollDriver attend les événements d’E/S",
                             "Remonte des erreurs de flux structurées",
-                            "TimeDuration"
+                            "Time\\Duration"
                         ],
                         "code": [],
                         "links": [
