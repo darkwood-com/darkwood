@@ -15,8 +15,8 @@ final class Flows
 
     public Program $program;
 
-    public function getFlows()
+    public function getFlows(): array
     {
-        return json_decode($this->program->getData(), true);
+        return $this->program->getData() ?? [];
     }
 }

@@ -2,6 +2,7 @@ import React, { useImperativeHandle, useMemo, useEffect } from 'react';
 import Search from './search.jsx';
 import { forwardRef } from 'react';
 import { createRef } from 'react';
+import UnsupportedFlow from './flow/unsupported-flow.jsx';
 import { flows as flowImports } from './../models/flows'
 
 const Flows = forwardRef((props, ref) => {
@@ -34,20 +35,21 @@ const Flows = forwardRef((props, ref) => {
 
   return (
     <>
-      <Search
+      {props.editable && <Search
         programFlows={programFlows}
         onPush={(flowType) => {
           onPush(0, flowType);
         }}
-        />
+        />}
       {graph.flows.map((flow, index) => {
-        const Flow = flowImports[flow.type];
+        const Flow = Object.hasOwn(flowImports, flow.type) ? flowImports[flow.type] : UnsupportedFlow;
 
         return (
           <React.Fragment key={index}>
             <Flow
               ref={flowRefs[index]}
               clients={clients}
+              type={flow.type}
               isPlaying={flow.isPlaying}
               data={flow.data}
               onPop={() => {
@@ -63,12 +65,12 @@ const Flows = forwardRef((props, ref) => {
                 onStopFlow(index);
               }}
             />
-            <Search
+            {props.editable && <Search
               programFlows={programFlows}
               onPush={(flowType) => {
                 onPush(index + 1, flowType);
               }}
-            />
+            />}
           </React.Fragment>
         )
       })}

@@ -1,5 +1,6 @@
 <div{{ attributes }}>
     <form class="sidebar-search d-flex align-items-center" role="search" action="{{ path('app_shop_feed') }}" method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token('feed_create') }}">
         <div class="input-group">
             <input
                 type="search"

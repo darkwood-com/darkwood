@@ -1,5 +1,5 @@
 <div class="sidebar">
-    <twig:NavigationSearch />
+    {% if canEdit %}<twig:NavigationSearch />{% endif %}
     <nav class="sidebar-nav{# if isCollapsed %} d-none d-sm-block{% endif #}">
         <div class="sidebar-section">
             <ul class="sidebar-items">

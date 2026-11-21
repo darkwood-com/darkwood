@@ -1,3 +1,4 @@
+import { TextListFlow, CheckboxesFlow, SelectFlow } from '../components/flow/list-flows.jsx';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import FunctionFlow from './../components/flow/function-flow.jsx'
@@ -11,6 +12,9 @@ import { ClientType } from './client-type';
 
 
 export const flows = {
+  'uniflow-select-component': SelectFlow,
+  'uniflow-checkboxes-component': CheckboxesFlow,
+  '@uniflow-io/uniflow-flow-text-list': TextListFlow,
   '@uniflow-io/uniflow-flow-function': FunctionFlow,
   '@uniflow-io/uniflow-flow-prompt': PromptFlow,
   '@uniflow-io/uniflow-flow-text': TextFlow,
@@ -21,6 +25,9 @@ export const flows = {
 }
 
 export const flowsNames = {
+  'uniflow-select-component': 'Select',
+  'uniflow-checkboxes-component': 'Checkboxes',
+  '@uniflow-io/uniflow-flow-text-list': 'Text List',
   '@uniflow-io/uniflow-flow-function': 'Function Flow',
   '@uniflow-io/uniflow-flow-prompt': 'Prompt Flow',
   '@uniflow-io/uniflow-flow-text': 'Text Flow',
@@ -31,6 +38,9 @@ export const flowsNames = {
 }
 
 export const flowsClients = {
+  'uniflow-select-component': [ClientType.UNIFLOW],
+  'uniflow-checkboxes-component': [ClientType.UNIFLOW],
+  '@uniflow-io/uniflow-flow-text-list': [ClientType.UNIFLOW],
   '@uniflow-io/uniflow-flow-function': [
       ClientType.UNIFLOW,
       ClientType.PHP,

@@ -56,12 +56,12 @@ class ProgramController extends AbstractController
             }
         }
 
-        $client = $request->get('client');
+        $client = $request->query->get('client');
 
         if ($user instanceof UserInterface && ($username === 'me' || $username === $user->getUsername())) {
-            $programs = $this->programService->findLastByUserAndClient($fetchUser, $client);
+            $programs = $this->programRepository->findLastByUserAndClient($fetchUser, $client);
         } else {
-            $programs = $this->programService->findLastPublicByUserAndClient($fetchUser, $client);
+            $programs = $this->programRepository->findLastPublicByUserAndClient($fetchUser, $client);
         }
 
         $data = [];
@@ -166,9 +166,13 @@ class ProgramController extends AbstractController
     {
         $user = $this->getUser();
 
-        $entity = $this->programRepository->findOneByUid($user, $uid);
+        $entity = $this->programRepository->findOneByUid(null, $uid);
 
         if (!$entity instanceof Program) {
+            throw $this->createNotFoundException('Unable to find Program entity.');
+        }
+
+        if (!$entity->getPublic() && (!$user instanceof User || $user->getId() !== $entity->getUser()->getId())) {
             throw $this->createNotFoundException('Unable to find Program entity.');
         }
 
@@ -224,7 +228,7 @@ class ProgramController extends AbstractController
             }
         }
 
-        return new JsonResponse($entity->getData());
+        return new JsonResponse($entity->getData() ?? []);
     }
 
     #[Route(path: '/{uid}/flows', name: 'api_program_set_flows', methods: ['PUT'])]

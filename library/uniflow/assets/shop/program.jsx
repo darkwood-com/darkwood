@@ -15,6 +15,8 @@ class Program extends React.Component {
     super(props);
 
     this.state = {
+      loading: true,
+      loadError: false,
       folderTreeEdit: false,
       folderTree: [],
       errors: {},
@@ -42,20 +44,28 @@ class Program extends React.Component {
     this.uid = '';
   }
 
-  componentDidMount() {
-    const programContainer = document.getElementById('program');
-    if (programContainer) {
-      const uid = programContainer.dataset.uid;
-      const token = programContainer.dataset.token;
-      const apiHost = programContainer.dataset.apiHost;
+  async componentDidMount() {
+    const { uid, token } = document.getElementById('program').dataset;
+    this.uid = uid;
+    this.token = token;
+    this.api = new Api('');
 
-      this.uid = uid;
-      this.token = token;
-      this.api = new Api(apiHost);
-
-      this.onFetchProgram();
-      this.onFetchFlowData();
+    try {
+      const options = { token };
+      const [program, data] = await Promise.all([
+        this.api.getProgram(uid, options),
+        this.api.getProgramFlows(uid, options),
+      ]);
+      this.pendingDeserialization = data;
+      this.setState({
+        program: { ...program, description: program.description || '' },
+        graph: { flows: data.map(({ flow }) => ({ type: flow, data: {}, isPlaying: false })) },
+        loading: false,
+      });
       this.onFetchUserSettings();
+    } catch (error) {
+      console.error('Failed to load program:', error);
+      this.setState({ loading: false, loadError: true });
     }
   }
 
@@ -78,18 +88,6 @@ class Program extends React.Component {
     }
   }
 
-  onFetchProgram = async () => {
-    const options = {
-        token: this.token
-    };
-    const program = await this.api.getProgram(this.uid, options);
-    program.description = program.description || '';
-
-    this.setState({
-        program
-    });
-  }
-
   updateProgram = debounce(async () => {
     const options = {
       token: this.token
@@ -107,31 +105,6 @@ class Program extends React.Component {
 
     if(this.token) {
         await this.api.updateProgram(this.uid, programData, options);
-    }
-  }, 1000);
-
-  onFetchFlowData = debounce(async () => {
-    const program = {
-      ...this.state.program,
-      uid: this.uid,
-    };
-
-    this.setState({
-      program,
-      graph: {
-        ...this.state.graph,
-        flows: []
-      }
-    });
-
-    let data = null;
-    const options = {
-        token: this.token
-    };
-    data = await this.api.getProgramFlows(this.uid, options);
-
-    if (data) {
-      this.onDeserializeFlowsData(data);
     }
   }, 1000);
 
@@ -190,27 +163,6 @@ class Program extends React.Component {
     }
 
     return data;
-  }
-
-  onDeserializeFlowsData = (data) => {
-    data = Array.isArray(data) ? data : [];
-
-    let flows = []
-    for (let index = 0; index < data.length; index++) {
-        const flow = data[index]
-        flows.splice(index, 0, { type: flow.flow, data: {}, isPlaying: false });
-    }
-
-    const { graph } = this.state;
-    this.setState({
-      graph: {
-        ...graph,
-        flows
-      }
-    }, () => {
-      // Store the data to deserialize for later use
-      this.pendingDeserialization = data;
-    });
   }
 
   onDeserializePendingFlows = () => {
@@ -495,10 +447,13 @@ class Program extends React.Component {
   };
 
   render() {
-    const { program } = this.state;
+    const { program, loading, loadError } = this.state;
+    if (loading) return <p role="status">Loading program…</p>;
+    if (loadError) return <p role="alert">Unable to load this program.</p>;
 
     return (
       <div className="program-container">
+        <fieldset disabled={!this.token}>
         <div className="row">
           <div className="col">
             <h3>Infos</h3>
@@ -716,11 +671,13 @@ class Program extends React.Component {
           onPlay={this.onPlay}
           onStop={this.onStop}
           onStopFlow={this.onStopFlow}
+          editable={Boolean(this.token)}
           onDeserializeReady={() => {
             this.onDeserializePendingFlows()
             this.onUpdateProgramFlows()
           }}
         />
+        </fieldset>
       </div>
     );
   }

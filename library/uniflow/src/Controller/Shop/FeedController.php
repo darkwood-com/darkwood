@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Shop;
 
 use App\Entity\Program;
-use App\Form\ProgramType;
 use App\Model\Page;
 use App\Repository\FolderRepository;
 use App\Repository\ProgramRepository;
@@ -40,8 +39,16 @@ class FeedController extends AbstractController
             throw $this->createNotFoundException('User not found');
         }
 
-        $search = $request->get('search');
-        if ($search !== null) {
+        $currentUser = $this->getUser();
+        $canEdit = $currentUser instanceof UserInterface && $currentUser->getId() === $user->getId();
+        $search = $request->request->getString('search');
+        if ($request->isMethod('POST')) {
+            if (!$canEdit || !$this->isCsrfTokenValid('feed_create', $request->request->getString('_token'))) {
+                throw $this->createAccessDeniedException();
+            }
+            if ('' === trim($search)) {
+                return $this->redirectToRoute('app_shop_feed');
+            }
             $program = $this->programService->createProgram($user, ['name' => $search]);
             $program = $this->programService->getJsonProgram($program);
 
@@ -51,13 +58,14 @@ class FeedController extends AbstractController
         $program = $this->programRepository->findOneByUserAndPath($user, $path);
         $folder = null;
         if ($program instanceof Program) {
+            if (!$canEdit && !$program->getPublic()) {
+                throw $this->createNotFoundException('Program not found');
+            }
             $folder = $program->getFolder();
         }
 
-        $programForm = $this->createForm(ProgramType::class, $program);
-
         $navigation = [];
-        $navigationFolders = $this->folderRepository->findByUserAndParent($user, $folder);
+        $navigationFolders = $canEdit ? $this->folderRepository->findByUserAndParent($user, $folder) : [];
         foreach ($navigationFolders as $navigationFolder) {
             $navigation[] = [
                 'type' => 'folder',
@@ -67,6 +75,9 @@ class FeedController extends AbstractController
 
         $navigationPrograms = $this->programRepository->findByUserAndFolder($user, $folder);
         foreach ($navigationPrograms as $navigationProgram) {
+            if (!$canEdit && !$navigationProgram->getPublic()) {
+                continue;
+            }
             $navigation[] = [
                 'type' => 'program',
                 'entity' => $this->programService->getJsonProgram($navigationProgram),
@@ -74,8 +85,7 @@ class FeedController extends AbstractController
         }
 
         $token = null;
-        $currentUser = $this->getUser();
-        if ($currentUser && $currentUser->getId() === $user->getId()) {
+        if ($canEdit) {
             $token = $this->jwtManager->create($user);
         }
 
@@ -87,7 +97,7 @@ class FeedController extends AbstractController
             ),
             'folder' => $folder,
             'program' => $program,
-            'programForm' => $programForm->createView(),
+            'canEdit' => $canEdit,
             'navigation' => $navigation,
             'token' => $token,
         ]);
