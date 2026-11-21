@@ -153,5 +153,15 @@
         "id": "55ea6e1d-f9f8-4630-928f-e3f1445b09d4",
         "source_slug": "ai-mcp-symfony-hackathon-content-hackathon",
         "title": "Darkwood Symfony AI MCP Hackathon — 90 seconds"
+    },
+    {
+        "id": "17c9442a-9821-4c75-98b1-efc7085807d9",
+        "source_slug": "darkwood-update-s47",
+        "title": "🤖 Darkwood Update — Symfony AI, MCP et PHP 8.6"
+    },
+    {
+        "id": "1a13bafd-d8af-4caa-aa98-45b5ff766dfa",
+        "source_slug": "darkwood-update-s47-en",
+        "title": "🤖 Darkwood Update — Symfony AI, MCP and PHP 8.6 (EN)"
     }
 ]

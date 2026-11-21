@@ -2304,6 +2304,676 @@
                 }
             ]
         },
+        "darkwood-update-s47-en": {
+            "count": 12,
+            "slides": [
+                {
+                    "id": "darkwood-update-s47-en-0",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Dark",
+                            "Darkwood Update",
+                            "Light",
+                            "Sepia",
+                            "Slide theme",
+                            "Symfony AI · MCP · PHP 8.6"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/images/darkwood-update/dark.svg",
+                            "http://localhost/images/darkwood-update/experience-poster.jpg",
+                            "http://localhost/images/darkwood-update/light.svg",
+                            "http://localhost/images/darkwood-update/sepia.svg"
+                        ],
+                        "hooks": [
+                            "data-theme-icon=dark",
+                            "data-theme-icon=light",
+                            "data-theme-icon=sepia"
+                        ],
+                        "footer": [
+                            "16–22 November 2026",
+                            "Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-1",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "17 games, clips and sets",
+                            "A week of releases",
+                            "Adopted for development",
+                            "Creative releases",
+                            "Darkwood Design",
+                            "Darkwood Flow",
+                            "Darkwood MCP Experience submitted",
+                            "Hackathon",
+                            "Navi and Uniflow",
+                            "PHP 8.6",
+                            "Partial application and native polling",
+                            "Shared tooling and UI consolidation",
+                            "Shared visual conventions"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "02 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-2",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience.",
+                            "Submitted to the Symfony AI & MCP Hackathon on 19 November 2026.",
+                            "View the official entry"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://symfony.com/hackathon/projects/darkwood-mcp-experience"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "03 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-3",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "48 × 15 · Geometry verified in PHP. Playability remains unverified.",
+                            "Approved export",
+                            "Brief",
+                            "Execution evidence",
+                            "From brief to approved export",
+                            "Generation agent",
+                            "MCP client",
+                            "MCP server",
+                            "PHP validation",
+                            "Symfony AI agent"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/darkwood/hackathon/level-preview.png",
+                            "http://localhost/images/darkwood-update/mcp-trace.png",
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/",
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/hackathon/mcp-proof.json"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "04 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-4",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Composio MCP",
+                            "Connect Flow",
+                            "Earlier connector experiment",
+                            "Flowvox",
+                            "Live API · custom MCP",
+                            "MCP Apps",
+                            "Mario Orchestration",
+                            "Prototype · simulated publishing",
+                            "Recherche Entreprise MCP",
+                            "Six paths through the workshop",
+                            "The workshop documents these projects independently.",
+                            "Verified execution",
+                            "Voice pipeline · end-to-end checks pending",
+                            "Workflow composition MVP"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "05 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-5",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "19 November 2026",
+                            "Navi supplies a reproducible environment. FrankenPHP in production still runs PHP 8.5.",
+                            "Navi · Nix 2.36 · Symfony 8.1",
+                            "PHP 8.6 became Darkwood’s development baseline on release day.",
+                            "PHP 8.6 from day one",
+                            "PHP 8.6 release notes"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://www.php.net/releases/8.6/en.php"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "06 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-6",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "3",
+                            "08",
+                            "Partial application in Flow",
+                            "The question mark leaves an argument for the next value in the Flow pipeline.",
+                            "→ +1 → ×2 →"
+                        ],
+                        "code": [
+                            "yield shiftNumber(?, 1);\nyield scaleNumber(factor: 2, number: ?);\nyield sprintf('Result: %02d', ?);"
+                        ],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "07 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-7",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Driver documentation",
+                            "FiberDriver remains the default.",
+                            "IoPoll",
+                            "PollDriver listens for I/O",
+                            "Reports structured stream errors",
+                            "TimeDuration",
+                            "Times out using",
+                            "Waits for streams to become readable or writable"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://flow.darkwood.com/docs/getting-started/driver/"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "08 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-8",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Dark",
+                            "Darkwood Design",
+                            "Jost, shared colour tokens, familiar navigation and accessible controls.",
+                            "Light",
+                            "One design system, four Portal themes",
+                            "Original",
+                            "Portal preserves each site’s own styling through Original and remembers the theme per site.",
+                            "Sepia"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/images/darkwood-update/dark.svg",
+                            "http://localhost/images/darkwood-update/light.svg",
+                            "http://localhost/images/darkwood-update/original.svg",
+                            "http://localhost/images/darkwood-update/sepia.svg",
+                            "https://github.com/darkwood-com/darkwood/tree/main/library/darkwood-design"
+                        ],
+                        "hooks": [
+                            "data-palette=dark",
+                            "data-palette=light",
+                            "data-palette=original",
+                            "data-palette=sepia"
+                        ],
+                        "footer": [
+                            "09 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-9",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Five games from Darkwaar",
+                            "Hindmost",
+                            "Hoopwend",
+                            "Moth Ferry",
+                            "Shoalpass",
+                            "Stillweight"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/images/darkwood-update/hindmost.jpg",
+                            "http://localhost/images/darkwood-update/hoopwend.jpg",
+                            "http://localhost/images/darkwood-update/moth-ferry.jpg",
+                            "http://localhost/images/darkwood-update/shoalpass.jpg",
+                            "http://localhost/images/darkwood-update/stillweight.jpg",
+                            "https://darkwaar.com/games/hindmost",
+                            "https://darkwaar.com/games/hoopwend",
+                            "https://darkwaar.com/games/moth-ferry",
+                            "https://darkwaar.com/games/shoalpass",
+                            "https://darkwaar.com/games/stillweight"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "10 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-10",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Brume de quai",
+                            "DJ Matyo",
+                            "HeroClip",
+                            "La spirale d’or",
+                            "Le jardin des heures",
+                            "Le pli et l’envol",
+                            "Lisière électrique",
+                            "L’harmonographe",
+                            "Marée de lumière",
+                            "Marée de néon",
+                            "Sillage doré",
+                            "Six clips and six sets",
+                            "Trajectoire — Second Mix",
+                            "Verre lent",
+                            "Écart"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/images/darkwood-update/brume-de-quai.svg",
+                            "http://localhost/images/darkwood-update/harmonographe.jpg",
+                            "https://djmatyo91.darkwood.com/sets",
+                            "https://heroclip.darkwood.com/clips"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "11 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-en-11",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "DJ Matyo",
+                            "Darkwaar",
+                            "Darkwood catalogue",
+                            "Discover the submission, watch the demo and share it. Feedback on the project is welcome.",
+                            "Explore Darkwood. Support Darkwood MCP Experience.",
+                            "Flow documentation",
+                            "HeroClip",
+                            "MCP workshop",
+                            "Symfony submission"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/",
+                            "https://darkwaar.com/games",
+                            "https://djmatyo91.darkwood.com/sets",
+                            "https://flow.darkwood.com/docs/getting-started/driver/",
+                            "https://heroclip.darkwood.com/clips",
+                            "https://pages.darkwood.com/",
+                            "https://symfony.com/hackathon/projects/darkwood-mcp-experience"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "12 | 12 · Darkwood"
+                        ]
+                    }
+                }
+            ]
+        },
+        "darkwood-update-s47": {
+            "count": 12,
+            "slides": [
+                {
+                    "id": "darkwood-update-s47-0",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Dark",
+                            "Darkwood Update",
+                            "Light",
+                            "Sepia",
+                            "Symfony AI · MCP · PHP 8.6",
+                            "Thème des slides"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/images/darkwood-update/dark.svg",
+                            "http://localhost/images/darkwood-update/experience-poster.jpg",
+                            "http://localhost/images/darkwood-update/light.svg",
+                            "http://localhost/images/darkwood-update/sepia.svg"
+                        ],
+                        "hooks": [
+                            "data-theme-icon=dark",
+                            "data-theme-icon=light",
+                            "data-theme-icon=sepia"
+                        ],
+                        "footer": [
+                            "16–22 novembre 2026",
+                            "Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-1",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "17 jeux, clips et sets",
+                            "Adopté pour le développement",
+                            "Candidature Darkwood MCP Experience soumise",
+                            "Darkwood Design",
+                            "Darkwood Flow",
+                            "Des repères visuels communs",
+                            "Fonctions partielles et polling natif",
+                            "Hackathon",
+                            "Navi et Uniflow",
+                            "Outillage mutualisé et interface consolidée",
+                            "PHP 8.6",
+                            "Publications créatives",
+                            "Une semaine de réalisations"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "02 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-2",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Candidature soumise au Symfony AI & MCP Hackathon le 19 novembre 2026.",
+                            "Darkwood MCP Experience",
+                            "One ecosystem. Multiple capabilities. One AI experience.",
+                            "Voir la candidature officielle"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://symfony.com/hackathon/projects/darkwood-mcp-experience"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "03 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-3",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "48 × 15 · Géométrie vérifiée en PHP. Jouabilité à évaluer.",
+                            "Agent Symfony AI",
+                            "Agent de génération",
+                            "Brief",
+                            "Client MCP",
+                            "Du brief à l’export approuvé",
+                            "Export approuvé",
+                            "Preuves d’exécution",
+                            "Serveur MCP",
+                            "Validation PHP"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/darkwood/hackathon/level-preview.png",
+                            "http://localhost/images/darkwood-update/mcp-trace.png",
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/",
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/hackathon/mcp-proof.json"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "04 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-4",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "API réelle · MCP personnalisé",
+                            "Composio MCP",
+                            "Connect Flow",
+                            "Expérience historique de connexion",
+                            "Exécution vérifiée",
+                            "Flowvox",
+                            "L’atelier documente ces projets indépendamment.",
+                            "MCP Apps",
+                            "MVP de composition de workflows",
+                            "Mario Orchestration",
+                            "Pipeline vocal · validation de bout en bout à poursuivre",
+                            "Prototype · publication simulée",
+                            "Recherche Entreprise MCP",
+                            "Six parcours dans l’atelier"
+                        ],
+                        "code": [],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "05 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-5",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "19 novembre 2026",
+                            "Annonce officielle de PHP 8.6",
+                            "Navi fournit un environnement reproductible. FrankenPHP en production tourne encore sous PHP 8.5.",
+                            "Navi · Nix 2.36 · Symfony 8.1",
+                            "PHP 8.6 dès le premier jour",
+                            "PHP 8.6 est devenu la référence de développement de Darkwood le jour de sa sortie."
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://www.php.net/releases/8.6/en.php"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "06 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-6",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "3",
+                            "08",
+                            "Le point d’interrogation réserve un argument pour la prochaine valeur du pipeline Flow.",
+                            "Les fonctions partielles dans Flow",
+                            "→ +1 → ×2 →"
+                        ],
+                        "code": [
+                            "yield shiftNumber(?, 1);\nyield scaleNumber(factor: 2, number: ?);\nyield sprintf('Result: %02d', ?);"
+                        ],
+                        "links": [],
+                        "hooks": [],
+                        "footer": [
+                            "07 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-7",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Attend qu’un flux soit prêt en lecture ou en écriture",
+                            "Documentation des pilotes",
+                            "FiberDriver reste le pilote par défaut.",
+                            "Gère les délais avec",
+                            "IoPoll",
+                            "PollDriver attend les événements d’E/S",
+                            "Remonte des erreurs de flux structurées",
+                            "TimeDuration"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://flow.darkwood.com/docs/getting-started/driver/"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "08 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-8",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Dark",
+                            "Darkwood Design",
+                            "Jost, tokens de couleur, navigation cohérente et contrôles accessibles.",
+                            "Light",
+                            "Original",
+                            "Portal conserve l’habillage de chaque site via Original et mémorise le thème par site.",
+                            "Sepia",
+                            "Un design commun, quatre thèmes sur Portal"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/images/darkwood-update/dark.svg",
+                            "http://localhost/images/darkwood-update/light.svg",
+                            "http://localhost/images/darkwood-update/original.svg",
+                            "http://localhost/images/darkwood-update/sepia.svg",
+                            "https://github.com/darkwood-com/darkwood/tree/main/library/darkwood-design"
+                        ],
+                        "hooks": [
+                            "data-palette=dark",
+                            "data-palette=light",
+                            "data-palette=original",
+                            "data-palette=sepia"
+                        ],
+                        "footer": [
+                            "09 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-9",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Cinq jeux sur Darkwaar",
+                            "Hindmost",
+                            "Hoopwend",
+                            "Moth Ferry",
+                            "Shoalpass",
+                            "Stillweight"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/images/darkwood-update/hindmost.jpg",
+                            "http://localhost/images/darkwood-update/hoopwend.jpg",
+                            "http://localhost/images/darkwood-update/moth-ferry.jpg",
+                            "http://localhost/images/darkwood-update/shoalpass.jpg",
+                            "http://localhost/images/darkwood-update/stillweight.jpg",
+                            "https://darkwaar.com/games/hindmost",
+                            "https://darkwaar.com/games/hoopwend",
+                            "https://darkwaar.com/games/moth-ferry",
+                            "https://darkwaar.com/games/shoalpass",
+                            "https://darkwaar.com/games/stillweight"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "10 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-10",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Brume de quai",
+                            "DJ Matyo",
+                            "HeroClip",
+                            "La spirale d’or",
+                            "Le jardin des heures",
+                            "Le pli et l’envol",
+                            "Lisière électrique",
+                            "L’harmonographe",
+                            "Marée de lumière",
+                            "Marée de néon",
+                            "Sillage doré",
+                            "Six clips et six sets",
+                            "Trajectoire — Second Mix",
+                            "Verre lent",
+                            "Écart"
+                        ],
+                        "code": [],
+                        "links": [
+                            "http://localhost/images/darkwood-update/brume-de-quai.svg",
+                            "http://localhost/images/darkwood-update/harmonographe.jpg",
+                            "https://djmatyo91.darkwood.com/sets",
+                            "https://heroclip.darkwood.com/clips"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "11 | 12 · Darkwood"
+                        ]
+                    }
+                },
+                {
+                    "id": "darkwood-update-s47-11",
+                    "fragments": 0,
+                    "payload": {
+                        "text": [
+                            "Atelier MCP",
+                            "Candidature Symfony",
+                            "Catalogue Darkwood",
+                            "DJ Matyo",
+                            "Darkwaar",
+                            "Documentation Flow",
+                            "Découvrez la candidature, regardez la démo et partagez le projet. Vos retours sont les bienvenus.",
+                            "Explorez Darkwood. Soutenez Darkwood MCP Experience.",
+                            "HeroClip"
+                        ],
+                        "code": [],
+                        "links": [
+                            "https://ai-mcp-symfony-hackathon-content.darkwood.com/",
+                            "https://darkwaar.com/games",
+                            "https://djmatyo91.darkwood.com/sets",
+                            "https://flow.darkwood.com/docs/getting-started/driver/",
+                            "https://heroclip.darkwood.com/clips",
+                            "https://pages.darkwood.com/",
+                            "https://symfony.com/hackathon/projects/darkwood-mcp-experience"
+                        ],
+                        "hooks": [],
+                        "footer": [
+                            "12 | 12 · Darkwood"
+                        ]
+                    }
+                }
+            ]
+        },
         "flow-pipe": {
             "count": 19,
             "slides": [

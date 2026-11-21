@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+<title id="title">DJ Matyo — Brume de quai</title><desc id="desc">Un quai désert noyé de brume grise, une lanterne ambrée diffuse et ses échos concentriques. Session dub techno originale à 124 BPM.</desc>
+<defs><linearGradient id="fog" x2="0" y2="1"><stop stop-color="#1a2128"/><stop offset=".6" stop-color="#3a464f"/><stop offset="1" stop-color="#11161b"/></linearGradient><radialGradient id="glow"><stop stop-color="#ffc56b" stop-opacity=".9"/><stop offset="1" stop-color="#ffc56b" stop-opacity="0"/></radialGradient></defs>
+<path fill="url(#fog)" d="M0 0h1000v1000H0z"/>
+<circle cx="680" cy="380" r="220" fill="url(#glow)"/>
+<g fill="none" stroke="#ffd690" stroke-width="3"><circle cx="680" cy="380" r="60" stroke-opacity=".6"/><circle cx="680" cy="380" r="110" stroke-opacity=".4"/><circle cx="680" cy="380" r="160" stroke-opacity=".25"/><circle cx="680" cy="380" r="210" stroke-opacity=".12"/></g>
+<path d="M676 380v260" stroke="#0c1014" stroke-width="10"/><path d="M0 640h1000v18H0z" fill="#0c1014"/>
+<g fill="#cfd8de" fill-opacity=".08"><path d="M0 520h1000v40H0z"/><path d="M0 590h1000v28H0z"/><path d="M0 700h1000v60H0z"/></g>
+<g fill="#eef2f4" font-family="sans-serif"><text x="578" y="130" font-size="48" letter-spacing="4">DJ Matyo</text><text x="78" y="868" font-size="84" font-weight="700">Brume de quai</text><text x="82" y="930" font-size="26" letter-spacing="3">DUB TECHNO ORIGINALE · 124 BPM</text></g>
+</svg>

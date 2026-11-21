@@ -1,0 +1,183 @@
+/* Only the Update decks use these overrides. The catalogue shares the preference. */
+html:has(.update-slide) {
+    --update-paper: #ffffff;
+    --update-ink: #101b27;
+    --update-muted: #4e5c69;
+    --update-surface: #eff2f7;
+    --update-link: #0056b3;
+    accent-color: var(--dw-blue);
+    color-scheme: light;
+}
+
+html[data-update-theme="dark"] {
+    --update-paper: #091a28;
+    --update-ink: #ebf4f1;
+    --update-muted: #9bb0bd;
+    --update-surface: #0f2b3d;
+    --update-link: #9acbff;
+    color-scheme: dark;
+}
+
+html[data-update-theme="sepia"] {
+    --update-paper: #f1e7d0;
+    --update-ink: #433422;
+    --update-muted: #665035;
+    --update-surface: #eadec2;
+    --update-link: #004080;
+}
+
+.sw-slide.update-slide,
+.update-slide .sw-canvas,
+.update-slide .slidewire-content {
+    background: var(--update-paper);
+    color: var(--update-ink);
+}
+
+.update-slide .sw-canvas {
+    --darkwood-ink: var(--update-ink);
+    --darkwood-white: var(--update-paper);
+    --dw-content-font-size: clamp(1rem, 2.35vw, 2.1rem);
+    --darkwood-heading: clamp(1.6rem, 4.5vw, 4.7rem);
+    --darkwood-font-reading: var(--darkwood-font);
+    --darkwood-footer-size: clamp(0.75rem, 1.45vw, 1.4rem);
+    --darkwood-page-x: clamp(1.25rem, 6vw, 7rem);
+    --darkwood-page-top: clamp(3.5rem, 6vh, 5rem);
+    --darkwood-page-bottom: clamp(4rem, 10vh, 7rem);
+}
+
+.update-slide .sw-content {
+    display: grid;
+    gap: clamp(0.65rem, 2vh, 1.8rem);
+    line-height: 1.25;
+}
+
+.update-slide .sw-content :is(p, dl, ul, ol, figure) { margin: 0; }
+.update-slide .sw-content a { color: var(--update-link); text-decoration: underline; }
+.update-slide .sw-content a:focus-visible { outline-color: var(--update-link); }
+.update-slide .sw-content img { display: block; max-width: 100%; }
+.update-statement, .update-result { font-size: clamp(1.7rem, 5.1vw, 5rem); font-weight: 700; }
+.update-result span { color: var(--update-muted); }
+.update-slide .sw-content .update-note { color: var(--update-muted); font-size: .78em; }
+
+.update-cover .sw-canvas { gap: clamp(0.8rem, 3vh, 2rem); }
+.update-cover .sw-title { font-size: clamp(2.55rem, 9vw, 8.25rem); }
+.update-cover .sw-subtitle { margin-top: .45em; }
+.update-poster {
+    width: min(72%, 54rem);
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: .5rem;
+}
+
+.update-grid, .update-palettes, .update-games, .update-media, .update-links {
+    display: grid;
+    gap: clamp(.55rem, 1.6vw, 1.6rem);
+}
+
+.update-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.update-grid div { border-top: 3px solid var(--dw-blue); padding-top: .4em; }
+.update-grid dt { font-weight: 700; }
+.update-grid dd { color: var(--update-muted); font-size: .76em; margin: .2em 0 0; }
+.update-palettes { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.update-palettes li { display: grid; place-items: center; gap: .4em; padding: .5em; border: 1px solid var(--update-surface); border-radius: .4rem; }
+.update-palettes img { width: clamp(1.5rem, 4vw, 3.5rem); height: auto; }
+.update-palettes [data-palette="original"] { background: #17437b; color: #fff; }
+.update-palettes [data-palette="light"] { background: #fff; color: #101b27; }
+.update-palettes [data-palette="dark"] { background: #091a28; color: #ebf4f1; }
+.update-palettes [data-palette="sepia"] { background: #f1e7d0; color: #433422; }
+.update-palettes :is([data-palette="dark"], [data-palette="original"]) img { filter: invert(1); }
+
+.update-games { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.update-games li { font-size: .75em; }
+.update-games img { width: 100%; aspect-ratio: 16 / 10; object-fit: contain; background: var(--update-surface); border-radius: .35rem; margin-bottom: .45em; }
+.update-media { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.update-media section { min-width: 0; }
+.update-media a { display: flex; align-items: center; gap: .55em; }
+.update-media img { width: clamp(3rem, 9vw, 8rem); aspect-ratio: 1; object-fit: cover; border-radius: .35rem; }
+.update-media h2 { font-weight: 700; }
+.update-media ul { font-size: .72em; padding-top: .55em; }
+.update-media li + li { margin-top: .13em; }
+
+.update-pipeline { display: flex; flex-wrap: wrap; gap: .3em .7em; align-items: center; padding: 0; list-style: none; font-size: .66em; }
+.update-pipeline li:not(:last-child)::after { content: "→" / ""; color: var(--update-link); margin-left: .65em; }
+.update-level img { width: 100%; max-height: 32vh; object-fit: contain; object-position: left; }
+.update-level figcaption { margin-top: .5em; font-size: .68em; }
+.update-list { list-style: disc; padding-left: 1.2em; }
+.update-links { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 0; }
+
+.update-theme {
+    position: fixed;
+    top: .65rem;
+    right: .75rem;
+    z-index: 50;
+    background: var(--update-paper);
+    color: var(--update-ink);
+    border: 1px solid var(--update-muted);
+    border-radius: .5rem;
+}
+.update-theme summary { list-style: none; display: grid; place-items: center; min-inline-size: 44px; min-block-size: 44px; cursor: pointer; }
+.update-theme summary::-webkit-details-marker { display: none; }
+.update-theme summary img { display: none; }
+html:not([data-update-theme]) .update-theme img[data-theme-icon="light"],
+html[data-update-theme="light"] .update-theme img[data-theme-icon="light"],
+html[data-update-theme="dark"] .update-theme img[data-theme-icon="dark"],
+html[data-update-theme="sepia"] .update-theme img[data-theme-icon="sepia"] { display: block; }
+html[data-update-theme="dark"] .update-theme summary img { filter: invert(1); }
+.update-theme fieldset { padding: .3rem .65rem .55rem; border: 0; }
+.update-theme legend { padding: 0; font-weight: 700; }
+.update-theme label { display: flex; align-items: center; gap: .5rem; min-height: 44px; cursor: pointer; }
+
+@media (max-width: 640px) {
+    .update-grid, .update-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .update-palettes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .update-games { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .update-media ul, .update-games li, .update-level figcaption, .update-pipeline { font-size: max(.84rem, .72em); }
+    .update-poster { width: 100%; }
+    .update-slide .sw-code-window pre { font-size: clamp(.64rem, 2.8vw, .9rem); }
+}
+@media print {
+    .update-theme { display: none; }
+}
+
+/* The overview can create additional copies of slide markup after page load. */
+html[data-update-theme] .slidewire-frame .update-theme { display: none; }
+
+.sw-slide.update-slide .sw-content :is(.update-games,.update-media ul,.update-links,.update-palettes) {
+    list-style: none;
+    padding-left: 0;
+    max-width: none;
+}
+.sw-slide.update-slide .sw-content :is(.update-games,.update-media,.update-links,.update-palettes) li {
+    margin: 0;
+}
+.sw-slide.update-slide .sw-content .update-media li + li { margin-top: .15em; }
+.sw-slide.update-slide .sw-content .update-media li,
+.sw-slide.update-slide .sw-content .update-games li,
+.sw-slide.update-slide .sw-content .update-level figcaption,
+.sw-slide.update-slide .sw-content .update-pipeline li { font-size: max(.84rem, .74em); }
+.sw-slide.update-slide .sw-content :is(.update-result,.update-statement) {
+    font-size: clamp(1.7rem, 5.1vw, 5rem);
+}
+.sw-slide.update-slide .sw-content .update-grid dd {
+    color: var(--update-muted);
+    font-size: .78em;
+}
+
+.sw-slide.update-cover .sw-footer { color: var(--update-ink); }
+.sw-slide.update-slide .sw-code-window :is(pre,code) {
+    font-size: clamp(.72rem, 2.2vw, 2rem);
+}
+@media (min-width: 900px) {
+    .update-cover .sw-canvas {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-content: center;
+        gap: 5vw;
+    }
+    .update-cover .sw-header { align-items: flex-start; text-align: left; }
+    .sw-slide.update-cover .sw-header h1 { font-size: clamp(2.55rem, 7vw, 8.25rem); }
+    .update-poster { width: 100%; max-height: 64vh; }
+}
+
+.update-trace { display: block; width: min(100%, 65rem); }
+.update-trace img { width: 100%; height: auto; border-radius: .35rem; }
