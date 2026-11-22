@@ -49,8 +49,8 @@ asset: ## Build
 	@ENV=$(ENV) DOCKER_USER=$(DOCKER_USER) $(DOCKER_COMPOSE) run --rm php bin/console sass:build
 	@ENV=$(ENV) DOCKER_USER=$(DOCKER_USER) $(DOCKER_COMPOSE) run --rm php bin/console asset-map:compile
 
-cache: ## cache
-    @ENV=$(ENV) DOCKER_USER=$(DOCKER_USER) $(DOCKER_COMPOSE) exec rm -rf var/cache/* && php -d memory_limit=512M bin/console cache:clear --env=prod --no-warmup && php -d memory_limit=512M bin/console cache:warmup --env=prod
+cache: ## Reconstruire le cache de production avec PHP 8.6 (Nix)
+	APP_ENV=prod APP_DEBUG=0 $(NIX) --command $(CONSOLE) cache:clear --env=prod --no-interaction
 
 debug: ## debug
 	@ENV=$(ENV) DOCKER_USER=$(DOCKER_USER) $(DOCKER_COMPOSE) -f compose.yml -f compose.override.yml -f compose.debug.yml up -d
