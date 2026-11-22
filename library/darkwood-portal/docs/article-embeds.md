@@ -28,10 +28,10 @@ Insérez un bloc de code nommé `darkwood-embed` dans le Markdown de la note Jop
 
 ````markdown
 ```darkwood-embed
-{"type":"map","url":"https://geo.darkwood.com/cards/population-europe-2025","title":"Population au 1ᵉʳ janvier 2025","cover":"https://geo.darkwood.com/covers/population-europe-2025.svg"}
+{"type":"map","url":"https://geo.darkwood.com/maps/population-europe-2025","title":"Population au 1ᵉʳ janvier 2025","cover":"https://geo.darkwood.com/covers/population-europe-2025.svg"}
 ```
 
-[Consulter la Card et le tableau sur Geo](https://geo.darkwood.com/cards/population-europe-2025)
+[Consulter la carte et le tableau sur Geo](https://geo.darkwood.com/maps/population-europe-2025)
 ````
 
 Le titre, le type et l’URL sont requis. Les jeux et cartes utilisent un slug canonique. Les clips et sets utilisent leur identifiant UUID. Les URL doivent être exactement celles d’une fiche publique HTTPS, sans paramètres ni fragment. La description et la couverture sont facultatives. La couverture doit appartenir au répertoire d’images publiques du produit. Le Markdown est rendu avec CommonMark, via le même type de rendu des blocs clôturés que Mermaid.

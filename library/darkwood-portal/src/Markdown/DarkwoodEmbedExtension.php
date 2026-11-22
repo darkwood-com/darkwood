@@ -22,7 +22,7 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
         'game' => ['Darkwaar', 'darkwaar.com', 'games', '[a-z0-9]+(?:-[a-z0-9]+)*', 'assets/docs/(?:blog|games)/(?:[A-Za-z0-9_-]+/)+[A-Za-z0-9_-]+\.(?:png|jpe?g|webp)'],
         'clip' => ['HeroClip', 'heroclip.darkwood.com', 'clips', '[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', 'media/clips/[a-z0-9-]+/thumbnail\.(?:jpe?g|webp|png)'],
         'set' => ['DJ Matyo', 'djmatyo91.darkwood.com', 'sets', '[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', 'covers/[a-zA-Z0-9_-]+\.(?:svg|png|jpe?g|webp)'],
-        'map' => ['Geo', 'geo.darkwood.com', 'cards', '[a-z0-9]+(?:-[a-z0-9]+)*', 'covers/[a-z0-9-]+\.svg'],
+        'map' => ['Geo', 'geo.darkwood.com', 'maps', '[a-z0-9]+(?:-[a-z0-9]+)*', 'covers/[a-z0-9-]+\.svg'],
     ];
 
     public function __construct(private TranslatorInterface $translator) {}
@@ -51,9 +51,10 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
         $type = $data['type'];
         [$product, $host, $path, $id, $coverPath] = self::PRODUCTS[$type];
         $origin = 'https://' . $host;
+        $inputPath = $type === 'map' ? '(?:maps|cards)' : $path;
         $url = $data['url'] ?? null;
         $title = $data['title'] ?? null;
-        if (!is_string($url) || preg_match('~\A' . preg_quote($origin, '~') . '/' . $path . '/(' . $id . ')\z~', $url, $matches) !== 1
+        if (!is_string($url) || preg_match('~\A' . preg_quote($origin, '~') . '/' . $inputPath . '/(' . $id . ')\z~', $url, $matches) !== 1
             || !is_string($title) || trim($title) === '' || mb_strlen($title) > 160) {
             return null;
         }
@@ -98,7 +99,7 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
                     'data-close-label' => $this->translator->trans('blog.embed.close'),
                     'aria-expanded' => 'false',
                 ], Xml::escape($label)),
-                new HtmlElement('a', ['href' => $url], Xml::escape($this->translator->trans('blog.embed.original'))),
+                new HtmlElement('a', ['href' => $origin . '/' . $path . '/' . $matches[1]], Xml::escape($this->translator->trans('blog.embed.original'))),
             ]),
             new HtmlElement('div', ['class' => 'dw-embed-player', 'hidden' => '']),
             new HtmlElement('template', [], $iframe),
