@@ -12,7 +12,7 @@ use function Castor\run;
 function envDev(): int
 {
     return run(
-        ['nix shell github:loophp/nix-shell#env-php82 --extra-experimental-features nix-command --extra-experimental-features flakes'],
+        ['nix --extra-experimental-features "nix-command flakes" develop .'],
         tty: true,
         allowFailure: true,
     )->getExitCode();

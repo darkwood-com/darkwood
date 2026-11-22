@@ -74,7 +74,7 @@ jobs:
             bootstrap_branch: (.git.bootstrapBranch // ""),
             composer: (.git.composer // ""),
             package_id: (.git.packageId // ""),
-            php_version: (.git.phpVersion // "8.5"),
+            php_version: (.git.phpVersion // "8.6"),
             php_extensions: (.git.phpExtensions // ""),
             mysql: (.git.mysql // false)
           }]}' .github/distribution-cards.json)

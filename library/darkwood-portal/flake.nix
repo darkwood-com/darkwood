@@ -3,9 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    naviPhpNixpkgs.url = "github:NixOS/nixpkgs/4ae25df2c68d889251c436d487553bc8f4e12030";
   };
 
-  outputs = { nixpkgs, ... }:
+  outputs = { nixpkgs, naviPhpNixpkgs, ... }:
     let
       systems = [
         "aarch64-darwin"
@@ -19,7 +20,7 @@
       devShells = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
-          php = pkgs.php85.buildEnv {
+          php = (import naviPhpNixpkgs { inherit system; }).php86.buildEnv {
             extensions = { enabled, all }:
               pkgs.lib.unique (enabled ++ [
                 all.apcu

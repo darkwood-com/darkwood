@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "naviPhpNixpkgs": {
+      "locked": {
+        "lastModified": 1795173816,
+        "narHash": "sha256-CvNWU/83xjmVpfMw5OFGAcLLM5EZNFATYe6w/7V9ipc=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "4ae25df2c68d889251c436d487553bc8f4e12030",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "4ae25df2c68d889251c436d487553bc8f4e12030",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1773389992,
@@ -18,6 +34,7 @@
     },
     "root": {
       "inputs": {
+        "naviPhpNixpkgs": "naviPhpNixpkgs",
         "nixpkgs": "nixpkgs"
       }
     }
