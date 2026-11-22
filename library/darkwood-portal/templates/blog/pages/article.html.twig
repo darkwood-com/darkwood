@@ -2,7 +2,7 @@
 
 {% block head_extra %}
 {% if safeMarkdown|default(false) %}
-<link rel="stylesheet" href="{{ asset('blog/darkwood-embed.css') }}?v=1">
+<link rel="stylesheet" href="{{ asset('blog/darkwood-embed.css') }}?v=2">
 <script src="{{ asset('blog/darkwood-embed.js') }}?v=1" defer></script>
 {% endif %}
 {% set articleTranslation = article.getOneTranslation(app.request.locale) %}
