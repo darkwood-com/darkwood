@@ -13,7 +13,7 @@ use function Castor\run;
 function envDev(): int
 {
     return run(
-        ['nix --extra-experimental-features "nix-command flakes" develop .'],
+        ['nix', '--extra-experimental-features', 'nix-command flakes', 'develop', '.'],
         context()->withAllowFailure()->withTty(true),
     )->getExitCode();
 }
