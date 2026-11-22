@@ -284,6 +284,7 @@ apps:
 
 blog:
   embed:
+    map: 'Afficher la carte'
     game: 'Jouer'
     clip: 'Regarder'
     set: 'Écouter'

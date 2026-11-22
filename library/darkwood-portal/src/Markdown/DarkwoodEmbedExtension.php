@@ -16,12 +16,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeRendererInterface
 {
-    public const string FRAME_POLICY = "frame-src https://darkwaar.com https://heroclip.darkwood.com https://djmatyo91.darkwood.com; object-src 'none'";
+    public const string FRAME_POLICY = "frame-src https://darkwaar.com https://heroclip.darkwood.com https://djmatyo91.darkwood.com https://geo.darkwood.com; object-src 'none'";
 
     private const array PRODUCTS = [
         'game' => ['Darkwaar', 'darkwaar.com', 'games', '[a-z0-9]+(?:-[a-z0-9]+)*', 'assets/docs/(?:blog|games)/(?:[A-Za-z0-9_-]+/)+[A-Za-z0-9_-]+\.(?:png|jpe?g|webp)'],
         'clip' => ['HeroClip', 'heroclip.darkwood.com', 'clips', '[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', 'media/clips/[a-z0-9-]+/thumbnail\.(?:jpe?g|webp|png)'],
         'set' => ['DJ Matyo', 'djmatyo91.darkwood.com', 'sets', '[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', 'covers/[a-zA-Z0-9_-]+\.(?:svg|png|jpe?g|webp)'],
+        'map' => ['Geo', 'geo.darkwood.com', 'cards', '[a-z0-9]+(?:-[a-z0-9]+)*', 'covers/[a-z0-9-]+\.svg'],
     ];
 
     public function __construct(private TranslatorInterface $translator) {}
@@ -63,8 +64,13 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
             : '';
         $description = is_string($data['description'] ?? null) ? mb_substr($data['description'], 0, 320) : '';
         $label = $this->translator->trans('blog.embed.' . $type);
-        $ratio = $type === 'set' ? 'audio' : ($type === 'game' ? 'portrait' : 'landscape');
-        if ($type !== 'set' && in_array($data['orientation'] ?? null, ['portrait', 'landscape'], true)) {
+        $ratio = match ($type) {
+            'set' => 'audio',
+            'map' => 'map',
+            'game' => 'portrait',
+            default => 'landscape',
+        };
+        if (in_array($type, ['game', 'clip'], true) && in_array($data['orientation'] ?? null, ['portrait', 'landscape'], true)) {
             $ratio = $data['orientation'];
         }
 
@@ -72,7 +78,7 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
             'src' => $origin . '/embed/' . $path . '/' . $matches[1],
             'title' => $product . ' — ' . $title,
             'sandbox' => $type === 'clip' ? '' : 'allow-scripts allow-same-origin',
-            'allow' => $type === 'set' ? "autoplay 'none'" : "fullscreen; autoplay 'none'",
+            'allow' => in_array($type, ['set', 'map'], true) ? "autoplay 'none'" : "fullscreen; autoplay 'none'",
             'loading' => 'lazy',
             'referrerpolicy' => 'no-referrer',
         ]);

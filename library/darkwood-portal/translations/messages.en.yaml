@@ -285,6 +285,7 @@ apps:
 
 blog:
   embed:
+    map: 'Show the map'
     game: 'Play'
     clip: 'Watch'
     set: 'Listen'

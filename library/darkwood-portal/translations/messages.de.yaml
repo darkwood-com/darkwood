@@ -282,6 +282,7 @@ apps:
 
 blog:
   embed:
+    map: 'Karte anzeigen'
     game: 'Spielen'
     clip: 'Ansehen'
     set: 'Anhören'
