@@ -64,6 +64,13 @@ const publicationsFor = (project) => distribution.cards.filter((card) =>
   card.source === project.path || card.source?.startsWith(`${project.path}/`));
 const publicLinksFor = (project) => {
   const links = [];
+  if (project.homepage) {
+    const homepage = new URL(project.homepage);
+    if (homepage.protocol !== "https:" || homepage.username || homepage.password) {
+      throw new Error(`Invalid public homepage for ${project.id}`);
+    }
+    links.push({ label: "Public website", url: homepage.href });
+  }
   for (const publication of publicationsFor(project)) {
     if (publication.repository && publication.repository !== "darkwood-com/darkwood") {
       links.push({ label: "Distribution repository", url: `https://github.com/${publication.repository}` });

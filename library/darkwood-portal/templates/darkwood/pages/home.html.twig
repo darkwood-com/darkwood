@@ -12,6 +12,17 @@
 </ul>
 </a>
 
+<ul class="itemlist">
+    <li>
+        <h2><a href="https://geo.darkwood.com/">Geo</a></h2>
+        <p>{{ {
+            fr: 'Geo explore l’Europe à travers des cartes interactives, des données publiques et des statistiques expliquées.',
+            en: 'Geo explores Europe through interactive maps, public data and explained statistics.',
+            de: 'Geo erkundet Europa mit interaktiven Karten, öffentlichen Daten und verständlich erklärten Statistiken.'
+        }[app.request.locale]|default('Geo explores Europe through interactive maps, public data and explained statistics.') }}</p>
+    </li>
+</ul>
+
 {% if lastWatchArticle %}
 <h2>{{ 'blog.home.watch_heading'|trans }}</h2>
 <ul class="itemlist">

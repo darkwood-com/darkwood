@@ -183,6 +183,21 @@
       ]
     },
     {
+      "id": "geo",
+      "path": "library/geo",
+      "domain": "darkwood",
+      "description": "Explore Europe through interactive maps, public data and explained statistics.",
+      "kind": "product",
+      "status": "working",
+      "homepage": "https://geo.darkwood.com/",
+      "dependencies": [],
+      "topics": [
+        "europe",
+        "mapping",
+        "statistics"
+      ]
+    },
+    {
       "id": "hearthbreaker",
       "path": "library/content-hearthbreaker",
       "domain": "darkwood",

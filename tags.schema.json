@@ -21,6 +21,7 @@
           "path": { "type": "string", "pattern": "^library/[^/]+$" },
           "domain": { "enum": ["darkwood", "matyo91"] },
           "description": { "type": "string", "minLength": 1 },
+          "homepage": { "type": "string", "format": "uri", "pattern": "^https://" },
           "kind": { "enum": ["product", "component", "content", "tool", "infrastructure", "operations", "experiment", "other"] },
           "status": { "enum": ["backlog", "working", "done"] },
           "dependencies": {
