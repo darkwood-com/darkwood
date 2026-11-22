@@ -15523,16 +15523,16 @@
     "packages-dev": [
         {
             "name": "behat/behat",
-            "version": "v4.0.0",
+            "version": "v4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "3f65b57a8e52c7d2c45e219ecaf5900a995946bf"
+                "reference": "a61d22aa80a809730f36e92a630dd6ef9a41f385"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/3f65b57a8e52c7d2c45e219ecaf5900a995946bf",
-                "reference": "3f65b57a8e52c7d2c45e219ecaf5900a995946bf",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/a61d22aa80a809730f36e92a630dd6ef9a41f385",
+                "reference": "a61d22aa80a809730f36e92a630dd6ef9a41f385",
                 "shasum": ""
             },
             "require": {
@@ -15541,7 +15541,7 @@
                 "composer/xdebug-handler": "^1.4 || ^2.0 || ^3.0",
                 "cucumber/tag-expressions": "^11.0",
                 "ext-mbstring": "*",
-                "php": ">=8.2 <8.6",
+                "php": ">=8.2 <8.7",
                 "psr/container": "^1.0 || ^2.0",
                 "symfony/config": "^5.4 || ^6.4 || ^7.0 || ^8.0",
                 "symfony/console": "^5.4.9 || ^6.4 || ^7.0 || ^8.0",
@@ -15607,7 +15607,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Behat/Behat/issues",
-                "source": "https://github.com/Behat/Behat/tree/v4.0.0"
+                "source": "https://github.com/Behat/Behat/tree/v4.1.1"
             },
             "funding": [
                 {
@@ -15623,7 +15623,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-28T16:13:53+00:00"
+            "time": "2026-11-20T21:17:01+00:00",
+            "published-time": "2026-11-20T21:25:08+00:00"
         },
         {
             "name": "behat/gherkin",
@@ -15852,7 +15853,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-06-07T11:47:49+00:00"
+            "time": "2026-06-07T11:47:49+00:00",
+            "published-time": "2026-06-11T12:12:37+00:00"
         },
         {
             "name": "composer/xdebug-handler",
@@ -15918,7 +15920,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-06T16:37:16+00:00"
+            "time": "2024-05-06T16:37:16+00:00",
+            "published-time": "2024-05-06T17:01:42+00:00"
         },
         {
             "name": "cucumber/tag-expressions",
@@ -15961,7 +15964,8 @@
                 "issues": "https://github.com/cucumber/tag-expressions/issues",
                 "source": "https://github.com/cucumber/tag-expressions-php/tree/v11.0.1"
             },
-            "time": "2026-03-24T10:42:49+00:00"
+            "time": "2026-03-24T10:42:49+00:00",
+            "published-time": "2026-08-15T17:37:27+00:00"
         },
         {
             "name": "dbrekelmans/bdi",
@@ -16474,7 +16478,8 @@
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.9.0"
             },
-            "time": "2026-09-13T18:51:52+00:00"
+            "time": "2026-09-13T18:51:52+00:00",
+            "published-time": "2026-09-13T18:53:16+00:00"
         },
         {
             "name": "nyholm/psr7",
