@@ -284,6 +284,12 @@ apps:
     home: Home
 
 blog:
+  embed:
+    game: 'Play'
+    clip: 'Watch'
+    set: 'Listen'
+    close: 'Close player'
+    original: 'Open the original publication'
   menu:
     blog: Blog
     articles: Articles

@@ -283,6 +283,12 @@ apps:
     home: Acceuil
 
 blog:
+  embed:
+    game: 'Jouer'
+    clip: 'Regarder'
+    set: 'Écouter'
+    close: 'Fermer le lecteur'
+    original: 'Voir la publication originale'
   menu:
     blog: Blog
     articles: Articles

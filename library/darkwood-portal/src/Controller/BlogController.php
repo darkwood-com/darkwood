@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Markdown\DarkwoodEmbedExtension;
+
 use App\Entity\Article;
 use App\Entity\CommentArticle;
 use App\Entity\User;
@@ -205,10 +207,14 @@ class BlogController extends AbstractController
 
         $isPremiumUser = $this->entitlementService->isPremium($this->getUser());
 
-        return $this->render('blog/pages/article.html.twig', [
+        $translation = $article->getOneTranslation($request->getLocale());
+        $safeMarkdown = DarkwoodEmbedExtension::usedIn((string) $translation->getContent())
+            || DarkwoodEmbedExtension::usedIn((string) $translation->getPremiumContent());
+        $response = $this->render('blog/pages/article.html.twig', [
             'page' => $page,
             'article' => $article,
-            'entity' => $article->getOneTranslation($request->getLocale()),
+            'entity' => $translation,
+            'safeMarkdown' => $safeMarkdown,
             'showLinks' => true,
             'form' => $form,
             'comments' => $comments,
@@ -217,6 +223,12 @@ class BlogController extends AbstractController
             'reactionEmojis' => $this->articleReactionService->getAvailableEmojis(),
             'relatedArticles' => $this->articleService->findRelatedArticles($article, $request->getLocale(), 4),
         ]);
+
+        if ($safeMarkdown) {
+            $response->headers->set('Content-Security-Policy', DarkwoodEmbedExtension::FRAME_POLICY);
+        }
+
+        return $response;
     }
 
     #[Route(path: ['fr' => '/fr/article/{slug}/reactions', 'en' => '/article/{slug}/reactions', 'de' => '/de/article/{slug}/reactions'], name: 'blog_article_reaction', methods: ['POST'])]

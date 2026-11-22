@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Markdown\ArticleMarkdown;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -15,6 +16,7 @@ final class AppExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
+            new TwigFilter('article_markdown', [ArticleMarkdown::class, 'render'], ['is_safe' => ['html']]),
             new TwigFilter('article_excerpt', [AppRuntime::class, 'articleExcerpt']),
             new TwigFilter('limit_markdown_source', [AppRuntime::class, 'limitMarkdownSource']),
         ];
