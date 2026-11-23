@@ -1,0 +1,13 @@
+{% for highlight in [
+    {article: lastWatchArticle|default(null), heading: 'blog.home.watch_heading'},
+    {article: lastReleaseArticle|default(null), heading: 'blog.home.release_heading'},
+    {article: lastCreatorArticle|default(null), heading: 'blog.home.creator_heading'},
+    {article: lastAutoArticle|default(null), heading: 'blog.menu.auto'},
+] %}
+    {% if highlight.article %}
+        <h2 class="article-highlight-heading">{{ highlight.heading|trans }}</h2>
+        <ul class="itemlist list-unstyled">
+            <li>{{ include('blog/partials/article-preview.html.twig', {article: highlight.article}) }}</li>
+        </ul>
+    {% endif %}
+{% endfor %}

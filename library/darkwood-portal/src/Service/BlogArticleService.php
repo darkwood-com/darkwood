@@ -274,13 +274,14 @@ class BlogArticleService
      *     news: list<Article>,
      *     lastWatchArticle: ?Article,
      *     lastReleaseArticle: ?Article,
-     *     lastCreatorArticle: ?Article
+     *     lastCreatorArticle: ?Article,
+     *     lastAutoArticle: ?Article
      * }
      */
     public function getDarkwoodHomeArticles(string $locale): array
     {
-        /** @var array{newsIds: list<int>, watchId: ?int, releaseId: ?int, creatorId: ?int} $ids */
-        $ids = $this->cache->get('darkwood.home.articles.' . $locale, function (ItemInterface $item) use ($locale): array {
+        /** @var array{newsIds: list<int>, watchId: ?int, releaseId: ?int, creatorId: ?int, autoId: ?int} $ids */
+        $ids = $this->cache->get('darkwood.home.articles.v2.' . $locale, function (ItemInterface $item) use ($locale): array {
             $item->expiresAfter(120);
 
             $newsIds = [];
@@ -296,6 +297,7 @@ class BlogArticleService
                 'watchId' => $this->articleRepository->findLatestWatchArticle($locale)?->getId(),
                 'releaseId' => $this->articleRepository->findLatestReleaseArticle($locale)?->getId(),
                 'creatorId' => $this->articleRepository->findLatestCreatorArticle($locale)?->getId(),
+                'autoId' => $this->findLatestAutoArticle($locale)?->getId(),
             ];
         });
 
@@ -304,6 +306,7 @@ class BlogArticleService
             $ids['watchId'],
             $ids['releaseId'],
             $ids['creatorId'],
+            $ids['autoId'],
         ], static fn ($id): bool => is_int($id))));
 
         $news = [];
@@ -318,7 +321,13 @@ class BlogArticleService
             'lastWatchArticle' => null !== $ids['watchId'] ? ($byId[$ids['watchId']] ?? null) : null,
             'lastReleaseArticle' => null !== $ids['releaseId'] ? ($byId[$ids['releaseId']] ?? null) : null,
             'lastCreatorArticle' => null !== $ids['creatorId'] ? ($byId[$ids['creatorId']] ?? null) : null,
+            'lastAutoArticle' => null !== $ids['autoId'] ? ($byId[$ids['autoId']] ?? null) : null,
         ];
+    }
+
+    public function findLatestAutoArticle(string $locale): ?Article
+    {
+        return $this->findActivesQueryBuilder($locale, 1, ArticleType::Auto)->getQuery()->getOneOrNullResult();
     }
 
     public function findLatestWatchArticle(?string $locale): ?Article

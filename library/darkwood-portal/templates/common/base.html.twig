@@ -38,6 +38,9 @@
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
+    {% if page.page.site.ref in ['blog', 'darkwood', 'hello'] %}
+        <link rel="stylesheet" href="{{ asset('blog/article-preview.css') }}?v=1">
+    {% endif %}
     {% block head_extra %}{% endblock %}
 </head>
 <body class="{% block layout %}layout{% endblock %}">

@@ -65,18 +65,18 @@ class HelloController extends AbstractController
         }
 
         $hello = $this->helloHomepageDataFactory->build();
-        $articles = $this->articleService->findManualActives($request->getLocale(), 3);
-        $lastWatchArticle = $this->articleService->findLatestWatchArticle($request->getLocale());
-        $lastCreatorArticle = $this->articleService->findLatestCreatorArticle($request->getLocale());
+        $homeArticles = $this->articleService->getDarkwoodHomeArticles($request->getLocale());
 
         return $this->render('hello/pages/home.html.twig', [
             'form' => $form,
             'page' => $page,
             'showLinks' => true,
             'hello' => $hello,
-            'articles' => $articles,
-            'lastWatchArticle' => $lastWatchArticle,
-            'lastCreatorArticle' => $lastCreatorArticle,
+            'articles' => array_slice($homeArticles['news'], 0, 3),
+            'lastWatchArticle' => $homeArticles['lastWatchArticle'],
+            'lastReleaseArticle' => $homeArticles['lastReleaseArticle'],
+            'lastCreatorArticle' => $homeArticles['lastCreatorArticle'],
+            'lastAutoArticle' => $homeArticles['lastAutoArticle'],
         ]);
     }
 

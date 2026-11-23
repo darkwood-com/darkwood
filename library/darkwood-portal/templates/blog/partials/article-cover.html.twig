@@ -1,5 +1,8 @@
 {% set fallback = asset('common/images/site/cover.png') %}
 {% set cover = vich_uploader_asset(translation, 'image') %}
-<img class="article-cover img-fluid" src="{{ cover ? asset(cover) : fallback }}" alt="" loading="lazy" decoding="async"
-     {% if square|default(false) %}width="350" height="350" style="aspect-ratio: 1; object-fit: cover"{% else %}style="max-height: 22rem; object-fit: contain"{% endif %}
+{% set thumbnail = thumbnail|default(false) %}
+{% set localFile = cover and not (cover matches '{^(?:[a-z][a-z0-9+.-]*:|//)}i') %}
+{% set source = not cover ? fallback : (thumbnail and localFile ? cover|trim('/', 'left')|imagine_filter('article_cover_square') : asset(cover)) %}
+<img class="article-cover img-fluid" src="{{ source }}" alt="{{ cover ? translation.title : '' }}" loading="lazy" decoding="async"
+     {% if thumbnail %}width="320" height="320"{% else %}style="max-height: 22rem; object-fit: contain"{% endif %}
      data-cover-fallback="{{ fallback }}" onerror="if (this.getAttribute('src') === this.dataset.coverFallback) { this.hidden = true; } else { this.src = this.dataset.coverFallback; }">

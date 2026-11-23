@@ -44,3 +44,8 @@ liip_imagine:
         hello_blog:
             filters:
                 thumbnail: { size: [ 350, 350 ], mode: outbound }
+
+        article_cover_square:
+            data_loader: web_path
+            filters:
+                thumbnail: { size: [320, 320], mode: outbound }

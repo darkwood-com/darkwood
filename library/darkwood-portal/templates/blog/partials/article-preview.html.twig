@@ -1,0 +1,22 @@
+{% set translation = article.getOneTranslation(app.request.locale) %}
+{% set articleUrl = path('blog_article', {slug: translation.slug, _locale: translation.locale}) %}
+<div class="article-preview">
+    <a class="article-preview__cover" href="{{ articleUrl }}" aria-label="{{ translation.title }}">
+        {{ include('blog/partials/article-cover.html.twig', {translation: translation, thumbnail: true}) }}
+    </a>
+    <div class="article-preview__text">
+        <h3><a href="{{ articleUrl }}">{{ translation.title }}</a></h3>
+        <p><em>{{ 'blog.home.article_on'|trans }} <time datetime="{{ translation.created|date('c') }}">{{ translation.created|format_date('long') }}</time></em></p>
+        <p>{{ translation.content|article_excerpt(260) }}</p>
+        <p><a href="{{ articleUrl }}">{{ 'blog.home.show_more'|trans }}</a></p>
+        {% if reactionEmojis is defined %}
+            {{ include('blog/partials/article-reactions.html.twig', {
+                article: article,
+                slug: translation.slug,
+                summary: reactionSummaries[article.id]|default({counts: {}, userReactions: []}),
+                reactionEmojis: reactionEmojis,
+                compact: true,
+            }) }}
+        {% endif %}
+    </div>
+</div>

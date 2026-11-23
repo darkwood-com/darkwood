@@ -47,7 +47,8 @@ class DarkwoodController extends AbstractController
         $lastWatchArticle = $homeArticles['lastWatchArticle'];
         $lastReleaseArticle = $homeArticles['lastReleaseArticle'];
         $lastCreatorArticle = $homeArticles['lastCreatorArticle'];
-        $reactionArticles = array_values(array_filter([$lastWatchArticle, $lastReleaseArticle, $lastCreatorArticle, ...$articles]));
+        $lastAutoArticle = $homeArticles['lastAutoArticle'];
+        $reactionArticles = array_values(array_filter([$lastWatchArticle, $lastReleaseArticle, $lastCreatorArticle, $lastAutoArticle, ...$articles]));
 
         $response = $this->render('darkwood/pages/home.html.twig', [
             'page' => $page,
@@ -55,6 +56,7 @@ class DarkwoodController extends AbstractController
             'lastWatchArticle' => $lastWatchArticle,
             'lastReleaseArticle' => $lastReleaseArticle,
             'lastCreatorArticle' => $lastCreatorArticle,
+            'lastAutoArticle' => $lastAutoArticle,
             'reactionSummaries' => $this->buildReactionSummaries($reactionArticles),
             'reactionEmojis' => $this->articleReactionService->getAvailableEmojis(),
             'showLinks' => true,
