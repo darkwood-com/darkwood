@@ -16,12 +16,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeRendererInterface
 {
-    public const string FRAME_POLICY = "frame-src https://darkwaar.com https://heroclip.darkwood.com https://djmatyo91.darkwood.com https://geo.darkwood.com; object-src 'none'";
+    public const string FRAME_POLICY = "frame-src https://darkwaar.com https://heroclip.darkwood.com https://djmatyo91.darkwood.com https://uniflow.io https://geo.darkwood.com; object-src 'none'";
 
     private const array PRODUCTS = [
         'game' => ['Darkwaar', 'darkwaar.com', 'games', '[a-z0-9]+(?:-[a-z0-9]+)*', 'assets/docs/(?:blog|games)/(?:[A-Za-z0-9_-]+/)+[A-Za-z0-9_-]+\.(?:png|jpe?g|webp)'],
         'clip' => ['HeroClip', 'heroclip.darkwood.com', 'clips', '[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', 'media/clips/[a-z0-9-]+/thumbnail\.(?:jpe?g|webp|png)'],
         'set' => ['DJ Matyo', 'djmatyo91.darkwood.com', 'sets', '[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', 'covers/[a-zA-Z0-9_-]+\.(?:svg|png|jpe?g|webp)'],
+        'workflow' => ['Uniflow', 'uniflow.io', 'feed/public', '[a-z0-9]+(?:-[a-z0-9]+)*', 'assets/images/[A-Za-z0-9_-]+\.(?:svg|png|jpe?g|webp)', 'embed/flows'],
         'map' => ['Geo', 'geo.darkwood.com', 'maps', '[a-z0-9]+(?:-[a-z0-9]+)*', 'covers/[a-z0-9-]+\.svg'],
     ];
 
@@ -50,6 +51,7 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
 
         $type = $data['type'];
         [$product, $host, $path, $id, $coverPath] = self::PRODUCTS[$type];
+        $embedPath = self::PRODUCTS[$type][5] ?? 'embed/' . $path;
         $origin = 'https://' . $host;
         $inputPath = $type === 'map' ? '(?:maps|cards)' : $path;
         $url = $data['url'] ?? null;
@@ -67,7 +69,7 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
         $label = $this->translator->trans('blog.embed.' . $type);
         $ratio = match ($type) {
             'set' => 'audio',
-            'map' => 'map',
+            'map', 'workflow' => 'map',
             'game' => 'portrait',
             default => 'landscape',
         };
@@ -76,10 +78,10 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
         }
 
         $iframe = new HtmlElement('iframe', [
-            'src' => $origin . '/embed/' . $path . '/' . $matches[1],
+            'src' => $origin . '/' . $embedPath . '/' . $matches[1],
             'title' => $product . ' — ' . $title,
             'sandbox' => $type === 'clip' ? '' : 'allow-scripts allow-same-origin',
-            'allow' => in_array($type, ['set', 'map'], true) ? "autoplay 'none'" : "fullscreen; autoplay 'none'",
+            'allow' => in_array($type, ['set', 'map', 'workflow'], true) ? "autoplay 'none'" : "fullscreen; autoplay 'none'",
             'loading' => 'lazy',
             'referrerpolicy' => 'no-referrer',
         ]);

@@ -19,6 +19,7 @@ final class ArticleMarkdownTest extends TestCase
             ['game', 'https://darkwaar.com/games/prime-lanterns'],
             ['clip', 'https://heroclip.darkwood.com/clips/01a20241-c293-748f-9dd4-ccfead5f65d8'],
             ['set', 'https://djmatyo91.darkwood.com/sets/01a20241-c177-7ce9-a9a8-af260e305622'],
+            ['workflow', 'https://uniflow.io/feed/public/lidar-canopy-classifier-2026-11-23'],
             ['game', 'https://example.org/games/prime-lanterns'],
             ['clip', 'https://heroclip.darkwood.com/clips/not-an-id'],
             ['set', 'data:text/html,untrusted'],
@@ -33,11 +34,12 @@ final class ArticleMarkdownTest extends TestCase
             . "\x60\x60\x60mermaid\ngraph TD\n\x60\x60\x60\n";
 
         $html = $renderer->render($body);
-        self::assertSame(3, substr_count($html, '<template><iframe'));
+        self::assertSame(4, substr_count($html, '<template><iframe'));
         self::assertSame(5, substr_count($html, '<code class="language-darkwood-embed">'));
         self::assertStringContainsString('https://darkwaar.com/embed/games/prime-lanterns', $html);
         self::assertStringContainsString('https://heroclip.darkwood.com/embed/clips/', $html);
         self::assertStringContainsString('https://djmatyo91.darkwood.com/embed/sets/', $html);
+        self::assertStringContainsString('https://uniflow.io/embed/flows/lidar-canopy-classifier-2026-11-23', $html);
         self::assertStringContainsString('href="https://darkwaar.com/games/prime-lanterns"', $html);
         self::assertStringContainsString('&lt;em&gt;Titre&lt;/em&gt;', $html);
         self::assertStringContainsString('<strong>Markdown ordinaire</strong>', $html);

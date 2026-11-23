@@ -288,6 +288,7 @@ blog:
     game: 'Jouer'
     clip: 'Regarder'
     set: 'Écouter'
+    workflow: 'Ouvrir le workflow'
     close: 'Fermer le lecteur'
     original: 'Voir la publication originale'
   menu:

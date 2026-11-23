@@ -30,6 +30,34 @@ class FeedController extends AbstractController
         private readonly JWTTokenManagerInterface $jwtManager,
     ) {}
 
+    #[Route('/embed/flows/{path}', name: 'flow_embed', methods: ['GET'], requirements: ['path' => '[a-z0-9]+(?:-[a-z0-9]+)*'])]
+    public function embed(string $path): Response
+    {
+        $user = $this->shopUserRepository->findOneByUidOrUsername('public');
+        if (!$user instanceof UserInterface) {
+            throw $this->createNotFoundException('User not found');
+        }
+
+        $program = $this->programRepository->findOneByUserAndPath($user, $path);
+        if (!$program instanceof Program || !$program->getPublic()) {
+            throw $this->createNotFoundException('Program not found');
+        }
+
+        $response = $this->render('shop/feed/embed.html.twig', [
+            'page' => new Page(
+                page: 'flow-embed',
+                title: $program->getName(),
+                description: $program->getDescription() ?? '',
+            ),
+            'program' => $this->programService->getJsonProgram($program),
+            'token' => null,
+        ]);
+        $response->headers->remove('X-Frame-Options');
+        $response->headers->set('Content-Security-Policy', "frame-ancestors https://blog.darkwood.com https://darkwood.com");
+
+        return $response;
+    }
+
     #[Route('/feed/{user?me}{path?}', name: 'feed', methods: ['GET', 'POST'], requirements: ['user' => '[a-zA-Z0-9-]+', 'path' => '.*'])]
     public function feed(Request $request, string $user = 'me', ?string $path = null): Response
     {

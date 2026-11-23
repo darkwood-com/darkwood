@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <title>{{ page.title }}</title>
+        <meta name="description" content="{{ page.description }}">
+        <link rel="canonical" href="{{ url('app_shop_feed', {user: 'public', path: program.path}) }}">
+        <link rel="stylesheet" href="{{ asset('styles/app.scss') }}">
+        <style>
+            html, body { margin: 0; min-height: 100%; }
+            body { padding: clamp(.5rem, 2vw, 1rem); }
+            #program { width: 100%; }
+        </style>
+    </head>
+    <body id="flow-embed" class="theme-light">
+        <main>{% include 'components/Program.html.twig' %}</main>
+        {{ encore_entry_script_tags('app-shop-entry', null, 'app.shop') }}
+    </body>
+</html>

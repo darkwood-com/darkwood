@@ -289,6 +289,7 @@ blog:
     game: 'Spielen'
     clip: 'Ansehen'
     set: 'Anhören'
+    workflow: 'Workflow öffnen'
     close: 'Player schließen'
     original: 'Originalbeitrag öffnen'
   menu:

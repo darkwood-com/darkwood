@@ -85,6 +85,7 @@ class Article implements Stringable
     #[ORM\OneToMany(targetEntity: CommentArticle::class, mappedBy: 'article')]
     private Collection $comments;
 
+    #[Groups(['article:read', 'article:write'])]
     #[ORM\Column(type: Types::STRING, length: 16, enumType: ArticleType::class, options: ['default' => 'manual'])]
     private ArticleType $type = ArticleType::Manual;
 

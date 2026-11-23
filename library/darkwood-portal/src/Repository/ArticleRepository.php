@@ -106,8 +106,8 @@ class ArticleRepository extends ServiceEntityRepository
             ->leftJoin('n.translations', 'nts')
             ->addOrderBy('n.created', 'desc')
             ->andWhere('nts.active = true')
-            ->andWhere('n.type = :manualType')
-            ->setParameter('manualType', ArticleType::Manual)
+            ->andWhere('n.type IN (:articleTypes)')
+            ->setParameter('articleTypes', [ArticleType::Manual, ArticleType::Auto])
         ;
         if ($locale) {
             $qb->andWhere('nts.locale = :locale')->setParameter('locale', $locale);
