@@ -121,8 +121,6 @@ darkwood:
     news_on: le
     news_rss: au format RSS
     show_more: Lire la suite...
-    flow_description: Composez et exécutez des pipelines asynchrones en PHP.
-    uniflow_description: Concevez, organisez et exécutez des workflows automatisés.
     hello_title: Hello !
     hello_content: Vous avez une idée, un projet ?<br />Rencontrons nous !<br /><br /><span>Cliquez ici pour en savoir plus<span>
 
