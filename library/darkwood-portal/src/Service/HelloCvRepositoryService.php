@@ -377,7 +377,7 @@ final readonly class HelloCvRepositoryService
             new HelloCvProject(
                 id: 'uniflow',
                 name: 'Uniflow',
-                description: 'Automate your recurring tasks',
+                description: 'Design, organize and run automated workflows.',
                 type: 'product',
                 links: [['label' => 'Site', 'url' => 'https://uniflow.io']],
                 tags: ['TypeScript', 'automation', 'orchestration'],
@@ -394,10 +394,10 @@ final readonly class HelloCvRepositoryService
             ),
             new HelloCvProject(
                 id: 'flow',
-                name: 'Flow',
-                description: 'Asynchronous Functional Programming',
+                name: 'Darkwood Flow',
+                description: 'Compose and run asynchronous pipelines in PHP.',
                 type: 'open-source',
-                links: [['label' => 'Flow', 'url' => 'https://flow.darkwood.com']],
+                links: [['label' => 'Darkwood Flow', 'url' => 'https://flow.darkwood.com/']],
                 tags: ['PHP', 'async', 'FBP'],
                 imageAsset: '/hello/projects/flow.png',
             ),

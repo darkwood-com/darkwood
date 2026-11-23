@@ -1,7 +1,7 @@
 common:
   seo:
     title: Darkwood
-    description: Darkwood assist you in your Symfony / ReactJS / n8n projects
+    description: Darkwood develops Darkwood Flow for asynchronous PHP orchestration and Uniflow for workflow automation.
   404:
     error: This page does not exist !
   login:
@@ -122,6 +122,8 @@ darkwood:
     news_on: on
     news_rss: in RSS format
     show_more: Read more...
+    flow_description: Compose and run asynchronous pipelines in PHP.
+    uniflow_description: Design, organize and run automated workflows.
     hello_title: Hello !
     hello_content: Do you have an idea or a project? <br /> Let's meet! <br /> <br /> <span> Click here to find out more <span>
 
@@ -370,13 +372,13 @@ hello:
     items:
         uniflow:
             title: Uniflow
-            description: Automate your recurring tasks
+            description: Design, organize and run automated workflows.
         navi:
             title: Navi
             description: Personnal assistant
         flow:
-            title: Flow
-            description: Asynchronous Functional Programming
+            title: Darkwood Flow
+            description: Compose and run asynchronous pipelines in PHP.
         djstream:
             title: DJ Stream
             description: DJ setup for streaming online

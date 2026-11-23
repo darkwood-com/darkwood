@@ -1,7 +1,7 @@
 common:
   seo:
     title: Darkwood
-    description: Darkwood vous accompagne dans la réalisation de vos projets Symfony / ReactJS / Flow
+    description: Darkwood développe Darkwood Flow pour l’orchestration asynchrone en PHP et Uniflow pour l’automatisation des workflows.
   404:
     error: Cette page n'existe pas !
   login:
@@ -121,6 +121,8 @@ darkwood:
     news_on: le
     news_rss: au format RSS
     show_more: Lire la suite...
+    flow_description: Composez et exécutez des pipelines asynchrones en PHP.
+    uniflow_description: Concevez, organisez et exécutez des workflows automatisés.
     hello_title: Hello !
     hello_content: Vous avez une idée, un projet ?<br />Rencontrons nous !<br /><br /><span>Cliquez ici pour en savoir plus<span>
 
@@ -342,7 +344,7 @@ hello:
   hero:
     scroll: Suite
     title: Hello !<br />I'm Mathieu
-    description: Un developpeur Freelance spécialisé en<br /><a href="https://symfony.com" target="_blank" rel="nofollow noopener noreferrer">Symfony</a>, <a href="https://fr.reactjs.org" target="_blank" rel="nofollow noopener noreferrer">React</a> et <a href="https://darkwood-com.github.io/flow" target="_blank" rel="nofollow noopener noreferrer">Flow</a>.
+    description: Un developpeur Freelance spécialisé en<br /><a href="https://symfony.com" target="_blank" rel="nofollow noopener noreferrer">Symfony</a>, <a href="https://fr.reactjs.org" target="_blank" rel="nofollow noopener noreferrer">React</a> et <a href="https://flow.darkwood.com/" target="_blank" rel="nofollow noopener noreferrer">Darkwood Flow</a>.
     cta: Se rencontrer
     newsletter:
       email: Inscrire votre adresse email
@@ -369,13 +371,13 @@ hello:
     items:
         uniflow:
             title: Uniflow
-            description: Automatisez vos taches récurrentes
+            description: Concevez, organisez et exécutez des workflows automatisés.
         navi:
             title: Navi
             description: Assistant personnel
         flow:
-            title: Flow
-            description: Asynchron Functionnal Programming
+            title: Darkwood Flow
+            description: Composez et exécutez des pipelines asynchrones en PHP.
         djstream:
             title: DJ Stream
             description: Setup de DJ pour stream online
