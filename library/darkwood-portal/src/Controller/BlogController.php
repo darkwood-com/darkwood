@@ -6,10 +6,13 @@ namespace App\Controller;
 
 use App\Markdown\DarkwoodEmbedExtension;
 
+use App\Markdown\DarkwoodEmbedExtension;
+
 use App\Entity\Article;
 use App\Entity\CommentArticle;
 use App\Entity\User;
 use App\Enum\ArticleReactionEmoji;
+use App\Enum\ArticleType;
 use App\Enum\ArticleType;
 use App\Form\CommentType;
 use App\Service\ArticleReactionService;
@@ -182,8 +185,14 @@ class BlogController extends AbstractController
         $safeMarkdown = DarkwoodEmbedExtension::usedIn((string) $translation->getContent())
             || DarkwoodEmbedExtension::usedIn((string) $translation->getPremiumContent());
         $response = $this->render('blog/pages/article.html.twig', [
+        $translation = $article->getOneTranslation($request->getLocale());
+        $safeMarkdown = DarkwoodEmbedExtension::usedIn((string) $translation->getContent())
+            || DarkwoodEmbedExtension::usedIn((string) $translation->getPremiumContent());
+        $response = $this->render('blog/pages/article.html.twig', [
             'page' => $page,
             'article' => $article,
+            'entity' => $translation,
+            'safeMarkdown' => $safeMarkdown,
             'entity' => $translation,
             'safeMarkdown' => $safeMarkdown,
             'showLinks' => true,
@@ -194,6 +203,12 @@ class BlogController extends AbstractController
             'reactionEmojis' => $this->articleReactionService->getAvailableEmojis(),
             'relatedArticles' => $this->articleService->findRelatedArticles($article, $request->getLocale(), 4),
         ]);
+
+        if ($safeMarkdown) {
+            $response->headers->set('Content-Security-Policy', DarkwoodEmbedExtension::FRAME_POLICY);
+        }
+
+        return $response;
 
         if ($safeMarkdown) {
             $response->headers->set('Content-Security-Policy', DarkwoodEmbedExtension::FRAME_POLICY);

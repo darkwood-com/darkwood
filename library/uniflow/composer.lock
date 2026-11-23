@@ -4031,13 +4031,17 @@
         {
             "name": "lcobucci/jwt",
             "version": "5.7.0",
+            "version": "5.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
                 "reference": "d7e47accd18c44268e1dcf01eec19f24d6904862"
+                "reference": "d7e47accd18c44268e1dcf01eec19f24d6904862"
             },
             "dist": {
                 "type": "zip",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/d7e47accd18c44268e1dcf01eec19f24d6904862",
+                "reference": "d7e47accd18c44268e1dcf01eec19f24d6904862",
                 "url": "https://api.github.com/repos/lcobucci/jwt/zipball/d7e47accd18c44268e1dcf01eec19f24d6904862",
                 "reference": "d7e47accd18c44268e1dcf01eec19f24d6904862",
                 "shasum": ""
@@ -4046,9 +4050,20 @@
                 "ext-openssl": "*",
                 "ext-sodium": "*",
                 "php": "~8.4.0 || ~8.5.0 || ~8.6.0",
+                "php": "~8.4.0 || ~8.5.0 || ~8.6.0",
                 "psr/clock": "^1.0"
             },
             "require-dev": {
+                "infection/infection": "^0.35",
+                "lcobucci/clock": "^3.7",
+                "lcobucci/coding-standard": "^12.1",
+                "phpbench/phpbench": "^1.7",
+                "phpstan/extension-installer": "^1.4.3",
+                "phpstan/phpstan": "^2.3",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.1",
+                "phpstan/phpstan-strict-rules": "^2.1",
+                "phpunit/phpunit": "^13.4"
                 "infection/infection": "^0.35",
                 "lcobucci/clock": "^3.7",
                 "lcobucci/coding-standard": "^12.1",
@@ -4087,6 +4102,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lcobucci/jwt/issues",
+                "source": "https://github.com/lcobucci/jwt/tree/5.7.0"
                 "source": "https://github.com/lcobucci/jwt/tree/5.7.0"
             },
             "funding": [
@@ -15524,13 +15540,17 @@
         {
             "name": "behat/behat",
             "version": "v4.1.1",
+            "version": "v4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
                 "reference": "a61d22aa80a809730f36e92a630dd6ef9a41f385"
+                "reference": "a61d22aa80a809730f36e92a630dd6ef9a41f385"
             },
             "dist": {
                 "type": "zip",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/a61d22aa80a809730f36e92a630dd6ef9a41f385",
+                "reference": "a61d22aa80a809730f36e92a630dd6ef9a41f385",
                 "url": "https://api.github.com/repos/Behat/Behat/zipball/a61d22aa80a809730f36e92a630dd6ef9a41f385",
                 "reference": "a61d22aa80a809730f36e92a630dd6ef9a41f385",
                 "shasum": ""
@@ -15541,6 +15561,7 @@
                 "composer/xdebug-handler": "^1.4 || ^2.0 || ^3.0",
                 "cucumber/tag-expressions": "^11.0",
                 "ext-mbstring": "*",
+                "php": ">=8.2 <8.7",
                 "php": ">=8.2 <8.7",
                 "psr/container": "^1.0 || ^2.0",
                 "symfony/config": "^5.4 || ^6.4 || ^7.0 || ^8.0",
@@ -15608,6 +15629,7 @@
             "support": {
                 "issues": "https://github.com/Behat/Behat/issues",
                 "source": "https://github.com/Behat/Behat/tree/v4.1.1"
+                "source": "https://github.com/Behat/Behat/tree/v4.1.1"
             },
             "funding": [
                 {
@@ -15629,13 +15651,17 @@
         {
             "name": "behat/gherkin",
             "version": "v4.19.0",
+            "version": "v4.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Gherkin.git",
                 "reference": "dc765f07d85be8d97a5782bc845f51c3055c115f"
+                "reference": "dc765f07d85be8d97a5782bc845f51c3055c115f"
             },
             "dist": {
                 "type": "zip",
+                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/dc765f07d85be8d97a5782bc845f51c3055c115f",
+                "reference": "dc765f07d85be8d97a5782bc845f51c3055c115f",
                 "url": "https://api.github.com/repos/Behat/Gherkin/zipball/dc765f07d85be8d97a5782bc845f51c3055c115f",
                 "reference": "dc765f07d85be8d97a5782bc845f51c3055c115f",
                 "shasum": ""
@@ -15643,11 +15669,15 @@
             "require": {
                 "composer-runtime-api": "^2.2",
                 "php": ">=8.1 <8.7"
+                "php": ">=8.1 <8.7"
             },
             "require-dev": {
                 "cucumber/gherkin-monorepo": "dev-gherkin-v43.0.0",
                 "cweagans/composer-patches": "^2.0",
+                "cucumber/gherkin-monorepo": "dev-gherkin-v43.0.0",
+                "cweagans/composer-patches": "^2.0",
                 "friendsofphp/php-cs-fixer": "^3.77",
+                "mikey179/vfsstream": "1.6.12",
                 "mikey179/vfsstream": "1.6.12",
                 "phpstan/extension-installer": "^1",
                 "phpstan/phpstan": "2.2.14",
@@ -15693,6 +15723,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Behat/Gherkin/issues",
+                "source": "https://github.com/Behat/Gherkin/tree/v4.19.0"
                 "source": "https://github.com/Behat/Gherkin/tree/v4.19.0"
             },
             "funding": [
