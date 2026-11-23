@@ -61,6 +61,7 @@ jobs:
         env:
           REQUESTED_TARGET: ${{ inputs.target }}
         run: |
+          # Composer marks PHP mirrors; an explicit phpVersion selects a pinned Nix shell.
           value=$(jq -c --arg requested "$REQUESTED_TARGET" '{include: [.cards[] | select(
             .git != null and
             ($requested == "" or $requested == "all" or .id == $requested)
@@ -74,7 +75,9 @@ jobs:
             bootstrap_branch: (.git.bootstrapBranch // ""),
             composer: (.git.composer // ""),
             package_id: (.git.packageId // ""),
-            php_version: (.git.phpVersion // "8.6"),
+            requires_php: (.git.composer != null),
+            pinned_php_shell: (.git.phpVersion != null),
+            php_version: (if .git.composer != null then (.git.phpVersion // "8.6") else "" end),
             php_extensions: (.git.phpExtensions // ""),
             mysql: (.git.mysql // false)
           }]}' .github/distribution-cards.json)
@@ -136,7 +139,7 @@ jobs:
           echo "selected=$selected" >> "$GITHUB_OUTPUT"
 
       - name: Set up PHP
-        if: steps.select.outputs.selected == 'true' && matrix.composer != '' && matrix.php_version != '8.6'
+        if: steps.select.outputs.selected == 'true' && matrix.requires_php && !matrix.pinned_php_shell
         uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
         with:
           php-version: ${{ matrix.php_version }}
@@ -145,7 +148,7 @@ jobs:
           coverage: none
 
       - name: Validate Composer package
-        if: steps.select.outputs.selected == 'true' && matrix.composer != '' && matrix.php_version != '8.6'
+        if: steps.select.outputs.selected == 'true' && matrix.requires_php && !matrix.pinned_php_shell
         env:
           SOURCE: ${{ matrix.source }}
           EXPECTED_PACKAGE: ${{ matrix.composer }}
@@ -160,11 +163,11 @@ jobs:
           library/darkwood-php/.github/ci-run-package.sh "$PACKAGE_ID"
 
       - name: Set up Nix for PHP 8.6
-        if: steps.select.outputs.selected == 'true' && matrix.php_version == '8.6'
+        if: steps.select.outputs.selected == 'true' && matrix.requires_php && matrix.pinned_php_shell && matrix.php_version == '8.6'
         uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
 
       - name: Validate package on stable PHP 8.6
-        if: steps.select.outputs.selected == 'true' && matrix.php_version == '8.6'
+        if: steps.select.outputs.selected == 'true' && matrix.requires_php && matrix.pinned_php_shell && matrix.php_version == '8.6'
         working-directory: ${{ matrix.source }}
         env:
           EXPECTED_PACKAGE: ${{ matrix.composer }}
