@@ -37,14 +37,18 @@ for TOOL in tools/php-cs-fixer tools/phpstan tools/phpunit; do
 done
 echo "::endgroup::"
 
-echo "::group::PHP CS Fixer (${PACKAGE_DIR})"
-PHP_CS_FIXER_CONFIG="${ROOT_DIR}/${PACKAGE_DIR}/tools/php-cs-fixer/.php-cs-fixer.php"
-if [ ! -f "${PHP_CS_FIXER_CONFIG}" ]; then
-    echo "Missing PHP CS Fixer config: ${PHP_CS_FIXER_CONFIG}" >&2
-    exit 1
+if [ "${SKIP_PHP_CS_FIXER:-0}" = "1" ]; then
+    echo "::notice::Skipping PHP CS Fixer because it does not support PHP 8.6 syntax"
+else
+    echo "::group::PHP CS Fixer (${PACKAGE_DIR})"
+    PHP_CS_FIXER_CONFIG="${ROOT_DIR}/${PACKAGE_DIR}/tools/php-cs-fixer/.php-cs-fixer.php"
+    if [ ! -f "${PHP_CS_FIXER_CONFIG}" ]; then
+        echo "Missing PHP CS Fixer config: ${PHP_CS_FIXER_CONFIG}" >&2
+        exit 1
+    fi
+    (cd tools/php-cs-fixer && vendor/bin/php-cs-fixer fix --config "${PHP_CS_FIXER_CONFIG}" --diff --dry-run)
+    echo "::endgroup::"
 fi
-(cd tools/php-cs-fixer && vendor/bin/php-cs-fixer fix --config "${PHP_CS_FIXER_CONFIG}" --diff --dry-run)
-echo "::endgroup::"
 
 echo "::group::PHPStan (${PACKAGE_DIR})"
 (cd tools/phpstan && vendor/bin/phpstan analyse --configuration=phpstan.neon --memory-limit=1024M)

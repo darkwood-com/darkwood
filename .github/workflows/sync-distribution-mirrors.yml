@@ -153,6 +153,7 @@ jobs:
           SOURCE: ${{ matrix.source }}
           EXPECTED_PACKAGE: ${{ matrix.composer }}
           PACKAGE_ID: ${{ matrix.package_id }}
+          SKIP_PHP_CS_FIXER: ${{ matrix.php_version == '8.6' && '1' || '0' }}
           # Symfony CLI uses this short-lived token to resolve/download Language Tools.
           GITHUB_TOKEN: ${{ github.token }}
         run: |
