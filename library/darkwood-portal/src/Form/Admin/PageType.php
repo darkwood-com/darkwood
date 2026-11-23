@@ -36,7 +36,7 @@ class PageType extends AbstractType
             if ($data instanceof App) {
                 $form->add('banner', VichImageType::class, ['required' => false]);
                 $form->add('theme', TextType::class, ['required' => false]);
-                $form->add('contents', CollectionType::class, ['entry_type' => AppContentType::class, 'allow_add' => true, 'by_reference' => false, 'allow_delete' => true, 'error_bubbling' => false]);
+                $form->add('contents', CollectionType::class, ['entry_type' => AppContentType::class, 'allow_add' => true, 'by_reference' => false, 'allow_delete' => false, 'error_bubbling' => false]);
             }
         });
     }

@@ -23,7 +23,9 @@
         </div>
     </div>
 
-    <div class="col-lg-1">
-        <a href="#" class="btn btn-danger collection-remove"><i class="glyphicon glyphicon-trash"></i></a>
-    </div>
+    {% if form.vars.data.id is null %}
+        <div class="col-lg-1">
+            <a href="#" class="btn btn-danger collection-remove"><i class="glyphicon glyphicon-trash"></i></a>
+        </div>
+    {% endif %}
 </div>
