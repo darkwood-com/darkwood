@@ -1,6 +1,8 @@
 api_platform:
     mcp:
-        enabled: true
+        # The public portal MCP uses explicit Symfony MCP handlers. API resources
+        # (including the historical DarkwoodGame actions) must not be auto-exposed.
+        enabled: false
         format: jsonld
     title: Darkwood API Platform
     version: 1.0.7

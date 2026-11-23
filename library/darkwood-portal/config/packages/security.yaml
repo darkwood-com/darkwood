@@ -30,6 +30,10 @@ security:
             stateless: true
             provider: oidc_subject_provider
             oauth2: true
+        darkwood_public_mcp:
+            pattern: ^/mcp$
+            host: '%darkwood_host%'
+            security: false
         # MCP accepts the same player JWT as Darkwood API. This separate context
         # does not inherit partially authenticated website/2FA sessions.
         darkwood_mcp:
@@ -117,6 +121,7 @@ security:
         - { path: ^/api/darkwood, host: '%api_host%', roles: PUBLIC_ACCESS } # Darkwood API: auth via X-API-Key in DarkwoodBetaAccessSubscriber
         - { path: ^/api/hello_(profile|experiences|projects|skills)$, host: '%api_host%', roles: PUBLIC_ACCESS } # Hello CV read API
         - { path: ^/mcp, host: '%api_host%', roles: PUBLIC_ACCESS } # MCP (Hello CV + API Platform tools)
+        - { path: ^/mcp, host: '%darkwood_host%', roles: PUBLIC_ACCESS } # Public Darkwood catalogue MCP
         - { path: ^/newsletter/unsubscribe, host: '%api_host%', roles: PUBLIC_ACCESS }
 
 when@test:
