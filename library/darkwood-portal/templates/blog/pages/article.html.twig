@@ -5,10 +5,6 @@
 <link rel="stylesheet" href="{{ asset('blog/darkwood-embed.css') }}?v=3">
 <script src="{{ asset('blog/darkwood-embed.js') }}?v=1" defer></script>
 {% endif %}
-{% if safeMarkdown|default(false) %}
-<link rel="stylesheet" href="{{ asset('blog/darkwood-embed.css') }}?v=3">
-<script src="{{ asset('blog/darkwood-embed.js') }}?v=1" defer></script>
-{% endif %}
 {% set articleTranslation = article.getOneTranslation(app.request.locale) %}
 {% set canonicalUrl = url('blog_article', { _locale: articleTranslation.locale, slug: articleTranslation.slug }) %}
 {% set excerpt = (articleTranslation.content|default('')|striptags|replace({"\n": " ", "\r": " "})|trim)|slice(0, 160) %}
@@ -65,19 +61,13 @@
 {% set bodyTooLarge = articleBody|length > 100000 or premiumBody|length > 100000 %}
 {% if is_granted('ROLE_SUPER_ADMIN') and isPremiumArticle %}
     {{ safeMarkdown|default(false) ? articleBody|limit_markdown_source|article_markdown : articleBody|limit_markdown_source|markdown_to_html }}
-    {{ safeMarkdown|default(false) ? articleBody|limit_markdown_source|article_markdown : articleBody|limit_markdown_source|markdown_to_html }}
     {% if premiumBody %}
         <hr>
-        {{ safeMarkdown|default(false) ? premiumBody|limit_markdown_source|article_markdown : premiumBody|limit_markdown_source|markdown_to_html }}
         {{ safeMarkdown|default(false) ? premiumBody|limit_markdown_source|article_markdown : premiumBody|limit_markdown_source|markdown_to_html }}
     {% endif %}
 {% elseif isPremiumArticle and article.isPremium and not isPremiumUser %}
     {{ safeMarkdown|default(false) ? articleBody|limit_markdown_source|article_markdown : articleBody|limit_markdown_source|markdown_to_html }}
-    {{ safeMarkdown|default(false) ? articleBody|limit_markdown_source|article_markdown : articleBody|limit_markdown_source|markdown_to_html }}
 {% elseif isPremiumArticle and premiumBody %}
-    {{ safeMarkdown|default(false) ? premiumBody|limit_markdown_source|article_markdown : premiumBody|limit_markdown_source|markdown_to_html }}
-{% elseif safeMarkdown|default(false) %}
-    {{ articleBody|limit_markdown_source|article_markdown }}
     {{ safeMarkdown|default(false) ? premiumBody|limit_markdown_source|article_markdown : premiumBody|limit_markdown_source|markdown_to_html }}
 {% elseif safeMarkdown|default(false) %}
     {{ articleBody|limit_markdown_source|article_markdown }}

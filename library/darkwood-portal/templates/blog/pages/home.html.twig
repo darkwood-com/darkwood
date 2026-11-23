@@ -6,16 +6,13 @@
 {# page.content|markdown_to_html #}
 
 {{ include('blog/partials/article-highlights.html.twig') }}
-{{ include('blog/partials/article-highlights.html.twig') }}
 
 <h2>{{ 'blog.home.news_heading'|trans }}</h2>
 <ul class="itemlist">
     {% for article in articles %}
         <li>{{ include('blog/partials/article-preview.html.twig', {article: article}) }}</li>
-        <li>{{ include('blog/partials/article-preview.html.twig', {article: article}) }}</li>
     {% endfor %}
 </ul>
-
 
 
 {{ knp_pagination_render(articles, 'common/partials/sliding.html.twig') }}

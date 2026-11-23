@@ -53,11 +53,19 @@ Adjust the version in the commands above.
 
 ### 5. Deploy
 
-On the production server (see `deploy/debian`):
+Every Darkwood deployment to VPS-4 must use the version already pushed to the
+remote Git repository. Check the production worktree first, then update it with
+`git pull --ff-only`; never replace the application tree with a local copy.
+
+On VPS-4:
 
 ```bash
-cd /var/www/darkwood-com/darkwood-com
-git fetch --tags && git checkout v1.0.7
+cd /var/www/darkwood
+git status --short --branch
+git fetch origin
+git pull --ff-only origin main
+test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+cd library/darkwood-portal
 make deploy
 ```
 

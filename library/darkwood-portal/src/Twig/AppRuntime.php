@@ -19,7 +19,6 @@ final class AppRuntime implements RuntimeExtensionInterface
         private readonly PageService $pageService,
         private readonly RequestStack $requestStack,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly UrlGeneratorInterface $urlGenerator,
     ) {}
 
     /**

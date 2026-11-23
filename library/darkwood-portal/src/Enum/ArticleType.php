@@ -8,7 +8,6 @@ enum ArticleType: string
 {
     case Manual = 'manual';
     case Auto = 'auto';
-    case Auto = 'auto';
     case Watch = 'watch';
     case Release = 'release';
     case Creator = 'creator';

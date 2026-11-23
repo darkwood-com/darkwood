@@ -31,11 +31,6 @@
                     {{ 'blog.menu.creator'|trans }}
                 </a>
             </li>
-            <li>
-                <a href="{{ path('blog_auto') }}" class="{% if activeRoute == 'blog_auto' %}active{% endif %}"{% if currentRoute == 'blog_auto' %} aria-current="page"{% endif %}>
-                    {{ 'blog.menu.auto'|trans }}
-                </a>
-            </li>
         </ul>
     </div>
 
@@ -74,11 +69,8 @@
 </nav>
 
 <nav aria-label="{{ app.request.locale == 'fr' ? 'Navigation mobile' : 'Mobile navigation' }}">
-<nav aria-label="{{ app.request.locale == 'fr' ? 'Navigation mobile' : 'Mobile navigation' }}">
 <ul class="theme-mobile-nav">
     <li class="theme-mobile-nav__home">
-        <a href="{{ path('blog_home') }}" class="{% if currentRoute == 'blog_home' %}active{% endif %}"{% if currentRoute == 'blog_home' %} aria-current="page"{% endif %}>
-            <span class="dw-mobile-icon" aria-hidden="true">⌂</span>
         <a href="{{ path('blog_home') }}" class="{% if currentRoute == 'blog_home' %}active{% endif %}"{% if currentRoute == 'blog_home' %} aria-current="page"{% endif %}>
             <span class="dw-mobile-icon" aria-hidden="true">⌂</span>
             Blog
@@ -114,12 +106,5 @@
             {{ 'blog.menu.creator'|trans }}
         </a>
     </li>
-    <li>
-        <a href="{{ path('blog_auto') }}" class="{% if activeRoute == 'blog_auto' %}active{% endif %}"{% if currentRoute == 'blog_auto' %} aria-current="page"{% endif %}>
-            <span class="dw-mobile-icon" aria-hidden="true">★</span>
-            {{ 'blog.menu.auto'|trans }}
-        </a>
-    </li>
 </ul>
-</nav>
 </nav>

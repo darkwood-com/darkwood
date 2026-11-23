@@ -100,7 +100,6 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     public function findActivesQueryBuilder($locale = null, $limit = null, ?ArticleType $type = null)
-    public function findActivesQueryBuilder($locale = null, $limit = null, ?ArticleType $type = null)
     {
         $qb = $this->createQueryBuilder('n')
             ->select('n', 'nts')
