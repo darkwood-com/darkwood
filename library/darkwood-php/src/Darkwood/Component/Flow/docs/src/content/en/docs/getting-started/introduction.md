@@ -13,15 +13,11 @@ weight: 10
 toc: true
 ---
 
-# Flow
+# Darkwood Flow
 
-## Why ?
+Darkwood Flow composes jobs into asynchronous pipelines in PHP. Jobs pass data through the pipeline, while the driver handles execution and waiting. PHP 8.6 partial function application lets you bind arguments and use the resulting closures as jobs.
 
-Flow concept aims to solve
-
-- Adopt asynchronous as native implementation
-- Build your code with functional programming and monoids
-- Assemble your code visually
+Start with [FiberDriver or PollDriver](../driver/), depending on how the pipeline needs to wait for I/O. For designing and running application workflows, see [Uniflow](https://uniflow.io/).
 
 ## Installation
 

@@ -4,7 +4,7 @@
 title = "Flow"
 titleSeparator = "-"
 titleAddition = "Flow"
-description = "Assemble your code by adopting asynchronous as native implementation and build with functional programming and monads."
+description = "Compose and run asynchronous pipelines in PHP with Darkwood Flow."
 
 ## Open Graph
 images = ["flow.png"]

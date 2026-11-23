@@ -4,13 +4,11 @@
   </a>
 </p>
 
-## Why ?
+# Darkwood Flow
 
-Flow concept aims to solve
+Darkwood Flow is a PHP library for composing and running asynchronous pipelines. Jobs pass data through a flow, and drivers handle execution and waiting. On PHP 8.6, pipelines accept native partially applied functions. FiberDriver is the default, and PollDriver uses `Io\Poll` to wait for stream events.
 
-- Adopt asynchronous as native implementation
-- Build your code with functional programming
-- Assemble your code visually
+[Flow documentation](https://flow.darkwood.com/) · [Uniflow workflow automation](https://uniflow.io/)
 
 ## Installation
 
