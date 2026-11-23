@@ -135,6 +135,12 @@
 	margin: 0;
 }
 
+/* Contain the remaining legacy floated fields without clearfix markup. */
+.theme :is(#login_form, #contact_form, #register_form, #gallery_form)
+{
+	display: flow-root;
+}
+
 .layout .theme-nav__links a,
 .layout .theme-nav__links a:visited,
 .layout .theme-nav__locales a,

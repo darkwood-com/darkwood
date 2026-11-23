@@ -12,7 +12,6 @@ import '../libs/bootstrap-social/bootstrap-social.css'
 import '../styles/prism.css'
 import '../styles/layout.css'
 import '../styles/theme.css'
-import '../styles/login-themes.css'
 import '../styles/theme-darkwood.css'
 import '../styles/theme-hello.css'
 import '../styles/theme-sky.css'
@@ -43,3 +42,4 @@ import '../styles/darkwood-tokens.css';
 import '../styles/darkwood-design.css';
 import './portal-theme.js';
 import '../styles/portal-palettes.css';
+import '../styles/login-themes.css';

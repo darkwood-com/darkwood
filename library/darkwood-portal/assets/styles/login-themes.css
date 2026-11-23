@@ -8,6 +8,7 @@
 	--login-muted: rgba(235, 244, 241, 0.72);
 	--login-primary: #0066cc;
 	--login-primary-hover: #004080;
+	--login-link: #72b9ff;
 	--login-error-bg: #3a1a18;
 	--login-error-text: #f5b4ae;
 	max-width: 28rem;
@@ -18,6 +19,20 @@
 	color: var(--login-text);
 	border-radius: 0.35rem;
 	box-sizing: border-box;
+	font-family: var(--dw-font-sans, Jost, system-ui, sans-serif);
+}
+
+.login-shell.login-theme-darkwood {
+	--login-bg: var(--dw-input);
+	--login-surface: var(--dw-surface);
+	--login-border: var(--dw-border);
+	--login-text: var(--dw-text);
+	--login-muted: var(--dw-muted);
+	--login-primary: color-mix(in srgb, var(--dw-primary) 85%, #000);
+	--login-primary-hover: color-mix(in srgb, var(--dw-primary) 70%, #000);
+	--login-link: var(--dw-primary-hover);
+	--login-error-bg: color-mix(in srgb, var(--dw-danger) 12%, var(--dw-surface));
+	--login-error-text: var(--dw-danger);
 }
 
 .login-shell.login-theme-oidc .login-brand {
@@ -35,6 +50,10 @@
 	display: block;
 	object-fit: cover;
 	border-radius: 0.35rem;
+}
+
+.login-shell.login-theme-darkwood .login-brand img {
+	object-fit: contain;
 }
 
 .login-shell.login-theme-oidc .login-brand h1 {
@@ -58,6 +77,10 @@
 }
 
 .login-shell.login-theme-oidc label {
+	display: block;
+	float: none;
+	width: 100%;
+	margin: 0;
 	color: var(--login-muted);
 }
 
@@ -72,6 +95,9 @@
 	color: var(--login-text);
 	font-size: 1rem;
 	line-height: 1.25;
+	min-height: 44px;
+	float: none;
+	clear: none;
 }
 
 .login-shell.login-theme-oidc input[type="submit"],
@@ -86,6 +112,9 @@
 	font-size: 1rem;
 	font-weight: 600;
 	cursor: pointer;
+	min-height: 44px;
+	float: none;
+	clear: none;
 }
 
 .login-shell.login-theme-oidc input[type="submit"]:hover,
@@ -122,11 +151,29 @@
 .login-shell.login-theme-oidc .login-links {
 	margin-top: 1.25rem;
 	font-size: 0.9rem;
+	line-height: 1.55;
 	color: var(--login-muted);
+	overflow-wrap: anywhere;
+}
+
+.login-shell.login-theme-oidc .login-links p {
+	margin: 0;
+	color: inherit;
+}
+
+.login-shell.login-theme-oidc .login-links p + p {
+	margin-top: 0.75rem;
 }
 
 .login-shell.login-theme-oidc .login-links a {
-	color: var(--login-primary);
+	color: var(--login-link);
+	text-decoration: underline;
+	text-underline-offset: 0.15em;
+}
+
+.login-shell.login-theme-oidc :is(input, button, a):focus-visible {
+	outline: 3px solid color-mix(in srgb, var(--login-primary) 55%, transparent);
+	outline-offset: 3px;
 }
 
 /* Soften surrounding page chrome when Darkwaar OIDC login is active */
@@ -137,7 +184,8 @@
 
 @media (max-width: 575.98px) {
 	.login-shell.login-theme-oidc {
-		margin: 1rem 0.75rem 2rem;
-		padding: 1.5rem 1.15rem;
+		width: calc(100% - 1rem);
+		margin: 1rem auto 2rem;
+		padding: 1.5rem 1rem;
 	}
 }
