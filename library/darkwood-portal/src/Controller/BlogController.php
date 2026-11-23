@@ -69,60 +69,27 @@ class BlogController extends AbstractController
         ]);
     }
 
-    #[Route(path: ['fr' => '/fr/watch', 'en' => '/watch', 'de' => '/de/watch'], name: 'blog_watch', defaults: ['ref' => 'watch'])]
-    #[Route(path: ['fr' => '/fr/auto', 'en' => '/auto', 'de' => '/de/auto'], name: 'blog_auto', defaults: ['ref' => 'home'])]
-    public function watchOrAuto(Request $request, #[MapQueryString] ?PaginationDTO $pagination, string $ref): Response
+    #[Route(
+        path: ['fr' => '/fr/{section}', 'en' => '/{section}', 'de' => '/de/{section}'],
+        name: 'blog_section',
+        requirements: ['section' => 'auto|watch|release|creator'],
+    )]
+    public function section(Request $request, ArticleType $section, #[MapQueryString] ?PaginationDTO $pagination): Response
     {
-        $page = $this->commonController->getPage($request, $ref);
-        $query = $request->attributes->get('_route') === 'blog_auto'
-            ? $this->articleService->findActivesQueryBuilder($request->getLocale(), type: ArticleType::Auto)
-            : $this->articleService->findWatchActivesQueryBuilder($request->getLocale());
+        $page = $this->commonController->getPage($request, $section === ArticleType::Auto ? 'home' : $section->value);
+        $locale = $request->getLocale();
+        $query = match ($section) {
+            ArticleType::Auto => $this->articleService->findActivesQueryBuilder($locale, type: ArticleType::Auto),
+            ArticleType::Watch => $this->articleService->findWatchActivesQueryBuilder($locale),
+            ArticleType::Release => $this->articleService->findReleaseActivesQueryBuilder($locale),
+            ArticleType::Creator => $this->articleService->findCreatorActivesQueryBuilder($locale),
+            default => throw $this->createNotFoundException(),
+        };
         $articles = $this->paginator->paginate($query, $pagination?->page ?? 1, 10);
 
         return $this->render('blog/pages/home.html.twig', [
             'page' => $page,
             'articles' => $articles,
-            'lastWatchArticle' => null,
-            'lastReleaseArticle' => null,
-            'lastCreatorArticle' => null,
-            'reactionSummaries' => $this->buildReactionSummaries(iterator_to_array($articles)),
-            'reactionEmojis' => $this->articleReactionService->getAvailableEmojis(),
-            'showLinks' => true,
-        ]);
-    }
-
-    #[Route(path: ['fr' => '/fr/release', 'en' => '/release', 'de' => '/de/release'], name: 'blog_release', defaults: ['ref' => 'release'])]
-    public function release(Request $request, #[MapQueryString] ?PaginationDTO $pagination, $ref): Response
-    {
-        $page = $this->commonController->getPage($request, $ref);
-        $query = $this->articleService->findReleaseActivesQueryBuilder($request->getLocale());
-        $articles = $this->paginator->paginate($query, $pagination?->page ?? 1, 10);
-
-        return $this->render('blog/pages/home.html.twig', [
-            'page' => $page,
-            'articles' => $articles,
-            'lastWatchArticle' => null,
-            'lastReleaseArticle' => null,
-            'lastCreatorArticle' => null,
-            'reactionSummaries' => $this->buildReactionSummaries(iterator_to_array($articles)),
-            'reactionEmojis' => $this->articleReactionService->getAvailableEmojis(),
-            'showLinks' => true,
-        ]);
-    }
-
-    #[Route(path: ['fr' => '/fr/creator', 'en' => '/creator', 'de' => '/de/creator'], name: 'blog_creator', defaults: ['ref' => 'creator'])]
-    public function creator(Request $request, #[MapQueryString] ?PaginationDTO $pagination, $ref): Response
-    {
-        $page = $this->commonController->getPage($request, $ref);
-        $query = $this->articleService->findCreatorActivesQueryBuilder($request->getLocale());
-        $articles = $this->paginator->paginate($query, $pagination?->page ?? 1, 10);
-
-        return $this->render('blog/pages/home.html.twig', [
-            'page' => $page,
-            'articles' => $articles,
-            'lastWatchArticle' => null,
-            'lastReleaseArticle' => null,
-            'lastCreatorArticle' => null,
             'reactionSummaries' => $this->buildReactionSummaries(iterator_to_array($articles)),
             'reactionEmojis' => $this->articleReactionService->getAvailableEmojis(),
             'showLinks' => true,

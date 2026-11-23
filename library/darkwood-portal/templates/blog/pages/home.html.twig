@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>{{ app.request.attributes.get('_route') == 'blog_auto' ? 'blog.menu.auto'|trans : page.title }}</h1>
+<h1>{{ app.request.attributes.get('_route') == 'blog_section' and app.request.attributes.get('section') == 'auto' ? 'blog.menu.auto'|trans : page.title }}</h1>
 {# page.content|markdown_to_html #}
 
 {{ include('blog/partials/article-highlights.html.twig') }}

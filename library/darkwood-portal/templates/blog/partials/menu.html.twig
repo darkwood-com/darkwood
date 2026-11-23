@@ -7,28 +7,28 @@
 
         <ul class="theme-nav__links">
             <li>
-                <a href="{{ path('blog_home') }}" class="{% if activeRoute == 'blog_home' %}active{% endif %}">
+                <a href="{{ path('blog_home') }}" class="{% if articlesActive %}active{% endif %}"{% if currentRoute == 'blog_home' %} aria-current="page"{% endif %}>
                     {{ 'blog.menu.articles'|trans }}
                 </a>
             </li>
             <li>
-                <a href="{{ path('blog_watch') }}" class="{% if activeRoute == 'blog_watch' %}active{% endif %}">
+                <a href="{{ path('blog_section', {section: 'auto'}) }}" class="{% if activeSection == 'auto' %}active{% endif %}"{% if currentSection == 'auto' %} aria-current="page"{% endif %}>
+                    {{ 'blog.menu.auto'|trans }}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('blog_section', {section: 'watch'}) }}" class="{% if activeSection == 'watch' %}active{% endif %}"{% if currentSection == 'watch' %} aria-current="page"{% endif %}>
                     {{ 'blog.menu.watch'|trans }}
                 </a>
             </li>
             <li>
-                <a href="{{ path('blog_release') }}" class="{% if activeRoute == 'blog_release' %}active{% endif %}">
+                <a href="{{ path('blog_section', {section: 'release'}) }}" class="{% if activeSection == 'release' %}active{% endif %}"{% if currentSection == 'release' %} aria-current="page"{% endif %}>
                     {{ 'blog.menu.release'|trans }}
                 </a>
             </li>
             <li>
-                <a href="{{ path('blog_creator') }}" class="{% if activeRoute == 'blog_creator' %}active{% endif %}">
+                <a href="{{ path('blog_section', {section: 'creator'}) }}" class="{% if activeSection == 'creator' %}active{% endif %}"{% if currentSection == 'creator' %} aria-current="page"{% endif %}>
                     {{ 'blog.menu.creator'|trans }}
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('blog_auto') }}" class="{% if activeRoute == 'blog_auto' %}active{% endif %}"{% if currentRoute == 'blog_auto' %} aria-current="page"{% endif %}>
-                    {{ 'blog.menu.auto'|trans }}
                 </a>
             </li>
         </ul>
@@ -77,33 +77,33 @@
         </a>
     </li>
     <li>
-        <a href="{{ path('blog_home') }}" class="{% if activeRoute == 'blog_home' %}active{% endif %}"{% if activeRoute == 'blog_home' %} aria-current="page"{% endif %}>
+        <a href="{{ path('blog_home') }}" class="{% if articlesActive %}active{% endif %}"{% if currentRoute == 'blog_home' %} aria-current="page"{% endif %}>
             <span class="dw-mobile-icon" aria-hidden="true">▦</span>
             {{ 'blog.menu.articles'|trans }}
         </a>
     </li>
     <li>
-        <a href="{{ path('blog_watch') }}" class="{% if activeRoute == 'blog_watch' %}active{% endif %}"{% if activeRoute == 'blog_watch' %} aria-current="page"{% endif %}>
+        <a href="{{ path('blog_section', {section: 'auto'}) }}" class="{% if activeSection == 'auto' %}active{% endif %}"{% if currentSection == 'auto' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">★</span>
+            {{ 'blog.menu.auto'|trans }}
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('blog_section', {section: 'watch'}) }}" class="{% if activeSection == 'watch' %}active{% endif %}"{% if currentSection == 'watch' %} aria-current="page"{% endif %}>
             <span class="dw-mobile-icon" aria-hidden="true">◷</span>
             {{ 'blog.menu.watch'|trans }}
         </a>
     </li>
     <li>
-        <a href="{{ path('blog_release') }}" class="{% if activeRoute == 'blog_release' %}active{% endif %}"{% if activeRoute == 'blog_release' %} aria-current="page"{% endif %}>
+        <a href="{{ path('blog_section', {section: 'release'}) }}" class="{% if activeSection == 'release' %}active{% endif %}"{% if currentSection == 'release' %} aria-current="page"{% endif %}>
             <span class="dw-mobile-icon" aria-hidden="true">↑</span>
             {{ 'blog.menu.release'|trans }}
         </a>
     </li>
     <li>
-        <a href="{{ path('blog_creator') }}" class="{% if activeRoute == 'blog_creator' %}active{% endif %}"{% if activeRoute == 'blog_creator' %} aria-current="page"{% endif %}>
+        <a href="{{ path('blog_section', {section: 'creator'}) }}" class="{% if activeSection == 'creator' %}active{% endif %}"{% if currentSection == 'creator' %} aria-current="page"{% endif %}>
             <span class="dw-mobile-icon" aria-hidden="true">♙</span>
             {{ 'blog.menu.creator'|trans }}
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('blog_auto') }}" class="{% if activeRoute == 'blog_auto' %}active{% endif %}"{% if currentRoute == 'blog_auto' %} aria-current="page"{% endif %}>
-            <span class="dw-mobile-icon" aria-hidden="true">★</span>
-            {{ 'blog.menu.auto'|trans }}
         </a>
     </li>
 </ul>

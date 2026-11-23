@@ -83,10 +83,10 @@ final class AppRuntime implements RuntimeExtensionInterface
 
         $seo = $this->seoService->getSeo($context);
         $request = $this->requestStack->getCurrentRequest();
-        if ($request?->attributes->get('_route') === 'blog_auto') {
+        if ($request?->attributes->get('_route') === 'blog_section' && $request->attributes->get('section') === 'auto') {
             $seo['title'] = 'Auto – ' . $seo['title'];
             $seo['facebook']['title'] = $seo['twitter']['title'] = $seo['title'];
-            $seo['facebook']['url'] = $this->urlGenerator->generate('blog_auto', ['_locale' => $request->getLocale()], UrlGeneratorInterface::ABSOLUTE_URL);
+            $seo['facebook']['url'] = $this->urlGenerator->generate('blog_section', ['_locale' => $request->getLocale(), 'section' => 'auto'], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         return $seo;
@@ -102,14 +102,14 @@ final class AppRuntime implements RuntimeExtensionInterface
             return ['canonical' => null, 'pageLinks' => []];
         }
 
-        if ($request->attributes->get('_route') === 'blog_auto') {
+        if ($request->attributes->get('_route') === 'blog_section' && $request->attributes->get('section') === 'auto') {
             $pageLinks = [];
             foreach (array_keys($this->pageService->getPageLinks($ref, $entity, $request->getHost())) as $locale) {
-                $pageLinks[$locale] = $this->urlGenerator->generate('blog_auto', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
+                $pageLinks[$locale] = $this->urlGenerator->generate('blog_section', ['_locale' => $locale, 'section' => 'auto'], UrlGeneratorInterface::ABSOLUTE_URL);
             }
             $locale = $request->getLocale();
 
-            $canonical = $this->urlGenerator->generate('blog_auto', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
+            $canonical = $this->urlGenerator->generate('blog_section', ['_locale' => $locale, 'section' => 'auto'], UrlGeneratorInterface::ABSOLUTE_URL);
 
             return ['canonical' => ['locale' => $locale, 'url' => $canonical], 'pageLinks' => $pageLinks];
         }
@@ -130,7 +130,7 @@ final class AppRuntime implements RuntimeExtensionInterface
             return [];
         }
 
-        if ($request->attributes->get('_route') === 'blog_auto') {
+        if ($request->attributes->get('_route') === 'blog_section' && $request->attributes->get('section') === 'auto') {
             return array_diff_key($this->hreflangData($ref, $entity)['pageLinks'], [$request->getLocale() => true]);
         }
 

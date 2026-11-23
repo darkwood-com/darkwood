@@ -28,6 +28,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 use function count;
+use function in_array;
 use function is_string;
 
 /**
@@ -263,6 +264,11 @@ class PageService
             $item->expiresAfter(43200); // 12 hours
             if ($entity instanceof PageTranslation) {
                 $site = $entity->getPage()->getSite();
+                $ref = $entity->getPage()->getRef();
+                if ($site?->getRef() === 'blog' && in_array($ref, ['watch', 'release', 'creator'], true)) {
+                    return $this->router->generate('blog_section', ['_locale' => $entity->getLocale(), 'section' => $ref], $referenceType);
+                }
+
                 $routes = $this->router->getRouteCollection();
                 $routeData = null;
                 foreach ($routes as $route) {
