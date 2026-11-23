@@ -1,0 +1,5 @@
+{% set fallback = asset('common/images/site/cover.png') %}
+{% set cover = vich_uploader_asset(translation, 'image') %}
+<img class="article-cover img-fluid" src="{{ cover ? asset(cover) : fallback }}" alt="" loading="lazy" decoding="async"
+     {% if square|default(false) %}width="350" height="350" style="aspect-ratio: 1; object-fit: cover"{% else %}style="max-height: 22rem; object-fit: contain"{% endif %}
+     data-cover-fallback="{{ fallback }}" onerror="if (this.getAttribute('src') === this.dataset.coverFallback) { this.hidden = true; } else { this.src = this.dataset.coverFallback; }">

@@ -297,6 +297,7 @@ blog:
     watch: Veille
     release: Releases
     creator: Créateurs
+    auto: Auto
   home:
     article_on: le
     show_more: Lire la suite...

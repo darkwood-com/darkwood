@@ -18,6 +18,7 @@ final class AppRuntime implements RuntimeExtensionInterface
         private readonly SeoService $seoService,
         private readonly PageService $pageService,
         private readonly RequestStack $requestStack,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {}
 
     /**
@@ -80,7 +81,15 @@ final class AppRuntime implements RuntimeExtensionInterface
             $context['article'] = $article;
         }
 
-        return $this->seoService->getSeo($context);
+        $seo = $this->seoService->getSeo($context);
+        $request = $this->requestStack->getCurrentRequest();
+        if ($request?->attributes->get('_route') === 'blog_auto') {
+            $seo['title'] = 'Auto – ' . $seo['title'];
+            $seo['facebook']['title'] = $seo['twitter']['title'] = $seo['title'];
+            $seo['facebook']['url'] = $this->urlGenerator->generate('blog_auto', ['_locale' => $request->getLocale()], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+
+        return $seo;
     }
 
     /**
@@ -91,6 +100,18 @@ final class AppRuntime implements RuntimeExtensionInterface
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
             return ['canonical' => null, 'pageLinks' => []];
+        }
+
+        if ($request->attributes->get('_route') === 'blog_auto') {
+            $pageLinks = [];
+            foreach (array_keys($this->pageService->getPageLinks($ref, $entity, $request->getHost())) as $locale) {
+                $pageLinks[$locale] = $this->urlGenerator->generate('blog_auto', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
+            }
+            $locale = $request->getLocale();
+
+            $canonical = $this->urlGenerator->generate('blog_auto', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            return ['canonical' => ['locale' => $locale, 'url' => $canonical], 'pageLinks' => $pageLinks];
         }
 
         return [
@@ -107,6 +128,10 @@ final class AppRuntime implements RuntimeExtensionInterface
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
             return [];
+        }
+
+        if ($request->attributes->get('_route') === 'blog_auto') {
+            return array_diff_key($this->hreflangData($ref, $entity)['pageLinks'], [$request->getLocale() => true]);
         }
 
         return $this->pageService->getPageLinks($ref, $entity, $request->getHost(), $request->getLocale());

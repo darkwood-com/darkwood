@@ -298,6 +298,7 @@ blog:
     watch: Beobachtung
     release: Releases
     creator: Creators
+    auto: Auto
   home:
     article_on: vom
     show_more: Weiterlesen

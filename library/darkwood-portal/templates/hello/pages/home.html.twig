@@ -505,7 +505,7 @@
                     <a href="{{ path('blog_article', {'slug': articleTranslation.slug}) }}" target="_blank" rel="noreferrer" class="single-block">
                         <div class="mt-30">
                             <div class="block-image">
-                                <img src="{{ asset(vich_uploader_asset(articleTranslation, 'image')|default('/common/images/site/cover.png'))|imagine_filter('hello_blog') }}" alt="">
+                                {{ include('blog/partials/article-cover.html.twig', {translation: articleTranslation, square: true}) }}
                             </div>
                             <div class="block-content">
                                 <h4 class="block-title">{{ articleTranslation.title }}</h4>

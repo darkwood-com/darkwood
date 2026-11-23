@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Article;
+use App\Enum\ArticleType;
 use App\Entity\ArticleTranslation;
 use App\Repository\ArticleRepository;
 use App\Repository\ArticleTranslationRepository;
@@ -229,9 +230,9 @@ class BlogArticleService
         return $this->articleRepository->findAll();
     }
 
-    public function findActivesQueryBuilder($locale = null, $limit = null)
+    public function findActivesQueryBuilder($locale = null, $limit = null, ?ArticleType $type = null)
     {
-        return $this->articleRepository->findActivesQueryBuilder($locale, $limit);
+        return $this->articleRepository->findActivesQueryBuilder($locale, $limit, $type);
     }
 
     public function findWatchActivesQueryBuilder($locale = null, $limit = null)

@@ -26,6 +26,11 @@
                     {{ 'blog.menu.creator'|trans }}
                 </a>
             </li>
+            <li>
+                <a href="{{ path('blog_auto') }}" class="{% if activeRoute == 'blog_auto' %}active{% endif %}"{% if currentRoute == 'blog_auto' %} aria-current="page"{% endif %}>
+                    {{ 'blog.menu.auto'|trans }}
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -93,6 +98,12 @@
         <a href="{{ path('blog_creator') }}" class="{% if activeRoute == 'blog_creator' %}active{% endif %}"{% if activeRoute == 'blog_creator' %} aria-current="page"{% endif %}>
             <span class="dw-mobile-icon" aria-hidden="true">♙</span>
             {{ 'blog.menu.creator'|trans }}
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('blog_auto') }}" class="{% if activeRoute == 'blog_auto' %}active{% endif %}"{% if currentRoute == 'blog_auto' %} aria-current="page"{% endif %}>
+            <span class="dw-mobile-icon" aria-hidden="true">★</span>
+            {{ 'blog.menu.auto'|trans }}
         </a>
     </li>
 </ul>

@@ -99,7 +99,7 @@ class ArticleRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function findActivesQueryBuilder($locale = null, $limit = null)
+    public function findActivesQueryBuilder($locale = null, $limit = null, ?ArticleType $type = null)
     {
         $qb = $this->createQueryBuilder('n')
             ->select('n', 'nts')
@@ -107,7 +107,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->addOrderBy('n.created', 'desc')
             ->andWhere('nts.active = true')
             ->andWhere('n.type IN (:articleTypes)')
-            ->setParameter('articleTypes', [ArticleType::Manual, ArticleType::Auto])
+            ->setParameter('articleTypes', $type === null ? [ArticleType::Manual, ArticleType::Auto] : [$type])
         ;
         if ($locale) {
             $qb->andWhere('nts.locale = :locale')->setParameter('locale', $locale);

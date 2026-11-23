@@ -80,6 +80,7 @@
     {% for article in news %}
     {% set articleTranslation = article.getOneTranslation(app.request.locale) %}
     <li>
+        {{ include('blog/partials/article-cover.html.twig', {translation: articleTranslation}) }}
         <h3>{{ articleTranslation.title }} <em>{{ 'darkwood.home.news_on'|trans }} {{ articleTranslation.created|format_date('long') }}</em></h3>
         <p>{{ articleTranslation.content|article_excerpt(260) }}</p>
         <p><a href="{{ path('blog_article', {'slug': articleTranslation.slug}) }}">{{ 'darkwood.home.show_more'|trans }}</a></p>

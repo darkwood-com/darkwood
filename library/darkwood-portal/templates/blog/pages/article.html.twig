@@ -44,6 +44,9 @@
 {% set articleTranslation = article.getOneTranslation(app.request.locale) %}
 <h1>{{ articleTranslation.title }}</h1>
 <p class="text-right py-2"><em>{{ 'blog.home.article_on'|trans }} {{ articleTranslation.created|format_date('long') }}</em></p>
+{% if article.type.value == 'auto' %}
+    {{ include('blog/partials/article-cover.html.twig', {translation: articleTranslation}) }}
+{% endif %}
 
 {{ include('blog/partials/article-reactions.html.twig', {
     article: article,

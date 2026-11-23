@@ -10,6 +10,7 @@ use App\Entity\Article;
 use App\Entity\CommentArticle;
 use App\Entity\User;
 use App\Enum\ArticleReactionEmoji;
+use App\Enum\ArticleType;
 use App\Form\CommentType;
 use App\Service\ArticleReactionService;
 use App\Service\BlogArticleService;
@@ -69,10 +70,13 @@ class BlogController extends AbstractController
     }
 
     #[Route(path: ['fr' => '/fr/watch', 'en' => '/watch', 'de' => '/de/watch'], name: 'blog_watch', defaults: ['ref' => 'watch'])]
-    public function watch(Request $request, #[MapQueryString] ?PaginationDTO $pagination, $ref): Response
+    #[Route(path: ['fr' => '/fr/auto', 'en' => '/auto', 'de' => '/de/auto'], name: 'blog_auto', defaults: ['ref' => 'home'])]
+    public function watchOrAuto(Request $request, #[MapQueryString] ?PaginationDTO $pagination, string $ref): Response
     {
         $page = $this->commonController->getPage($request, $ref);
-        $query = $this->articleService->findWatchActivesQueryBuilder($request->getLocale());
+        $query = $request->attributes->get('_route') === 'blog_auto'
+            ? $this->articleService->findActivesQueryBuilder($request->getLocale(), type: ArticleType::Auto)
+            : $this->articleService->findWatchActivesQueryBuilder($request->getLocale());
         $articles = $this->paginator->paginate($query, $pagination?->page ?? 1, 10);
 
         return $this->render('blog/pages/home.html.twig', [

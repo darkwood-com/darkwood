@@ -15,7 +15,8 @@ enum ArticleType: string
     public function blogListRouteName(): string
     {
         return match ($this) {
-            self::Manual, self::Auto => 'blog_home',
+            self::Manual => 'blog_home',
+                        self::Auto => 'blog_auto',
             self::Watch => 'blog_watch',
             self::Release => 'blog_release',
             self::Creator => 'blog_creator',
