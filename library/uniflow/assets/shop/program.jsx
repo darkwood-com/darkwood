@@ -453,7 +453,6 @@ class Program extends React.Component {
 
     return (
       <div className="program-container">
-        <fieldset disabled={!this.token}>
         <div className="row">
           <div className="col">
             <h3>Infos</h3>
@@ -472,6 +471,7 @@ class Program extends React.Component {
           </div>*/}
         </div>
         <form className="form-sm-horizontal">
+          <fieldset disabled={!this.token}>
           <div className="row mb-3">
             <label htmlFor="program-name" className="col-sm-2 col-form-label">Name</label>
             <div className="col-sm-10">
@@ -579,6 +579,7 @@ class Program extends React.Component {
               </div>
             </div>
           </div>
+          </fieldset>
         </form>
         {program.clients.map((client) => {
             if (client === ClientType.UNIFLOW) {
@@ -677,7 +678,6 @@ class Program extends React.Component {
             this.onUpdateProgramFlows()
           }}
         />
-        </fieldset>
       </div>
     );
   }
