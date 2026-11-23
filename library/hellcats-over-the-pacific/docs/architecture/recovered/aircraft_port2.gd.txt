@@ -1,0 +1,130 @@
+
+## 0x1ac08 (link 0, two saved registers): spawn_trail, Leyte's: spawn_mission_pool_object(0x2cc04[kind], x, y, z, 0, 0,
+## 0, 0) (0x30 below); its controller (the object's +0, 1.0.3 +8) takes the kind at +0x32 and goes through the kind's
+## initialiser 0x20734[kind](object, controller) (0x18 below). Returns the controller, 0 when nothing was spawned.
+func spawn_trail(kind: int, x: int, y: int, z: int) -> int:
+	assert(memory != null, "spawn_trail requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x30
+	var obj: int = C68kScript.u32(spawn_mission_pool_object(memory.read_u32(C68kScript.u32(0x2cc04 + C68kScript.s32(kind) * 4)), x, y, z, 0, 0, 0, 0))
+	a7 = entry_a7
+	if obj == 0:
+		return 0
+	var ctl: int = memory.read_u32(obj)
+	memory.write_u16(ctl + 0x32, C68kScript.u16(kind))
+	a7 = entry_a7 - 0x18
+	_jsr(memory.read_u32(C68kScript.u32(0x20734 + C68kScript.s32(kind) * 4)), [obj, ctl])
+	a7 = entry_a7
+	return ctl
+
+## 0x1ac6a (three saved registers): attach_smoke_trail, Leyte's: spawn_trail(0, x, y, z) (0x20 below); the trail's
+## +0x32 = 0, owner object +0x58 (1.0.3 +0x52), word +0x5c = 1; the owner controller's trail count +0x6a0 + 1 and its
+## object's reference count +0x29 + 1; one tick_trail at once (0x14 below). Returns the trail, or 0.
+func attach_smoke_trail(x: int, y: int, z: int, owner_ctl: int) -> int:
+	assert(memory != null, "attach_smoke_trail requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x20
+	var trail: int = C68kScript.u32(spawn_trail(0, x, y, z))
+	a7 = entry_a7
+	if trail == 0:
+		return 0
+	memory.write_u16(trail + 0x32, 0)
+	memory.write_u32(trail + 0x58, memory.read_u32(owner_ctl))
+	memory.write_u16(trail + 0x5c, 1)
+	memory.write_u16(owner_ctl + 0x6a0, C68kScript.u16(memory.read_u16(owner_ctl + 0x6a0) + 1))
+	var owner: int = memory.read_u32(owner_ctl)
+	memory.write_u8(owner + 0x29, (memory.read_u8(owner + 0x29) + 1) & 0xff)
+	a7 = entry_a7 - 0x14
+	tick_trail(trail)
+	a7 = entry_a7
+	return trail
+
+## 0x1b1aa (a2 saved): tick_trail, Leyte's: the kind's tick 0x2073c[kind +0x32](controller) (0xc below); a countdown word
+## +0x34 counts down, else the object hides (long +0x14 |= 0x40; 1.0.3 +4); a non-zero D0 word from the tick retires the
+## object (retire_entity, 0xc below).
+func tick_trail(ctl: int) -> void:
+	assert(memory != null, "tick_trail requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0xc
+	var r = _jsr(memory.read_u32(C68kScript.u32(0x2073c + memory.read_s16(ctl + 0x32) * 4)), [ctl])
+	a7 = entry_a7
+	var d0: int = 0 if r == null else C68kScript.u32(int(r))
+	if memory.read_u16(ctl + 0x34) != 0:
+		memory.write_u16(ctl + 0x34, C68kScript.u16(memory.read_u16(ctl + 0x34) - 1))
+	else:
+		var obj: int = memory.read_u32(ctl)
+		memory.write_u32(obj + 0x14, memory.read_u32(obj + 0x14) | 0x40)
+	if (d0 & 0xffff) != 0:
+		a7 = entry_a7 - 0xc
+		retire_entity(memory.read_u32(ctl), d0)
+		a7 = entry_a7
+
+## 0x1370e (link 0): spawn_smoke_plume, Leyte's: spawn_mission_pool_object(0x2c694's template, x, y, z, 0, 0, 0, 0) (0x28
+## below); its controller (+0) takes size words +0x36 = size_a << the object's scale word +0x36 and +0x34 = size_b << it
+## (1.0.3: word +0x34), word +0x32, and +0x38 = frame + duration. Returns the controller, 0 when nothing was spawned.
+func spawn_smoke_plume(size_a: int, size_b: int, duration: int, word_32: int, _unused: int, x: int, y: int, z: int) -> int:
+	assert(memory != null, "spawn_smoke_plume requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x28
+	var spawned: int = C68kScript.u32(spawn_mission_pool_object(memory.read_u32(0x2c694), x, y, z, 0, 0, 0, 0))
+	a7 = entry_a7
+	if spawned == 0:
+		return 0
+	var ctl: int = memory.read_u32(spawned)
+	var shift: int = memory.read_u16(spawned + 0x36) & 0x3f
+	memory.write_u16(ctl + 0x36, C68kScript.u16(C68kScript.lsl32(size_a, shift)))
+	memory.write_u16(ctl + 0x34, C68kScript.u16(C68kScript.lsl32(size_b, shift)))
+	memory.write_u16(ctl + 0x32, C68kScript.u16(word_32))
+	memory.write_u32(ctl + 0x38, C68kScript.u32(duration + memory.read_u32(0x21020)))
+	return ctl
+
+## 0x13778 (three saved registers): attach_trailing_plume, Leyte's: spawn_smoke_plume(0x48, 0, 0, 0, 0, x, y, z) (0x30
+## below); its eight trail points (+0x40, 12 apart) start at the plume object's position; the object's long +0x14 bit 20
+## clears and its scale word +0x36 = 0; +0x3c = the owner controller's object, whose reference count +0x29 goes up.
+func attach_trailing_plume(x: int, y: int, z: int, owner_ctl: int) -> void:
+	assert(memory != null, "attach_trailing_plume requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x30
+	var plume: int = C68kScript.u32(spawn_smoke_plume(0x48, 0, 0, 0, 0, x, y, z))
+	a7 = entry_a7
+	if plume == 0:
+		return
+	var plume_obj: int = memory.read_u32(plume)
+	for i in range(8):
+		for k in range(3):
+			memory.write_u32(plume + 0x40 + 12 * i + 4 * k, memory.read_u32(plume_obj + 4 + 4 * k))
+	memory.write_u32(plume_obj + 0x14, memory.read_u32(plume_obj + 0x14) & 0xffefffff)
+	memory.write_u16(memory.read_u32(plume) + 0x36, 0)
+	var owner_obj: int = memory.read_u32(owner_ctl)
+	memory.write_u32(plume + 0x3c, owner_obj)
+	memory.write_u8(owner_obj + 0x29, (memory.read_u8(owner_obj + 0x29) + 1) & 0xff)
+
+## 0x1b23a (link 0): spawn_ground_fire_object, Leyte's: spawn_mission_pool_object(0x2cc0c's template, x, y, z, 0, 0, 0, 0)
+## (0x28 below); the controller (+0) gets word +0x34 = 1, +0x32 = 0x2d. Returns it, 0 when nothing was spawned.
+func spawn_ground_fire_object(x: int, y: int, z: int) -> int:
+	assert(memory != null, "spawn_ground_fire_object requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x28
+	var obj: int = C68kScript.u32(spawn_mission_pool_object(memory.read_u32(0x2cc0c), x, y, z, 0, 0, 0, 0))
+	a7 = entry_a7
+	if obj == 0:
+		return 0
+	var ctl: int = memory.read_u32(obj)
+	memory.write_u16(ctl + 0x34, 1)
+	memory.write_u16(ctl + 0x32, 0x2d)
+	return ctl
+
+## 0x1b280 (two saved registers): attach_ground_fire, Leyte's: spawn_ground_fire_object(x, y, z) (0x18 below); the fire's
+## +0x50 = the owner controller's object, whose reference count +0x29 goes up. Returns the fire when its +0 is set, else 0.
+func attach_ground_fire(x: int, y: int, z: int, owner_ctl: int) -> int:
+	assert(memory != null, "attach_ground_fire requires original global memory")
+	var entry_a7: int = a7
+	a7 = entry_a7 - 0x18
+	var fire: int = C68kScript.u32(spawn_ground_fire_object(x, y, z))
+	a7 = entry_a7
+	if fire == 0:
+		return 0
+	var owner_obj: int = memory.read_u32(owner_ctl)
+	memory.write_u32(fire + 0x50, owner_obj)
+	memory.write_u8(owner_obj + 0x29, (memory.read_u8(owner_obj + 0x29) + 1) & 0xff)
+	return fire if memory.read_u32(fire) != 0 else 0

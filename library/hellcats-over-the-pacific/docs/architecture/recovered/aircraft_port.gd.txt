@@ -1,0 +1,236 @@
+
+## 0x124c0 (six saved registers): update_aircraft_damage_state, Leyte's (1.0.3's 0x10630 on the moved fields: damage word
+## +0x698, its last value +0x69a, timer +0x69c; positions +4 / +8 / +0xc). The damage stages 0x40 / 0x80 / 0x100 / 0x200
+## advance as in 1.0.3 (attach_smoke_trail / attach_trailing_plume, 0x2c below). Newly destroyed (byte +0x698 bit 2): the
+## player requests the replay and records the crash (host +0x98 = 2, 0x2106c = 0x21070; while replaying host +0xd8 = 1
+## without a parachute, 4 with 0x21062); the stages clear; spawn_destruction_effect(object, 300 for the bomber state
+## 0x13158, else 100) with 0x21058 forced to -1 (0x24 below); in live play the mission outcomes (mission 5: the second
+## type-5 aircraft (0x2705e) -> +0xd2 = 1; mission 7: the second type-4 (0x2705c) -> -1; each only from 0) and the
+## credited tally (word +0x52: t > 0 -> host +0xbc + 2t, t < 0 -> +0xd6); dispatch_entity_cleanup (0x20 below). Newly
+## burning (bit 4 of byte +0x698): attach_ground_fire(x, ground +0x2e, z) (0x2c below). Hit (bit 0 of byte +0x698), not
+## yet stalled (+0x688), not the player, not the bomber: one draw in 32 stalls it. The player newly bailing out (byte
+## +0x699 bit 0): 0x2105c = 1, 0x2105a = 0, and without a parachute host +0xd8 = 1, 0x2102c = 1. A stage timer range
+## sets +0x69c = (range & rng) / 2 + range / 2 (toward zero); +0x69a = +0x698.
+func update_aircraft_damage_state(ctl: int) -> void:
+	assert(memory != null, "update_aircraft_damage_state requires original global memory")
+	var entry_a7: int = a7
+	var obj: int = memory.read_u32(ctl)
+	var timer_range: int = 0
+	var damage: int = memory.read_u16(ctl + 0x698)
+	var prev: int = memory.read_u16(ctl + 0x69a)
+	if memory.read_u16(ctl + 0x69c) != 0:
+		memory.write_u16(ctl + 0x69c, C68kScript.u16(memory.read_u16(ctl + 0x69c) - 1))
+		damage = damage & 0xfc3f
+	while true:
+		var before: int = damage
+		var stage: int = damage & 0x3c0
+		if stage == 0x40:
+			timer_range = 0xff
+			if (prev & 0x40) == 0:
+				a7 = entry_a7 - 0x2c
+				attach_smoke_trail(memory.read_u32(obj + 4), memory.read_u32(obj + 8), memory.read_u32(obj + 0xc), ctl)
+				a7 = entry_a7
+			elif (overlay_rng_next() & 1) != 0:
+				damage = damage & 0xffbf
+				if (overlay_rng_next() & 1) != 0:
+					damage = damage | 0x80
+				else:
+					damage = damage | 0x200
+		elif stage == 0x80:
+			timer_range = 0xff
+			if (prev & 0x80) != 0 and (overlay_rng_next() & 3) == 0:
+				damage = (damage & 0xff7f) | 0x200
+		elif stage == 0x100:
+			if (memory.read_u8(ctl + 0x698) & 8) != 0:
+				memory.write_u16(ctl + 0x69c, 0x16)
+			else:
+				timer_range = 0xff
+			if (prev & 0x100) == 0:
+				a7 = entry_a7 - 0x2c
+				attach_trailing_plume(memory.read_u32(obj + 4), memory.read_u32(obj + 8), memory.read_u32(obj + 0xc), ctl)
+				a7 = entry_a7
+			elif (memory.read_u8(ctl + 0x698) & 8) != 0 or (overlay_rng_next() & 1) != 0:
+				damage = (damage & 0xfeff) | 0x400
+		elif stage == 0x200:
+			timer_range = 0xff
+		var changed: int = (before ^ damage) & 0xffff
+		memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) & (~changed & 0xffff))
+		memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) | (changed & damage))
+		prev = before & changed
+		damage = changed & damage
+		if damage == 0:
+			break
+	var host: int = memory.read_u32(0x207fc)
+	var player: int = memory.read_u32(0x20b28)
+	if (memory.read_u8(ctl + 0x698) & 4) != 0 and (memory.read_u8(ctl + 0x69a) & 4) == 0:
+		if ctl == player:
+			a7 = entry_a7 - 0x20
+			request_instant_replay(0 if (memory.read_u8(ctl + 0x698) & 8) != 0 else 1)
+			a7 = entry_a7
+			if memory.read_u16(0x21058) == 0:
+				memory.write_u16(host + 0x98, 2)
+			memory.write_u32(0x2106c, memory.read_u32(0x21070))
+			if memory.read_u16(0x21058) != 0:
+				if memory.read_u32(0x21064) == 0:
+					memory.write_u16(host + 0xd8, 1)
+				elif memory.read_u16(0x21062) != 0:
+					memory.write_u16(host + 0xd8, 4)
+		memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) & 0xfc3f)
+		var saved: int = memory.read_u16(0x21058)
+		memory.write_u16(0x21058, 0xffff)
+		a7 = entry_a7 - 0x24
+		spawn_destruction_effect(obj, 300 if memory.read_u32(ctl + 0x32) == 0x13158 else 100)
+		a7 = entry_a7
+		memory.write_u16(0x21058, saved)
+		if saved == 0:
+			var kind: int = memory.read_s16(memory.read_u32(ctl + 4))
+			if memory.read_s16(host + 0x90) == 5 and kind == 5 and memory.read_u16(host + 0xd2) == 0:
+				memory.write_u16(0x2705e, C68kScript.u16(memory.read_u16(0x2705e) + 1))
+				if memory.read_s16(0x2705e) == 2:
+					memory.write_u16(host + 0xd2, 1)
+			if memory.read_s16(host + 0x90) == 7 and kind == 4 and memory.read_u16(host + 0xd2) == 0:
+				memory.write_u16(0x2705c, C68kScript.u16(memory.read_u16(0x2705c) + 1))
+				if memory.read_s16(0x2705c) == 2:
+					memory.write_u16(host + 0xd2, 0xffff)
+			var tally: int = memory.read_s16(obj + 0x52)
+			if tally != 0 and memory.read_s8(ctl + 0x698) < 0:
+				var counter: int = host + 0xbc + tally * 2 if tally > 0 else host + 0xd6
+				memory.write_u16(counter, C68kScript.u16(memory.read_u16(counter) + 1))
+		a7 = entry_a7 - 0x20
+		dispatch_entity_cleanup(obj)
+		a7 = entry_a7
+	if (memory.read_u8(ctl + 0x698) & 0x10) != 0 and (memory.read_u8(ctl + 0x69a) & 0x10) == 0:
+		a7 = entry_a7 - 0x2c
+		attach_ground_fire(memory.read_u32(obj + 4), memory.read_u32(ctl + 0x2e), memory.read_u32(obj + 0xc), ctl)
+		a7 = entry_a7
+	if (memory.read_u8(ctl + 0x698) & 1) != 0 and memory.read_u8(ctl + 0x688) == 0 and ctl != player:
+		if (overlay_rng_next() & 0x1f) == 0 and memory.read_u32(ctl + 0x32) != 0x13158:
+			memory.write_u8(ctl + 0x688, 1)
+	if ctl == player and (memory.read_u8(ctl + 0x699) & 1) != 0 and (memory.read_u8(ctl + 0x69b) & 1) == 0:
+		memory.write_u16(0x2105c, 1)
+		memory.write_u16(0x2105a, 0)
+		if memory.read_u32(0x21064) == 0:
+			memory.write_u16(host + 0xd8, 1)
+			memory.write_u16(0x2102c, 1)
+	if timer_range != 0:
+		var r: int = overlay_rng_next() & 0xffff
+		var a: int = timer_range & r
+		var b: int = timer_range
+		memory.write_u16(ctl + 0x69c, C68kScript.u16((a >> 1) + (b >> 1)))
+	memory.write_u16(ctl + 0x69a, memory.read_u16(ctl + 0x698))
+
+## 0xfc5c (Leyte only; five saved registers): an aircraft fleeing the object at +0x6bc: steer_entity_toward_point to
+## (x - 8 * (threat x - x), y + 30000, z - 8 * (threat z - z)) (0x2c below), fly (update_aircraft_entity, 0x20 below);
+## the distance to the threat (approx_dist3_xyz) is remembered at +0x6c0 the first time, and once it has grown past it
+## and beyond 0x9c4 the threat is let go (its reference count +0x29 - 1, +0x6bc / +0x6c0 cleared).
+func leyte_aircraft_flee(ctl: int) -> void:
+	assert(memory != null, "leyte_aircraft_flee requires original global memory")
+	var entry_a7: int = a7
+	var obj: int = memory.read_u32(ctl)
+	var threat: int = memory.read_u32(ctl + 0x6bc)
+	var x: int = C68kScript.s32(-(C68kScript.s32((memory.read_u32(threat + 4) - memory.read_u32(obj + 4)) << 3) - memory.read_s32(obj + 4)))
+	var y: int = C68kScript.s32(memory.read_u32(obj + 8) + 30000)
+	var z: int = C68kScript.s32(memory.read_s32(obj + 0xc) - C68kScript.s32((memory.read_u32(threat + 0xc) - memory.read_u32(obj + 0xc)) << 3))
+	a7 = entry_a7 - 0x28
+	steer_entity_toward_point(ctl, x, y, z)
+	a7 = entry_a7 - 0x2c
+	update_aircraft_entity(ctl)
+	a7 = entry_a7
+	var d: int = C68kScript.s32(approx_dist3_xyz(memory.read_s32(obj + 4), memory.read_s32(obj + 8), memory.read_s32(obj + 0xc),
+			memory.read_s32(threat + 4), memory.read_s32(threat + 8), memory.read_s32(threat + 0xc)))
+	if memory.read_u32(ctl + 0x6c0) == 0:
+		memory.write_u32(ctl + 0x6c0, C68kScript.u32(d))
+	if d > memory.read_s32(ctl + 0x6c0) and d > 0x9c4:
+		var t: int = memory.read_u32(ctl + 0x6bc)
+		memory.write_u8(t + 0x29, (memory.read_u8(t + 0x29) - 1) & 0xff)
+		memory.write_u32(ctl + 0x6bc, 0)
+		memory.write_u32(ctl + 0x6c0, 0)
+
+## 0xf9f6 (four saved registers): aircraft_tick, Leyte's. The pose ring (+0x36, 75 records of 0x14, cursor word +0x612)
+## advances. A live aircraft that is not the player's, in views 1 / 7 / 8: more than 0x7cf above its ground (+0x2e) it is
+## a radar track (add_radar_track, 0x10 below); unless its definition type is 1 it becomes the designated aircraft
+## 0x21070 when there is none or it is nearer the camera (metric +0x1c smaller) than that one. Live play: a downed aircraft (bit 2 of
+## byte +0x698, both now and before) has no velocity, one fleeing (+0x6bc) flies leyte_aircraft_flee, else its state
+## +0x32 (jsr) (0x18 below); update_aircraft_damage_state (0x18 below); the record takes position + velocity, the
+## attitude words +0x20 / +0x22 / +0x24 and the damage word. Replaying (from the object's birth frame +0x42): the
+## record is applied as 1.0.3's (+0x698 / +0x69a / +0x69c, gear byte +0x68a following the player's).
+func aircraft_tick(ctl: int) -> void:
+	assert(memory != null, "aircraft_tick requires original global memory")
+	var entry_a7: int = a7
+	var pose: int = C68kScript.u32(ctl + 0x36 + memory.read_s16(ctl + 0x612) * 0x14)
+	memory.write_u16(ctl + 0x612, C68kScript.u16(memory.read_u16(ctl + 0x612) + 1))
+	if memory.read_u16(ctl + 0x612) == 0x4b:
+		memory.write_u16(ctl + 0x612, 0)
+	var obj: int = memory.read_u32(ctl)
+	if (memory.read_u8(obj + 0x17) & 2) == 0 and ctl != memory.read_u32(0x20b28):
+		var view: int = memory.read_s16(0x23d88)
+		if view == 1 or view == 8 or view == 7:
+			if C68kScript.s32(memory.read_u32(obj + 8) - memory.read_u32(ctl + 0x2e)) > 0x7cf:
+				a7 = entry_a7 - 0x18
+				add_radar_track(obj)
+				a7 = entry_a7
+			if memory.read_s16(memory.read_u32(ctl + 4)) != 1:
+				var current: int = memory.read_u32(0x21070)
+				if current == 0 or memory.read_s32(obj + 0x1c) < memory.read_s32(memory.read_u32(current) + 0x1c):
+					memory.write_u32(0x21070, ctl)
+	if memory.read_u16(0x21058) == 0:
+		if (memory.read_u8(ctl + 0x698) & 4) != 0 and (memory.read_u8(ctl + 0x69a) & 4) != 0:
+			for k in range(3):
+				memory.write_u32(ctl + 8 + 4 * k, 0)
+		elif memory.read_u32(ctl + 0x6bc) != 0:
+			a7 = entry_a7 - 0x18
+			leyte_aircraft_flee(ctl)
+			a7 = entry_a7
+		else:
+			a7 = entry_a7 - 0x18
+			_jsr(memory.read_u32(ctl + 0x32), [ctl])
+			a7 = entry_a7
+		a7 = entry_a7 - 0x18
+		update_aircraft_damage_state(ctl)
+		a7 = entry_a7
+		for k in range(3):
+			memory.write_u32(pose + 4 * k, C68kScript.u32(memory.read_u32(obj + 4 + 4 * k) + memory.read_u32(ctl + 8 + 4 * k)))
+		memory.write_u16(pose + 0xc, memory.read_u16(ctl + 0x20))
+		memory.write_u16(pose + 0xe, memory.read_u16(ctl + 0x22))
+		memory.write_u16(pose + 0x10, memory.read_u16(ctl + 0x24))
+		memory.write_u16(pose + 0x12, memory.read_u16(ctl + 0x698))
+		return
+	var frame: int = memory.read_s32(0x21020)
+	if frame < memory.read_s32(obj + 0x42):
+		return
+	var recorded: int = memory.read_u16(pose + 0x12)
+	if memory.read_s16(0x21058) == 1 or frame == memory.read_s32(obj + 0x42):
+		for k in range(3):
+			memory.write_u32(ctl + 8 + 4 * k, 0)
+		memory.write_u32(obj + 4, memory.read_u32(pose))
+		memory.write_u32(obj + 8, memory.read_u32(pose + 4))
+		memory.write_u32(obj + 0xc, memory.read_u32(pose + 8))
+		memory.write_u16(ctl + 0x69c, 0)
+		memory.write_u16(ctl + 0x69a, recorded & 0xeeff)
+		memory.write_u16(ctl + 0x698, recorded)
+		memory.write_u8(ctl + 0x68a, 0 if (memory.read_u8(ctl + 0x698) & 0x20) != 0 else 0x2d)
+		if (recorded & 0x3c0) != 0 and (memory.read_u8(pose + 0x12) & 0x10) == 0:
+			memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) & 0xfc3f)
+			memory.write_u16(ctl + 0x69a, memory.read_u16(ctl + 0x69a) & 0xfc3f)
+			memory.write_u16(ctl + 0x698, memory.read_u16(ctl + 0x698) | 0x40)
+	else:
+		for k in range(3):
+			memory.write_u32(ctl + 8 + 4 * k, C68kScript.u32(memory.read_u32(pose + 4 * k) - memory.read_u32(obj + 4 + 4 * k)))
+		memory.write_u16(ctl + 0x698, recorded)
+		memory.write_u16(ctl + 0x69c, 0 if ((memory.read_u16(ctl + 0x698) ^ memory.read_u16(ctl + 0x69a)) & 0x3c0) != 0 else 1)
+	memory.write_u16(ctl + 0x20, memory.read_u16(pose + 0xc))
+	memory.write_u16(ctl + 0x22, memory.read_u16(pose + 0xe))
+	memory.write_u16(ctl + 0x24, memory.read_u16(pose + 0x10))
+	var flags_now: int = memory.read_u16(ctl + 0x698)
+	a7 = entry_a7 - 0x18
+	update_aircraft_damage_state(ctl)
+	a7 = entry_a7
+	if ((memory.read_u16(ctl + 0x698) ^ memory.read_u16(ctl + 0x69a)) & 0x2000) != 0:
+		var player_gear: int = abs_int(memory.read_s8(memory.read_u32(0x20b28) + 0x68a))
+		if (memory.read_u8(ctl + 0x698) & 0x20) != 0:
+			memory.write_u8(ctl + 0x68a, (-player_gear) & 0xff)
+		else:
+			memory.write_u8(ctl + 0x68a, player_gear & 0xff)
+			if memory.read_u8(ctl + 0x68a) == 0:
+				memory.write_u8(ctl + 0x68a, 1)
+	memory.write_u16(ctl + 0x69a, flags_now)

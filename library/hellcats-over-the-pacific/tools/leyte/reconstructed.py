@@ -18,8 +18,11 @@ ID02 = "original/leyte/port/ID02_reconstructed.gd"
 ID08 = "original/leyte/port/ID08.gd"
 ## segment -> the port file the runtime instantiates for it when it has reconstructed routines
 ID03 = "original/leyte/port/ID03_reconstructed.gd"
-PORT_FILES = {2: ID02, 3: ID03, 8: ID08}
+ID04 = "original/leyte/port/ID04_reconstructed.gd"
+PORT_FILES = {2: ID02, 3: ID03, 4: ID04, 8: ID08}
 ROUTINES = {
+    (2, 0x1E): (ID02, "labs_jt"),
+    (2, 0x3E8): (ID02, "strlen_jt"),
     (2, 0x245A): (ID02, "reset_overlay_state"),
     (2, 0x54B8): (ID02, "apply_display_palettes"),
     (2, 0x2DB2): (ID02, "apply_settings_to_live_options"),
@@ -50,6 +53,8 @@ ROUTINES = {
     (2, 0x34D8): (ID02, "save_changed_settings"),
     (2, 0x35E2): (ID02, "quit_application"),
     (2, 0xAB4): (ID02, "redraw_panel_readouts_locked"),
+    (2, 0x127A): (ID02, "draw_notched_frame_pair_marked_a5safe"),
+    (2, 0x1516): (ID02, "draw_six_segment_indicator_a5safe"),
     (3, 0x5EB4): (ID03, "prepare_instrument_panel"),
     (3, 0x5BE4): (ID03, "release_panel_bitmaps"),
     (3, 0x5CA6): (ID03, "store_panel_bitmaps_as_resources"),
@@ -59,6 +64,23 @@ ROUTINES = {
     (3, 0x4B32): (ID03, "draw_split_display_box"),
     (3, 0x4790): (ID03, "draw_percent_scale_gauge"),
     (3, 0x4C42): (ID03, "draw_six_cell_display_box"),
+    (4, 0x3A2E): (ID04, "conclude_mission"),
+    (4, 0x3638): (ID04, "show_mission_summary_dialog"),
+    (4, 0x27E2): (ID04, "attach_list_scroll_bar"),
+    (4, 0x28CC): (ID04, "dispose_list_scroll_bar"),
+    (4, 0x29E8): (ID04, "advance_mission_summary_text"),
+    (4, 0x28F0): (ID04, "summary_dialog_filter_proc"),
+    (4, 0x2436): (ID04, "leyte_list_set_scroll_max"),
+    (4, 0x24B8): (ID04, "leyte_list_scroll"),
+    (4, 0x262E): (ID04, "leyte_list_scroll_to_end"),
+    (4, 0x23B2): (ID04, "leyte_list_redraw"),
+    (4, 0x1FF8): (ID04, "leyte_fill_medals_list"),
+    (4, 0x21C6): (ID04, "leyte_fill_kill_markers_list"),
+    (4, 0x1E28): (ID04, "leyte_draw_target_row"),
+    (4, 0x1FB8): (ID04, "leyte_target_table_item_proc"),
+    (4, 0x23FE): (ID04, "leyte_medals_item_proc"),
+    (4, 0x241A): (ID04, "leyte_kill_markers_item_proc"),
+    (4, 0x1D9E): (ID04, "leyte_rank_insignia_item_proc"),
     (8, 0x6): (ID08, "load_overlay_from_data_fork"),
     (8, 0x350): (ID08, "alloc_and_read_resource_payload"),
 }
@@ -69,7 +91,7 @@ COVERED_BY = {"alloc_and_read_resource_payload": "load_overlay_from_data_fork"}
 
 def check() -> list[str]:
     bad = []
-    cases = [c for f in ("id02_reconstructed_cases.json", "id03_reconstructed_cases.json")
+    cases = [c for f in ("id02_reconstructed_cases.json", "id03_reconstructed_cases.json", "id04_reconstructed_cases.json")
              for c in json.loads((ROOT / "godot" / "tests" / "leyte" / "port" / "fixtures" / f).read_text())["cases"]]
     tested = {c["method"] for c in cases} | {"load_overlay_from_data_fork"}
     for (seg, off), (path, method) in ROUTINES.items():

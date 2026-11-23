@@ -4456,3 +4456,445 @@ Cycle 88 of job f19bd982:
   attach_trailing_plume / spawn_ground_fire_object / attach_ground_fire. They are in the session scratchpad
   (aircraft_port.gd and aircraft_port2.gd), which is temporary. Next: append them, register 0xf9f6, write the
   cases, then update_aircraft_entity (0xfcf6) and CODE 2 $3e2 / $432.
+
+### Cycle 146 checkpoint — recovered aircraft routines integrated
+
+- Recovered: the two scratchpad files written at the 2026-11-19 usage limit, aircraft_port.gd (12548 bytes) and
+  aircraft_port2.gd (6722 bytes). Copies with matching SHA-1 are kept under the task workspace:
+  `recovered-2026-11-19/`. None of their ten functions was in the port. They are now integrated into
+  pacific_conflict_reconstructed.gd:
+  - aircraft_tick 0xf9f6 (registered), leyte_aircraft_flee 0xfc5c and update_aircraft_damage_state 0x124c0;
+  - spawn_trail 0x1ac08, attach_smoke_trail 0x1ac6a and tick_trail 0x1b1aa;
+  - spawn_smoke_plume 0x1370e and attach_trailing_plume 0x13778;
+  - spawn_ground_fire_object 0x1b23a and attach_ground_fire 0x1b280;
+  - add_radar_track 0x1b836, which was missing, written from its listing (at most 8 tracks in 0x20744, metric
+    limit 0x2cc1a).
+- Cases: 1366 hand-written, 0 script errors in the targeted runs.
+  - aircraft_tick: 134 of 160 instructions executed. Unexecuted:
+    - the flee branch, which needs update_aircraft_entity;
+    - the gear-flip block (19 instructions), which cannot run: update_aircraft_damage_state always ends with
+      +0x69a = +0x698, and the tick then tests their difference;
+    - the cursor wrap.
+  - update_aircraft_damage_state: 231 of 234. The three left cannot run: a stage arm below 0x80 other than 0x40,
+    and two rounding adds for a timer range that is always 0xff.
+  - add_radar_track: complete.
+  - The trail / plume / fire spawners run only into a pool where spawning fails.
+- 0x1ebb6 identified from its bytes: a Leyte-only ordnance class factory. leyte_register_ordnance_templates
+  installs it at definition +6. It allocates a 0x32-byte controller, sets object flags +0x14 |= 0x112000 and uses
+  definition 0x20788 (entry 15) whatever the key. Leyte also keeps 1.0.3's create_ordnance_controller at 0x148fa.
+  The port is written; it is not yet registered.
+  - Naming fix: the routine I called leyte_spawn_wake_object (0x1ec2e) spawns from 0x2cdd4, which is the
+    ordnance template table, so "wake" was a guess.
+- CODE 2 services: $3e2 is CODE 2 +0x127a and $432 is +0x1516. Both are A5-safe QuickDraw drawing callbacks:
+  - +0x127a is a Leyte rewrite of 1.0.3's draw_notched_frame_pair_a5safe (which host_ports reports "not found in
+    Leyte"), with a fourth argument that adds two marker rects;
+  - +0x1516 is a six-segment indicator over the rects at A5 - 0x1200, one bit of its argument per segment, using a
+    new beveled-box polygon builder at +0x1490.
+  The three routines are written; they still need registering in tools/leyte/reconstructed.py, emulator cases in
+  gen_leyte_id02_reconstructed_cases.py and a jump-table rebuild.
+- Disk: 10 GiB free.
+
+### Cycles 147-149 checkpoint — the flight model and the AI chain
+
+- Cycle 147:
+  - Registered 0x1ebb6 (leyte_create_ordnance_controller) in the code table. The instantiator calls class factories
+    with (object, key, record word), so it is registered through a lambda.
+  - CODE 2 services $3e2 (+0x127a, draw_notched_frame_pair_marked_a5safe) and $432 (+0x1516,
+    draw_six_segment_indicator_a5safe) are registered in tools/leyte/reconstructed.py, with +0x1490
+    build_beveled_box_poly. 9 emulator cases; the jump table is rebuilt (184 slots, 111 named).
+  - The probe then stopped at 0xfcf6 and 0x13038.
+- Cycle 148, update_aircraft_entity (0xfcf6, 1593 instructions), translated block by block from Leyte's listing:
+  - Frame: link -0x74, ten saved registers, the body 0xa0 below the entry. Every local lives in the frame, because
+    -0x68 / -0x6c are read uninitialised for aircraft outside the engine model.
+  - Helpers: the easing (`_uae_ease`), the rate scale (`_uae_speed_step`), the deck velocity, the surface switch and
+    the stores (`_uae_weapons`).
+  - Its five Leyte callees: scale_template_field_38 0xf9c0 (definition long +0x3a asr 1, then asr 7),
+    leyte_spawn_weapon_entity 0x149da, leyte_spawn_template_2c830_object 0x14a58,
+    leyte_spawn_template_2c82c_object 0x14afe and spawn_bailout_parachute 0x1d590.
+  - Binary-evidence fix: the divide at 0x10542 is `divsl.l d0,d0:d1` (extension word 0x1800), so +0x644 keeps the
+    remainder of the speed accumulator. Capstone lists it as a plain divide. The other divides in the routine were
+    checked and are plain.
+  - Cases: 286 flight-model cases plus 8 for the callees. 1547 of 1593 instructions run.
+    - Not run: rounding adds that need overflow, easing steps whose eighth is zero, the unknown-surface
+      fall-throughs, and the 13 instructions after a successful spawn.
+    - No world yet makes spawn_mission_pool_object succeed, not even cloud_cases' "a free slot", which returns 0.
+      The stores therefore read the spawned definition through the null result, as the original does; the long at
+      address 4 stands in for that low memory.
+  - A test-world note: on the ground the vertical term +0x63e must be negative (the original resets it to -0x5b each
+    frame). With the gear up the floor is the ground plus half of +0x42. A ground +0x2e below zero keeps the case's
+    surface byte (zero makes surface_type_under_object recompute it) and engages no deck.
+- Cycle 149, the AI chain behind the AI +0x32 handler:
+  - ai_attack_or_fly 0x13038 (62 instructions) and ai_bootstrap_climb_phase 0x129ea (54), both fully covered.
+  - ai_fly_formation_on_player 0x12e76 (137, Leyte only; 136 covered). It keeps a random station off the player,
+    turned by the player's matrix 0x2c59c, and matches the player's speed.
+  - ai_pursue_target 0x1c28e (537; 513 covered):
+    - it aims at the target's 0x4b-frame history, extrapolated by the lag 0x2105e / 0x21060;
+    - it claims the target, fires the guns within 0x3f of the bore, and runs evasive manoeuvres 1-3 plus
+      manoeuvre 4;
+    - its history stride 0x14 comes from extension word 0x8c36 (Capstone shows a scale of 1).
+    - The halving loop for a distance of 0x8000 or more cannot run, because such distances take the >0x4e20
+      branch first.
+  - approx_dist3_xyz is the generated port's own static version.
+  - 77 AI cases plus their facing variants: 344 pass in the targeted run, 0 script errors. Headings 0x3400 / 0x3800
+    face the target; other headings break off.
+- Probes: after cycle 148 only 0x13038 was missing; after cycle 149 the start probe runs clean (0 script errors,
+  nothing missing) to ExitToShell. It posts Command-Q as soon as the flight loop starts, so sustained flight is not
+  yet observed.
+- Validation after cycle 149: Leyte suite 0 script errors, QA passed, git diff --check clean. Disk: 10 GiB free.
+- Cycle 150, the first sustained-flight attempt. The probe gained an opt-in `LEYTE_PROBE_FRAMES`: it delays
+  Command-Q and prints the player aircraft's state. With it, the flight loop runs past its first frame, and the
+  collision dispatch (dispatch_overlap_collisions) jsrs to four handlers with no port:
+  - flak_notice_object 0x1ccf4 (63 instructions);
+  - enemy_fighter_notice_object 0x11ec0 (15);
+  - 0x11c76 (172);
+  - 0x12bd6 (its extent still to fix; the listing runs into the following routines).
+  The assertions do not stop the run, so it looped; it was stopped by hand. The player aircraft at pass 0 was
+  controller 0x1183c4: speed 0, damage word 0x4000, fuel 0x13 / 0x13.
+  The probe's pass counter hooks HiliteMenu, which does not run every frame. It needs a per-frame hook (for example
+  overlay_frame_step) before frames can be counted.
+
+### Cycles 150-151 checkpoint — 200 frames of sustained play
+
+- Collision notice handlers, ported from Leyte's bytes and registered for dispatch_overlap_collisions:
+  - flak_notice_object 0x1ccf4: 1.0.3's on Leyte's layout. Types 5-7 / up to 4, a 1-in-4 draw, reference count
+    +0x29, the controller at +0. 63 of 63 instructions run.
+  - enemy_fighter_notice_object 0x11ec0: rewritten, with the type table at 0x11eec and Leyte's AI states. 116 of 142
+    run; the ship branches need a world where the facility probe returns 0x200.
+  - leyte_aircraft_notice_object 0x11c76: 1.0.3's 0xfe76 rewritten. 146 of 172 run; the misses are the table words,
+    the separate release_ai_target and the facility-0x100 branch.
+- ensure_ai_script_1b2e0_tick 0x12bd6 and ensure_ai_script_1b340_tick 0x12c56: Leyte's route tables 0x20508 / 0x20568.
+  The generated port refused them because the two look identical apart from the table.
+- AI states:
+  - ai_dive_at_target 0x13158: 75 of 75 run;
+  - ai_bombing_run 0x1325c, four phases: 228 of 234 run;
+  - release_ai_target 0x11ea6;
+  - leyte_heading_to_point 0x18712 was already ported and is now registered.
+- About 800 new cases. Every targeted run: 0 failures, 0 script errors.
+- The probe counts frames at the flight loop's per-frame GetMouse (HiliteMenu belongs to the outer loop). Logs are
+  capped at 30 MB.
+- Cycle 151 validation: Leyte suite 0 script errors, QA passed, git diff --check clean.
+- LEYTE_PROBE_FRAMES=200: 200 frames flown with 0 script errors and nothing missing, then Command-Q and ExitToShell.
+  - The player controller 0x1183c4 moves steadily at speed 2432 on heading 0x3ca0, height 692, about 37 units per
+    frame. The damage word 0x4000 means the engine is off, consistent with riding the carrier deck.
+  - The AI states, the collision dispatch and the ship movement run every frame.
+- Not yet shown: the player taking off under its own power. That is the next probe: '=' held, the throttle-up key.
+
+### Cycles 152-153 checkpoint — engine start, take-off, crash, replay, respawn
+
+- The probe gained LEYTE_PROBE_THROTTLE: synthetic input only, '=' (the throttle-up key) held from frame 20 to 80. The
+  printed state also shows the throttle, power, ground flag and view.
+- First run, 600 frames, deterministic (cycle 152; the identical trajectory came back in cycle 153's run):
+
+  | Frames | What happens |
+  |---|---|
+  | 20 | '=' pressed. The engine starts: damage word 0x4000 → 0, throttle 9, power to about 0x1cc00. |
+  | 50-80 | Speed rises from 2432 to 2723 as the aircraft swings across the deck (heading 0x3ca0 → 0x1c0 → 0x8c8). |
+  | ~100 | It leaves the deck (ground 0) at height 472, banked; without stick input it never pulls up. |
+  | ~130 | It hits the water at height 67: crash flag 0x400, view 8. |
+  | 160-220 | The crash is replayed; frame 220 repeats frame 130. |
+  | 250 on | A new aircraft sits on the deck, engine off, view 1, riding the carrier again. |
+
+  The engine start, the throttle control, flight off the deck, the crash, the replay and the respawn all execute.
+- Routines the run reached, ported from Leyte's bytes and registered:
+  - animate_landing_gear 0x118e2: 1.0.3's 0xfb0a on Leyte's layout. The template stride 0x18 comes from extension
+    words 0x0a00 / 0x9e14. 225 of 225 instructions run.
+  - create_effect_controller 0x13c06: the definition table 0x2074c, extension word 0x1c00. 19 of 19 run.
+  - tick_effect 0x1489a: the kind table 0x205cc, object flags +0x14.
+  - init_effect_kind0_flat_ring 0x14164: the six-vertex ring, extension words 0x8c3a / 0x8c6e.
+  - 0x14892, an empty routine (clr.l d0; rts): the tick of effect kinds 4 and 7 and a pre-render entry.
+  Effect kinds 2, 3 and 5 (0x143ba, 0x14654, 0x14896) are not ported yet.
+- Cases: 9 for the gear, 2 for the factory, 10 effect ticks (kinds 0, 1, 4, 6, 7), 4 flat-ring cases and 1 for the
+  empty routine. 0 failures and 0 script errors in every targeted run.
+- Cycle 152 validation: Leyte suite 0 script errors (164 generated functions kept), QA passed, git diff --check
+  clean.
+- The probe also gained LEYTE_PROBE_STICK = 2 / 8: that keypad digit (the keyboard steering's vertical, 0x2b268) held
+  from frame 85 to 115.
+- Cycle 153 validation: Leyte suite 0 script errors, QA passed, git diff --check clean.
+- Throttle plus stick '2' (400 frames): '2' pushes the nose down (pitch 0x3db0 → 0x397a); the crash comes at frame 120
+  instead of 130; the replay and respawn follow as before. So '8' should pull up.
+- The aircraft swings about 0x700 in heading while still rolling on the deck, before any stick key. On the ground the
+  aileron word +0x674 steers. The stick is computed from the mouse (host words +0x37a / +0x37c) against the view centre
+  (0x27052 / 0x27054); the headless mouse sits at the screen centre (320, 240), which need not be the view's centre.
+- New missing routines: effect kind 5's tick 0x14896 and 0x141f2. The host also reports "missing jt:$10a segment 4
+  +0x3a2e".
+
+### Cycle 154 checkpoint — a clean take-off run
+
+- Ported and registered:
+  - init_effect_kind1_column 0x141f2: 1.0.3's 0x120aa on Leyte's layout. Extension words 0x8a00 / 0x8c3a /
+    0x8c6e / 0x3c00.
+  - 0x14896: a second empty routine (clr.l d0; rts), effect kind 5's tick.
+  8 column cases and 2 more tick cases; every targeted run 0 failures, 0 script errors.
+- Validation: Leyte suite 0 script errors, QA passed, git diff --check clean.
+- Probe option LEYTE_PROBE_CENTRE: a synthetic hand moves the mouse each frame by the stick's offset (host words
+  +0x37a / +0x37c against the view centre 0x27052 / 0x27054). The headless mouse started at (100, 100), a stick
+  offset of (-320, -230): full left aileron and nose down. That caused the earlier swerve on the deck and the dive.
+- Throttle plus a centred stick, 400 frames, 0 script errors:
+  - a straight deck run: heading 0x3ca0 held, speed 2432 → about 7500 over 200 frames at throttle 9;
+  - it leaves the deck end at frame ~225, height 686, nose level;
+  - the nose sags slowly (0x3fc3 → 0x3d87) into the water at frame 270 (crash flag 0x400); the replay follows.
+  '8' did nothing here, because the centring hand also cancels keyboard steering, and the press came while still on
+  the deck.
+- Still missing on the host side: jt:$10a, segment 4 +0x3a2e (2 args).
+- Next: LEYTE_PROBE_PULL holds a nose-up stick as the aircraft leaves the deck.
+
+### Cycle 155 checkpoint — milestone: controlled Leyte flight
+
+- _route_aim_y is ported from Leyte's bytes. The route tick 0x12b56 computes the aim height at 0x12b92 .. 0x12bb2: the
+  route point's y, or the ground + 0x1000 within 0xfff. Two more route-patrol cases.
+- Validation: Leyte suite 0 script errors, QA passed, git diff --check clean.
+- New probe option LEYTE_PROBE_PULL=from,to,dy: the centring hand holds the stick dy rows below centre (nose up)
+  between those frames.
+- Probe: LEYTE_PROBE_FRAMES=500, LEYTE_PROBE_THROTTLE, LEYTE_PROBE_CENTRE, LEYTE_PROBE_PULL=215,330,150. Synthetic
+  input only, no player saves touched. 0 script errors, nothing missing, Command-Q to ExitToShell.
+
+  | Frames | What happens |
+  |---|---|
+  | 20-225 | Engine start and a straight deck run: heading 0x3ca0, speed 2432 → 7600. |
+  | ~225 | Off the deck end. |
+  | 225-380 | Pulled up, it climbs from height 692 to 5087. The pitch rises to 0x50f and the speed bleeds from 7700 to 5700 in the climb. |
+  | 330 | The pull is released. |
+  | 380-470 | The nose drops through level; the dive rebuilds speed to 10886. |
+  | 480 | Into the water: crash flag 0x400, view 8. |
+
+  About 255 airborne frames responding to throttle and elevator. The earlier runs showed the replay and the respawn on
+  the carrier after a crash.
+- Leyte milestone reached: start-up, the flight loop, engine start, take-off, controlled climb and dive, the crash, the
+  replay, the respawn and the exit all execute with no script errors.
+- Not yet shown, the next work:
+  - a mission outcome other than a crash (a landing, ships sunk, mission success / failure screens);
+  - effect kinds 2 / 3 (0x143ba / 0x14654);
+  - the host jt:$10a (segment 4 +0x3a2e), reached during the replay or respawn;
+  - the facility-0x200 branches of the notice handlers;
+  - a successful-spawn emulator world;
+  - aircraft_tick's flee branch.
+
+### Cycle 156 checkpoint — the mission's end: conclusion, debrief, back to the menus
+
+- How a Leyte flight ends: run_flight_session_leyte's result 1 or 6..10 concludes the mission through JT $10a
+  (CODE 4 +0x3a2e). That slot was the missing host routine, so after a crash the game used to fly again at once.
+- New file godot/original/leyte/port/ID04_reconstructed.gd (extends the generated ID04.gd), written from Leyte's own
+  CODE 4:
+  - conclude_mission 0x3a2e: 1.0.3's 0x31aa on Leyte's A5, without 1.0.3's game-state test;
+  - show_mission_summary_dialog 0x3638: DLOG 133. Against 1.0.3: other user items and order, two list scroll bars,
+    the early-death flag tested in the loop, filter A5 + 0x18a;
+  - attach_list_scroll_bar 0x27e2 and dispose_list_scroll_bar 0x28cc (Leyte only);
+  - advance_mission_summary_text 0x29e8 (about 860 instructions): 1.0.3's id04_21d6 with Leyte's operands. The
+    messages move by -0x3e (A5 - 0xeXX) and -0x80 (A5 - 0x22XX). Differences: phase 3's closing line by game
+    state, the medal bit 1 << (state + 6), the kill and rank stages inline;
+  - summary_dialog_filter_proc 0x28f0 (slot $18a): 1.0.3's 0x2104 plus the list scroll bars' clicks.
+  Registered in tools/leyte/reconstructed.py (PORT_FILES[4]); the Leyte profile loads the reconstructed ID04.
+- CODE 2 helpers reached through the jump table: labs_jt (JT $522, CODE 2 +0x1e, the verified abs_long) and
+  strlen_jt (JT $56a, +0x3e8).
+- Tests:
+  - new tools/leyte/gen_leyte_id04_reconstructed_cases.py and tests/leyte/port/test_leyte_id04_reconstructed.gd
+    (in run_all.gd and the QA generator list);
+  - 127 ID04 cases on Leyte's code: conclude, summary, scroll bars, every summary-text stage and the filter;
+  - 11 more ID02 cases (labs, strlen).
+  All pass, 0 script errors.
+- Probe, 600 frames: throttle, centred stick, the take-off and water crash, then the replay. Then the flight ends
+  and, through the original code:
+  1. conclude_mission (JT $10a) opens the summary;
+  2. the summary dialog (DLOG 133) runs its text to the end on the filter's idle passes (8 lines, stage 100);
+  3. Return (the default item) closes it;
+  4. the game returns to the mission dialogs (130 / 129);
+  5. a new flight starts on the deck.
+  Synthetic input only: the probe holds Return until the text's stage is 100 and prints each TEInsert line.
+- Still missing: four user-item drawers of the summary (slots $12a / $b2 / $fa / $ca → CODE 4 +0x1fb8 / +0x23fe /
+  +0x241a / +0x1d9e) and the list routines they reach (0x170, 0x1e28, 0x23b2, the list fill procedures at
+  +0x1ff8 / +0x21c6, 0x262e and 0x24b8). These draw only; the flow runs without them.
+- Cycle 157, the debrief's text: the probe prints the summary's TEInsert lines. Leyte's own messages, through the
+  original logic:
+  - "POW!"
+  - "Congratulations!  You're going home - in the cargo hold!"
+  - "No new kills to report."
+  Return closes it, and the game goes back to the mission dialogs and a new flight.
+- Milestone: a complete Leyte mission lifecycle reaches its authentic result through the original code. Mission
+  dialogs, take-off, flight, the crash and its replay, the mission's conclusion (JT $10a), the debrief with the
+  game's own failure verdict and the pilot's status written back, then the return to mission selection and the next
+  flight. The result is a failure (the pilot lost); a success path (a landing or targets destroyed) is not yet shown.
+- Validation: Leyte suite 0 script errors (with the ID04 cases), QA passed (with the ID04 generator check), git diff
+  --check clean. Disk: 42 GiB free.
+
+### Cycle 158 checkpoint — Leyte's success rules, Scramble Two's bombers
+
+- How a Leyte mission succeeds, from the code:
+  - A stopped aircraft on a deck or runway surface (0x30 / 0x60 / 0x70; 0x21050 = 2) with the objective met (host
+    +0xd2 > 0) and a friendly facility (kind 0x200) gives flight result 1 with status 0. The debrief then pushes STR#
+    129 #28, "Congratulations! You have acheived your objectives and completed the mission!", and stage 2 awards the
+    scenario's medal (record +0x26 bit state + 6).
+  - Landing without the objective gives result 9 ("Nice landing." and its variants); at an enemy base, 0xa.
+  - host = A5 - 0x1406: host +0x90 = A5 - 0x1376 (the scenario), +0xd2 = A5 - 0x1334 (the objective: > 0 met,
+    -1 failed), +0xd8 = A5 - 0x132e (the pilot's status).
+- The scenarios (DITL 129, radio item = scenario + 7; scenario 1 shares the button of 2):
+  - 2 Big Bang (the default; three ground targets about 290 000 from the carrier);
+  - 3 Mission X (one target at (0x5cf903, -0x3e0e));
+  - 4 Lightning Strike (the third non-carrier ship sunk);
+  - 5 Scramble Two (the second type-5 aircraft destroyed; its bombers reaching (0x5bc72d, -0x29cb16) fail it);
+  - 6 Island Storm, 7 Texas Tea, 8 Deep Trouble, 9 Bridge Out!.
+- The probe gained LEYTE_PROBE_SCENARIO = n (the radio button clicked at its DITL box centre, then OK) and
+  LEYTE_PROBE_SURVEY (every 50 frames: the scenario, objective, status and the typed entities of both arrays).
+- Ported from Leyte's bytes and registered:
+  - create_friendly_bomber 0xf6f4 (Leyte's layout, state ai_fly_bomber 0x1312c, a gunner turret);
+  - create_enemy_bomber 0xf790;
+  - spawn_turret_on_object 0x1d298;
+  - tick_ai_1b310_approach_fire 0x12d3e (Scramble Two's bomber: its target point and the failure rule);
+  - ai_script_try_fire_burst 0x12c96.
+- Cases: 23 more, all passing with 0 script errors. They include the first verified successful pool spawn: the gunner
+  turret with the camera beside the bomber returns its controller (0x32068); away, it retires.
+- Scramble Two's world, surveyed over 400 frames:
+  - two type-5 bombers at about height 25 000, each with a gunner turret (type 36), and type-6 escorts, about
+    380 000 south-east of the carrier;
+  - their route to the target passes almost over the carrier group, so an interception near home is realistic.
+  The run reached the flak and effect routines, so these were ported and registered (P1 effects done):
+  - init_effect_kind2_burst 0x14028 and animate_effect_kind2_burst 0x143ba (effect kind 2, the flak burst);
+  - animate_effect_kind3_debris 0x14654 (kind 3; Leyte's smoke lasts 0x12c);
+  - create_bullet_controller 0x19b6a;
+  - spawn_ground_mark 0x1b762 (template 0x2cc14, expiry frame + 0x384).
+  Leyte darkens the effect faces inline (6/8, 7/8) with the palette-slot rewrite (0x1b90). The extension words check
+  the ×4 velocity strides.
+- Cases: 45 more (burst init draws, burst moving / depth 8 / rewinding / out with and without smoke, debris airborne /
+  replay / landed / at y 0 with the ground mark and smoke, the bullet factory, ground marks). All pass, 0 script
+  errors. The ground mark beside the camera is a second verified successful spawn.
+
+### Cycle 159 checkpoint — the bullet system
+
+- The second Scramble Two run stopped in the bullet system (2822 script errors), so it is ported from Leyte's bytes:
+  - tick_bullet 0x19d9e: 1.0.3's 0x15da8 on Leyte's layout. A latched hit goes through leyte_destroy_entity (the
+    tally, the mission objectives, the cleanup);
+  - bullet_hits_aircraft 0x1a7c6: radius +0x20, the player-hit flag 0x2102a, D0 left as andi.w #7 leaves it;
+  - bullet_hits_shape 0x1a64a (already written, now registered) and apply_random_aircraft_damage 0x1a70c (already
+    written: Leyte's gate on the definition word +0x50, now registered).
+- Cases: 37 more for the bullet routines (out of range, eight draws × in range / gate shut / the player's / staged
+  and uncredited, bullet ages / gravity / floor), all passing with 0 script errors. The first run caught a D0
+  difference (the unmasked draw), fixed from the bytes.
+- Still to do for Scramble Two: tick_bullet's latched-hit path needs the effect world for its own cases.
+- The summary's drawing family is surveyed but not ported:
+  - two list fill procedures, 0x1ff8 and 0x21c6 (colour icons, via 0x2436);
+  - the list scroll 0x24b8, the target row 0x1e28, the list redraw 0x23b2, the scroll sync 0x262e;
+  - the rank insignia 0x1d9e (1.0.3's draw_rank_insignia).
+  0x170 is the verified frame_dialog_item_box.
+
+### Cycle 160 checkpoint — the summary's item drawers
+
+- P1's summary drawers are ported from Leyte's CODE 4 into `ID04_reconstructed.gd`. The family:
+  - the four user item procedures: the target table 0x1fb8 ($12a), the medals list 0x23fe ($b2), the kill markers
+    0x241a ($fa) and the rank insignia 0x1d9e ($ca);
+  - their routines: the target row 0x1e28, the list redraw 0x23b2, the two fill procedures 0x1ff8 (medal cicns
+    0x264+ / 0x1f8+, three per row) and 0x21c6 (kill markers cicn 0x3e8..0x3ea, six per row);
+  - the list scrolling: the scroll maximum 0x2436, the scroll 0x24b8 (CopyBits, then refilling the uncovered band)
+    and scrolling to the end 0x262e.
+- A naming error was corrected from the bytes: trap 0xA887 is TextFont (port +0x44 is txFont), so the target rows
+  draw in the application font, not bold.
+- Cases: 34 more for ID04, 161 in all, passing with 0 script errors. The drawers' rects are logged by content (stub
+  derefs). Five mutations (row height, scroll band, medal cell, medals threshold, marker row width) are
+  all caught.
+- Scramble Two over 3000 frames, with the player still on deck: the objective stays at 0. The run hit six
+  missing class factories when damage spawns objects: 0x136c2, 0x142a4, the smoke trail 0x1ab5a, the ground fire
+  0x1b1ea, 0x1b6ea and 0x1ca6e. Each failure then gives instantiate_mission_pool_slot's "Nonexistent 'int'
+  constructor" error. These factories are the next blocker for P0 and P2.
+
+### Cycle 161 checkpoint — the damage spawns' factories
+
+- The six routines Scramble Two's damage path reached unported are now ported from Leyte's bytes:
+  - the class factories create_plume_controller 0x136c2, create_trail_controller 0x1ab5a,
+    create_ground_fire_controller 0x1b1ea and create_ground_mark_controller 0x1b6ea (object flags at +0x14, Leyte's
+    field +0x36, definitions from 0x2074c or the longs 0x20774 / 0x20784);
+  - the debris explosion's init init_effect_kind3_debris_explosion 0x142a4: a kind-2 burst first, through
+    spawn_effect;
+  - the shadow's destroy hook destroy_shadow_controller 0x1ca6e (the owner's byte +0x29).
+- Cases: 13 more, 2737 overlay cases in all, passing. The first run caught a stride error in the debris init: Capstone
+  prints two indexed stores without their scale, and the emulator shows the stride of 4 (as in 1.0.3).
+- QA passes; the overlay placement now pairs 404 of 428 routines.
+
+### Cycle 162 checkpoint — the damage spawns' ticks
+
+- The rerun Scramble Two probe (3000 frames, the player on deck, the objective still 0) spawned the cycle-161 objects.
+  Their per-frame routines are now ported from Leyte's bytes and registered:
+  - the trail inits 0x1abe4 / 0x1abf6;
+  - the smoke-trail animator animate_smoke_trail 0x1add4 (kind 0; owner +0x58, the controller's +0x698 / +0x699 /
+    +0x6a0);
+  - the ground-fire animator animate_ground_fire 0x1b2d6 and its tick 0x1b504;
+  - the plume's tick tick_smoke_plume 0x13808;
+  - the parachute's factory create_parachute_controller 0x1d516.
+  tick_trail 0x1b1aa was already ported but had never been registered (a duplicate written this cycle was removed).
+- Cases: 57 more, 2794 overlay cases in all, covering every animator state (rewind, retired owner, owner no longer
+  smoking, lifetime out) and the retire paths through retire_entity. The Leyte suite (with ID04) passes with 0 script
+  errors; QA passes; placement pairs 406 of 428 routines.
+
+### Cycle 163 checkpoint — the last spawn hooks, collisions, and a flying hand for P0
+
+- Ported from Leyte's bytes and registered:
+  - the destroy hooks of the trail 0x1ad8c, ground fire 0x1b2c0 and plume 0x137f2;
+  - the plume's pre-render 0x13b9a with shape_free_plume 0x138a0 and shape_trailing_plume 0x13a4a (vertices at object
+    +0x46, age frame +0x42, camera heading 0x23d3e);
+  - aircraft_collision 0x11bd0 (Leyte rewrote it: stores, aircraft, ships by definition type);
+  - ordnance_collision 0x1578a;
+  - create_debris_controller 0x1b526.
+  The Scramble Two probe now runs a 3000-frame mission with no missing routine.
+- Cases: 41 more, 2835 overlay cases in all. The Leyte suite passes with 0 script errors.
+- New probe options, synthetic input only and with no game variable written:
+  - LEYTE_PROBE_AILERON=from,to,dx. A characterisation flight found that a left stick gives positive roll, that
+    positive roll raises the heading, and that the bank holds.
+  - LEYTE_PROBE_AUTOPILOT=bank,climb,straight,flee. A hand flies the aircraft at the nearest live bomber (definition
+    type 5) as a player watching the screen would:
+    - it climbs while flying the bombers' course, then turns and meets them head-on along their ground track;
+    - it puts the nose on the bomber in the last 4000;
+    - it holds the mouse button (read through Button into host +0x37e and 0x2b230) only while the bomber is within
+      15000 and inside a small cone.
+- Findings, all from the original rules:
+  - enemy flak guns (definition type 0x15, flag 0x100) 24k north of the carrier hit an aircraft that turns slowly over
+    them;
+  - the bombers (radius 583) fly a straight track at about 214 per frame, faster than the Hellcat's 140, so only
+    head-on passes are possible;
+  - the bombers' gunners hit back;
+  - a round damages only when its segment passes within the radius, and then one draw in eight;
+  - Scramble Two's objective counts the second bomber destroyed in live play, by any cause.
+  Passes now line up within 3 heading units, with 12-round bursts; no bomber hit yet. The timing follows real ticks,
+  so runs are not deterministic.
+
+### Cycle 164 checkpoint — gunnery data, and Island Storm's ground battle
+
+- Ported from Leyte's bytes, with cases, and registered:
+  - tick_debris_fragment 0x1b646 (retired with D0 the fall value, as the bytes leave it);
+  - destroy_flak_controller 0x1ccce.
+- The autopilot's endgame:
+  - arriving 800 above the bombers puts the vertical aim within a few units at 13k;
+  - inside 15k the nose goes on the bomber itself.
+  One pass hit a bomber (its damage word 0x2000 → 0xa010) without bringing it down. Damage rolls above 0x5d start
+  the smoke stages, which advance to destruction on a timer, so one hit can be enough. Scramble Two still needs two
+  kills from a single pass at bombers that outrun the Hellcat.
+- Island Storm (scenario 6), surveyed with the new survey columns (flags +0x16, radius +0x20, the player's bombs /
+  rockets / rounds):
+  - the objective counts five definition-type-0x28 kills; the failure counts four 0x27 losses;
+  - five 0x28 units (flags 0xa0, radius 168) stand on the ground in two groups about 430k west of the carrier;
+  - the player carries 2 bombs ('b'), 6 rockets ('n') and 675 rounds;
+  - guns cannot latch 0x28 units, because bullet_hits_shape latches only flagged shapes (bit 2).
+  The mission's start reaches three unported Leyte-only routines with no 1.0.3 counterpart:
+  - the 0x27 / 0x28 notice handler 0x1ee1e: they pick each other as targets within 0x26ac0, with chance
+    0x672000 / distance, the hold at +0x61a / +0x61e;
+  - the unit tick 0x1f4fc: a 75-entry pose ring at +0x32 for the replay, live movement through 0x1f164;
+  - a 0x32-byte factory 0x1f5ee.
+  The ground battle itself may decide the objective under the original rules.
+- Next: port the Island Storm units: the notice handler, the factory, the tick and its movement 0x1f164 with its
+  callees 0x1eeee / 0x1efc0 / 0x1f014 / 0x1f0d8 (about 480 instructions), then watch the battle and script the attack.
+
+### Cycle 165 checkpoint — Island Storm's ground units
+
+- Ported from Leyte's bytes (no 1.0.3 counterpart) and registered:
+  - the 0x27 / 0x28 notice handler island_unit_notice_object 0x1ee1e;
+  - the unit tick tick_island_unit 0x1f4fc and its live step island_unit_step 0x1f164, which covers aiming (turns of
+    at most 0x100, a 12-halving pitch search against the target's distance, shells through leyte_spawn_weapon_entity
+    with jittered heading / pitch / speed) and field-point searches near the nearest waypoint;
+  - its helpers: island_unit_follow_route 0x1f014, island_unit_next_point 0x1eeee, island_unit_set_velocity 0x1efc0,
+    island_nearest_waypoint 0x1f0d8, leyte_rng_long 0x1369e (two draws, the first the low word) and
+    leyte_point_in_face_xz 0x15b3a (a DIVUL with the remainder in d1 picks the random point);
+  - the marker factory 0x1f5ee and create_ordnance_controller 0x148fa (0x63c bytes in Leyte).
+  Cases: 77 more, 2923 overlay cases in all. The Leyte suite passes with 0 script errors. The notice handler's D0 is
+  not compared, as for flak_notice_object (the dispatcher does not read it).
+- Island Storm with the player on deck: the type-0x27 force arrives near frame 1200 and the units' shells fly. The
+  shells' tick ordnance_tick 0x14eaa is not ported; neither are its callees, which Leyte rewrote:
+  ordnance_ballistic_step 0x14b72 (248 instructions against 1.0.3's 111: a surface run with byte +0x639 negative, a
+  fuse +0x624, gravity scaled by range) and ordnance_detonation 0x1544e (the bomb-hit counters host +0xcc / +0xce /
+  +0xd2).
+- Next: port the ordnance trio from Leyte's bytes. The player's own bombs and rockets need it too.

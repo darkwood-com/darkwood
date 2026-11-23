@@ -4,16 +4,16 @@
  "counts": {
   "routines_1_0_3": 428,
   "routines_leyte": 492,
-  "placed": 400,
-  "unplaced": 28,
+  "placed": 409,
+  "unplaced": 19,
   "by_evidence": {
-   "calls": 35,
-   "cases": 127,
+   "calls": 21,
+   "cases": 182,
    "correspondence": 149,
    "map": 54,
-   "similarity": 35
+   "similarity": 3
   },
-  "addresses_beyond_the_map": 518
+  "addresses_beyond_the_map": 529
  },
  "routines": [
   {
@@ -2341,7 +2341,7 @@
    "name": "create_enemy_bomber",
    "hellcats_1_0_3": "0xe320",
    "leyte": "0xf790",
-   "evidence": "similarity:0.93",
+   "evidence": "cases",
    "instructions": [
     15,
     15
@@ -2418,7 +2418,7 @@
    "name": "scale_template_field_38",
    "hellcats_1_0_3": "0xe550",
    "leyte": "0xf9c0",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     18,
     18
@@ -2429,7 +2429,7 @@
    "name": "aircraft_tick",
    "hellcats_1_0_3": "0xe58a",
    "leyte": "0xf9f6",
-   "evidence": "similarity:0.67",
+   "evidence": "cases",
    "instructions": [
     127,
     160
@@ -2440,7 +2440,7 @@
    "name": "update_aircraft_entity",
    "hellcats_1_0_3": "0xe772",
    "leyte": "0xfcf6",
-   "evidence": "calls:8",
+   "evidence": "cases",
    "instructions": [
     1201,
     1593
@@ -2462,7 +2462,7 @@
    "name": "animate_landing_gear",
    "hellcats_1_0_3": "0xfb0a",
    "leyte": "0x118e2",
-   "evidence": "similarity:0.97",
+   "evidence": "cases",
    "instructions": [
     221,
     225
@@ -2473,7 +2473,7 @@
    "name": "aircraft_collision",
    "hellcats_1_0_3": "0xfdea",
    "leyte": "0x11bd0",
-   "evidence": "similarity:0.74",
+   "evidence": "cases",
    "instructions": [
     44,
     56
@@ -2484,7 +2484,7 @@
    "name": "release_ai_target",
    "hellcats_1_0_3": "0x1009c",
    "leyte": "0x11ea6",
-   "evidence": "similarity:0.71",
+   "evidence": "cases",
    "instructions": [
     8,
     9
@@ -2495,7 +2495,7 @@
    "name": "enemy_fighter_notice_object",
    "hellcats_1_0_3": "0x100b4",
    "leyte": "0x11ec0",
-   "evidence": "similarity:0.70",
+   "evidence": "cases",
    "instructions": [
     140,
     196
@@ -2539,7 +2539,7 @@
    "name": "update_aircraft_damage_state",
    "hellcats_1_0_3": "0x10630",
    "leyte": "0x124c0",
-   "evidence": "similarity:0.96",
+   "evidence": "cases",
    "instructions": [
     235,
     234
@@ -2572,7 +2572,7 @@
    "name": "ai_bootstrap_climb_phase",
    "hellcats_1_0_3": "0x10b64",
    "leyte": "0x129ea",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     52,
     54
@@ -2624,6 +2624,17 @@
    "matching": 41
   },
   {
+   "name": "ensure_ai_script_1b2e0_tick",
+   "hellcats_1_0_3": "0x10d48",
+   "leyte": "0x12bd6",
+   "evidence": "cases",
+   "instructions": [
+    19,
+    19
+   ],
+   "matching": 19
+  },
+  {
    "name": "ensure_ai_script_1b310_tick",
    "hellcats_1_0_3": "0x10d88",
    "leyte": "0x12c16",
@@ -2635,10 +2646,21 @@
    "matching": 19
   },
   {
+   "name": "ensure_ai_script_1b340_tick",
+   "hellcats_1_0_3": "0x10dc8",
+   "leyte": "0x12c56",
+   "evidence": "cases",
+   "instructions": [
+    19,
+    19
+   ],
+   "matching": 19
+  },
+  {
    "name": "ai_script_try_fire_burst",
    "hellcats_1_0_3": "0x10e08",
    "leyte": "0x12c96",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     48,
     49
@@ -2671,7 +2693,7 @@
    "name": "ai_fly",
    "hellcats_1_0_3": "0x11162",
    "leyte": "0x13100",
-   "evidence": "similarity:1.00",
+   "evidence": "calls:2",
    "instructions": [
     15,
     15
@@ -2693,7 +2715,7 @@
    "name": "ai_dive_at_target",
    "hellcats_1_0_3": "0x111ba",
    "leyte": "0x13158",
-   "evidence": "similarity:0.89",
+   "evidence": "cases",
    "instructions": [
     71,
     75
@@ -2704,7 +2726,7 @@
    "name": "ai_bombing_run",
    "hellcats_1_0_3": "0x112c0",
    "leyte": "0x1325c",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     120,
     237
@@ -2770,7 +2792,7 @@
    "name": "spawn_smoke_plume",
    "hellcats_1_0_3": "0x115dc",
    "leyte": "0x1370e",
-   "evidence": "similarity:0.74",
+   "evidence": "cases",
    "instructions": [
     36,
     32
@@ -2781,7 +2803,7 @@
    "name": "attach_trailing_plume",
    "hellcats_1_0_3": "0x11650",
    "leyte": "0x13778",
-   "evidence": "similarity:0.88",
+   "evidence": "cases",
    "instructions": [
     38,
     39
@@ -2789,10 +2811,21 @@
    "matching": 34
   },
   {
+   "name": "destroy_plume_controller",
+   "hellcats_1_0_3": "0x116c8",
+   "leyte": "0x137f2",
+   "evidence": "cases",
+   "instructions": [
+    7,
+    8
+   ],
+   "matching": 5
+  },
+  {
    "name": "tick_smoke_plume",
    "hellcats_1_0_3": "0x116dc",
    "leyte": "0x13808",
-   "evidence": "similarity:0.98",
+   "evidence": "cases",
    "instructions": [
     41,
     41
@@ -2825,7 +2858,7 @@
    "name": "plume_pre_render",
    "hellcats_1_0_3": "0x11a70",
    "leyte": "0x13b9a",
-   "evidence": "similarity:1.00",
+   "evidence": "cases",
    "instructions": [
     10,
     10
@@ -2902,7 +2935,7 @@
    "name": "init_effect_kind2_burst",
    "hellcats_1_0_3": "0x11edc",
    "leyte": "0x14028",
-   "evidence": "similarity:0.99",
+   "evidence": "cases",
    "instructions": [
     110,
     110
@@ -2913,7 +2946,7 @@
    "name": "init_effect_kind0_flat_ring",
    "hellcats_1_0_3": "0x1201a",
    "leyte": "0x14164",
-   "evidence": "similarity:0.98",
+   "evidence": "cases",
    "instructions": [
     51,
     51
@@ -2924,7 +2957,7 @@
    "name": "init_effect_kind1_column",
    "hellcats_1_0_3": "0x120aa",
    "leyte": "0x141f2",
-   "evidence": "similarity:0.98",
+   "evidence": "cases",
    "instructions": [
     58,
     58
@@ -2935,7 +2968,7 @@
    "name": "init_effect_kind3_debris_explosion",
    "hellcats_1_0_3": "0x1215e",
    "leyte": "0x142a4",
-   "evidence": "similarity:0.99",
+   "evidence": "cases",
    "instructions": [
     89,
     89
@@ -2946,7 +2979,7 @@
    "name": "animate_effect_kind2_burst",
    "hellcats_1_0_3": "0x12276",
    "leyte": "0x143ba",
-   "evidence": "similarity:0.98",
+   "evidence": "cases",
    "instructions": [
     104,
     106
@@ -2979,7 +3012,7 @@
    "name": "animate_effect_kind3_debris",
    "hellcats_1_0_3": "0x12508",
    "leyte": "0x14654",
-   "evidence": "similarity:0.99",
+   "evidence": "cases",
    "instructions": [
     169,
     171
@@ -3023,7 +3056,7 @@
    "name": "create_ordnance_controller",
    "hellcats_1_0_3": "0x127a6",
    "leyte": "0x148fa",
-   "evidence": "similarity:1.00",
+   "evidence": "cases",
    "instructions": [
     21,
     21
@@ -3045,7 +3078,7 @@
    "name": "ordnance_ballistic_step",
    "hellcats_1_0_3": "0x12896",
    "leyte": "0x14b72",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     111,
     248
@@ -3078,7 +3111,7 @@
    "name": "ordnance_detonation",
    "hellcats_1_0_3": "0x12d14",
    "leyte": "0x1544e",
-   "evidence": "calls:2",
+   "evidence": "cases",
    "instructions": [
     146,
     256
@@ -3089,7 +3122,7 @@
    "name": "ordnance_collision",
    "hellcats_1_0_3": "0x12f32",
    "leyte": "0x1578a",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     16,
     22
@@ -3540,7 +3573,7 @@
    "name": "tick_bullet",
    "hellcats_1_0_3": "0x15da8",
    "leyte": "0x19d9e",
-   "evidence": "similarity:0.91",
+   "evidence": "cases",
    "instructions": [
     49,
     46
@@ -3650,7 +3683,7 @@
    "name": "bullet_hits_aircraft",
    "hellcats_1_0_3": "0x167d4",
    "leyte": "0x1a7c6",
-   "evidence": "similarity:0.96",
+   "evidence": "cases",
    "instructions": [
     55,
     55
@@ -3672,7 +3705,7 @@
    "name": "alloc_transformed_vertex_block",
    "hellcats_1_0_3": "0x168b2",
    "leyte": "0x1a8a2",
-   "evidence": "calls:1",
+   "evidence": "calls:2",
    "instructions": [
     20,
     20
@@ -3724,10 +3757,32 @@
    "matching": 23
   },
   {
+   "name": "init_trail_kind0",
+   "hellcats_1_0_3": "0x16aa4",
+   "leyte": "0x1abe4",
+   "evidence": "cases",
+   "instructions": [
+    4,
+    4
+   ],
+   "matching": 4
+  },
+  {
+   "name": "init_trail_kind1",
+   "hellcats_1_0_3": "0x16ab6",
+   "leyte": "0x1abf6",
+   "evidence": "cases",
+   "instructions": [
+    4,
+    4
+   ],
+   "matching": 4
+  },
+  {
    "name": "spawn_trail",
    "hellcats_1_0_3": "0x16ac8",
    "leyte": "0x1ac08",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     31,
     31
@@ -3738,7 +3793,7 @@
    "name": "attach_smoke_trail",
    "hellcats_1_0_3": "0x16b2c",
    "leyte": "0x1ac6a",
-   "evidence": "similarity:0.84",
+   "evidence": "cases",
    "instructions": [
     28,
     29
@@ -3749,7 +3804,7 @@
    "name": "attach_burning_trail",
    "hellcats_1_0_3": "0x16b7e",
    "leyte": "0x1acbe",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     39,
     53
@@ -3760,7 +3815,7 @@
    "name": "destroy_trail_controller",
    "hellcats_1_0_3": "0x16c04",
    "leyte": "0x1ad8c",
-   "evidence": "similarity:0.76",
+   "evidence": "cases",
    "instructions": [
     24,
     26
@@ -3771,7 +3826,7 @@
    "name": "animate_smoke_trail",
    "hellcats_1_0_3": "0x16c4a",
    "leyte": "0x1add4",
-   "evidence": "similarity:0.99",
+   "evidence": "cases",
    "instructions": [
     125,
     125
@@ -3782,7 +3837,7 @@
    "name": "animate_burning_trail",
    "hellcats_1_0_3": "0x16de6",
    "leyte": "0x1af6e",
-   "evidence": "similarity:0.94",
+   "evidence": "cases",
    "instructions": [
     177,
     183
@@ -3815,7 +3870,7 @@
    "name": "spawn_ground_fire_object",
    "hellcats_1_0_3": "0x1709a",
    "leyte": "0x1b23a",
-   "evidence": "similarity:0.95",
+   "evidence": "cases",
    "instructions": [
     22,
     22
@@ -3826,7 +3881,7 @@
    "name": "attach_ground_fire",
    "hellcats_1_0_3": "0x170e2",
    "leyte": "0x1b280",
-   "evidence": "similarity:0.81",
+   "evidence": "cases",
    "instructions": [
     23,
     24
@@ -3834,10 +3889,21 @@
    "matching": 19
   },
   {
+   "name": "destroy_ground_fire_controller",
+   "hellcats_1_0_3": "0x1711c",
+   "leyte": "0x1b2c0",
+   "evidence": "cases",
+   "instructions": [
+    7,
+    8
+   ],
+   "matching": 5
+  },
+  {
    "name": "animate_ground_fire",
    "hellcats_1_0_3": "0x17130",
    "leyte": "0x1b2d6",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     169,
     169
@@ -3854,6 +3920,17 @@
     12
    ],
    "matching": 12
+  },
+  {
+   "name": "create_debris_controller",
+   "hellcats_1_0_3": "0x17382",
+   "leyte": "0x1b526",
+   "evidence": "cases",
+   "instructions": [
+    15,
+    15
+   ],
+   "matching": 15
   },
   {
    "name": "spawn_debris_fragment",
@@ -3878,6 +3955,17 @@
    "matching": 42
   },
   {
+   "name": "create_ground_mark_controller",
+   "hellcats_1_0_3": "0x17546",
+   "leyte": "0x1b6ea",
+   "evidence": "cases",
+   "instructions": [
+    15,
+    15
+   ],
+   "matching": 15
+  },
+  {
    "name": "tick_ground_mark",
    "hellcats_1_0_3": "0x175a0",
    "leyte": "0x1b744",
@@ -3892,7 +3980,7 @@
    "name": "spawn_ground_mark",
    "hellcats_1_0_3": "0x175be",
    "leyte": "0x1b762",
-   "evidence": "similarity:0.99",
+   "evidence": "cases",
    "instructions": [
     68,
     68
@@ -3903,7 +3991,7 @@
    "name": "add_radar_track",
    "hellcats_1_0_3": "0x17692",
    "leyte": "0x1b836",
-   "evidence": "similarity:0.96",
+   "evidence": "cases",
    "instructions": [
     27,
     27
@@ -4057,7 +4145,7 @@
    "name": "ai_pursue_target",
    "hellcats_1_0_3": "0x181ea",
    "leyte": "0x1c28e",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     490,
     537
@@ -4085,6 +4173,17 @@
     23
    ],
    "matching": 23
+  },
+  {
+   "name": "destroy_shadow_controller",
+   "hellcats_1_0_3": "0x18922",
+   "leyte": "0x1ca6e",
+   "evidence": "cases",
+   "instructions": [
+    7,
+    8
+   ],
+   "matching": 5
   },
   {
    "name": "spawn_object_shadow",
@@ -4134,7 +4233,7 @@
    "name": "destroy_flak_controller",
    "hellcats_1_0_3": "0x18b78",
    "leyte": "0x1ccce",
-   "evidence": "similarity:0.62",
+   "evidence": "cases",
    "instructions": [
     12,
     14
@@ -4145,7 +4244,7 @@
    "name": "flak_notice_object",
    "hellcats_1_0_3": "0x18b9a",
    "leyte": "0x1ccf4",
-   "evidence": "similarity:0.90",
+   "evidence": "cases",
    "instructions": [
     62,
     63
@@ -4178,7 +4277,7 @@
    "name": "spawn_turret_on_object",
    "hellcats_1_0_3": "0x19110",
    "leyte": "0x1d298",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     24,
     24
@@ -4211,7 +4310,7 @@
    "name": "create_parachute_controller",
    "hellcats_1_0_3": "0x19396",
    "leyte": "0x1d516",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     21,
     21
@@ -4233,7 +4332,7 @@
    "name": "spawn_bailout_parachute",
    "hellcats_1_0_3": "0x19410",
    "leyte": "0x1d590",
-   "evidence": "calls:1",
+   "evidence": "cases",
    "instructions": [
     64,
     65
@@ -4441,56 +4540,15 @@
      0.4
     ],
     [
-     "0x11ec0",
-     0.39
-    ]
-   ]
-  },
-  {
-   "name": "ensure_ai_script_1b2e0_tick",
-   "hellcats_1_0_3": "0x10d48",
-   "candidates": [
-    [
-     "0x12c56",
-     1.0
-    ],
-    [
-     "0x12bd6",
-     1.0
-    ],
-    [
-     "0x18d1c",
-     0.89
-    ]
-   ]
-  },
-  {
-   "name": "ensure_ai_script_1b340_tick",
-   "hellcats_1_0_3": "0x10dc8",
-   "candidates": [
-    [
-     "0x12c56",
-     1.0
-    ],
-    [
-     "0x12bd6",
-     1.0
-    ],
-    [
-     "0x18d1c",
-     0.89
+     "0x1ee1e",
+     0.38
     ]
    ]
   },
   {
    "name": "tick_ai_1b370_mission",
    "hellcats_1_0_3": "0x10f48",
-   "candidates": [
-    [
-     "0x1325c",
-     0.18
-    ]
-   ]
+   "candidates": []
   },
   {
    "name": "create_spinner_controller",
@@ -4505,7 +4563,7 @@
      0.96
     ],
     [
-     "0x1b6ea",
+     "0x13bb6",
      0.74
     ]
    ]
@@ -4529,38 +4587,20 @@
    ]
   },
   {
-   "name": "destroy_plume_controller",
-   "hellcats_1_0_3": "0x116c8",
-   "candidates": [
-    [
-     "0x1ca6e",
-     0.67
-    ],
-    [
-     "0x1b2c0",
-     0.67
-    ],
-    [
-     "0x137f2",
-     0.67
-    ]
-   ]
-  },
-  {
    "name": "create_camera_facing_controller",
    "hellcats_1_0_3": "0x11a8e",
    "candidates": [
-    [
-     "0x1b6ea",
-     1.0
-    ],
     [
      "0x13bb6",
      1.0
     ],
     [
-     "0x1b526",
-     0.93
+     "0x157da",
+     0.9
+    ],
+    [
+     "0x1c182",
+     0.82
     ]
    ]
   },
@@ -4609,12 +4649,12 @@
      1.0
     ],
     [
-     "0x1b526",
-     0.97
+     "0x13bb6",
+     0.9
     ],
     [
-     "0x1b6ea",
-     0.9
+     "0x1c182",
+     0.86
     ]
    ]
   },
@@ -4665,42 +4705,6 @@
    ]
   },
   {
-   "name": "init_trail_kind0",
-   "hellcats_1_0_3": "0x16aa4",
-   "candidates": [
-    [
-     "0x1abf6",
-     1.0
-    ],
-    [
-     "0x1abe4",
-     1.0
-    ],
-    [
-     "0x1eaae",
-     0.36
-    ]
-   ]
-  },
-  {
-   "name": "init_trail_kind1",
-   "hellcats_1_0_3": "0x16ab6",
-   "candidates": [
-    [
-     "0x1abf6",
-     1.0
-    ],
-    [
-     "0x1abe4",
-     1.0
-    ],
-    [
-     "0x1eaae",
-     0.36
-    ]
-   ]
-  },
-  {
    "name": "register_ground_fire_template",
    "hellcats_1_0_3": "0x17078",
    "candidates": [
@@ -4719,42 +4723,6 @@
    ]
   },
   {
-   "name": "destroy_ground_fire_controller",
-   "hellcats_1_0_3": "0x1711c",
-   "candidates": [
-    [
-     "0x1ca6e",
-     0.67
-    ],
-    [
-     "0x1b2c0",
-     0.67
-    ],
-    [
-     "0x137f2",
-     0.67
-    ]
-   ]
-  },
-  {
-   "name": "create_debris_controller",
-   "hellcats_1_0_3": "0x17382",
-   "candidates": [
-    [
-     "0x1b526",
-     1.0
-    ],
-    [
-     "0x157da",
-     0.97
-    ],
-    [
-     "0x1b6ea",
-     0.93
-    ]
-   ]
-  },
-  {
    "name": "register_debris_template",
    "hellcats_1_0_3": "0x173bc",
    "candidates": [
@@ -4769,24 +4737,6 @@
     [
      "0x1b560",
      1.0
-    ]
-   ]
-  },
-  {
-   "name": "create_ground_mark_controller",
-   "hellcats_1_0_3": "0x17546",
-   "candidates": [
-    [
-     "0x1b6ea",
-     1.0
-    ],
-    [
-     "0x13bb6",
-     1.0
-    ],
-    [
-     "0x1b526",
-     0.93
     ]
    ]
   },
@@ -4818,10 +4768,6 @@
    "hellcats_1_0_3": "0x18020",
    "candidates": [
     [
-     "0x1b526",
-     0.27
-    ],
-    [
      "0x157da",
      0.27
     ]
@@ -4834,24 +4780,6 @@
     [
      "0x1c1d2",
      0.52
-    ]
-   ]
-  },
-  {
-   "name": "destroy_shadow_controller",
-   "hellcats_1_0_3": "0x18922",
-   "candidates": [
-    [
-     "0x1ca6e",
-     0.67
-    ],
-    [
-     "0x1b2c0",
-     0.67
-    ],
-    [
-     "0x137f2",
-     0.67
     ]
    ]
   },
@@ -5048,7 +4976,7 @@
   {
    "hellcats_1_0_3": "0x1b4c",
    "leyte": "0x2184",
-   "votes": 25
+   "votes": 27
   },
   {
    "hellcats_1_0_3": "0x1b64",
@@ -5958,17 +5886,27 @@
   {
    "hellcats_1_0_3": "0x10cb8",
    "leyte": "0x12b46",
-   "votes": 1
+   "votes": 0
   },
   {
    "hellcats_1_0_3": "0x10cc8",
    "leyte": "0x12b56",
-   "votes": 1
+   "votes": 3
+  },
+  {
+   "hellcats_1_0_3": "0x10d48",
+   "leyte": "0x12bd6",
+   "votes": 0
   },
   {
    "hellcats_1_0_3": "0x10d88",
    "leyte": "0x12c16",
    "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x10dc8",
+   "leyte": "0x12c56",
+   "votes": 0
   },
   {
    "hellcats_1_0_3": "0x10e08",
@@ -6024,6 +5962,11 @@
    "hellcats_1_0_3": "0x11650",
    "leyte": "0x13778",
    "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x116c8",
+   "leyte": "0x137f2",
+   "votes": 0
   },
   {
    "hellcats_1_0_3": "0x116dc",
@@ -6363,7 +6306,7 @@
   {
    "hellcats_1_0_3": "0x15d00",
    "leyte": "0x19cf6",
-   "votes": 0
+   "votes": 1
   },
   {
    "hellcats_1_0_3": "0x15d58",
@@ -6408,7 +6351,7 @@
   {
    "hellcats_1_0_3": "0x168b2",
    "leyte": "0x1a8a2",
-   "votes": 1
+   "votes": 3
   },
   {
    "hellcats_1_0_3": "0x168fc",
@@ -6423,6 +6366,16 @@
   {
    "hellcats_1_0_3": "0x16a58",
    "leyte": "0x1ab98",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x16aa4",
+   "leyte": "0x1abe4",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x16ab6",
+   "leyte": "0x1abf6",
    "votes": 0
   },
   {
@@ -6476,6 +6429,11 @@
    "votes": 1
   },
   {
+   "hellcats_1_0_3": "0x1711c",
+   "leyte": "0x1b2c0",
+   "votes": 0
+  },
+  {
    "hellcats_1_0_3": "0x17130",
    "leyte": "0x1b2d6",
    "votes": 1
@@ -6486,6 +6444,11 @@
    "votes": 0
   },
   {
+   "hellcats_1_0_3": "0x17382",
+   "leyte": "0x1b526",
+   "votes": 0
+  },
+  {
    "hellcats_1_0_3": "0x173de",
    "leyte": "0x1b582",
    "votes": 1
@@ -6493,6 +6456,11 @@
   {
    "hellcats_1_0_3": "0x174a4",
    "leyte": "0x1b646",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x17546",
+   "leyte": "0x1b6ea",
    "votes": 0
   },
   {
@@ -6563,6 +6531,11 @@
   {
    "hellcats_1_0_3": "0x188d4",
    "leyte": "0x1ca20",
+   "votes": 0
+  },
+  {
+   "hellcats_1_0_3": "0x18922",
+   "leyte": "0x1ca6e",
    "votes": 0
   },
   {
@@ -6851,8 +6824,18 @@
    "votes": 1
   },
   {
+   "hellcats_1_0_3": "0x1b2e0",
+   "leyte": "0x20508",
+   "votes": 1
+  },
+  {
    "hellcats_1_0_3": "0x1b310",
    "leyte": "0x20538",
+   "votes": 1
+  },
+  {
+   "hellcats_1_0_3": "0x1b340",
+   "leyte": "0x20568",
    "votes": 1
   },
   {
@@ -7478,14 +7461,11 @@
   "0xf46c",
   "0xfc5c",
   "0x11c76",
-  "0x12bd6",
-  "0x12c56",
   "0x12dda",
   "0x12e76",
   "0x1357a",
   "0x1369e",
   "0x136ec",
-  "0x137f2",
   "0x13bb6",
   "0x13c50",
   "0x14952",
@@ -7527,17 +7507,11 @@
   "0x1970a",
   "0x19bac",
   "0x1a936",
-  "0x1abe4",
-  "0x1abf6",
   "0x1b218",
-  "0x1b2c0",
-  "0x1b526",
   "0x1b560",
-  "0x1b6ea",
   "0x1b722",
   "0x1c182",
   "0x1c1d2",
-  "0x1ca6e",
   "0x1d276",
   "0x1e7b6",
   "0x1e888",

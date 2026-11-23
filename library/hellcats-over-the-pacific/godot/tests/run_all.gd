@@ -14,6 +14,7 @@ const TEST_PATHS := [
 	"res://tests/leyte/port/test_leyte_id02.gd",
 	"res://tests/leyte/port/test_leyte_id02_reconstructed.gd",
 	"res://tests/leyte/port/test_leyte_id03_reconstructed.gd",
+	"res://tests/leyte/port/test_leyte_id04_reconstructed.gd",
 	"res://tests/leyte/port/test_leyte_id03.gd",
 	"res://tests/leyte/port/test_leyte_id04.gd",
 	"res://tests/leyte/port/test_leyte_overlay.gd",

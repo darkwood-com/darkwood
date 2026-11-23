@@ -1351,3 +1351,140 @@ func redraw_panel_readouts_locked() -> void:
 		_local(LEYTE_LOCAL_LOCK_SESSION, [])
 		_hook(-0x10b4)
 		_local(LEYTE_LOCAL_UNLOCK_SESSION, [])
+
+const TRAP_OFFSET_RECT: int = 0xa8a8
+
+## CODE 2 +0x1490 (Leyte only; link a6 -8): a beveled box polygon (OpenPoly .. ClosePoly) between top / left (a, b)
+## and bottom / right (c, d) made relative to the port's +0x34 / +0x36 (A5 - 0x168a): MoveTo(a, b), LineTo(a, d),
+## (c - 2, d), (c, d + 2), (c, b - 2), (c - 2, b), (a, b). Returns the polygon.
+func build_beveled_box_poly(a: int, b: int, c: int, d: int) -> int:
+	var poly: int = C68kScript.u32(_trap(TRAP_OPEN_POLY, []))
+	var port: int = memory.read_u32(C68kScript.u32(a5 + -0x168a))
+	a &= 0xffff
+	b &= 0xffff
+	d = C68kScript.u16(d - memory.read_u16(port + 0x36))
+	c = C68kScript.u16(c - memory.read_u16(port + 0x34))
+	_trap(TRAP_MOVE_TO, [a, b])
+	_trap(TRAP_LINE_TO, [a, d])
+	_trap(TRAP_LINE_TO, [C68kScript.u16(c - 2), d])
+	_trap(TRAP_LINE_TO, [c, C68kScript.u16(d + 2)])
+	_trap(TRAP_LINE_TO, [c, C68kScript.u16(b - 2)])
+	_trap(TRAP_LINE_TO, [C68kScript.u16(c - 2), b])
+	_trap(TRAP_LINE_TO, [a, b])
+	_trap(TRAP_CLOSE_POLY, [])
+	return poly
+
+## CODE 2 +0x127a (Leyte; jump-table slot $3e2, the service at A5 - 0x1130; the A5-safe callback runs on CurrentA5):
+## Leyte's notched frame pair (1.0.3's draw_notched_frame_pair_a5safe 0x11ec, with a marker): polygons of the frame
+## rect A5 - 0x1216 built with 2 x 2 and 1 x 1 pens (build_notched_frame_poly). With `marker`, two rects from the frame
+## (word divides toward zero, w = right - left, h = bottom - top): r1 = the frame with left += w / 4, right -= w / 4,
+## top += h / 2 - w / 12, bottom = top + w / 6; r2 = the frame with left += w / 2 - w / 12, right = left + w / 6, top =
+## r1's top, bottom = top + h / 3. ForeColor 0x21, BackColor 0x1e; two passes (colours `colour`, then `colour2`): fill
+## the inner polygon in the colour over the back colour A5 - 0x1206 (painted with `paint`, else the pattern A5 -
+## 0x1560), frame the outer in A5 - 0x1206, with the marker fill both rects (pattern A5 - 0x169a), frame the inner in A5
+## - 0x1204, then offset both polygons and both rects by A5 - 0x120c - A5 - 0x1214. The polygons are killed and the pen
+## pattern set back (A5 - 0x169a).
+func draw_notched_frame_pair_marked_a5safe(paint: int, colour: int, colour2: int, marker: int) -> void:
+	var world: int = _current_a5()
+	var saved: int = a5
+	a5 = world
+	var entry_a7: int = a7
+	var a6: int = entry_a7 - 4
+	var rect: int = C68kScript.u32(world - 0x1216)
+	_trap(TRAP_PEN_SIZE, [2, 2])
+	var outer: int = build_notched_frame_poly(memory.read_u16(rect), memory.read_u16(rect + 2), memory.read_u16(rect + 4), memory.read_u16(rect + 6))
+	_trap(TRAP_PEN_SIZE, [1, 1])
+	var inner: int = build_notched_frame_poly(memory.read_u16(rect), memory.read_u16(rect + 2), memory.read_u16(rect + 4), memory.read_u16(rect + 6))
+	var r1: int = a6 - 0x14
+	var r2: int = a6 - 0x1c
+	if C68kScript.u32(marker) != 0:
+		for k in 4:
+			memory.write_u16(r1 + 2 * k, memory.read_u16(rect + 2 * k))
+		var w: int = C68kScript.s16(memory.read_u16(r1 + 6) - memory.read_u16(r1 + 2))
+		memory.write_u16(r1 + 2, C68kScript.u16(memory.read_u16(r1 + 2) + _wdiv(w, 4)))
+		memory.write_u16(r1 + 6, C68kScript.u16(memory.read_u16(r1 + 6) - _wdiv(w, 4)))
+		var h: int = C68kScript.s16(memory.read_u16(r1 + 4) - memory.read_u16(r1))
+		memory.write_u16(r1, C68kScript.u16(_wdiv(h, 2) + memory.read_u16(r1) - _wdiv(w, 0xc)))
+		memory.write_u16(r1 + 4, C68kScript.u16(_wdiv(w, 6) + memory.read_u16(r1)))
+		for k in 4:
+			memory.write_u16(r2 + 2 * k, memory.read_u16(rect + 2 * k))
+		memory.write_u16(r2 + 2, C68kScript.u16(memory.read_u16(r2 + 2) + C68kScript.u16(_wdiv(w, 2) - _wdiv(w, 0xc))))
+		memory.write_u16(r2 + 6, C68kScript.u16(_wdiv(w, 6) + memory.read_u16(r2 + 2)))
+		memory.write_u16(r2, memory.read_u16(r1))
+		memory.write_u16(r2 + 4, C68kScript.u16(_wdiv(h, 3) + memory.read_u16(r2)))
+	_trap(TRAP_PEN_MODE_LONG, [0x21])
+	_trap(TRAP_BACK_COLOR, [0x1e])
+	var c: int = colour
+	for k in 2:
+		set_draw_color_index(c & 0xffff)
+		set_back_color_index(memory.read_u16(C68kScript.u32(world - 0x1206)))
+		_trap(TRAP_PEN_SIZE, [1, 1])
+		if C68kScript.u32(paint) != 0:
+			_trap(TRAP_PAINT_POLY, [inner])
+		else:
+			_trap(TRAP_FILL_POLY, [C68kScript.u32(world - 0x1560), inner])
+		set_draw_color_index(memory.read_u16(C68kScript.u32(world - 0x1206)))
+		_trap(TRAP_PEN_SIZE, [2, 2])
+		_trap(TRAP_FRAME_POLY, [outer])
+		if C68kScript.u32(marker) != 0:
+			_trap(TRAP_FILL_RECT, [C68kScript.u32(world - 0x169a), r1])
+			_trap(TRAP_FILL_RECT, [C68kScript.u32(world - 0x169a), r2])
+		set_draw_color_index(memory.read_u16(C68kScript.u32(world - 0x1204)))
+		_trap(TRAP_PEN_SIZE, [1, 1])
+		_trap(TRAP_FRAME_POLY, [inner])
+		var dx: int = C68kScript.u16(memory.read_u16(C68kScript.u32(world - 0x120c)) - memory.read_u16(C68kScript.u32(world - 0x1214)))
+		_trap(TRAP_OFFSET_POLY, [0, dx, inner])
+		_trap(TRAP_OFFSET_POLY, [0, dx, outer])
+		_trap(TRAP_OFFSET_RECT, [0, dx, r1])
+		_trap(TRAP_OFFSET_RECT, [0, dx, r2])
+		c = colour2
+	_trap(TRAP_KILL_POLY, [inner])
+	_trap(TRAP_KILL_POLY, [outer])
+	_trap(TRAP_PEN_PAT, [C68kScript.u32(world - 0x169a)])
+	a5 = saved
+
+## CODE 2 +0x1516 (Leyte only; jump-table slot $432, the service at A5 - 0x112c; A5-safe): a six-segment indicator.
+## ForeColor 0x21, BackColor 0x1e, back colour A5 - 0x1206, draw colour A5 - 0x1202; a beveled box polygon of the rect
+## at A5 - 0x11d8 (build_beveled_box_poly); for segment i = 5 down to 0 (the rects at A5 - 0x1200 + 8 i) the next bit of
+## `bits` (bit 0 first, then shifted right) fills it with the pattern A5 - 0x169a (set) or A5 - 0x1692 (clear), the
+## polygon is framed and, before the last, moved by the step to the next rect (its top / left less this one's). The
+## polygon is killed.
+func draw_six_segment_indicator_a5safe(bits: int) -> void:
+	var world: int = _current_a5()
+	var saved: int = a5
+	a5 = world
+	_trap(TRAP_PEN_MODE_LONG, [0x21])
+	_trap(TRAP_BACK_COLOR, [0x1e])
+	set_back_color_index(memory.read_u16(C68kScript.u32(world - 0x1206)))
+	set_draw_color_index(memory.read_u16(C68kScript.u32(world - 0x1202)))
+	var box: int = C68kScript.u32(world - 0x11d8)
+	var poly: int = build_beveled_box_poly(memory.read_u16(box), memory.read_u16(box + 2), memory.read_u16(box + 4), memory.read_u16(box + 6))
+	var v: int = C68kScript.u32(bits)
+	var i: int = 5
+	while i >= 0:
+		var seg: int = C68kScript.u32(world - 0x1200 + 8 * i)
+		var pattern: int = world - 0x169a if (v & 1) != 0 else world - 0x1692
+		_trap(TRAP_FILL_RECT, [C68kScript.u32(pattern), seg])
+		_trap(TRAP_FRAME_POLY, [poly])
+		if i != 0:
+			var prev: int = C68kScript.u32(world - 0x1200 + 8 * (i - 1))
+			var dh: int = C68kScript.u16(memory.read_u16(prev + 2) - memory.read_u16(seg + 2))
+			var dv: int = C68kScript.u16(memory.read_u16(prev) - memory.read_u16(seg))
+			_trap(TRAP_OFFSET_POLY, [dv, dh, poly])
+		i -= 1
+		v = C68kScript.u32(C68kScript.asr32(C68kScript.s32(v), 1))
+	_trap(TRAP_KILL_POLY, [poly])
+	a5 = saved
+
+## CODE 2 +0x1e (JT $522; C: long): labs, the generated port's verified abs_long (NEG.L of a negative long, 0x80000000
+## staying itself) as the jump table's method; Leyte's CODE 4 summary filter reaches it through the slot.
+func labs_jt(value: int) -> int:
+	return abs_long(value)
+
+## CODE 2 +0x3e8 (JT $56a; C: string): strlen, the bytes before the zero (moveq #-1; addq / tst.b (a0)+ until zero),
+## as 1.0.3's runtime has it (id02_03e8); the CODE 4 text appends measure their lines with it.
+func strlen_jt(s: int) -> int:
+	var n: int = 0
+	while memory.read_u8(C68kScript.u32(s + n)) != 0:
+		n += 1
+	return n

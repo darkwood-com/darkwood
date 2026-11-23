@@ -3,7 +3,7 @@
  "above_a5": 1504,
  "below_a5": 8994,
  "jump_table_offset": 32,
- "named": 109,
+ "named": 121,
  "entries": [
   {
    "a5_offset": 34,
@@ -89,23 +89,23 @@
    "a5_offset": 114,
    "segment": 4,
    "target": 8184,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID04_reconstructed.gd",
+   "method": "leyte_fill_medals_list",
    "pascal": false
   },
   {
    "a5_offset": 122,
    "segment": 4,
    "target": 8646,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID04_reconstructed.gd",
+   "method": "leyte_fill_kill_markers_list",
    "pascal": false
   },
   {
    "a5_offset": 130,
    "segment": 4,
    "target": 15310,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "plot_map_symbol_callback",
    "pascal": false
   },
@@ -113,7 +113,7 @@
    "a5_offset": 138,
    "segment": 4,
    "target": 1224,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "show_paused_dialog",
    "pascal": false
   },
@@ -137,7 +137,7 @@
    "a5_offset": 162,
    "segment": 4,
    "target": 6448,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "scroll_bar_action_proc",
    "pascal": false
   },
@@ -153,15 +153,15 @@
    "a5_offset": 178,
    "segment": 4,
    "target": 9214,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID04_reconstructed.gd",
+   "method": "leyte_medals_item_proc",
    "pascal": false
   },
   {
    "a5_offset": 186,
    "segment": 4,
    "target": 5982,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "scrolling_text_user_item_proc",
    "pascal": false
   },
@@ -169,7 +169,7 @@
    "a5_offset": 194,
    "segment": 4,
    "target": 17844,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "check_system_requirements",
    "pascal": false
   },
@@ -177,15 +177,15 @@
    "a5_offset": 202,
    "segment": 4,
    "target": 7582,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID04_reconstructed.gd",
+   "method": "leyte_rank_insignia_item_proc",
    "pascal": false
   },
   {
    "a5_offset": 210,
    "segment": 4,
    "target": 5228,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "draw_high_scores_table",
    "pascal": false
   },
@@ -201,7 +201,7 @@
    "a5_offset": 226,
    "segment": 4,
    "target": 1588,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "duty_roster_filter_proc",
    "pascal": false
   },
@@ -209,7 +209,7 @@
    "a5_offset": 234,
    "segment": 4,
    "target": 446,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "draw_default_button_outline",
    "pascal": false
   },
@@ -217,7 +217,7 @@
    "a5_offset": 242,
    "segment": 4,
    "target": 7278,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "build_rank_and_name_string",
    "pascal": false
   },
@@ -225,15 +225,15 @@
    "a5_offset": 250,
    "segment": 4,
    "target": 9242,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID04_reconstructed.gd",
+   "method": "leyte_kill_markers_item_proc",
    "pascal": false
   },
   {
    "a5_offset": 258,
    "segment": 4,
    "target": 578,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "draw_grey_user_item",
    "pascal": false
   },
@@ -241,8 +241,8 @@
    "a5_offset": 266,
    "segment": 4,
    "target": 14894,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID04_reconstructed.gd",
+   "method": "conclude_mission",
    "pascal": false
   },
   {
@@ -273,15 +273,15 @@
    "a5_offset": 298,
    "segment": 4,
    "target": 8120,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID04_reconstructed.gd",
+   "method": "leyte_target_table_item_proc",
    "pascal": false
   },
   {
    "a5_offset": 306,
    "segment": 4,
    "target": 1344,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "ask_save_changes",
    "pascal": false
   },
@@ -289,7 +289,7 @@
    "a5_offset": 314,
    "segment": 4,
    "target": 4052,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "refuel_dialog_filter_proc",
    "pascal": false
   },
@@ -297,7 +297,7 @@
    "a5_offset": 322,
    "segment": 4,
    "target": 784,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "percent_bar_user_item_proc",
    "pascal": false
   },
@@ -305,7 +305,7 @@
    "a5_offset": 330,
    "segment": 4,
    "target": 16766,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "map_dialog_filter_proc",
    "pascal": false
   },
@@ -313,7 +313,7 @@
    "a5_offset": 338,
    "segment": 4,
    "target": 17150,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "show_about_dialog",
    "pascal": false
   },
@@ -329,7 +329,7 @@
    "a5_offset": 354,
    "segment": 4,
    "target": 3114,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "scenario_selection_filter_proc",
    "pascal": false
   },
@@ -345,7 +345,7 @@
    "a5_offset": 370,
    "segment": 4,
    "target": 2622,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "draw_select_mission_title",
    "pascal": false
   },
@@ -353,7 +353,7 @@
    "a5_offset": 378,
    "segment": 4,
    "target": 1182,
-   "port": "original/leyte/port/ID04.gd",
+   "port": "original/leyte/port/ID04_reconstructed.gd",
    "method": "show_scenery_open_error_alert",
    "pascal": false
   },
@@ -369,8 +369,8 @@
    "a5_offset": 394,
    "segment": 4,
    "target": 10480,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID04_reconstructed.gd",
+   "method": "summary_dialog_filter_proc",
    "pascal": false
   },
   {
@@ -969,8 +969,8 @@
    "a5_offset": 994,
    "segment": 2,
    "target": 4730,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "draw_notched_frame_pair_marked_a5safe",
    "pascal": false
   },
   {
@@ -1049,8 +1049,8 @@
    "a5_offset": 1074,
    "segment": 2,
    "target": 5398,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "draw_six_segment_indicator_a5safe",
    "pascal": false
   },
   {
@@ -1289,8 +1289,8 @@
    "a5_offset": 1314,
    "segment": 2,
    "target": 30,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "labs_jt",
    "pascal": false
   },
   {
@@ -1361,8 +1361,8 @@
    "a5_offset": 1386,
    "segment": 2,
    "target": 1000,
-   "port": null,
-   "method": null,
+   "port": "original/leyte/port/ID02_reconstructed.gd",
+   "method": "strlen_jt",
    "pascal": false
   },
   {

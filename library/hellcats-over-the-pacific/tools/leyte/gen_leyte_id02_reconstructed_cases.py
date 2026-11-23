@@ -32,7 +32,7 @@ ID01_AT = 0x7E000
 CODE2_AT = 0x10000               # Leyte's CODE 2, for another segment's cases that call its library routines
 ID01 = ROOT / "sources" / "leyte-gulf-1-0" / "CODE" / "ID01.bin"
 IMAGE, BLOCK, ENTRY_OFF = 0x15000, 0x16000, 0x100
-ROUTINES = {"reset_overlay_state": 0x245A, "apply_settings_to_live_options": 0x2DB2, "apply_display_palettes": 0x54B8,
+ROUTINES = {"labs_jt": 0x1E, "strlen_jt": 0x3E8, "reset_overlay_state": 0x245A, "apply_settings_to_live_options": 0x2DB2, "apply_display_palettes": 0x54B8,
             "main": 0x37D2, "initialize_application": 0x32D8, "install_overlay_service_table": 0x1E58,
             "import_settings_from_resource_file": 0x3082, "convert_imported_pilots": 0x31D8,
             "open_preferences_file": 0x2F42, "scan_display_devices": 0x24C8,
@@ -44,13 +44,14 @@ ROUTINES = {"reset_overlay_state": 0x245A, "apply_settings_to_live_options": 0x2
             "begin_overlay_session": 0x45A, "end_overlay_session": 0x4A4, "load_game_sounds": 0x22AC,
             "restore_screen_globals": 0x552A, "process_pending_update_events": 0x54C8, "handle_update_event": 0x54FE,
             "run_flight_session_leyte": 0x4FC, "save_changed_settings": 0x34D8, "quit_application": 0x35E2,
-            "redraw_panel_readouts_locked": 0xAB4}
+            "redraw_panel_readouts_locked": 0xAB4, "draw_notched_frame_pair_marked_a5safe": 0x127A,
+            "draw_six_segment_indicator_a5safe": 0x1516}
 ## Routines a method calls as written methods of the port (not by offset): Leyte's own code runs for
 ## them in its cases, under the same stand-ins, instead of a local stand-in.
 REAL = {"configure_display_from_main_device": {0x24C8}, "rebuild_all_palette_index_maps": {0x502C},
         "check_device_color_state_changed": {0x502C}, "update_menu_items": {0x3CE4},
         "quit_application": {0x34D8}}
-WORD_RESULT = {"import_settings_from_resource_file", "build_palette_index_map"}     # cases compare D0's low word
+WORD_RESULT = {"import_settings_from_resource_file", "build_palette_index_map", "labs_jt", "strlen_jt"}     # cases compare D0's low word
 H127, REC127, H128 = 0x19A40, 0x19B00, 0x19A50
 HEL1, MENU = 0x48454C31, 0x4D454E55
 REC227, REC228, H227, H228, CTAB = 0x19000, 0x19200, 0x19800, 0x19810, 0x19900
@@ -118,7 +119,14 @@ STUBS = [["jt", 0x252, [4], True, 4], ["trap", 0xA975, [], True, 4], ["addr", IM
          ["addr", FLIGHT_HOOKS[-0x10C8], [], False, 4], ["addr", FLIGHT_HOOKS[-0x10BC], [4, 4], False, 0],
          ["addr", FLIGHT_HOOKS[-0x10D0], [], False, 0], ["addr", FLIGHT_HOOKS[-0x10CC], [], False, 0],
          ["jt", 0x9A, [], False, 2], ["jt", 0x132, [], False, 2], ["local", 0x34D8, [], False, 0],
-         ["addr", READOUTS_HOOK, [], False, 0]] + [
+         ["addr", READOUTS_HOOK, [], False, 0],
+         # the overlay's drawing services ($3e2 / $432): QuickDraw (Pascal traps) and the colour pattern slot
+         ["trap", 0xA8CB, [], True, 4], ["trap", 0xA8CC, [], True, 0], ["trap", 0xA893, [2, 2], True, 0],
+         ["trap", 0xA891, [2, 2], True, 0], ["trap", 0xA892, [2, 2], True, 0], ["trap", 0xA89B, [2, 2], True, 0], ["trap", 0xA862, [4], True, 0],
+         ["trap", 0xA863, [4], True, 0], ["trap", 0xA8C7, [4], True, 0], ["trap", 0xA8CA, [4, 4], True, 0],
+         ["trap", 0xA8C6, [4], True, 0], ["trap", 0xA8A5, [4, 4], True, 0], ["trap", 0xA8CE, [2, 2, 4], True, 0],
+         ["trap", 0xA8A8, [2, 2, 4], True, 0], ["trap", 0xA8CD, [4], True, 0], ["trap", 0xA89D, [4], True, 0],
+         ["jt", 0x1E2, [2, 2, 2], False, 4]] + [
          ["addr", at, [], False, 0] for at in SESSION_HOOKS.values()]
 
 
@@ -675,6 +683,9 @@ def build() -> list:
         *quit_cases(),
         *poll_cases(),
         *redraw_cases(),
+        *draw_service_cases(),
+        *labs_cases(),
+        *strlen_cases(),
         *[{"name": "service table, FreeMem %#x" % free, "method": "install_overlay_service_table", "args": [], "writes": [],
            "results": {("jt", 0x222): [free], ("jt", 0x242): [0x1A000]}} for free in (0x400000, 0x1C2000, 0x1C2001, 0x80000)],
         {"name": "main: overlay loaded, new mission at once", "method": "main", "args": [], "a7": STACK_TOP - 4,
@@ -690,6 +701,52 @@ def build() -> list:
         {"name": "reset: odd sizes", "method": "reset_overlay_state", "args": [],
          "writes": overlay(0x12, 6, 0x13, 0x7), "results": {("jt", 0x252): [7], ("trap", 0xA975): [0x7FFFFFFF]}},
     ]
+
+
+def labs_cases() -> list:
+    """labs (CODE 2 +0x1e, JT $522; C: long): the absolute value (0x80000000 stays itself); D0's low word compared."""
+    return [{"name": "labs: %#x" % v, "method": "labs_jt", "args": [v], "stack": [(4, v)], "a7": STACK_TOP - 4 - 4,
+             "writes": [], "results": {}} for v in (0, 5, 0xFFFFFFFB, 0x12345, 0xFFFEDCBB, 0x80000000, 0x7FFFFFFF)]
+
+
+def strlen_cases() -> list:
+    """strlen (CODE 2 +0x3e8, JT $56a; C: string): the bytes before the zero; D0's low word compared."""
+    out = []
+    for text in (b"", b"Mission", b"Lt. Smith was shot down over Leyte Gulf.", bytes(range(1, 200))):
+        at = 0x1D000
+        w = [[at + k, 1, b] for k, b in enumerate(text)] + [[at + len(text), 1, 0]]
+        out.append({"name": "strlen: %d bytes" % len(text), "method": "strlen_jt", "args": [at], "stack": [(4, at)],
+                    "a7": STACK_TOP - 4 - 4, "writes": w, "results": {}})
+    return out
+
+
+def draw_service_cases() -> list:
+    """The overlay's two drawing services ($3e2 / $432), A5-safe (CurrentA5 0x904 = A5), with the colour helpers
+    (set_draw_color_index / set_back_color_index), the notched frame builder (+0x115c) and the beveled box builder
+    (+0x1490) running as Leyte's code: the notched frame pair painted / filled, with and without its marker rects (a
+    frame wide enough for each divide), at depth 8 and at depth 1 (the pattern slot $1e2); the six-segment indicator
+    over a few bit patterns (the rects stepping right and down)."""
+    PORT = 0x1D800
+    POLYS = {("trap", 0xA8CB): [0x1DA00, 0x1DB00], ("jt", 0x1E2): [0x1DC00] * 12}
+    base = [[0x904, 4, A5], [A5 - 0x168A, 4, PORT], [PORT + 0x34, 2, 3], [PORT + 0x36, 2, 5], [A5 - 0x13F8, 2, 8],
+            [A5 - 0x1206, 2, 2], [A5 - 0x1204, 2, 4], [A5 - 0x1202, 2, 6], [A5 - 0x120C, 2, 0x150], [A5 - 0x1214, 2, 0x20]]
+    frame = [[A5 - 0x1216, 2, 0x30], [A5 - 0x1214, 2, 0x20], [A5 - 0x1212, 2, 0x70], [A5 - 0x1210, 2, 0xB7]]
+    colours = [[A5 - 0x1438, 2, 0], [A5 - 0x1436, 2, 0], [A5 - 0x1434, 4, 0x1D900]] + [[0x1D900 + 6 * k + j, 2, 0x1111 * (k + 1) + j] for k in range(8) for j in (0, 2, 4)]
+    out = []
+    for name, args, extra in (("painted, no marker", (1, 3, 5, 0), []), ("filled, marker", (0, 3, 5, 1), []),
+                              ("painted, marker, a narrow frame", (1, 7, 1, 1), [[A5 - 0x1210, 2, 0x2B]]),
+                              ("filled, marker, depth 1", (0, 2, 4, 1), [[A5 - 0x13F8, 2, 1]])):
+        out.append({"name": "notched frame pair: " + name, "method": "draw_notched_frame_pair_marked_a5safe", "args": list(args),
+                    "stack": [(4, v) for v in args], "a7": STACK_TOP - 16 - 4, "writes": base + frame + colours + extra,
+                    "results": POLYS})
+    box = [[A5 - 0x11D8, 2, 0x40], [A5 - 0x11D6, 2, 0x10], [A5 - 0x11D4, 2, 0x48], [A5 - 0x11D2, 2, 0x20]]
+    box += [[A5 - 0x1200 + 8 * k + j, 2, v] for k in range(6) for j, v in ((0, 0x40 + 2 * k), (2, 0x10 + 0xC * k), (4, 0x48 + 2 * k), (6, 0x20 + 0xC * k))]
+    for name, bits in (("all clear", 0), ("all set", 0x3F), ("alternating", 0x15), ("a negative argument", -2)):
+        out.append({"name": "six-segment indicator: " + name, "method": "draw_six_segment_indicator_a5safe", "args": [bits & 0xFFFFFFFF],
+                    "stack": [(4, bits & 0xFFFFFFFF)], "a7": STACK_TOP - 4 - 4, "writes": base + box + colours, "results": POLYS})
+    out.append({"name": "six-segment indicator: depth 1", "method": "draw_six_segment_indicator_a5safe", "args": [0x2A],
+                "stack": [(4, 0x2A)], "a7": STACK_TOP - 4 - 4, "writes": base + box + colours + [[A5 - 0x13F8, 2, 1]], "results": POLYS})
+    return out
 
 
 def run(c: dict) -> list:

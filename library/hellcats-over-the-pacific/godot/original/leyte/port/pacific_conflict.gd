@@ -137,9 +137,9 @@ const DAT_0001b778: int = 0x20f60 ## session_ptr_a_slot1: span-run buffers of sl
 const DAT_0001c1bc: int = 0x1c1bc ## deferred_free_flag (word)
 const DAT_00026784: int = 0x2cd90 ## cloud_templates: template object per cloud kind (long each, 5 slots)
 const DAT_00026780: int = 0x2cd8c ## parachute_template (long)
-const DAT_0001b2e0: int = 0x1b2e0 ## route_1b2e0: 4 patrol points (12 bytes) in the aircraft's frame
+const DAT_0001b2e0: int = 0x20508 ## route_1b2e0: 4 patrol points (12 bytes) in the aircraft's frame
 const DAT_0001b310: int = 0x20538 ## route_1b310: 4 patrol points
-const DAT_0001b340: int = 0x1b340 ## route_1b340: 4 patrol points
+const DAT_0001b340: int = 0x20568 ## route_1b340: 4 patrol points
 const DAT_0001b370: int = 0x1b370 ## route_1b370: 8 world points of the scripted mission
 const DAT_0001b3d0: int = 0x1b3d0 ## route_1b370_speeds: throttle target per mission point (long each)
 const DAT_00020b40: int = 0x27078 ## type10_controller: controller whose object mirrors the glide target (long, may be 0)
@@ -383,10 +383,14 @@ func _init(param_memory = null) -> void:
 	code_table[0x13bee] = Callable(self, "face_camera_heading")
 	## release_ai_target: reached by BSR.W only (0x11294 / 0x11422 / 0x11438); registered for
 	## test_aircraft_notice.gd, which calls it by address.
+	code_table[0x12bd6] = Callable(self, "ensure_ai_script_1b2e0_tick")
 	code_table[0x12c16] = Callable(self, "ensure_ai_script_1b310_tick")
+	code_table[0x12c56] = Callable(self, "ensure_ai_script_1b340_tick")
 	code_table[0x13100] = Callable(self, "ai_fly")
 	code_table[0x1312c] = Callable(self, "ai_fly_bomber")
 	## Trails: init / animate tables (0x1b50c / 0x1b514), tick and destroy handlers.
+	code_table[0x1abe4] = Callable(self, "init_trail_kind0")
+	code_table[0x1abf6] = Callable(self, "init_trail_kind1")
 	## Aircraft class factories (definition records of keys 1..4, +6).
 	## effect_init_table (0x1b40c) entries 0..3, runtime addresses; spawn_effect jsrs them with
 	## the new effect object.
@@ -2417,11 +2421,13 @@ func tick_ground_fire(ctl: int) -> void:
 
 ## 0x16ac4 / 0x16ad6 (identical): lifetime 0x4b, state 1. The object argument is not read.
 func init_trail_kind0(_obj: int, ctl: int) -> void:
-	assert(false, "init_trail_kind0: not verified for Leyte Gulf (sources/leyte-gulf-1-0/host_ports.json unverified)")
+	memory.write_u16(ctl + 0x34, 0x4b)
+	memory.write_u16(ctl + 0x36, 1)
 
 ## 0x16ad6 (FUN_00016ad6; runtime 0x16ab6).
 func init_trail_kind1(_obj: int, ctl: int) -> void:
-	assert(false, "init_trail_kind1: not verified for Leyte Gulf (sources/leyte-gulf-1-0/host_ports.json unverified)")
+	memory.write_u16(ctl + 0x34, 0x4b)
+	memory.write_u16(ctl + 0x36, 1)
 
 ## 0x16ae8: spawn_mission_pool_object(trail_templates[kind], x, y, z, 0, 0, 0, 0) (0x30 below);
 ## null -> 0. Controller word +0x32 = kind, then trail_init_table[kind](obj, ctl) (jsr, 0x18
@@ -3368,7 +3374,8 @@ func _ensure_route_tick(ctl: int, src: int, speed: int) -> void:
 
 ## 0x10d68 (ai_fly_table kind 1, runtime 0x10d48): patrol route_1b2e0 at speed 0x9d8.
 func ensure_ai_script_1b2e0_tick(ctl: int) -> void:
-	assert(false, "ensure_ai_script_1b2e0_tick: not verified for Leyte Gulf (sources/leyte-gulf-1-0/host_ports.json unverified)")
+	assert(memory != null, "ensure_ai_script_1b2e0_tick requires original global memory")
+	_ensure_route_tick(ctl, DAT_0001b2e0, 0x9d8)
 
 ## 0x10da8 (kind 5, runtime 0x10d88): patrol route_1b310 at speed 0xd5c.
 func ensure_ai_script_1b310_tick(ctl: int) -> void:
@@ -3377,7 +3384,8 @@ func ensure_ai_script_1b310_tick(ctl: int) -> void:
 
 ## 0x10de8 (kind 2, runtime 0x10dc8): patrol route_1b340 at speed 0x9d8.
 func ensure_ai_script_1b340_tick(ctl: int) -> void:
-	assert(false, "ensure_ai_script_1b340_tick: not verified for Leyte Gulf (sources/leyte-gulf-1-0/host_ports.json unverified)")
+	assert(memory != null, "ensure_ai_script_1b340_tick requires original global memory")
+	_ensure_route_tick(ctl, DAT_0001b340, 0x9d8)
 
 ## 0x10e28: from frame +0x6ac on: no bombs (byte +0x67c) -> 1. Otherwise, with the bomb phase
 ## +0x674 idle and rng & 7 == 0 (0x10 below): phase 2, heading = (+0x22 - 0x80 + (rng & 0xff))

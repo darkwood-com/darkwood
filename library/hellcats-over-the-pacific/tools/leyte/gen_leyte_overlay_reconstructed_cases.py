@@ -77,7 +77,8 @@ ROUTINES = {"leyte_overlay_main_entry": 0x175A, "leyte_overlay_initialise": 0x1E
             "register_parachute_template": 0x1D56E, "leyte_register_route_ship_templates": 0x1ED5C,
             "leyte_register_template_2c834": 0x14952, "leyte_register_template_2c830": 0x14974,
             "leyte_register_template_2c82c": 0x14996, "leyte_create_type10_controller": 0x13BB6,
-            "init_aircraft_controller": 0xF3B8, "aircraft_create": 0xF4A8, "create_enemy_fighter": 0xF616, "spawn_object_shadow": 0x1CA84,
+            "init_aircraft_controller": 0xF3B8, "aircraft_create": 0xF4A8, "create_enemy_fighter": 0xF616, "create_friendly_bomber": 0xF6F4, "create_enemy_bomber": 0xF790,
+            "spawn_turret_on_object": 0x1D298, "tick_ai_1b310_approach_fire": 0x12D3E, "ai_script_try_fire_burst": 0x12C96, "spawn_object_shadow": 0x1CA84,
             "create_shadow_controller": 0x1C9DA,
             "find_anchor_point": 0x11FA, "start_mission_scene": 0x46E2,
             "create_view_attached_controller": 0x1DCE2, "create_cloud_controller": 0x1DB7A, "create_turret_controller": 0x1D21A,
@@ -128,7 +129,42 @@ ROUTINES = {"leyte_overlay_main_entry": 0x175A, "leyte_overlay_initialise": 0x1E
             "leyte_ship_first_move": 0x18D54, "leyte_ship_mover": 0x18E20, "leyte_landing_ship_mover": 0x18376,
             "leyte_steer_ship": 0x18B34, "leyte_turn_ship": 0x18908, "leyte_next_route_point": 0x1869C,
             "leyte_move_ship_attachments": 0x17D2A, "leyte_make_route": 0x1A8A2, "leyte_route_from_scene": 0x1A936,
-            "leyte_ship_kind1": 0x18D1C, "apply_template_chain_xform_always": 0x3604}
+            "leyte_ship_kind1": 0x18D1C, "apply_template_chain_xform_always": 0x3604,
+            "aircraft_tick": 0xF9F6, "update_aircraft_damage_state": 0x124C0, "add_radar_track": 0x1B836,
+            "spawn_trail": 0x1AC08, "attach_smoke_trail": 0x1AC6A, "tick_trail": 0x1B1AA, "spawn_smoke_plume": 0x1370E,
+            "attach_trailing_plume": 0x13778, "spawn_ground_fire_object": 0x1B23A, "attach_ground_fire": 0x1B280,
+            "leyte_create_ordnance_controller": 0x1EBB6,
+            "update_aircraft_entity": 0xFCF6, "scale_template_field_38": 0xF9C0, "leyte_spawn_weapon_entity": 0x149DA,
+            "leyte_spawn_template_2c830_object": 0x14A58, "leyte_spawn_template_2c82c_object": 0x14AFE,
+            "spawn_bailout_parachute": 0x1D590,
+            "approx_dist3_xyz": 0x4886, "ai_bootstrap_climb_phase": 0x129EA, "ai_attack_or_fly": 0x13038,
+            "ai_fly_formation_on_player": 0x12E76, "ai_pursue_target": 0x1C28E,
+            "leyte_aircraft_notice_object": 0x11C76, "enemy_fighter_notice_object": 0x11EC0, "flak_notice_object": 0x1CCF4,
+            "ensure_ai_script_1b2e0_tick": 0x12BD6, "ensure_ai_script_1b340_tick": 0x12C56,
+            "ai_dive_at_target": 0x13158, "ai_bombing_run": 0x1325C, "release_ai_target": 0x11EA6,
+            "animate_landing_gear": 0x118E2, "create_effect_controller": 0x13C06,
+            "tick_effect": 0x1489A, "init_effect_kind0_flat_ring": 0x14164, "leyte_effect_pre_render_none": 0x14892,
+            "init_effect_kind1_column": 0x141F2,
+            "create_bullet_controller": 0x19B6A, "init_effect_kind2_burst": 0x14028, "animate_effect_kind2_burst": 0x143BA,
+            "animate_effect_kind3_debris": 0x14654, "spawn_ground_mark": 0x1B762,
+            "init_effect_kind3_debris_explosion": 0x142A4, "create_plume_controller": 0x136C2,
+            "create_trail_controller": 0x1AB5A, "create_ground_fire_controller": 0x1B1EA,
+            "create_ground_mark_controller": 0x1B6EA, "destroy_shadow_controller": 0x1CA6E,
+            "init_trail_kind0": 0x1ABE4, "init_trail_kind1": 0x1ABF6, "tick_trail": 0x1B1AA, "animate_smoke_trail": 0x1ADD4,
+            "animate_ground_fire": 0x1B2D6, "tick_ground_fire": 0x1B504, "tick_smoke_plume": 0x13808,
+            "create_parachute_controller": 0x1D516,
+            "destroy_trail_controller": 0x1AD8C, "destroy_ground_fire_controller": 0x1B2C0,
+            "destroy_plume_controller": 0x137F2, "shape_free_plume": 0x138A0, "shape_trailing_plume": 0x13A4A,
+            "plume_pre_render": 0x13B9A,
+            "aircraft_collision": 0x11BD0, "ordnance_collision": 0x1578A, "create_debris_controller": 0x1B526, "tick_debris_fragment": 0x1B646, "destroy_flak_controller": 0x1CCCE,
+            "leyte_rng_long": 0x1369E, "leyte_point_in_face_xz": 0x15B3A, "island_unit_notice_object": 0x1EE1E,
+            "island_unit_next_point": 0x1EEEE, "island_unit_set_velocity": 0x1EFC0, "island_unit_follow_route": 0x1F014,
+            "island_nearest_waypoint": 0x1F0D8, "island_unit_step": 0x1F164, "tick_island_unit": 0x1F4FC,
+            "create_island_marker_controller": 0x1F5EE, "create_ordnance_controller": 0x148FA,
+            "ordnance_tick": 0x14EAA, "ordnance_ballistic_step": 0x14B72, "ordnance_detonation": 0x1544E,
+            "attach_burning_trail": 0x1ACBE, "animate_burning_trail": 0x1AF6E, "leyte_hide_object_faces": 0x153F2,
+            "leyte_show_object_faces": 0x15420,
+            "tick_bullet": 0x19D9E, "bullet_hits_aircraft": 0x1A7C6}
 ## The host world's memory services ensure_handle_allocated calls (world +0x302 create, +0x30a
 ## reallocate, +0x31a make unpurgeable; 1.0.3: +0x2c6 / +0x2ce / +0x2de) as logging stand-ins at
 ## SERVICES; everything else runs as it is.
@@ -209,7 +245,7 @@ def session_buffer_cases() -> list:
               0x20F48: 0x3B140, 0x20F4C: 0x3B150, 0x20F50: 0x3B160}),
         case("depth 1: the entry handle only", 1, 1, 0, {}),
         case("no entry flag, one screen", 0, 4, 0, {0x20F38: 0x3B200}),
-    ] + unlock_cases() + span_reset_cases() + clip_cases() + lock_cases() + trig_cases() + rotation_cases() + flight_rank_cases() + bomb_lamp_cases() + radar_button_cases() + state_lamp_cases() + readout_cases() + needle_cases() + more_needle_cases() + sky_cases() + frame_line_cases() + radar_scope_cases() + heading_tape_cases() + hook12_cases() + entity_retire_cases() + entity_tick_cases() + simulation_tick_cases() + object_alloc_cases() + attitude_cases() + translate_cases() + chain_xform_cases() + band_cases() + shade_cases() + poly_buffer_cases() + land_outline_cases() + contact_cases() + terrain_cases() + object_collision_cases() + bullet_cases() + pending_pose_cases() + carrier_cases() + effect_cases() + small_flight_cases() + tracking_camera_cases() + replay_view_cases() + facility_cases() + type80_point_cases() + control_input_cases() + frame_advance_cases() + sound_cases() + runway_cases() + steer_sample_cases() + flight_input_cases() + bailout_view_cases() + small_tick_cases() + turret_cases() + spawner_cases() + shadow_render_cases() + damage_small_cases() + destruction_effect_cases() + sinkable_hit_cases() + blast_cases() + flak_cases() + ship_tick_cases() + sinking_step_cases() + ship_move_cases() + sink_cases() + instantiate_cases() + cloud_cases() + scene_part_cases() + template_table_cases() + mission_part_cases() + hook0_cases() + depth8_cases() + erase_dot_cases() + face_colour_cases() + depth4_cases() + template_factory_cases() + aircraft_cases() + anchor_cases() + mission_factory_cases() + ship_factory_cases() + route_ship_cases() + frame_batch1_cases() + cloud_layer_cases() + frame_batch2_cases() + frame_batch3_cases() + polygon_cases() + surface_cases() + submit_cases() + transform_object_cases() + sort_parts_cases() + render_objects_cases() + far_objects_cases() + altitude_cases() + scatter_cases() + dot_cases() + frame_step_cases() + collision_test_cases() + contact_cases()
+    ] + unlock_cases() + span_reset_cases() + clip_cases() + lock_cases() + trig_cases() + rotation_cases() + flight_rank_cases() + bomb_lamp_cases() + radar_button_cases() + state_lamp_cases() + readout_cases() + needle_cases() + more_needle_cases() + sky_cases() + frame_line_cases() + radar_scope_cases() + heading_tape_cases() + hook12_cases() + entity_retire_cases() + entity_tick_cases() + simulation_tick_cases() + object_alloc_cases() + attitude_cases() + translate_cases() + chain_xform_cases() + band_cases() + shade_cases() + poly_buffer_cases() + land_outline_cases() + contact_cases() + terrain_cases() + object_collision_cases() + bullet_cases() + pending_pose_cases() + carrier_cases() + effect_cases() + small_flight_cases() + tracking_camera_cases() + replay_view_cases() + facility_cases() + type80_point_cases() + control_input_cases() + frame_advance_cases() + sound_cases() + runway_cases() + steer_sample_cases() + flight_input_cases() + bailout_view_cases() + small_tick_cases() + turret_cases() + spawner_cases() + shadow_render_cases() + damage_small_cases() + destruction_effect_cases() + sinkable_hit_cases() + blast_cases() + flak_cases() + ship_tick_cases() + sinking_step_cases() + ship_move_cases() + aircraft_cases_leyte() + flight_model_cases_leyte() + sink_cases() + instantiate_cases() + cloud_cases() + scene_part_cases() + template_table_cases() + mission_part_cases() + hook0_cases() + depth8_cases() + erase_dot_cases() + face_colour_cases() + depth4_cases() + template_factory_cases() + aircraft_cases() + anchor_cases() + mission_factory_cases() + ship_factory_cases() + route_ship_cases() + frame_batch1_cases() + cloud_layer_cases() + frame_batch2_cases() + frame_batch3_cases() + polygon_cases() + surface_cases() + submit_cases() + transform_object_cases() + sort_parts_cases() + render_objects_cases() + far_objects_cases() + altitude_cases() + scatter_cases() + dot_cases() + frame_step_cases() + collision_test_cases() + contact_cases()
 
 
 def unlock_cases() -> list:
@@ -1470,6 +1506,21 @@ def aircraft_cases() -> list:
         w = pool(3, 0) + fighter + [[0x20B28, 4, PLAYER if player else 0], [PLAYER, 4, player]]
         out.append({"name": "aircraft: shadow " + name, "method": "spawn_object_shadow", "args": [x, 0, 0x300, 2, OBJ],
                     "d0": True, "writes": w, "stack_guard": [0x3E000, 0x3F040]})
+    # the bombers: their shadow (kind 4) and gunner turret (template 0x2cd88) through the real pool spawn; with the
+    # camera beside the bomber the turret spawns (a successful spawn: slot, instantiation, activation), away it retires
+    near = [[0x23D68, 4, 0x123400], [0x23D64, 4, 0x2000], [0x23D60, 4, 0x56780]]
+    for label, cam in (("far: the turret retired", []), ("near: the turret spawned", near)):
+        for method in ("create_friendly_bomber", "create_enemy_bomber"):
+            w = pool(3, 1) + fighter + [[0x20B28, 4, 0], [0x2CD6C + 4 * 4, 4, TMPL], [0x2CD88, 4, TMPL]] + cam
+            out.append({"name": "aircraft: %s, %s" % (method.replace("_", " "), label), "method": method, "args": [OBJ, 7, 1],
+                        "d0": True, "writes": w, "stack_guard": [0x3E000, 0x3F040]})
+        w = pool(3, 1) + fighter + [[0x2CD88, 4, TMPL]] + cam
+        out.append({"name": "aircraft: turret on object, " + label, "method": "spawn_turret_on_object", "args": [OBJ],
+                    "d0": True, "writes": w, "stack_guard": [0x3E000, 0x3F040]})
+    for label, cam in (("far: retired", []), ("near: spawned", near)):
+        w = pool(3, 1) + fighter + [[0x2CC14, 4, TMPL], [0x21020, 4, 0x1234]] + cam
+        out.append({"name": "aircraft: ground mark, " + label, "method": "spawn_ground_mark", "args": [0x50, 0x123400, 0x2000, 0x56780],
+                    "d0": True, "writes": w, "stack_guard": [0x3E000, 0x3F040]})
     w = pool(3, 1) + fighter + [[0x20B28, 4, 0], [0x2C5AE, 4, 0x3FF00]]
     out.append({"name": "aircraft: enemy fighter with its shadow", "method": "create_enemy_fighter", "args": [OBJ, 7, 1],
                 "d0": True, "writes": w, "stack_guard": [0x3E000, 0x3F040]})
@@ -2630,6 +2681,22 @@ def bullet_cases() -> list:
                         ("a type-0x24 target, a zero draw (marked)", [[SDEF, 2, 0x24]] + [[0x2C5B8 + 4 * k, 4, 0] for k in range(0x37)]),
                         ("odd negative velocities", [[BCTL + 8, 4, 0xFFFFFF01], [BCTL + 0x10, 4, 0xFFFFFF7F]])):
         out.append({"name": "bullet hits shape: " + name, "method": "bullet_hits_shape", "args": [BUL, SHAPE], "writes": w + extra})
+    # the target an aircraft: its controller (SCTL) with the damage word +0x698 and the gate word +0x50 of its definition
+    air = w + [[SDEF + 0x50, 2, 0x8000], [SCTL + 0x698, 2, 0], [BCTL + 0x36, 2, 1], [0x20B28, 4, 0x3C800]]
+    out.append({"name": "bullet hits aircraft: out of range", "method": "bullet_hits_aircraft", "args": [BUL, SHAPE], "d0": True,
+                "writes": air + [[SHAPE + 4, 4, 0x90000]]})
+    for k in range(8):
+        cur = [[0x2C5B4, 4, 0x2C5B8 + 4 * k]]
+        for name, extra in (("in range", []), ("the gate shut", [[SDEF + 0x50, 2, 0]]), ("the player's", [[0x20B28, 4, SCTL]]),
+                            ("staged, uncredited", [[SCTL + 0x698, 2, 0x200], [BCTL + 0x36, 2, 0], [SDEF + 0x50, 2, 0xFFFF]])):
+            out.append({"name": "bullet hits aircraft: %s, draw %d" % (name, k), "method": "bullet_hits_aircraft", "args": [BUL, SHAPE],
+                        "d0": True, "writes": air + extra + cur})
+    # the bullet's own tick (no latched hit): its age, its fall after age 3, its floor, its end at age 0x1f
+    for name, extra in (("young, above its floor", [[BCTL + 0x38, 2, 0]]), ("falling", [[BCTL + 0x38, 2, 5]]),
+                        ("at its floor: retired", [[BCTL + 0x38, 2, 5], [BCTL + 0x2E, 4, 0x300]]),
+                        ("age 0x1e: retired", [[BCTL + 0x38, 2, 0x1E]])):
+        out.append({"name": "bullet tick: " + name, "method": "tick_bullet", "args": [BCTL],
+                    "writes": w + [[BCTL, 4, BUL], [BCTL + 0x3C, 4, 0], [BCTL + 0x32, 4, 0x400], [BCTL + 0x2E, 4, 0x100]] + extra})
     return out
 
 
@@ -3771,6 +3838,810 @@ def ship_move_cases() -> list:
                         ("beached, water all round", pool + [[S + 0x698, 2, 1]])):
         out.append({"name": "landing ship: " + name, "method": "leyte_landing_ship_mover", "args": [S], "writes": w + L + extra,
                     "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+
+def flight_model_cases_leyte() -> list:
+    """update_aircraft_entity (0xfcf6) and its five Leyte callees on aircraft_cases_leyte's world (effect templates, a
+    pool whose spawns retire): an aircraft definition with every field the flight model reads, flown through its
+    blocks: wrecked (falling, on water), the damaged controls and a hit, the engine (out of fuel, burning fuel, leaking,
+    the player's engine model and the designated aircraft's in view 7), the speed regimes of the angle-of-attack step
+    (below +0x38, between, above 0xca7), a stall, flaps and gear moving, rolling on each surface (gear down and up),
+    brakes, take-off, touchdowns (soft, hard, crashing), a carrier deck and the stores (the second store either kind,
+    the rocket salvo's rails, the guns, the bail-out)."""
+    dead = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    TMPL = 0x30600
+    common = dead + [[0x2C81A + 4 * k, 4, TMPL] for k in range(4)] + [[0x2CC10, 4, TMPL], [0x2C698, 2, 3], [0x21058, 2, 0],
+                     [0x23D88, 2, 3], [0x21020, 4, 0x77], [0x2C5B4, 4, 0x2C5B4], [0x2CC04, 4, TMPL], [0x2C694, 4, TMPL],
+                     [0x2CC0C, 4, TMPL], [0x2C830, 4, TMPL], [0x2C834, 4, TMPL], [0x2C82C, 4, TMPL], [0x2CD8C, 4, TMPL], [0x2CBFE, 4, TMPL],
+                     [HOST + 0x90, 2, 0], [HOST + 0xD2, 2, 0], [HOST + 0xD6, 2, 5], [HOST + 0xD8, 2, 0]]
+    common += [[0x2C5B8 + 4 * j, 4, (0x9E3779B1 * (j + 9)) & 0xFFFFFFFF] for j in range(55)]
+    S, O, D, P = 0x41000, 0x3C000, 0x3C100, 0x3C200
+    definition = [[D + 0x1E, 4, 0x7FFF], [D + 0x20, 2, 0x100], [D + 0x22, 2, 0x40], [D + 0x24, 2, 0x100], [D + 0x26, 2, 0x80],
+                  [D + 0x28, 2, 0x10], [D + 0x2A, 2, 0x20], [D + 0x2C, 2, 0x30], [D + 0x2E, 2, 0x28], [D + 0x30, 2, 0x40],
+                  [D + 0x32, 2, 0x20], [D + 0x34, 2, 0x100], [D + 0x36, 2, 0x300], [D + 0x38, 2, 0x100], [D + 0x3A, 4, 0x20000],
+                  [D + 0x3E, 2, 0x50], [D + 0x40, 2, 0x200], [D + 0x42, 2, 0x40], [D + 0x44, 2, 0x100], [D + 0x46, 2, 0x80],
+                  [D + 0x48, 2, 0x200], [D + 0x4A, 2, 0x400], [D + 0x4C, 2, 0x100], [D + 0x4E, 2, 0]]
+    air = [[S, 4, O], [S + 4, 4, D], [S + 0x20, 2, 0x100], [S + 0x22, 2, 0x1000], [S + 0x24, 2, 0x2000], [S + 0x2C, 1, 0x40],
+           [S + 0x2E, 4, 0], [S + 0x32, 4, 0xF9F6], [S + 0x61A, 2, 0x10], [S + 0x61E, 2, 0x20], [S + 0x626, 2, 0x100],
+           [S + 0x62A, 4, 0xC00], [S + 0x63E, 2, 0], [S + 0x642, 2, 0x100], [S + 0x670, 2, 0x40], [S + 0x672, 2, 0x20],
+           [S + 0x674, 2, 0x30], [S + 0x676, 1, 0x40], [S + 0x678, 4, 0x1000], [S + 0x67C, 4, 0x800], [S + 0x680, 2, 0x10],
+           [S + 0x691, 1, 0x20], [S + 0x692, 1, 0x20], [S + 0x694, 2, 0], [S + 0x696, 2, 10],
+           [O + 4, 4, 0x10000], [O + 8, 4, 0x20000], [O + 0xC, 4, 0x20000], [0x20B28, 4, P], [0x21070, 4, 0],
+           [0x2146C, 2, 3], [0x21468, 4, 0x40]]
+    # the pool retires every spawn (no successful-spawn world exists yet), and the stores read the spawned controller's
+    # definition through the null result as the original does: the long at address 4 stands in for that low memory
+    nul = [[4, 4, 0x3C300], [0x3C31A, 2, 0x18]]
+    w = common + definition + air + nul
+    # on the ground the vertical term +0x63e carries the last frame's gravity (-0x5b, reset each frame), keeping it down
+    ground = [[S + 0x64C, 1, 1], [S + 0x68A, 1, 0x2D], [O + 8, 4, 0x40], [S + 0x62A, 4, 0x600], [S + 0x20, 2, 0], [S + 0x63E, 2, 0xF000]]
+    player = [[0x20B28, 4, S]]
+    cases = [
+        ("cruising", []), ("the player, cruising", player),
+        ("the designated aircraft in view 7", [[0x21070, 4, S], [0x23D88, 2, 7]]),
+        ("slow, below +0x38", [[S + 0x62A, 4, 0x200]]), ("between +0x38 and 0xca7", [[S + 0x62A, 4, 0x2000]]),
+        ("fast, above 0xca7", [[S + 0x62A, 4, 0x4000]]), ("stalled", [[S + 0x626, 2, 0x500]]),
+        ("stalled, smoothing", [[S + 0x626, 2, 0x500], [S + 0x689, 1, 4], [S + 0x648, 2, 0x40]]),
+        ("flaps and gear extending", [[S + 0x68C, 1, 5], [S + 0x68A, 1, 0x10]]),
+        ("flaps and gear retracting", [[S + 0x68C, 1, 0xF6], [S + 0x68A, 1, 0xF0]]),
+        ("gear jammed", [[S + 0x68A, 1, 0x10], [S + 0x698, 2, 0x0020]]),
+        ("wrecked, falling", [[S + 0x698, 2, 0x0800]]),
+        ("wrecked, at the ground on water, the player", [[S + 0x698, 2, 0x0800], [S + 0x2C, 1, 0x10], [O + 8, 4, 0x10]] + player),
+        ("damaged elevator and ailerons", [[S + 0x698, 2, 0x000C], [S + 0x670, 2, 0x1F0], [S + 0x674, 2, 0xFF10]]),
+        ("hit", [[S + 0x698, 2, 0x0100]]), ("out of fuel", [[S + 0x691, 1, 0], [S + 0x692, 1, 0]]),
+        ("engine stopped, the player", [[S + 0x698, 2, 0x0040], [S + 0x67C, 4, 0], [S + 0x676, 1, 0]] + player),
+        ("burning fuel", [[S + 0x694, 2, 0x7FF0], [D + 0x1E, 4, 0x100]]),
+        ("an engine fault, the player", [[S + 0x698, 2, 0x0080]] + player),
+        ("the throttle gated", [[S + 0x698, 2, 0x0040], [S + 0x6A0, 2, 0]]),
+        ("rolling on the runway", ground), ("rolling on the runway, the player", ground + player),
+        ("rolling on the runway, the player, fast", ground + player + [[S + 0x62A, 4, 0x5000]]),
+        ("rolling on the runway, the player, squealing", ground + player + [[0x21040, 2, 1]]),
+        ("rolling, take-off speeds held", ground + [[D + 0x4E, 2, 1]]),
+        ("rolling, take-off speeds held, slow", ground + [[D + 0x4E, 2, 1], [S + 0x62A, 4, 0x200]]),
+        ("rolling, gear up: crash", ground + [[S + 0x68A, 1, 0]]),
+        ("rolling on 0x50, brakes", ground + [[S + 0x2C, 1, 0x50], [S + 0x64F, 1, 1]] + player + [[0x21040, 2, 1]]),
+        ("rolling on 0x30", ground + [[S + 0x2C, 1, 0x30]]), ("rolling on 0x20", ground + [[S + 0x2C, 1, 0x20]]),
+        ("rolling on 0x20, wrecked", ground + [[S + 0x2C, 1, 0x20], [S + 0x698, 2, 0x0800], [O + 8, 4, 0x100]]),
+        ("ditching on water", ground + [[S + 0x2C, 1, 0x10], [S + 0x68A, 1, 0]]),
+        ("sinking on water, gear down", ground + [[S + 0x2C, 1, 0x10]]),
+        ("rolling, landing brake", ground + [[S + 0x64E, 1, 1]]),
+        ("rolling, landing brake, backwards", ground + [[S + 0x64E, 1, 1], [S + 0x62A, 4, 0xFFFFFE00]]),
+        ("rolling to a stop, the player", ground + player + [[S + 0x62A, 4, 0x10], [S + 0x676, 1, 0], [0x21050, 2, 1]]),
+        ("lifting off", ground + [[O + 8, 4, 0x30], [S + 0x63E, 2, 0x4000]]),
+        ("lifting off backwards", ground + [[O + 8, 4, 0x30], [S + 0x63E, 2, 0x4000], [S + 0x62A, 4, 0xFFFFF000]]),
+        ("touchdown, soft", [[O + 8, 4, 0x44], [S + 0x20, 2, 0x3FF0], [S + 0x62A, 4, 0x400], [S + 0x63E, 2, 0xFF00]] + player),
+        ("touchdown, hard", [[O + 8, 4, 0x48], [S + 0x20, 2, 0x3E00], [S + 0x62A, 4, 0x1000], [S + 0x63E, 2, 0xF000]]),
+        ("touchdown, crashing", [[O + 8, 4, 0x60], [S + 0x20, 2, 0x3800], [S + 0x62A, 4, 0x4000], [S + 0x63E, 2, 0x8000]]),
+        ("touchdown on a deck", [[O + 8, 4, 0x144], [S + 0x2E, 4, 0x100], [S + 0x20, 2, 0x3FF0], [S + 0x62A, 4, 0x400],
+                                 [S + 0x632, 4, 0x80], [S + 0x634, 2, 0x20], [S + 0x636, 2, 3], [S + 0x638, 2, 5]]),
+        ("on a deck", ground + [[O + 8, 4, 0x140], [S + 0x2E, 4, 0x100], [S + 0x62E, 4, 0x300], [S + 0x632, 4, 0x80],
+                                [S + 0x634, 2, 0x20], [S + 0x636, 2, 3], [S + 0x638, 2, 5]]),
+        ("on a deck, stopping", ground + [[O + 8, 4, 0x140], [S + 0x2E, 4, 0x100], [S + 0x62E, 4, 0x10], [S + 0x632, 4, 0x200],
+                                          [S + 0x676, 1, 0]] + player + [[0x21050, 2, 1]]),
+        ("the second store, a 2c82c object", [[S + 0x684, 1, 1], [S + 0x68D, 1, 2], [S + 0x690, 1, 1]]),
+        ("the second store, a weapon, the player", [[S + 0x684, 1, 1], [S + 0x68D, 1, 2]] + player),
+        ("the second store, cycling", [[S + 0x684, 1, 4], [S + 0x68D, 1, 2]]),
+        ("rockets, choosing rails", [[S + 0x682, 2, 0x0001], [S + 0x68E, 1, 4]]),
+        ("rockets, the cursor on the first rail", [[S + 0x682, 2, 0x0045], [S + 0x68E, 1, 4]] + player),
+        ("rockets, the cursor on the second rail", [[S + 0x682, 2, 0x0349], [S + 0x68E, 1, 3]]),
+        ("rockets, the cursor on neither", [[S + 0x682, 2, 0x0251], [S + 0x68E, 1, 3]]),
+        ("rockets, the last rail", [[S + 0x682, 2, 0x0516], [S + 0x68E, 1, 3]]),
+        ("guns firing", [[S + 0x687, 1, 1]]), ("guns firing, the player", [[S + 0x687, 1, 1]] + player),
+        ("guns cycling", [[S + 0x687, 1, 2]]), ("guns out of rounds", [[S + 0x687, 1, 1], [S + 0x696, 2, 1]]),
+        ("bailing out", [[S + 0x688, 1, 1]]),
+        ("bailing out, the player", [[S + 0x688, 1, 1]] + player),
+        ("crash after a hit", ground + [[S + 0x68A, 1, 0], [S + 0x698, 2, 0x0100], [S + 0x69C, 2, 0x30]]),
+        ("crash after a hit, the timer short", ground + [[S + 0x68A, 1, 0], [S + 0x698, 2, 0x0100], [S + 0x69C, 2, 0x10]]),
+        ("crash unhit", ground + [[S + 0x68A, 1, 0], [S + 0x69C, 2, 0x30]]),
+        ("elevator jammed high", [[S + 0x698, 2, 0x0004], [S + 0x670, 2, 0x230]]),
+        ("elevator jammed low", [[S + 0x698, 2, 0x0004], [S + 0x670, 2, 0xFDC0]]),
+        ("ailerons jammed right", [[S + 0x698, 2, 0x0008], [S + 0x674, 2, 0x180]]),
+        ("ailerons jammed left", [[S + 0x698, 2, 0x0008], [S + 0x674, 2, 0xFE80]]),
+        ("an engine fault, reversed throttle", [[S + 0x698, 2, 0x0080], [S + 0x676, 1, 0xC0]]),
+        ("gear height negative", [[S + 0x68A, 1, 0], [D + 0x42, 2, 0xFFC1]]),
+        ("negative lift", [[S + 0x626, 2, 0xFC00]]),
+        ("slow, stick down", [[S + 0x62A, 4, 0x200], [S + 0x670, 2, 0xFF00]]),
+        ("between, stick down", [[S + 0x62A, 4, 0x2000], [S + 0x670, 2, 0xFF00]]),
+        ("rockets, a negative rail count", [[S + 0x682, 2, 0x0045], [S + 0x68E, 1, 0xFD]]),
+        ("rockets, the second rail, a negative count", [[S + 0x682, 2, 0x0349], [S + 0x68E, 1, 0xFD]]),
+        ("the player climbing steeply, fast", player + [[S + 0x20, 2, 0x1000], [S + 0x62A, 4, 0x8000]]),
+        ("the player diving steeply, fast", player + [[S + 0x20, 2, 0x3000], [S + 0x62A, 4, 0x8000]]),
+        ("the player, the climb history wrapping", player + [[0x2146C, 2, 0x77]]),
+        ("the player bails out, out of one tank", [[S + 0x688, 1, 1], [S + 0x691, 1, 0], [S + 0x692, 1, 5]] + player),
+        ("the player bails out, out of fuel", [[S + 0x688, 1, 1], [S + 0x691, 1, 0], [S + 0x692, 1, 0]] + player),
+        ("the player bails out, its object tracked", [[S + 0x688, 1, 1], [O + 0x17, 1, 0x40], [O + 0x14, 4, 0x77]] + player),
+        ("the pilot already out", [[S + 0x688, 1, 1], [S + 0x698, 2, 0x0001]]),
+        ("rolling, take-off speeds held, between", ground + [[D + 0x4E, 2, 1], [S + 0x62A, 4, 0xC00]]),
+        ("rolling, between the take-off speeds", ground + [[S + 0x62A, 4, 0xC00], [S + 0x626, 2, 0x80]]),
+        ("rolling, above the take-off speeds", ground + [[S + 0x62A, 4, 0x1400], [S + 0x626, 2, 0x200]]),
+        ("rolling, rudder left", ground + [[S + 0x674, 2, 0xFFD0]]),
+        ("rolling, rudder left, the player", ground + player + [[S + 0x674, 2, 0xFFD0]]),
+        ("rolling fast, high lift", ground + [[S + 0x62A, 4, 0x5000], [S + 0x626, 2, 0x280]]),
+        ("rolling on 0x50 fast", ground + [[S + 0x2C, 1, 0x50], [S + 0x62A, 4, 0x1400]]),
+        ("rolling on 0x60", ground + [[S + 0x2C, 1, 0x60]]), ("rolling on 0x70", ground + [[S + 0x2C, 1, 0x70]]),
+        ("rolling on 0x80", ground + [[S + 0x2C, 1, 0x80]]),
+        ("rolling on 0x30, gear up", ground + [[S + 0x2C, 1, 0x30], [S + 0x68A, 1, 0]]),
+        ("rolling on 0x50, gear up", ground + [[S + 0x2C, 1, 0x50], [S + 0x68A, 1, 0]]),
+        ("rolling, gear up, burning", ground + [[S + 0x68A, 1, 0], [S + 0x698, 2, 0x1000]] + player),
+        ("rolling, gear up, burning, the other", ground + [[S + 0x68A, 1, 0], [S + 0x698, 2, 0x1000]]),
+        ("ditching, nose down", ground + [[S + 0x2C, 1, 0x10], [S + 0x68A, 1, 0], [S + 0x626, 2, 0x3E00]]),
+        ("ditching fast, the player", ground + [[S + 0x2C, 1, 0x10], [S + 0x68A, 1, 0], [S + 0x62A, 4, 0x3000]] + player),
+        ("ditching, heading negative", ground + [[S + 0x2C, 1, 0x10], [S + 0x68A, 1, 0], [S + 0x24, 2, 0x3800]]),
+        ("rolling, nose high", ground + [[S + 0x20, 2, 0x2400]]),
+        ("rolling, brake set, landing", ground + [[S + 0x64D, 1, 1]]),
+        ("rolling, brake set, crashing", ground + [[S + 0x64D, 1, 1], [S + 0x68A, 1, 0]]),
+        ("rolling, the throttle back", ground + [[S + 0x676, 1, 0xE0]]),
+        ("lifting off from a deck", ground + [[O + 8, 4, 0x130], [S + 0x2E, 4, 0x100], [S + 0x62E, 4, 0x300], [S + 0x632, 4, 0x80],
+                                              [S + 0x63E, 2, 0x4000]] + player),
+        ("on a deck, stopped", ground + [[O + 8, 4, 0x140], [S + 0x2E, 4, 0x100], [S + 0x62E, 4, 0x10], [S + 0x632, 4, 0x200],
+                                         [S + 0x676, 1, 0], [S + 0x67C, 4, 0]] + player + [[0x21050, 2, 1]]),
+        ("on a deck, stopped, the engine on", ground + [[O + 8, 4, 0x140], [S + 0x2E, 4, 0x100], [S + 0x62E, 4, 0], [S + 0x632, 4, 0x200]]),
+        ("on a deck, slower than it", ground + [[O + 8, 4, 0x140], [S + 0x2E, 4, 0x100], [S + 0x62E, 4, 0x10], [S + 0x632, 4, 0x80],
+                                                [S + 0x634, 2, 0x40]]),
+    ]
+    # a ground +0x2e below zero keeps the case's surface byte (zero has surface_type_under_object recompute it) and no deck
+    for surface in (0x40, 0x50, 0x30, 0x60, 0x70, 0x20, 0x10, 0x80):
+        laid = ground + [[S + 0x2E, 4, 0xFFFFFFF0], [O + 8, 4, 0x30], [S + 0x2C, 1, surface]]
+        for name, extra in (("", []), (", the player", player), (", the player, fast", player + [[S + 0x62A, 4, 0x5000]]),
+                            (", the player, squealing", player + [[0x21040, 2, 1]]), (", gear up", [[S + 0x68A, 1, 0]]),
+                            (", wrecked", [[S + 0x698, 2, 0x0800]]), (", gear up, nose down", [[S + 0x68A, 1, 0], [S + 0x626, 2, 0x3E00]])):
+            cases.append(("laid on surface 0x%x%s" % (surface, name), laid + extra))
+    cases += [("rolling, braking to a stop, the player", ground + [[S + 0x62A, 4, 0x10], [S + 0x64E, 1, 1], [S + 0x676, 1, 0]] + player + [[0x21050, 2, 1]]),
+              ("on a deck, braking, backwards", ground + [[O + 8, 4, 0x140], [S + 0x2E, 4, 0x100], [S + 0x62E, 4, 0], [S + 0x632, 4, 0x10],
+                                                          [S + 0x64E, 1, 1], [S + 0x676, 1, 0]] + player + [[0x21050, 2, 1]]),
+              ("on a deck, braking, the engine on", ground + [[O + 8, 4, 0x140], [S + 0x2E, 4, 0x100], [S + 0x62E, 4, 0], [S + 0x632, 4, 0x10],
+                                                              [S + 0x64E, 1, 1], [S + 0x67C, 4, 0x500]]),
+              ("lifting off a deck backwards", ground + [[O + 8, 4, 0x130], [S + 0x2E, 4, 0x100], [S + 0x62E, 4, 0xFFFFF000], [S + 0x632, 4, 0x10],
+                                                         [S + 0x63E, 2, 0x4000]])]
+    # the floor is the ground +0x2e plus the gear height +0x42, halved with the gear not down (0x20 here)
+    deck = [[S + 0x2E, 4, 0x100], [S + 0x632, 4, 0x80], [S + 0x636, 2, 3], [S + 0x638, 2, 5]]
+    for name, height, sink, extra in (("soft", 0x21, 0xFF00, []), ("soft, the player", 0x21, 0xFF00, player),
+                                      ("firm", 0x21, 0xFCC0, []), ("hard", 0x21, 0xFC00, []), ("crashing", 0x21, 0xF800, []),
+                                      ("crashing, on unknown ground", 0x21, 0xF800, [[S + 0x2C, 1, 0x40]]),
+                                      ("crashing onto a deck", 0x121, 0xF800, deck),
+                                      ("banked", 0x21, 0xFF00, [[S + 0x24, 2, 0x600]]), ("nose down", 0x21, 0xFF00, [[S + 0x20, 2, 0x3E00]]),
+                                      ("gear down, soft", 0x41, 0xFF00, [[S + 0x68A, 1, 0x2D]]),
+                                      ("gear down, soft, the player", 0x41, 0xFF00, [[S + 0x68A, 1, 0x2D]] + player),
+                                      ("on a deck", 0x121, 0xFF00, deck + [[S + 0x634, 2, 0x20]]),
+                                      ("on a deck, slow", 0x121, 0xFF00, deck + [[S + 0x634, 2, 0x200]]),
+                                      ("on a deck, gear down, the player", 0x141, 0xFF00, deck + [[S + 0x68A, 1, 0x2D]] + player)):
+        cases.append(("settling, " + name, [[O + 8, 4, height], [S + 0x20, 2, 0], [S + 0x24, 2, 0x80], [S + 0x62A, 4, 0x400],
+                                            [S + 0x63E, 2, sink]] + extra))
+    out = []
+    for name, extra in cases:
+        out.append({"name": "flight model: " + name, "method": "update_aircraft_entity", "args": [S], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for k in range(20):
+        cur = [[0x2C5B4, 4, 0x2C5B4 + 4 * k]]
+        for name, extra in (("leaking fuel", [[S + 0x698, 2, 0x0002]]), ("burning fuel", [[S + 0x694, 2, 0xF0], [D + 0x1E, 4, 0x100]]),
+                            ("rolling on the runway, the player", ground + player),
+                            ("rolling on the runway, the player, fast", ground + player + [[S + 0x62A, 4, 0x5000]]),
+                            ("rockets, choosing rails", [[S + 0x682, 2, 0x0001], [S + 0x68E, 1, 4]])):
+            out.append({"name": "flight model draws %d: %s" % (k, name), "method": "update_aircraft_entity", "args": [S],
+                        "writes": w + extra + cur, "stack_guard": [0x3E000, 0x3F040]})
+    for name, args in (("density 0", [0, 0x3F000]), ("density 0x400", [0x400, 0x3F000]), ("density -0x80", [0xFFFFFF80, 0x3F000])):
+        out.append({"name": "field 0x3a scaled: " + name, "method": "scale_template_field_38", "args": args,
+                    "writes": definition + [[0x27074, 4, D]], "stack_guard": [0x3E000, 0x3F040]})
+    for name, method, args in (
+            ("weapon entity", "leyte_spawn_weapon_entity", [O, 0x800, 1, 0x10000, 0x2000, 0x20000, 0x100, 0x200, 0x300]),
+            ("weapon entity, no flag", "leyte_spawn_weapon_entity", [O, 0x800, 0, 0x10000, 0x2000, 0x20000, 0x100, 0x200, 0x300]),
+            ("2c830 object", "leyte_spawn_template_2c830_object", [O, 0x800, 0x10000, 0x2000, 0x20000, 0x100, 0x200, 0x300]),
+            ("2c82c object", "leyte_spawn_template_2c82c_object", [O, 0x800, 0x10000, 0x2000, 0x20000, 0x100, 0x200, 0x300]),
+            ("bail-out parachute", "spawn_bailout_parachute", [0x800, 0x10000, 0x2000, 0x20000, 0x100, 0x200, 0x300])):
+        out.append({"name": "flight model spawns: " + name, "method": method, "args": args, "d0": True, "writes": w,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    # the AI chain on the same world: a target object T (controller TC with its 0x4b-frame history, cursor +0x612)
+    T, TC, HEAP = 0x3C400, 0x3C500, 0x3D000
+    tgt = [[S + 0x6A2, 4, T], [S + 0x6A6, 4, 0x1800], [T, 4, TC], [T + 4, 4, 0x10800], [T + 8, 4, 0x20100], [T + 0xC, 4, 0x20600],
+           [T + 0x46, 4, 0x3C700], [T + 0x29, 1, 2], [TC, 4, T], [TC + 0x22, 2, 0x1100], [TC + 0x62A, 4, 0xC00], [TC + 0x612, 2, 5],
+           [0x2105E, 2, 2], [0x21060, 2, 3], [D, 2, 3]]
+    for k in range(0x4B):
+        e = TC + 0x36 + 0x14 * k
+        tgt += [[e, 4, 0x10800 + 0x30 * k], [e + 4, 4, 0x20100 + 4 * k], [e + 8, 4, 0x20600 + 0x18 * k]]
+    climbed = [[O + 8, 4, 0x20000]]   # at the target's height, the climb (0x7d0 over the ground) done
+    ai = []
+    for name, extra in (("climbing", [[O + 8, 4, 0x300]]), ("climbing, low", [[O + 8, 4, 0x80], [S + 0x68A, 1, 0x2D], [S + 0x68C, 1, 0]]),
+                        ("climbing, gear and flaps out", [[O + 8, 4, 0x300], [S + 0x68A, 1, 0x2D], [S + 0x68C, 1, 5]]),
+                        ("climbing, nose low", [[O + 8, 4, 0x300], [S + 0x20, 2, 0x3800], [S + 0x61A, 2, 0x800]]),
+                        ("climbing, nose high", [[O + 8, 4, 0x300], [S + 0x20, 2, 0x1000], [S + 0x61A, 2, 0xF800]]),
+                        ("climbed, flaps out", [[S + 0x68C, 1, 5]] + climbed)):
+        ai.append(("bootstrap climb: " + name, "ai_bootstrap_climb_phase", extra))
+    for name, extra in (("no target, a fighter: formation", [[S + 0x6A2, 4, 0]]), ("no target, type 5: flies on", [[S + 0x6A2, 4, 0], [D, 2, 5]]),
+                        ("no target, at rest", [[S + 0x6A2, 4, 0], [S + 0x64C, 1, 1], [S + 0x676, 1, 0], [S + 0x62A, 4, 0]]),
+                        ("a manoeuvre handler", [[S + 0x6A2, 4, 0], [S + 0x614, 2, 1], [0x2059C, 4, 0xFCF6]]),
+                        ("a target, still climbing", [[O + 8, 4, 0x300]]),
+                        ("a target, out of rounds", climbed + [[S + 0x696, 2, 1]]),
+                        ("a target, already down", climbed + [[T + 0x17, 1, 2]]),
+                        ("a target without vertices", climbed + [[T + 0x46, 4, 0]]),
+                        ("a target, attacking", climbed),
+                        ("a target, far", climbed + [[T + 4, 4, 0x30000]]),
+                        ("a target, close: claimed", climbed + [[T + 4, 4, 0x10100], [T + 8, 4, 0x20010], [T + 0xC, 4, 0x20100]]),
+                        ("a target, behind it, turned away", climbed + [[TC + 0x22, 2, 0x3000], [T + 4, 4, 0x11800]]),
+                        ("a target, in the sights", climbed + [[T + 4, 4, 0x10000], [T + 8, 4, 0x20000], [T + 0xC, 4, 0x20800],
+                                                              [S + 0x22, 2, 0], [S + 0x20, 2, 0], [S + 0x24, 2, 0], [S + 0x626, 2, 0x80]]),
+                        ("a target, type 1 lag", climbed + [[D, 2, 1]]), ("a target, type 6 lag", climbed + [[D, 2, 6]]),
+                        ("a target, the history wrapping", climbed + [[TC + 0x612, 2, 1], [0x21060, 2, 3]]),
+                        ("a target, the history at its end", climbed + [[TC + 0x612, 2, 0x4A], [0x21060, 2, 0]])):
+        ai.append(("attack or fly: " + name, "ai_attack_or_fly", extra))
+    # breaking off: the target ahead on the same heading (turned within 0x1000), a waypoint at the aircraft for the
+    # manoeuvres already under way
+    off = [[S + 0x6A6, 4, 0x5000]]
+    for name, extra in (("beyond range", off), ("breaking off", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000]]),
+                        ("manoeuvre 4 continuing", [[S + 0x6AA, 1, 4]]),
+                        ("evading, turn-away stage 0", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 1], [S + 0x6B8, 4, 0x100], [S + 0x6AC, 4, 0x10000], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000]]),
+                        ("evading, turn-away done", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 1], [S + 0x6AB, 1, 1],
+                                                     [S + 0x6AC, 4, 0x10000], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000]]),
+                        ("evading, weave stage 1", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 2], [S + 0x6AB, 1, 1], [S + 0x6AC, 4, 0x10000], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000]]),
+                        ("evading, weave stage 2", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 2], [S + 0x6AB, 1, 2], [S + 0x6AC, 4, 0x10000], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000]]),
+                        ("evading, climbing break stage 0", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 3], [S + 0x6AC, 4, 0x10000], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000]]),
+                        ("evading, climbing break stage 1", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 3], [S + 0x6AB, 1, 1], [S + 0x6AC, 4, 0x10000], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000]]),
+                        ("evading, climbing break done", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 3], [S + 0x6AB, 1, 2], [S + 0x6AC, 4, 0x10000], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000]]),
+                        ("evading, waypoint far", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 1], [S + 0x6AB, 1, 1],
+                                                   [S + 0x6AC, 4, 0x30000], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000]]),
+                        ("evading, closing slowly", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 1], [S + 0x6AB, 1, 1],
+                                                     [S + 0x6AC, 4, 0x10500], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000], [S + 0x6B8, 4, 0x100]]),
+                        ("evading fast and level", [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x62A, 4, 0x4000], [S + 0x20, 2, 0]])):
+        ai.append(("pursue: " + name, "ai_pursue_target", climbed + extra))
+    for k in range(8):
+        cur = [[0x2C5B4, 4, 0x2C5B4 + 4 * k]]
+        ai.append(("pursue draws %d: breaking off" % k, "ai_pursue_target", climbed + [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000]] + cur))
+        ai.append(("pursue draws %d: weave" % k, "ai_pursue_target", climbed + [[S + 0x22, 2, 0x3000], [T + 4, 4, 0x08000], [TC + 0x22, 2, 0x3000], [S + 0x6AA, 1, 2],
+                                                                                [S + 0x6AB, 1, 1], [S + 0x6AC, 4, 0x10000], [S + 0x6B0, 4, 0x20000], [S + 0x6B4, 4, 0x20000]] + cur))
+        ai.append(("pursue draws %d: manoeuvre 4" % k, "ai_pursue_target", climbed + [[S + 0x6AA, 1, 4]] + cur))
+    form = [[S + 0x6A2, 4, 0], [0x20B28, 4, P], [P, 4, 0x3C600], [0x3C604, 4, 0x10400], [0x3C608, 4, 0x20200], [0x3C60C, 4, 0x20300],
+            [P + 0x62A, 4, 0x1000], [0x2C59C, 2, 0x1000], [0x2C5A4, 2, 0x1000], [0x2C5AC, 2, 0x1000], [0x23FAC, 4, 0x30800],
+            [HOST + 0x384, 4, HEAP]]
+    for name, extra in (("first use: allocated, climbing", [[S + 0x616, 4, 0], [O + 8, 4, 0x300]]),
+                        ("climbing", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 0], [O + 8, 4, 0x300]]),
+                        ("climb done", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 0]] + climbed),
+                        ("no leader", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 1], [P, 4, 0]]),
+                        ("station drawn", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 1]] + climbed),
+                        ("on station", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 1], [S + 0x6B0, 4, 0xFFF0BDC1], [S + 0x6AC, 4, 0x100],
+                                        [S + 0x6B4, 4, 0x80]] + climbed + [[O + 4, 4, 0x10500], [O + 8, 4, 0x20200], [O + 0xC, 4, 0x20380]]),
+                        ("near station", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 1], [S + 0x6B0, 4, 0xFFF0BDC1], [S + 0x6AC, 4, 0x100],
+                                          [S + 0x6B4, 4, 0x80]] + climbed + [[O + 4, 4, 0x10D00], [O + 8, 4, 0x20200], [O + 0xC, 4, 0x20380]]),
+                        ("short of station", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 1], [S + 0x6B0, 4, 0xFFF0BDC1], [S + 0x6AC, 4, 0x100],
+                                              [S + 0x6B4, 4, 0x80]] + climbed + [[O + 4, 4, 0x12500], [O + 8, 4, 0x20200], [O + 0xC, 4, 0x20380]]),
+                        ("far from station", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 1], [S + 0x6B0, 4, 0xFFF0BDC1]] + climbed + [[O + 4, 4, 0x30000]])):
+        ai.append(("formation: " + name, "ai_fly_formation_on_player", form + extra))
+    for name, args in (("x largest", [0, 0, 0, 0x300, 0x100, 0x80]), ("y largest", [0, 0, 0, 0x100, 0xFFFFFC00, 0x80]),
+                       ("z largest", [0x10, 0x20, 0x30, 0x110, 0x120, 0xFFFFF030]), ("equal", [5, 5, 5, 5, 5, 5])):
+        out.append({"name": "approx distance: " + name, "method": "approx_dist3_xyz", "args": args, "d0": True, "writes": [],
+                    "stack_guard": [0x3E000, 0x3F040]})
+    # headed 0x3400 / 0x3800 the aircraft faces the target (the attack path; other headings break off)
+    ai += [(name + ", facing it %x" % h, method, extra + [[S + 0x22, 2, h]]) for name, method, extra in list(ai)
+           if name.startswith(("attack or fly: a target", "pursue: ", "pursue draws")) for h in (0x3400, 0x3800)]
+    # the collision notice handlers: self O (controller S) notices T (controller TC, definition TD of a given type)
+    TD, G, GC = 0x3C900, 0x3CA00, 0x3CB00
+    seen = tgt + [[O, 4, S], [S + 0x6A2, 4, 0], [S + 0x6A6, 4, 0], [TC + 4, 4, TD], [T + 0x20, 4, 0x40], [S + 0x32, 4, 0x13038]]
+    notice = []
+    for typ in (1, 2, 3, 4, 5, 6, 7, 8, 27, 28, 30, 34, 35, 39, 40, 41):
+        for k in range(4):
+            cur = [[0x2C5B4, 4, 0x2C5B4 + 4 * k]]
+            for method, label in (("leyte_aircraft_notice_object", "aircraft"), ("enemy_fighter_notice_object", "fighter")):
+                notice.append(("%s notices type %d, draw %d" % (label, typ, k), method, seen + [[TD, 2, typ]] + cur))
+    for k in range(8):
+        cur = [[0x2C5B4, 4, 0x2C5B4 + 4 * k]]
+        for name, extra in (("ai_fly", [[S + 0x32, 4, 0x13100]]), ("bombing", [[S + 0x32, 4, 0x1325C]]),
+                            ("diving", [[S + 0x32, 4, 0x13158]]), ("another state", [[S + 0x32, 4, 0xFCF6]]),
+                            ("holding a target", [[S + 0x6A2, 4, 0x3CC00], [S + 0x6A6, 4, 0x40000], [0x3CC29, 1, 3]]),
+                            ("holding a nearer target", [[S + 0x6A2, 4, 0x3CC00], [S + 0x6A6, 4, 0x100], [0x3CC29, 1, 3]]),
+                            ("out of rounds", [[S + 0x696, 2, 1]]), ("very near", [[T + 4, 4, 0x10010], [T + 8, 4, 0x20000], [T + 0xC, 4, 0x20000]]),
+                            ("at the same point", [[T + 4, 4, 0x10000], [T + 8, 4, 0x20000], [T + 0xC, 4, 0x20000]]),
+                            ("escorting already", [[S + 0x6BC, 4, 0x3CC00]]), ("the player", [[0x20B28, 4, S]])):
+            for typ in (4, 5, 6):
+                for method, label in (("leyte_aircraft_notice_object", "aircraft"), ("enemy_fighter_notice_object", "fighter")):
+                    notice.append(("%s notices type %d, %s, draw %d" % (label, typ, name, k), method, seen + [[TD, 2, typ]] + extra + cur))
+    for name, method, extra in notice:
+        out.append({"name": "notice: " + name, "method": method, "args": [O, T], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    gun = [[G, 4, GC], [G + 4, 4, 0x10400], [G + 8, 4, 0x20000], [G + 0xC, 4, 0x20300], [GC + 0x3E, 2, 0x200], [GC + 0x40, 2, 1],
+           [GC + 0x36, 4, 0], [GC + 0x3A, 4, 0]]
+    for k in range(8):
+        cur = [[0x2C5B4, 4, 0x2C5B4 + 4 * k]]
+        for name, extra in (("an enemy aircraft", [[TD, 2, 5]]), ("type 7", [[TD, 2, 7]]), ("type 8", [[TD, 2, 8]]), ("type 4", [[TD, 2, 4]]),
+                            ("a friendly gun, type 4", [[TD, 2, 4], [GC + 0x3E, 2, 0x100]]), ("a friendly gun, type 5", [[TD, 2, 5], [GC + 0x3E, 2, 0x100]]),
+                            ("not set up", [[TD, 2, 5], [GC + 0x40, 2, 0]]), ("another probe", [[TD, 2, 5], [GC + 0x3E, 2, 0x300]]),
+                            ("holding a far target", [[TD, 2, 5], [GC + 0x36, 4, 0x3CC00], [GC + 0x3A, 4, 0x40000], [0x3CC29, 1, 2]]),
+                            ("holding a near target", [[TD, 2, 5], [GC + 0x36, 4, 0x3CC00], [GC + 0x3A, 4, 0x100], [0x3CC29, 1, 2]]),
+                            ("at the gun", [[TD, 2, 5], [T + 4, 4, 0x10400], [T + 8, 4, 0x20000], [T + 0xC, 4, 0x20300]])):
+            out.append({"name": "notice: flak gun, %s, draw %d" % (name, k), "method": "flak_notice_object", "args": [G, T],
+                        "writes": w + seen + gun + extra + cur, "stack_guard": [0x3E000, 0x3F040]})
+    # Scramble Two's bomber (0x12d3e) and its bomb release (0x12c96): the route block allocated and routing
+    route = [[S + 0x616, 4, 0x3D800], [0x3D802, 2, 0x9D8], [0x21020, 4, 0x100], [S + 0x68D, 1, 3], [S + 0x684, 1, 0]]
+    at_target = [[O + 4, 4, 0x5BC72D + 0x100], [O + 0xC, 4, 0xFFD634EA + 0x200], [O + 8, 4, 0x6000]]
+    for name, extra in (("routing, far", [[0x3D800, 2, 1]]), ("routing, at the target", [[0x3D800, 2, 1]] + at_target),
+                        ("routing, at the target, already failed", [[0x3D800, 2, 1], [HOST + 0xD2, 2, 1]] + at_target),
+                        ("routing, at the target, low", [[0x3D800, 2, 1]] + at_target + [[O + 8, 4, 0x4000]]),
+                        ("routing, at the target, hit", [[0x3D800, 2, 1], [S + 0x698, 2, 0x100]] + at_target),
+                        ("attacking, too early", [[0x3D800, 2, 2], [S + 0x6C4, 4, 0x200]]),
+                        ("attacking, no bombs", [[0x3D800, 2, 2], [S + 0x6C4, 4, 0x80], [S + 0x68D, 1, 0]]),
+                        ("attacking, a store busy", [[0x3D800, 2, 2], [S + 0x6C4, 4, 0x80], [S + 0x684, 1, 2]]),
+                        ("done", [[0x3D800, 2, 3]])):
+        out.append({"name": "scramble bomber: " + name, "method": "tick_ai_1b310_approach_fire", "args": [S],
+                    "writes": w + tgt + route + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for k in range(8):
+        out.append({"name": "scramble bomber: release draw %d" % k, "method": "ai_script_try_fire_burst", "args": [S], "d0": True,
+                    "writes": w + tgt + route + [[S + 0x6C4, 4, 0x80], [0x2C5B4, 4, 0x2C5B4 + 4 * k]],
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("allocated, routing, a high point", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 1], [0x3D802, 2, 0x9D8]]),
+                        ("allocated, routing, a low point", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 1], [0x3D802, 2, 0x9D8], [S + 0x2E, 4, 0x7FFF0]]),
+                        ("allocated", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 0], [0x3D802, 2, 0x9D8]]),
+                        ("allocated, climbing", [[S + 0x616, 4, 0x3D800], [0x3D800, 2, 0], [0x3D802, 2, 0x9D8], [O + 8, 4, 0x300]])):
+        for method in ("ensure_ai_script_1b2e0_tick", "ensure_ai_script_1b340_tick"):
+            out.append({"name": "route patrol: %s, %s" % (method, name), "method": method, "args": [S], "writes": w + tgt + extra,
+                        "stack_guard": [0x3E000, 0x3F040]})
+    # the dive and bombing-run states: bombs aboard (+0x68d), the target moving (controller velocity words +0xa / +0x12)
+    run = climbed + [[S + 0x68D, 1, 2], [TC + 0xA, 2, 0x10], [TC + 0x12, 2, 0xFFF0], [S + 0x32, 4, 0x1325C]]
+    far = [[T + 4, 4, 0x18000]]
+    low = [[O + 8, 4, 0x2000], [T + 8, 4, 0x80]]
+    for name, extra in (("no target", [[S + 0x6A2, 4, 0]]), ("no target, out of rounds", [[S + 0x6A2, 4, 0], [S + 0x696, 2, 2]]),
+                        ("out of bombs", [[S + 0x68D, 1, 0]]), ("target down", [[T + 0x17, 1, 2]]), ("climbing", [[O + 8, 4, 0x300]]),
+                        ("phase 0", []), ("phase 0, far", far), ("phase 1", [[S + 0x686, 1, 1], [S + 0x6AC, 4, 0x7000], [S + 0x6B4, 4, 0x1000]]),
+                        ("phase 1, into range", far + [[S + 0x686, 1, 1]]), ("phase 1, into range but low", far + [[S + 0x686, 1, 1], [O + 8, 4, 0x4000]]),
+                        ("phase 1, beyond range", [[T + 4, 4, 0x20000], [S + 0x686, 1, 1]]),
+                        ("phase 2, high", [[S + 0x686, 1, 2]]), ("phase 2, at rest", [[S + 0x686, 1, 2], [S + 0x62A, 4, 0]]),
+                        ("phase 2, low, x leading", low + [[S + 0x686, 1, 2], [S + 8, 4, 0x40], [S + 0x10, 4, 0x10], [S + 0xC, 4, 0xFFFFFFF0]]),
+                        ("phase 2, low, z leading", low + [[S + 0x686, 1, 2], [S + 8, 4, 0x10], [S + 0x10, 4, 0x40], [S + 0xC, 4, 0xFFFFFFF0]]),
+                        ("phase 2, low, hovering", low + [[S + 0x686, 1, 2], [S + 8, 4, 0], [S + 0x10, 4, 0], [S + 0xC, 4, 0]]),
+                        ("phase 2, low, release", [[O + 8, 4, 0x900], [T + 8, 4, 0x80], [S + 0x686, 1, 2], [S + 8, 4, 0x40], [S + 0x10, 4, 0],
+                                                   [S + 0xC, 4, 0], [T + 4, 4, 0x10400], [T + 0xC, 4, 0x20000], [TC, 4, 0]]),
+                        ("phase 2, no target controller", [[S + 0x686, 1, 2], [TC, 4, 0], [T, 4, 0]]),
+                        ("phase 3", [[S + 0x686, 1, 3], [S + 8, 4, 0x20], [S + 0x10, 4, 0x30]]),
+                        ("phase 3, run over", [[S + 0x686, 1, 3], [T + 4, 4, 0x30000]]), ("phase 5", [[S + 0x686, 1, 5]])):
+        ai.append(("bombing run: " + name, "ai_bombing_run", run + extra))
+    for name, extra in (("no target", [[S + 0x6A2, 4, 0]]), ("no target, out of rounds", [[S + 0x6A2, 4, 0], [S + 0x696, 2, 2]]),
+                        ("target down", [[T + 0x17, 1, 2]]), ("no vertices", [[T + 0x46, 4, 0]]), ("climbing", [[O + 8, 4, 0x300]]),
+                        ("near", []), ("far", [[T + 4, 4, 0x30000]]), ("no target, a manoeuvre", [[S + 0x6A2, 4, 0], [S + 0x614, 2, 1], [0x2059C, 4, 0xFCF6]])):
+        ai.append(("dive: " + name, "ai_dive_at_target", climbed + [[S + 0x32, 4, 0x13158]] + extra))
+    for name, extra in (("a target", []), ("none", [[S + 0x6A2, 4, 0]])):
+        ai.append(("release target: " + name, "release_ai_target", extra))
+    # the landing-gear render hook on a small model: two gear faces (kind 1) and a plain one, eight template vertices
+    M1, M2, FACES, IDX, VBUF, BASE = 0x3D100, 0x3D200, 0x3D300, 0x3D400, 0x3D500, 0x3D600
+    model = [[O + 0x24, 4, M1], [M1 + 0x2A, 4, M2], [M2 + 0x1A + 0x14 + 0x18 * 2, 4, 0x100], [O + 0x10, 2, 2], [HOST + 0x8C, 4, BASE],
+             [0x207FC, 4, HOST], [O + 0x4A, 4, FACES], [O + 0x3C, 2, 3], [O + 0x46, 4, VBUF], [O + 0x38, 2, 1], [O + 0x36, 2, 1],
+             [D + 0x46, 2, 0x80]]
+    tv = BASE + 0x100 + 0x22
+    for k in range(8):
+        model += [[tv + 0xC * k, 4, (0x40 if k % 2 else 0xFFFFFFC0) + 8 * k], [tv + 0xC * k + 4, 4, 0x20 - 4 * k], [tv + 0xC * k + 8, 4, 0x10 * k]]
+    for f, (kind, n, first) in enumerate(((1, 2, 2), (0, 1, 4), (1, 2, 3))):
+        fa = FACES + 0x20 * f
+        model += [[fa + 0x13, 1, 0], [fa + 0x14, 2, n], [fa + 0x17, 1, kind], [fa + 0x18, 4, IDX + 8 * f]]
+        model += [[IDX + 8 * f + 2 * j, 2, first + j] for j in range(n)]
+    for name, extra in (("up", [[S + 0x68A, 1, 0]]), ("down, at rest", [[S + 0x68A, 1, 0x2D], [S + 0x68B, 1, 0]]),
+                        ("down, finishing", [[S + 0x68A, 1, 0x2D], [S + 0x68B, 1, 2]]),
+                        ("extending", [[S + 0x68A, 1, 0x10]]), ("nearly down", [[S + 0x68A, 1, 0x2C]]),
+                        ("retracting", [[S + 0x68A, 1, 0xF0]]), ("just raised", [[S + 0x68A, 1, 0xFF]]),
+                        ("up, finishing", [[S + 0x68A, 1, 0], [S + 0x68B, 1, 3]]), ("extending, shift 0", [[S + 0x68A, 1, 0x20], [O + 0x36, 2, 0]])):
+        ai.append(("landing gear: " + name, "animate_landing_gear", model + [[S + 0x20, 2, 0x100], [S + 0x22, 2, 0x200], [S + 0x24, 2, 0x300]] + extra))
+    heap = [[0x23FAC, 4, 0x30800], [HOST + 0x384, 4, HEAP], [0x2C826, 4, 0]]
+    for name, args, extra in (("key 3", [O, 3], []), ("key 0, the special object", [O, 0], [[0x2C826, 4, O]])):
+        out.append({"name": "effect factory: " + name, "method": "create_effect_controller", "args": args, "d0": True,
+                    "writes": w + heap + [[0x2074C + 4 * k, 4, 0x3D700 + 0x10 * k] for k in range(8)] + extra, "stack_guard": [0x3E000, 0x3F040]})
+    # effects: an effect object EO (controller EC) with six vertices; the kind ticks are Leyte's own (table 0x205cc)
+    EO, EC, EV = 0x3D800, 0x3D900, 0x3DA00
+    eff = [[EO, 4, EC], [EC, 4, EO], [EO + 0x46, 4, EV], [EO + 0x36, 2, 2], [EO + 0x20, 4, 0x300], [EC + 0x34, 2, 0x40], [EO + 0x14, 4, 0]]
+    eff += [[EV + 0xC * k + m, 4, v] for k in range(6) for m, v in ((0, 0x100 + 0x40 * k), (4, 0x20 * k), (8, 0xFFFFFF00 + 0x30 * k))]
+    for kind in (0, 1, 4, 5, 6, 7):
+        for name, extra in (("waiting", [[EC + 0x36, 2, 3]]), ("due", [[EC + 0x36, 2, 0]])):
+            out.append({"name": "effect tick: kind %d, %s" % (kind, name), "method": "tick_effect", "args": [EC],
+                        "writes": w + eff + [[EC + 0x32, 1, kind]] + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("size 0x40, shift 2", []), ("size 0x64, shift 0", [[EC + 0x34, 2, 0x64], [EO + 0x36, 2, 0]]),
+                        ("size -0x20, shift 1", [[EC + 0x34, 2, 0xFFE0], [EO + 0x36, 2, 1]]), ("shift 65", [[EO + 0x36, 2, 0x41]])):
+        out.append({"name": "effect flat ring: " + name, "method": "init_effect_kind0_flat_ring", "args": [EO],
+                    "writes": w + eff + extra, "stack_guard": [0x3E000, 0x3F040]})
+        out.append({"name": "effect column: " + name, "method": "init_effect_kind1_column", "args": [EO],
+                    "writes": w + eff + extra, "stack_guard": [0x3E000, 0x3F040]})
+    # the flak burst (kind 2), the debris (kind 3), the bullet factory and the ground mark: faces for the depth-8
+    # darkening (two, the first in the slot table 0x23fac), 13 vertices for the debris
+    FACES2, SLOTS2 = 0x3DC00, 0x3DE00
+    eff2 = eff + [[EO + 0x4A, 4, FACES2], [EO + 0x3C, 2, 2], [0x23FAC, 4, SLOTS2], [SLOTS2 + 4 * 3, 4, FACES2],
+                  [FACES2 + 0xC, 1, 0xF0], [FACES2 + 0xD, 1, 0x81], [FACES2 + 0xE, 1, 0x17], [FACES2 + 0xF, 1, 3],
+                  [FACES2 + 0x20 + 0xC, 1, 0x7F], [FACES2 + 0x20 + 0xD, 1, 0x40], [FACES2 + 0x20 + 0xE, 1, 0xFF], [FACES2 + 0x20 + 0xF, 1, 5],
+                  [EO + 4, 4, 0x10000], [EO + 8, 4, 0x300], [EO + 0xC, 4, 0x20000], [EC + 0x34, 2, 0x30],
+                  # the palette queue the darkening's slot rewrite reaches (queue_face_palette_entry): index mode, its
+                  # slot -> index map and the host's spec table (+0x72); a single screen (host +0xb4 0)
+                  [0x23D8A, 2, 0], [0x23D8C, 4, 0x3DF00], [0x3DF00 + 2 * 3, 2, 0x33], [HOST + 0x72, 4, 0x3DF80],
+                  [0x3DF80 + 6, 2, 0], [HOST + 0xB4, 2, 0]]
+    eff2 += [[EV + 0xC * k + m, 4, v] for k in range(6, 13) for m, v in ((0, 0x80 + 0x10 * k), (4, 0x40 + 8 * k), (8, 0xFFFFFF80 + 0x20 * k))]
+    eff2 += [[EC + base + 4 * k, 4, (0x200 * (k + 1) * (1 if k % 2 else -1)) & 0xFFFFFFFF] for base in (0x3A, 0x6E, 0xA2) for k in range(12)]
+    for k in range(4):
+        out.append({"name": "effect burst init: draw %d" % k, "method": "init_effect_kind2_burst", "args": [EO],
+                    "writes": w + eff2 + [[0x2C5B4, 4, 0x2C5B4 + 4 * k]], "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("moving", [[EC + 0x36, 2, 5]]), ("moving at depth 8", [[EC + 0x36, 2, 5], [0x2100E, 2, 8]]),
+                        ("rewinding", [[EC + 0x36, 2, 5], [0x21058, 2, 1]]), ("out, no smoke", [[EC + 0x36, 2, 0], [EC + 0x38, 1, 0]]),
+                        ("out, smoke", [[EC + 0x36, 2, 0], [EC + 0x38, 1, 1]])):
+        out.append({"name": "effect burst: " + name, "method": "animate_effect_kind2_burst", "args": [EC], "d0": True,
+                    "writes": w + eff2 + extra, "stack_guard": [0x3E000, 0x3F040]})
+    ground = [[EV + 0xC * k + 4, 4, 0] for k in range(12)] + [[EC + 0x6E + 4 * k, 4, 0] for k in range(12)]
+    for name, extra in (("airborne", []), ("airborne at depth 8", [[HOST + 0xE, 2, 8]]),
+                        ("replay debris, rewinding", [[EC + 0x33, 1, 1], [0x21058, 2, 1]]),
+                        ("live, a replay running", [[0x21058, 2, 2]]),
+                        ("landed, replay debris", [[EC + 0x33, 1, 1], [0x21058, 2, 2]] + ground),
+                        ("landed, replay debris, state 3", [[EC + 0x33, 1, 1], [0x21058, 2, 3]] + ground),
+                        ("landed live, aloft object, no smoke", ground + [[EC + 0x38, 1, 0]]),
+                        ("landed live, aloft object, smoke", ground + [[EC + 0x38, 1, 1]]),
+                        ("landed live at y 0, smoke", ground + [[EC + 0x38, 1, 1], [EO + 8, 4, 0]])):
+        out.append({"name": "effect debris: " + name, "method": "animate_effect_kind3_debris", "args": [EC], "d0": True,
+                    "writes": w + eff2 + [[0x2CC14, 4, 0x30600]] + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for key in (3, 9):
+        out.append({"name": "bullet factory: key %d" % key, "method": "create_bullet_controller", "args": [EO, key], "d0": True,
+                    "writes": w + eff2 + [[0x23FAC, 4, 0x30800], [HOST + 0x384, 4, HEAP]] + [[0x2074C + 4 * k, 4, 0x3D700 + 0x10 * k] for k in range(12)],
+                    "stack_guard": [0x3E000, 0x3F040]})
+    # the debris explosion's init (kind 3: a kind-2 burst first, through spawn_effect's pool), the damage spawns'
+    # factories (plume, trail, ground fire, ground mark) and the shadow's destroy hook
+    for name, extra in (("size 0x30, shift 2", []), ("size -0xf, shift 1", [[EC + 0x34, 2, 0xFFF1], [EO + 0x36, 2, 1]]),
+                        ("rewinding", [[0x21058, 2, 1]]), ("size 0x64, shift 0", [[EC + 0x34, 2, 0x64], [EO + 0x36, 2, 0]])):
+        out.append({"name": "effect debris init: " + name, "method": "init_effect_kind3_debris_explosion", "args": [EO],
+                    "writes": w + eff2 + [[0x23FAC, 4, 0x30800], [HOST + 0x384, 4, HEAP], [0x2CC14, 4, 0x30600]] + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    fheap = [[0x23FAC, 4, 0x30800], [HOST + 0x384, 4, HEAP], [0x20774, 4, 0x3D7A0], [0x20784, 4, 0x3D7C0]] + \
+        [[0x2074C + 4 * k, 4, 0x3D700 + 0x10 * k] for k in range(12)]
+    for method, keys in (("create_plume_controller", (None,)), ("create_trail_controller", (3, 9)),
+                         ("create_ground_fire_controller", (None,)), ("create_ground_mark_controller", (3, 9)),
+                         ("create_debris_controller", (3, 9)),
+                         ("create_ordnance_controller", (3, 9))):
+        for key in keys:
+            out.append({"name": "spawn factory: %s%s" % (method, "" if key is None else ", key %d" % key), "method": method,
+                        "args": [EO] if key is None else [EO, key], "d0": True,
+                        "writes": w + eff2 + fheap + [[EO + 0x14, 4, 0x80000001], [EO + 0x36, 2, 0x1234]],
+                        "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("an owner", [[EC + 0x32, 4, 0x3D600], [0x3D600 + 0x29, 1, 3]]), ("no owner", [[EC + 0x32, 4, 0]]),
+                        ("an owner at 0", [[EC + 0x32, 4, 0x3D600], [0x3D600 + 0x29, 1, 0]])):
+        out.append({"name": "shadow destroyed: " + name, "method": "destroy_shadow_controller", "args": [EC], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    # the damage spawns' ticks: trails (init, tick, the smoke animator), ground fire (animator, tick), the plume's tick
+    # and the parachute's factory; the owner an aircraft object OWN (its controller OC at its +0) beside the effect
+    OWN, OC = 0x3D600, 0x41000
+    own = [[OWN, 4, OC], [OWN + 4, 4, 0x12000], [OWN + 8, 4, 0x800], [OWN + 0xC, 4, 0xFFFE0000], [OWN + 0x17, 1, 0],
+           [OC + 8, 4, 0x300], [OC + 0x10, 4, 0xFFFFFB00], [OC + 0x698, 2, 0x1BC1], [OC + 0x6A0, 2, 2], [0x21020, 4, 0x77]]
+    tw = w + eff2 + own + fheap + [[EC + 0x58, 4, OWN], [EC + 0x50, 4, OWN], [EC + 0x3C, 4, OWN]]
+    for kind in (0, 1):
+        out.append({"name": "trail init: kind %d" % kind, "method": "init_trail_kind%d" % kind, "args": [EO, EC],
+                    "writes": tw, "stack_guard": [0x3E000, 0x3F040]})
+    rngs = lambda k: [[0x2C5B4, 4, 0x2C5B4 + 4 * k]]
+    trail = [("state 1", [[EC + 0x36, 2, 1], [EC + 0x34, 2, 0x4B], [EC + 0x56, 2, 0]]),
+             ("state 2, two detached", [[EC + 0x36, 2, 2], [EC + 0x34, 2, 9], [EC + 0x56, 2, 3]]),
+             ("state 2, three detached", [[EC + 0x36, 2, 2], [EC + 0x34, 2, 9], [EC + 0x56, 2, 7]]),
+             ("state 2, lifetime out", [[EC + 0x36, 2, 2], [EC + 0x34, 2, 0], [EC + 0x56, 2, 1]]),
+             ("state 3, smoke byte clear", [[EC + 0x36, 2, 3], [EC + 0x34, 2, 9], [OC + 0x699, 1, 0x41]]),
+             ("state 3, smoke byte negative", [[EC + 0x36, 2, 3], [EC + 0x34, 2, 9], [OC + 0x699, 1, 0xC1]]),
+             ("state 4, alive", [[EC + 0x36, 2, 4], [EC + 0x34, 2, 9]]),
+             ("state 4, lifetime out", [[EC + 0x36, 2, 4], [EC + 0x34, 2, 0]]),
+             ("state 4, rewinding", [[EC + 0x36, 2, 4], [EC + 0x34, 2, 9], [0x21058, 2, 1]]),
+             ("state 2, rewinding", [[EC + 0x36, 2, 2], [EC + 0x34, 2, 9], [0x21058, 2, 1]]),
+             ("state 1, rewinding", [[EC + 0x36, 2, 1], [EC + 0x34, 2, 9], [0x21058, 2, 1]]),
+             ("owner retired, state 1", [[EC + 0x36, 2, 1], [EC + 0x34, 2, 9], [OWN + 0x17, 1, 2]]),
+             ("owner no longer smoking", [[EC + 0x36, 2, 2], [EC + 0x34, 2, 9], [OC + 0x698, 2, 0x1801]]),
+             ("state 5", [[EC + 0x36, 2, 5], [EC + 0x34, 2, 9]])]
+    for name, extra in trail:
+        for k in ((0, 1, 2, 3) if name.startswith(("state 2, two", "state 3", "state 1")) else (0,)):
+            out.append({"name": "smoke trail: %s, draw %d" % (name, k), "method": "animate_smoke_trail", "args": [EC], "d0": True,
+                        "writes": tw + rngs(k) + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("counting down", [[EC + 0x36, 2, 4], [EC + 0x34, 2, 9], [EC + 0x32, 2, 0]]),
+                        ("lifetime out, hidden", [[EC + 0x36, 2, 2], [EC + 0x34, 2, 0], [EC + 0x56, 2, 0xF], [EC + 0x32, 2, 0]]),
+                        ("finished, retired", [[EC + 0x36, 2, 4], [EC + 0x34, 2, 0], [EC + 0x32, 2, 0]])):
+        out.append({"name": "trail tick: " + name, "method": "tick_trail", "args": [EC], "writes": tw + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    fire = [("state 1, moving", [[EC + 0x34, 2, 1], [EC + 0x4E, 2, 0], [EC + 0x32, 2, 5]]),
+            ("state 2, two detached", [[EC + 0x34, 2, 2], [EC + 0x4E, 2, 6]] + [[EC + 0x36 + 2 * v, 2, (0x10 * v - 0x18) & 0xFFFF] for v in range(4)]
+             + [[EC + 0x46 + 2 * v, 2, (0x0F - 0x9 * v) & 0xFFFF] for v in range(4)]),
+            ("state 2, ends 0 and 3 detached", [[EC + 0x34, 2, 2], [EC + 0x4E, 2, 9]]),
+            ("state 2, fire out", [[EC + 0x34, 2, 2], [EC + 0x4E, 2, 1], [OC + 0x698, 2, 0x03C0]]),
+            ("state 2, moving west", [[EC + 0x34, 2, 2], [EC + 0x4E, 2, 0], [OC + 8, 4, 0xFFFFF000], [OC + 0x10, 4, 0x77]]),
+            ("stopped owner, state 1", [[EC + 0x34, 2, 1], [EC + 0x32, 2, 5], [OC + 8, 4, 0], [OC + 0x10, 4, 0]]),
+            ("retired owner, state 2", [[EC + 0x34, 2, 2], [EC + 0x32, 2, 5], [OWN + 0x17, 1, 2]]),
+            ("state 3, timer 2", [[EC + 0x34, 2, 3], [EC + 0x32, 2, 2]]),
+            ("state 3, timer 1", [[EC + 0x34, 2, 3], [EC + 0x32, 2, 1]]),
+            ("state 3, rewinding", [[EC + 0x34, 2, 3], [EC + 0x32, 2, 7], [0x21058, 2, 1]]),
+            ("state 2, rewinding", [[EC + 0x34, 2, 2], [EC + 0x32, 2, 7], [0x21058, 2, 1]]),
+            ("state 0", [[EC + 0x34, 2, 0]])]
+    for name, extra in fire:
+        for k in ((0, 1) if name.startswith("state 2, two") else (0,)):
+            out.append({"name": "ground fire: %s, draw %d" % (name, k), "method": "animate_ground_fire", "args": [EC], "d0": True,
+                        "writes": tw + rngs(k) + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("burning", [[EC + 0x34, 2, 2], [EC + 0x4E, 2, 0]]), ("burnt out, retired", [[EC + 0x34, 2, 3], [EC + 0x32, 2, 1]])):
+        out.append({"name": "ground fire tick: " + name, "method": "tick_ground_fire", "args": [EC], "writes": tw + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("ownerless, running", [[EC + 0x3C, 4, 0], [EC + 0x38, 4, 0x99]]),
+                        ("owned, following", [[EC + 0xA0, 2, 0]]), ("owned, index 5", [[EC + 0xA0, 2, 5]]),
+                        ("owner not smoking, retired", [[OC + 0x698, 2, 0x1AC1]]), ("owner retired", [[OWN + 0x17, 1, 2]]),
+                        ("ownerless, its end frame", [[EC + 0x3C, 4, 0], [EC + 0x38, 4, 0x77]])):
+        out.append({"name": "plume tick: " + name, "method": "tick_smoke_plume", "args": [EC], "writes": tw + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for key in (3, 9):
+        out.append({"name": "parachute factory: key %d" % key, "method": "create_parachute_controller", "args": [EO, key], "d0": True,
+                    "writes": w + eff2 + fheap, "stack_guard": [0x3E000, 0x3F040]})
+    refs = [[OWN + 0x29, 1, 3]]
+    for name, extra in (("smoke, counted", [[EC + 0x32, 2, 0], [EC + 0x5C, 2, 1]]), ("smoke, released", [[EC + 0x32, 2, 0], [EC + 0x5C, 2, 0]]),
+                        ("burning", [[EC + 0x32, 2, 1], [EC + 0x5C, 2, 1]]), ("kind 2", [[EC + 0x32, 2, 2]]),
+                        ("smoke, no owner", [[EC + 0x32, 2, 0], [EC + 0x58, 4, 0]]), ("references at 0", [[EC + 0x32, 2, 1], [OWN + 0x29, 1, 0]])):
+        out.append({"name": "trail destroyed: " + name, "method": "destroy_trail_controller", "args": [EC], "writes": tw + refs + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("an owner", []), ("no owner", [[EC + 0x50, 4, 0]])):
+        out.append({"name": "ground fire destroyed: " + name, "method": "destroy_ground_fire_controller", "args": [EC],
+                    "writes": tw + refs + extra, "stack_guard": [0x3E000, 0x3F040]})
+    # the plume's shaping (free or trailing its owner) and destroy hook
+    ring = [[EC + 0x40 + 12 * k + m, 4, (0x1000 * (k + 1) + 0x100 * m) & 0xFFFFFFFF] for k in range(8) for m in (0, 4, 8)]
+    plume = tw + ring + [[EC + 0x34, 2, 0x180], [EC + 0x38, 4, 0x70], [EO + 0x42, 4, 0x60], [0x23D3E, 2, 0x1234]]
+    for name, extra in (("free, first frame, facing, width", [[EC + 0x3C, 4, 0], [EC + 0x32, 2, 1], [EC + 0x36, 2, 0xFF9C]]),
+                        ("free, settled width", [[EC + 0x3C, 4, 0], [EC + 0x36, 2, 0x64], [EO + 0x42, 4, 0x10]]),
+                        ("free, shaped this frame", [[EC + 0x3C, 4, 0], [EC + 0x38, 4, 0x77], [EC + 0x36, 2, 0x20]]),
+                        ("free, negative height", [[EC + 0x3C, 4, 0], [EC + 0x34, 2, 0xFF81]]),
+                        ("free, future birth", [[EC + 0x3C, 4, 0], [EO + 0x42, 4, 0x80]]),
+                        ("trailing, index 0", [[EC + 0xA0, 2, 0]]), ("trailing, index 6", [[EC + 0xA0, 2, 6]])):
+        for k in (0, 2):
+            out.append({"name": "plume shaped: %s, draw %d" % (name, k), "method": "plume_pre_render", "args": [EC],
+                        "writes": plume + rngs(k) + extra, "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "plume shaped free directly", "method": "shape_free_plume", "args": [EC], "d0": True,
+                "writes": plume + [[EC + 0x3C, 4, 0], [EC + 0x36, 2, 0x30]], "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "plume shaped trailing directly", "method": "shape_trailing_plume", "args": [EC], "d0": True,
+                "writes": plume + [[EC + 0xA0, 2, 3]], "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("an owner", [[OWN + 0x29, 1, 2]]), ("no owner", [[EC + 0x3C, 4, 0]])):
+        out.append({"name": "plume destroyed: " + name, "method": "destroy_plume_controller", "args": [EC], "writes": tw + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    # collisions: an aircraft OWN (controller OC) meets EO (controller EC, its definition type set per case); a store EO
+    # (controller EC) meets OWN
+    DEFX = 0x3D6C0
+    col = tw + [[EC + 4, 4, DEFX], [OC + 4, 4, DEFX + 0x10], [DEFX + 0x10, 2, 2], [OC + 0x2E, 4, 0x900], [EC + 0x698, 2, 0x10],
+                [0x20B28, 4, 0x3D500]]
+    for name, extra in (("another aircraft", [[DEFX, 2, 3]]), ("a store", [[DEFX, 2, 0x11], [EC + 0x634, 4, 0]]),
+                        ("a ship, above its deck", [[DEFX, 2, 0x1E], [OWN + 8, 4, 0xA00]]),
+                        ("a ship, below its deck", [[DEFX, 2, 0x22], [OWN + 8, 4, 0x100]]),
+                        ("a ship, the player", [[DEFX, 2, 0x1B], [0x20B28, 4, OC]]),
+                        ("type 8", [[DEFX, 2, 8]]), ("type 0x23", [[DEFX, 2, 0x23]]), ("no controller", [[EO, 4, 0]]),
+                        ("replaying", [[DEFX, 2, 3], [0x21058, 2, 1]])):
+        out.append({"name": "aircraft collision: " + name, "method": "aircraft_collision", "args": [OWN, EO], "writes": col + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("an aircraft", [[EC + 0x634, 4, 0]]), ("its launcher", [[EC + 0x634, 4, OWN]]),
+                        ("a ship", [[EC + 0x634, 4, 0], [OC + 4, 4, DEFX + 0x10], [DEFX + 0x10, 2, 0x1C], [EC + 0x62B, 1, 0]]),
+                        ("a ship, armed", [[EC + 0x634, 4, 0], [DEFX + 0x10, 2, 0x22], [EC + 0x62B, 1, 1]]),
+                        ("no controller", [[EC + 0x634, 4, 0], [OWN, 4, 0]]), ("replaying", [[0x21058, 2, 2]])):
+        out.append({"name": "ordnance collision: " + name, "method": "ordnance_collision", "args": [EO, OWN], "writes": col + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    # a debris fragment's tick: spinning and falling, moving in replay state 3, retired at its end frame or its floor
+    frag = tw + [[EC + 0x20, 2, 0x3F00], [EC + 0x22, 2, 0x1234], [EC + 0x24, 2, 0x3FF0], [EC + 0x36, 2, 0x200],
+                 [EC + 8, 4, 0x40], [EC + 0x10, 4, 0xFFFFFFC0], [EC + 0x32, 4, 0x99], [EC + 0x2E, 4, 0x100], [EO + 8, 4, 0x800]]
+    for name, extra in (("falling", []), ("replay state 3", [[0x21058, 2, 3]]), ("replay state 1", [[0x21058, 2, 1]]),
+                        ("its end frame", [[EC + 0x32, 4, 0x77]]), ("at its floor", [[EO + 8, 4, 0x100]]),
+                        ("below its floor, negative", [[EO + 8, 4, 0xFFFFF000], [EC + 0x36, 2, 0xFF00]])):
+        out.append({"name": "debris fragment tick: " + name, "method": "tick_debris_fragment", "args": [EC], "writes": frag + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("a target and a mount", [[EC + 0x36, 4, OWN], [EC + 0x32, 4, EO], [OWN + 0x29, 1, 2], [EO + 0x29, 1, 1]]),
+                        ("a mount only", [[EC + 0x36, 4, 0], [EC + 0x32, 4, EO], [EO + 0x29, 1, 0]]),
+                        ("neither", [[EC + 0x36, 4, 0], [EC + 0x32, 4, 0]])):
+        out.append({"name": "flak gun destroyed: " + name, "method": "destroy_flak_controller", "args": [EC], "writes": tw + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    # Island Storm's ground units (Leyte only; the notice handler's D0 is not compared: dispatch_overlap_collisions does
+    # not read it, as for flak_notice_object): a type-0x28 unit UO (controller UC) against a type-0x27 TO (TC), a route
+    # record, a waypoint object WO (type 0x29, a face record with no outline points) in entity_array
+    UC, UO, TO, TC, RT, WO, WC, DEFU = 0x42000, 0x42800, 0x42900, 0x42A00, 0x42B00, 0x42C00, 0x42D00, 0x42E00
+    dead = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    units = w + dead + [[0x2C834, 4, 0x30600], [0x23FAC, 4, 0x30800], [HOST + 0x384, 4, HEAP], [0x21020, 4, 0x77], [0x21058, 2, 0],
+             [UO, 4, UC], [UC, 4, UO], [UC + 4, 4, DEFU], [DEFU, 2, 0x28], [DEFU + 0x10, 2, 0x27], [DEFU + 0x20, 2, 0x29],
+             [UO + 4, 4, 0x120000], [UO + 8, 4, 0x40], [UO + 0xC, 4, 0xFFF00000], [UO + 0x20, 4, 0x180], [UO + 0x42, 4, 0x50],
+             [UO + 0x46, 4, 0x3DA00], [UC + 0x22, 2, 0x0800], [UC + 0x616, 4, 0x100], [UC + 0x62A, 2, 0xFFFF], [UC + 0x612, 4, RT],
+             [TO, 4, TC], [TC + 4, 4, DEFU + 0x10], [TO + 4, 4, 0x124000], [TO + 8, 4, 0x20], [TO + 0xC, 4, 0xFFF06000],
+             [TO + 0x46, 4, 0x3DA00], [TO + 0x29, 1, 1], [TO + 0x17, 1, 0],
+             [RT + 4, 2, 1], [RT + 6, 2, 3]] + [[RT + 8 + 12 * k + m, 4, v] for k, pt in enumerate(((0x121000, 0, 0xFFF01000),
+             (0x120050, 0x10, 0xFFF00020), (0x118000, 0, 0xFFF08000))) for m, v in zip((0, 4, 8), pt)] + [
+             [WO, 4, WC], [WC + 4, 4, DEFU + 0x20], [WO + 4, 4, 0x121800], [WO + 0xC, 4, 0xFFF02000], [WO + 0x14, 4, 0],
+             [WO + 0x20, 4, 0x400], [WO + 0x34, 2, 2], [WO + 0x36, 2, 4], [WO + 0x4A, 4, 0x42F00], [0x42F00 + 0x14, 2, 0],
+             [0x42F00 + 0x18, 4, 0x42F40], [WO + 0x46, 4, 0x3DA00], [0x20F2C, 4, 1], [0x20B44, 4, WO]]
+    held = [[UC + 0x61A, 4, TO], [UC + 0x61E, 4, 0x3000]]
+    for k in range(4):
+        for name, extra in (("free", []), ("holding a far one", [[UC + 0x61A, 4, WO], [UC + 0x61E, 4, 0x20000], [WO + 0x29, 1, 1]]),
+                            ("holding a near one", [[UC + 0x61A, 4, WO], [UC + 0x61E, 4, 0x100], [WO + 0x29, 1, 1]]),
+                            ("out of range", [[TO + 4, 4, 0x200000]]), ("on top of it", [[TO + 4, 4, 0x120000], [TO + 8, 4, 0x40], [TO + 0xC, 4, 0xFFF00000]])):
+            out.append({"name": "island unit notices an enemy: %s, draw %d" % (name, k), "method": "island_unit_notice_object",
+                        "args": [UO, TO], "writes": units + rngs(k) + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("its own side", [[TC + 4, 4, DEFU]]), ("a waypoint", [[TC + 4, 4, DEFU + 0x20]])):
+        out.append({"name": "island unit notices: " + name, "method": "island_unit_notice_object", "args": [UO, TO],
+                    "writes": units + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for h, sp in ((0, 0x100), (0x0800, 0x16B), (0x2A00, 0x40), (0x3F00, 0xFFFFFFF0)):
+        out.append({"name": "island unit velocity: heading %x speed %x" % (h, sp), "method": "island_unit_set_velocity", "args": [UC],
+                    "writes": units + [[UC + 0x22, 2, h], [UC + 0x616, 4, sp]], "stack_guard": [0x3E000, 0x3F040]})
+    OUTP, OUTD = 0x43F00, 0x43F04
+    for name, extra in (("far from its point", []), ("at its point", [[UO + 4, 4, 0x120040], [UO + 0xC, 4, 0xFFF00010]]),
+                        ("at the last point", [[RT + 4, 2, 2], [UO + 4, 4, 0x118000], [UO + 0xC, 4, 0xFFF08000]]),
+                        ("on a field point, far", [[UC + 0x62C, 2, 2], [UC + 0x622, 4, 0x130000], [UC + 0x626, 4, 0xFFF10000]]),
+                        ("on a field point, there", [[UC + 0x62C, 2, 2], [UC + 0x622, 4, 0x120010], [UC + 0x626, 4, 0xFFF00010]]),
+                        ("no route", [[UC + 0x612, 4, 0]])):
+        out.append({"name": "island unit next point: " + name, "method": "island_unit_next_point", "args": [UC, OUTP, OUTD], "d0": True,
+                    "writes": units + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("a new point", [[UO + 4, 4, 0x120040], [UO + 0xC, 4, 0xFFF00010]]), ("turning, countdown", [[UC + 0x62E, 2, 5]]),
+                        ("countdown out", [[UC + 0x62E, 2, 1]]), ("small turn", [[UC + 0x62E, 2, 0], [UC + 0x22, 2, 0x3C00]]),
+                        ("at full speed", [[UC + 0x62E, 2, 0], [UC + 0x616, 4, 0x16C]])):
+        out.append({"name": "island unit follows its route: " + name, "method": "island_unit_follow_route", "args": [UC], "d0": True,
+                    "writes": units + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("one in range", []), ("hidden", [[WO + 0x14, 4, 2]]), ("too far", [[WO + 4, 4, 0x200000]]), ("none", [[0x20F2C, 4, 0]])):
+        out.append({"name": "island nearest waypoint: " + name, "method": "island_nearest_waypoint", "args": [UO], "d0": True,
+                    "writes": units + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("shift up", []), ("shift down", [[WO + 0x34, 2, 6], [WO + 0x36, 2, 2]])):
+        out.append({"name": "island point in face: " + name, "method": "leyte_point_in_face_xz", "args": [0x121000, 0xFFF01000, WO, 0x42F00],
+                    "d0": True, "writes": units + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for k in (0, 2):
+        out.append({"name": "rng long, draw %d" % k, "method": "leyte_rng_long", "args": [], "d0": True, "writes": units + rngs(k),
+                    "stack_guard": [0x3E000, 0x3F040]})
+    step = [("aiming, turning", held + [[UC + 0x62C, 2, 1]]),
+            ("aiming, on target: fires", held + [[UC + 0x62C, 2, 1], [UC + 0x22, 2, 0x3A00]]),
+            ("aiming, out of range", held + [[UC + 0x62C, 2, 1], [TO + 4, 4, 0x200000]]),
+            ("target retired", held + [[TO + 0x17, 1, 2]]), ("target shapeless", held + [[TO + 0x46, 4, 0]]),
+            ("holding, a field point", held + [[UC + 0x62C, 2, 6], [UC + 0x622, 4, 0x120010], [UC + 0x626, 4, 0xFFF00010]]),
+            ("holding, searching", held + [[UC + 0x62C, 2, 0]]), ("holding, searched", held + [[UC + 0x62C, 2, 4]]),
+            ("no target, route only", [[UC + 0x610, 2, 0x63]]), ("no target, a wanted heading", [[UC + 0x62A, 2, 0x1000]]),
+            ("no target, wanted heading held", [[UC + 0x62A, 2, 0x0800], [UC + 0x616, 4, 0x170]]),
+            ("no target, none wanted", []), ("no target, stopped", [[UC + 0x616, 4, 0]])]
+    for name, extra in step:
+        for k in ((0, 1, 2, 3) if name.startswith(("aiming, on", "holding, search")) else (0,)):
+            out.append({"name": "island unit step: %s, draw %d" % (name, k), "method": "island_unit_step", "args": [UC],
+                        "writes": units + rngs(k) + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("live", [[UC + 0x60E, 2, 3]]), ("live, ring wrap", [[UC + 0x60E, 2, 0x4A]]),
+                        ("replay before birth", [[0x21058, 2, 2], [UO + 0x42, 4, 0x90]]), ("replay at birth", [[0x21058, 2, 2], [UO + 0x42, 4, 0x77]]),
+                        ("replay state 1", [[0x21058, 2, 1]]), ("replay moving", [[0x21058, 2, 2], [UC + 0x60E, 2, 2]] +
+                        [[UC + 0x32 + 0x14 * 2 + o, 4, v] for o, v in ((0, 0x120100), (4, 0x50), (8, 0xFFF00200))] +
+                        [[UC + 0x32 + 0x14 * 2 + 0xC, 2, 0x100], [UC + 0x32 + 0x14 * 2 + 0x12, 2, 7]])):
+        out.append({"name": "island unit tick: " + name, "method": "tick_island_unit", "args": [UC], "writes": units + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for key in (3, 9):
+        out.append({"name": "island marker factory: key %d" % key, "method": "create_island_marker_controller", "args": [UO, key], "d0": True,
+                    "writes": w + eff2 + fheap, "stack_guard": [0x3E000, 0x3F040]})
+    # Leyte's stores: a store UO (controller UC on Leyte's layout) with two faces; trails from the dead pool template
+    ord_w = units + [[0x2CC04 + 4 * k, 4, 0x30600] for k in range(2)] + [[UO + 0x4A, 4, 0x3DC00], [UO + 0x3C, 2, 2],
+             [UC + 0x20, 2, 0x100], [UC + 0x22, 2, 0x800], [UC + 0x24, 2, 0x40], [UC + 0x610, 2, 0x10], [UC + 0x61E, 4, 0x2000],
+             [UC + 0x2E, 4, 0], [UC + 0x2C, 1, 0x10], [UO + 8, 4, 0x2000], [UO + 0x42, 4, 0x50]]
+    ballistic = [("flying", []), ("burning, early", [[UC + 0x624, 2, 5], [UO + 0x42, 4, 0x72]]),
+                 ("burning, late", [[UC + 0x624, 2, 5]]), ("very fast", [[UC + 0x61E, 4, 0x200000]]),
+                 ("diving", [[UC + 0x20, 2, 0x3E00], [UC + 0x61E, 4, 0x9000]]),
+                 ("into land", [[UO + 8, 4, 0x20], [UC + 0x2E, 4, 0x30], [UC + 0x2C, 1, 0x30]]),
+                 ("into land, armed", [[UO + 8, 4, 0x20], [UC + 0x2E, 4, 0x30], [UC + 0x2C, 1, 0x60], [UC + 0x62B, 1, 1]]),
+                 ("a torpedo into land", [[UO + 8, 4, 0x20], [UC + 0x2E, 4, 0x30], [UC + 0x2C, 1, 0x70], [UC + 0x62A, 1, 1]]),
+                 ("into the sea", [[UO + 8, 4, 0x20]]), ("a torpedo into the sea", [[UO + 8, 4, 0x20], [UC + 0x62A, 1, 1]]),
+                 ("a torpedo, too fast", [[UO + 8, 4, 0x20], [UC + 0x62A, 1, 1], [UC + 0x61E, 4, 0x8000]]),
+                 ("a torpedo, too steep", [[UO + 8, 4, 0x20], [UC + 0x62A, 1, 1], [UC + 0x20, 2, 0x3800]]),
+                 ("running", [[UC + 0x639, 1, 0x80], [UC + 0x612, 4, 0x123], [UC + 0x616, 4, 0xFFFFFF00], [UC + 0x61A, 2, 0x30],
+                              [UC + 0x62C, 4, WO], [UO + 8, 4, 0x3C]]),
+                 ("running, frame 8", [[UC + 0x639, 1, 0x80], [UC + 0x612, 4, 0x40], [UC + 0x62C, 4, WO], [0x21020, 4, 0x78]])]
+    for name, extra in ballistic:
+        out.append({"name": "store ballistic step: " + name, "method": "ordnance_ballistic_step", "args": [UC], "writes": ord_w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    imp = [[UC + 0x638, 2, 0x400]]
+    deton = [("in flight", []), ("burning starts", [[UC + 0x638, 2, 0x40]]), ("burning goes on", [[UC + 0x638, 2, 0x40], [UC + 0x63A, 2, 0x40]]),
+             ("impact, a miss", imp), ("impact, credited", imp + [[UC + 0x626, 2, 1]]),
+             ("impact, a ship hit", imp + [[UC + 0x628, 2, 1]]), ("impact, an armed hit", imp + [[UC + 0x628, 2, 2]]),
+             ("impact, a land hit", imp + [[UC + 0x628, 2, 1], [UC + 0x2E, 4, 0x30]]),
+             ("impact, a torpedo hit", imp + [[UC + 0x628, 2, 1], [UC + 0x62A, 1, 1]]),
+             ("impact, a torpedo in Deep Trouble", imp + [[UC + 0x62A, 1, 1], [HOST + 0x90, 2, 8], [0x27056, 2, 0xB]]),
+             ("the blast's frame", imp + [[UC + 0x63A, 2, 0x400], [UC + 0x630, 4, 0x77], [UC + 0x628, 2, 1], [UC + 0x626, 2, 1]]),
+             ("the blast's frame, armed", imp + [[UC + 0x63A, 2, 0x400], [UC + 0x630, 4, 0x77], [UC + 0x62B, 1, 1]]),
+             ("waiting for the blast", imp + [[UC + 0x63A, 2, 0x400], [UC + 0x630, 4, 0x80]]),
+             ("running, a wake", [[UC + 0x639, 1, 0x80], [UC + 0x62C, 4, WO], [WO + 0x42, 4, 0x60]]),
+             ("running on, an old wake", [[UC + 0x639, 1, 0x80], [UC + 0x63B, 1, 0x80], [UC + 0x62C, 4, WO], [WO + 0x42, 4, 0xFFFFE000]]),
+             ("a stopped wake", imp + [[UC + 0x63A, 2, 0x400], [UC + 0x630, 4, 0x10], [UC + 0x62C, 4, WO]])]
+    for name, extra in deton:
+        out.append({"name": "store detonation: " + name, "method": "ordnance_detonation", "args": [UC], "writes": ord_w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("live", []), ("live, landed", imp + [[UC + 0x63A, 2, 0x400]]), ("replay before birth", [[0x21058, 2, 2], [UO + 0x42, 4, 0x90]]),
+                        ("replay at birth", [[0x21058, 2, 2], [UO + 0x42, 4, 0x77]]), ("replay state 1", [[0x21058, 2, 1]]),
+                        ("replay moving", [[0x21058, 2, 2], [UC + 0x60E, 2, 1]] + [[UC + 0x32 + 0x14 + o, 4, v] for o, v in ((0, 0x120100), (4, 0x50), (8, 0xFFF00200))])):
+        out.append({"name": "store tick: " + name, "method": "ordnance_tick", "args": [UC], "writes": ord_w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, args in (("high, near", [0x120000, 0x1000, 0xFFF00000, UC]), ("high, far", [0x150000, 0x1000, 0xFFF00000, UC]),
+                       ("low", [0x120000, 0x40, 0xFFF00000, UC])):
+        out.append({"name": "burning trail attached: " + name, "method": "attach_burning_trail", "args": args, "d0": True, "writes": ord_w,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    btw = tw + [[EC + 0x50, 2, 0x64], [EC + 0x52, 2, 4], [EC + 0x54, 2, 0x3C]]
+    for name, extra in (("state 1", [[EC + 0x36, 2, 1], [EC + 0x34, 2, 0x4B], [EC + 0x56, 2, 0]]),
+                        ("state 2, two detached", [[EC + 0x36, 2, 2], [EC + 0x34, 2, 0x40], [EC + 0x56, 2, 3]]),
+                        ("state 2, lifetime short", [[EC + 0x36, 2, 2], [EC + 0x34, 2, 0x20], [EC + 0x56, 2, 5]]),
+                        ("state 2, lifetime out", [[EC + 0x36, 2, 2], [EC + 0x34, 2, 0], [EC + 0x56, 2, 7]]),
+                        ("state 4", [[EC + 0x36, 2, 4], [EC + 0x34, 2, 9], [EC + 0x56, 2, 0xF]]),
+                        ("state 4, out", [[EC + 0x36, 2, 4], [EC + 0x34, 2, 0]]), ("rewinding", [[EC + 0x36, 2, 2], [0x21058, 2, 1]]),
+                        ("owner retired", [[EC + 0x36, 2, 1], [OWN + 0x17, 1, 2]]), ("state 3", [[EC + 0x36, 2, 3]])):
+        for k in ((0, 1, 2) if name.startswith(("state 1", "state 2, two")) else (0,)):
+            out.append({"name": "burning trail: %s, draw %d" % (name, k), "method": "animate_burning_trail", "args": [EC], "d0": True,
+                        "writes": btw + rngs(k) + extra, "stack_guard": [0x3E000, 0x3F040]})
+    for name, method, extra in (("hidden", "leyte_hide_object_faces", []), ("hidden already", "leyte_hide_object_faces", [[0x3DC13, 1, 2]]),
+                                ("shown", "leyte_show_object_faces", [[0x3DC13, 1, 2], [0x3DC33, 1, 2]]),
+                                ("shown already", "leyte_show_object_faces", [])):
+        out.append({"name": "store faces " + name, "method": method, "args": [UO], "writes": ord_w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "effect empty routine", "method": "leyte_effect_pre_render_none", "args": [EC], "d0": True, "writes": [],
+                "stack_guard": [0x3E000, 0x3F040]})
+    for name, method, extra in ai:
+        out.append({"name": "ai " + name, "method": method, "args": [S], "writes": w + tgt + extra, "d0": method == "ai_bootstrap_climb_phase",
+                    "stack_guard": [0x3E000, 0x3F040]})
+    return out
+
+
+def aircraft_cases_leyte() -> list:
+    """aircraft_tick, update_aircraft_damage_state and add_radar_track on destruction_effect_cases' world (effect
+    templates, a pool whose spawns retire, the retire root): the tick in live play (its state handler stood in; views 3
+    and 1 with a radar track and the designated aircraft, a type-1 aircraft, a nearer one, a downed one) and replaying
+    (before its birth frame, the first frame, a later frame, the gear following the player's); the damage stages (smoke,
+    its two outcomes, the 0x80 stage, the plume, 0x200), a non-player destroyed (the mission 5 / 7 outcomes, the credited
+    tally either sign), the player destroyed live and replaying, newly burning (ground fire), the stall draw, the player
+    bailing out, the stage timer; the radar table full and beyond its range. The trail / plume / fire spawners run through
+    these into the retiring pool; spawn_trail's initialiser table is not reached (nothing spawns)."""
+    dead = next(c for c in cloud_cases() if c["name"] == "spawn pool object: no vertices: retired")["writes"]
+    TMPL = 0x30600
+    common = dead + [[0x2C81A + 4 * k, 4, TMPL] for k in range(4)] + [[0x2CC10, 4, TMPL], [0x2C698, 2, 3], [0x21058, 2, 0],
+                     [0x23D88, 2, 3], [0x21020, 4, 0x77], [0x2C5B4, 4, 0x2C5B4], [0x2CC04, 4, TMPL], [0x2C694, 4, TMPL],
+                     [0x2CC0C, 4, TMPL], [HOST + 0x90, 2, 0], [HOST + 0xD2, 2, 0], [HOST + 0xD6, 2, 5], [HOST + 0xD8, 2, 0],
+                     [0x2705E, 2, 1], [0x2705C, 2, 1]]
+    common += [[0x2C5B8 + 4 * j, 4, (0x9E3779B1 * (j + 9)) & 0xFFFFFFFF] for j in range(55)]
+    S, O, D, P, TGT, TOBJ, TRK = 0x41000, 0x3C000, 0x3C100, 0x3C200, 0x3C300, 0x3C400, 0x3C500
+    MOVER = STAND_INS["controller tick"][0]
+    w = common + [[S, 4, O], [S + 4, 4, D], [D, 2, 3], [S + 0x32, 4, MOVER], [S + 0x612, 2, 5], [S + 0x2E, 4, 0x100],
+                  [S + 8, 4, 0x20], [S + 0xC, 4, 0xFFFFFFF0], [S + 0x10, 4, 0x40], [S + 0x20, 2, 0x10], [S + 0x22, 2, 0x1234],
+                  [S + 0x24, 2, 0x20], [O + 4, 4, 0x10000], [O + 8, 4, 0x2000], [O + 0xC, 4, 0x20000], [O + 0x1C, 4, 0x500],
+                  [O + 0x42, 4, 0x50], [O + 0x10, 2, 0], [O + 0x12, 2, 0], [0x20B28, 4, P], [P + 0x68A, 1, 0xFE],
+                  [0x21070, 4, 0], [0x20744, 4, TRK], [0x2CC2A, 4, 0], [0x2CC1A, 4, 0x1000]]
+    for k in range(0x4B):
+        e = S + 0x36 + 0x14 * k
+        w += [[e, 4, 0x10000 + 0x40 * k], [e + 4, 4, 0x2000 + k], [e + 8, 4, 0x20000 - 0x20 * k], [e + 0xC, 2, 0x100 + k],
+              [e + 0xE, 2, 0x200 + k], [e + 0x10, 2, 0x300 + k], [e + 0x12, 2, 0x0040 if k == 5 else 0x0000]]
+    out = []
+    for name, extra in (("live, view 3", []), ("live, view 1: a radar track, the designated aircraft", [[0x23D88, 2, 1]]),
+                        ("live, view 8, a type-1 aircraft: not designated", [[0x23D88, 2, 8], [D, 2, 1]]),
+                        ("live, view 7, nearer than the designated one", [[0x23D88, 2, 7], [0x21070, 4, TGT], [TGT, 4, TOBJ], [TOBJ + 0x1C, 4, 0x600]]),
+                        ("live, view 1, farther than the designated one, low", [[0x23D88, 2, 1], [0x21070, 4, TGT], [TGT, 4, TOBJ],
+                                                                             [TOBJ + 0x1C, 4, 0x400], [O + 8, 4, 0x500]]),
+                        ("live, downed", [[S + 0x698, 2, 0x400], [S + 0x69A, 2, 0x400]]),
+                        ("live, the player's own", [[0x20B28, 4, S], [0x23D88, 2, 1]]),
+                        ("replaying, before its birth", [[0x21058, 2, 2], [O + 0x42, 4, 0x100]]),
+                        ("replaying, the first frame", [[0x21058, 2, 1]]),
+                        ("replaying, its birth frame, smoking recorded", [[0x21058, 2, 2], [O + 0x42, 4, 0x77], [S + 0x36 + 0x14 * 5 + 0x12, 2, 0x0040]]),
+                        ("replaying, a later frame", [[0x21058, 2, 2]]),
+                        ("replaying, the gear flips with the player's", [[0x21058, 2, 2], [S + 0x36 + 0x14 * 5 + 0x12, 2, 0x2000]]),
+                        ("replaying, the gear flips up", [[0x21058, 2, 2], [S + 0x36 + 0x14 * 5 + 0x12, 2, 0x2020], [P + 0x68A, 1, 0]])):
+        out.append({"name": "aircraft tick: " + name, "method": "aircraft_tick", "args": [S], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("nothing", []), ("smoke starts", [[S + 0x698, 2, 0x40]]),
+                        ("smoke, draws", [[S + 0x698, 2, 0x40], [S + 0x69A, 2, 0x40]]),
+                        ("smoke, other draws", [[S + 0x698, 2, 0x40], [S + 0x69A, 2, 0x40], [0x2C5B4, 4, 0x2C5C4]]),
+                        ("stage 0x80", [[S + 0x698, 2, 0x80], [S + 0x69A, 2, 0x80], [0x2C5B4, 4, 0x2C5E0]]),
+                        ("a plume starts", [[S + 0x698, 2, 0x100]]),
+                        ("a plume, the wing gone", [[S + 0x698, 2, 0x908], [S + 0x69A, 2, 0x100]]),
+                        ("stage 0x200", [[S + 0x698, 2, 0x200]]), ("the stage timer running", [[S + 0x698, 2, 0x40], [S + 0x69C, 2, 3]]),
+                        ("destroyed", [[S + 0x698, 2, 0x400]]),
+                        ("destroyed, credited, tally 2", [[S + 0x698, 2, 0x8400], [O + 0x52, 2, 2]]),
+                        ("destroyed, credited, tally -1", [[S + 0x698, 2, 0x8400], [O + 0x52, 2, 0xFFFF]]),
+                        ("destroyed, mission 5 type 5", [[S + 0x698, 2, 0x400], [D, 2, 5], [HOST + 0x90, 2, 5]]),
+                        ("destroyed, mission 7 type 4", [[S + 0x698, 2, 0x400], [D, 2, 4], [HOST + 0x90, 2, 7]]),
+                        ("destroyed while replaying", [[S + 0x698, 2, 0x400], [0x21058, 2, 2]]),
+                        ("the player destroyed", [[S + 0x698, 2, 0xC00], [0x20B28, 4, S], [0x21070, 4, TGT]]),
+                        ("the player destroyed while replaying, no parachute", [[S + 0x698, 2, 0x400], [0x20B28, 4, S], [0x21058, 2, 2], [0x21064, 4, 0]]),
+                        ("the player destroyed while replaying, a parachute", [[S + 0x698, 2, 0x400], [0x20B28, 4, S], [0x21058, 2, 2],
+                                                                                 [0x21064, 4, 0x3C600], [0x21062, 2, 1]]),
+                        ("burning: ground fire", [[S + 0x698, 2, 0x1000]]),
+                        ("hit: the stall draw", [[S + 0x698, 2, 0x100 * 0 + 0x0100]]),
+                        ("hit, stall draws", [[S + 0x698, 2, 0x0100], [0x2C5B4, 4, 0x2C5F0]]),
+                        ("the player bails out", [[S + 0x698, 2, 0x0001], [0x20B28, 4, S], [0x21064, 4, 0]]),
+                        ("the player bails out with a parachute up", [[S + 0x698, 2, 0x0001], [0x20B28, 4, S], [0x21064, 4, 0x3C600]])):
+        out.append({"name": "aircraft damage: " + name, "method": "update_aircraft_damage_state", "args": [S], "writes": w + extra,
+                    "stack_guard": [0x3E000, 0x3F040]})
+    for k in range(8):
+        cur = [[0x2C5B4, 4, 0x2C5B4 + 4 * k]]
+        for name, extra in (("smoke", [[S + 0x698, 2, 0x40], [S + 0x69A, 2, 0x40]]), ("stage 0x80", [[S + 0x698, 2, 0x80], [S + 0x69A, 2, 0x80]]),
+                            ("a plume", [[S + 0x698, 2, 0x100], [S + 0x69A, 2, 0x100]]), ("hit", [[S + 0x698, 2, 0x0100 * 0 + 0x100]]),
+                            ("a hit bomber", [[S + 0x698, 2, 0x100], [S + 0x32, 4, 0x13158]])):
+            out.append({"name": "aircraft damage draws %d: %s" % (k, name), "method": "update_aircraft_damage_state", "args": [S],
+                        "writes": w + extra + cur, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("stages 0x40 and 0x80 at once", [[S + 0x698, 2, 0xC0], [S + 0x69A, 2, 0xC0]]),
+                        ("stages 0x100 and 0x200 at once", [[S + 0x698, 2, 0x300], [S + 0x69A, 2, 0x300]]),
+                        ("hit: the stall draw succeeds", [[S + 0x698, 2, 0x100], [0x2C614, 4, 0], [0x2C690, 4, 0]])):
+        out.append({"name": "aircraft damage: " + name, "method": "update_aircraft_damage_state", "args": [S],
+                    "writes": w + extra, "stack_guard": [0x3E000, 0x3F040]})
+    out.append({"name": "aircraft damage: the bomber destroyed", "method": "update_aircraft_damage_state", "args": [S],
+                "writes": w + [[S + 0x698, 2, 0x400], [S + 0x32, 4, 0x13158]], "stack_guard": [0x3E000, 0x3F040]})
+    for name, flags in (("flags clear", 0), ("flags kept", 0x41)):
+        out.append({"name": "ordnance factory: " + name, "method": "leyte_create_ordnance_controller", "args": [O],
+                    "writes": [[0x207FC, 4, HOST], [HOST + 0x384, 4, 0x32000], [0x27188, 4, 0], [0x27198, 4, 0], [O + 0x14, 4, flags],
+                               [0x20788, 4, 0x3C900]], "d0": True, "stack_guard": [0x3E000, 0x3F040]})
+    for name, extra in (("a track", []), ("the table full", [[0x2CC2A, 4, 8]]), ("beyond range", [[O + 0x1C, 4, 0x2000]])):
+        out.append({"name": "radar track: " + name, "method": "add_radar_track", "args": [O], "writes": w + extra})
     return out
 
 
