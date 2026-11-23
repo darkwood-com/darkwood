@@ -69,21 +69,49 @@ class SeoService
             if (isset($context['article']) && $context['article'] instanceof Article) {
                 $articleTranslation = $context['article']->getOneTranslation($pageTranslation->getLocale());
                 $articleUrl = $this->pageService->getUrl($articleTranslation, RouterInterface::ABSOLUTE_URL) ?? '';
+                $articleDescription = $this->getArticleDescription((string) $articleTranslation->getContent());
                 $data = array_replace_recursive($data, [
                     'title' => $articleTranslation->getTitle(),
+                    'description' => $articleDescription,
                     'facebook' => [
                         'src' => $this->uploaderHelper->asset($articleTranslation, 'image'),
                         'title' => $articleTranslation->getTitle(),
+                        'description' => $articleDescription,
                         'url' => $articleUrl,
                     ],
                     'twitter' => [
                         'src' => $this->uploaderHelper->asset($articleTranslation, 'image'),
                         'title' => $articleTranslation->getTitle(),
+                        'description' => $articleDescription,
                     ],
                 ]);
             }
 
             return $data;
         }, $force ? INF : null);
+    }
+
+    private function getArticleDescription(string $content): string
+    {
+        $content = preg_replace('/```.*?```/s', '', $content) ?? $content;
+        foreach (preg_split('/\R{2,}/', $content) ?: [] as $paragraph) {
+            $paragraph = trim($paragraph);
+            if ('' === $paragraph || str_starts_with($paragraph, '#') || str_starts_with($paragraph, ':::') || str_starts_with($paragraph, '![')) {
+                continue;
+            }
+
+            $paragraph = preg_replace('/\[([^]]+)]\([^)]+\)/', '$1', $paragraph) ?? $paragraph;
+            $paragraph = strip_tags($paragraph);
+            $paragraph = preg_replace('/[*_`~]+/', '', $paragraph) ?? $paragraph;
+            $paragraph = preg_replace('/\s+/', ' ', $paragraph) ?? $paragraph;
+            $paragraph = trim($paragraph);
+            if ('' === $paragraph) {
+                continue;
+            }
+
+            return mb_strlen($paragraph) > 240 ? mb_substr($paragraph, 0, 237) . '…' : $paragraph;
+        }
+
+        return '';
     }
 }
