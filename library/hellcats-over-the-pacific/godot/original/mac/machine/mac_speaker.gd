@@ -13,6 +13,8 @@ func attach(owner) -> void:
 	var generator := AudioStreamGenerator.new()
 	generator.mix_rate = machine.toolbox.sounds.RATE
 	generator.buffer_length = 0.25
+	# Web defaults to sampled playback, but a live generator can only be streamed.
+	playback_type = AudioServer.PLAYBACK_TYPE_STREAM
 	stream = generator
 	play()
 	_playback = get_stream_playback()
