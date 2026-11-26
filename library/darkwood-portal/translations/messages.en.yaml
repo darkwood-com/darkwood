@@ -14,7 +14,7 @@ common:
   action:
     register: Register
   register:
-    username: Nickname
+    username: Username
     email: Email
     plain_password_first: Password
     plain_password_second: Confirm Password

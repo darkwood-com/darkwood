@@ -14,7 +14,7 @@ common:
   action:
     register: inscrire
   register:
-    username: Pseudo
+    username: Nom d’utilisateur
     email: Email
     plain_password_first: Mot de passe
     plain_password_second: Confirmez le mot de passe

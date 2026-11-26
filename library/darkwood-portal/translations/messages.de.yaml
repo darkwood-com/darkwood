@@ -14,7 +14,7 @@ common:
   action:
     register: registrieren
   register:
-    username: Spitzname
+    username: Benutzername
     email: Email
     plain_password_first: Passwort
     plain_password_second: Bestätigen Sie das Passwort
