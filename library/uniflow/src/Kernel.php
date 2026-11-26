@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\DependencyInjection\Compiler\ShopIdentityVerificationPass;
 use App\DependencyInjection\Compiler\SyliusDefaultUsernameListenerPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,5 +19,6 @@ final class Kernel extends BaseKernel
         parent::build($container);
 
         $container->addCompilerPass(new SyliusDefaultUsernameListenerPass());
+        $container->addCompilerPass(new ShopIdentityVerificationPass());
     }
 }

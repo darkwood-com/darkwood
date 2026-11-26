@@ -68,16 +68,19 @@ final class DarkwoodLoginController extends AbstractController
             if (!$this->allowLinked && $identity['id'] !== $this->pilotUid) {
                 throw new RuntimeException('Identity outside the pilot.');
             }
-            $email = trim($identity['email']);
-            if (!$identity['email_verified'] || !filter_var($email, FILTER_VALIDATE_EMAIL) || !Uuid::isValid($identity['id'])) {
-                throw new RuntimeException('Darkwood did not provide a verified account and email address.');
+            if (!Uuid::isValid($identity['id'])) {
+                throw new RuntimeException('Darkwood did not provide a valid subject.');
             }
 
+            $email = trim($identity['email']);
             $user = $users->findOneBy(['darkwoodUid' => $identity['id']]);
             if (null === $user) {
+                if (!$identity['email_verified'] || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    return $this->loginError('Verify your email address in Darkwood Identity before creating a new Uniflow account.');
+                }
                 $canonicalEmail = mb_strtolower($email);
                 if (null !== $entityManager->getRepository(Customer::class)->findOneBy(['emailCanonical' => $canonicalEmail])) {
-                    throw new RuntimeException('The existing customer requires an explicit identity association.');
+                    return $this->loginError('A Uniflow customer already uses this email. Sign in with the Darkwood account linked to that customer, or contact support.');
                 }
 
                 $customer = new Customer();
@@ -92,10 +95,12 @@ final class DarkwoodLoginController extends AbstractController
                 $entityManager->persist($customer);
                 $entityManager->persist($user);
             }
-            if (!$user->isEnabled() || 0 !== strcasecmp(trim((string) $user->getCustomer()?->getEmail()), $email)) {
-                throw new RuntimeException('The linked account or the verified address is unavailable.');
+            if (!$user->isEnabled()) {
+                return $this->loginError('This Uniflow account is disabled.');
             }
-            if (!$user->isVerified()) {
+            if (!$user->isVerified() && $identity['email_verified']
+                && 0 === strcasecmp(trim((string) $user->getEmail()), $email)
+            ) {
                 $user->setVerifiedAt(new DateTime());
                 $entityManager->flush();
             }
@@ -110,7 +115,12 @@ final class DarkwoodLoginController extends AbstractController
             $logger->error('Uniflow Darkwood login could not complete.', ['type' => $exception::class]);
         }
 
-        $this->addFlash('darkwood_login_error', 'Darkwood sign-in could not complete. Check that your account is linked to Uniflow and that the matching Darkwood address is verified.');
+        return $this->loginError('Darkwood sign-in could not complete. Please try again from Uniflow.');
+    }
+
+    private function loginError(string $message): Response
+    {
+        $this->addFlash('darkwood_login_error', $message);
 
         return $this->redirectToRoute('app_shop_login');
     }
