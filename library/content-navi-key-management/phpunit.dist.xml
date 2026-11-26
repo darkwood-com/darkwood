@@ -16,6 +16,10 @@
         <server name="APP_ENV" value="test" force="true" />
         <server name="KERNEL_CLASS" value="App\Kernel" />
         <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="APP_SECRET" value="test-only-navi-key-management" />
+        <!-- Fixed 32-byte fixture for the local Sodium client. -->
+        <server name="DEV_KMS_KEY" value="AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8" />
+        <server name="KMS_KEY_ID" value="app-key" />
     </php>
 
     <testsuites>
