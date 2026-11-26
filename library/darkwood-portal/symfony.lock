@@ -22,6 +22,9 @@
     "behat/transliterator": {
         "version": "v1.3.0"
     },
+    "darkwood/darkwood-bundle": {
+        "version": "v0.1.0"
+    },
     "darkwood/ia-exception-bundle": {
         "version": "dev-main"
     },

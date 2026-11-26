@@ -38,7 +38,7 @@ import './mermaid.js'
 import './article-reactions.js'
 
 // Shared typography and navigation behavior for the portal skins.
-import '../styles/darkwood-tokens.css';
+import '../../vendor/darkwood/darkwood-bundle/public/tokens.css';
 import '../styles/darkwood-design.css';
 import './portal-theme.js';
 import '../styles/portal-palettes.css';

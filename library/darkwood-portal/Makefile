@@ -84,9 +84,9 @@ phpunit: ## Launch PHPUnit test suite
 	composer phpunit
 
 deploy: ## Deploy app on server
+	composer install --no-dev --optimize-autoloader
 	npm install
 	npm run build
-	composer install --no-dev --optimize-autoloader
 	bin/console doctrine:migration:migrate --no-interaction
 
 # DEFAULT

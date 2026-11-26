@@ -32,6 +32,11 @@
         </div>
     </div>
 
+    {% include '@Darkwood/components/footer.html.twig' with {
+        show_contact: false,
+        active_product: 'darkwood',
+        product_keys: ['darkwood', 'darkwaar'],
+    } only %}
     <p class="col-md-auto ms-md-auto">{{ 'common.footer.copyright'|trans({'%year%': 'now'|date('Y')}) }}</p>
 </div>
     {#<ul>

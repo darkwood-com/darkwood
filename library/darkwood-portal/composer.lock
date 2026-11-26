@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "254a86eb575990e12da5e7085bd45243",
+    "content-hash": "0aca792261ed7ac5d45260cf43dfbd58",
     "packages": [
         {
             "name": "ajgarlag/openid-connect-provider-bundle",
@@ -488,6 +488,52 @@
                 }
             ],
             "time": "2026-10-29T09:13:34+00:00"
+        },
+        {
+            "name": "darkwood/darkwood-bundle",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/darkwood-com/darkwood-bundle.git",
+                "reference": "db4a7385d7a9dd530c1550352adf7a6c55c014cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-bundle/zipball/db4a7385d7a9dd530c1550352adf7a6c55c014cc",
+                "reference": "db4a7385d7a9dd530c1550352adf7a6c55c014cc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.4",
+                "symfony/asset": "^7.4 || ^8.1",
+                "symfony/framework-bundle": "^7.4 || ^8.1",
+                "symfony/translation": "^7.4 || ^8.1",
+                "symfony/twig-bundle": "^7.4 || ^8.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Darkwood\\Bundle\\DarkwoodBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Shared Darkwood Identity templates and design assets for Symfony applications.",
+            "homepage": "https://github.com/darkwood-com/darkwood-bundle",
+            "keywords": [
+                "darkwood",
+                "design",
+                "symfony",
+                "twig"
+            ],
+            "support": {
+                "issues": "https://github.com/darkwood-com/darkwood-bundle/issues",
+                "source": "https://github.com/darkwood-com/darkwood-bundle/tree/v0.1.0"
+            },
+            "time": "2026-11-26T09:37:39+00:00",
+            "published-time": "2026-11-26T09:39:53+00:00"
         },
         {
             "name": "darkwood/ia-exception-bundle",
@@ -16184,5 +16230,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }

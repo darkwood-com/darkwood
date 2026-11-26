@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Ajgarlag\Bundle\OpenIDConnectProviderBundle\AjgarlagOpenIDConnectProviderBundle;
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
+use Darkwood\Bundle\DarkwoodBundle\DarkwoodBundle;
 use Darkwood\IaExceptionBundle\DarkwoodIaExceptionBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
@@ -56,6 +57,7 @@ return [
     LexikJWTAuthenticationBundle::class => ['all' => true],
     AiBundle::class => ['all' => true],
     DarkwoodIaExceptionBundle::class => ['all' => true],
+    DarkwoodBundle::class => ['all' => true],
     McpBundle::class => ['all' => true],
     SchebTwoFactorBundle::class => ['all' => true],
     LeagueOAuth2ServerBundle::class => ['all' => true],
