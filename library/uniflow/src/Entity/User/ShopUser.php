@@ -23,7 +23,7 @@ class ShopUser extends BaseShopUser implements PasswordAuthenticatedUserInterfac
 {
     use UidTrait;
 
-    #[ORM\Column(length: 36, nullable: true)]
+    #[ORM\Column(name: 'darkwood_uid', length: 36, nullable: true)]
     private ?string $darkwoodUid = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
