@@ -26,16 +26,18 @@ final class EmailVerificationTest extends WebTestCase
         $crawler = $client->request('GET', '/register');
         self::assertResponseIsSuccessful();
 
-        $client->submit($crawler->filter('#register_form')->form([
-            'registration[username]' => 'verification_' . $suffix,
-            'registration[email]' => $address,
-            'registration[plainPassword][first]' => $password,
-            'registration[plainPassword][second]' => $password,
-        ]));
-        self::assertSelectorTextContains('#register_form', 'The username can only contain letters A–Z, numbers and hyphens.');
-        self::assertEmailCount(0);
+        foreach (['verification_' . $suffix, ' verification-' . $suffix] as $invalidUsername) {
+            $client->submit($crawler->filter('#register_form')->form([
+                'registration[username]' => $invalidUsername,
+                'registration[email]' => $address,
+                'registration[plainPassword][first]' => $password,
+                'registration[plainPassword][second]' => $password,
+            ]));
+            self::assertSelectorTextContains('#register_form', 'The username can only contain letters A–Z, numbers and hyphens.');
+            self::assertEmailCount(0);
+            $crawler = $client->request('GET', '/register');
+        }
 
-        $crawler = $client->request('GET', '/register');
         $client->submit($crawler->filter('#register_form')->form([
             'registration[username]' => 'Verification-' . $suffix,
             'registration[email]' => $address,
