@@ -9,6 +9,10 @@ class RemotePublicationIdentity
 {
     public function validate(string $provider, string $id, string $url): void
     {
+        if (! filter_var($url, FILTER_VALIDATE_URL)) {
+            throw new InvalidArgumentException('Use the canonical HTTPS public URL.');
+        }
+
         $parts = parse_url($url);
         if (($parts['scheme'] ?? '') !== 'https' || isset($parts['user']) || isset($parts['pass']) || isset($parts['port']) || isset($parts['query']) || isset($parts['fragment'])) {
             throw new InvalidArgumentException('Use the canonical HTTPS public URL.');

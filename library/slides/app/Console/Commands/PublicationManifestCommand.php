@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Support\PublicPublicationManifest;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
 class PublicationManifestCommand extends Command
 {
@@ -19,21 +18,10 @@ class PublicationManifestCommand extends Command
 
             return self::FAILURE;
         }
-        if ($file = $this->option('import')) {
-            $data = json_decode(file_get_contents($file), true, flags: JSON_THROW_ON_ERROR);
-            DB::beginTransaction();
-            try {
-                $manifest->import($data, (bool) $this->option('accept-metadata-update'));
-                $this->option('dry-run') ? DB::rollBack() : DB::commit();
-            } catch (\Throwable $error) {
-                DB::rollBack();
-                throw $error;
-            }
-        }
-        $data = $manifest->snapshot();
-        if ($this->option('export') && ! $this->option('dry-run')) {
-            $manifest->export(resource_path('data/publications.json'));
-        }
+        $file = $this->option('import');
+        $data = $file
+            ? $manifest->import($manifest->read($file), (bool) $this->option('accept-metadata-update'), (bool) $this->option('dry-run'))
+            : $manifest->snapshot();
         $this->line(json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
         return self::SUCCESS;

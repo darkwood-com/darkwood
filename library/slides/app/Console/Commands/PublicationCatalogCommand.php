@@ -9,11 +9,11 @@ class PublicationCatalogCommand extends Command
 {
     protected $signature = 'publications:catalog';
 
-    protected $description = 'Synchronize canonical UUIDs and inventory compiled presentations';
+    protected $description = 'Inventory the canonical UUIDs and compiled presentations';
 
     public function handle(PresentationCatalog $catalog): int
     {
-        $rows = $catalog->synchronize();
+        $rows = $catalog->compiledEntries();
         $this->line(json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         return self::SUCCESS;

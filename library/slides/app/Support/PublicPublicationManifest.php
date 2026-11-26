@@ -2,20 +2,29 @@
 
 namespace App\Support;
 
-use App\Models\ExternalPublication;
-use App\Models\PublicationAttempt;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use InvalidArgumentException;
+use RuntimeException;
 
-/** Explicit public projection of the operational database, not a second job journal. */
 class PublicPublicationManifest
 {
     public const FIELDS = ['slide_id', 'provider', 'remote_id', 'remote_url', 'source_hash', 'published_at', 'last_synced_at'];
 
+    public function __construct(private ?string $path = null) {}
+
     public function snapshot(): array
     {
-        $data = ['schema_version' => 1, 'publications' => ExternalPublication::whereNotNull('remote_id')
-            ->orderBy('slide_id')->orderBy('provider')->get()->map(fn ($p) => array_replace(array_fill_keys(self::FIELDS, null), array_intersect_key($p->toArray(), array_flip(self::FIELDS))))->all()];
+        return $this->read($this->path ?? resource_path('data/publications.json'));
+    }
+
+    public function read(string $path): array
+    {
+        $decoded = json_decode(File::get($path), flags: JSON_THROW_ON_ERROR);
+        if (! $decoded instanceof \stdClass || ! is_array($decoded->publications ?? null)) {
+            throw new InvalidArgumentException('Invalid public manifest schema.');
+        }
+        $data = (array) $decoded;
+        $data['publications'] = array_map(static fn ($row) => $row instanceof \stdClass ? (array) $row : $row, $decoded->publications);
         $this->validate($data);
 
         return $data;
@@ -66,68 +75,109 @@ class PublicPublicationManifest
         }
     }
 
-    public function export(string $path): void
+    public function associate(string $id, string $provider, string $remoteId, string $url, bool $confirmed): array
     {
-        $data = $this->snapshot();
-        if (! is_dir(dirname($path))) {
-            mkdir(dirname($path), 0755, true);
+        if (! $confirmed) {
+            throw new InvalidArgumentException('The editorial correspondence must be explicitly confirmed.');
         }
-        $temporary = tempnam(dirname($path), '.publications-');
+
+        $row = ['slide_id' => $id, 'provider' => $provider, 'remote_id' => $remoteId, 'remote_url' => $url];
+        $next = $this->merge(['schema_version' => 1, 'publications' => [$row]], true);
+
+        return collect($next['publications'])->first(fn (array $publication): bool => $publication['slide_id'] === $id && $publication['provider'] === $provider);
+    }
+
+    public function import(array $data, bool $acceptMetadataUpdate = false, bool $dryRun = false): array
+    {
+        return $this->merge($data, $acceptMetadataUpdate, $dryRun);
+    }
+
+    private function merge(array $data, bool $acceptMetadataUpdate, bool $dryRun = false): array
+    {
+        $this->validate($data);
+        if ($dryRun) {
+            return $this->merged($this->snapshot(), $data, $acceptMetadataUpdate);
+        }
+        if (app()->isProduction()) {
+            throw new RuntimeException('Edit the public manifest in the authoring checkout and deploy it with Git.');
+        }
+
+        $path = $this->path ?? resource_path('data/publications.json');
+        $lock = fopen(dirname($path).'/.'.basename($path).'.lock', 'c');
+        if ($lock === false) {
+            throw new RuntimeException('Unable to open the public manifest lock.');
+        }
+
         try {
-            file_put_contents($temporary, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n");
-            chmod($temporary, 0644);
-            if (! rename($temporary, $path)) {
-                throw new \RuntimeException('Public manifest export failed.');
+            if (! flock($lock, LOCK_EX)) {
+                throw new RuntimeException('Unable to lock the public manifest.');
+            }
+            $current = $this->snapshot();
+            $next = $this->merged($current, $data, $acceptMetadataUpdate);
+            if ($next !== $current) {
+                $this->write($path, $next);
+            }
+
+            return $next;
+        } finally {
+            fclose($lock);
+        }
+    }
+
+    private function merged(array $current, array $incoming, bool $acceptMetadataUpdate): array
+    {
+        $publications = [];
+        foreach ($current['publications'] as $row) {
+            $publications[$row['slide_id'].':'.$row['provider']] = $row;
+        }
+
+        foreach ($incoming['publications'] as $row) {
+            $key = $row['slide_id'].':'.$row['provider'];
+            $previous = $publications[$key] ?? null;
+            if ($previous !== null) {
+                if ($previous['remote_id'] !== $row['remote_id']) {
+                    throw new InvalidArgumentException('Remote identity conflict; no association overwritten.');
+                }
+                if (isset($previous['source_hash']) && array_key_exists('source_hash', $row) && $row['source_hash'] === null) {
+                    throw new InvalidArgumentException('A known published hash cannot be erased by an import.');
+                }
+                if (! $acceptMetadataUpdate
+                    && ($previous['remote_url'] !== $row['remote_url']
+                        || (isset($previous['source_hash'], $row['source_hash']) && $previous['source_hash'] !== $row['source_hash']))) {
+                    throw new InvalidArgumentException('PDF hash or public URL conflict; review before accepting metadata updates.');
+                }
+                foreach (['published_at', 'last_synced_at'] as $field) {
+                    if (isset($previous[$field]) && ! isset($row[$field])) {
+                        unset($row[$field]);
+                    }
+                }
+            }
+
+            $publications[$key] = array_replace(array_fill_keys(self::FIELDS, null), $previous ?? [], $row);
+        }
+
+        ksort($publications);
+        $next = ['schema_version' => 1, 'publications' => array_values($publications)];
+        $this->validate($next);
+
+        return $next;
+    }
+
+    private function write(string $path, array $data): void
+    {
+        $temporary = tempnam(dirname($path), '.publications-');
+        if ($temporary === false) {
+            throw new RuntimeException('Unable to stage the public manifest.');
+        }
+        try {
+            $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n";
+            if (file_put_contents($temporary, $json) !== strlen($json) || ! chmod($temporary, 0644) || ! rename($temporary, $path)) {
+                throw new RuntimeException('Public manifest write failed.');
             }
         } finally {
             if (is_file($temporary)) {
                 unlink($temporary);
             }
         }
-    }
-
-    public function import(array $data, bool $acceptMetadataUpdate = false): void
-    {
-        $this->validate($data);
-        DB::transaction(function () use ($data, $acceptMetadataUpdate) {
-            app(PresentationCatalog::class)->synchronize();
-            foreach ($data['publications'] as $row) {
-                $p = ExternalPublication::firstOrNew(['slide_id' => $row['slide_id'], 'provider' => $row['provider']]);
-                if ($p->exists) {
-                    $p = ExternalPublication::whereKey($p->id)->lockForUpdate()->firstOrFail();
-                }
-                if ($p->remote_id && $p->remote_id !== $row['remote_id']) {
-                    throw new InvalidArgumentException('Remote identity conflict; no association overwritten.');
-                }
-                if ($p->source_hash && empty($row['source_hash'])) {
-                    throw new InvalidArgumentException('A known published hash cannot be erased by an import.');
-                }
-                if ($p->remote_id && $p->source_hash && $p->source_hash !== ($row['source_hash'] ?? null) && ! $acceptMetadataUpdate) {
-                    throw new InvalidArgumentException('PDF hash conflict; review before accepting metadata updates.');
-                }
-                if ($p->remote_id && $p->remote_url !== $row['remote_url'] && ! $acceptMetadataUpdate) {
-                    throw new InvalidArgumentException('Public URL conflict; review before accepting metadata updates.');
-                }
-                foreach (['published_at', 'last_synced_at'] as $field) {
-                    if ($p->$field && empty($row[$field])) {
-                        unset($row[$field]); // Unknown imported dates never erase known attestations.
-                    }
-                }
-                if ($p->exists && PublicationAttempt::where('external_publication_id', $p->id)->where('active_slot', 1)->exists()) {
-                    throw new InvalidArgumentException('Unresolved local attempt; reconcile before importing.');
-                }
-                $owner = ExternalPublication::where('provider', $row['provider'])->where('remote_id', $row['remote_id'])->first();
-                if ($owner && $owner->slide_id !== $row['slide_id']) {
-                    throw new InvalidArgumentException('Remote identity already belongs to another presentation.');
-                }
-                $p->fill(array_intersect_key($row, array_flip(self::FIELDS)));
-                if (! $p->exists || ! $p->getOriginal('remote_id')) {
-                    $p->status = 'imported_public_manifest';
-                }
-                if ($p->isDirty()) {
-                    $p->save();
-                }
-            }
-        });
     }
 }

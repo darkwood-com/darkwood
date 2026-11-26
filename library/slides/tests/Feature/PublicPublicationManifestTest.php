@@ -2,38 +2,55 @@
 
 namespace Tests\Feature;
 
-use App\Models\ExternalPublication;
-use App\Models\PublicationAttempt;
 use App\Support\PresentationCatalog;
 use App\Support\PublicPublicationManifest;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use InvalidArgumentException;
+use RuntimeException;
 use Tests\TestCase;
 
-// Manifest imports render the complete catalogue; isolate that engine state under the 128M budget.
-#[RunTestsInSeparateProcesses]
 class PublicPublicationManifestTest extends TestCase
 {
-    use RefreshDatabase;
+    private string $directory;
+    private string $manifestPath;
+    private PublicPublicationManifest $manifest;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->directory = sys_get_temp_dir().'/slides-manifest-'.bin2hex(random_bytes(8));
+        mkdir($this->directory, 0700);
+        $this->manifestPath = $this->directory.'/publications.json';
+        file_put_contents($this->manifestPath, '{"schema_version":1,"publications":[]}');
+        $this->manifest = new PublicPublicationManifest($this->manifestPath);
+        $this->app->instance(PublicPublicationManifest::class, $this->manifest);
+    }
+
+    protected function tearDown(): void
+    {
+        File::deleteDirectory($this->directory);
+        parent::tearDown();
+    }
 
     private function data(): array
     {
         return ['schema_version' => 1, 'publications' => [[
             'slide_id' => app(PresentationCatalog::class)->entries()[0]['id'],
-            'provider' => 'speakerdeck', 'remote_id' => str_repeat('a', 32),
+            'provider' => 'speakerdeck',
+            'remote_id' => str_repeat('a', 32),
             'remote_url' => 'https://speakerdeck.com/matyo91/example',
-            'source_hash' => str_repeat('b', 64), 'published_at' => null, 'last_synced_at' => null,
+            'source_hash' => str_repeat('b', 64),
+            'published_at' => null,
+            'last_synced_at' => null,
         ]]];
     }
 
     public function test_repository_public_manifest_has_only_approved_fields_and_canonical_identities(): void
     {
         $file = resource_path('data/publications.json');
-        $data = json_decode(file_get_contents($file), true, flags: JSON_THROW_ON_ERROR);
-        app(PublicPublicationManifest::class)->validate($data);
+        $data = $this->manifest->read($file);
         foreach ($data['publications'] as $row) {
             $this->assertSame([], array_diff(array_keys($row), PublicPublicationManifest::FIELDS));
         }
@@ -41,157 +58,137 @@ class PublicPublicationManifestTest extends TestCase
         $this->assertStringNotContainsString('artifact_path', file_get_contents($file));
     }
 
-    public function test_import_restores_public_mapping_on_a_fresh_deployment_and_is_idempotent(): void
+    public function test_import_and_export_are_idempotent_without_database_or_network(): void
     {
         Http::preventStrayRequests();
-        $service = app(PublicPublicationManifest::class);
-        $data = $this->data();
-        $service->import($data);
-        $p = ExternalPublication::firstOrFail();
-        $id = $p->id;
-        $p->update(['last_error' => 'fixture-private-detail']);
-        $service->import($data);
-        $this->assertDatabaseCount('presentations', 33);
-        $this->assertDatabaseCount('external_publications', 1);
-        $this->assertDatabaseCount('publication_attempts', 0);
-        $this->assertSame($id, $p->fresh()->id);
-        $this->assertSame('fixture-private-detail', $p->fresh()->last_error);
-        $this->assertSame($data, $service->snapshot());
+        $data = $this->manifest->read(resource_path('data/publications.json'));
+
+        $this->artisan('publications:manifest', ['--import' => resource_path('data/publications.json')])->assertSuccessful();
+        $this->assertSame($data, $this->manifest->snapshot());
+        $inode = fileinode($this->manifestPath);
+
+        $this->manifest->import($data);
+        $this->artisan('publications:manifest', ['--export' => true])->assertSuccessful();
+        clearstatcache(true, $this->manifestPath);
+        $this->assertSame($inode, fileinode($this->manifestPath));
+        $this->assertSame($data, $this->manifest->snapshot());
     }
 
-    public function test_import_dry_run_rolls_back_catalog_and_mapping(): void
+    public function test_dry_run_previews_changes_without_writing_any_files(): void
     {
-        $file = tempnam(sys_get_temp_dir(), 'public-manifest-');
+        $file = $this->directory.'/incoming.json';
+        file_put_contents($file, json_encode($this->data(), JSON_THROW_ON_ERROR));
+        $before = file_get_contents($this->manifestPath);
+
+        $this->artisan('publications:manifest', ['--import' => $file, '--dry-run' => true])->assertSuccessful();
+        $this->assertSame($before, file_get_contents($this->manifestPath));
+        $this->assertFileDoesNotExist($this->directory.'/.publications.json.lock');
+    }
+
+    public function test_association_requires_confirmation_and_never_claims_pdf_equality(): void
+    {
+        $row = $this->data()['publications'][0];
         try {
-            file_put_contents($file, json_encode($this->data()));
-            $this->artisan('publications:manifest', ['--import' => $file, '--dry-run' => true])->assertSuccessful();
-            $this->assertDatabaseCount('presentations', 0);
-            $this->assertDatabaseCount('external_publications', 0);
-        } finally {
-            unlink($file);
+            $this->manifest->associate($row['slide_id'], $row['provider'], $row['remote_id'], $row['remote_url'], false);
+            $this->fail('Expected explicit confirmation.');
+        } catch (InvalidArgumentException) {
+            $this->assertSame([], $this->manifest->snapshot()['publications']);
         }
-    }
 
-    public function test_repository_manifest_rebuilds_all_public_associations_without_a_private_backup(): void
-    {
-        Http::preventStrayRequests();
-        $originalStorage = $this->app->storagePath();
-        $emptyStorage = sys_get_temp_dir().'/manifest-install-'.uniqid();
-        $file = resource_path('data/publications.json');
-        $data = json_decode(file_get_contents($file), true, flags: JSON_THROW_ON_ERROR);
-
-        try {
-            $this->app->useStoragePath($emptyStorage);
-            $this->assertDatabaseCount('presentations', 0);
-            $this->assertDatabaseCount('external_publications', 0);
-            $this->assertDirectoryDoesNotExist($emptyStorage);
-
-            $this->artisan('publications:manifest', ['--import' => $file, '--dry-run' => true])->assertSuccessful();
-            $this->assertDatabaseCount('presentations', 0);
-            $this->assertDatabaseCount('external_publications', 0);
-
-            $this->artisan('publications:manifest', ['--import' => $file])->assertSuccessful();
-            $this->assertDatabaseCount('presentations', count(app(PresentationCatalog::class)->entries()));
-            $this->assertDatabaseCount('external_publications', count($data['publications']));
-            $this->assertSame($data, app(PublicPublicationManifest::class)->snapshot());
-            $ids = ExternalPublication::orderBy('slide_id')->orderBy('provider')->pluck('id')->all();
-
-            $this->artisan('publications:manifest', ['--import' => $file])->assertSuccessful();
-            $this->assertSame($ids, ExternalPublication::orderBy('slide_id')->orderBy('provider')->pluck('id')->all());
-            $this->assertSame($data, app(PublicPublicationManifest::class)->snapshot());
-            $this->assertDatabaseCount('publication_attempts', 0);
-            $this->assertDirectoryDoesNotExist($emptyStorage);
-        } finally {
-            $this->app->useStoragePath($originalStorage);
-            File::deleteDirectory($emptyStorage);
+        for ($i = 0; $i < 2; ++$i) {
+            $saved = $this->manifest->associate($row['slide_id'], $row['provider'], $row['remote_id'], $row['remote_url'], true);
+            $this->assertNull($saved['source_hash']);
+            $this->assertNull($saved['last_synced_at']);
         }
+        $this->assertCount(1, $this->manifest->snapshot()['publications']);
     }
 
-    public function test_import_never_replaces_remote_identity_or_silently_overwrites_hash(): void
+    public function test_import_requires_review_for_metadata_changes_and_cannot_replace_an_identity(): void
     {
-        $service = app(PublicPublicationManifest::class);
-        $data = $this->data();
-        $service->import($data);
-        $changed = $data;
-        $changed['publications'][0]['source_hash'] = str_repeat('c', 64);
+        $original = $this->data();
+        $original['publications'][0]['published_at'] = '2026-01-01T00:00:00Z';
+        $this->manifest->import($original);
+        $change = $this->data();
+        $change['publications'][0]['source_hash'] = str_repeat('c', 64);
+
         try {
-            $service->import($changed);
+            $this->manifest->import($change);
             $this->fail('Expected hash conflict.');
-        } catch (\InvalidArgumentException) {
-            $this->assertSame(str_repeat('b', 64), ExternalPublication::first()->source_hash);
+        } catch (InvalidArgumentException) {
+            $this->assertSame($original, $this->manifest->snapshot());
         }
-        $service->import($changed, true);
-        $this->assertSame(str_repeat('c', 64), ExternalPublication::first()->source_hash);
-        $changed['publications'][0]['remote_id'] = str_repeat('d', 32);
-        $this->expectException(\InvalidArgumentException::class);
-        $service->import($changed, true);
-    }
 
-    public function test_import_cannot_erase_an_unresolved_local_upload(): void
-    {
-        $service = app(PublicPublicationManifest::class);
-        $data = $this->data();
-        $service->import($data);
-        PublicationAttempt::create(['external_publication_id' => ExternalPublication::first()->id,
-            'source_hash' => str_repeat('c', 64), 'artifact_path' => '/private/fixture.pdf', 'operation' => 'replace', 'active_slot' => 1]);
-        $this->expectException(\InvalidArgumentException::class);
-        $service->import($data, true);
-    }
-
-    public function test_public_schema_rejects_private_fields_credentials_and_duplicate_remote_ids(): void
-    {
-        $data = $this->data();
-        $cases = [];
-        $bad = $data;
-        $bad['publications'][0]['last_error'] = 'fixture-private-detail';
-        $cases[] = $bad;
-        $bad = $data;
-        $bad['publications'][0]['published_at'] = '2026-02-31T00:00:00Z';
-        $cases[] = $bad;
-        $bad = $data;
-        $bad['publications'][0]['remote_url'] = 'https://example:fixture@speakerdeck.com/matyo91/example';
-        $cases[] = $bad;
-        $bad = $data;
-        $bad['publications'][] = $bad['publications'][0];
-        $bad['publications'][1]['slide_id'] = app(PresentationCatalog::class)->entries()[1]['id'];
-        $cases[] = $bad;
-        foreach ($cases as $case) {
+        $this->manifest->import($change, true);
+        $saved = $this->manifest->snapshot();
+        $this->assertSame('2026-01-01T00:00:00Z', $saved['publications'][0]['published_at']);
+        foreach (['source_hash' => null, 'remote_id' => str_repeat('d', 32)] as $key => $value) {
+            $conflict = $change;
+            $conflict['publications'][0][$key] = $value;
             try {
-                app(PublicPublicationManifest::class)->validate($case);
-                $this->fail('Unsafe public manifest accepted.');
-            } catch (\InvalidArgumentException) {
-                $this->assertTrue(true);
+                $this->manifest->import($conflict, true);
+                $this->fail('Expected identity or hash conflict.');
+            } catch (InvalidArgumentException) {
+                $this->assertSame($saved, $this->manifest->snapshot());
             }
         }
     }
 
-    public function test_diagnostics_omit_operational_errors_paths_and_attempts(): void
+    public function test_invalid_publication_fields_and_duplicates_are_rejected(): void
     {
-        app(PublicPublicationManifest::class)->import($this->data());
-        $p = ExternalPublication::first();
-        $p->update(['last_error' => 'fixture-private-detail']);
-        PublicationAttempt::create(['external_publication_id' => $p->id, 'source_hash' => str_repeat('c', 64), 'artifact_path' => '/private/fixture.pdf', 'operation' => 'replace', 'active_slot' => 1]);
-        Artisan::call('publications:diagnose', ['--json' => true]);
-        $output = Artisan::output();
-        $this->assertStringNotContainsString('fixture-private-detail', $output);
-        $this->assertStringNotContainsString('/private/fixture.pdf', $output);
-        $data = json_decode($output, true);
-        $this->assertSame(1, $data['active_attempt_count']);
-        $this->assertSame(0, $data['orphan_count']);
-        $this->assertCount(65, $data['missing']);
+        $data = $this->data();
+        $cases = [];
+        foreach ([
+            'last_error' => 'private detail',
+            'published_at' => '2026-02-31T00:00:00Z',
+            'remote_url' => 'https://name:secret@speakerdeck.com/matyo91/example',
+            'slide_id' => '00000000-0000-4000-8000-000000000000',
+            'provider' => 'unknown',
+            'remote_id' => null,
+        ] as $key => $value) {
+            $bad = $data;
+            $bad['publications'][0][$key] = $value;
+            $cases[] = $bad;
+        }
+        $bad = $data;
+        $bad['publications'][] = $bad['publications'][0];
+        $cases[] = $bad;
+        $bad['publications'][1]['slide_id'] = app(PresentationCatalog::class)->entries()[1]['id'];
+        $cases[] = $bad;
+        foreach ($cases as $case) {
+            try {
+                $this->manifest->import($case);
+                $this->fail('Unsafe public manifest accepted.');
+            } catch (InvalidArgumentException) {
+                $this->assertSame([], $this->manifest->snapshot()['publications']);
+            }
+        }
     }
 
-    public function test_import_preserves_known_dates_and_never_erases_a_published_hash(): void
+    public function test_import_cannot_claim_another_presentations_remote_id(): void
     {
-        $service = app(PublicPublicationManifest::class);
         $data = $this->data();
-        $service->import($data);
-        $p = ExternalPublication::first();
-        $p->update(['published_at' => '2026-01-01T00:00:00Z']);
-        $service->import($data);
-        $this->assertSame('2026-01-01', $p->fresh()->published_at->format('Y-m-d'));
-        $data['publications'][0]['source_hash'] = null;
-        $this->expectException(\InvalidArgumentException::class);
-        $service->import($data, true);
+        $this->manifest->import($data);
+        $data['publications'][0]['slide_id'] = app(PresentationCatalog::class)->entries()[1]['id'];
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->manifest->import($data);
+    }
+
+    public function test_object_is_not_accepted_in_place_of_the_publications_list(): void
+    {
+        file_put_contents($this->manifestPath, '{"schema_version":1,"publications":{}}');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->manifest->snapshot();
+    }
+
+    public function test_production_only_permits_reads_and_dry_runs(): void
+    {
+        $this->app->instance('env', 'production');
+        $this->assertSame($this->data(), $this->manifest->import($this->data(), dryRun: true));
+        $this->assertSame([], $this->manifest->snapshot()['publications']);
+
+        $this->expectException(RuntimeException::class);
+        $this->manifest->import($this->data());
     }
 }

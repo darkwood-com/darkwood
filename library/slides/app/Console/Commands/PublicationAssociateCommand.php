@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Presentation;
-use App\Support\PublicationAssociations;
+use App\Support\PublicPublicationManifest;
 use Illuminate\Console\Command;
 
 class PublicationAssociateCommand extends Command
@@ -12,10 +11,10 @@ class PublicationAssociateCommand extends Command
 
     protected $description = 'Associate an existing remote deck without uploading or asserting PDF equality';
 
-    public function handle(PublicationAssociations $associations): int
+    public function handle(PublicPublicationManifest $manifest): int
     {
-        $publication = $associations->associate(Presentation::findOrFail($this->argument('id')), $this->argument('provider'), $this->argument('remote_id'), $this->argument('url'), (bool) $this->option('confirmed-correspondence'));
-        $this->line($publication->toJson(JSON_PRETTY_PRINT));
+        $publication = $manifest->associate($this->argument('id'), $this->argument('provider'), $this->argument('remote_id'), $this->argument('url'), (bool) $this->option('confirmed-correspondence'));
+        $this->line(json_encode($publication, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
 
         return self::SUCCESS;
     }

@@ -22,15 +22,23 @@ token ni cookie et ne téléversent aucun document.
 
 ## Identités et persistance
 
-- `resources/presentations.json` contient les UUID stables ;
-- `resources/data/publications.json` est la projection publique portable ;
-- la base Laravel conserve les associations déployées ;
-- les artefacts PDF restent sous `storage/` et hors de Git.
+- `resources/presentations.json` fixe les UUID et les sources Blade.
+- `resources/data/publications.json` fait foi pour les associations publiques.
+- Les artefacts PDF restent sous `storage/`, hors de Git.
 
-Le manifeste refuse les champs privés, doublons, UUID inconnus, URLs contenant
-des credentials et réattributions d'identité distante. Son import est
-transactionnel et idempotent. Il ne prouve pas que le PDF distant correspond au
-hash déclaré : cette attestation relève du processus d'exploitation extérieur.
+`publications:manifest` et `--export` lisent et impriment le manifeste validé.
+`--import=FICHIER --dry-run` prévisualise la fusion. Enlever `--dry-run` écrit
+sur le poste d’édition sous verrou et par remplacement atomique. Vérifier le
+diff, puis committer et déployer le fichier. Le serveur de publication accepte
+les lectures et simulations.
+
+L’import est idempotent. Il refuse les UUID inconnus, fournisseurs ou URLs
+invalides, champs privés, doublons par présentation ou par identité distante,
+ainsi que tout changement d’ID. Un changement d’URL ou de hash déjà connu exige
+`--accept-metadata-update`. Une date ou un hash omis conserve la valeur connue.
+Un hash publié ne peut pas être effacé. L’attestation du PDF distant relève
+du processus d’exploitation privé.
+
 
 ## Export PDF
 
@@ -53,4 +61,4 @@ rester complet, ordonné et lié à la révision courante.
 La sélection du compte, la vérification Speaker Deck/SlideShare, l'upload, la
 reprise et les procédures opérateur ne font pas partie de l'application
 publique. Après une publication contrôlée, l'interface `publications:associate`
-ou l'import d'un manifeste approuvé suffit à restituer les liens publics.
+ou l’import d’un manifeste approuvé enregistre les liens publics dans le fichier à versionner.

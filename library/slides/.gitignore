@@ -77,3 +77,6 @@ id_dsa
 
 # Canonical public identities remain versionable.
 !/resources/data/publications.json
+
+/resources/data/.publications.json.lock
+/resources/data/.publications-*

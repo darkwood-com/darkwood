@@ -2,7 +2,7 @@
 
 ## Catalogue et lecteur
 
-`resources/presentations.json` définit chaque présentation par un UUID, un `source_slug` et un titre. `PresentationCatalog::entries()` valide ce catalogue sans écrire dans la base. `routes/web.php` l'utilise pour le catalogue `/` et les routes `/slides/SLUG`.
+`resources/presentations.json` définit chaque présentation par un UUID, un `source_slug` et un titre. `PresentationCatalog::entries()` valide ce catalogue et calcule le nombre de slides à partir des sources compilées. `routes/web.php` l'utilise pour le catalogue `/` et les routes `/slides/SLUG`.
 
 Les sources sont dans `resources/views/pages/slides/`. Le compilateur du paquet `wendelladriel/slidewire` assemble les composants Blade et fournit les frames du lecteur. Les composants partagés résident dans `resources/views/components/darkwood/`, les styles dans `resources/css/` et les interactions dans `resources/js/`.
 
@@ -10,18 +10,17 @@ Les UUID identifient les présentations, indépendamment des titres, slugs et ID
 
 ## Données publiques de publication
 
-La base Laravel restitue les associations publiques :
+`resources/data/publications.json` est le registre versionné des associations
+publiques. Il contient les UUID, fournisseurs, identifiants et URLs distants
+ainsi que les attestations publiques facultatives. La validation impose une
+association par `(slide_id, provider)` et un propriétaire canonique par
+`(provider, remote_id)`. Les commandes d’écriture valident le résultat puis
+remplacent le fichier sous verrou. Les procédures fournisseur et les journaux
+opérateur relèvent de Slides Core. Voir [l’interface publique](publications.md).
 
-- `presentations` : catalogue compilé et nombre de slides ;
-- `external_publications` : association d'une présentation à un provider ;
-- `publication_attempts` : compatibilité avec les données historiques.
-
-Les contraintes SQL imposent une association par `(slide_id, provider)` et un
-propriétaire canonique par `(provider, remote_id)`.
-
-`resources/data/publications.json` est une projection publique explicitement
-exportée depuis la base. Les procédures fournisseur et les journaux opérateur
-appartiennent au plan de contrôle privé. Voir [l'interface publique](publications.md).
+Les sessions et le cache Laravel utilisent les fichiers. La file est configurée
+en mode synchrone et Slides ne soumet aucun job. Le catalogue, le lecteur et
+les commandes de publication démarrent avec la connexion SQL désactivée.
 
 `resources/data/presentation-metadata.json` fournit les titres de couverture, auteurs et autres métadonnées publiques utilisés par les rapports. Ces informations ne portent aucune identité de publication distante.
 

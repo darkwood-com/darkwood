@@ -10,7 +10,7 @@ npm test
 npm run build
 ```
 
-Les tests Laravel couvrent le catalogue, le générateur, les composants, les identités, les contraintes de mapping, les réservations, l'import, la sauvegarde privée et les contrôles d'accès. Les tests JavaScript couvrent les règles de jeux et les surfaces fonctionnelles.
+Les tests Laravel couvrent le catalogue, le générateur, les composants, les identités, les contraintes du manifeste, l’import et les contrôles d’accès. La suite Laravel fixe `DB_CONNECTION=disabled` afin de détecter tout retour d’une dépendance SQL. Les tests JavaScript couvrent les règles de jeux et les surfaces fonctionnelles.
 
 ## Lecteur et rendu
 
