@@ -17,11 +17,15 @@ final class EmailVerificationTest extends WebTestCase
 {
     public function testRegistrationRequiresTheMailedProofBeforeLogin(): void
     {
-        $client = self::createClient([], ['HTTPS' => 'on', 'HTTP_HOST' => 'darkwood.localhost']);
+        $suffix = bin2hex(random_bytes(5));
+        $client = self::createClient([], [
+            'HTTPS' => 'on',
+            'HTTP_HOST' => 'darkwood.localhost',
+            'REMOTE_ADDR' => '2001:db8::' . implode(':', str_split($suffix, 4)),
+        ]);
         $entityManager = $client->getContainer()->get(EntityManagerInterface::class);
         $this->seedPages($entityManager);
 
-        $suffix = bin2hex(random_bytes(5));
         $address = 'verification-' . $suffix . '@example.com';
         $password = 'QA-' . $suffix . '-password';
         $crawler = $client->request('GET', '/register');
