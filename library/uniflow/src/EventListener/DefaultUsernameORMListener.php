@@ -17,5 +17,5 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 
 final class DefaultUsernameORMListener
 {
-    public function onFlush(OnFlushEventArgs $onFlushEventArgs) {}
+    public function onFlush(OnFlushEventArgs $onFlushEventArgs): void {}
 }

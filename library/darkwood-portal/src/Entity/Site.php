@@ -92,7 +92,7 @@ class Site implements Stringable
         return $this->active;
     }
 
-    public function setActive(mixed $active)
+    public function setActive(mixed $active): void
     {
         $this->active = $active;
     }
@@ -159,7 +159,7 @@ class Site implements Stringable
     /**
      * @param int $position
      */
-    public function setPosition($position)
+    public function setPosition($position): void
     {
         $this->position = $position;
     }
@@ -177,7 +177,7 @@ class Site implements Stringable
     /**
      * Remove pages.
      */
-    public function removePage(Page $pages)
+    public function removePage(Page $pages): void
     {
         $this->pages->removeElement($pages);
     }
@@ -200,7 +200,7 @@ class Site implements Stringable
     /**
      * @param File|UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImage(File $image): void
     {
         $this->image = $image;
         if ($image) {
@@ -217,7 +217,7 @@ class Site implements Stringable
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }

@@ -34,7 +34,7 @@ class CommonWebTestCase extends WebTestCase
         return $client;
     }
 
-    public function validatePageUrl($url)
+    public function validatePageUrl($url): void
     {
         $client = $this->getHostClient();
         $client->request('GET', $url);
@@ -44,7 +44,7 @@ class CommonWebTestCase extends WebTestCase
         self::assertTrue($client->getResponse()->isSuccessful(), sprintf('Page url %s response is not successful', $request->getUri()));
     }
 
-    public function validateW3CUrl($url)
+    public function validateW3CUrl($url): void
     {
         /*$client = $this->getHostClient();
         $filesystem = $client->getContainer()->get('filesystem');

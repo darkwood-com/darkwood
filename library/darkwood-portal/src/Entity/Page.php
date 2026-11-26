@@ -113,7 +113,7 @@ class Page implements Stringable
     /**
      * Remove translations.
      */
-    public function removeTranslation(PageTranslation $translations)
+    public function removeTranslation(PageTranslation $translations): void
     {
         $this->translations->removeElement($translations);
         $translations->setPage(null);
@@ -151,7 +151,7 @@ class Page implements Stringable
         return $this->ref;
     }
 
-    public function setRef(mixed $ref)
+    public function setRef(mixed $ref): void
     {
         $this->ref = $ref;
     }
@@ -186,7 +186,7 @@ class Page implements Stringable
     /**
      * Remove comment.
      */
-    public function removeComment(Comment $comment)
+    public function removeComment(Comment $comment): void
     {
         $this->comments->removeElement($comment);
         $comment->setPage(null);

@@ -13,9 +13,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[AsEventListener(event: KernelEvents::RESPONSE)]
 final readonly class OpenIdDiscoverySubscriber
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
-    }
+    public function __construct(private UrlGeneratorInterface $urlGenerator) {}
 
     public function __invoke(ResponseEvent $event): void
     {

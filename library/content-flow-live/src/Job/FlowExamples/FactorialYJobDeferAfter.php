@@ -16,7 +16,7 @@ class FactorialYJobDeferAfter implements JobInterface
     {
         [$data, $defer] = $args;
 
-        return $defer(static function ($complete) use ($data, $defer) {
+        return $defer(static function ($complete) use ($data, $defer): void {
             printf("...* #%d - Job 4 : Result for factorialYJobDefer(%d) = %d\n", $data->id, $data->number, $data->result);
 
             $complete([new YFlowData($data->id, $data->number), $defer]);

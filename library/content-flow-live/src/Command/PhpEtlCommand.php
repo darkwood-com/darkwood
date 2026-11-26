@@ -65,7 +65,7 @@ class PhpEtlCommand extends Command
             yield static function (Pipeline $pipeline) {
                 $pipeline->transform(
                     StepCode::fromString('transformer'),
-                    new class() implements TransformerInterface,
+                    new class implements TransformerInterface,
                         FlushableInterface {
                         /** @return Generator<null|ResultBucketInterface<mixed>> */
                         public function transform(): Generator
@@ -90,7 +90,7 @@ class PhpEtlCommand extends Command
             yield static function (Pipeline $pipeline) {
                 $pipeline->load(
                     StepCode::fromString('loader'),
-                    new class() implements LoaderInterface,
+                    new class implements LoaderInterface,
                         FlushableInterface {
                         /** @return Generator<null|ResultBucketInterface<mixed>> */
                         public function load(): Generator
@@ -112,7 +112,7 @@ class PhpEtlCommand extends Command
 
                 return $pipeline;
             };
-            yield static function (Pipeline $pipeline) {
+            yield static function (Pipeline $pipeline): void {
                 foreach ($pipeline->walk() as $items) {
                     printf("%s\n", implode(',', $items));
                 }

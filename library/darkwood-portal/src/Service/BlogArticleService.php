@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Article;
-use App\Enum\ArticleType;
 use App\Entity\ArticleTranslation;
+use App\Enum\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\ArticleTranslationRepository;
 use DateTime;
@@ -73,7 +73,7 @@ class BlogArticleService
     /**
      * Remove one articleTranslation.
      */
-    public function remove(Article $article)
+    public function remove(Article $article): void
     {
         $this->em->remove($article);
         $this->em->flush();
@@ -162,7 +162,7 @@ class BlogArticleService
         return $articleTranslation;
     }
 
-    public function removeTranslation(ArticleTranslation $articleTs)
+    public function removeTranslation(ArticleTranslation $articleTs): void
     {
         $nbT = count($articleTs->getArticle()->getTranslations());
         if ($nbT <= 1) {

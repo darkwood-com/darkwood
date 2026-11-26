@@ -15,7 +15,7 @@ final class LoginPageTest extends CommonWebTestCase
     /**
      * @param array{0: string, 1: string, 2: string} $expectedLinks
      */
-    #[DataProvider('localizedLoginPages')]
+    #[DataProvider('provideCanonicalLoginFormAndLocalizedLinksCases')]
     public function testCanonicalLoginFormAndLocalizedLinks(string $path, array $expectedLinks): void
     {
         $client = $this->getHostClient();
@@ -41,7 +41,7 @@ final class LoginPageTest extends CommonWebTestCase
     /**
      * @return iterable<string, array{string, array{string, string, string}}>
      */
-    public static function localizedLoginPages(): iterable
+    public static function provideCanonicalLoginFormAndLocalizedLinksCases(): iterable
     {
         yield 'French' => [
             '/fr/login',

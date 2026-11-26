@@ -6,9 +6,12 @@ namespace App\Repository;
 
 use App\Entity\ApiKey;
 use App\Entity\ApiKeyUsage;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\Persistence\ManagerRegistry;
+
+use function sprintf;
 
 /**
  * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\ApiKeyUsage>
@@ -20,7 +23,7 @@ final class ApiKeyUsageRepository extends ServiceEntityRepository
         parent::__construct($registry, ApiKeyUsage::class);
     }
 
-    public function incrementIfBelowLimit(ApiKey $apiKey, \DateTimeImmutable $date, int $limit): bool
+    public function incrementIfBelowLimit(ApiKey $apiKey, DateTimeImmutable $date, int $limit): bool
     {
         $connection = $this->getEntityManager()->getConnection();
         $table = $this->getClassMetadata()->getTableName();
@@ -31,7 +34,7 @@ final class ApiKeyUsageRepository extends ServiceEntityRepository
             ? 'INSERT IGNORE INTO %s (api_key_id, usage_date, usage_count) VALUES (:apiKeyId, :usageDate, 0)'
             : 'INSERT INTO %s (api_key_id, usage_date, usage_count) VALUES (:apiKeyId, :usageDate, 0) ON CONFLICT (api_key_id, usage_date) DO NOTHING';
         $connection->executeStatement(
-            \sprintf(
+            sprintf(
                 $insert,
                 $table
             ),
@@ -42,7 +45,7 @@ final class ApiKeyUsageRepository extends ServiceEntityRepository
         );
 
         $updated = $connection->executeStatement(
-            \sprintf(
+            sprintf(
                 'UPDATE %s
                  SET usage_count = usage_count + 1
                  WHERE api_key_id = :apiKeyId

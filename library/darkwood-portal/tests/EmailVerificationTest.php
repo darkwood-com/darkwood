@@ -10,7 +10,8 @@ use App\Entity\Site;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use SymfonyCasts\Bundle\VerifyEmail\Factory\UriSignerFactory;
+use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\Mime\Email;
 
 final class EmailVerificationTest extends WebTestCase
 {
@@ -47,11 +48,11 @@ final class EmailVerificationTest extends WebTestCase
         self::assertResponseRedirects('/register/resend-email', 303);
         self::assertEmailCount(1);
         $email = self::getMailerMessage();
-        self::assertNotNull($email);
+        self::assertInstanceOf(Email::class, $email);
         self::assertEmailAddressContains($email, 'To', $address);
         self::assertEmailTextBodyContains($email, 'https://darkwood.localhost/register/verify-email#');
         self::assertEmailSubjectContains($email, 'Confirm your email address');
-        $text = $email->getTextBody();
+        $text = $email->getTextBody() ?? '';
         self::assertSame(1, preg_match('~https://[^\s]+#([^\s]+)~', $text, $parts));
         $user = $client->getContainer()->get(EntityManagerInterface::class)->getRepository(User::class)->findOneBy(['email' => $address]);
         self::assertInstanceOf(User::class, $user);
@@ -73,7 +74,8 @@ final class EmailVerificationTest extends WebTestCase
 
         // Model the end of the per-address cooldown without waiting five minutes.
         $client->getContainer()->get('limiter.email_verification_address')
-            ->create(hash('sha256', $address))->reset();
+            ->create(hash('sha256', $address))->reset()
+        ;
         $crawler = $client->request('GET', '/register/resend-email');
         $client->submit($crawler->selectButton('Resend the verification link')->form(['email' => $address]));
         self::assertResponseRedirects('/register/resend-email', 303);
@@ -85,7 +87,7 @@ final class EmailVerificationTest extends WebTestCase
         parse_str($parts[1], $pastQuery);
         $pastQuery['expires'] = time() - 60;
         unset($pastQuery['signature']);
-        $signer = (new UriSignerFactory($client->getContainer()->getParameter('kernel.secret'), 'signature'))->createUriSigner();
+        $signer = new UriSigner($client->getContainer()->getParameter('kernel.secret'), 'signature');
         $expired = $signer->sign('https://darkwood.localhost/register/verify-email?' . http_build_query($pastQuery));
         $expiredProof = parse_url($expired, PHP_URL_QUERY);
 
@@ -133,8 +135,8 @@ final class EmailVerificationTest extends WebTestCase
         self::assertResponseRedirects();
         self::assertEmailCount(1);
         $message = self::getMailerMessage();
-        self::assertNotNull($message);
-        self::assertSame(1, preg_match('~/resetting/reset/[a-f0-9]{64}\.[a-f0-9]{64}~', $message->getHtmlBody(), $match));
+        self::assertInstanceOf(Email::class, $message);
+        self::assertSame(1, preg_match('~/resetting/reset/[a-f0-9]{64}\.[a-f0-9]{64}~', $message->getHtmlBody() ?? '', $match));
 
         $crawler = $client->request('GET', $match[0]);
         $client->submit($crawler->filter('#resetting_form')->form([

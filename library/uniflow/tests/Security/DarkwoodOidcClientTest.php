@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Security\DarkwoodOidcClient;
+use LogicException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -51,7 +52,7 @@ final class DarkwoodOidcClientTest extends TestCase
 
                     return ['id_token' => $token . '.' . $encode($signature)];
                 })(),
-                default => throw new \LogicException('Unexpected HTTP request.'),
+                default => throw new LogicException('Unexpected HTTP request.'),
             };
 
             return new MockResponse(json_encode($payload, JSON_THROW_ON_ERROR));

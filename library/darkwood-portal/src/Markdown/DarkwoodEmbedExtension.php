@@ -14,6 +14,10 @@ use League\CommonMark\Util\HtmlElement;
 use League\CommonMark\Util\Xml;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function in_array;
+use function is_array;
+use function is_string;
+
 final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeRendererInterface
 {
     public const string FRAME_POLICY = "frame-src https://darkwaar.com https://heroclip.darkwood.com https://djmatyo91.darkwood.com https://uniflow.io https://geo.darkwood.com; object-src 'none'";

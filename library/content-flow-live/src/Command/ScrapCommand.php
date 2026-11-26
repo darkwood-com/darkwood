@@ -93,7 +93,7 @@ class ScrapCommand extends Command
                 return $urlDatas;
             };
             yield [new ScrapUrlJob(), null, new FlattenIpStrategy()];
-            yield function (UrlContent $urlData) use ($io) {
+            yield function (UrlContent $urlData) use ($io): void {
                 $filesystem = new Filesystem();
                 $scrapDir = $this->cacheDir . '/scrap';
 
@@ -129,7 +129,7 @@ class ScrapCommand extends Command
                     return $users;
                 };
             });
-            yield static function ($users) use ($io) {
+            yield static function ($users) use ($io): void {
                 $io->writeln(sprintf('ScrapYJob      : Finished scrapping %d', count($users)));
             };
 
@@ -138,20 +138,20 @@ class ScrapCommand extends Command
                 return function ($args) use ($rec) {
                     [$data, $defer] = $args;
 
-                    return $defer(function ($complete, $async) use ($data, $defer, $rec) {
+                    return $defer(function ($complete, $async) use ($data, $defer, $rec): void {
                         [$i, $users] = $data;
                         if ($i === null) {
                             $response = $this->httpClient->request('GET', 'https://jsonplaceholder.typicode.com/users');
                             Fiber::suspend();
                             $users = $response->toArray();
 
-                            $async($rec([[0, $users], $defer]), static function ($result) use ($complete) {
+                            $async($rec([[0, $users], $defer]), static function ($result) use ($complete): void {
                                 $complete($result);
                             });
                         } elseif ($i >= 0 && $i < count($users)) {
                             $users[$i] = $this->getUserData($users[$i], $this->httpClient);
 
-                            $async($rec([[$i + 1, $users], $defer]), static function ($result) use ($complete) {
+                            $async($rec([[$i + 1, $users], $defer]), static function ($result) use ($complete): void {
                                 $complete($result);
                             });
                         } else {
@@ -160,7 +160,7 @@ class ScrapCommand extends Command
                     });
                 };
             }), null, null, null, new DeferAsyncHandler()];
-            yield static function ($users) use ($io) {
+            yield static function ($users) use ($io): void {
                 $io->writeln(sprintf('ScrapYDeferJob : Finished scrapping %d', count($users)));
             };
         }, ['driver' => $driver]);

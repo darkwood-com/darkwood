@@ -42,7 +42,7 @@ class ContactService
     /**
      * Remove one contactTranslation.
      */
-    public function remove(Contact $contact)
+    public function remove(Contact $contact): void
     {
         $this->em->remove($contact);
         $this->em->flush();

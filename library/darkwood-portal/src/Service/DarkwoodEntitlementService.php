@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Entitlement;
+use App\Entity\User;
 use App\Entity\UserEntitlement;
+use App\Enum\EntitlementStatus;
+use App\Repository\EntitlementRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\User;
-use App\Repository\EntitlementRepository;
+
+use function in_array;
 
 /**
  * Minimal entitlement service: premium only if active entitlement exists for the user.
@@ -44,11 +47,12 @@ class DarkwoodEntitlementService
             ->andWhere('grant.validFrom <= :now')
             ->andWhere('grant.validUntil IS NULL OR grant.validUntil > :now')
             ->setParameter('user', $user)
-            ->setParameter('status', \App\Enum\EntitlementStatus::Active)
+            ->setParameter('status', EntitlementStatus::Active)
             ->setParameter('now', $now)
             ->orderBy('definition.code', 'ASC')
             ->getQuery()
-            ->getScalarResult();
+            ->getScalarResult()
+        ;
 
         $codes = array_values(array_map(static fn (array $row): string => (string) $row['code'], $rows));
         if ($user->isPremium() || $this->entitlementRepository->findActivePremiumForUser($user) instanceof Entitlement) {

@@ -39,7 +39,8 @@ class ResettingController extends AbstractController
         private readonly EntityManagerInterface $entityManager,
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly MailerInterface $mailer,
-        #[Autowire('%kernel.secret%')] private readonly string $secret,
+        #[Autowire('%kernel.secret%')]
+        private readonly string $secret,
     ) {}
 
     /**

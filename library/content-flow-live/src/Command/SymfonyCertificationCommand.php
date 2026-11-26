@@ -270,7 +270,7 @@ class SymfonyCertificationCommand extends Command
                 };
             });
         }, [
-            'errorJob' => static function (RuntimeException $exception) {
+            'errorJob' => static function (RuntimeException $exception): void {
                 throw $exception->getPrevious();
             },
         ]);

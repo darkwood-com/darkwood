@@ -137,7 +137,7 @@ class Article implements Stringable
     /**
      * Remove translations.
      */
-    public function removeTranslation(ArticleTranslation $translations)
+    public function removeTranslation(ArticleTranslation $translations): void
     {
         $this->translations->removeElement($translations);
         $translations->setArticle(null);
@@ -182,7 +182,7 @@ class Article implements Stringable
     /**
      * Remove comments.
      */
-    public function removeComment(CommentArticle $comments)
+    public function removeComment(CommentArticle $comments): void
     {
         $this->comments->removeElement($comments);
         $comments->setArticle(null);
@@ -212,13 +212,13 @@ class Article implements Stringable
     /**
      * Remove tags.
      */
-    public function removeTag(Tag $tag)
+    public function removeTag(Tag $tag): void
     {
         $this->tags->removeElement($tag);
         $tag->removeArticle($this);
     }
 
-    public function removeAllTags()
+    public function removeAllTags(): void
     {
         foreach ($this->getTags() as $tag) {
             $this->removeTag($tag);

@@ -123,7 +123,7 @@ class Potion
     /**
      * @param File|UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImage(File $image): void
     {
         $this->image = $image;
         if ($image) {
@@ -140,7 +140,7 @@ class Potion
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -174,7 +174,7 @@ class Potion
     /**
      * Remove player.
      */
-    public function removePlayer(Player $player)
+    public function removePlayer(Player $player): void
     {
         $this->players->removeElement($player);
     }
@@ -200,7 +200,7 @@ class Potion
     /**
      * Remove currentPotionPlayer.
      */
-    public function removeCurrentPotionPlayer(Player $currentPotionPlayer)
+    public function removeCurrentPotionPlayer(Player $currentPotionPlayer): void
     {
         $this->currentPotionPlayers->removeElement($currentPotionPlayer);
     }

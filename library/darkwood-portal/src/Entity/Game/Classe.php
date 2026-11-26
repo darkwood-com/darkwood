@@ -81,7 +81,7 @@ class Classe
     /**
      * @param int $strength
      */
-    public function setStrength($strength)
+    public function setStrength($strength): void
     {
         $this->strength = $strength;
     }
@@ -94,7 +94,7 @@ class Classe
     /**
      * @param int $dexterity
      */
-    public function setDexterity($dexterity)
+    public function setDexterity($dexterity): void
     {
         $this->dexterity = $dexterity;
     }
@@ -107,7 +107,7 @@ class Classe
     /**
      * @param int $vitality
      */
-    public function setVitality($vitality)
+    public function setVitality($vitality): void
     {
         $this->vitality = $vitality;
     }
@@ -120,7 +120,7 @@ class Classe
     /**
      * @param File|UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImage(File $image): void
     {
         $this->image = $image;
         if ($image) {
@@ -137,7 +137,7 @@ class Classe
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -171,7 +171,7 @@ class Classe
     /**
      * Remove player.
      */
-    public function removePlayer(Player $player)
+    public function removePlayer(Player $player): void
     {
         $this->players->removeElement($player);
     }

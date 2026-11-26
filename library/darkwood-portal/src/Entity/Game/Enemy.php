@@ -237,7 +237,7 @@ class Enemy
     /**
      * @param File|UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImage(File $image): void
     {
         $this->image = $image;
         if ($image) {
@@ -254,7 +254,7 @@ class Enemy
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -288,7 +288,7 @@ class Enemy
     /**
      * Remove lastFightPlayer.
      */
-    public function removeLastFightPlayer(Player $lastFightPlayer)
+    public function removeLastFightPlayer(Player $lastFightPlayer): void
     {
         $this->lastFightPlayers->removeElement($lastFightPlayer);
     }
@@ -314,7 +314,7 @@ class Enemy
     /**
      * Remove maxFightPlayer.
      */
-    public function removeMaxFightPlayer(Player $maxFightPlayer)
+    public function removeMaxFightPlayer(Player $maxFightPlayer): void
     {
         $this->maxFightPlayers->removeElement($maxFightPlayer);
     }
@@ -340,7 +340,7 @@ class Enemy
     /**
      * Remove currentEnemyPlayer.
      */
-    public function removeCurrentEnemyPlayer(Player $currentEnemyPlayer)
+    public function removeCurrentEnemyPlayer(Player $currentEnemyPlayer): void
     {
         $this->currentEnemyPlayers->removeElement($currentEnemyPlayer);
     }

@@ -48,7 +48,7 @@ class CarbonImageCommand extends Command
 
         $flow = $this->flowFactory->create(static function () use ($io) {
             yield new CarbonImageJob(__DIR__ . '/../../data/carbon-image/carbon-config.json');
-            yield static function (CarbonImage $carbonImage) use ($io) {
+            yield static function (CarbonImage $carbonImage) use ($io): void {
                 $io->info(sprintf('Finished %s %s', $carbonImage->code, $carbonImage->url));
             };
         }, ['driver' => $driver]);

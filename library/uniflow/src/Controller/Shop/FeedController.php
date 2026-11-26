@@ -53,7 +53,7 @@ class FeedController extends AbstractController
             'token' => null,
         ]);
         $response->headers->remove('X-Frame-Options');
-        $response->headers->set('Content-Security-Policy', "frame-ancestors https://blog.darkwood.com https://darkwood.com");
+        $response->headers->set('Content-Security-Policy', 'frame-ancestors https://blog.darkwood.com https://darkwood.com');
 
         return $response;
     }

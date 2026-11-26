@@ -292,7 +292,7 @@ class DarkwoodGameService
         return $regeneration;
     }
 
-    public function chooseClasse(User $user, $classeId)
+    public function chooseClasse(User $user, $classeId): void
     {
         $classeId = (int) $classeId;
         $classe = $this->getClasses();
@@ -307,7 +307,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function addPoint(User $user, $type)
+    public function addPoint(User $user, $type): void
     {
         $points = $this->getInfo($user);
         $points = $points['points'];
@@ -337,7 +337,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function equipGem(User $user, $index)
+    public function equipGem(User $user, $index): void
     {
         $index = (int) $index;
         $player = $this->getOrCreate($user);
@@ -352,7 +352,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function throwGem(User $user, $index)
+    public function throwGem(User $user, $index): void
     {
         $index = (int) $index;
         $player = $this->getOrCreate($user);
@@ -370,7 +370,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function regen(User $user, $key)
+    public function regen(User $user, $key): void
     {
         $player = $this->getOrCreate($user);
         $regeneration = $this->getRegenerations($user);
@@ -396,7 +396,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function nextArmor(User $user)
+    public function nextArmor(User $user): void
     {
         $player = $this->getOrCreate($user);
         $armorInfo = $this->getArmorInfo($player->getCurrentDefaultArmor());
@@ -407,7 +407,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function previousArmor(User $user)
+    public function previousArmor(User $user): void
     {
         $player = $this->getOrCreate($user);
         $armorInfo = $this->getArmorInfo($player->getCurrentDefaultArmor());
@@ -418,7 +418,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function buyArmor(User $user)
+    public function buyArmor(User $user): void
     {
         $player = $this->getOrCreate($user);
         $armor = $player->getCurrentDefaultArmor();
@@ -441,7 +441,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function sellArmor(User $user)
+    public function sellArmor(User $user): void
     {
         $player = $this->getOrCreate($user);
         $armorInfo = $this->getArmorInfo($player->getArmor());
@@ -452,7 +452,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function nextPotion(User $user)
+    public function nextPotion(User $user): void
     {
         $player = $this->getOrCreate($user);
         $potionInfo = $this->getPotionInfo($player->getCurrentDefaultPotion());
@@ -463,7 +463,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function previousPotion(User $user)
+    public function previousPotion(User $user): void
     {
         $player = $this->getOrCreate($user);
         $potionInfo = $this->getPotionInfo($player->getCurrentDefaultPotion());
@@ -474,7 +474,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function buyPotion(User $user)
+    public function buyPotion(User $user): void
     {
         $player = $this->getOrCreate($user);
         $potion = $player->getCurrentDefaultPotion();
@@ -491,7 +491,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function nextSword(User $user)
+    public function nextSword(User $user): void
     {
         $player = $this->getOrCreate($user);
         $swordInfo = $this->getSwordInfo($player->getCurrentDefaultSword());
@@ -502,7 +502,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function previousSword(User $user)
+    public function previousSword(User $user): void
     {
         $player = $this->getOrCreate($user);
         $swordInfo = $this->getSwordInfo($player->getCurrentDefaultSword());
@@ -513,7 +513,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function buySword(User $user)
+    public function buySword(User $user): void
     {
         $player = $this->getOrCreate($user);
         $sword = $player->getCurrentDefaultSword();
@@ -542,7 +542,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function sellSword(User $user)
+    public function sellSword(User $user): void
     {
         $player = $this->getOrCreate($user);
         $swordInfo = $this->getSwordInfo($player->getSword());
@@ -559,7 +559,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function nextEnemy(User $user)
+    public function nextEnemy(User $user): void
     {
         $player = $this->getOrCreate($user);
         $enemyInfo = $this->getEnemyInfo($player->getCurrentEnemy() ?: $this->enemyRepository->findDefault());
@@ -570,7 +570,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function previousEnemy(User $user)
+    public function previousEnemy(User $user): void
     {
         $player = $this->getOrCreate($user);
         $enemyInfo = $this->getEnemyInfo($player->getCurrentEnemy() ?: $this->enemyRepository->findDefault());
@@ -581,7 +581,7 @@ class DarkwoodGameService
         $this->em->flush();
     }
 
-    public function setLastFight(User $user)
+    public function setLastFight(User $user): void
     {
         $player = $this->getOrCreate($user);
         if (!$player->getLastFight() instanceof Enemy) {
@@ -610,7 +610,7 @@ class DarkwoodGameService
         $this->getActiveSession()->set($sessionKey, $value);
     }
 
-    public function fight(User $user, $action)
+    public function fight(User $user, $action): void
     {
         $player = $this->getOrCreate($user);
         $playerInfo = $this->getInfo($user);
@@ -794,7 +794,7 @@ class DarkwoodGameService
         $this->getActiveSession()->set($sessionDailyKey, $value);
     }
 
-    public function fightDaily(User $user)
+    public function fightDaily(User $user): void
     {
         $player = $this->getOrCreate($user);
         $playerInfo = $this->getInfo($user);

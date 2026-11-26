@@ -89,7 +89,7 @@ class PageService
     /**
      * Remove one entity.
      */
-    public function remove(Page $page)
+    public function remove(Page $page): void
     {
         $this->em->remove($page);
         $this->em->flush();
@@ -167,7 +167,7 @@ class PageService
         return $entity;
     }
 
-    public function removeTranslation(PageTranslation $pageTs)
+    public function removeTranslation(PageTranslation $pageTs): void
     {
         $nbT = count($pageTs->getPage()->getTranslations());
         if ($nbT <= 1) {

@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
-use Darkwood\Bundle\DarkwoodBundle\DarkwoodBundle;
 use BabDev\PagerfantaBundle\BabDevPagerfantaBundle;
 use Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle;
+use Darkwood\Bundle\DarkwoodBundle\DarkwoodBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;

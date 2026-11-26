@@ -43,7 +43,7 @@ class AppContentService
     /**
      * Remove one appTranslation.
      */
-    public function remove(AppContent $appContent)
+    public function remove(AppContent $appContent): void
     {
         $this->em->remove($appContent);
         $this->em->flush();

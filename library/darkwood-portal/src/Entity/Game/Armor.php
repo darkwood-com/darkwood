@@ -144,7 +144,7 @@ class Armor
     /**
      * @param File|UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImage(File $image): void
     {
         $this->image = $image;
         if ($image) {
@@ -161,7 +161,7 @@ class Armor
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -195,7 +195,7 @@ class Armor
     /**
      * Remove player.
      */
-    public function removePlayer(Player $player)
+    public function removePlayer(Player $player): void
     {
         $this->players->removeElement($player);
     }
@@ -221,7 +221,7 @@ class Armor
     /**
      * Remove currentArmorPlayer.
      */
-    public function removeCurrentArmorPlayer(Player $currentArmorPlayer)
+    public function removeCurrentArmorPlayer(Player $currentArmorPlayer): void
     {
         $this->currentArmorPlayers->removeElement($currentArmorPlayer);
     }

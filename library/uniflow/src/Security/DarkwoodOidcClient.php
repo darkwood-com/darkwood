@@ -25,7 +25,9 @@ use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+use function count;
 use function is_array;
+use function is_int;
 use function is_string;
 use function parse_url;
 use function sprintf;
@@ -166,8 +168,7 @@ final readonly class DarkwoodOidcClient
 
         $cacheKey = $this->discoveryCacheKey($issuer);
 
-        /** @var array{authorization_endpoint: string, token_endpoint: string, jwks_uri: string, issuer: string} $discovery */
-        $discovery = $this->cache->get($cacheKey, function (ItemInterface $item) use ($issuer): array {
+        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($issuer): array {
             $item->expiresAfter(3600);
             $response = $this->httpClient->request('GET', $issuer . '/.well-known/openid-configuration', ['max_redirects' => 0, 'timeout' => 8]);
             /** @var array<string, mixed> $config */
@@ -204,8 +205,6 @@ final readonly class DarkwoodOidcClient
                 'issuer' => rtrim($config['issuer'], '/'),
             ];
         });
-
-        return $discovery;
     }
 
     /**
@@ -216,7 +215,7 @@ final readonly class DarkwoodOidcClient
         $jws = $this->verifyIdTokenSignature($idToken, $jwksUri);
 
         /** @var array<string, mixed> $claims */
-        $claims = json_decode((string) $jws->getPayload(), true, 512, \JSON_THROW_ON_ERROR);
+        $claims = json_decode((string) $jws->getPayload(), true, 512, JSON_THROW_ON_ERROR);
 
         $clock = new Clock();
         $checkers = new ClaimCheckerManager([

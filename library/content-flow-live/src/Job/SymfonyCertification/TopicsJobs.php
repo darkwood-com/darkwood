@@ -33,11 +33,11 @@ class TopicsJobs implements JobInterface
         $crawler = new Crawler($html);
         $topics = [];
 
-        $crawler->filter($selector)->each(static function ($node) use (&$topics) {
+        $crawler->filter($selector)->each(static function ($node) use (&$topics): void {
             $topic = $node->filter('h3')->text();
             $items = [];
 
-            $node->filter('ul li')->each(static function ($subNode) use (&$items) {
+            $node->filter('ul li')->each(static function ($subNode) use (&$items): void {
                 $items[] = $subNode->text();
             });
 

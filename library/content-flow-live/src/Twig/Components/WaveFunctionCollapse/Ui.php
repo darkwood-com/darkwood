@@ -49,7 +49,7 @@ final class Ui
     {
         $flow = $this->flowFactory->create(function () {
             yield new CollapseJob();
-            yield function ($nextBoard) {
+            yield function ($nextBoard): void {
                 if ($nextBoard === null) {
                     $this->board->startOver();
                 } else {

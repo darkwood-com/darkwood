@@ -59,8 +59,8 @@ class HomeController extends AbstractController
     }
 
     #[Route('/{_locale}/imagine/flush', name: 'admin_imagine_flush')]
-    public function imagineFlush() {}
+    public function imagineFlush(): void {}
 
     #[Route('/{_locale}/imagine/generate', name: 'admin_imagine_generate')]
-    public function imagineGenerate() {}
+    public function imagineGenerate(): void {}
 }

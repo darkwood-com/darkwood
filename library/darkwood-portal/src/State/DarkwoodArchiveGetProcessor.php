@@ -8,13 +8,14 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Dto\DarkwoodArchiveIdInput;
 use App\Service\DarkwoodMcpForwarderService;
+use DateTimeImmutable;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final readonly class DarkwoodArchiveGetProcessor implements ProcessorInterface
 {
     public function __construct(
         private DarkwoodMcpForwarderService $forwarder,
-    ) {
-    }
+    ) {}
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
@@ -23,9 +24,9 @@ final readonly class DarkwoodArchiveGetProcessor implements ProcessorInterface
             $id = $data->id;
         }
 
-        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $id);
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $id);
         if (false === $date || $date->format('Y-m-d') !== $id) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException('Archive id must be an actual YYYY-MM-DD date.');
+            throw new BadRequestHttpException('Archive id must be an actual YYYY-MM-DD date.');
         }
 
         return $this->forwarder->forward('api_darkwood_archive_get', 'GET', null, ['id' => $id]);

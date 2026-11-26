@@ -9,6 +9,7 @@ use App\Enum\PaymentProvider;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use LogicException;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'external_purchase')]
@@ -62,18 +63,45 @@ class ExternalPurchase
         $this->updatedAt = $this->createdAt;
     }
 
-    public function getId(): ?int { return $this->id; }
-    public function getProvider(): PaymentProvider { return $this->provider; }
-    public function getProviderPurchaseId(): string { return $this->providerPurchaseId; }
-    public function getUser(): ?User { return $this->user; }
-    public function getState(): CommercialState { return $this->state; }
-    public function getValidUntil(): ?DateTimeImmutable { return $this->validUntil; }
-    public function isVerified(): bool { return $this->verifiedAt instanceof DateTimeImmutable; }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getProvider(): PaymentProvider
+    {
+        return $this->provider;
+    }
+
+    public function getProviderPurchaseId(): string
+    {
+        return $this->providerPurchaseId;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function getState(): CommercialState
+    {
+        return $this->state;
+    }
+
+    public function getValidUntil(): ?DateTimeImmutable
+    {
+        return $this->validUntil;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->verifiedAt instanceof DateTimeImmutable;
+    }
 
     public function associate(User $user): void
     {
         if ($this->user instanceof User && $this->user !== $user) {
-            throw new \LogicException('External purchase is already associated with another Darkwood account.');
+            throw new LogicException('External purchase is already associated with another Darkwood account.');
         }
         $this->user = $user;
         $this->updatedAt = new DateTimeImmutable();

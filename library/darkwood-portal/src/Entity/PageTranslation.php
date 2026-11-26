@@ -239,7 +239,7 @@ class PageTranslation implements Stringable
         return $this->content;
     }
 
-    public function setContent(mixed $content)
+    public function setContent(mixed $content): void
     {
         $this->content = $content;
     }
@@ -252,7 +252,7 @@ class PageTranslation implements Stringable
     /**
      * @param File|UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImage(File $image): void
     {
         $this->image = $image;
         if ($image) {
@@ -269,7 +269,7 @@ class PageTranslation implements Stringable
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -282,7 +282,7 @@ class PageTranslation implements Stringable
     /**
      * @param File|UploadedFile $thumbnailImage
      */
-    public function setThumbnailImage(File $thumbnailImage)
+    public function setThumbnailImage(File $thumbnailImage): void
     {
         $this->thumbnailImage = $thumbnailImage;
         if ($thumbnailImage) {
@@ -299,12 +299,12 @@ class PageTranslation implements Stringable
     /**
      * @param string $thumbnailImageName
      */
-    public function setThumbnailImageName($thumbnailImageName)
+    public function setThumbnailImageName($thumbnailImageName): void
     {
         $this->thumbnailImageName = $thumbnailImageName;
     }
 
-    public function setImgAlt(mixed $imgAlt)
+    public function setImgAlt(mixed $imgAlt): void
     {
         $this->imgAlt = $imgAlt;
     }
@@ -314,7 +314,7 @@ class PageTranslation implements Stringable
         return $this->imgAlt;
     }
 
-    public function setImgTitle(mixed $imgTitle)
+    public function setImgTitle(mixed $imgTitle): void
     {
         $this->imgTitle = $imgTitle;
     }
@@ -324,7 +324,7 @@ class PageTranslation implements Stringable
         return $this->imgTitle;
     }
 
-    public function setSeoTitle(mixed $seoTitle)
+    public function setSeoTitle(mixed $seoTitle): void
     {
         $this->seoTitle = $seoTitle;
     }
@@ -334,7 +334,7 @@ class PageTranslation implements Stringable
         return $this->seoTitle;
     }
 
-    public function setSeoDescription(mixed $seoDescription)
+    public function setSeoDescription(mixed $seoDescription): void
     {
         $this->seoDescription = $seoDescription;
     }
@@ -344,7 +344,7 @@ class PageTranslation implements Stringable
         return $this->seoDescription;
     }
 
-    public function setSeoKeywords(mixed $seoKeywords)
+    public function setSeoKeywords(mixed $seoKeywords): void
     {
         $this->seoKeywords = $seoKeywords;
     }
@@ -354,7 +354,7 @@ class PageTranslation implements Stringable
         return $this->seoKeywords;
     }
 
-    public function setTwitterTitle(mixed $twitterTitle)
+    public function setTwitterTitle(mixed $twitterTitle): void
     {
         $this->twitterTitle = $twitterTitle;
     }
@@ -364,7 +364,7 @@ class PageTranslation implements Stringable
         return $this->twitterTitle;
     }
 
-    public function setTwitterCard(mixed $twitterCard)
+    public function setTwitterCard(mixed $twitterCard): void
     {
         $this->twitterCard = $twitterCard;
     }
@@ -374,7 +374,7 @@ class PageTranslation implements Stringable
         return $this->twitterCard;
     }
 
-    public function setTwitterDescription(mixed $twitterDescription)
+    public function setTwitterDescription(mixed $twitterDescription): void
     {
         $this->twitterDescription = $twitterDescription;
     }
@@ -384,7 +384,7 @@ class PageTranslation implements Stringable
         return $this->twitterDescription;
     }
 
-    public function setTwitterSite(mixed $twitterSite)
+    public function setTwitterSite(mixed $twitterSite): void
     {
         $this->twitterSite = $twitterSite;
     }
@@ -402,7 +402,7 @@ class PageTranslation implements Stringable
     /**
      * @param File|UploadedFile $twitterImage
      */
-    public function setTwitterImage(File $twitterImage)
+    public function setTwitterImage(File $twitterImage): void
     {
         $this->twitterImage = $twitterImage;
         if ($twitterImage) {
@@ -419,12 +419,12 @@ class PageTranslation implements Stringable
     /**
      * @param string $twitterImageName
      */
-    public function setTwitterImageName($twitterImageName)
+    public function setTwitterImageName($twitterImageName): void
     {
         $this->twitterImageName = $twitterImageName;
     }
 
-    public function setOgTitle(mixed $ogTitle)
+    public function setOgTitle(mixed $ogTitle): void
     {
         $this->ogTitle = $ogTitle;
     }
@@ -434,7 +434,7 @@ class PageTranslation implements Stringable
         return $this->ogTitle;
     }
 
-    public function setOgDescription(mixed $ogDescription)
+    public function setOgDescription(mixed $ogDescription): void
     {
         $this->ogDescription = $ogDescription;
     }
@@ -444,7 +444,7 @@ class PageTranslation implements Stringable
         return $this->ogDescription;
     }
 
-    public function setOgType(mixed $ogType)
+    public function setOgType(mixed $ogType): void
     {
         $this->ogType = $ogType;
     }
@@ -462,7 +462,7 @@ class PageTranslation implements Stringable
     /**
      * @param File|UploadedFile $ogImage
      */
-    public function setOgImage($ogImage)
+    public function setOgImage($ogImage): void
     {
         $this->ogImage = $ogImage;
         if ($ogImage) {
@@ -479,7 +479,7 @@ class PageTranslation implements Stringable
     /**
      * @param string $ogImageName
      */
-    public function setOgImageName($ogImageName)
+    public function setOgImageName($ogImageName): void
     {
         $this->ogImageName = $ogImageName;
     }

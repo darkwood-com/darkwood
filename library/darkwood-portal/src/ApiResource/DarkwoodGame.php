@@ -9,8 +9,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\McpTool;
 use ApiPlatform\Metadata\Post;
 use App\Dto\DarkwoodActionInput;
-use App\Dto\DarkwoodMcpActionInput;
 use App\Dto\DarkwoodArchiveIdInput;
+use App\Dto\DarkwoodMcpActionInput;
 use App\State\DarkwoodActionHttpProcessor;
 use App\State\DarkwoodActionProcessor;
 use App\State\DarkwoodArchiveGetProcessor;
@@ -83,6 +83,4 @@ use App\State\Provider\DarkwoodStateProvider;
         ),
     ],
 )]
-final class DarkwoodGame
-{
-}
+final class DarkwoodGame {}

@@ -22,6 +22,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 use Twig\Environment;
 
+use function array_slice;
+
 #[Route(host: '%hello_host%')]
 class HelloController extends AbstractController
 {

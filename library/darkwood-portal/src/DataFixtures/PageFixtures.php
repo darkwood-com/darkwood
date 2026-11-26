@@ -27,7 +27,7 @@ class PageFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function createPage($params, ObjectManager $manager)
+    public function createPage($params, ObjectManager $manager): void
     {
         $sites = $this->siteService->findAll();
         foreach ($sites as $site) {

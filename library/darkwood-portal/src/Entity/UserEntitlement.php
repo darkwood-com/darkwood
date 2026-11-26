@@ -52,9 +52,20 @@ class UserEntitlement
         $this->updatedAt = $this->validFrom;
     }
 
-    public function getStatus(): EntitlementStatus { return $this->status; }
-    public function getEntitlement(): EntitlementDefinition { return $this->entitlement; }
-    public function getValidUntil(): ?DateTimeImmutable { return $this->validUntil; }
+    public function getStatus(): EntitlementStatus
+    {
+        return $this->status;
+    }
+
+    public function getEntitlement(): EntitlementDefinition
+    {
+        return $this->entitlement;
+    }
+
+    public function getValidUntil(): ?DateTimeImmutable
+    {
+        return $this->validUntil;
+    }
 
     public function update(EntitlementStatus $status, ?DateTimeImmutable $validUntil): void
     {

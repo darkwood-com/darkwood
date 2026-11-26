@@ -12,7 +12,7 @@ use function count;
 use function in_array;
 
 /**
- * @implements JobInterface<Board, Board|null>
+ * @implements JobInterface<Board, null|Board>
  */
 class CollapseJob implements JobInterface
 {

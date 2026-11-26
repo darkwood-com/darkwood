@@ -30,7 +30,7 @@ final class FlowTask
         $dataSet = DataSetEnumType::cases()[array_rand(DataSetEnumType::cases())];
 
         $flow = $this->flowFactory->doMp4($dataSet)
-            ->fn(function ($path) {
+            ->fn(function ($path): void {
                 $message = (new ChatMessage('Daily Flow generation.', (new TwitterOptions())->attachVideo(new File($path))))
                     ->transport('twitter')
                 ;

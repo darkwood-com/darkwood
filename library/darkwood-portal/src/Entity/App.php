@@ -61,7 +61,7 @@ class App extends Page
     /**
      * Remove content.
      */
-    public function removeContent(AppContent $content)
+    public function removeContent(AppContent $content): void
     {
         $this->contents->removeElement($content);
         $content->setApp(null);
@@ -85,7 +85,7 @@ class App extends Page
     /**
      * @param File|UploadedFile $banner
      */
-    public function setBanner(File $banner)
+    public function setBanner(File $banner): void
     {
         $this->banner = $banner;
         if ($banner) {
@@ -102,7 +102,7 @@ class App extends Page
     /**
      * @param string $bannerName
      */
-    public function setBannerName($bannerName)
+    public function setBannerName($bannerName): void
     {
         $this->bannerName = $bannerName;
     }
@@ -115,7 +115,7 @@ class App extends Page
     /**
      * @param string $theme
      */
-    public function setTheme($theme)
+    public function setTheme($theme): void
     {
         $this->theme = $theme;
     }

@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use ApiPlatform\Metadata\McpTool;
+use App\Dto\DarkwoodArchiveIdInput;
+use App\Dto\DarkwoodMcpActionInput;
 use App\Entity\ApiKey;
+use App\Entity\ApiKeyUsage;
 use App\Entity\Game\Player;
 use App\Entity\User;
 use App\EventSubscriber\DarkwoodBetaAccessSubscriber;
@@ -12,7 +16,15 @@ use App\EventSubscriber\DarkwoodRateLimitSubscriber;
 use App\Repository\ApiKeyUsageRepository;
 use App\Service\ApiKeyResolverService;
 use App\Service\DarkwoodMcpForwarderService;
+use App\State\DarkwoodActionProcessor;
+use App\State\DarkwoodArchiveGetProcessor;
+use DateTimeImmutable;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -27,33 +39,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class DarkwoodMcpForwarderTest extends TestCase
 {
-    private function forwarder(Request $request, ?User $user = null, int $status = 200, array $payload = []): DarkwoodMcpForwarderService
-    {
-        $stack = new RequestStack();
-        $stack->push($request);
-        $router = $this->createStub(RouterInterface::class);
-        $router->method('generate')->willReturn('/api/darkwood/state');
-        $storage = new TokenStorage();
-        if (null !== $user) {
-            $storage->setToken(new UsernamePasswordToken($user, 'main', ['ROLE_USER']));
-        }
-        $kernel = $this->createStub(HttpKernelInterface::class);
-        $kernel->method('handle')->willReturnCallback(function (Request $sub, int $type) use ($status, $payload, $request) {
-            self::assertSame(HttpKernelInterface::SUB_REQUEST, $type);
-            self::assertTrue($sub->attributes->get(DarkwoodMcpForwarderService::FORWARDED_ATTRIBUTE));
-            self::assertSame('api.darkwood.localhost', $sub->getHost());
-            self::assertSame($request->headers->get('X-API-Key'), $sub->headers->get('X-API-Key'));
-            self::assertFalse($sub->headers->has(DarkwoodMcpForwarderService::APPROVAL_HEADER));
-            if ($request->hasSession()) {
-                self::assertSame($request->getSession(), $sub->getSession());
-            }
-
-            return new JsonResponse($payload, $status);
-        });
-
-        return new DarkwoodMcpForwarderService($kernel, $stack, $router, $storage);
-    }
-
     public function testObservationKeepsTransportContextAndRemovesSecretFields(): void
     {
         $request = Request::create('https://api.darkwood.localhost/mcp');
@@ -74,7 +59,7 @@ final class DarkwoodMcpForwarderTest extends TestCase
     {
         $request = Request::create('https://api.darkwood.localhost/mcp');
         $user = new User();
-        (new \ReflectionProperty(User::class, 'id'))->setValue($user, 7);
+        (new ReflectionProperty(User::class, 'id'))->setValue($user, 7);
         $user->setPlayer(new Player());
         $forwarder = $this->forwarder($request, $user, payload: ['state' => 'combat']);
         $query = ['state' => 'combat', 'actionFight' => '1'];
@@ -82,6 +67,7 @@ final class DarkwoodMcpForwarderTest extends TestCase
             if (null !== $approval) {
                 $request->headers->set(DarkwoodMcpForwarderService::APPROVAL_HEADER, $approval);
             }
+
             try {
                 $forwarder->forward('api_darkwood_post_action', 'POST', ['query' => $query]);
                 self::fail('Unapproved action accepted.');
@@ -113,7 +99,7 @@ final class DarkwoodMcpForwarderTest extends TestCase
     {
         $request = Request::create('/api/darkwood/state');
         $request->attributes->set(DarkwoodMcpForwarderService::FORWARDED_ATTRIBUTE, true);
-        $kernel = $this->createStub(HttpKernelInterface::class);
+        $kernel = self::createStub(HttpKernelInterface::class);
         $resolver = $this->createMock(ApiKeyResolverService::class);
         $resolver->expects(self::once())->method('resolveForGate')->willReturn(null);
         $event = new RequestEvent($kernel, $request, HttpKernelInterface::SUB_REQUEST);
@@ -128,17 +114,17 @@ final class DarkwoodMcpForwarderTest extends TestCase
         $request->attributes->set('_route', 'api_darkwood_post_action');
         $key = (new ApiKey())->setIsPremium(false)->setDailyActionLimit(0);
         $request->attributes->set('api_key', $key);
-        $registry = $this->createMock(\Doctrine\Persistence\ManagerRegistry::class);
+        $registry = $this->createMock(ManagerRegistry::class);
         $registry->expects(self::never())->method('getManagerForClass');
         $repository = new ApiKeyUsageRepository($registry);
-        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::SUB_REQUEST);
+        $event = new RequestEvent(self::createStub(HttpKernelInterface::class), $request, HttpKernelInterface::SUB_REQUEST);
         (new DarkwoodRateLimitSubscriber($repository))->onKernelRequest($event);
         self::assertSame(429, $event->getResponse()?->getStatusCode());
     }
 
     public function testMalformedActionsAreRejectedBeforeTransport(): void
     {
-        $processor = new \App\State\DarkwoodActionProcessor($this->forwarder(Request::create('https://api.darkwood.localhost/mcp')));
+        $processor = new DarkwoodActionProcessor($this->forwarder(Request::create('https://api.darkwood.localhost/mcp')));
         foreach ([
             ['state' => 'login', '_password' => 'fixture'],
             ['state' => 'combat', 'actionFight' => 'false'],
@@ -149,7 +135,7 @@ final class DarkwoodMcpForwarderTest extends TestCase
             ['state' => ['combat']],
         ] as $query) {
             try {
-                $processor->process(new \App\Dto\DarkwoodMcpActionInput($query), new \ApiPlatform\Metadata\McpTool());
+                $processor->process(new DarkwoodMcpActionInput($query), new McpTool());
                 self::fail('Invalid action reached the transport.');
             } catch (HttpExceptionInterface $error) {
                 self::assertSame(400, $error->getStatusCode());
@@ -159,10 +145,10 @@ final class DarkwoodMcpForwarderTest extends TestCase
 
     public function testArchiveIdentifiersRejectInvalidDatesAndPathInjection(): void
     {
-        $processor = new \App\State\DarkwoodArchiveGetProcessor($this->forwarder(Request::create('https://api.darkwood.localhost/mcp')));
+        $processor = new DarkwoodArchiveGetProcessor($this->forwarder(Request::create('https://api.darkwood.localhost/mcp')));
         foreach (['2026-02-30', '../../state', '2026-1-1', ''] as $id) {
             try {
-                $processor->process(new \App\Dto\DarkwoodArchiveIdInput($id), new \ApiPlatform\Metadata\McpTool());
+                $processor->process(new DarkwoodArchiveIdInput($id), new McpTool());
                 self::fail('Invalid archive date reached the transport.');
             } catch (HttpExceptionInterface $error) {
                 self::assertSame(400, $error->getStatusCode());
@@ -172,24 +158,51 @@ final class DarkwoodMcpForwarderTest extends TestCase
 
     public function testDailyQuotaStopsAtTheLimitWithARealSqliteConnection(): void
     {
-        $connection = \Doctrine\DBAL\DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
+        $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $connection->executeStatement('CREATE TABLE api_key_usage (id INTEGER PRIMARY KEY AUTOINCREMENT, api_key_id INTEGER NOT NULL, usage_date DATE NOT NULL, usage_count INTEGER NOT NULL, UNIQUE(api_key_id, usage_date))');
-        $metadata = new \Doctrine\ORM\Mapping\ClassMetadata(\App\Entity\ApiKeyUsage::class);
+        $metadata = new ClassMetadata(ApiKeyUsage::class);
         $metadata->setPrimaryTable(['name' => 'api_key_usage']);
-        $manager = $this->createStub(\Doctrine\ORM\EntityManagerInterface::class);
+        $manager = self::createStub(EntityManagerInterface::class);
         $manager->method('getConnection')->willReturn($connection);
         $manager->method('getClassMetadata')->willReturn($metadata);
-        $registry = $this->createStub(\Doctrine\Persistence\ManagerRegistry::class);
+        $registry = self::createStub(ManagerRegistry::class);
         $registry->method('getManagerForClass')->willReturn($manager);
         $repository = new ApiKeyUsageRepository($registry);
         $key = new ApiKey();
-        (new \ReflectionProperty(ApiKey::class, 'id'))->setValue($key, 7);
-        $date = new \DateTimeImmutable('2026-11-19T00:00:00Z');
+        (new ReflectionProperty(ApiKey::class, 'id'))->setValue($key, 7);
+        $date = new DateTimeImmutable('2026-11-19T00:00:00Z');
         self::assertTrue($repository->incrementIfBelowLimit($key, $date, 2));
         self::assertTrue($repository->incrementIfBelowLimit($key, $date, 2));
         self::assertFalse($repository->incrementIfBelowLimit($key, $date, 2));
         self::assertSame(2, (int) $connection->fetchOne('SELECT usage_count FROM api_key_usage'));
         self::assertSame(1, (int) $connection->fetchOne('SELECT COUNT(*) FROM api_key_usage'));
         $connection->close();
+    }
+
+    private function forwarder(Request $request, ?User $user = null, int $status = 200, array $payload = []): DarkwoodMcpForwarderService
+    {
+        $stack = new RequestStack();
+        $stack->push($request);
+        $router = self::createStub(RouterInterface::class);
+        $router->method('generate')->willReturn('/api/darkwood/state');
+        $storage = new TokenStorage();
+        if (null !== $user) {
+            $storage->setToken(new UsernamePasswordToken($user, 'main', ['ROLE_USER']));
+        }
+        $kernel = self::createStub(HttpKernelInterface::class);
+        $kernel->method('handle')->willReturnCallback(static function (Request $sub, int $type) use ($status, $payload, $request) {
+            self::assertSame(HttpKernelInterface::SUB_REQUEST, $type);
+            self::assertTrue($sub->attributes->get(DarkwoodMcpForwarderService::FORWARDED_ATTRIBUTE));
+            self::assertSame('api.darkwood.localhost', $sub->getHost());
+            self::assertSame($request->headers->get('X-API-Key'), $sub->headers->get('X-API-Key'));
+            self::assertFalse($sub->headers->has(DarkwoodMcpForwarderService::APPROVAL_HEADER));
+            if ($request->hasSession()) {
+                self::assertSame($request->getSession(), $sub->getSession());
+            }
+
+            return new JsonResponse($payload, $status);
+        });
+
+        return new DarkwoodMcpForwarderService($kernel, $stack, $router, $storage);
     }
 }

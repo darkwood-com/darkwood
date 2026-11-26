@@ -27,7 +27,8 @@ final class AdminAppContentFormTest extends TestCase
 
                 return true;
             }))
-            ->willReturnSelf();
+            ->willReturnSelf()
+        ;
 
         (new PageType())->buildForm($builder, ['locale' => 'en']);
 
@@ -43,7 +44,8 @@ final class AdminAppContentFormTest extends TestCase
                 }
 
                 return $form;
-            });
+            })
+        ;
 
         $listener(new FormEvent($form, new App()));
     }

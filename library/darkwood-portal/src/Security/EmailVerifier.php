@@ -43,7 +43,8 @@ final readonly class EmailVerifier
             ->locale($locale)
             ->htmlTemplate('common/mails/registration.html.twig')
             ->textTemplate('common/mails/registration.txt.twig')
-            ->context(['verificationUrl' => $url, 'expiresAt' => $signature->getExpiresAt()]);
+            ->context(['verificationUrl' => $url, 'expiresAt' => $signature->getExpiresAt()])
+        ;
 
         try {
             $this->mailer->send($email);
@@ -56,8 +57,9 @@ final readonly class EmailVerifier
     {
         return $this->entityManager->wrapInTransaction(function () use ($signedRequest, $user): bool {
             // Doctrine refresh can include nullable joins, which PostgreSQL cannot lock.
-            $id = $this->entityManager->getConnection()->fetchOne(
-                'SELECT id FROM public."user" WHERE id = ? FOR UPDATE',
+            $connection = $this->entityManager->getConnection();
+            $id = $connection->fetchOne(
+                'SELECT id FROM ' . $connection->quoteIdentifier('user') . ' WHERE id = ? FOR UPDATE',
                 [$user->getId()],
             );
             if (false === $id) {

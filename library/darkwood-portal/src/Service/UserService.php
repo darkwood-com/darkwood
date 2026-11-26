@@ -31,7 +31,7 @@ class UserService
     /**
      * Save a user.
      */
-    public function save(User $user)
+    public function save(User $user): void
     {
         $this->em->persist($user);
         $this->em->flush();
@@ -40,7 +40,7 @@ class UserService
     /**
      * Remove one user.
      */
-    public function remove(User $user)
+    public function remove(User $user): void
     {
         $this->em->remove($user);
         $this->em->flush();

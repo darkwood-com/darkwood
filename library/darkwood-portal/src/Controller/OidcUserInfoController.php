@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+use function in_array;
+use function sprintf;
+
 final class OidcUserInfoController extends AbstractController
 {
     public function __construct(

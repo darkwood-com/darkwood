@@ -63,7 +63,7 @@ class TagService
     /**
      * Remove one tag.
      */
-    public function remove(Tag $tag)
+    public function remove(Tag $tag): void
     {
         $this->em->remove($tag);
         $this->em->flush();

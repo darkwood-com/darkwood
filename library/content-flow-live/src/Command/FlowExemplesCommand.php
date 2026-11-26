@@ -67,7 +67,7 @@ class FlowExemplesCommand extends Command
         printf("- DataC(f)\n");
 
         echo "begin - synchronous\n";
-        $asyncTask = function () use ($driver) {
+        $asyncTask = function () use ($driver): void {
             echo "begin - flow asynchronous\n";
 
             $flow = $this->flowFactory->create(static function () use ($driver) {

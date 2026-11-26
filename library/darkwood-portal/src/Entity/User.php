@@ -8,6 +8,7 @@ use App\Entity\Game\Player;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\UserRepository;
 use DateTime;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -148,7 +149,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     private bool $uniflowActivationRequired = false;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $emailVerifiedAt = null;
+    private ?DateTimeImmutable $emailVerifiedAt = null;
 
     #[ORM\Column(options: ['default' => 0])]
     private int $emailVerificationVersion = 0;
@@ -266,12 +267,12 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
         return $this->email;
     }
 
-    public function setEmail(mixed $email)
+    public function setEmail(mixed $email): void
     {
         if (isset($this->email) && $this->email !== $email) {
             $this->setIsVerified(false);
             $this->emailVerificationRequired = true;
-            ++$this->emailVerificationVersion;
+            $this->emailVerificationVersion++;
             $this->resetToken = null;
             $this->resetRequestedAt = null;
         }
@@ -363,7 +364,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     /**
      * Set firstname.
      */
-    public function setFirstname(mixed $firstname)
+    public function setFirstname(mixed $firstname): void
     {
         $this->firstname = $firstname;
     }
@@ -379,7 +380,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     /**
      * Set lastname.
      */
-    public function setLastname(mixed $lastname)
+    public function setLastname(mixed $lastname): void
     {
         $this->lastname = $lastname;
     }
@@ -409,7 +410,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
         return $this->city;
     }
 
-    public function setCity(mixed $city)
+    public function setCity(mixed $city): void
     {
         $this->city = $city;
     }
@@ -419,7 +420,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
         return $this->comment;
     }
 
-    public function setComment(mixed $comment)
+    public function setComment(mixed $comment): void
     {
         $this->comment = $comment;
     }
@@ -432,7 +433,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     /**
      * @param File|UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImage(File $image): void
     {
         $this->image = $image;
         if ($image) {
@@ -449,7 +450,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -462,12 +463,12 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     /**
      * @param string $facebookId
      */
-    public function setFacebookId($facebookId)
+    public function setFacebookId($facebookId): void
     {
         $this->facebookId = $facebookId;
     }
 
-    public function setCivility(mixed $civility)
+    public function setCivility(mixed $civility): void
     {
         $this->civility = $civility;
     }
@@ -489,7 +490,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     /**
      * Remove comment.
      */
-    public function removeComment(Comment $comment)
+    public function removeComment(Comment $comment): void
     {
         $this->comments->removeElement($comment);
         $comment->setUser(null);
@@ -517,7 +518,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     /**
      * Remove contact.
      */
-    public function removeContact(Contact $contact)
+    public function removeContact(Contact $contact): void
     {
         $this->contacts->removeElement($contact);
         $contact->setUser(null);
@@ -578,7 +579,7 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     public function setIsVerified(bool $isVerified): self
     {
         if ($isVerified && !$this->isVerified) {
-            $this->emailVerifiedAt = new \DateTimeImmutable();
+            $this->emailVerifiedAt = new DateTimeImmutable();
         } elseif (!$isVerified) {
             $this->emailVerifiedAt = null;
         }

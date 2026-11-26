@@ -6,7 +6,12 @@ namespace App\Service\Bonzai;
 
 use App\Enum\CommercialState;
 use DateTimeImmutable;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
+use function in_array;
+use function is_array;
+use function is_string;
 
 final readonly class BonzaiOrderVerifier
 {
@@ -19,19 +24,19 @@ final readonly class BonzaiOrderVerifier
     public function verify(string $orderId): VerifiedBonzaiOrder
     {
         if ('' === trim($this->expectedProductId)) {
-            throw new \RuntimeException('Bonzai product verification is not configured.');
+            throw new RuntimeException('Bonzai product verification is not configured.');
         }
 
         $order = $this->api->getOrder($orderId);
         $verifiedId = (string) ($order['id'] ?? '');
         if ('' === $verifiedId || !hash_equals($orderId, $verifiedId)) {
-            throw new \RuntimeException('Bonzai returned a different order identifier.');
+            throw new RuntimeException('Bonzai returned a different order identifier.');
         }
 
         $product = is_array($order['product'] ?? null) ? $order['product'] : [];
         $productId = (string) ($product['uuid'] ?? $product['id'] ?? '');
         if ('' === $productId || !hash_equals($this->expectedProductId, $productId)) {
-            throw new \RuntimeException('Bonzai order belongs to an unexpected product.');
+            throw new RuntimeException('Bonzai order belongs to an unexpected product.');
         }
 
         $intentStatus = strtolower((string) ($order['intent_status'] ?? ''));

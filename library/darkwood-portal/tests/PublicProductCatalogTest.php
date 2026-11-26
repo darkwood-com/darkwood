@@ -7,6 +7,8 @@ namespace App\Tests;
 use App\Service\PublicProductCatalog;
 use PHPUnit\Framework\TestCase;
 
+use function count;
+
 final class PublicProductCatalogTest extends TestCase
 {
     public function testCanonicalPublicProductsAreDistinctAndResolvable(): void

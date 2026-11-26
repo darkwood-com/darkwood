@@ -23,9 +23,6 @@ class ShopUser extends BaseShopUser implements PasswordAuthenticatedUserInterfac
 {
     use UidTrait;
 
-    #[ORM\Column(name: 'darkwood_uid', length: 36, nullable: true)]
-    private ?string $darkwoodUid = null;
-
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $apiKey = null;
 
@@ -40,6 +37,9 @@ class ShopUser extends BaseShopUser implements PasswordAuthenticatedUserInterfac
      */
     #[ORM\OneToMany(targetEntity: Folder::class, mappedBy: 'user', cascade: ['persist'])]
     protected Collection $folders;
+
+    #[ORM\Column(name: 'darkwood_uid', length: 36, nullable: true)]
+    private ?string $darkwoodUid = null;
 
     public function __construct()
     {
@@ -165,7 +165,7 @@ class ShopUser extends BaseShopUser implements PasswordAuthenticatedUserInterfac
         ]);
     }
 
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         [
             $this->id,

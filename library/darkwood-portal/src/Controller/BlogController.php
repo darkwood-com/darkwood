@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Markdown\DarkwoodEmbedExtension;
-
 use App\Entity\Article;
 use App\Entity\CommentArticle;
 use App\Entity\User;
 use App\Enum\ArticleReactionEmoji;
 use App\Enum\ArticleType;
 use App\Form\CommentType;
+use App\Markdown\DarkwoodEmbedExtension;
 use App\Service\ArticleReactionService;
 use App\Service\BlogArticleService;
 use App\Service\CommentService;

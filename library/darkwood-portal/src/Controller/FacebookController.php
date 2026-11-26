@@ -32,7 +32,7 @@ class FacebookController extends AbstractController
      * in config/packages/knpu_oauth2_client.yaml.
      */
     #[Route('/connect/facebook/check', name: 'connect_facebook_check')]
-    public function connectCheck()
+    public function connectCheck(): void
     {
         // ** if you want to *authenticate* the user, then
         // leave this method blank and create a Guard authenticator

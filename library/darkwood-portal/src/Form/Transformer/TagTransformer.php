@@ -24,7 +24,7 @@ class TagTransformer implements DataTransformerInterface
         private readonly TagService $tagService
     ) {}
 
-    public function setLocale($locale)
+    public function setLocale($locale): void
     {
         $this->locale = $locale;
     }

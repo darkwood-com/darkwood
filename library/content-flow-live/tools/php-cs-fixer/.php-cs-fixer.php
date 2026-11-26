@@ -12,6 +12,7 @@ $finder = Finder::create()
         __FILE__,
     ])
     ->notPath('.castor.stub.php')
+    ->notPath('config/reference.php')
 ;
 
 return (new Config())

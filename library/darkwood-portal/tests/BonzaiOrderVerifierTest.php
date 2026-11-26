@@ -9,6 +9,7 @@ use App\Service\Bonzai\BonzaiApiClient;
 use App\Service\Bonzai\BonzaiOrderVerifier;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\JsonMockResponse;
 
@@ -45,7 +46,7 @@ final class BonzaiOrderVerifierTest extends TestCase
         ]));
         $verifier = new BonzaiOrderVerifier(new BonzaiApiClient($http, 'test-token'), '199');
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $verifier->verify('12345');
     }
 }

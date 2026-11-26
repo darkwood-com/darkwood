@@ -461,7 +461,7 @@ class Player
     /**
      * Remove dailyBattle.
      */
-    public function removeDailyBattle(DailyBattle $dailyBattle)
+    public function removeDailyBattle(DailyBattle $dailyBattle): void
     {
         $this->dailyBattles->removeElement($dailyBattle);
     }

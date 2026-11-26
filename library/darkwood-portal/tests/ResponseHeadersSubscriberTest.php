@@ -55,7 +55,7 @@ final class ResponseHeadersSubscriberTest extends TestCase
         $request->attributes->set('_route', $route);
         $response = new Response($content);
         $event = new ResponseEvent(
-            $this->createStub(HttpKernelInterface::class),
+            self::createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $response,

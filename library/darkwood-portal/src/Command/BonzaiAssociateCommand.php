@@ -14,6 +14,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function sprintf;
+
 #[AsCommand(
     name: 'app:bonzai:associate',
     description: 'Associate a server-verified Bonzai order after explicit account-ownership confirmation.',

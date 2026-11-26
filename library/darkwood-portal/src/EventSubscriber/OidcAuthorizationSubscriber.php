@@ -8,8 +8,8 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use League\Bundle\OAuth2ServerBundle\Event\AuthorizationRequestResolveEvent;
 use League\Bundle\OAuth2ServerBundle\Event\ScopeResolveEvent;
-use League\OAuth2\Server\Exception\OAuthServerException;
 use League\Bundle\OAuth2ServerBundle\OAuth2Events;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

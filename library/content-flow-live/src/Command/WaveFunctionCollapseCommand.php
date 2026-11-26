@@ -64,7 +64,7 @@ class WaveFunctionCollapseCommand extends Command
         $io->writeln(sprintf('Dataset: %s', $dataSet->value));
 
         $flow = $this->flowFactory->doMp4($dataSet)
-            ->fn(static function ($path) use ($io) {
+            ->fn(static function ($path) use ($io): void {
                 $io->success(sprintf('Movie is generated: %s', $path));
             })
         ;

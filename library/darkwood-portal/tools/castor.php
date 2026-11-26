@@ -10,6 +10,7 @@ use function Castor\capture;
 use function Castor\context;
 use function Castor\import;
 use function Castor\run;
+use function dirname;
 
 import(__DIR__ . '/env/castor.php');
 import(__DIR__ . '/php-cs-fixer/castor.php');
@@ -27,12 +28,12 @@ function ciFixtures(): void
         }
         echo json_encode($environment, JSON_THROW_ON_ERROR);
         PHP,
-        __DIR__.'/phpunit/phpunit.xml',
+        __DIR__ . '/phpunit/phpunit.xml',
     ]);
     $environment = json_decode($variables, true, flags: JSON_THROW_ON_ERROR);
     $environment['APP_RUNTIME_OPTIONS'] = '{"disable_dotenv":true}';
 
     $context = context()->withEnvironment($environment);
-    run(['php', dirname(__DIR__).'/bin/console', '--env=test', 'doctrine:database:create', '--if-not-exists'], $context);
-    run(['php', dirname(__DIR__).'/bin/console', '--env=test', 'doctrine:schema:update', '--force'], $context);
+    run(['php', dirname(__DIR__) . '/bin/console', '--env=test', 'doctrine:database:create', '--if-not-exists'], $context);
+    run(['php', dirname(__DIR__) . '/bin/console', '--env=test', 'doctrine:schema:update', '--force'], $context);
 }

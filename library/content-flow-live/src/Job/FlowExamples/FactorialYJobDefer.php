@@ -17,11 +17,11 @@ class FactorialYJobDefer implements JobInterface
         return static function ($args) use ($factorial) {
             [$data, $defer] = $args;
 
-            return $defer(static function ($complete, $async) use ($data, $defer, $factorial) {
+            return $defer(static function ($complete, $async) use ($data, $defer, $factorial): void {
                 if ($data->result <= 1) {
                     $complete([new YFlowData($data->id, $data->number, 1), $defer]);
                 } else {
-                    $async($factorial([new YFlowData($data->id, $data->number, $data->result - 1), $defer]), static function ($result) use ($data, $complete) {
+                    $async($factorial([new YFlowData($data->id, $data->number, $data->result - 1), $defer]), static function ($result) use ($data, $complete): void {
                         [$resultData, $defer] = $result;
                         $complete([new YFlowData($data->id, $data->number, $data->result * $resultData->result), $defer]);
                     });

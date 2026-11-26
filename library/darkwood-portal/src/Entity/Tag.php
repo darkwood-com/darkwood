@@ -73,7 +73,7 @@ class Tag implements Stringable
     /**
      * Remove translations.
      */
-    public function removeTranslation(TagTranslation $translations)
+    public function removeTranslation(TagTranslation $translations): void
     {
         $this->translations->removeElement($translations);
         $translations->setTag(null);
@@ -119,12 +119,12 @@ class Tag implements Stringable
     /**
      * Remove articles.
      */
-    public function removeArticle(Article $article)
+    public function removeArticle(Article $article): void
     {
         $this->articles->removeElement($article);
     }
 
-    public function removeAllArticles()
+    public function removeAllArticles(): void
     {
         foreach ($this->getArticles() as $article) {
             $this->removeArticle($article);

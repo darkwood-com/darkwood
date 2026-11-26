@@ -30,7 +30,7 @@ class PageType extends AbstractType
         $locale = $options['locale'];
         $builder->add('ref', TextType::class);
         $builder->add('site', EntityType::class, ['class' => Site::class]);
-        $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $event->getData();
             if ($data instanceof App) {

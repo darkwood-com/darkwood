@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\Bonzai\BonzaiNotificationHandler;
+use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
+use function in_array;
+use function strlen;
 
 final class BonzaiWebhookController extends AbstractController
 {
@@ -33,7 +37,7 @@ final class BonzaiWebhookController extends AbstractController
 
         try {
             $payload = $request->toArray();
-        } catch (\JsonException) {
+        } catch (JsonException) {
             return $this->json(['error' => 'invalid_json'], Response::HTTP_BAD_REQUEST);
         }
 

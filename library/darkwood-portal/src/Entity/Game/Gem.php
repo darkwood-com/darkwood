@@ -108,7 +108,7 @@ class Gem
     /**
      * @param File|UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImage(File $image): void
     {
         $this->image = $image;
         if ($image) {
@@ -125,7 +125,7 @@ class Gem
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -141,7 +141,7 @@ class Gem
     /**
      * Remove equipment1Player.
      */
-    public function removeEquipment1Player(Player $equipment1Player)
+    public function removeEquipment1Player(Player $equipment1Player): void
     {
         $this->equipment1Players->removeElement($equipment1Player);
     }
@@ -167,7 +167,7 @@ class Gem
     /**
      * Remove equipment2Player.
      */
-    public function removeEquipment2Player(Player $equipment2Player)
+    public function removeEquipment2Player(Player $equipment2Player): void
     {
         $this->equipment2Players->removeElement($equipment2Player);
     }
@@ -193,7 +193,7 @@ class Gem
     /**
      * Remove equipment3Player.
      */
-    public function removeEquipment3Player(Player $equipment3Player)
+    public function removeEquipment3Player(Player $equipment3Player): void
     {
         $this->equipment3Players->removeElement($equipment3Player);
     }

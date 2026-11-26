@@ -15,14 +15,17 @@ use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
 use Mcp\Schema\ToolAnnotations;
 
+use function array_slice;
+use function count;
+use function strlen;
+
 final readonly class DarkwoodPortalMcp
 {
     public function __construct(
         private PublicProductCatalog $products,
         private AppRepository $apps,
         private ArticleRepository $articles,
-    ) {
-    }
+    ) {}
 
     #[McpTool(
         name: 'darkwood_search_apps',
@@ -42,7 +45,7 @@ final readonly class DarkwoodPortalMcp
                 'id' => (string) $app->getRef(),
                 'name' => $translation->getTitle(),
                 'category' => 'archive',
-                'url' => 'https://apps.darkwood.com/'.rawurlencode((string) $app->getRef()),
+                'url' => 'https://apps.darkwood.com/' . rawurlencode((string) $app->getRef()),
                 'status' => 'public',
                 'function' => $translation->getDescription() ?? $this->excerpt((string) $translation->getContent(), 300),
                 'technologies' => [],
@@ -94,13 +97,13 @@ final readonly class DarkwoodPortalMcp
                 'description' => $translation->getDescription(),
                 'documentation' => $this->excerpt((string) $translation->getContent(), 4000),
                 'features' => array_slice($features, 0, 20),
-                'url' => 'https://apps.darkwood.com/'.rawurlencode((string) $app->getRef()),
+                'url' => 'https://apps.darkwood.com/' . rawurlencode((string) $app->getRef()),
                 'status' => 'public',
                 'locale' => $translation->getLocale(),
             ], 'readOnly' => true];
         }
 
-        throw new ToolCallException('Unknown public Darkwood product: '.$reference.'.');
+        throw new ToolCallException('Unknown public Darkwood product: ' . $reference . '.');
     }
 
     #[McpTool(
@@ -123,7 +126,7 @@ final readonly class DarkwoodPortalMcp
             }
             $translation = $article->getOneTranslation($language);
             $created = $article->getCreated()?->getTimestamp();
-            if (!$translation->getActive() || !$this->contains($translation->getTitle().' '.(string) $translation->getContent(), $query)
+            if (!$translation->getActive() || !$this->contains($translation->getTitle() . ' ' . (string) $translation->getContent(), $query)
                 || ($after !== null && ($created === null || $created < $after))) {
                 continue;
             }
@@ -146,11 +149,11 @@ final readonly class DarkwoodPortalMcp
     {
         $article = $this->articles->findOneBySlugAndLocale($slug, $language);
         if (!$article instanceof Article || $article->isPremium()) {
-            throw new ToolCallException('Unknown public article: '.$slug.'.');
+            throw new ToolCallException('Unknown public article: ' . $slug . '.');
         }
         $translation = $article->getOneTranslation($language);
         if (!$translation->getActive()) {
-            throw new ToolCallException('Unknown public article: '.$slug.'.');
+            throw new ToolCallException('Unknown public article: ' . $slug . '.');
         }
 
         return ['article' => [
@@ -198,7 +201,7 @@ final readonly class DarkwoodPortalMcp
 
     private function articleSummary(Article $article, ArticleTranslation $translation): array
     {
-        $localePrefix = $translation->getLocale() === 'en' ? '' : '/'.$translation->getLocale();
+        $localePrefix = $translation->getLocale() === 'en' ? '' : '/' . $translation->getLocale();
 
         return [
             'slug' => $translation->getSlug(),
@@ -206,7 +209,7 @@ final readonly class DarkwoodPortalMcp
             'excerpt' => $this->excerpt((string) $translation->getContent(), 400),
             'date' => $article->getCreated()?->format(DATE_ATOM),
             'language' => $translation->getLocale(),
-            'url' => 'https://blog.darkwood.com'.$localePrefix.'/article/'.rawurlencode((string) $translation->getSlug()),
+            'url' => 'https://blog.darkwood.com' . $localePrefix . '/article/' . rawurlencode((string) $translation->getSlug()),
         ];
     }
 

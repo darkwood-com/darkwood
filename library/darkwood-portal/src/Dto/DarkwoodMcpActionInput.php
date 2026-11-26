@@ -26,6 +26,5 @@ final readonly class DarkwoodMcpActionInput
             'description' => 'One existing game action; requires separate trusted-client transport approval. Not a credential or confirmation argument.',
         ])]
         public array $query = [],
-    ) {
-    }
+    ) {}
 }

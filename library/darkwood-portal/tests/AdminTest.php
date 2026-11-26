@@ -22,7 +22,7 @@ class AdminTest extends CommonWebTestCase
     }*/
 
     #[DataProvider('provideW3CCases')]
-    public function testW3C($url)
+    public function testW3C($url): void
     {
         $this->validateW3CUrl($url);
     }
@@ -47,8 +47,7 @@ class AdminTest extends CommonWebTestCase
 
     public static function provideProvideW3CCasesCases(): iterable
     {
-        $commonUrls = [
-        ];
+        $commonUrls = [];
 
         $urls = array_merge($commonUrls, [
             ['/fr', '/login'],

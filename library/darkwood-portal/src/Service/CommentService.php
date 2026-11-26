@@ -60,7 +60,7 @@ class CommentService
     /**
      * Remove one commentTranslation.
      */
-    public function remove(Comment $comment)
+    public function remove(Comment $comment): void
     {
         $this->em->remove($comment);
         $this->em->flush();

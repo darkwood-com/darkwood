@@ -19,6 +19,9 @@ use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Uid\Uuid;
 
+use function is_string;
+use function strlen;
+
 class RegistrationController extends AbstractController
 {
     public function __construct(
@@ -27,8 +30,10 @@ class RegistrationController extends AbstractController
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly EntityManagerInterface $entityManager,
         private readonly UserRepository $users,
-        #[Target('email_verification_ip')] private readonly RateLimiterFactoryInterface $ipLimiter,
-        #[Target('email_verification_address')] private readonly RateLimiterFactoryInterface $addressLimiter,
+        #[Target('email_verification_ip')]
+        private readonly RateLimiterFactoryInterface $ipLimiter,
+        #[Target('email_verification_address')]
+        private readonly RateLimiterFactoryInterface $addressLimiter,
     ) {}
 
     #[Route(path: ['fr' => '/fr/inscription', 'en' => '/register', 'de' => '/de/registrieren'], name: 'common_register', defaults: ['ref' => 'register'], methods: ['GET', 'POST'])]

@@ -22,7 +22,7 @@ class PhotosTest extends CommonWebTestCase
     }*/
 
     #[DataProvider('provideW3CCases')]
-    public function testW3C($url)
+    public function testW3C($url): void
     {
         $this->validateW3CUrl($url);
     }

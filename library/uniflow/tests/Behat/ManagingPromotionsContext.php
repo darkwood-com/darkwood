@@ -13,9 +13,7 @@ use Sylius\Component\Promotion\Model\PromotionInterface;
 /** Adapts Sylius 2.3.3 step signatures to Behat 4's capture validation. */
 final class ManagingPromotionsContext implements Context
 {
-    public function __construct(private readonly SyliusContext $sylius)
-    {
-    }
+    public function __construct(private readonly SyliusContext $sylius) {}
 
     #[When('/^I delete a ("[^"]+" promotion)$/')]
     public function deletePromotion(PromotionInterface $promotion): void

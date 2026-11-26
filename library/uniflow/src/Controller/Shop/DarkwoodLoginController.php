@@ -40,6 +40,7 @@ final class DarkwoodLoginController extends AbstractController
     public function begin(Request $request, LoggerInterface $logger): Response
     {
         $this->requireEnabled();
+
         try {
             if ($request->query->getBoolean('checkout')) {
                 $this->saveTargetPath($request->getSession(), 'shop', $this->generateUrl('sylius_shop_checkout_address', ['_locale' => $request->getLocale()]));
@@ -63,6 +64,7 @@ final class DarkwoodLoginController extends AbstractController
         LoggerInterface $logger,
     ): Response {
         $this->requireEnabled();
+
         try {
             $identity = $this->oidc->handleCallback($request);
             if (!$this->allowLinked && $identity['id'] !== $this->pilotUid) {

@@ -9,6 +9,10 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
+use function count;
+use function sprintf;
+use function strlen;
+
 final class Version20261126235500 extends AbstractMigration
 {
     private const string VALID_USERNAME = '^[A-Za-z0-9-]{2,32}$';
@@ -73,6 +77,7 @@ final class Version20261126235500 extends AbstractMigration
 
     /**
      * @param list<array{id: int|string, username: string}> $rows
+     *
      * @return list<array{int, string, string}>
      */
     private function buildRenames(array $rows): array
@@ -93,7 +98,7 @@ final class Version20261126235500 extends AbstractMigration
             $base = strlen($base) >= 2 ? $base : 'user-' . $id;
             $candidate = $base;
 
-            for ($attempt = 1; isset($occupied[strtolower($candidate)]); ++$attempt) {
+            for ($attempt = 1; isset($occupied[strtolower($candidate)]); $attempt++) {
                 $suffix = '-' . $id . ($attempt > 1 ? '-' . $attempt : '');
                 $candidate = rtrim(substr($base, 0, 32 - strlen($suffix)), '-') . $suffix;
             }

@@ -43,7 +43,7 @@ class AppService
     /**
      * Remove one appTranslation.
      */
-    public function remove(App $app)
+    public function remove(App $app): void
     {
         $this->em->remove($app);
         $this->em->flush();

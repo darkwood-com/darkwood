@@ -28,7 +28,8 @@ class PlayerRepository extends ServiceEntityRepository
             ->select('COUNT(p.id)')
             ->andWhere('p.user IS NOT NULL')
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
 
         if ($count === 0) {
             return null;
@@ -38,7 +39,8 @@ class PlayerRepository extends ServiceEntityRepository
             ->select('p')
             ->andWhere('p.user IS NOT NULL')
             ->setFirstResult(random_int(0, $count - 1))
-            ->setMaxResults(1);
+            ->setMaxResults(1)
+        ;
 
         return $qb->getQuery()->getOneOrNullResult();
     }

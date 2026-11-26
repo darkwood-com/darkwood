@@ -6,6 +6,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\ApiKey;
 use App\Service\ApiKeyResolverService;
+use App\Service\DarkwoodMcpForwarderService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +23,7 @@ final readonly class DarkwoodBetaAccessSubscriber implements EventSubscriberInte
 
     public function __construct(
         private ApiKeyResolverService $apiKeyResolver,
-    ) {
-    }
+    ) {}
 
     public static function getSubscribedEvents(): array
     {
@@ -34,7 +34,7 @@ final readonly class DarkwoodBetaAccessSubscriber implements EventSubscriberInte
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMainRequest() && !$event->getRequest()->attributes->get(\App\Service\DarkwoodMcpForwarderService::FORWARDED_ATTRIBUTE, false)) {
+        if (!$event->isMainRequest() && !$event->getRequest()->attributes->get(DarkwoodMcpForwarderService::FORWARDED_ATTRIBUTE, false)) {
             return;
         }
 

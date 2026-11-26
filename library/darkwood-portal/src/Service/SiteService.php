@@ -50,7 +50,7 @@ class SiteService
     /**
      * Remove one site.
      */
-    public function remove(Site $site)
+    public function remove(Site $site): void
     {
         $this->em->remove($site);
         $this->em->flush();

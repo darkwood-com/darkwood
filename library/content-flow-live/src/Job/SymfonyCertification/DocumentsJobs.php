@@ -30,8 +30,13 @@ class DocumentsJobs implements JobInterface
         private string $cacheDir,
     ) {}
 
+    /** @param mixed $certificationType */
     public function __invoke($certificationType): array
     {
+        if (!$certificationType instanceof CertificationEnumType) {
+            throw new ValueError('Unsupported certification type');
+        }
+
         return match ($certificationType) {
             CertificationEnumType::SYMFONY_7 => array_merge(
                 $this->retrieveGithubDocuments('symfony', 'symfony', '', '7.0'),
@@ -40,7 +45,6 @@ class DocumentsJobs implements JobInterface
             ),
             CertificationEnumType::TWIG_3 => $this->retrieveGithubDocuments('twigphp', 'Twig', '', '3.x'),
             CertificationEnumType::SYLIUS_1 => $this->retrieveGithubDocuments('Sylius', 'Sylius', '', '1.14'),
-            default => throw new ValueError('Unsupported certification type'),
         };
     }
 

@@ -12,8 +12,7 @@ use ApiPlatform\Metadata\ApiProperty;
 final class DarkwoodArchiveIdInput
 {
     public function __construct(
-        #[ApiProperty(schema: ['type' => 'string', 'pattern' => '^\\d{4}-\\d{2}-\\d{2}$', 'description' => 'Actual calendar date YYYY-MM-DD; premium shared snapshot.'])]
+        #[ApiProperty(schema: ['type' => 'string', 'pattern' => '^\d{4}-\d{2}-\d{2}$', 'description' => 'Actual calendar date YYYY-MM-DD; premium shared snapshot.'])]
         public string $id = '',
-    ) {
-    }
+    ) {}
 }

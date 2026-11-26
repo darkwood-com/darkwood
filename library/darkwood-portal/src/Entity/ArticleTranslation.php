@@ -158,7 +158,7 @@ class ArticleTranslation implements Stringable
         return $this->slug;
     }
 
-    public function setSlug(mixed $slug)
+    public function setSlug(mixed $slug): void
     {
         $this->slug = $slug;
     }
@@ -168,7 +168,7 @@ class ArticleTranslation implements Stringable
         return $this->content;
     }
 
-    public function setContent(mixed $content)
+    public function setContent(mixed $content): void
     {
         $this->content = $content;
     }
@@ -191,7 +191,7 @@ class ArticleTranslation implements Stringable
     /**
      * @param File|UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImage(File $image): void
     {
         $this->image = $image;
         if ($image) {
@@ -208,7 +208,7 @@ class ArticleTranslation implements Stringable
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }

@@ -6,6 +6,9 @@ namespace App\EventSubscriber;
 
 use App\Entity\ApiKey;
 use App\Repository\ApiKeyUsageRepository;
+use App\Service\DarkwoodMcpForwarderService;
+use DateTimeImmutable;
+use DateTimeZone;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,8 +21,7 @@ final readonly class DarkwoodRateLimitSubscriber implements EventSubscriberInter
 
     public function __construct(
         private ApiKeyUsageRepository $apiKeyUsageRepository,
-    ) {
-    }
+    ) {}
 
     public static function getSubscribedEvents(): array
     {
@@ -30,7 +32,7 @@ final readonly class DarkwoodRateLimitSubscriber implements EventSubscriberInter
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMainRequest() && !$event->getRequest()->attributes->get(\App\Service\DarkwoodMcpForwarderService::FORWARDED_ATTRIBUTE, false)) {
+        if (!$event->isMainRequest() && !$event->getRequest()->attributes->get(DarkwoodMcpForwarderService::FORWARDED_ATTRIBUTE, false)) {
             return;
         }
 
@@ -58,7 +60,7 @@ final readonly class DarkwoodRateLimitSubscriber implements EventSubscriberInter
             return;
         }
 
-        $nowUtc = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $nowUtc = new DateTimeImmutable('now', new DateTimeZone('UTC'));
         $todayUtc = $nowUtc->setTime(0, 0, 0);
 
         if ($dailyLimit <= 0 || !$this->apiKeyUsageRepository->incrementIfBelowLimit($apiKey, $todayUtc, $dailyLimit)) {
