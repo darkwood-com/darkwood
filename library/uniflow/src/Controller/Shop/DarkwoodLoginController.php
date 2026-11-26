@@ -27,14 +27,22 @@ final class DarkwoodLoginController extends AbstractController
         private readonly DarkwoodOidcClient $oidc,
         #[Autowire('%env(default::UNIFLOW_OIDC_PILOT_UID)%')]
         private readonly ?string $pilotUid,
+        #[Autowire('%env(bool:default::UNIFLOW_OIDC_ALLOW_LINKED)%')]
+        private readonly bool $allowLinked,
     ) {}
 
     #[Route('/auth/darkwood', name: 'app_shop_darkwood_login', methods: ['GET'])]
-    public function begin(Request $request): Response
+    public function begin(Request $request, LoggerInterface $logger): Response
     {
-        $this->requirePilot();
+        $this->requireEnabled();
+        try {
+            return $this->redirect($this->oidc->buildAuthorizeUrl($request));
+        } catch (Throwable $exception) {
+            $logger->warning('Uniflow Darkwood sign-in could not start.', ['type' => $exception::class]);
+            $this->addFlash('darkwood_login_error', 'Darkwood sign-in is temporarily unavailable.');
 
-        return $this->redirect($this->oidc->buildAuthorizeUrl($request));
+            return $this->redirectToRoute('app_shop_login');
+        }
     }
 
     #[Route('/auth/darkwood/callback', name: 'app_shop_darkwood_callback', methods: ['GET'])]
@@ -45,10 +53,10 @@ final class DarkwoodLoginController extends AbstractController
         Security $security,
         LoggerInterface $logger,
     ): Response {
-        $this->requirePilot();
+        $this->requireEnabled();
         try {
             $identity = $this->oidc->handleCallback($request);
-            if ($identity['id'] !== $this->pilotUid) {
+            if (!$this->allowLinked && $identity['id'] !== $this->pilotUid) {
                 throw new RuntimeException('Identity outside the pilot.');
             }
             $user = $users->findOneBy(['darkwoodUid' => $identity['id']]);
@@ -69,14 +77,14 @@ final class DarkwoodLoginController extends AbstractController
             $logger->error('Uniflow Darkwood login could not complete.', ['type' => $exception::class]);
         }
 
-        $this->addFlash('darkwood_login_error', 'Darkwood sign-in could not complete. Check that your Darkwood address is verified and your account is part of the pilot.');
+        $this->addFlash('darkwood_login_error', 'Darkwood sign-in could not complete. Check that your account is linked to Uniflow and that the matching Darkwood address is verified.');
 
         return $this->redirectToRoute('app_shop_login');
     }
 
-    private function requirePilot(): void
+    private function requireEnabled(): void
     {
-        if (!$this->oidc->supportsDelegatedLogin() || '' === trim((string) $this->pilotUid)) {
+        if (!$this->oidc->supportsDelegatedLogin() || (!$this->allowLinked && '' === trim((string) $this->pilotUid))) {
             throw $this->createNotFoundException();
         }
     }

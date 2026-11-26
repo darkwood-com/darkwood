@@ -6,8 +6,9 @@
     {% for message in app.flashes('darkwood_login_error') %}
         <p class="alert alert-warning" role="alert">{{ message }}</p>
     {% endfor %}
-    {% if darkwood_pilot_enabled %}
-        <p><a href="{{ path('app_shop_darkwood_login') }}">Sign in with Darkwood Identity (pilot)</a></p>
+    {% if darkwood_login_enabled %}
+        <p><a href="{{ path('app_shop_darkwood_login') }}">Sign in with Darkwood Identity{% if darkwood_pilot_only %} (pilot){% endif %}</a></p>
+        <p><a href="https://darkwood.com/resetting/request">Set or reset your Darkwood password</a></p>
     {% endif %}
     <div class="row">
         <div class="col-sm-6 offset-sm-3">

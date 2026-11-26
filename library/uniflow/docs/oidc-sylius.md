@@ -30,18 +30,38 @@ Unknown or unlinked subjects are denied by default. There is no automatic provis
 
 `OidcShopUserProvider` implements Symfony's attributes-based user-provider contract. It resolves the validated identifier exclusively through the configured `OIDC_PROVIDER` and Sylius `UserOAuth`, then returns the existing `ShopUser`. It never creates an account or updates identity data from OIDC claims. The existing Sylius Shop user checker remains responsible for rejecting disabled users.
 
-## Activation status
+## Darkwood Identity rollout
 
-Uniflow currently runs Sylius 2.3.2, Symfony 8.1 and PHP 8.5. The identity mapping, explicit association command and provider-neutral Shop user provider are ready. Browser OIDC authentication remains disabled until the project adopts a stable Symfony version providing the native `oidc_login` authenticator with verified Sylius compatibility.
+Uniflow runs the Darkwood browser pilot on Symfony 8.1. The Shop callback
+validates the authorization code, PKCE S256, state, nonce, issuer,
+audience and ID-token signature. It selects the existing ShopUser using
+the validated `sub` and `ShopUser.darkwoodUid`. The signed
+`email_verified` claim and an address matching the associated Sylius
+Customer are required. The callback keeps the Sylius verification and
+enabled checks and updates `verified_at` after that proof. The existing
+`UserOAuth` provider and explicit association command remain available
+for other integrations.
 
-No temporary OIDC bundle, provider URL or client secret is committed. Each installation supplies its discovery URL, client configuration and redirect URIs through deployment configuration.
+Configure `DARKWOOD_OIDC_ISSUER`, `DARKWOOD_OIDC_CLIENT_ID`,
+`DARKWOOD_OIDC_CLIENT_SECRET` and `DARKWOOD_OIDC_REDIRECT_URI` with the
+deployment’s private configuration. The confidential client accepts
+authorization code with scopes `openid email` at the exact
+`https://uniflow.io/auth/darkwood/callback` URI.
 
-## Activation checklist
+For a pilot, set `UNIFLOW_OIDC_PILOT_UID` to a single Darkwood subject and
+keep `UNIFLOW_OIDC_ALLOW_LINKED` unset or false. A migrated user with a
+`uf_` Darkwood username and no password can choose their password via
+the [Darkwood reset form](https://darkwood.com/resetting/request).
+The one-time link is bound to their current mailbox and verifies its
+possession when the new password is saved.
 
-1. Confirm Sylius and all installed plugins support the selected Symfony version.
-2. Use Symfony's maintained native OIDC integration.
-3. Register exact redirect URIs with the chosen identity provider.
-4. Configure OIDC inside the existing `shop` firewall, retaining its provider and user checker chain.
-5. Resolve the validated `sub` exclusively through `UserOAuth(provider, identifier)`.
-6. Test initial URL restoration, existing provider sessions, unknown subjects, expired sessions and local logout.
-7. Keep Admin, JWT and API-key authentication regression tests green.
+For a wider rollout, confirm mail delivery before announcement. Set
+`UNIFLOW_OIDC_ALLOW_LINKED=true` to offer the Darkwood button to every
+linked, enabled account that completes address verification. The
+existing Sylius login is available throughout this phase. Monitor
+activation, successful callbacks and both login options before any
+change to the default entry point. Removing the pilot UID and
+setting the rollout flag to false disables the OIDC routes.
+
+Admin, JWT API and API-key authentication use their existing firewalls.
+The test pilot uses a dedicated ShopUser and avoids payment actions.

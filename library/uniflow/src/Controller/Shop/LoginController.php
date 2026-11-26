@@ -28,6 +28,7 @@ class LoginController extends AbstractController
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly EventDispatcherInterface $eventDispatcher,
         #[Autowire('%env(default::UNIFLOW_OIDC_PILOT_UID)%')] private readonly ?string $pilotUid,
+        #[Autowire('%env(bool:default::UNIFLOW_OIDC_ALLOW_LINKED)%')] private readonly bool $allowLinked,
     ) {}
 
     #[Route('/login', name: 'login', methods: ['GET', 'POST'])]
@@ -86,7 +87,8 @@ class LoginController extends AbstractController
             'form' => $form->createView(),
             'error' => $error,
             'last_username' => $lastUsername,
-            'darkwood_pilot_enabled' => '' !== trim((string) $this->pilotUid),
+            'darkwood_login_enabled' => $this->allowLinked || '' !== trim((string) $this->pilotUid),
+            'darkwood_pilot_only' => !$this->allowLinked,
         ]);
     }
 }
