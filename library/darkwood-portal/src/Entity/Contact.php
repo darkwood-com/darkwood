@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\Table(name: 'contact')]
-#[ORM\UniqueConstraint(name: 'uniq_contact_legacy_reference', columns: ['legacy_reference'])]
 class Contact
 {
     use TimestampTrait;
@@ -25,9 +24,6 @@ class Contact
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private ?int $id = null;
-
-    #[ORM\Column(name: 'legacy_reference', type: Types::STRING, length: 64, nullable: true)]
-    private ?string $legacyReference = null;
 
     #[Assert\NotBlank(message: 'common.comment.required_email')]
     #[Assert\Email(message: '{{ value }} is invalid.', mode: 'strict')]
