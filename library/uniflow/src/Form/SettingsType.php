@@ -25,10 +25,10 @@ class SettingsType extends AbstractType
         $builder->add('apiKey', TextType::class, [
             'required' => false,
             'constraints' => [
-                new Assert\Length([
-                    'max' => 255,
-                    'maxMessage' => 'API key cannot be longer than {{ limit }} characters.',
-                ]),
+                new Assert\Length(
+                    max: 255,
+                    maxMessage: 'API key cannot be longer than {{ limit }} characters.',
+                ),
             ],
         ]);
         // $builder->add('facebookId', TextType::class);
