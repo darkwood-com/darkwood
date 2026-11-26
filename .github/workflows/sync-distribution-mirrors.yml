@@ -217,17 +217,6 @@ jobs:
               fi
             '
 
-      - name: Create a repository-scoped publication token
-        if: steps.select.outputs.selected == 'true'
-        id: publication-token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
-        with:
-          app-id: ${{ vars.DARKWOOD_DISTRIBUTION_APP_ID }}
-          private-key: ${{ secrets.DARKWOOD_DISTRIBUTION_APP_PRIVATE_KEY }}
-          owner: ${{ matrix.owner }}
-          repositories: ${{ matrix.repository_name }}
-          permission-contents: write
-
       - name: Build mirror commit
         if: steps.select.outputs.selected == 'true'
         id: mirror
@@ -239,9 +228,7 @@ jobs:
           TARGET: ${{ matrix.id }}
           REQUIRES_PHP: ${{ matrix.requires_php }}
           CANONICAL_SHA: ${{ github.sha }}
-          APP_TOKEN: ${{ steps.publication-token.outputs.token }}
         run: |
-          git config --global url."https://x-access-token:${APP_TOKEN}@github.com/".insteadOf "https://github.com/"
           mirror_url="https://github.com/$REPOSITORY.git"
           clone_branch="$BRANCH"
           if [[ -n "$BOOTSTRAP_BRANCH" ]]; then
@@ -304,6 +291,20 @@ jobs:
           git -C mirror commit -m "🔄 Sync $TARGET from darkwood@${CANONICAL_SHA:0:12}"
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
+      - name: Create a repository-scoped publication token
+        if: >-
+          steps.select.outputs.selected == 'true' &&
+          steps.mirror.outputs.changed == 'true' &&
+          (github.event_name != 'workflow_dispatch' || inputs.dry_run == false)
+        id: publication-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        with:
+          app-id: ${{ vars.DARKWOOD_DISTRIBUTION_APP_ID }}
+          private-key: ${{ secrets.DARKWOOD_DISTRIBUTION_APP_PRIVATE_KEY }}
+          owner: ${{ matrix.owner }}
+          repositories: ${{ matrix.repository_name }}
+          permission-contents: write
+
       - name: Push mirror commit
         if: >-
           steps.select.outputs.selected == 'true' &&
@@ -311,8 +312,10 @@ jobs:
           (github.event_name != 'workflow_dispatch' || inputs.dry_run == false)
         env:
           BRANCH: ${{ matrix.branch }}
+          APP_TOKEN: ${{ steps.publication-token.outputs.token }}
         run: |
-          git -C mirror push origin "HEAD:refs/heads/$BRANCH"
+          git -C mirror -c "url.https://x-access-token:${APP_TOKEN}@github.com/.insteadOf=https://github.com/" \
+            push origin "HEAD:refs/heads/$BRANCH"
 
       - name: Report dry run
         if: >-
