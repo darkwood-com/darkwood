@@ -135,7 +135,19 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     private ?bool $emailSent = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private ?bool $isVerified = false;
+    private bool $isVerified = false;
+
+    #[ORM\Column(options: ['default' => false])]
+    private bool $emailVerificationRequired = true;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $emailVerifiedAt = null;
+
+    #[ORM\Column(options: ['default' => 0])]
+    private int $emailVerificationVersion = 0;
+
+    #[ORM\Column(options: ['default' => true])]
+    private bool $enabled = true;
 
     #[ORM\Column(type: Types::STRING, length: 64, nullable: true)]
     private ?string $totpSecret = null;
@@ -249,6 +261,14 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
 
     public function setEmail(mixed $email)
     {
+        if (isset($this->email) && $this->email !== $email) {
+            $this->setIsVerified(false);
+            $this->emailVerificationRequired = true;
+            ++$this->emailVerificationVersion;
+            $this->resetToken = null;
+            $this->resetRequestedAt = null;
+        }
+
         $this->email = $email;
     }
 
@@ -550,9 +570,41 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
 
     public function setIsVerified(bool $isVerified): self
     {
+        if ($isVerified && !$this->isVerified) {
+            $this->emailVerifiedAt = new \DateTimeImmutable();
+        } elseif (!$isVerified) {
+            $this->emailVerifiedAt = null;
+        }
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    public function isEmailVerificationPending(): bool
+    {
+        return $this->emailVerificationRequired && !$this->isVerified;
+    }
+
+    public function getEmailVerificationVersion(): int
+    {
+        return $this->emailVerificationVersion;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function canAuthenticate(): bool
+    {
+        return $this->isEnabled() && !$this->isEmailVerificationPending();
     }
 
     public function getBonzaiOrderId(): ?string

@@ -490,3 +490,23 @@ resetting:
   reset:
     submit: Changer le mot de passe
   password_already_requested: Ce lien de réinitialisation est invalide ou a expiré. Veuillez refaire une demande de réinitialisation.
+
+email_verification:
+    title: "Vérification de votre adresse e-mail"
+    registration_pending: "Votre compte Darkwood a été créé. Vérifiez votre boîte de réception pour confirmer votre adresse avant de vous connecter."
+    confirm_help: "Confirmez votre adresse e-mail pour activer la connexion à Darkwood."
+    confirm_button: "Confirmer mon adresse e-mail"
+    address: "Adresse e-mail"
+    resend_button: "Renvoyer le lien de vérification"
+    resend_help: "Saisissez votre adresse e-mail pour demander un nouveau lien de vérification."
+    resend_result: "Si cette adresse peut être vérifiée, vous recevrez un lien de confirmation. Vous pouvez également vérifier vos courriers indésirables."
+    confirmed: "Votre adresse e-mail a été vérifiée. Vous pouvez vous connecter à Darkwood et accéder aux produits de la suite."
+    invalid: "Ce lien est invalide ou a expiré. Vous pouvez demander un nouveau lien ci-dessous."
+    login: "Se connecter à Darkwood"
+    mail_subject: "Bienvenue sur Darkwood — Confirmez votre adresse e-mail"
+    mail_welcome: "Bienvenue sur Darkwood !"
+    mail_body: "Confirmez votre adresse e-mail pour terminer votre inscription à Darkwood Identity."
+    mail_expiry: "Le lien reste valable jusqu’au %expires% UTC."
+    mail_ignore: "Vous pouvez ignorer ce message si vous n’êtes pas à l’origine de l’inscription."
+    profile_verified: "Adresse e-mail vérifiée."
+    profile_unverified: "Adresse e-mail en attente de vérification."

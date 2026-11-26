@@ -30,7 +30,8 @@
                                     <thead>
                                     <tr>
                                         {# sorting of properties based on query components #}
-                                        <th style="width: 100px; text-align:center;"  {% if entities.isSorted('u.isVerified') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Actif', 'u.isVerified') }}</th>
+                                        <th style="width: 100px; text-align:center;"  {% if entities.isSorted('u.isVerified') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'E-mail vérifié', 'u.isVerified') }}</th>
+                                        <th>{{ knp_pagination_sortable(entities, 'Connexion autorisée', 'u.enabled') }}</th>
                                         <th style="width: 50px; text-align:center;"{% if entities.isSorted('u.id') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Id', 'u.id') }}</th>
                                         <th style="width: 100px; text-align:center;">Avatar</th>
                                         <th{% if entities.isSorted('u.firstname') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Prénom', 'u.firstname') }}</th>
@@ -46,6 +47,7 @@
                                     {% for user in entities %}
                                         <tr {% if loop.index is odd %}class="color"{% endif %} id="user-{{ user.id }}">
                                             <td style="text-align:center;vertical-align:middle;">{% if user.isVerified %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-times text-danger"></i>{% endif %}</td>
+                                            <td style="text-align:center">{% if user.enabled %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-times text-danger"></i>{% endif %}</td>
                                             <td style="vertical-align:middle;">{{ user.id }}</td>
                                             <td style="vertical-align: middle"><img src="{{ asset(vich_uploader_asset(user, 'image')|default('/common/images/profile/default.jpg'))|imagine_filter('admin_list') }}" /></td>
                                             <td style="vertical-align:middle;"><a href="{{ path('admin_user_edit', {'id': user.id}) }}">{{ user.firstname }}</a></td>

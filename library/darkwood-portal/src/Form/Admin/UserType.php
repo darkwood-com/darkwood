@@ -35,7 +35,7 @@ class UserType extends AbstractType
         $builder->add('email', EmailType::class);
         $builder->add('plainPassword', RepeatedType::class, ['type' => PasswordType::class, 'options' => ['required' => false], 'first_options' => ['label' => 'Mot de passe'], 'second_options' => ['label' => 'Confirmer mot de passe'], 'invalid_message' => 'Mot de passe invalide']);
         $builder->add('birthday', DateType::class, ['widget' => 'single_text', 'input' => 'datetime', 'format' => 'dd/MM/y']);
-        $builder->add('isVerified', CheckboxType::class, ['required' => false]);
+        $builder->add('enabled', CheckboxType::class, ['required' => false]);
         $builder->add('hasRoleAdmin', CheckboxType::class, ['required' => false]);
         $builder->add('hasRoleSuperAdmin', CheckboxType::class, ['required' => false]);
     }

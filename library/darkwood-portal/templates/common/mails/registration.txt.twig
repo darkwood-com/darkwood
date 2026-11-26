@@ -1,0 +1,7 @@
+{{ 'email_verification.mail_welcome'|trans }}
+
+{{ 'email_verification.mail_body'|trans }}
+{{ verificationUrl }}
+
+{{ 'email_verification.mail_expiry'|trans({'%expires%': expiresAt|date('Y-m-d H:i', 'UTC')}) }}
+{{ 'email_verification.mail_ignore'|trans }}

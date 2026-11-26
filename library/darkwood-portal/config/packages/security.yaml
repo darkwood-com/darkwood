@@ -26,6 +26,7 @@ security:
             pattern: ^/token$
             security: false
         oidc_userinfo:
+            user_checker: App\Security\IdentityUserChecker
             pattern: ^/userinfo$
             stateless: true
             provider: oidc_subject_provider
@@ -37,6 +38,7 @@ security:
         # MCP accepts the same player JWT as Darkwood API. This separate context
         # does not inherit partially authenticated website/2FA sessions.
         darkwood_mcp:
+            user_checker: App\Security\IdentityUserChecker
             pattern: ^/mcp$
             host: '%api_host%'
             stateless: false
@@ -44,16 +46,19 @@ security:
             jwt: ~
         # Darkwood API: stateful so DarkwoodGameService can use session (flash, combat state)
         darkwood_api:
+            user_checker: App\Security\IdentityUserChecker
             pattern: ^/api/darkwood
             stateless: false
             provider: app_user_provider
             jwt: ~
         api:
+            user_checker: App\Security\IdentityUserChecker
             pattern: ^/api/
             stateless: true
             provider: app_user_provider
             jwt: ~
         main:
+            user_checker: App\Security\IdentityUserChecker
             lazy: true
             provider: app_user_provider
             json_login:

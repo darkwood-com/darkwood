@@ -334,3 +334,23 @@ resetting:
   reset:
     submit: Passwort ändern
   password_already_requested: Dieser Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen. Bitte fordern Sie ein neues Passwort an.
+
+email_verification:
+    title: "E-Mail-Adresse bestätigen"
+    registration_pending: "Ihr Darkwood-Konto wurde erstellt. Prüfen Sie Ihren Posteingang und bestätigen Sie Ihre Adresse, bevor Sie sich anmelden."
+    confirm_help: "Bestätigen Sie Ihre E-Mail-Adresse, um sich bei Darkwood anmelden zu können."
+    confirm_button: "Meine E-Mail-Adresse bestätigen"
+    address: "E-Mail-Adresse"
+    resend_button: "Bestätigungslink erneut senden"
+    resend_help: "Geben Sie Ihre E-Mail-Adresse ein, um einen neuen Bestätigungslink anzufordern."
+    resend_result: "Wenn diese Adresse bestätigt werden kann, erhalten Sie einen Bestätigungslink. Prüfen Sie gegebenenfalls auch Ihren Spam-Ordner."
+    confirmed: "Ihre E-Mail-Adresse wurde bestätigt. Sie können sich bei Darkwood anmelden und die Produkte nutzen."
+    invalid: "Dieser Link ist ungültig oder abgelaufen. Sie können unten einen neuen Link anfordern."
+    login: "Bei Darkwood anmelden"
+    mail_subject: "Willkommen bei Darkwood — Bestätigen Sie Ihre E-Mail-Adresse"
+    mail_welcome: "Willkommen bei Darkwood!"
+    mail_body: "Bestätigen Sie Ihre E-Mail-Adresse, um die Registrierung bei Darkwood Identity abzuschließen."
+    mail_expiry: "Dieser Link ist bis %expires% UTC gültig."
+    mail_ignore: "Wenn Sie sich nicht registriert haben, können Sie diese Nachricht ignorieren."
+    profile_verified: "E-Mail-Adresse bestätigt."
+    profile_unverified: "E-Mail-Adresse noch nicht bestätigt."

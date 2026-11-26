@@ -492,3 +492,23 @@ resetting:
   reset:
     submit: Change password
   password_already_requested: This password reset link is invalid or has expired. Please request a new password reset.
+
+email_verification:
+    title: "Verify your email address"
+    registration_pending: "Your Darkwood account has been created. Check your inbox to confirm your address before signing in."
+    confirm_help: "Confirm your email address to enable sign-in to Darkwood."
+    confirm_button: "Confirm my email address"
+    address: "Email address"
+    resend_button: "Resend the verification link"
+    resend_help: "Enter your email address to request a new verification link."
+    resend_result: "If this address can be verified, you will receive a confirmation link. You can also check your spam folder."
+    confirmed: "Your email address has been verified. You can sign in to Darkwood and access its products."
+    invalid: "This link is invalid or has expired. You can request a new link below."
+    login: "Sign in to Darkwood"
+    mail_subject: "Welcome to Darkwood — Confirm your email address"
+    mail_welcome: "Welcome to Darkwood!"
+    mail_body: "Confirm your email address to finish signing up for Darkwood Identity."
+    mail_expiry: "This link expires on %expires% UTC."
+    mail_ignore: "If you did not sign up, you can ignore this message."
+    profile_verified: "Email address verified."
+    profile_unverified: "Email address awaiting verification."

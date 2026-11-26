@@ -16,3 +16,11 @@ framework:
             policy: 'fixed_window'
             limit: 10000
             interval: '1 hour'
+        email_verification_ip:
+            policy: sliding_window
+            limit: 10
+            interval: '15 minutes'
+        email_verification_address:
+            policy: sliding_window
+            limit: 1
+            interval: '5 minutes'

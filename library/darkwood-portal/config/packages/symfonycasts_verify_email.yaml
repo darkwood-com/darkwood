@@ -1,0 +1,5 @@
+parameters:
+    env(DARKWOOD_EMAIL_VERIFICATION_TTL): '86400'
+
+symfonycasts_verify_email:
+    lifetime: '%env(int:DARKWOOD_EMAIL_VERIFICATION_TTL)%'

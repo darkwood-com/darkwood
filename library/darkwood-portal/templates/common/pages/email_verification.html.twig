@@ -1,0 +1,44 @@
+{% extends 'darkwood/base.html.twig' %}
+
+{% block content %}
+    <div class="container py-4">
+        <h1>{{ 'email_verification.title'|trans }}</h1>
+        {% for message in app.flashes('registration_verification') %}
+            <p class="alert {{ message == 'email_verification.invalid' ? 'alert-warning' : 'alert-info' }}" role="status">{{ message|trans }}</p>
+        {% endfor %}
+        {% if confirm %}
+            <p>{{ 'email_verification.confirm_help'|trans }}</p>
+            <form id="email-verification-confirm" method="post" action="{{ path('common_register_check') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('confirm_email') }}">
+                <input type="hidden" name="proof">
+                <button type="submit" class="btn btn-primary">{{ 'email_verification.confirm_button'|trans }}</button>
+            </form>
+            <p class="mt-3"><a href="{{ path('common_register_resend') }}">{{ 'email_verification.resend_button'|trans }}</a></p>
+        {% else %}
+            <p>{{ 'email_verification.resend_help'|trans }}</p>
+            <form method="post" action="{{ path('common_register_resend') }}" class="row g-2 align-items-end">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('resend_email') }}">
+                <div class="col-sm-auto">
+                    <label for="verification-email" class="form-label">{{ 'email_verification.address'|trans }}</label>
+                    <input id="verification-email" name="email" type="email" autocomplete="email" required class="form-control">
+                </div>
+                <div class="col-sm-auto"><button class="btn btn-primary">{{ 'email_verification.resend_button'|trans }}</button></div>
+            </form>
+        {% endif %}
+        <p class="mt-3"><a href="{{ path('security_login') }}">{{ 'email_verification.login'|trans }}</a></p>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {% if confirm %}
+        <script>
+            const proof = document.querySelector('#email-verification-confirm input[name="proof"]');
+            proof.value = window.location.hash.slice(1);
+            if (window.location.hash) {
+                window.history.replaceState(null, '', window.location.pathname);
+            }
+        </script>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

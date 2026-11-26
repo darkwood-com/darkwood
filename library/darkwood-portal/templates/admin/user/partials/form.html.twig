@@ -13,7 +13,7 @@
                 form.username.vars['errors'] |length > 0 or
                 form.email.vars['errors'] |length > 0 or
                 form.plainPassword.vars['errors'] |length > 0 or
-                form.isVerified.vars['errors'] |length > 0
+                form.enabled.vars['errors'] |length > 0
                 %}
                     <span class="badge badge-danger" style="background: #f8b2b2 !important; color: red !important;position: absolute; left: 5px; top: 5px;width: 19px;"><i class="fa fa-flash"></i></span>
                 {% endif %}
@@ -113,7 +113,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group {% if form.isVerified.vars['errors'] |length > 0 %}has-error has-feedback{% endif %}">
+            <div class="form-group {% if form.plainPassword.second.vars['errors'] |length > 0 %}has-error has-feedback{% endif %}">
                 <div class="row">
                     {{ form_label(form.plainPassword.second, 'Répeter le mot de passe', { 'label_attr': { 'class': 'col-md-2 control-label' }}) }}
                     <div class="col-md-8">
@@ -124,10 +124,10 @@
 
             <hr/>
 
-            <div class="form-group {% if form.isVerified.vars['errors'] |length > 0 %}has-error has-feedback{% endif %}">
-                {{ form_label(form.isVerified, 'Activé', { 'label_attr': { 'class': 'col-md-2 control-label' }}) }}
+            <div class="form-group {% if form.enabled.vars['errors'] |length > 0 %}has-error has-feedback{% endif %}">
+                {{ form_label(form.enabled, 'Autoriser la connexion', { 'label_attr': { 'class': 'col-md-2 control-label' }}) }}
                 <div class="col-md-10 toggle-button" data-on="success" data-off="danger">
-                    {{ form_widget(form.isVerified, { 'attr': {'style': 'border:none; box-shadow: none;margin-top: 0px;', 'class': 'form-control switch-button'} }) }}
+                    {{ form_widget(form.enabled, { 'attr': {'style': 'border:none; box-shadow: none;margin-top: 0px;', 'class': 'form-control switch-button'} }) }}
                 </div>
             </div>
         </div>

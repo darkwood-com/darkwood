@@ -1,0 +1,3 @@
+email_verification:
+    login_required: "Verify your email address before signing in."
+    account_disabled: "Sign-in is disabled for this account."

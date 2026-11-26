@@ -1,10 +1,9 @@
-{% extends "common/mails/base.html.twig" %}
-{% block subject %}[Darkwood] Bienvenue {{ user.username }} !{% endblock %}
+{% extends 'common/mails/base.html.twig' %}
 
 {% block content %}
-<span style="color:#EEEEEE; font-size:20px; font-weight: 300;">Bienvenue {{ user.username }} !</span><br /><br />
-
-Pour valider votre compte utilisateur, merci de vous rendre sur :<br /><br />
-<a href="{{ signedUrl|raw }}">{{ signedUrl|raw }}</a>
-Ce lien expire dans {{ expiresAt|date('g') }} heure(s).
+    <p style="color:#eeeeee;font-size:20px;line-height:1.4">{{ 'email_verification.mail_welcome'|trans }}</p>
+    <p style="line-height:1.5">{{ 'email_verification.mail_body'|trans }}</p>
+    <p style="margin:24px 0"><a href="{{ verificationUrl }}" style="display:inline-block;padding:10px 16px;background:#eeeeee;color:#202020;border-radius:4px">{{ 'email_verification.confirm_button'|trans }}</a></p>
+    <p style="line-height:1.5">{{ 'email_verification.mail_expiry'|trans({'%expires%': expiresAt|date('Y-m-d H:i', 'UTC')}) }}</p>
+    <p style="line-height:1.5">{{ 'email_verification.mail_ignore'|trans }}</p>
 {% endblock %}

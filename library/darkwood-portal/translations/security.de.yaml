@@ -1,0 +1,3 @@
+email_verification:
+    login_required: "Bestätigen Sie Ihre E-Mail-Adresse, bevor Sie sich anmelden."
+    account_disabled: "Die Anmeldung für dieses Konto ist deaktiviert."

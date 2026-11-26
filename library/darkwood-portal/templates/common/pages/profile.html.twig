@@ -4,6 +4,10 @@
 
 <h1>{{ page.title }} {{ form.vars['value'].username }}</h1>
 
+<p>{{ (app.user.verified ? 'email_verification.profile_verified' : 'email_verification.profile_unverified')|trans }}
+    {% if not app.user.verified %}<a href="{{ url('common_register_resend') }}">{{ 'email_verification.resend_button'|trans }}</a>{% endif %}
+</p>
+
 {{ form_start(form) }}
     {{ form_errors(form._token) }}
     {{ form_widget(form._token) }}

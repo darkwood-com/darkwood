@@ -1,0 +1,3 @@
+email_verification:
+    login_required: "Vérifiez votre adresse e-mail avant de vous connecter."
+    account_disabled: "La connexion à ce compte est désactivée."

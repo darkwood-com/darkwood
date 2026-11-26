@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 final class LoginPageTest extends CommonWebTestCase
 {
     /**
-     * @param array{0: string, 1: string} $expectedLinks
+     * @param array{0: string, 1: string, 2: string} $expectedLinks
      */
     #[DataProvider('localizedLoginPages')]
     public function testCanonicalLoginFormAndLocalizedLinks(string $path, array $expectedLinks): void
@@ -32,13 +32,14 @@ final class LoginPageTest extends CommonWebTestCase
         self::assertCount(1, $crawler->filter('form#login_form input[type="submit"]'));
 
         $links = $crawler->filter('.login-links p');
-        self::assertCount(2, $links);
+        self::assertCount(3, $links);
         self::assertSame($expectedLinks[0], trim($links->eq(0)->text(null, true)));
         self::assertSame($expectedLinks[1], trim($links->eq(1)->text(null, true)));
+        self::assertStringContainsString($expectedLinks[2], (string) $links->eq(2)->filter('a')->attr('href'));
     }
 
     /**
-     * @return iterable<string, array{string, array{string, string}}>
+     * @return iterable<string, array{string, array{string, string, string}}>
      */
     public static function localizedLoginPages(): iterable
     {
@@ -47,6 +48,7 @@ final class LoginPageTest extends CommonWebTestCase
             [
                 "Si vous n'avez pas encore de compte, vous devez vous inscrire.",
                 'Si vous avez oublié votre mot de passe, réinitialisez-le.',
+                '/fr/inscription/renvoyer-email',
             ],
         ];
 
@@ -55,6 +57,7 @@ final class LoginPageTest extends CommonWebTestCase
             [
                 'If you do not have an account yet, you need to register.',
                 'If you forgot your password, reset it.',
+                '/register/resend-email',
             ],
         ];
 
@@ -63,6 +66,7 @@ final class LoginPageTest extends CommonWebTestCase
             [
                 'Wenn Sie noch kein Konto haben, müssen Sie sich registrieren.',
                 'Wenn Sie Ihr Passwort vergessen haben, setzen Sie es zurück.',
+                '/de/registrieren/e-mail-erneut-senden',
             ],
         ];
     }

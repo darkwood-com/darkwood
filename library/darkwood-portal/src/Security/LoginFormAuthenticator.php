@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Entity\Site;
+use App\EventSubscriber\AuthenticationTargetPathSubscriber;
 use App\Repository\UserRepository;
 use App\Service\SiteService;
 use Override;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -46,6 +48,16 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         private readonly UserProviderInterface $userProvider,
         private readonly WebAuthenticationHostResolver $authenticationHostResolver,
     ) {}
+
+    #[Override]
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
+    {
+        if ($request->isMethod('GET') && '/authorize' === $request->getPathInfo() && $request->hasSession()) {
+            $request->getSession()->set(AuthenticationTargetPathSubscriber::OIDC_TARGET_EXPIRY_KEY, time() + 600);
+        }
+
+        return parent::start($request, $authException);
+    }
 
     #[Override]
     public function supports(Request $request): bool

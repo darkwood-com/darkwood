@@ -36,6 +36,7 @@
     <div class="login-links">
         <p>{{ 'common.login.no_account_intro'|trans }} <a href="{{ path('common_register') }}">{{ 'common.action.register'|trans|lower }}</a>{{ 'common.login.no_account_end'|trans }}</p>
         <p>{{ 'common.login.forgot_password_intro'|trans }} <a href="{{ path('common_resetting_request') }}">{{ 'common.login.forgot_password_link'|trans }}</a>{{ 'common.login.forgot_password_end'|trans }}</p>
+        <p><a href="{{ url('common_register_resend') }}">{{ 'email_verification.resend_button'|trans }}</a></p>
     </div>
 
     <p class="login-footer">Authentication secured by Darkwood Identity.</p>
