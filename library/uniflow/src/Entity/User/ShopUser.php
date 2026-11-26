@@ -18,9 +18,13 @@ use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ShopUserRepository::class)]
 #[ORM\Table(name: 'sylius_shop_user')]
+#[ORM\UniqueConstraint(name: 'uniq_shop_user_darkwood_uid', columns: ['darkwood_uid'])]
 class ShopUser extends BaseShopUser implements PasswordAuthenticatedUserInterface
 {
     use UidTrait;
+
+    #[ORM\Column(length: 36, nullable: true)]
+    private ?string $darkwoodUid = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $apiKey = null;
@@ -54,6 +58,18 @@ class ShopUser extends BaseShopUser implements PasswordAuthenticatedUserInterfac
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getDarkwoodUid(): ?string
+    {
+        return $this->darkwoodUid;
+    }
+
+    public function setDarkwoodUid(?string $darkwoodUid): self
+    {
+        $this->darkwoodUid = $darkwoodUid;
+
+        return $this;
     }
 
     public function getApiKey(): ?string
