@@ -28,10 +28,10 @@
             </div>
         </div>
 
-        <div class="row theme-footer">
+        <footer class="row theme-footer">
             <div class="col-md-12">
-                {%- include "apps/partials/footer.html.twig" -%}
+                {%- include 'common/partials/footer.html.twig' with {sitemap_route: 'apps_sitemap'} only -%}
             </div>
-        </div>
+        </footer>
     </div>
 {% endblock %}

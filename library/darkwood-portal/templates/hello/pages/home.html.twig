@@ -546,11 +546,11 @@
             </div>
         </div>
     </section>
-    <div class="row theme-footer no_link">
+    <footer class="row theme-footer no_link">
         <div class="col-md-12">
-            {%- include "hello/partials/footer.html.twig" -%}
+            {%- include 'common/partials/footer.html.twig' with {sitemap_route: 'hello_sitemap'} only -%}
         </div>
-    </div>
+    </footer>
     <div class="row theme-info no_link p-2">
         <div class="col-12 text-center">
             {{ 'hello.footer.credit'|trans|raw }}
