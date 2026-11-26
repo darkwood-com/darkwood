@@ -20,6 +20,14 @@ on:
       phpunit:
         type: boolean
         default: true
+      composer-scripts:
+        description: Run Composer scripts during project installation
+        type: boolean
+        default: true
+      prepare-dotenv:
+        description: Create a test-only .env when the project stores runtime configuration outside Git
+        type: boolean
+        default: false
       mysql:
         description: Start an isolated MySQL 5.7 service on port 3311
         type: boolean
@@ -89,6 +97,8 @@ jobs:
         id: install
         env:
           EXPECTED_PACKAGE: ${{ inputs.package }}
+          COMPOSER_SCRIPTS: ${{ inputs.composer-scripts }}
+          PREPARE_DOTENV: ${{ inputs.prepare-dotenv }}
           PHP_VERSION: ${{ inputs.php-version }}
           PHP_CS_FIXER: ${{ inputs.php-cs-fixer }}
           PHPSTAN: ${{ inputs.phpstan }}
@@ -147,7 +157,14 @@ jobs:
             test "$(jq -r .name composer.json)" = "$EXPECTED_PACKAGE"
             composer validate --strict --no-check-publish
           fi
-          composer install --no-interaction --no-progress --prefer-dist
+          if [[ "$PREPARE_DOTENV" == true && ! -e .env ]]; then
+            printf 'APP_ENV=test\nAPP_DEBUG=0\n' > .env
+          fi
+          composer_args=()
+          if [[ "$COMPOSER_SCRIPTS" != true ]]; then
+            composer_args+=(--no-scripts)
+          fi
+          composer install --no-interaction --no-progress --prefer-dist "${composer_args[@]}"
           for tool in php-cs-fixer phpstan phpunit; do
             case "$tool" in
               php-cs-fixer) enabled=$PHP_CS_FIXER ;;
