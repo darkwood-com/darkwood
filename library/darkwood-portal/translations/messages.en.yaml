@@ -72,8 +72,8 @@ common:
     submited: Your message has been send !
   menu:
     login: Login
-    login_username: Pseudo
-    login_password: Code
+    login_username: Email or username
+    login_password: Password
     login_btn: Login
     login_welcome: Welcome
     logout_btn: Logout
