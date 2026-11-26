@@ -2,13 +2,15 @@
 
 Le monorepo public est la source de développement. Le package se trouve dans
 `library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/`. Il fournit le footer
-et la navigation Darkwood Identity, les logos Darkwood et Darkwaar, les
+et la navigation Darkwood Identity, les logos Darkwood, Darkwaar, HeroClip, DJ Matyo et Geo, les
 traductions FR, EN et DE, les tokens, les icônes de thème, Jost sous licence
 OFL et le lecteur YouTube à chargement volontaire. Les palettes et composants
 propres aux produits restent dans leurs applications.
 
-Symfony enregistre le namespace Twig `@Darkwood` et installe les fichiers
-publics sous `public/bundles/darkwood/`. Les dépendances couvrent Symfony 7.4
+Symfony enregistre le namespace Twig `@Darkwood`. Le bundle déclare le chemin
+AssetMapper `darkwood` pour son dossier `assets/`. Les applications rendent
+les chemins comme `asset('darkwood/styles/identity.css')`, puis génèrent
+les fichiers versionnés sous `public/assets/darkwood/` en production. Les dépendances couvrent Symfony 7.4
 et 8.1, PHP 8.4 ou ultérieur et les composants Twig, Asset et Translation.
 Le footer lit les liens dans le template et reçoit ses options à l’inclusion.
 Les deux premiers consommateurs tournent sous Symfony 8.1. Composer a aussi
@@ -35,21 +37,20 @@ Installer la version stable publiée ou `dev-main`, vérifier le diff du lockfil
 le bundle, compiler les actifs et vérifier le rendu du footer sur desktop
 et mobile. Chaque produit garde son propre `composer.lock`.
 
-- **Portal** importe les tokens et icônes du package dans Encore. Installer
-  Composer avant le build JavaScript. Après le premier déploiement, préparer
-  le nouveau conteneur Symfony avant d’installer les actifs du bundle.
-  Vérifier que le CSS Encore utilise les tokens et la police du package.
-- **Darkwaar** installe les fichiers du bundle avant sa compilation AssetMapper
-  et conserve les styles et les scripts propres aux jeux.
-- **HeroClip**, **Geo** et **DJ Matyo** utilisent Symfony 8.1. Une résolution
-  Composer de test accepte le tag dans les trois projets sans mettre à jour
-  leurs dépendances déjà verrouillées. Leurs variantes de footer restent à valider.
+- **Portal** conserve sa chaîne Encore pour les assets du site. Les assets
+  du footer du bundle suivent AssetMapper et ne nécessitent aucun build Encore.
+- **Darkwaar** charge son logo de navigation et son footer depuis le bundle
+  et conserve son pipeline AssetMapper et les styles propres aux jeux.
+- **HeroClip**, **Geo** et **DJ Matyo** utilisent les marques SVG, le footer
+  et les styles partagés. Les interactions vidéo, audio et cartographiques
+  restent dans les applications. L’export statique DJ Matyo embarque les
+  fichiers versionnés générés par AssetMapper sous son préfixe de publication.
 - **Uniflow** utilise Sylius et AssetMapper. La résolution Composer est bloquée
   par un fichier `composer.lock` invalide dans le checkout public audité.
   **Slides** est une application Laravel et peut référencer les ressources statiques.
 
 Sur VPS-4, avancer avec `git pull --ff-only`, installer les dépendances
-verrouillées, reconstruire le conteneur et les actifs, puis contrôler la
+verrouillées, reconstruire le conteneur et les actifs avec `APP_ENV=prod php bin/console asset-map:compile`, puis contrôler la
 version installée et les pages publiques. Pour revenir en arrière, rétablir
 dans un commit le précédent `composer.lock`, l’enregistrement du bundle et
 les templates associés, puis déployer normalement. Les tags publiés restent
