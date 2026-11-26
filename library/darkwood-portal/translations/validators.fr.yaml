@@ -15,6 +15,8 @@ form:
       phone:      Téléphone invalide
 
 common:
+  username:
+    invalid: Le nom d’utilisateur ne peut contenir que des lettres de A à Z, des chiffres et des tirets.
   comment:
     required_email: Vous devez inscrire un email !
     required_user: Vous devez être connecté !

@@ -31,7 +31,7 @@ class UserType extends AbstractType
         $builder->add('civility', ChoiceType::class, ['choices' => ['m' => 'Monsieur', 'mme' => 'Madame', 'mlle' => 'Mademoiselle'], 'placeholder' => false, 'required' => false]);
         $builder->add('firstname', TextType::class);
         $builder->add('lastname', TextType::class);
-        $builder->add('username', TextType::class);
+        $builder->add('username', TextType::class, ['attr' => ['pattern' => User::USERNAME_PATTERN]]);
         $builder->add('email', EmailType::class);
         $builder->add('plainPassword', RepeatedType::class, ['type' => PasswordType::class, 'options' => ['required' => false], 'first_options' => ['label' => 'Mot de passe'], 'second_options' => ['label' => 'Confirmer mot de passe'], 'invalid_message' => 'Mot de passe invalide']);
         $builder->add('birthday', DateType::class, ['widget' => 'single_text', 'input' => 'datetime', 'format' => 'dd/MM/y']);

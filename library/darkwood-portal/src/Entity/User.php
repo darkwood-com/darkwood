@@ -36,6 +36,8 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
 {
     use TimestampTrait;
 
+    public const string USERNAME_PATTERN = '[A-Za-z0-9\-]+';
+
     private const string TOTP_ALGORITHM = TotpConfiguration::ALGORITHM_SHA1;
 
     private const int TOTP_PERIOD = 30;
@@ -118,6 +120,8 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     #[ORM\Column(type: Types::STRING, length: 36, unique: true)]
     private ?string $uuid = null;
 
+    #[Assert\NotBlank(message: 'form.general.required')]
+    #[Assert\Regex(pattern: '/\A' . self::USERNAME_PATTERN . '\z/', message: 'common.username.invalid')]
     #[Assert\Length(min: 2, max: 32, minMessage: 'The username must be at least {{ limit }} characters long', maxMessage: 'The username cannot be longer than {{ limit }} characters')]
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private ?string $username = null;

@@ -27,7 +27,17 @@ final class EmailVerificationTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         $client->submit($crawler->filter('#register_form')->form([
-            'registration[username]' => 'verification-' . $suffix,
+            'registration[username]' => 'verification_' . $suffix,
+            'registration[email]' => $address,
+            'registration[plainPassword][first]' => $password,
+            'registration[plainPassword][second]' => $password,
+        ]));
+        self::assertSelectorTextContains('#register_form', 'The username can only contain letters A–Z, numbers and hyphens.');
+        self::assertEmailCount(0);
+
+        $crawler = $client->request('GET', '/register');
+        $client->submit($crawler->filter('#register_form')->form([
+            'registration[username]' => 'Verification-' . $suffix,
             'registration[email]' => $address,
             'registration[plainPassword][first]' => $password,
             'registration[plainPassword][second]' => $password,
@@ -107,7 +117,7 @@ final class EmailVerificationTest extends WebTestCase
         $client = self::createClient([], ['HTTPS' => 'on', 'HTTP_HOST' => 'darkwood.localhost']);
         $entityManager = $client->getContainer()->get(EntityManagerInterface::class);
         $this->seedPages($entityManager);
-        $username = 'uniflow.activation.' . bin2hex(random_bytes(4));
+        $username = 'uniflow-activation-' . bin2hex(random_bytes(4));
         $address = $username . '@example.com';
 
         $user = new User();
