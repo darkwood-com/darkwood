@@ -2,7 +2,7 @@
 
 Le monorepo public est la source de développement. Le package se trouve dans
 `library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/`. Il fournit le footer
-et la navigation Darkwood Identity, les logos Darkwood, Darkwaar, HeroClip, DJ Matyo et Geo, les
+et la navigation Darkwood Identity, les logos Darkwood, Darkwaar, HeroClip, DJ Matyo, Geo, Flow et Uniflow, les
 traductions FR, EN et DE, les tokens, les icônes de thème, Jost sous licence
 OFL et le lecteur YouTube à chargement volontaire. Les palettes et composants
 propres aux produits restent dans leurs applications.
@@ -12,7 +12,8 @@ AssetMapper `darkwood` pour son dossier `assets/`. Les applications rendent
 les chemins comme `asset('darkwood/styles/identity.css')`, puis génèrent
 les fichiers versionnés sous `public/assets/darkwood/` en production. Les dépendances couvrent Symfony 7.4
 et 8.1, PHP 8.4 ou ultérieur et les composants Twig, Asset et Translation.
-Le footer lit les liens dans le template et reçoit ses options à l’inclusion.
+Le catalogue `data/identity.json` définit les liens et l’ordre du footer.
+Le template reçoit ses options à l’inclusion.
 Les deux premiers consommateurs tournent sous Symfony 8.1. Composer a aussi
 résolu le tag avec Symfony 7.4 et une plateforme PHP 8.4 simulée.
 
@@ -45,9 +46,11 @@ et mobile. Chaque produit garde son propre `composer.lock`.
   et les styles partagés. Les interactions vidéo, audio et cartographiques
   restent dans les applications. L’export statique DJ Matyo embarque les
   fichiers versionnés générés par AssetMapper sous son préfixe de publication.
-- **Uniflow** utilise Sylius et AssetMapper. La résolution Composer est bloquée
-  par un fichier `composer.lock` invalide dans le checkout public audité.
-  **Slides** est une application Laravel et peut référencer les ressources statiques.
+- **Uniflow** charge le logo et le footer depuis AssetMapper dans le layout
+  de la boutique. Les assets spécifiques gardent leur chaîne Sass/Encore.
+- **Flow** lit le catalogue et copie les assets dans sa build Hugo existante
+  pour GitHub Pages.
+- **Slides** est une application Laravel et peut référencer les ressources statiques.
 
 Sur VPS-4, avancer avec `git pull --ff-only`, installer les dépendances
 verrouillées, reconstruire le conteneur et les actifs avec `APP_ENV=prod php bin/console asset-map:compile`, puis contrôler la
