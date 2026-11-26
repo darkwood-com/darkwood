@@ -18,10 +18,10 @@ class SettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('customer', SettingsCustomerType::class);
-        $builder->add('username', TextType::class, [
+        // $builder->add('customer', SettingsCustomerType::class);
+        /*$builder->add('username', TextType::class, [
             'required' => false,
-        ]);
+        ]);*/
         $builder->add('apiKey', TextType::class, [
             'required' => false,
             'constraints' => [
