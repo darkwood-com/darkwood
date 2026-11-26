@@ -167,7 +167,7 @@ class ResettingController extends AbstractController
     private function isImportedAccountAwaitingActivation(User $user): bool
     {
         return str_starts_with((string) $user->getUsername(), 'uf_')
-            && !$user->isVerified() && null === $user->getPassword();
+            && !$user->isVerified() && '' === $user->getPassword();
     }
 
     private function mailboxSignature(User $user, string $nonce): string
