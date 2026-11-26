@@ -28,6 +28,7 @@
 	<env name="APP_SECRET" value="16aa17bccc9fa9c52386dda545354fa2" />
 	<env name="KERNEL_CLASS" value="App\Kernel" />
 	<env name="DARKWOOD_HOST" value="darkwood.localhost" />
+	<env name="DEFAULT_URI" value="http://darkwood.localhost" />
 	<env name="APPS_HOST" value="apps.darkwood.localhost" />
 	<env name="PHOTOS_HOST" value="photos.darkwood.localhost" />
 	<env name="BLOG_HOST" value="blog.darkwood.localhost" />
@@ -36,9 +37,14 @@
 	<env name="ADMIN_HOST" value="admin.darkwood.localhost" />
 	<env name="API_HOST" value="api.darkwood.localhost" />
 	<env name="DATABASE_URL" value="mysql://root:root@127.0.0.1:3311/darkwood?serverVersion=5.7" />
+	<env name="DATABASE_SERVER_VERSION" value="5.7" />
+	<env name="DATABASE_CHARSET" value="utf8mb4" />
 	<env name="COOKIE_DOMAIN" value=".darkwood.localhost" />
 	<env name="MAILER_DSN" value="null://null" />
 	<env name="CORS_ALLOW_ORIGIN" value="^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$" />
 	<env name="ENABLE_IA_EXCEPTION" value="false" />
+	<env name="DARKWOOD_MCP_ENABLED" value="false" />
+	<env name="SENTRY_DSN" value="" />
+	<env name="GOOGLE_RECAPTCHA_SITE_KEY" value="" />
   </php>
 </phpunit>
