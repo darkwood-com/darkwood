@@ -1,8 +1,13 @@
 {% set locale = app.request.locale|default('en')|slice(0, 2) %}
 {% set contact_urls = {
-    de: 'https://darkwood.com/de/kontakt',
     en: 'https://darkwood.com/contact',
     fr: 'https://darkwood.com/fr/contact',
+    de: 'https://darkwood.com/de/kontakt',
+} %}
+{% set legal_mentions_urls = {
+    en: 'https://darkwood.com/legal-mentions',
+    fr: 'https://darkwood.com/fr/mentions-legales',
+    de: 'https://darkwood.com/de/impressum',
 } %}
 {% set products = {
     darkwood: {name: 'Darkwood', url: portal_url|default('https://darkwood.com/'), icon: 'darkwood.svg'},
@@ -16,6 +21,9 @@
 <div class="dw-identity d-flex flex-wrap align-items-center justify-content-end">
     <a class="dw-identity__link" href="{{ contact_url|default(contact_urls[locale]|default(contact_urls.en)) }}">
         {{ 'contact'|trans({}, 'darkwood_identity') }}
+    </a>
+    <a class="dw-identity__link" href="{{ legal_mentions_urls[locale]|default(legal_mentions_urls.en) }}">
+        {{ 'legal_mentions'|trans({}, 'darkwood_identity') }}
     </a>
     <nav aria-label="Darkwood Identity" class="dw-identity__navigation">
         <ul class="dw-identity__products">
@@ -35,7 +43,4 @@
             {% endfor %}
         </ul>
     </nav>
-    <a class="dw-identity__link" href="https://darkwood.com/legal-mentions">
-        {{ 'legal_mentions'|trans({}, 'darkwood_identity') }}
-    </a>
 </div>
