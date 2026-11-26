@@ -1,0 +1,149 @@
+name: Publish a distribution mirror
+on:
+  workflow_call:
+    inputs:
+      mirror:
+        type: string
+        required: true
+      dry-run:
+        type: boolean
+        required: true
+    secrets:
+      DARKWOOD_DISTRIBUTION_APP_PRIVATE_KEY:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    if: fromJSON(inputs.mirror).requires_php
+    uses: darkwood-com/darkwood-php-component-navi/.github/workflows/php-quality.yml@main
+    with:
+      working-directory: ${{ fromJSON(inputs.mirror).source }}
+      package: ${{ fromJSON(inputs.mirror).composer }}
+      php-version: ${{ fromJSON(inputs.mirror).quality.php }}
+      extensions: ${{ fromJSON(inputs.mirror).quality.extensions }}
+      php-cs-fixer: ${{ fromJSON(inputs.mirror).quality.php-cs-fixer }}
+      phpstan: ${{ fromJSON(inputs.mirror).quality.phpstan }}
+      phpunit: ${{ fromJSON(inputs.mirror).quality.phpunit }}
+      mysql: ${{ fromJSON(inputs.mirror).quality.mysql }}
+      symfony-lsp: ${{ fromJSON(inputs.mirror).quality.symfony-lsp }}
+      nix-file: ${{ fromJSON(inputs.mirror).quality.nix-file }}
+      nix-args: ${{ fromJSON(inputs.mirror).quality.nix-args }}
+
+  publish:
+    needs: quality
+    if: ${{ !cancelled() && (needs.quality.result == 'success' || (!fromJSON(inputs.mirror).requires_php && needs.quality.result == 'skipped')) }}
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          filter: blob:none
+
+      - name: Build mirror commit
+        id: mirror
+        env:
+          SOURCE: ${{ fromJSON(inputs.mirror).source }}
+          REPOSITORY: ${{ fromJSON(inputs.mirror).repository }}
+          BRANCH: ${{ fromJSON(inputs.mirror).branch }}
+          BOOTSTRAP_BRANCH: ${{ fromJSON(inputs.mirror).bootstrap_branch }}
+          TARGET: ${{ fromJSON(inputs.mirror).id }}
+          REQUIRES_PHP: ${{ fromJSON(inputs.mirror).requires_php }}
+          CANONICAL_SHA: ${{ github.sha }}
+        run: |
+          mirror_url="https://github.com/$REPOSITORY.git"
+          clone_branch="$BRANCH"
+          if [[ -n "$BOOTSTRAP_BRANCH" ]]; then
+            status=0
+            git ls-remote --exit-code --heads "$mirror_url" "refs/heads/$BRANCH" >/dev/null || status=$?
+            if [[ "$status" == 2 ]]; then
+              clone_branch="$BOOTSTRAP_BRANCH"
+            elif [[ "$status" != 0 ]]; then
+              exit "$status"
+            fi
+          fi
+          git clone --branch "$clone_branch" --single-branch "$mirror_url" mirror
+          staging=$(mktemp -d)
+          git archive "$CANONICAL_SHA:$SOURCE" | tar -x -C "$staging"
+          if [[ "$REQUIRES_PHP" == true ]]; then
+            rsync -a --checksum --delete --exclude='.git/' "$staging/" mirror/
+          else
+            rsync -a --delete --exclude='.git/' --exclude='.github/workflows/' "$staging/" mirror/
+            rm -rf mirror/.github/workflows
+            cat > mirror/DISTRIBUTION_MIRROR.md <<EOF
+          # Distribution mirror
+
+          This repository is a read-only distribution mirror. Development, issues, and pull requests belong in the [canonical Darkwood monorepo](https://github.com/darkwood-com/darkwood/tree/main/$SOURCE).
+
+          Canonical source: \`$SOURCE\`<br>
+          Canonical revision: \`$CANONICAL_SHA\`
+          EOF
+
+            cat > mirror/.darkwood-mirror.json <<EOF
+          {
+            "canonical_repository": "darkwood-com/darkwood",
+            "canonical_path": "$SOURCE",
+            "canonical_revision": "$CANONICAL_SHA",
+            "destination_repository": "$REPOSITORY",
+            "destination_branch": "$BRANCH"
+          }
+          EOF
+          fi
+          rm -rf "$staging"
+
+          if [[ "$REQUIRES_PHP" == true ]]; then
+            # Only files from git archive are present, including tracked files matched by .gitignore.
+            git -C mirror add --force --all
+            test "$(git -C mirror write-tree)" = "$(git rev-parse "$CANONICAL_SHA:$SOURCE")"
+          else
+            git -C mirror add --all
+          fi
+          if git -C mirror diff --cached --quiet; then
+            if [[ "$clone_branch" != "$BRANCH" ]]; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+            exit 0
+          fi
+
+          git -C mirror diff --cached --stat
+          git -C mirror config user.name github-actions[bot]
+          git -C mirror config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git -C mirror commit -m "🔄 Sync $TARGET from darkwood@${CANONICAL_SHA:0:12}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create a repository-scoped publication token
+        if: >-
+          steps.mirror.outputs.changed == 'true' &&
+          !inputs.dry-run
+        id: publication-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        with:
+          app-id: ${{ vars.DARKWOOD_DISTRIBUTION_APP_ID }}
+          private-key: ${{ secrets.DARKWOOD_DISTRIBUTION_APP_PRIVATE_KEY }}
+          owner: ${{ fromJSON(inputs.mirror).owner }}
+          repositories: ${{ fromJSON(inputs.mirror).repository_name }}
+          permission-contents: write
+
+      - name: Push mirror commit
+        if: >-
+          steps.mirror.outputs.changed == 'true' &&
+          !inputs.dry-run
+        env:
+          BRANCH: ${{ fromJSON(inputs.mirror).branch }}
+          APP_TOKEN: ${{ steps.publication-token.outputs.token }}
+        run: |
+          git -C mirror -c "url.https://x-access-token:${APP_TOKEN}@github.com/.insteadOf=https://github.com/" \
+            push origin "HEAD:refs/heads/$BRANCH"
+
+      - name: Report dry run
+        if: >-
+          steps.mirror.outputs.changed == 'true' &&
+          inputs.dry-run
+        run: echo "Validated ${{ fromJSON(inputs.mirror).id }}; dry run requested, nothing was pushed."

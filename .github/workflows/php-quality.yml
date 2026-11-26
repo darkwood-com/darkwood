@@ -1,0 +1,58 @@
+name: Darkwood PHP quality
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'library/**'
+      - '.github/scripts/php-quality-matrix.php'
+      - '.github/distribution-cards.json'
+      - '.github/workflows/php-quality.yml'
+  pull_request:
+    paths:
+      - 'library/**'
+      - '.github/scripts/php-quality-matrix.php'
+      - '.github/distribution-cards.json'
+      - '.github/workflows/php-quality.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.projects.outputs.matrix }}
+      count: ${{ steps.projects.outputs.count }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: projects
+        run: |
+          matrix=$(php .github/scripts/php-quality-matrix.php)
+          {
+            echo "matrix=$matrix"
+            echo "count=$(jq '.include | length' <<< "$matrix")"
+          } >> "$GITHUB_OUTPUT"
+
+  quality:
+    name: ${{ matrix.directory }}
+    needs: discover
+    if: needs.discover.outputs.count != '0'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    uses: darkwood-com/darkwood-php-component-navi/.github/workflows/php-quality.yml@main
+    with:
+      working-directory: ${{ matrix.directory }}
+      php-version: ${{ matrix.php }}
+      extensions: ${{ matrix.extensions }}
+      php-cs-fixer: ${{ matrix.php-cs-fixer }}
+      phpstan: ${{ matrix.phpstan }}
+      phpunit: ${{ matrix.phpunit }}
+      mysql: ${{ matrix.mysql }}
+      prepare-task: ${{ matrix.prepare-task }}
+      symfony-lsp: ${{ matrix.symfony-lsp }}
+      nix-file: ${{ matrix.nix-file }}
+      nix-args: ${{ matrix.nix-args }}

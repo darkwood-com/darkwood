@@ -6,6 +6,8 @@ on:
     paths:
       - .github/distribution-cards.json
       - .github/workflows/sync-distribution-mirrors.yml
+      - .github/workflows/publish-distribution-mirror.yml
+      - .github/scripts/php-quality-matrix.php
       - library/.github/**
       - library/matyo91/**
       - library/darkwood-php/src/Darkwood/Component/Flow/**
@@ -48,279 +50,64 @@ defaults:
 
 jobs:
   prepare:
-    name: Read the canonical distribution manifest
+    name: Select mirrors from the canonical distribution manifest
     runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
+      count: ${{ steps.matrix.outputs.count }}
     steps:
-      - name: Check out the publication manifest
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          sparse-checkout: .github/distribution-cards.json
+          persist-credentials: false
+          fetch-depth: 0
+          filter: blob:none
 
-      - name: Build the Git distribution matrix
-        id: matrix
+      - id: matrix
         env:
           REQUESTED_TARGET: ${{ inputs.target }}
+          BEFORE: ${{ github.event.before }}
         run: |
-          # Composer marks PHP mirrors; an explicit phpVersion selects a pinned Nix shell.
-          value=$(jq -c --arg requested "$REQUESTED_TARGET" '{include: [.cards[] | select(
-            .git != null and
-            ($requested == "" or $requested == "all" or .id == $requested)
-          ) | {
-            id,
-            source,
-            repository,
-            owner: (.repository | split("/")[0]),
-            repository_name: (.repository | split("/")[1]),
-            branch: .git.branch,
-            bootstrap_branch: (.git.bootstrapBranch // ""),
-            composer: (.git.composer // ""),
-            package_id: (.git.packageId // ""),
-            requires_php: (.git.composer != null),
-            pinned_php_shell: (.git.phpVersion != null),
-            php_version: (if .git.composer != null then (.git.phpVersion // "8.6") else "" end),
-            php_extensions: (.git.phpExtensions // ""),
-            mysql: (.git.mysql // false)
-          }]}' .github/distribution-cards.json)
+          quality=$(php .github/scripts/php-quality-matrix.php)
+          changed=''
+          if [[ "$GITHUB_EVENT_NAME" == push && -n "$BEFORE" && ! "$BEFORE" =~ ^0+$ ]]; then
+            changed=$(git diff --name-only "$BEFORE" "$GITHUB_SHA")
+          fi
+          value=$(jq -c --arg requested "$REQUESTED_TARGET" --arg changed "$changed" --argjson quality "$quality" '
+            ($changed | split("\n")) as $files
+            | {include: [.cards[] | select(.git != null) | . as $entry
+            | select(
+                if $requested != "" then ($requested == "all" or .id == $requested)
+                else $changed == "" or any($files[]; startswith($entry.source + "/")
+                  or . == ".github/distribution-cards.json"
+                  or . == ".github/scripts/php-quality-matrix.php"
+                  or . == ".github/workflows/publish-distribution-mirror.yml"
+                  or . == ".github/workflows/sync-distribution-mirrors.yml")
+                end)
+            | {
+                id,
+                source,
+                repository,
+                owner: (.repository | split("/")[0]),
+                repository_name: (.repository | split("/")[1]),
+                branch: .git.branch,
+                bootstrap_branch: (.git.bootstrapBranch // ""),
+                composer: (.git.composer // ""),
+                requires_php: (.git.composer != null),
+                quality: ([$quality.include[] | select(.directory == $entry.source)] | first // {})
+              }]}' .github/distribution-cards.json)
           echo "value=$value" >> "$GITHUB_OUTPUT"
+          echo "count=$(jq '.include | length' <<< "$value")" >> "$GITHUB_OUTPUT"
 
   sync:
     name: ${{ matrix.id }}
     needs: prepare
-    runs-on: ubuntu-24.04
-    services:
-      mysql:
-        image: ${{ matrix.mysql && 'mysql:5.7' || '' }}
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3311:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
+    if: needs.prepare.outputs.count != '0'
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
-
-    steps:
-      - name: Check out the canonical monorepo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 2
-          filter: blob:none
-          sparse-checkout: |
-            ${{ matrix.source }}
-            library/darkwood-php/.github
-            library/darkwood-php/src/Darkwood/Component/Navi/tools/env
-            .github/distribution-cards.json
-            .github/workflows/sync-distribution-mirrors.yml
-          sparse-checkout-cone-mode: false
-
-      - name: Select changed mirror
-        id: select
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          BEFORE: ${{ github.event.before }}
-          CURRENT: ${{ github.sha }}
-          REQUESTED_TARGET: ${{ inputs.target }}
-          SOURCE: ${{ matrix.source }}
-          TARGET: ${{ matrix.id }}
-        run: |
-          selected=false
-          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
-            if [[ "$REQUESTED_TARGET" == "all" || "$REQUESTED_TARGET" == "$TARGET" ]]; then
-              selected=true
-            fi
-          else
-            if ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
-              git fetch --depth=1 origin "$BEFORE"
-            fi
-            changed=$(git diff --name-only "$BEFORE" "$CURRENT" -- \
-              "$SOURCE" .github/distribution-cards.json .github/workflows/sync-distribution-mirrors.yml)
-            if [[ -n "$changed" ]]; then
-              selected=true
-            fi
-          fi
-          echo "selected=$selected" >> "$GITHUB_OUTPUT"
-
-      - name: Set up PHP
-        if: steps.select.outputs.selected == 'true' && matrix.requires_php && !matrix.pinned_php_shell
-        uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
-        with:
-          php-version: ${{ matrix.php_version }}
-          extensions: ${{ matrix.php_extensions }}
-          tools: composer, symfony-cli
-          coverage: none
-
-      - name: Validate Composer package
-        if: steps.select.outputs.selected == 'true' && matrix.requires_php && !matrix.pinned_php_shell
-        env:
-          SOURCE: ${{ matrix.source }}
-          EXPECTED_PACKAGE: ${{ matrix.composer }}
-          PACKAGE_ID: ${{ matrix.package_id }}
-          SKIP_PHP_CS_FIXER: ${{ matrix.php_version == '8.6' && '1' || '0' }}
-          # Symfony CLI uses this short-lived token to resolve/download Language Tools.
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          # shellcheck disable=SC2016
-          actual_package=$(php -r 'echo json_decode(file_get_contents($argv[1]), true, 512, JSON_THROW_ON_ERROR)["name"];' "$SOURCE/composer.json")
-          test "$actual_package" = "$EXPECTED_PACKAGE"
-          composer validate --strict --no-check-publish "$SOURCE/composer.json"
-          if [[ "$PACKAGE_ID" != "darkwood-bundle" ]]; then
-            library/darkwood-php/.github/ci-run-package.sh "$PACKAGE_ID"
-          fi
-
-      - name: Set up Nix for PHP 8.6
-        if: steps.select.outputs.selected == 'true' && matrix.requires_php && matrix.pinned_php_shell && matrix.php_version == '8.6'
-        uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
-
-      - name: Validate package on stable PHP 8.6
-        if: steps.select.outputs.selected == 'true' && matrix.requires_php && matrix.pinned_php_shell && matrix.php_version == '8.6'
-        working-directory: ${{ matrix.source }}
-        env:
-          EXPECTED_PACKAGE: ${{ matrix.composer }}
-          PACKAGE_ID: ${{ matrix.package_id }}
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          case "$PACKAGE_ID" in
-            flow)
-              shell_args=(--argstr naviEnv "$(cd ../Navi/tools/env && pwd -P)" --arg withOpenSwoole true)
-              ;;
-            navi)
-              shell_args=(--argstr lockFile "$PWD/tools/env/flake.lock" --arg withQualityTools true
-                --arg extraExtensions '{ all, ... }: [ all.openswoole ]')
-              ;;
-            *)
-              echo "No pinned PHP 8.6 shell configured for $PACKAGE_ID" >&2
-              exit 1
-              ;;
-          esac
-          nix --extra-experimental-features 'nix-command flakes' develop --file tools/env/shell.nix \
-            "${shell_args[@]}" -c bash -euo pipefail -c '
-              test "$(jq -r .name composer.json)" = "$EXPECTED_PACKAGE"
-              php -v
-              composer install --no-progress --no-interaction
-              composer validate --strict --no-check-publish
-              composer check-platform-reqs
-              composer -d tools/phpstan install --no-progress --no-interaction
-              composer -d tools/phpunit install --no-progress --no-interaction
-              # PHP CS Fixer 3.95.32 does not support PHP 8.6 syntax.
-              phpstan analyse -c tools/phpstan/phpstan.neon --memory-limit=1024M \
-                --autoload-file tools/phpunit/vendor/autoload.php
-              phpunit -c tools/phpunit/phpunit.dist.xml
-              # Run Symfony project diagnostics when Navi ships an application entry point.
-              if [[ "$PACKAGE_ID" == navi && -f bin/console ]]; then
-                tools/symfony-lsp/check.sh github
-              fi
-            '
-
-      - name: Build mirror commit
-        if: steps.select.outputs.selected == 'true'
-        id: mirror
-        env:
-          SOURCE: ${{ matrix.source }}
-          REPOSITORY: ${{ matrix.repository }}
-          BRANCH: ${{ matrix.branch }}
-          BOOTSTRAP_BRANCH: ${{ matrix.bootstrap_branch }}
-          TARGET: ${{ matrix.id }}
-          REQUIRES_PHP: ${{ matrix.requires_php }}
-          CANONICAL_SHA: ${{ github.sha }}
-        run: |
-          mirror_url="https://github.com/$REPOSITORY.git"
-          clone_branch="$BRANCH"
-          if [[ -n "$BOOTSTRAP_BRANCH" ]]; then
-            status=0
-            git ls-remote --exit-code --heads "$mirror_url" "refs/heads/$BRANCH" >/dev/null || status=$?
-            if [[ "$status" == 2 ]]; then
-              clone_branch="$BOOTSTRAP_BRANCH"
-            elif [[ "$status" != 0 ]]; then
-              exit "$status"
-            fi
-          fi
-          git clone --branch "$clone_branch" --single-branch "$mirror_url" mirror
-          staging=$(mktemp -d)
-          git archive "$CANONICAL_SHA:$SOURCE" | tar -x -C "$staging"
-          if [[ "$REQUIRES_PHP" == true ]]; then
-            rsync -a --checksum --delete --exclude='.git/' "$staging/" mirror/
-          else
-            rsync -a --delete --exclude='.git/' --exclude='.github/workflows/' "$staging/" mirror/
-            rm -rf mirror/.github/workflows
-            cat > mirror/DISTRIBUTION_MIRROR.md <<EOF
-          # Distribution mirror
-
-          This repository is a read-only distribution mirror. Development, issues, and pull requests belong in the [canonical Darkwood monorepo](https://github.com/darkwood-com/darkwood/tree/main/$SOURCE).
-
-          Canonical source: \`$SOURCE\`<br>
-          Canonical revision: \`$CANONICAL_SHA\`
-          EOF
-
-            cat > mirror/.darkwood-mirror.json <<EOF
-          {
-            "canonical_repository": "darkwood-com/darkwood",
-            "canonical_path": "$SOURCE",
-            "canonical_revision": "$CANONICAL_SHA",
-            "destination_repository": "$REPOSITORY",
-            "destination_branch": "$BRANCH"
-          }
-          EOF
-          fi
-          rm -rf "$staging"
-
-          if [[ "$REQUIRES_PHP" == true ]]; then
-            # Only files from git archive are present, including tracked files matched by .gitignore.
-            git -C mirror add --force --all
-            test "$(git -C mirror write-tree)" = "$(git rev-parse "$CANONICAL_SHA:$SOURCE")"
-          else
-            git -C mirror add --all
-          fi
-          if git -C mirror diff --cached --quiet; then
-            if [[ "$clone_branch" != "$BRANCH" ]]; then
-              echo "changed=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-            fi
-            exit 0
-          fi
-
-          git -C mirror diff --cached --stat
-          git -C mirror config user.name github-actions[bot]
-          git -C mirror config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git -C mirror commit -m "🔄 Sync $TARGET from darkwood@${CANONICAL_SHA:0:12}"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-
-      - name: Create a repository-scoped publication token
-        if: >-
-          steps.select.outputs.selected == 'true' &&
-          steps.mirror.outputs.changed == 'true' &&
-          (github.event_name != 'workflow_dispatch' || inputs.dry_run == false)
-        id: publication-token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
-        with:
-          app-id: ${{ vars.DARKWOOD_DISTRIBUTION_APP_ID }}
-          private-key: ${{ secrets.DARKWOOD_DISTRIBUTION_APP_PRIVATE_KEY }}
-          owner: ${{ matrix.owner }}
-          repositories: ${{ matrix.repository_name }}
-          permission-contents: write
-
-      - name: Push mirror commit
-        if: >-
-          steps.select.outputs.selected == 'true' &&
-          steps.mirror.outputs.changed == 'true' &&
-          (github.event_name != 'workflow_dispatch' || inputs.dry_run == false)
-        env:
-          BRANCH: ${{ matrix.branch }}
-          APP_TOKEN: ${{ steps.publication-token.outputs.token }}
-        run: |
-          git -C mirror -c "url.https://x-access-token:${APP_TOKEN}@github.com/.insteadOf=https://github.com/" \
-            push origin "HEAD:refs/heads/$BRANCH"
-
-      - name: Report dry run
-        if: >-
-          steps.select.outputs.selected == 'true' &&
-          steps.mirror.outputs.changed == 'true' &&
-          github.event_name == 'workflow_dispatch' && inputs.dry_run == true
-        run: echo "Validated ${{ matrix.id }}; dry run requested, nothing was pushed."
-
+    uses: ./.github/workflows/publish-distribution-mirror.yml
+    with:
+      mirror: ${{ toJSON(matrix) }}
+      dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+    secrets:
+      DARKWOOD_DISTRIBUTION_APP_PRIVATE_KEY: ${{ secrets.DARKWOOD_DISTRIBUTION_APP_PRIVATE_KEY }}

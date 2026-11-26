@@ -7,13 +7,14 @@ namespace Flow\Tools;
 use Castor\Attribute\AsOption;
 use Castor\Attribute\AsTask;
 
+use function Castor\context;
 use function Castor\run;
 
 #[AsTask(description: 'Launch PHPUnit test suite', aliases: ['phpunit'])]
 function phpunit(
     #[AsOption(description: 'Replace default result output with TestDox format')]
     bool $testDox,
-    #[AsOption(description: 'Apply XDEBUG_MODE', suggestedValues: ['coverage'])]
+    #[AsOption(description: 'Apply XDEBUG_MODE', autocomplete: ['coverage'])]
     ?string $xdebugMode,
     #[AsOption(description: 'Path to HTML coverage')]
     ?string $coverateHtmlPath,
@@ -41,5 +42,5 @@ function phpunit(
         $command[] = $coverateHtmlXml;
     }
 
-    return run($command, $environment, allowFailure: true)->getExitCode();
+    return run($command, $environment, context()->withAllowFailure())->getExitCode();
 }
