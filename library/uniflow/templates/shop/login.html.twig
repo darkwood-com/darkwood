@@ -5,7 +5,7 @@
     <h3>Login</h3>
     <div class="row">
         <div class="col-sm-6 offset-sm-3">
-            <div class="card mb-3">
+            <div class="card dw-product-card mb-3">
                 <article class="card-body">
                     {{ form_start(form, {'attr': {'data-controller': 'login-form'}}) }}
                         {% if error %}
@@ -58,7 +58,7 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary" data-login-form-target="submitButton">
+                                    <button type="submit" class="btn btn-primary dw-product-action" data-login-form-target="submitButton">
                                         Login
                                     </button>
                                 </div>

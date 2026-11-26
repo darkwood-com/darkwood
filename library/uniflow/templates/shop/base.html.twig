@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+        <link rel="icon" type="image/svg+xml" href="{{ asset('darkwood/images/products/uniflow.svg') }}">
         <title>{{ page.title }}</title>
         <meta name="description" content="{{ page.description }}" />
 
@@ -26,13 +26,15 @@
         <meta name="twitter:site" content="uniflow_io" />
         <meta name="twitter:title" content="{{ page.title }}" />
         <meta name="twitter:description" content="{{ page.description }}" />
-        <meta name="twitter:image" content="{{ absolute_url(asset('images/logo.svg')) }}" />
+        <meta name="twitter:image" content="{{ absolute_url(asset('darkwood/images/products/uniflow.svg')) }}" />
 
         <link rel="stylesheet" href="{{ asset('styles/app.scss') }}">
+        <link rel="stylesheet" href="{{ asset('darkwood/styles/product.css') }}">
+        <link rel="stylesheet" href="{{ asset('darkwood/styles/identity.css') }}">
         {# <link rel="manifest" href="/site.webmanifest"> #}
         {# encore_entry_link_tags('app') #}
     </head>
-    <body id="{{ page.page }}" class="theme-light">
+    <body id="{{ page.page }}" class="theme-light dw-product">
         {% include 'shop/partials/header.html.twig' %}
         {% include 'shop/partials/alerts.html.twig' %}
         <main>{% block body %}{% endblock %}</main>

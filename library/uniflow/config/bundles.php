@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
+use Darkwood\Bundle\DarkwoodBundle\DarkwoodBundle;
 use BabDev\PagerfantaBundle\BabDevPagerfantaBundle;
 use Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
@@ -67,6 +68,7 @@ use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
 use Symfonycasts\SassBundle\SymfonycastsSassBundle;
 
 return [
+    DarkwoodBundle::class => ['all' => true],
     FrameworkBundle::class => ['all' => true],
     MonologBundle::class => ['all' => true],
     SecurityBundle::class => ['all' => true],

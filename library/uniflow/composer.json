@@ -24,6 +24,7 @@
         }
     ],
     "require": {
+        "darkwood/darkwood-bundle": "dev-main",
         "php": "^8.5",
         "friendsofsymfony/rest-bundle": "^3.0",
         "league/commonmark": "^2.7",

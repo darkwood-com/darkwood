@@ -66,3 +66,11 @@ If you have problems or questions go to our contact page, we will then try to he
 Uniflow is [fair-code](http://faircode.io) distributed under [AGPL-3.0 License with Commons Clause](https://github.com/uniflow-io/uniflow/blob/1.x/LICENSE.md) license.
 
 Additional information about license can be found in the [FAQ](https://uniflow.io/docs/faq#which-license-does-uniflow-use) page.
+
+## Darkwood Identity
+
+La boutique charge le logo Uniflow et le footer depuis DarkwoodBundle
+(`darkwood/images/products/uniflow.svg`, `darkwood/styles/identity.css`).
+Compiler avec `APP_ENV=prod APP_DEBUG=0 php bin/console asset-map:compile`
+après l’installation du lockfile. Le layout public et les pages authentifiées
+qui l’étendent gardent Encore et Sass pour leurs assets propres.
