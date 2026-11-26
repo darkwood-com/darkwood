@@ -1,3 +1,3 @@
 <?php
 
-return ['contact' => 'Contact'];
+return ['contact' => 'Contact', 'legal_mentions' => 'Legal mentions'];

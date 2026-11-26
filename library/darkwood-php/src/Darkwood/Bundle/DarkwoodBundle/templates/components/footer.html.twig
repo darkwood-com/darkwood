@@ -4,11 +4,38 @@
     en: 'https://darkwood.com/contact',
     fr: 'https://darkwood.com/fr/contact',
 } %}
-<div class="dw-identity">
-    {% if show_contact is not defined or show_contact %}
-        <a class="dw-identity__link" href="{{ contact_url|default(contact_urls[locale]|default(contact_urls.en)) }}">
-            {{ 'contact'|trans({}, 'darkwood_identity') }}
-        </a>
-    {% endif %}
-    {% include '@Darkwood/components/identity-navigation.html.twig' %}
+{% set products = {
+    darkwood: {name: 'Darkwood', url: portal_url|default('https://darkwood.com/'), icon: 'darkwood.svg'},
+    darkwaar: {name: 'Darkwaar', url: 'https://darkwaar.com/', icon: 'darkwaar.svg'},
+    heroclip: {name: 'HeroClip', url: 'https://heroclip.darkwood.com/'},
+    djmatyo91: {name: 'DJ Matyo', url: 'https://djmatyo91.darkwood.com/'},
+    geo: {name: 'Geo', url: 'https://geo.darkwood.com/'},
+    uniflow: {name: 'Uniflow', url: 'https://uniflow.io/'},
+    slides: {name: 'Slides', url: 'https://slides.darkwood.com/'},
+} %}
+<div class="dw-identity d-flex flex-wrap align-items-center justify-content-end">
+    <a class="dw-identity__link" href="{{ contact_url|default(contact_urls[locale]|default(contact_urls.en)) }}">
+        {{ 'contact'|trans({}, 'darkwood_identity') }}
+    </a>
+    <nav aria-label="Darkwood Identity" class="dw-identity__navigation">
+        <ul class="dw-identity__products">
+            {% for key in product_keys|default(['darkwood', 'darkwaar']) %}
+                {% if products[key] is defined %}
+                    {% set product = products[key] %}
+                    <li>
+                        <a class="dw-identity__link" href="{{ product.url }}"{% if key == active_product|default(null) %} aria-current="true"{% endif %}>
+                            {% if product.icon is defined %}
+                                <img src="{{ asset('bundles/darkwood/images/products/' ~ product.icon) }}" width="24" height="24" alt="{{ product.name }}">
+                            {% else %}
+                                {{ product.name }}
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+    <a class="dw-identity__link" href="https://darkwood.com/legal-mentions">
+        {{ 'legal_mentions'|trans({}, 'darkwood_identity') }}
+    </a>
 </div>

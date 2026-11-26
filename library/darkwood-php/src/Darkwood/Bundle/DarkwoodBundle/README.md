@@ -23,8 +23,8 @@ Symfony translator to use the bundled locale labels.
 
 `product_keys` is an ordered list of public product identifiers.
 `portal_url` and `contact_url` override the canonical defaults.
-Use `show_contact: false` when the surrounding footer already has its own
-contact link. The snippet fits inside the host application's footer.
+The footer includes Contact and Legal mentions. Its Bootstrap utilities
+align the links on the right and let them wrap on narrower screens.
 
 Symfony installs the CSS, SVGs, fonts and JavaScript as public bundle assets.
 This works with both Encore and AssetMapper. Applications can keep their own
