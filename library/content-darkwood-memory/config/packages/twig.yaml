@@ -2,7 +2,7 @@ twig:
     file_name_pattern: '*.twig'
     paths:
         '%kernel.project_dir%/../darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/templates/components': darkwood_design
-        '%kernel.project_dir%/../darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/public': darkwood_design_assets
+        '%kernel.project_dir%/../darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/js': darkwood_design_assets
 
 when@test:
     twig:
