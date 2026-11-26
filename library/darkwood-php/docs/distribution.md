@@ -51,10 +51,8 @@ versions Symfony, utiliser un quatrième segment numérique, par exemple
 Flow `v8.1.12` a été publié depuis l’ancienne branche `8.1` et le commit
 source `ee5c052249a51c0b3ff80024d790f8fa92a8c8c1`. Flow `dev-main`
 contient les évolutions PHP 8.6 et ne satisfait pas la contrainte
-`^8.1.6` de MediaBundle. Les branches retirées restent récupérables
-depuis les tags GitHub `archive/packagist-2026-11-26/*`. Les seules
-branches conservées sur les proxies sont `main` et, pour la documentation
-Flow, `gh-pages`.
+`^8.1.6` de MediaBundle. Les proxies distribuent les sources sur `main`.
+Flow utilise aussi `gh-pages` pour sa documentation.
 
 ## Consommer et déployer
 
