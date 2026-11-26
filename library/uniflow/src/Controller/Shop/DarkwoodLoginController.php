@@ -75,8 +75,10 @@ final class DarkwoodLoginController extends AbstractController
             $email = trim($identity['email']);
             $user = $users->findOneBy(['darkwoodUid' => $identity['id']]);
             if (null === $user) {
-                if (!$identity['email_verified'] || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    return $this->loginError('Verify your email address in Darkwood Identity before creating a new Uniflow account.');
+                // Darkwood admits eligible legacy identities even when the mailbox
+                // has no verification record. Their local account starts unverified.
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    return $this->loginError('Darkwood Identity did not provide a usable email address for your new Uniflow account.');
                 }
                 $canonicalEmail = mb_strtolower($email);
                 if (null !== $entityManager->getRepository(Customer::class)->findOneBy(['emailCanonical' => $canonicalEmail])) {
@@ -102,8 +104,8 @@ final class DarkwoodLoginController extends AbstractController
                 && 0 === strcasecmp(trim((string) $user->getEmail()), $email)
             ) {
                 $user->setVerifiedAt(new DateTime());
-                $entityManager->flush();
             }
+            $entityManager->flush();
             $response = $security->login($user, DarkwoodShopAuthenticator::class, 'shop');
             $target = $this->getTargetPath($request->getSession(), 'shop');
             $this->removeTargetPath($request->getSession(), 'shop');
