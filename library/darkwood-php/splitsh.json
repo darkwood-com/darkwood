@@ -1,17 +1,19 @@
 {
     "repository": "darkwood-com/darkwood",
-    "branch": "8.1",
+    "branch": "main",
     "reference_package": "navi",
     "subtrees": {
         "navi": "src/Darkwood/Component/Navi",
         "flow": "src/Darkwood/Component/Flow",
         "media-bundle": "src/Darkwood/Bundle/MediaBundle",
-        "ia-exception-bundle": "src/Darkwood/Bundle/IaExceptionBundle"
+        "ia-exception-bundle": "src/Darkwood/Bundle/IaExceptionBundle",
+        "darkwood-bundle": "src/Darkwood/Bundle/DarkwoodBundle"
     },
     "remotes": {
         "navi": "git@github.com:darkwood-com/darkwood-php-component-navi.git",
         "flow": "git@github.com:darkwood-com/darkwood-php-component-flow.git",
         "media-bundle": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-media-bundle.git",
-        "ia-exception-bundle": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle.git"
+        "ia-exception-bundle": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle.git",
+        "darkwood-bundle": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-bundle.git"
     }
 }

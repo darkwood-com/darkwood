@@ -2,10 +2,11 @@
   "enabled": false,
   "source": "darkwood-com/darkwood",
   "publications": {
-    "flow": { "prefix": "library/darkwood-php/src/Darkwood/Component/Flow", "remote": "git@github.com:darkwood-com/flow.git", "branch": "8.1" },
-    "navi": { "prefix": "library/darkwood-php/src/Darkwood/Component/Navi", "remote": "git@github.com:darkwood-com/navi.git", "branch": "8.1" },
-    "ia-exception-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle", "remote": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle.git", "branch": "8.1" },
-    "media-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/MediaBundle", "remote": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-media-bundle.git", "branch": "8.1" },
+    "flow": { "prefix": "library/darkwood-php/src/Darkwood/Component/Flow", "remote": "git@github.com:darkwood-com/darkwood-php-component-flow.git", "branch": "main" },
+    "navi": { "prefix": "library/darkwood-php/src/Darkwood/Component/Navi", "remote": "git@github.com:darkwood-com/darkwood-php-component-navi.git", "branch": "main" },
+    "ia-exception-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle", "remote": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle.git", "branch": "main" },
+    "media-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/MediaBundle", "remote": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-media-bundle.git", "branch": "main" },
+    "darkwood-bundle": { "prefix": "library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle", "remote": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-bundle.git", "branch": "main" },
     "matyo91": { "prefix": "library/matyo91", "remote": "git@github.com:matyo91/matyo91.git", "branch": "main" }
   }
 }
