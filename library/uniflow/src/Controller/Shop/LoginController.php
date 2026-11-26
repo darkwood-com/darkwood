@@ -6,6 +6,7 @@ namespace App\Controller\Shop;
 
 use App\Form\LoginType;
 use App\Model\Page;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,8 @@ class LoginController extends AbstractController
     public function __construct(
         private readonly UserProviderInterface $userProvider,
         private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
+        #[Autowire('%env(default::UNIFLOW_OIDC_PILOT_UID)%')] private readonly ?string $pilotUid,
     ) {}
 
     #[Route('/login', name: 'login', methods: ['GET', 'POST'])]
@@ -84,6 +86,7 @@ class LoginController extends AbstractController
             'form' => $form->createView(),
             'error' => $error,
             'last_username' => $lastUsername,
+            'darkwood_pilot_enabled' => '' !== trim((string) $this->pilotUid),
         ]);
     }
 }

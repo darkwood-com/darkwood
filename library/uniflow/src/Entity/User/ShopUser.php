@@ -60,6 +60,13 @@ class ShopUser extends BaseShopUser implements PasswordAuthenticatedUserInterfac
         return $this->id;
     }
 
+    public function getUserIdentifier(): string
+    {
+        $username = parent::getUserIdentifier();
+
+        return $username !== '' ? $username : ($this->getEmailCanonical() ?? $this->getUid());
+    }
+
     public function getDarkwoodUid(): ?string
     {
         return $this->darkwoodUid;

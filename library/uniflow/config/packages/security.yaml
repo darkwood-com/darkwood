@@ -78,6 +78,8 @@ security:
         shop:
             switch_user: { role: ROLE_ALLOWED_TO_SWITCH }
             context: shop
+            entry_point: form_login
+            custom_authenticators: [App\Security\DarkwoodShopAuthenticator]
             pattern: "%sylius.security.shop_regex%"
             provider: sylius_shop_user_provider
             user_checker: security.user_checker.chain.shop
