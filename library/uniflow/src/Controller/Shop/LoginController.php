@@ -4,91 +4,42 @@ declare(strict_types=1);
 
 namespace App\Controller\Shop;
 
-use App\Form\LoginType;
 use App\Model\Page;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use App\Security\DarkwoodOidcClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-#[Route('/', name: 'app_shop_')]
-class LoginController extends AbstractController
+final class LoginController extends AbstractController
 {
-    public function __construct(
-        private readonly UserProviderInterface $userProvider,
-        private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        #[Autowire('%env(default::UNIFLOW_OIDC_PILOT_UID)%')] private readonly ?string $pilotUid,
-        #[Autowire('%env(bool:default::UNIFLOW_OIDC_ALLOW_LINKED)%')] private readonly bool $allowLinked,
-    ) {}
+    public function __construct(private readonly DarkwoodOidcClient $oidc) {}
 
-    #[Route('/login', name: 'login', methods: ['GET', 'POST'])]
-    public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
+    #[Route('/login', name: 'app_shop_login', methods: ['GET'])]
+    public function login(): Response
     {
-        // Get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-
-        // Last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        // Create the form
-        $form = $this->createForm(LoginType::class, [
-            'username' => $lastUsername,
+        return $this->render('shop/login.html.twig', [
+            'page' => new Page(page: 'login', title: 'Login', description: 'Sign in with Darkwood Identity'),
+            'darkwood_issuer' => $this->oidc->supportsDelegatedLogin() ? $this->oidc->getIssuer() : null,
         ]);
+    }
 
-        $form->handleRequest($request);
+    #[Route('/register', name: 'app_shop_register', methods: ['GET'])]
+    public function redirectToLogin(): Response
+    {
+        return $this->redirectToRoute('app_shop_login');
+    }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData();
-            $username = $formData['username'];
-            $password = $formData['password'];
+    public function retiredLogin(): Response
+    {
+        return new Response('Sign in with Darkwood Identity.', Response::HTTP_GONE);
+    }
 
-            // Load the user using the injected user provider
-            /** @var PasswordAuthenticatedUserInterface $user */
-            $user = $this->userProvider->loadUserByIdentifier($username);
-
-            // Check if the password is valid using the injected password hasher
-            if ($this->passwordHasher->isPasswordValid($user, $password)) {
-                // Create authentication token
-                $token = new UsernamePasswordToken(
-                    $user,
-                    'shop',
-                    $user->getRoles()
-                );
-
-                // Set the token in the security context
-                $this->container->get('security.token_storage')->setToken($token);
-
-                // Dispatch the interactive login event
-                $event = new InteractiveLoginEvent($request, $token);
-                $this->eventDispatcher->dispatch($event, 'security.interactive_login');
-
-                return $this->redirectToRoute('app_shop_feed');
-            }
-
-            $error = new AuthenticationException('Invalid credentials.');
+    public function resetPassword(): Response
+    {
+        if (!$this->oidc->supportsDelegatedLogin()) {
+            return $this->redirectToRoute('app_shop_login');
         }
 
-        return $this->render('shop/login.html.twig', [
-            'page' => new Page(
-                page: 'login',
-                title: 'Login',
-                description: 'Login to your account',
-            ),
-            'form' => $form->createView(),
-            'error' => $error,
-            'last_username' => $lastUsername,
-            'darkwood_login_enabled' => $this->allowLinked || '' !== trim((string) $this->pilotUid),
-            'darkwood_pilot_only' => !$this->allowLinked,
-        ]);
+        return $this->redirect($this->oidc->getIssuer() . '/resetting/request', Response::HTTP_SEE_OTHER);
     }
 }

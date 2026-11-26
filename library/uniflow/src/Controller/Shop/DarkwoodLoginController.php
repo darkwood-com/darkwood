@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Shop;
 
+use App\Entity\Customer\Customer;
 use App\Entity\User\ShopUser;
 use App\Repository\User\ShopUserRepository;
 use App\Security\DarkwoodOidcClient;
@@ -19,10 +20,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Uid\Uuid;
 use Throwable;
 
 final class DarkwoodLoginController extends AbstractController
 {
+    use TargetPathTrait;
+
     public function __construct(
         private readonly DarkwoodOidcClient $oidc,
         #[Autowire('%env(default::UNIFLOW_OIDC_PILOT_UID)%')]
@@ -36,6 +41,10 @@ final class DarkwoodLoginController extends AbstractController
     {
         $this->requireEnabled();
         try {
+            if ($request->query->getBoolean('checkout')) {
+                $this->saveTargetPath($request->getSession(), 'shop', $this->generateUrl('sylius_shop_checkout_address', ['_locale' => $request->getLocale()]));
+            }
+
             return $this->redirect($this->oidc->buildAuthorizeUrl($request));
         } catch (Throwable $exception) {
             $logger->warning('Uniflow Darkwood sign-in could not start.', ['type' => $exception::class]);
@@ -59,9 +68,31 @@ final class DarkwoodLoginController extends AbstractController
             if (!$this->allowLinked && $identity['id'] !== $this->pilotUid) {
                 throw new RuntimeException('Identity outside the pilot.');
             }
+            $email = trim($identity['email']);
+            if (!$identity['email_verified'] || !filter_var($email, FILTER_VALIDATE_EMAIL) || !Uuid::isValid($identity['id'])) {
+                throw new RuntimeException('Darkwood did not provide a verified account and email address.');
+            }
+
             $user = $users->findOneBy(['darkwoodUid' => $identity['id']]);
-            if (!$user instanceof ShopUser || !$user->isEnabled() || !$identity['email_verified']
-                || '' === $identity['email'] || 0 !== strcasecmp(trim((string) $user->getEmail()), trim($identity['email']))) {
+            if (null === $user) {
+                $canonicalEmail = mb_strtolower($email);
+                if (null !== $entityManager->getRepository(Customer::class)->findOneBy(['emailCanonical' => $canonicalEmail])) {
+                    throw new RuntimeException('The existing customer requires an explicit identity association.');
+                }
+
+                $customer = new Customer();
+                $customer->setEmail($email);
+                $customer->setEmailCanonical($canonicalEmail);
+                $user = new ShopUser();
+                $user->setCustomer($customer);
+                $user->setDarkwoodUid($identity['id']);
+                $user->setUsername((string) $user->getUid());
+                $user->setUsernameCanonical((string) $user->getUid());
+                $user->setEnabled(true);
+                $entityManager->persist($customer);
+                $entityManager->persist($user);
+            }
+            if (!$user->isEnabled() || 0 !== strcasecmp(trim((string) $user->getCustomer()?->getEmail()), $email)) {
                 throw new RuntimeException('The linked account or the verified address is unavailable.');
             }
             if (!$user->isVerified()) {
@@ -69,8 +100,10 @@ final class DarkwoodLoginController extends AbstractController
                 $entityManager->flush();
             }
             $response = $security->login($user, DarkwoodShopAuthenticator::class, 'shop');
+            $target = $this->getTargetPath($request->getSession(), 'shop');
+            $this->removeTargetPath($request->getSession(), 'shop');
 
-            return $response ?? $this->redirectToRoute('app_shop_feed');
+            return $response ?? ($target ? $this->redirect($target) : $this->redirectToRoute('app_shop_feed'));
         } catch (AuthenticationException|RuntimeException $exception) {
             $logger->warning('Uniflow Darkwood login was rejected.', ['type' => $exception::class]);
         } catch (Throwable $exception) {

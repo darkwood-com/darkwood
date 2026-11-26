@@ -1,0 +1,6 @@
+{% set form = hookable_metadata.context.form %}
+
+{% if form.customer is defined %}
+    {{ form_row(form.customer.email) }}
+    <p><a href="{{ path('app_shop_darkwood_login', {checkout: 1}) }}">Sign in with Darkwood Identity</a></p>
+{% endif %}

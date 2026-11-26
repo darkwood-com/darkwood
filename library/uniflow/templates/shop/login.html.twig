@@ -1,84 +1,25 @@
 {% extends 'shop/base.html.twig' %}
 
 {% block body %}
-<section class="section container-fluid">
-    <h3>Login</h3>
-    {% for message in app.flashes('darkwood_login_error') %}
-        <p class="alert alert-warning" role="alert">{{ message }}</p>
-    {% endfor %}
-    {% if darkwood_login_enabled %}
-        <p><a href="{{ path('app_shop_darkwood_login') }}">Sign in with Darkwood Identity{% if darkwood_pilot_only %} (pilot){% endif %}</a></p>
-        <p><a href="https://darkwood.com/resetting/request">Set or reset your Darkwood password</a></p>
-    {% endif %}
-    <div class="row">
-        <div class="col-sm-6 offset-sm-3">
-            <div class="card dw-product-card mb-3">
-                <article class="card-body">
-                    {{ form_start(form, {'attr': {'data-controller': 'login-form'}}) }}
-                        {% if error %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ error.messageKey|trans(error.messageData, 'security') }}
-                            </div>
-                        {% endif %}
-
-                        {% if form_errors(form) %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ form_errors(form) }}
-                            </div>
-                        {% endif %}
-
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                       <twig:ux:icon name="mdi:user" class="svg-inline--fa" />
-                                    </span>
-                                    {{ form_widget(form.username, {
-                                        'attr': {
-                                            'class': 'form-control',
-                                            'placeholder': 'Email or Username',
-                                            'autocomplete': 'username'
-                                        }
-                                    }) }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                       <twig:ux:icon name="bi:key-fill" class="svg-inline--fa" />
-                                    </span>
-                                    {{ form_widget(form.password, {
-                                        'attr': {
-                                            'class': 'form-control',
-                                            'placeholder': 'Password',
-                                            'autocomplete': 'current-password'
-                                        },
-                                        'label': false
-                                    }) }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary dw-product-action" data-login-form-target="submitButton">
-                                        Login
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    {{ form_end(form) }}
-                </article>
+<section class="section container py-4">
+    <div class="row justify-content-center">
+        <div class="col-sm-10 col-lg-6">
+            <div class="card dw-product-card">
+                <div class="card-body">
+                    <h1 class="h3">Sign in to Uniflow</h1>
+                    {% for message in app.flashes('darkwood_login_error') %}
+                        <p class="alert alert-warning" role="alert">{{ message }}</p>
+                    {% endfor %}
+                    {% if darkwood_issuer %}
+                        <p><a class="btn btn-primary dw-product-action" href="{{ path('app_shop_darkwood_login') }}">Sign in with Darkwood Identity</a></p>
+                        <p class="mb-2">Already have a Uniflow account? Use the same email address to activate your Darkwood account.</p>
+                        <p class="mb-2"><a href="{{ darkwood_issuer }}/resetting/request">Activate your account or reset your Darkwood password</a></p>
+                        <p class="mb-0"><a href="{{ darkwood_issuer }}/register">Create a Darkwood account</a></p>
+                    {% else %}
+                        <p class="alert alert-warning mb-0" role="alert">Darkwood Identity is temporarily unavailable.</p>
+                    {% endif %}
+                </div>
             </div>
-            <p class="text-center">
-                <a href="{{ path('app_shop_register') }}">
-                    <twig:ux:icon name="stash:signin" class="svg-inline--fa" /> Register
-                </a>
-            </p>
         </div>
     </div>
 </section>

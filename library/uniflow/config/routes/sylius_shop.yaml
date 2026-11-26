@@ -1,7 +1,7 @@
 sylius_shop:
     resource: "@SyliusShopBundle/Resources/config/routing.yml"
     prefix: /{_locale}
-    requirements:
+    requirements: &shop_locale
         _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
 
 sylius_shop_payum:
@@ -20,7 +20,54 @@ sylius_shop_default_locale:
 sylius_shop_request_password_reset_token_redirect:
     path: /.well-known/change-password
     methods: [GET]
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
-    defaults:
-        route: sylius_shop_request_password_reset_token
-        permanent: false
+    controller: App\Controller\Shop\LoginController::resetPassword
+
+
+# Keep Sylius route names used by shop templates and send sign-in to Darkwood Identity.
+sylius_shop_login:
+    path: /{_locale}/login
+    requirements: *shop_locale
+    methods: [GET]
+    controller: App\Controller\Shop\LoginController::redirectToLogin
+
+sylius_shop_login_check:
+    path: /{_locale}/login-check
+    requirements: *shop_locale
+    methods: [POST]
+    controller: App\Controller\Shop\LoginController::retiredLogin
+
+sylius_shop_json_login_check:
+    path: /{_locale}/json-login-check
+    requirements: *shop_locale
+    methods: [POST]
+    controller: App\Controller\Shop\LoginController::retiredLogin
+
+sylius_shop_register:
+    path: /{_locale}/register
+    requirements: *shop_locale
+    methods: [GET]
+    controller: App\Controller\Shop\LoginController::redirectToLogin
+
+sylius_shop_register_after_checkout:
+    path: /{_locale}/register-after-checkout/{tokenValue}
+    requirements: *shop_locale
+    methods: [GET]
+    controller: App\Controller\Shop\LoginController::redirectToLogin
+
+sylius_shop_request_password_reset_token:
+    path: /{_locale}/forgotten-password
+    requirements: *shop_locale
+    methods: [GET, POST]
+    controller: App\Controller\Shop\LoginController::resetPassword
+
+sylius_shop_password_reset:
+    path: /{_locale}/forgotten-password/{token}
+    requirements: *shop_locale
+    methods: [GET, POST]
+    controller: App\Controller\Shop\LoginController::resetPassword
+
+sylius_shop_account_change_password:
+    path: /{_locale}/account/change-password
+    requirements: *shop_locale
+    methods: [GET, POST]
+    controller: App\Controller\Shop\LoginController::resetPassword
