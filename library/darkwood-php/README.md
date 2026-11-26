@@ -90,6 +90,9 @@ darkwood/
 
 ### Continuous integration
 
+See the [Navi PHP quality guide](docs/php-quality.md) for the reusable
+workflow, Castor conventions and dynamic monorepo matrix.
+
 The monorepo workflow
 [`Sync distribution mirrors`](../../.github/workflows/sync-distribution-mirrors.yml)
 validates and synchronizes package subtrees on changes to `main`. The workflow

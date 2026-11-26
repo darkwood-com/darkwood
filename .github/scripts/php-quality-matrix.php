@@ -16,7 +16,8 @@ function readJson(string $path): array
 
 $manifest = readJson('.github/distribution-cards.json');
 $mirrors = array_column(array_filter($manifest['cards'], static fn (array $entry): bool => isset($entry['git']['composer'])), null, 'source');
-$paths = explode("\0", (string) shell_exec("git ls-files -z -- 'library/**/composer.json'"));
+$files = array_fill_keys(explode("\0", (string) shell_exec('git ls-files -z -- library')), true);
+$paths = array_filter(array_keys($files), static fn (string $file): bool => str_ends_with($file, '/composer.json'));
 $projects = [];
 
 foreach (array_filter($paths) as $path) {
@@ -34,24 +35,31 @@ foreach (array_filter($paths) as $path) {
         throw new RuntimeException("$path: select a CI PHP version for constraint $constraint.");
     }
     $php = $mirror['phpVersion'] ?? $minimum[1];
-    if (str_starts_with($constraint, '>=') && version_compare($php, '8.5', '<')) {
+    if (preg_match('/^(?:>=|\^8\.)/', $constraint) && version_compare($php, '8.5', '<')) {
         $php = '8.5';
     }
 
-    $hasCastor = is_file("$dir/castor.php") || is_file("$dir/tools/castor.php");
+    $hasCastor = isset($files["$dir/castor.php"]) || isset($files["$dir/tools/castor.php"]);
     $tools = [];
     foreach (['php-cs-fixer', 'phpstan', 'phpunit'] as $tool) {
-        $tools[$tool] = is_file("$dir/tools/$tool/composer.json");
+        $tools[$tool] = isset($files["$dir/tools/$tool/composer.json"]);
         if ($tools[$tool] && !$hasCastor) {
             throw new RuntimeException("$dir: $tool has a tools manifest but the Castor entry point is missing.");
         }
     }
     $tools['php-cs-fixer'] = $tools['php-cs-fixer'] || isset($requirements['friendsofphp/php-cs-fixer']) || isset($requirements['php-cs-fixer/shim']);
     $tools['phpstan'] = $tools['phpstan'] || isset($requirements['phpstan/phpstan']);
-    $tools['phpunit'] = $tools['phpunit'] || (bool) glob("$dir/phpunit*.xml*") || isset($requirements['phpunit/phpunit']);
+    $tools['phpunit'] = $tools['phpunit'] || isset($files["$dir/phpunit.xml"])
+        || isset($files["$dir/phpunit.xml.dist"]) || isset($files["$dir/phpunit.dist.xml"]) || isset($requirements['phpunit/phpunit']);
     if ($tools['phpunit'] && !$hasCastor && !isset($requirements['phpunit/phpunit']) && !isset($requirements['symfony/phpunit-bridge'])) {
         throw new RuntimeException("$dir: PHPUnit configuration exists but the tool is missing from Composer.");
     }
+
+    $runtimeBootBlocked = in_array($card, [
+        'content-composio-mcp', 'content-hearthbreaker', 'content-joplin-api',
+        'content-recherche-entreprise-mcp', 'content-thumbnail-mcp', 'content-url-scrapping-api',
+    ], true);
+    $hasDotenv = isset($files["$dir/.env"]);
 
     $entry = [
         'card' => $card,
@@ -59,14 +67,17 @@ foreach (array_filter($paths) as $path) {
         'directory' => $dir,
         'php' => $php,
         'extensions' => implode(', ', array_unique(array_filter(array_merge(
-            array_map(static fn (string $key): string => substr($key, 4), array_filter(array_keys($requirements), static fn (string $key): bool => str_starts_with($key, 'ext-') && $key !== 'ext-openswoole')),
+            array_map(static fn (string $key): string => substr($key, 4), array_filter(array_keys($requirements), static fn (string $key): bool => str_starts_with($key, 'ext-'))),
             explode(', ', $mirror['phpExtensions'] ?? ''),
         )))),
         ...$tools,
+        'prepare-dotenv' => $tools['phpunit'] && isset($files["$dir/tests/bootstrap.php"]) && !$hasDotenv,
+        // Bootstrapping deployed applications is separate from installing their CI dependencies.
+        'composer-scripts' => !isset($composer['scripts']['auto-scripts']) || ($hasDotenv && !$runtimeBootBlocked),
         'mysql' => $mirror['mysql'] ?? in_array($card, ['darkwood-portal', 'uniflow'], true),
         'prepare-task' => $dir === 'library/darkwood-portal' ? 'ci-fixtures' : '',
         'symfony-lsp' => ($mirror['packageId'] ?? '') === 'media-bundle'
-            || (($mirror['packageId'] ?? '') === 'navi' && is_file("$dir/bin/console")),
+            || (($mirror['packageId'] ?? '') === 'navi' && isset($files["$dir/bin/console"])),
         'nix-file' => '',
         'nix-args' => '[]',
     ];

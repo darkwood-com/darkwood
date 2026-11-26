@@ -27,6 +27,8 @@ jobs:
       php-cs-fixer: ${{ fromJSON(inputs.mirror).quality.php-cs-fixer }}
       phpstan: ${{ fromJSON(inputs.mirror).quality.phpstan }}
       phpunit: ${{ fromJSON(inputs.mirror).quality.phpunit }}
+      composer-scripts: ${{ fromJSON(inputs.mirror).quality.composer-scripts }}
+      prepare-dotenv: ${{ fromJSON(inputs.mirror).quality.prepare-dotenv }}
       mysql: ${{ fromJSON(inputs.mirror).quality.mysql }}
       symfony-lsp: ${{ fromJSON(inputs.mirror).quality.symfony-lsp }}
       nix-file: ${{ fromJSON(inputs.mirror).quality.nix-file }}

@@ -51,6 +51,8 @@ jobs:
       php-cs-fixer: ${{ matrix.php-cs-fixer }}
       phpstan: ${{ matrix.phpstan }}
       phpunit: ${{ matrix.phpunit }}
+      composer-scripts: ${{ matrix.composer-scripts }}
+      prepare-dotenv: ${{ matrix.prepare-dotenv }}
       mysql: ${{ matrix.mysql }}
       prepare-task: ${{ matrix.prepare-task }}
       symfony-lsp: ${{ matrix.symfony-lsp }}
