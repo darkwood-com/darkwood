@@ -303,6 +303,7 @@ blog:
     article_on: vom
     show_more: Weiterlesen
     news_heading: Artikel
+    highlights_heading: Neueste Artikel nach Kategorie
     watch_heading: Neuester Beobachtungsartikel
     watch_read: Artikel lesen
     watch_all: Alle Beobachtungsartikel

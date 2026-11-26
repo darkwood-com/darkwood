@@ -302,6 +302,7 @@ blog:
     article_on: le
     show_more: Lire la suite...
     news_heading: Articles
+    highlights_heading: Derniers articles par catégorie
     watch_heading: Dernier article de veille
     watch_read: Lire l'article
     watch_all: Tous les articles de veille

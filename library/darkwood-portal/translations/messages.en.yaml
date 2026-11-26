@@ -303,6 +303,7 @@ blog:
     article_on: on
     show_more: Read more...
     news_heading: Articles
+    highlights_heading: Latest by category
     watch_heading: Latest watch article
     watch_read: Read the article
     watch_all: All watch articles

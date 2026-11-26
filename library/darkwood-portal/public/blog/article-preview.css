@@ -22,6 +22,14 @@
     overflow-wrap: anywhere;
 }
 
+.article-highlights .article-preview {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.article-highlights .article-preview__cover {
+    justify-self: center;
+}
+
 .theme-hello .article-preview-hello {
     max-width: 52rem;
     color: var(--bs-white);

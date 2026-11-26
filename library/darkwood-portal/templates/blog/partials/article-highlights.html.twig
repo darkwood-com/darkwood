@@ -1,13 +1,21 @@
-{% for highlight in [
-    {article: lastWatchArticle|default(null), heading: 'blog.home.watch_heading'},
-    {article: lastReleaseArticle|default(null), heading: 'blog.home.release_heading'},
-    {article: lastCreatorArticle|default(null), heading: 'blog.home.creator_heading'},
-    {article: lastAutoArticle|default(null), heading: 'blog.menu.auto'},
-] %}
-    {% if highlight.article %}
-        <h2 class="article-highlight-heading">{{ highlight.heading|trans }}</h2>
-        <ul class="itemlist list-unstyled">
-            <li>{{ include('blog/partials/article-preview.html.twig', {article: highlight.article}) }}</li>
+{% set highlights = [
+    lastAutoArticle|default(null),
+    lastWatchArticle|default(null),
+    lastReleaseArticle|default(null),
+    lastCreatorArticle|default(null),
+]|filter(article => article is not null) %}
+
+{% if highlights is not empty %}
+    <section class="article-highlights" aria-labelledby="article-highlights-heading">
+        <h2 id="article-highlights-heading">{{ 'blog.home.highlights_heading'|trans }}</h2>
+        <ul class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 list-unstyled ps-0 mb-4">
+            {% for article in highlights %}
+                <li class="col">
+                    <article class="h-100 p-3 border rounded">
+                        {{ include('blog/partials/article-preview.html.twig', {article: article}) }}
+                    </article>
+                </li>
+            {% endfor %}
         </ul>
-    {% endif %}
-{% endfor %}
+    </section>
+{% endif %}
