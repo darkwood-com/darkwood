@@ -28,6 +28,10 @@ on:
         description: Optional Castor task to prepare test fixtures
         type: string
         default: ''
+      symfony-lsp:
+        description: Run the project’s existing Symfony language-tools check
+        type: boolean
+        default: false
       nix-file:
         description: Optional path to a pinned Nix shell relative to the project
         type: string
@@ -72,7 +76,7 @@ jobs:
         with:
           php-version: ${{ inputs.php-version }}
           extensions: ${{ inputs.extensions }}
-          tools: composer
+          tools: ${{ inputs.symfony-lsp && 'composer, symfony-cli' || 'composer' }}
           coverage: none
       - uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
         if: inputs.nix-file != ''
@@ -114,8 +118,18 @@ jobs:
           fi
           case "$1" in
             php-cs-fixer) exec vendor/bin/php-cs-fixer fix --dry-run --diff ;;
-            phpstan) exec vendor/bin/phpstan analyse ;;
+            phpstan)
+              if jq -e '.scripts.phpstan != null' composer.json >/dev/null; then
+                exec composer run-script phpstan
+              fi
+              exec vendor/bin/phpstan analyse
+              ;;
             phpunit)
+              for script in phpunit test; do
+                if jq -e --arg script "$script" '.scripts[$script] != null' composer.json >/dev/null; then
+                  exec composer run-script "$script"
+                fi
+              done
               if [[ -x vendor/bin/phpunit ]]; then
                 exec vendor/bin/phpunit
               fi
@@ -163,3 +177,9 @@ jobs:
             "$RUNNER_TEMP/navi-php" "$RUNNER_TEMP/navi-check" "$PREPARE_TASK"
           fi
           "$RUNNER_TEMP/navi-php" "$RUNNER_TEMP/navi-check" phpunit
+
+      - name: Symfony LSP
+        if: ${{ !cancelled() && steps.install.outcome == 'success' && inputs.symfony-lsp }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: '"$RUNNER_TEMP/navi-php" tools/symfony-lsp/check.sh github'
