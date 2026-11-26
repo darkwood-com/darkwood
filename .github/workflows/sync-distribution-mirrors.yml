@@ -282,9 +282,12 @@ jobs:
           fi
           rm -rf "$staging"
 
-          git -C mirror add --all
           if [[ "$REQUIRES_PHP" == true ]]; then
+            # Only files from git archive are present, including tracked files matched by .gitignore.
+            git -C mirror add --force --all
             test "$(git -C mirror write-tree)" = "$(git rev-parse "$CANONICAL_SHA:$SOURCE")"
+          else
+            git -C mirror add --all
           fi
           if git -C mirror diff --cached --quiet; then
             if [[ "$clone_branch" != "$BRANCH" ]]; then
