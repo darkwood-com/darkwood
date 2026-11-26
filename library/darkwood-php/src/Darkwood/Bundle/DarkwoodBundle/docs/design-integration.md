@@ -41,10 +41,10 @@ Sur une interface Bootstrap 5.3, le sélecteur applique une seule valeur parmi
 choix. Une ancienne classe `theme-*` peut rester un alias pour les composants
 existants. Black correspond à `dark`. Conserver la clé de préférence déjà
 utilisée par le produit et valider la valeur relue. Reprendre les icônes SVG d’Uniflow pour les trois thèmes, avec le
-[soleil pour Light](../public/icons/light.svg), la [lune pour Dark](../public/icons/dark.svg)
-et la [tasse pour Sepia](../public/icons/sepia.svg). Insérer le SVG dans le document
+[soleil pour Light](../assets/images/themes/light.svg), la [lune pour Dark](../assets/images/themes/dark.svg)
+et la [tasse pour Sepia](../assets/images/themes/sepia.svg). Insérer le SVG dans le document
 pour qu’il hérite de la couleur du bouton et garder le nom accessible sur le
-bouton. La [palette pour Original](../public/icons/original.svg) représente
+bouton. La [palette pour Original](../assets/images/themes/original.svg) représente
 l’habillage personnalisé du site.
 
 La palette sépia demande des déclarations CSS locales. Mapper `--bs-body-color`

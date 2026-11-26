@@ -8,6 +8,7 @@
     "require": {
         "php": ">=8.4",
         "symfony/asset": "^7.4 || ^8.1",
+        "symfony/asset-mapper": "^7.4 || ^8.1",
         "symfony/framework-bundle": "^7.4 || ^8.1",
         "symfony/translation": "^7.4 || ^8.1",
         "symfony/twig-bundle": "^7.4 || ^8.1"

@@ -13,7 +13,7 @@ Ce dépôt ne fournit ni framework CSS ni dépendance runtime. Il documente le p
 - **Interaction** : cible minimale de 44 px, focus visible de 3 px, état désactivé perceptible autrement que par la couleur.
 - **Mouvement** : transitions courtes de 200 ms et respect de `prefers-reduced-motion`.
 
-Les tokens de référence sont dans [`tokens.css`](../public/tokens.css). La page [d’exemples](../public/design-examples.html) montre les composants sans JavaScript ni infrastructure. Le [guide d'intégration](design-integration.md) définit la méthode d'adoption.
+Les tokens de référence sont dans [`tokens.css`](../assets/styles/tokens.css). La page [d’exemples](design-examples.html) montre les composants sans JavaScript ni infrastructure. Le [guide d'intégration](design-integration.md) définit la méthode d'adoption.
 
 ## Composants de référence
 
@@ -44,3 +44,15 @@ Chaque produit adopte les conventions par petits commits autonomes. Les tests fo
 ## Licence et logos
 
 Les sources propres à la card suivent la licence du monorepo. Les marques et logos restent des identifiants Darkwood ; leur présence dans ce référentiel n'autorise pas une représentation trompeuse d'un produit tiers.
+
+## Marques produit
+
+- Darkwood et Darkwaar reprennent les fichiers vectoriels du bundle.
+- HeroClip utilise un pictogramme de lecture et deux traits de mouvement.
+- Geo combine une carte pliée et un repère.
+- DJ Matyo reprend Criket, redessiné en chemins SVG à partir de
+  `avatars/dj-matyo/cricket.png` et de la référence `criket_high.jpg`.
+  La silhouette, les yeux asymétriques et les tons verts reprennent la mascotte.
+
+Les cinq SVG servent aux icônes de navigation. HeroClip, DJ Matyo et Geo
+utilisent également ces mêmes fichiers pour leur en-tête et leur favicon.

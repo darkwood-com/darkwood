@@ -33,7 +33,8 @@
   --dw-transition: .2s ease;
 }
 
-:root[data-theme="dark"] {
+:root[data-theme="dark"],
+.dw-product.theme-dark {
   color-scheme: dark;
   --dw-text: #ebf4f1;
   --dw-background: #091a28;
@@ -52,7 +53,8 @@
   --dw-shadow: rgba(0, 0, 0, .22);
 }
 
-:root[data-theme="sepia"] {
+:root[data-theme="sepia"],
+.dw-product.theme-sepia {
   color-scheme: light;
   --dw-text: #433422;
   --dw-background: #f1e7d0;

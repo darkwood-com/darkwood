@@ -1,0 +1,51 @@
+@import url('./tokens.css');
+
+@font-face {
+    font-family: Jost;
+    src: url('../fonts/Jost-400-Book.otf') format('opentype');
+    font-weight: 400;
+    font-display: swap;
+}
+
+.dw-product {
+    font-family: var(--dw-font-sans);
+}
+
+.dw-product-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.dw-product-brand img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex: none;
+}
+
+.dw-product-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem 1rem;
+}
+
+.dw-product-footer .dw-identity {
+    margin-inline-start: auto;
+}
+
+.dw-product-card {
+    border-radius: .5rem;
+}
+
+.dw-product-action {
+    min-height: 44px;
+    border-radius: .375rem;
+}
+
+.dw-product :where(header, footer) :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
