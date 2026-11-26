@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0aca792261ed7ac5d45260cf43dfbd58",
+    "content-hash": "01fda7283743125df88ce90d7974c439",
     "packages": [
         {
             "name": "ajgarlag/openid-connect-provider-bundle",
@@ -491,16 +491,16 @@
         },
         {
             "name": "darkwood/darkwood-bundle",
-            "version": "v0.1.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle.git",
-                "reference": "db4a7385d7a9dd530c1550352adf7a6c55c014cc"
+                "reference": "e7cef96e4795e14d4a45421d4b54f11a640ca8ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/db4a7385d7a9dd530c1550352adf7a6c55c014cc",
-                "reference": "db4a7385d7a9dd530c1550352adf7a6c55c014cc",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/e7cef96e4795e14d4a45421d4b54f11a640ca8ab",
+                "reference": "e7cef96e4795e14d4a45421d4b54f11a640ca8ab",
                 "shasum": ""
             },
             "require": {
@@ -510,6 +510,7 @@
                 "symfony/translation": "^7.4 || ^8.1",
                 "symfony/twig-bundle": "^7.4 || ^8.1"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -530,10 +531,10 @@
             ],
             "support": {
                 "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/issues",
-                "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/tree/v0.1.0"
+                "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/tree/main"
             },
-            "time": "2026-11-26T09:37:39+00:00",
-            "published-time": "2026-11-26T09:39:53+00:00"
+            "time": "2026-11-26T11:30:24+00:00",
+            "published-time": "2026-11-26T11:35:05+00:00"
         },
         {
             "name": "darkwood/ia-exception-bundle",
@@ -16221,7 +16222,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "darkwood/darkwood-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
