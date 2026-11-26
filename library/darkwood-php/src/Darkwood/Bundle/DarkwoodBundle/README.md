@@ -16,7 +16,6 @@ Symfony translator to use the bundled locale labels.
 ```twig
 <link rel="stylesheet" href="{{ asset('darkwood/styles/identity.css') }}">
 {% include '@Darkwood/components/footer.html.twig' with {
-    active_product: 'darkwaar',
     product_keys: ['darkwood'],
 } only %}
 ```

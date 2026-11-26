@@ -12,7 +12,7 @@
                 {% if darkwood_identity.products[key] is defined %}
                     {% set product = darkwood_identity.products[key] %}
                     <li>
-                        <a class="dw-identity__link" href="{{ key == 'darkwood' ? portal_url|default(product.url) : product.url }}"{% if key == active_product|default(null) %} aria-current="true"{% endif %}>
+                        <a class="dw-identity__link" href="{{ key == 'darkwood' ? portal_url|default(product.url) : product.url }}">
                             {% if product.icon is defined %}
                                 <img src="{{ asset_base_path|default('') ~ asset('darkwood/images/products/' ~ product.icon) }}" width="24" height="24" alt="{{ product.name }}">
                             {% else %}
