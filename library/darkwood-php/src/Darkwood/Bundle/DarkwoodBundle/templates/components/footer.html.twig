@@ -10,13 +10,13 @@
     de: 'https://darkwood.com/de/impressum',
 } %}
 {% set products = {
-    darkwood: {name: 'Darkwood', url: portal_url|default('https://darkwood.com/'), icon: 'darkwood.svg'},
-    darkwaar: {name: 'Darkwaar', url: 'https://darkwaar.com/', icon: 'darkwaar.svg'},
-    heroclip: {name: 'HeroClip', url: 'https://heroclip.darkwood.com/'},
-    djmatyo91: {name: 'DJ Matyo', url: 'https://djmatyo91.darkwood.com/'},
-    geo: {name: 'Geo', url: 'https://geo.darkwood.com/'},
-    uniflow: {name: 'Uniflow', url: 'https://uniflow.io/'},
-    slides: {name: 'Slides', url: 'https://slides.darkwood.com/'},
+    darkwaar: {name: 'Darkwaar', url: 'https://darkwaar.com', icon: 'darkwaar.svg'},
+    heroclip: {name: 'HeroClip', url: 'https://heroclip.darkwood.com'},
+    djmatyo91: {name: 'DJ Matyo', url: 'https://djmatyo91.darkwood.com'},
+    geo: {name: 'Geo', url: 'https://geo.darkwood.com'},
+    uniflow: {name: 'Uniflow', url: 'https://uniflow.io'},
+    slides: {name: 'Slides', url: 'https://slides.darkwood.com'},
+    darkwood: {name: 'Darkwood', url: portal_url|default('https://darkwood.com'), icon: 'darkwood.svg'},
 } %}
 <div class="dw-identity d-flex flex-wrap align-items-center justify-content-end">
     <a class="dw-identity__link" href="{{ contact_url|default(contact_urls[locale]|default(contact_urls.en)) }}">
