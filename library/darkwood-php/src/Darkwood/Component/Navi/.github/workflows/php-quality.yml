@@ -97,7 +97,10 @@ jobs:
             test -f "$NAVI_NIX_FILE"
             jq -e 'type == "array" and all(.[]; type == "string" and (contains("\n") | not))' <<< "$NAVI_NIX_ARGS" >/dev/null
             mapfile -t args < <(jq -r '.[]' <<< "$NAVI_NIX_ARGS")
-            exec nix develop --file "$NAVI_NIX_FILE" "${args[@]}" --command "$@"
+            for i in "${!args[@]}"; do
+              args[$i]=${args[$i]//%project%/$PWD}
+            done
+            exec nix --extra-experimental-features 'nix-command flakes' develop --file "$NAVI_NIX_FILE" "${args[@]}" --command "$@"
           fi
           exec "$@"
           BASH
