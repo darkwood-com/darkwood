@@ -75,7 +75,7 @@ foreach (array_filter($paths) as $path) {
         // Bootstrapping deployed applications is separate from installing their CI dependencies.
         'composer-scripts' => !isset($composer['scripts']['auto-scripts']) || ($hasDotenv && !$runtimeBootBlocked),
         'mysql' => $mirror['mysql'] ?? in_array($card, ['darkwood-portal', 'uniflow'], true),
-        'prepare-task' => $dir === 'library/darkwood-portal' ? 'ci-fixtures' : '',
+        'prepare-task' => in_array($dir, ['library/darkwood-portal', 'library/slides'], true) ? 'ci-fixtures' : '',
         'symfony-lsp' => ($mirror['packageId'] ?? '') === 'media-bundle'
             || (($mirror['packageId'] ?? '') === 'navi' && isset($files["$dir/bin/console"])),
         'nix-file' => '',

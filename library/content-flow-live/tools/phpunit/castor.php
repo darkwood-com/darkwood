@@ -22,10 +22,10 @@ function phpunit(
     ?string $coverateHtmlXml,
 ): int {
     $command = [__DIR__ . '/vendor/bin/phpunit', '--configuration=' . __DIR__ . '/phpunit.xml'];
-    $environment = null;
+    $ctx = context()->withAllowFailure();
 
     if ($xdebugMode !== null || $coverateHtmlPath !== null || $coverateHtmlXml !== null) {
-        $environment = ['XDEBUG_MODE=' => $xdebugMode ?? 'coverage'];
+        $ctx = $ctx->withEnvironment(['XDEBUG_MODE' => $xdebugMode ?? 'coverage']);
     }
 
     if ($testDox) {
@@ -42,5 +42,5 @@ function phpunit(
         $command[] = $coverateHtmlXml;
     }
 
-    return run($command, $environment, context()->withAllowFailure())->getExitCode();
+    return run($command, $ctx)->getExitCode();
 }
