@@ -11,7 +11,6 @@ use App\Repository\UserRepository;
 use DateInterval;
 use DateTime;
 use DateTimeImmutable;
-use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -134,7 +133,14 @@ class ResettingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $changed = $this->entityManager->wrapInTransaction(function () use ($user, $token, $form): bool {
-                $this->entityManager->refresh($user, LockMode::PESSIMISTIC_WRITE);
+                $connection = $this->entityManager->getConnection();
+                if (false === $connection->fetchOne(
+                    'SELECT id FROM ' . $connection->quoteIdentifier('user') . ' WHERE id = ? FOR UPDATE',
+                    [$user->getId()],
+                )) {
+                    return false;
+                }
+                $this->entityManager->refresh($user);
                 if (!$this->isResetTokenValid($user, $token)) {
                     return false;
                 }
