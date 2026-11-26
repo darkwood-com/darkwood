@@ -7,8 +7,8 @@
     <div class="article-preview__text">
         <h3><a href="{{ articleUrl }}">{{ translation.title }}</a></h3>
         <p><em>{{ 'blog.home.article_on'|trans }} <time datetime="{{ translation.created|date('c') }}">{{ translation.created|format_date('long') }}</time></em></p>
-        <p>{{ translation.content|article_excerpt(260) }}</p>
-        <p><a href="{{ articleUrl }}">{{ 'blog.home.show_more'|trans }}</a></p>
+        {#<p>{{ translation.content|article_excerpt(260) }}</p>
+        <p><a href="{{ articleUrl }}">{{ 'blog.home.show_more'|trans }}</a></p>#}
         {% if reactionEmojis is defined %}
             {{ include('blog/partials/article-reactions.html.twig', {
                 article: article,
