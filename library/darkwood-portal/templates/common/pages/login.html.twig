@@ -5,7 +5,11 @@
 
 {% block content %}
 <div class="login-shell login-theme-oidc login-theme-{{ login_brand }}">
-    {% include 'common/pages/oidc_login/' ~ login_brand ~ '_brand.html.twig' with {two_factor: false} only %}
+    {% if login_brand in ['djmatyo91', 'geo'] %}
+        {% include 'common/pages/oidc_login/product_brand.html.twig' with {product: darkwood_identity.products[login_brand], two_factor: false} only %}
+    {% else %}
+        {% include 'common/pages/oidc_login/' ~ login_brand ~ '_brand.html.twig' with {two_factor: false} only %}
+    {% endif %}
 
     <form id="login_form" method="post" action="{{ path('security_login') }}" novalidate="novalidate">
         {% if error %}

@@ -18,7 +18,11 @@
 
 <div class="login-shell login-theme-{{ login_theme }}{% if login_theme != 'default' %} login-theme-oidc{% else %} two-factor-shell{% endif %}">
     {% if login_theme != 'default' %}
-        {% include 'common/pages/oidc_login/' ~ login_theme ~ '_brand.html.twig' with {two_factor: true} only %}
+        {% if login_theme in ['djmatyo91', 'geo'] %}
+            {% include 'common/pages/oidc_login/product_brand.html.twig' with {product: darkwood_identity.products[login_theme], two_factor: true} only %}
+        {% else %}
+            {% include 'common/pages/oidc_login/' ~ login_theme ~ '_brand.html.twig' with {two_factor: true} only %}
+        {% endif %}
     {% else %}
         <h1>Two-factor authentication</h1>
         <p>Enter the 6-digit code from your authenticator app to complete sign-in.</p>
