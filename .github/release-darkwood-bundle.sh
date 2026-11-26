@@ -9,7 +9,7 @@ fi
 
 cd "$(git rev-parse --show-toplevel)"
 prefix=library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle
-remote=${DARKWOOD_BUNDLE_REMOTE:-git@github.com:darkwood-com/darkwood-bundle.git}
+remote=${DARKWOOD_BUNDLE_REMOTE:-git@github.com:darkwood-com/darkwood-php-bundle-darkwood-bundle.git}
 revision=${2:-origin/main}
 commit=$(git rev-parse --verify "$revision^{commit}")
 git merge-base --is-ancestor "$commit" origin/main

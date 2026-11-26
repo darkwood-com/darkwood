@@ -18,12 +18,24 @@ repository published on Packagist.
 |------|---------------|-------------------|
 | `src/Darkwood/Component/Navi` | `darkwood/navi` | [darkwood-com/darkwood-php-component-navi](https://github.com/darkwood-com/darkwood-php-component-navi) |
 | `src/Darkwood/Component/Flow` | `darkwood/flow` | [darkwood-com/darkwood-php-component-flow](https://github.com/darkwood-com/darkwood-php-component-flow) |
-| `src/Darkwood/Bundle/MediaBundle` | `darkwood/media-bundle` | [darkwood-com/darkwood-php-bundle-media](https://github.com/darkwood-com/darkwood-php-bundle-media) |
-| `src/Darkwood/Bundle/IaExceptionBundle` | `darkwood/ia-exception-bundle` | [darkwood-com/darkwood-php-bundle-ia-exception](https://github.com/darkwood-com/darkwood-php-bundle-ia-exception) |
-| `src/Darkwood/Bundle/DarkwoodBundle` | `darkwood/darkwood-bundle` | [darkwood-com/darkwood-bundle](https://github.com/darkwood-com/darkwood-bundle) |
+| `src/Darkwood/Bundle/MediaBundle` | `darkwood/media-bundle` | [darkwood-com/darkwood-php-bundle-darkwood-media-bundle](https://github.com/darkwood-com/darkwood-php-bundle-darkwood-media-bundle) |
+| `src/Darkwood/Bundle/IaExceptionBundle` | `darkwood/ia-exception-bundle` | [darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle](https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle) |
+| `src/Darkwood/Bundle/DarkwoodBundle` | `darkwood/darkwood-bundle` | [darkwood-com/darkwood-php-bundle-darkwood-bundle](https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle) |
 
 Package-specific documentation, installation, and usage live in each package `README.md`.
 DarkwoodBundle follows independent SemVer. See the [release and rollout guide](docs/darkwood-bundle.md).
+
+## Naming new bundles
+
+| Item | Convention |
+|---|---|
+| Composer package | `darkwood/<package-name>` |
+| GitHub distribution repository | `darkwood-com/darkwood-php-bundle-<bundle-name>` |
+| Development source | `library/darkwood-php/src/Darkwood/Bundle/` in the monorepo |
+| Distribution and versions | GitHub and Packagist, with Git tags on the distribution repository |
+
+Publish from the monorepo through the existing mirror workflow or the
+DarkwoodBundle release script. Commit source changes in the monorepo.
 
 ## Requirements
 

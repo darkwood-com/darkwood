@@ -11,7 +11,7 @@
     "remotes": {
         "navi": "git@github.com:darkwood-com/darkwood-php-component-navi.git",
         "flow": "git@github.com:darkwood-com/darkwood-php-component-flow.git",
-        "media-bundle": "git@github.com:darkwood-com/darkwood-php-bundle-media.git",
-        "ia-exception-bundle": "git@github.com:darkwood-com/darkwood-php-bundle-ia-exception.git"
+        "media-bundle": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-media-bundle.git",
+        "ia-exception-bundle": "git@github.com:darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle.git"
     }
 }

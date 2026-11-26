@@ -25,8 +25,8 @@ on:
           - personal-profile
           - darkwood-php-component-flow
           - darkwood-php-component-navi
-          - darkwood-php-bundle-media
-          - darkwood-php-bundle-ia-exception
+          - darkwood-php-bundle-darkwood-media-bundle
+          - darkwood-php-bundle-darkwood-ia-exception-bundle
       dry_run:
         description: Validate and show the diff without pushing
         required: true

@@ -55,9 +55,9 @@
       }
     },
     {
-      "id": "darkwood-php-bundle-media",
+      "id": "darkwood-php-bundle-darkwood-media-bundle",
       "source": "library/darkwood-php/src/Darkwood/Bundle/MediaBundle",
-      "repository": "darkwood-com/darkwood-php-bundle-media",
+      "repository": "darkwood-com/darkwood-php-bundle-darkwood-media-bundle",
       "git": {
         "branch": "8.1",
         "composer": "darkwood/media-bundle",
@@ -67,9 +67,9 @@
       }
     },
     {
-      "id": "darkwood-php-bundle-ia-exception",
+      "id": "darkwood-php-bundle-darkwood-ia-exception-bundle",
       "source": "library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle",
-      "repository": "darkwood-com/darkwood-php-bundle-ia-exception",
+      "repository": "darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle",
       "git": {
         "branch": "8.1",
         "composer": "darkwood/ia-exception-bundle",

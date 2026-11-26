@@ -32,7 +32,15 @@ La première version est `v0.1.0`. Elle correspond au commit source
 Le test d’exécution distante de GitHub Actions n’a pas obtenu de jeton pour ce
 nouveau dépôt. Le script utilise l’accès Git de l’opérateur et ne requiert
 aucun nouveau secret. Le registre Packagist a été soumis avec le dépôt public
-[darkwood-com/darkwood-bundle](https://github.com/darkwood-com/darkwood-bundle).
+[darkwood-com/darkwood-php-bundle-darkwood-bundle](https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle).
+
+Les proxies des bundles suivent la convention
+`darkwood-php-bundle-<nom-du-bundle>`. MediaBundle et IaExceptionBundle sont
+synchronisés par le workflow `Sync distribution mirrors` à partir de
+`.github/distribution-cards.json`. DarkwoodBundle conserve son script de
+publication et son versionnement indépendant. Les trois packages conservent
+leurs noms Composer. Voir le [catalogue PHP](../README.md#packages) pour les
+URL canoniques.
 
 ## Adoption et retour arrière
 
