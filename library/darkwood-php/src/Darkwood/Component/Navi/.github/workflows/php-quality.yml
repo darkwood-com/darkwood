@@ -1,0 +1,162 @@
+name: Reusable PHP quality
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        type: string
+        default: .
+      php-version:
+        type: string
+        default: '8.5'
+      extensions:
+        type: string
+        default: ''
+      php-cs-fixer:
+        type: boolean
+        default: true
+      phpstan:
+        type: boolean
+        default: true
+      phpunit:
+        type: boolean
+        default: true
+      mysql:
+        description: Start an isolated MySQL 5.7 service on port 3311
+        type: boolean
+        default: false
+      prepare-task:
+        description: Optional Castor task to prepare test fixtures
+        type: string
+        default: ''
+      nix-file:
+        description: Optional path to a pinned Nix shell relative to the project
+        type: string
+        default: ''
+      nix-args:
+        description: JSON array of additional arguments to nix develop
+        type: string
+        default: '[]'
+      package:
+        description: Optional expected Composer package name
+        type: string
+        default: ''
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    services:
+      mysql:
+        image: ${{ inputs.phpunit && inputs.mysql && 'mysql:5.7' || '' }}
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3311:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+    env:
+      CI: 'true'
+      NAVI_NIX_FILE: ${{ inputs.nix-file }}
+      NAVI_NIX_ARGS: ${{ inputs.nix-args }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
+        if: inputs.nix-file == ''
+        with:
+          php-version: ${{ inputs.php-version }}
+          extensions: ${{ inputs.extensions }}
+          tools: composer
+          coverage: none
+      - uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
+        if: inputs.nix-file != ''
+      - uses: castor-php/setup-castor@2a495b8c91f00be6768ad8a040ba8634c797d386 # v1.1.0
+        if: inputs.php-cs-fixer || inputs.phpstan || inputs.phpunit
+        with:
+          version: v1.9.1
+
+      - name: Install project and quality tools
+        id: install
+        env:
+          EXPECTED_PACKAGE: ${{ inputs.package }}
+          PHP_VERSION: ${{ inputs.php-version }}
+          PHP_CS_FIXER: ${{ inputs.php-cs-fixer }}
+          PHPSTAN: ${{ inputs.phpstan }}
+          PHPUNIT: ${{ inputs.phpunit }}
+        run: |
+          cat > "$RUNNER_TEMP/navi-php" <<'BASH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          if [[ -n "$NAVI_NIX_FILE" ]]; then
+            test -f "$NAVI_NIX_FILE"
+            jq -e 'type == "array" and all(.[]; type == "string" and (contains("\n") | not))' <<< "$NAVI_NIX_ARGS" >/dev/null
+            mapfile -t args < <(jq -r '.[]' <<< "$NAVI_NIX_ARGS")
+            exec nix develop --file "$NAVI_NIX_FILE" "${args[@]}" --command "$@"
+          fi
+          exec "$@"
+          BASH
+          cat > "$RUNNER_TEMP/navi-check" <<'BASH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          if [[ -f castor.php ]]; then
+            exec castor --no-interaction "$@"
+          elif [[ -f tools/castor.php ]]; then
+            exec castor --no-interaction --castor-file=tools/castor.php "$@"
+          fi
+          case "$1" in
+            php-cs-fixer) exec vendor/bin/php-cs-fixer fix --dry-run --diff ;;
+            phpstan) exec vendor/bin/phpstan analyse ;;
+            phpunit)
+              if [[ -x vendor/bin/phpunit ]]; then
+                exec vendor/bin/phpunit
+              fi
+              exec vendor/bin/simple-phpunit
+              ;;
+            *) echo "The requested setup task requires a Castor project." >&2; exit 1 ;;
+          esac
+          BASH
+          cat > "$RUNNER_TEMP/navi-install" <<'BASH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          actual_version=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')
+          test "$actual_version" = "$PHP_VERSION"
+          if [[ -n "$EXPECTED_PACKAGE" ]]; then
+            test "$(jq -r .name composer.json)" = "$EXPECTED_PACKAGE"
+            composer validate --strict --no-check-publish
+          fi
+          composer install --no-interaction --no-progress --prefer-dist
+          for tool in php-cs-fixer phpstan phpunit; do
+            case "$tool" in
+              php-cs-fixer) enabled=$PHP_CS_FIXER ;;
+              phpstan) enabled=$PHPSTAN ;;
+              phpunit) enabled=$PHPUNIT ;;
+            esac
+            if [[ "$enabled" == true && -f "tools/$tool/composer.json" ]]; then
+              composer --working-dir="tools/$tool" install --no-interaction --no-progress --prefer-dist
+            fi
+          done
+          BASH
+          chmod +x "$RUNNER_TEMP"/navi-{php,check,install}
+          "$RUNNER_TEMP/navi-php" "$RUNNER_TEMP/navi-install"
+
+      - name: PHP CS Fixer
+        if: inputs.php-cs-fixer
+        run: '"$RUNNER_TEMP/navi-php" "$RUNNER_TEMP/navi-check" php-cs-fixer --dry-run'
+      - name: PHPStan
+        if: ${{ !cancelled() && steps.install.outcome == 'success' && inputs.phpstan }}
+        run: '"$RUNNER_TEMP/navi-php" "$RUNNER_TEMP/navi-check" phpstan'
+      - name: PHPUnit
+        if: ${{ !cancelled() && steps.install.outcome == 'success' && inputs.phpunit }}
+        env:
+          PREPARE_TASK: ${{ inputs.prepare-task }}
+        run: |
+          if [[ -n "$PREPARE_TASK" ]]; then
+            "$RUNNER_TEMP/navi-php" "$RUNNER_TEMP/navi-check" "$PREPARE_TASK"
+          fi
+          "$RUNNER_TEMP/navi-php" "$RUNNER_TEMP/navi-check" phpunit
