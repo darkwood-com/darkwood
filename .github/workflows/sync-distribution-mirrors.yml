@@ -244,7 +244,7 @@ jobs:
           staging=$(mktemp -d)
           git archive "$CANONICAL_SHA:$SOURCE" | tar -x -C "$staging"
           if [[ "$REQUIRES_PHP" == true ]]; then
-            rsync -a --delete --exclude='.git/' "$staging/" mirror/
+            rsync -a --checksum --delete --exclude='.git/' "$staging/" mirror/
           else
             rsync -a --delete --exclude='.git/' --exclude='.github/workflows/' "$staging/" mirror/
             rm -rf mirror/.github/workflows
