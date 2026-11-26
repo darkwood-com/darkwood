@@ -494,12 +494,12 @@
             "version": "v0.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/darkwood-com/darkwood-bundle.git",
+                "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle.git",
                 "reference": "db4a7385d7a9dd530c1550352adf7a6c55c014cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-bundle/zipball/db4a7385d7a9dd530c1550352adf7a6c55c014cc",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/db4a7385d7a9dd530c1550352adf7a6c55c014cc",
                 "reference": "db4a7385d7a9dd530c1550352adf7a6c55c014cc",
                 "shasum": ""
             },
@@ -521,7 +521,7 @@
                 "MIT"
             ],
             "description": "Shared Darkwood Identity templates and design assets for Symfony applications.",
-            "homepage": "https://github.com/darkwood-com/darkwood-bundle",
+            "homepage": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle",
             "keywords": [
                 "darkwood",
                 "design",
@@ -529,8 +529,8 @@
                 "twig"
             ],
             "support": {
-                "issues": "https://github.com/darkwood-com/darkwood-bundle/issues",
-                "source": "https://github.com/darkwood-com/darkwood-bundle/tree/v0.1.0"
+                "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/issues",
+                "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/tree/v0.1.0"
             },
             "time": "2026-11-26T09:37:39+00:00",
             "published-time": "2026-11-26T09:39:53+00:00"
@@ -540,12 +540,12 @@
             "version": "v8.1.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/darkwood-com/darkwood-php-bundle-ia-exception.git",
+                "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle.git",
                 "reference": "bd7c3ac064c609b57abcf34ab07706ffc6cad55d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-ia-exception/zipball/bd7c3ac064c609b57abcf34ab07706ffc6cad55d",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/zipball/bd7c3ac064c609b57abcf34ab07706ffc6cad55d",
                 "reference": "bd7c3ac064c609b57abcf34ab07706ffc6cad55d",
                 "shasum": ""
             },
@@ -582,8 +582,8 @@
             ],
             "description": "Augments HTTP 500 errors with AI-based exception analysis using Symfony AI",
             "support": {
-                "issues": "https://github.com/darkwood-com/ia-exception-bundle/issues",
-                "source": "https://github.com/darkwood-com/ia-exception-bundle/tree/v8.1.6"
+                "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/issues",
+                "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/tree/v8.1.6"
             },
             "time": "2026-09-01T15:19:05+00:00"
         },

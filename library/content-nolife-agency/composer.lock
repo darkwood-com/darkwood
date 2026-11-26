@@ -79,12 +79,12 @@
             "version": "v8.1.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/darkwood-com/darkwood-php-bundle-ia-exception.git",
+                "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle.git",
                 "reference": "bd7c3ac064c609b57abcf34ab07706ffc6cad55d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-ia-exception/zipball/bd7c3ac064c609b57abcf34ab07706ffc6cad55d",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/zipball/bd7c3ac064c609b57abcf34ab07706ffc6cad55d",
                 "reference": "bd7c3ac064c609b57abcf34ab07706ffc6cad55d",
                 "shasum": ""
             },
@@ -121,8 +121,8 @@
             ],
             "description": "Augments HTTP 500 errors with AI-based exception analysis using Symfony AI",
             "support": {
-                "issues": "https://github.com/darkwood-com/ia-exception-bundle/issues",
-                "source": "https://github.com/darkwood-com/ia-exception-bundle/tree/v8.1.6"
+                "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/issues",
+                "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/tree/v8.1.6"
             },
             "time": "2026-09-01T15:19:05+00:00",
             "published-time": "2026-09-01T15:35:29+00:00"
@@ -132,12 +132,12 @@
             "version": "v8.1.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/darkwood-com/darkwood-php-bundle-media.git",
+                "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-media-bundle.git",
                 "reference": "9b806a8a2f7e7ed14f07d039d734e332d6053796"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-media/zipball/9b806a8a2f7e7ed14f07d039d734e332d6053796",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-media-bundle/zipball/9b806a8a2f7e7ed14f07d039d734e332d6053796",
                 "reference": "9b806a8a2f7e7ed14f07d039d734e332d6053796",
                 "shasum": ""
             },
@@ -175,8 +175,8 @@
                 "MIT"
             ],
             "support": {
-                "issues": "https://github.com/darkwood-com/media-bundle/issues",
-                "source": "https://github.com/darkwood-com/media-bundle/tree/v8.1.6"
+                "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-media-bundle/issues",
+                "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-media-bundle/tree/v8.1.6"
             },
             "time": "2026-09-01T15:19:05+00:00",
             "published-time": "2026-09-01T15:35:31+00:00"
