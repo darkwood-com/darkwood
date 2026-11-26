@@ -4,7 +4,7 @@
 
 Development repository for [Darkwood](https://github.com/darkwood-com) PHP libraries and Symfony bundles.
 
-All packages share a **single global version line** (Symfony-style): one tag
+Navi, Flow, MediaBundle, and IaExceptionBundle share a global version line. One tag
 (`v8.1.0`, `v8.1.1`, …) applies to the monorepo and to every satellite
 repository published on Packagist.
 
@@ -20,8 +20,10 @@ repository published on Packagist.
 | `src/Darkwood/Component/Flow` | `darkwood/flow` | [darkwood-com/darkwood-php-component-flow](https://github.com/darkwood-com/darkwood-php-component-flow) |
 | `src/Darkwood/Bundle/MediaBundle` | `darkwood/media-bundle` | [darkwood-com/darkwood-php-bundle-media](https://github.com/darkwood-com/darkwood-php-bundle-media) |
 | `src/Darkwood/Bundle/IaExceptionBundle` | `darkwood/ia-exception-bundle` | [darkwood-com/darkwood-php-bundle-ia-exception](https://github.com/darkwood-com/darkwood-php-bundle-ia-exception) |
+| `src/Darkwood/Bundle/DarkwoodBundle` | `darkwood/darkwood-bundle` | [darkwood-com/darkwood-bundle](https://github.com/darkwood-com/darkwood-bundle) |
 
 Package-specific documentation, installation, and usage live in each package `README.md`.
+DarkwoodBundle follows independent SemVer. See the [release and rollout guide](docs/darkwood-bundle.md).
 
 ## Requirements
 
@@ -49,15 +51,9 @@ make phpunit
 make symfony-lsp
 ```
 
-### Link monorepo packages into another project
+### Application dependencies
 
-After `composer install` in a consuming application, symlink local clones from this monorepo:
-
-```bash
-./link /path/to/your/symfony-app
-```
-
-Use `./link --rollback /path/to/your/symfony-app` to restore vendor copies, then run `composer install` in the app.
+Install each package from Packagist and commit the application's Composer lockfile.
 
 ## Repository layout
 

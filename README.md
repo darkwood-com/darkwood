@@ -9,12 +9,11 @@ The [Symfony AI MCP workshop](library/content-darkwood-ai-mcp-symfony-hackathon/
 ## Projects
 
 - [Darkwood GitHub Profile](library/.github) — organization profile and public community templates.
-- [Darkwood Design](library/darkwood-design) — canonical visual conventions, tokens and integration guidance for the Darkwood ecosystem.
 - [Composio MCP](library/content-composio-mcp) — Symfony MCP server integrating Composio actions and workflows.
 - [Connect Flow](library/content-connect-flow) — Symfony prototype connecting natural-language capabilities to the Flow runtime.
 - [Crypto Trade](library/content-crypto-trade) — experimental cryptocurrency market-analysis application.
 - [Advent of Code](library/content-adventofcode) — archived Rust solutions for Advent of Code 2020.
-- [Darkwood PHP](library/darkwood-php) — PHP libraries and Symfony bundles.
+- [Darkwood PHP](library/darkwood-php) — PHP libraries and Symfony bundles, including [DarkwoodBundle](library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle) for shared design.
 - [Darkwood Publish Article MCP Apps](library/darkwood-publish-article-mcp-apps) — MCP application for article generation and publication workflows.
 - [Darkwood Showreel](library/content-darkwood-showreel) — web and terminal showreel content built with Symfony TUI.
 - [Darkwood Memory](library/content-darkwood-memory) — interactive editorial demonstrations about preserving creative memory.

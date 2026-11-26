@@ -17,7 +17,7 @@ const sourceAssets = resolve(root, "library/pages/assets");
 const sourceFonts = resolve(root, "library/pages/assets/fonts");
 const themeIcons = Object.fromEntries(await Promise.all(["light", "dark", "sepia"].map(async (theme) => [
   theme,
-  (await readFile(resolve(root, `library/darkwood-design/icons/${theme}.svg`), "utf8")).trim(),
+  (await readFile(resolve(root, `library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/public/icons/${theme}.svg`), "utf8")).trim(),
 ])));
 const themeIconTemplates = Object.entries(themeIcons)
   .map(([theme, svg]) => `<template id="${theme}-theme-icon">${svg}</template>`)
@@ -31,6 +31,7 @@ const cardRedirects = new Map([
   ["adventofcode", "content-adventofcode"],
   ["php-pipe-operator", "content-php-pipe-operator"],
   ["flowvox-ios", "flowvox"],
+  ["darkwood-design", "darkwood-php"],
 ]);
 
 const escape = (value) => String(value ?? "")
