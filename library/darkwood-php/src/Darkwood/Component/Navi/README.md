@@ -57,3 +57,9 @@ php bin/console navi:workflow:run
 ```
 
 The console command runs the same structural path as the test: two merge actions and JSON output of the resulting state. It is a smoke check for wiring, not a stand-in for real workflows.
+
+## PHP quality workflow
+
+Navi distributes a reusable GitHub Actions workflow for PHP CS Fixer,
+PHPStan and PHPUnit. See the [integration guide](https://github.com/darkwood-com/darkwood/blob/main/library/darkwood-php/docs/php-quality.md)
+for a caller example, local Castor commands and the Darkwood project matrix.

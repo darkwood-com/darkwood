@@ -5,8 +5,8 @@ applications peuvent exécuter les binaires de ce shell avec leurs propres
 configurations. Les extensions d’analyse qui dépendent de Doctrine, Twig
 ou d’API Platform restent dans le projet qui les utilise.
 
-L’analyse PHPStan de Navi charge l’autoloader de Navi. Son lock d’outil
-contient uniquement le moteur. Les autres locks isolés sous `tools/`
+L’analyse PHPStan de Navi charge les autoloaders de Navi et de PHPUnit
+pour inclure les tests. Son lock d’outil contient uniquement le moteur. Les autres locks isolés sous `tools/`
 permettent de lancer les tâches Castor existantes. Dans le profil qualité,
 PHPStan, PHPUnit, PHP-CS-Fixer et Psalm utilisent des distributions
 officielles épinglées par SHA-256. Rector utilise son verrou Composer.
