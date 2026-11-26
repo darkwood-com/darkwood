@@ -1,0 +1,14 @@
+{% set locale = app.request.locale|default('en')|slice(0, 2) %}
+{% set contact_urls = {
+    de: 'https://darkwood.com/de/kontakt',
+    en: 'https://darkwood.com/contact',
+    fr: 'https://darkwood.com/fr/contact',
+} %}
+<div class="dw-identity">
+    {% if show_contact is not defined or show_contact %}
+        <a class="dw-identity__link" href="{{ contact_url|default(contact_urls[locale]|default(contact_urls.en)) }}">
+            {{ 'contact'|trans({}, 'darkwood_identity') }}
+        </a>
+    {% endif %}
+    {% include '@Darkwood/components/identity-navigation.html.twig' %}
+</div>

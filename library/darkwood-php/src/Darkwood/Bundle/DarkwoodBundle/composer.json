@@ -1,0 +1,20 @@
+{
+    "name": "darkwood/darkwood-bundle",
+    "description": "Shared Darkwood Identity templates and design assets for Symfony applications.",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "homepage": "https://github.com/darkwood-com/darkwood-bundle",
+    "keywords": ["darkwood", "symfony", "twig", "design"],
+    "require": {
+        "php": ">=8.4",
+        "symfony/asset": "^7.4 || ^8.1",
+        "symfony/framework-bundle": "^7.4 || ^8.1",
+        "symfony/translation": "^7.4 || ^8.1",
+        "symfony/twig-bundle": "^7.4 || ^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Darkwood\\Bundle\\DarkwoodBundle\\": "src/"
+        }
+    }
+}

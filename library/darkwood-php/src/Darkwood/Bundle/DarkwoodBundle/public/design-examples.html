@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Darkwood Design — exemples</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    @font-face{font-family:Jost;src:url("fonts/Jost-400-Book.otf") format("opentype");font-weight:400;font-display:swap}
+    code,pre{font-family:var(--dw-font-mono)}
+    nav a{display:inline-flex;align-items:center;min-height:44px}
+    a{color:var(--dw-primary-hover)}
+    .primary{background:color-mix(in srgb,var(--dw-primary) 85%,#000)}
+    .primary:hover{filter:brightness(.9)}
+    *{box-sizing:border-box}body{margin:0;color:var(--dw-text);background:var(--dw-background);font:1.125rem/1.5 var(--dw-font-sans)}header,main{width:min(var(--dw-container),calc(100% - 2rem));margin:auto}header{min-height:var(--dw-header-height);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--dw-border)}nav{display:flex;gap:1rem}.brand{display:flex;align-items:center;gap:.65rem;color:inherit;text-decoration:none}.mark{display:grid;place-items:center;width:36px;height:36px;color:var(--dw-on-primary);background:var(--dw-primary);border-radius:var(--dw-radius);font-weight:600}section{padding:var(--dw-space-6) 0;border-bottom:1px solid var(--dw-border)}h1{font-size:clamp(2.8rem,7vw,5.5rem);line-height:.96;letter-spacing:-.045em;font-weight:500}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--dw-space-3)}.card{padding:var(--dw-space-4);background:var(--dw-surface);border:1px solid var(--dw-border);border-radius:var(--dw-radius-lg);box-shadow:0 .5rem 1rem var(--dw-shadow)}button,input,select{min-height:44px;font:inherit;border:1px solid var(--dw-border);border-radius:var(--dw-radius);color:var(--dw-text);background:var(--dw-input)}button{padding:.6rem 1rem;cursor:pointer}.primary{color:var(--dw-on-primary);background:color-mix(in srgb,var(--dw-primary) 85%,#000);border-color:var(--dw-primary-hover)}label{display:grid;gap:.4rem}table{width:100%;border-collapse:collapse}th,td{padding:.75rem;text-align:left;border-bottom:1px solid var(--dw-border)}.states{display:flex;gap:1rem;flex-wrap:wrap}.states span{padding:.4rem .65rem;border:1px solid currentColor;border-radius:var(--dw-radius)}.success{color:var(--dw-success)}.warning{color:var(--dw-warning)}.danger{color:var(--dw-danger)}@media(max-width:720px){.grid{grid-template-columns:1fr}header{align-items:flex-start;padding-block:1rem;gap:1rem;flex-direction:column}}
+  </style>
+</head>
+<body>
+<header><a class="brand" href="#"><span class="mark">D</span><strong>Darkwood</strong></a><nav aria-label="Navigation principale"><a href="#cards">Cards</a><a href="#forms">Formulaires</a></nav></header>
+<main>
+  <section><p>Référentiel canonique</p><h1>Une identité commune, des produits distincts</h1><p>Les rôles visuels restent stables. Chaque produit conserve les composants utiles à son métier.</p></section>
+  <section id="cards" class="grid"><article class="card"><h2>Card</h2><p>Surface, bordure et rayon communs.</p><button class="primary">Action principale</button></article><article class="card"><h2>États</h2><div class="states"><span class="success">Succès</span><span class="warning">Attention</span><span class="danger">Erreur</span></div></article><article class="card" id="forms"><h2>Formulaire</h2><label>Nom<input value="Darkwood"></label></article></section>
+  <section><table><thead><tr><th>Composant</th><th>Rôle</th></tr></thead><tbody><tr><td>Header</td><td>Identité et navigation</td></tr><tr><td>Card</td><td>Regroupement d'une information</td></tr><tr><td>Focus</td><td>Repère clavier visible</td></tr></tbody></table></section>
+</main>
+</body>
+</html>
