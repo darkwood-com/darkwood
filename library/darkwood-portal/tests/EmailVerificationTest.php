@@ -102,6 +102,52 @@ final class EmailVerificationTest extends WebTestCase
         self::assertNull($client->getContainer()->get('security.token_storage')->getToken());
     }
 
+    public function testRenamedUniflowAccountRetainsMailboxActivation(): void
+    {
+        $client = self::createClient([], ['HTTPS' => 'on', 'HTTP_HOST' => 'darkwood.localhost']);
+        $entityManager = $client->getContainer()->get(EntityManagerInterface::class);
+        $this->seedPages($entityManager);
+        $username = 'uniflow.activation.' . bin2hex(random_bytes(4));
+        $address = $username . '@example.com';
+
+        $user = new User();
+        $user->setUsername($username);
+        $user->setEmail($address);
+        $user->setUniflowActivationRequired(true);
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $client->request('POST', '/resetting/send-email', ['email' => $address]);
+        self::assertResponseRedirects();
+        self::assertEmailCount(1);
+        $message = self::getMailerMessage();
+        self::assertNotNull($message);
+        self::assertSame(1, preg_match('~/resetting/reset/[a-f0-9]{64}\.[a-f0-9]{64}~', $message->getHtmlBody(), $match));
+
+        $crawler = $client->request('GET', $match[0]);
+        $client->submit($crawler->filter('#resetting_form')->form([
+            'resetting[plainPassword][first]' => 'QA-Uniflow-Strong-1!',
+            'resetting[plainPassword][second]' => 'QA-Uniflow-Strong-1!',
+        ]));
+        self::assertResponseRedirects('/login');
+
+        $user = $client->getContainer()->get(EntityManagerInterface::class)->getRepository(User::class)->findOneBy(['email' => $address]);
+        self::assertInstanceOf(User::class, $user);
+        self::assertSame($username, $user->getUsername());
+        self::assertTrue($user->isVerified());
+        self::assertFalse($user->isUniflowActivationRequired());
+        self::assertNull($user->getResetToken());
+
+        $crawler = $client->request('GET', '/login');
+        $client->submit($crawler->filter('#login_form')->form([
+            'username' => $username,
+            'password' => 'QA-Uniflow-Strong-1!',
+        ]));
+        self::assertResponseRedirects();
+        $client->request('GET', '/login');
+        self::assertNotNull($client->getContainer()->get('security.token_storage')->getToken());
+    }
+
     private function seedPages(EntityManagerInterface $entityManager): void
     {
         $sites = $entityManager->getRepository(Site::class);
@@ -116,7 +162,7 @@ final class EmailVerificationTest extends WebTestCase
             $entityManager->persist($site);
         }
 
-        foreach (['register', 'login'] as $reference) {
+        foreach (['register', 'login', 'resetting'] as $reference) {
             if (null !== $entityManager->getRepository(Page::class)->findOneBy(['ref' => $reference, 'site' => $site])) {
                 continue;
             }
