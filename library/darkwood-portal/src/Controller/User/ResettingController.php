@@ -11,9 +11,11 @@ use App\Repository\UserRepository;
 use DateInterval;
 use DateTime;
 use DateTimeImmutable;
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +40,7 @@ class ResettingController extends AbstractController
         private readonly EntityManagerInterface $entityManager,
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly MailerInterface $mailer,
+        #[Autowire('%kernel.secret%')] private readonly string $secret,
     ) {}
 
     /**
@@ -63,6 +66,9 @@ class ResettingController extends AbstractController
 
         if ($user instanceof User) {
             $token = bin2hex(random_bytes(32));
+            if ($this->isImportedAccountAwaitingActivation($user)) {
+                $token .= '.' . $this->mailboxSignature($user, $token);
+            }
             $user->setResetToken($token);
             $user->setResetRequestedAt(new DateTime());
             $this->entityManager->flush();
@@ -116,7 +122,7 @@ class ResettingController extends AbstractController
 
         $user = $this->userRepository->findOneBy(['resetToken' => $token]);
 
-        if (!$user instanceof User || !$this->isResetTokenValid($user)) {
+        if (!$user instanceof User || !$this->isResetTokenValid($user, $token)) {
             return $this->render('common/pages/resettingPasswordAlreadyRequested.html.twig', [
                 'page' => $page,
                 'site_ref' => $siteRef,
@@ -127,10 +133,23 @@ class ResettingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($this->passwordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
-            $user->setResetToken(null);
-            $user->setResetRequestedAt(null);
-            $this->entityManager->flush();
+            $changed = $this->entityManager->wrapInTransaction(function () use ($user, $token, $form): bool {
+                $this->entityManager->refresh($user, LockMode::PESSIMISTIC_WRITE);
+                if (!$this->isResetTokenValid($user, $token)) {
+                    return false;
+                }
+                if (str_contains($token, '.') && $this->isImportedAccountAwaitingActivation($user)) {
+                    $user->setIsVerified(true);
+                }
+                $user->setPassword($this->passwordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
+                $user->setResetToken(null);
+                $user->setResetRequestedAt(null);
+
+                return true;
+            });
+            if (!$changed) {
+                return $this->redirectToRoute('common_resetting_request');
+            }
 
             $this->addFlash('success', 'Your password has been reset.');
 
@@ -145,8 +164,29 @@ class ResettingController extends AbstractController
         ]);
     }
 
-    private function isResetTokenValid(User $user): bool
+    private function isImportedAccountAwaitingActivation(User $user): bool
     {
+        return str_starts_with((string) $user->getUsername(), 'uf_')
+            && !$user->isVerified() && null === $user->getPassword();
+    }
+
+    private function mailboxSignature(User $user, string $nonce): string
+    {
+        return hash_hmac('sha256', "uniflow-activation\0" . $user->getUuid() . "\0" . $user->getEmail() . "\0" . $nonce, $this->secret);
+    }
+
+    private function isResetTokenValid(User $user, string $token): bool
+    {
+        if (!hash_equals((string) $user->getResetToken(), $token)) {
+            return false;
+        }
+        if (str_contains($token, '.')) {
+            [$nonce, $signature] = explode('.', $token, 2);
+            if (!hash_equals($this->mailboxSignature($user, $nonce), $signature)) {
+                return false;
+            }
+        }
+
         $requestedAt = $user->getResetRequestedAt();
 
         if (null === $requestedAt) {
