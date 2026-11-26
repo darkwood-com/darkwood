@@ -59,6 +59,17 @@ final class EmailVerificationTest extends WebTestCase
         $client->followRedirect();
         self::assertSelectorTextContains('[role="alert"]', 'Verify your email address before signing in.');
 
+        // Model the end of the per-address cooldown without waiting five minutes.
+        $client->getContainer()->get('limiter.email_verification_address')
+            ->create(hash('sha256', $address))->reset();
+        $crawler = $client->request('GET', '/register/resend-email');
+        $client->submit($crawler->selectButton('Resend the verification link')->form(['email' => $address]));
+        self::assertResponseRedirects('/register/resend-email', 303);
+        self::assertEmailCount(1);
+        $resend = self::getMailerMessage();
+        self::assertNotNull($resend);
+        self::assertEmailAddressContains($resend, 'To', $address);
+
         parse_str($parts[1], $pastQuery);
         $pastQuery['expires'] = time() - 60;
         unset($pastQuery['signature']);
@@ -79,6 +90,16 @@ final class EmailVerificationTest extends WebTestCase
         $client->submit($crawler->filter('#login_form')->form(['username' => $address, 'password' => $password]));
         self::assertResponseRedirects();
         self::assertStringNotContainsString('/login', (string) $client->getResponse()->headers->get('Location'));
+
+        $client->request('GET', '/login');
+        self::assertNotNull($client->getContainer()->get('security.token_storage')->getToken());
+        $entityManager = $client->getContainer()->get(EntityManagerInterface::class);
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $address]);
+        $user->setEnabled(false);
+        $entityManager->flush();
+
+        $client->request('GET', '/login');
+        self::assertNull($client->getContainer()->get('security.token_storage')->getToken());
     }
 
     private function seedPages(EntityManagerInterface $entityManager): void
