@@ -1,0 +1,62 @@
+{
+    "default_keys": [
+        "darkwood",
+        "darkwaar",
+        "heroclip",
+        "djmatyo91",
+        "geo",
+        "flow",
+        "uniflow"
+    ],
+    "products": {
+        "darkwood": {
+            "name": "Darkwood",
+            "url": "https://darkwood.com",
+            "icon": "darkwood.svg"
+        },
+        "darkwaar": {
+            "name": "Darkwaar",
+            "url": "https://darkwaar.com",
+            "icon": "darkwaar.svg"
+        },
+        "heroclip": {
+            "name": "HeroClip",
+            "url": "https://heroclip.darkwood.com",
+            "icon": "heroclip.svg"
+        },
+        "djmatyo91": {
+            "name": "DJ Matyo",
+            "url": "https://djmatyo91.darkwood.com",
+            "icon": "djmatyo.svg"
+        },
+        "geo": {
+            "name": "Geo",
+            "url": "https://geo.darkwood.com",
+            "icon": "geo.svg"
+        },
+        "flow": {
+            "name": "Flow",
+            "url": "https://flow.darkwood.com",
+            "icon": "flow.svg"
+        },
+        "uniflow": {
+            "name": "Uniflow",
+            "url": "https://uniflow.io",
+            "icon": "uniflow.svg"
+        },
+        "slides": {
+            "name": "Slides",
+            "url": "https://slides.darkwood.com"
+        }
+    },
+    "contact": {
+        "en": "https://darkwood.com/contact",
+        "fr": "https://darkwood.com/fr/contact",
+        "de": "https://darkwood.com/de/kontakt"
+    },
+    "legal_mentions": {
+        "en": "https://darkwood.com/legal-mentions",
+        "fr": "https://darkwood.com/fr/mentions-legales",
+        "de": "https://darkwood.com/de/impressum"
+    }
+}

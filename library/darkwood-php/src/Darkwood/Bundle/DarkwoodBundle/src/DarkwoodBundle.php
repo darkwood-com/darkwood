@@ -12,6 +12,12 @@ final class DarkwoodBundle extends AbstractBundle
 {
     public function prependExtension(ContainerConfigurator $configurator, ContainerBuilder $container): void
     {
+        $catalogue = $this->getPath().'/data/identity.json';
+        $container->fileExists($catalogue);
+        $container->prependExtensionConfig('twig', [
+            'globals' => ['darkwood_identity' => json_decode(file_get_contents($catalogue), true, flags: JSON_THROW_ON_ERROR)],
+        ]);
+
         $container->prependExtensionConfig('framework', [
             'asset_mapper' => [
                 'paths' => [$this->getPath().'/assets' => 'darkwood'],

@@ -44,3 +44,7 @@ Utiliser `asset()` dans Twig et recompiler les assets à chaque mise à jour du 
 `product.css` charge les tokens et la police Jost. Les sites conservent leurs
 feuilles spécialisées pour le lecteur vidéo, le studio audio et la cartographie.
 Le fichier [design.md](docs/design.md) documente la provenance des logos.
+
+Le catalogue `data/identity.json` définit l’ordre, les liens et les marques
+du sélecteur Darkwood Identity. La documentation Hugo de Flow le lit
+également pendant sa compilation statique.
