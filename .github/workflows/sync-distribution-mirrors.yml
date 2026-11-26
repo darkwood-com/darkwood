@@ -12,6 +12,7 @@ on:
       - library/darkwood-php/src/Darkwood/Component/Navi/**
       - library/darkwood-php/src/Darkwood/Bundle/MediaBundle/**
       - library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle/**
+      - library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/**
   workflow_dispatch:
     inputs:
       target:
@@ -27,6 +28,7 @@ on:
           - darkwood-php-component-navi
           - darkwood-php-bundle-darkwood-media-bundle
           - darkwood-php-bundle-darkwood-ia-exception-bundle
+          - darkwood-php-bundle-darkwood-bundle
       dry_run:
         description: Validate and show the diff without pushing
         required: true
@@ -132,9 +134,15 @@ jobs:
             if [[ "$REQUESTED_TARGET" == "all" || "$REQUESTED_TARGET" == "$TARGET" ]]; then
               selected=true
             fi
-          elif git diff --name-only "$BEFORE" "$CURRENT" -- \
-            "$SOURCE" .github/distribution-cards.json .github/workflows/sync-distribution-mirrors.yml | grep -q .; then
-            selected=true
+          else
+            if ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+              git fetch --depth=1 origin "$BEFORE"
+            fi
+            changed=$(git diff --name-only "$BEFORE" "$CURRENT" -- \
+              "$SOURCE" .github/distribution-cards.json .github/workflows/sync-distribution-mirrors.yml)
+            if [[ -n "$changed" ]]; then
+              selected=true
+            fi
           fi
           echo "selected=$selected" >> "$GITHUB_OUTPUT"
 
@@ -161,7 +169,9 @@ jobs:
           actual_package=$(php -r 'echo json_decode(file_get_contents($argv[1]), true, 512, JSON_THROW_ON_ERROR)["name"];' "$SOURCE/composer.json")
           test "$actual_package" = "$EXPECTED_PACKAGE"
           composer validate --strict --no-check-publish "$SOURCE/composer.json"
-          library/darkwood-php/.github/ci-run-package.sh "$PACKAGE_ID"
+          if [[ "$PACKAGE_ID" != "darkwood-bundle" ]]; then
+            library/darkwood-php/.github/ci-run-package.sh "$PACKAGE_ID"
+          fi
 
       - name: Set up Nix for PHP 8.6
         if: steps.select.outputs.selected == 'true' && matrix.requires_php && matrix.pinned_php_shell && matrix.php_version == '8.6'
@@ -227,6 +237,7 @@ jobs:
           BRANCH: ${{ matrix.branch }}
           BOOTSTRAP_BRANCH: ${{ matrix.bootstrap_branch }}
           TARGET: ${{ matrix.id }}
+          REQUIRES_PHP: ${{ matrix.requires_php }}
           CANONICAL_SHA: ${{ github.sha }}
           APP_TOKEN: ${{ steps.publication-token.outputs.token }}
         run: |
@@ -245,14 +256,12 @@ jobs:
           git clone --branch "$clone_branch" --single-branch "$mirror_url" mirror
           staging=$(mktemp -d)
           git archive "$CANONICAL_SHA:$SOURCE" | tar -x -C "$staging"
-          rsync -a --delete \
-            --exclude='.git/' \
-            --exclude='.github/workflows/' \
-            "$staging/" mirror/
-          rm -rf "$staging"
-
-          rm -rf mirror/.github/workflows
-          cat > mirror/DISTRIBUTION_MIRROR.md <<EOF
+          if [[ "$REQUIRES_PHP" == true ]]; then
+            rsync -a --delete --exclude='.git/' "$staging/" mirror/
+          else
+            rsync -a --delete --exclude='.git/' --exclude='.github/workflows/' "$staging/" mirror/
+            rm -rf mirror/.github/workflows
+            cat > mirror/DISTRIBUTION_MIRROR.md <<EOF
           # Distribution mirror
 
           This repository is a read-only distribution mirror. Development, issues, and pull requests belong in the [canonical Darkwood monorepo](https://github.com/darkwood-com/darkwood/tree/main/$SOURCE).
@@ -261,7 +270,7 @@ jobs:
           Canonical revision: \`$CANONICAL_SHA\`
           EOF
 
-          cat > mirror/.darkwood-mirror.json <<EOF
+            cat > mirror/.darkwood-mirror.json <<EOF
           {
             "canonical_repository": "darkwood-com/darkwood",
             "canonical_path": "$SOURCE",
@@ -270,10 +279,19 @@ jobs:
             "destination_branch": "$BRANCH"
           }
           EOF
+          fi
+          rm -rf "$staging"
 
           git -C mirror add --all
+          if [[ "$REQUIRES_PHP" == true ]]; then
+            test "$(git -C mirror write-tree)" = "$(git rev-parse "$CANONICAL_SHA:$SOURCE")"
+          fi
           if git -C mirror diff --cached --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            if [[ "$clone_branch" != "$BRANCH" ]]; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
             exit 0
           fi
 

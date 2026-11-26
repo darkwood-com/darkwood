@@ -25,8 +25,8 @@
       "source": "library/darkwood-php/src/Darkwood/Component/Flow",
       "repository": "darkwood-com/darkwood-php-component-flow",
       "git": {
-        "branch": "9.0",
-        "bootstrapBranch": "8.1",
+        "branch": "main",
+        "bootstrapBranch": "9.0",
         "composer": "darkwood/flow",
         "packageId": "flow",
         "phpVersion": "8.6",
@@ -46,12 +46,13 @@
       "source": "library/darkwood-php/src/Darkwood/Component/Navi",
       "repository": "darkwood-com/darkwood-php-component-navi",
       "git": {
-        "branch": "8.1",
+        "branch": "main",
         "composer": "darkwood/navi",
         "packageId": "navi",
         "phpVersion": "8.6",
         "phpExtensions": "xsl, openswoole",
-        "mysql": true
+        "mysql": true,
+        "bootstrapBranch": "8.1"
       }
     },
     {
@@ -59,11 +60,12 @@
       "source": "library/darkwood-php/src/Darkwood/Bundle/MediaBundle",
       "repository": "darkwood-com/darkwood-php-bundle-darkwood-media-bundle",
       "git": {
-        "branch": "8.1",
+        "branch": "main",
         "composer": "darkwood/media-bundle",
         "packageId": "media-bundle",
         "phpExtensions": "ctype, iconv",
-        "mysql": false
+        "mysql": false,
+        "bootstrapBranch": "8.1"
       }
     },
     {
@@ -71,11 +73,23 @@
       "source": "library/darkwood-php/src/Darkwood/Bundle/IaExceptionBundle",
       "repository": "darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle",
       "git": {
-        "branch": "8.1",
+        "branch": "main",
         "composer": "darkwood/ia-exception-bundle",
         "packageId": "ia-exception-bundle",
         "phpExtensions": "ctype, iconv",
-        "mysql": false
+        "mysql": false,
+        "bootstrapBranch": "8.1"
+      }
+    },
+    {
+      "id": "darkwood-php-bundle-darkwood-bundle",
+      "source": "library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle",
+      "repository": "darkwood-com/darkwood-php-bundle-darkwood-bundle",
+      "git": {
+        "branch": "main",
+        "composer": "darkwood/darkwood-bundle",
+        "packageId": "darkwood-bundle",
+        "phpExtensions": "ctype, iconv"
       }
     },
     {
