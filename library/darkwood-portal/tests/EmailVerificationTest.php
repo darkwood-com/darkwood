@@ -10,7 +10,7 @@ use App\Entity\Site;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\UriSigner;
+use SymfonyCasts\Bundle\VerifyEmail\Factory\UriSignerFactory;
 
 final class EmailVerificationTest extends WebTestCase
 {
@@ -61,8 +61,8 @@ final class EmailVerificationTest extends WebTestCase
 
         parse_str($parts[1], $pastQuery);
         $pastQuery['expires'] = time() - 60;
-        unset($pastQuery['_hash']);
-        $signer = $client->getContainer()->get(UriSigner::class);
+        unset($pastQuery['signature']);
+        $signer = (new UriSignerFactory($client->getContainer()->getParameter('kernel.secret'), 'signature'))->createUriSigner();
         $expired = $signer->sign('https://darkwood.localhost/register/verify-email?' . http_build_query($pastQuery));
         $expiredProof = parse_url($expired, PHP_URL_QUERY);
 
