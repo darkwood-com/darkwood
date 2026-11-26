@@ -31,7 +31,7 @@ for (const [source, target] of [['src/index.html', 'index.html'], ['src/404.html
   const destination = resolve(output, target);
   await mkdir(dirname(destination), { recursive: true });
   if (source === 'src/index.html') {
-    const helper = await readFile(resolve(card, '../darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/public/youtube.js'), 'utf8');
+    const helper = await readFile(resolve(card, '../darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/js/youtube.js'), 'utf8');
     const html = await readFile(resolve(card, source), 'utf8');
     if (!html.includes('<!-- darkwood-youtube-helper -->')) throw new Error('Missing shared player marker');
     await writeFile(destination, html.replace('<!-- darkwood-youtube-helper -->', `<script>${helper}</script>`));

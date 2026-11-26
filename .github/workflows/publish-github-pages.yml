@@ -5,7 +5,8 @@ on:
     branches: [main]
     paths:
       - .github/distribution-cards.json
-      - library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/public/youtube.js
+      - library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/**
+      - library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/data/**
       - library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/templates/components/youtube.html.twig
       - library/darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix
       - library/content-darkwood-memory/**
@@ -107,7 +108,8 @@ jobs:
           filter: blob:none
           sparse-checkout: |
             ${{ matrix.source }}
-            library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/public
+            library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets
+            library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/data
             library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/templates/components
             library/darkwood-php/src/Darkwood/Component/Navi/tools/env/shell.nix
             ${{ matrix.id == 'content-darkwood-ai-mcp-symfony-hackathon' && 'library/content-mario-orquestration' || '' }}
@@ -132,9 +134,13 @@ jobs:
             fi
           elif [[ "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
             selected=true
-          elif git diff --quiet "$BEFORE" "$CURRENT" -- "$SOURCE" library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/public/youtube.js library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/templates/components/youtube.html.twig .github/distribution-cards.json .github/workflows/publish-github-pages.yml; then
+          elif git diff --quiet "$BEFORE" "$CURRENT" -- "$SOURCE" library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/js/youtube.js library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/templates/components/youtube.html.twig .github/distribution-cards.json .github/workflows/publish-github-pages.yml; then
             selected=false
           else
+            selected=true
+          fi
+          if [[ "$EVENT_NAME" == "push" && "$TARGET" == "darkwood-php-component-flow" ]] &&
+             ! git diff --quiet "$BEFORE" "$CURRENT" -- library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/data; then
             selected=true
           fi
           if [[ "$EVENT_NAME" == "push" && "$TARGET" == "content-darkwood-ai-mcp-symfony-hackathon" ]] &&

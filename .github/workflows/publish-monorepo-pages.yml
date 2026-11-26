@@ -25,7 +25,7 @@ jobs:
           sparse-checkout: |
             .github/distribution-cards.json
             library/pages
-            library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/public/icons
+            library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/images/themes
             .github/scripts/validate-publication-domains.mjs
             .github/scripts/validate-publication-domains.test.mjs
             README.md

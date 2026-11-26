@@ -23,9 +23,9 @@
   "scripts": {
     "init": "shx rm -rf .git && git init -b main",
     "create": "exec-bin node_modules/.bin/hugo/hugo new",
-    "prestart": "npm run clean",
+    "prestart": "npm run clean && node prepare-darkwood.mjs",
     "start": "exec-bin node_modules/.bin/hugo/hugo server --bind=0.0.0.0 --disableFastRender -s src",
-    "prebuild": "npm run clean",
+    "prebuild": "npm run clean && node prepare-darkwood.mjs",
     "build": "exec-bin node_modules/.bin/hugo/hugo --gc --minify -s src --baseURL https://flow.darkwood.com",
     "build:preview": "npm run build -D -F",
     "clean": "shx rm -rf public resources",

@@ -73,7 +73,7 @@ dégagée. Aucun appel Replicate ni nouveau serveur.
 Les vidéos générées sont des artefacts locaux, ignorés par Git. Le build public
 ne dépend d’aucun MP4. Les lecteurs chargent YouTube nocookie après un clic,
 sans autoplay sonore, et proposent toujours un lien direct de secours. Leur
-petit mécanisme commun provient de `library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/public/youtube.js`.
+petit mécanisme commun provient de `library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/js/youtube.js`.
 
 GitHub Pages ne fournit pas de redirections HTTP personnalisées par chemin.
 Les références connues des anciennes vidéos ont été corrigées ; `404.html`

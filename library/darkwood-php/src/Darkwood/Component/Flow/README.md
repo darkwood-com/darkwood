@@ -159,3 +159,11 @@ Flow checkout can use `DARKWOOD_NAVI_ENV_DIR` with Castor or pass `naviEnv`
 directly to Nix. Both take the absolute `tools/env` path from a pinned Navi
 checkout. Composer installations of the library itself require no Navi
 checkout.
+
+### Documentation site design
+
+The existing Hugo build (`cd docs && npm run build`) reads the DarkwoodBundle
+catalogue and assets from the monorepo. For a standalone checkout of the Flow
+mirror, set `DARKWOOD_BUNDLE_DIR` to an available copy of DarkwoodBundle.
+The build stages files under Hugo's ignored directories; the shared sources
+come from the bundle. The canonical website is published to GitHub Pages.
