@@ -3,20 +3,11 @@
     "license": "proprietary",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../darkwood/src/Darkwood/Component/Navi",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
     "require": {
         "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "darkwood/navi": "8.1.x-dev@dev",
+        "darkwood/navi": "^8.1.12@stable",
         "doctrine/doctrine-bundle": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.7",

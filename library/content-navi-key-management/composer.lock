@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f63f91a48dc6a0aadd0c53a5d31b3cd4",
+    "content-hash": "f1b099a12c16eed09a30907cf1d01de7",
     "packages": [
         {
             "name": "async-aws/core",
@@ -142,11 +142,17 @@
         },
         {
             "name": "darkwood/navi",
-            "version": "8.1.x-dev",
+            "version": "v8.1.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/darkwood-com/darkwood-php-component-navi.git",
+                "reference": "2008d1b3716161ffe787beaea640d5bfe1a36494"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../darkwood/src/Darkwood/Component/Navi",
-                "reference": "3a0ec78bf91447c51ba5317ee06336b6c837df72"
+                "type": "zip",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-component-navi/zipball/2008d1b3716161ffe787beaea640d5bfe1a36494",
+                "reference": "2008d1b3716161ffe787beaea640d5bfe1a36494",
+                "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
@@ -165,8 +171,8 @@
             "type": "library",
             "extra": {
                 "symfony": {
-                    "allow-contrib": false,
-                    "require": "^8.1"
+                    "require": "^8.1",
+                    "allow-contrib": false
                 }
             },
             "autoload": {
@@ -174,43 +180,16 @@
                     "Navi\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Navi\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "demo": [
-                    "php bin/console navi:workflow:run"
-                ],
-                "php-cs-fixer": [
-                    "cd tools && castor app:tools:php-cs-fixer"
-                ],
-                "phpstan": [
-                    "cd tools && castor app:tools:phpstan"
-                ],
-                "phpunit": [
-                    "cd tools && castor app:tools:phpunit"
-                ],
-                "env": [
-                    "cd tools && castor app:tools:env"
-                ],
-                "symfony-lsp": [
-                    "cd tools && castor app:tools:symfony-lsp"
-                ],
-                "auto-scripts": {
-                    "cache:clear": "symfony-cmd",
-                    "assets:install %PUBLIC_DIR%": "symfony-cmd"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Public architectural layer for structured workflow execution.",
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/darkwood-com/darkwood-php-component-navi/tree/v8.1.12"
+            },
+            "time": "2026-11-26T14:07:08+00:00",
+            "published-time": "2026-11-26T14:08:04+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -9128,7 +9107,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "darkwood/navi": 20,
+        "darkwood/navi": 0,
         "symfony/aws-key-management": 20,
         "symfony/key-management": 20
     },
@@ -9140,5 +9119,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.11.0"
 }

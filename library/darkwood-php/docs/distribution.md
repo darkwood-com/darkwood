@@ -48,11 +48,13 @@ versions Symfony, utiliser un quatrième segment numérique, par exemple
 `v8.1.12.1`, et documenter le correctif. Les commits ordinaires sur
 `main` restent consommables sans tag.
 
-Flow `v8.1.12` provient de la branche de maintenance `8.1` et du commit
-source `ee5c052249a51c0b3ff80024d790f8fa92a8c8c1`. Le dernier argument du
-script permet de sélectionner cette branche. Flow `dev-main` contient
-les évolutions PHP 8.6 et ne satisfait pas la contrainte `^8.1.6` de
-MediaBundle. Les branches historiques restent disponibles.
+Flow `v8.1.12` a été publié depuis l’ancienne branche `8.1` et le commit
+source `ee5c052249a51c0b3ff80024d790f8fa92a8c8c1`. Flow `dev-main`
+contient les évolutions PHP 8.6 et ne satisfait pas la contrainte
+`^8.1.6` de MediaBundle. Les branches retirées restent récupérables
+depuis les tags GitHub `archive/packagist-2026-11-26/*`. Les seules
+branches conservées sur les proxies sont `main` et, pour la documentation
+Flow, `gh-pages`.
 
 ## Consommer et déployer
 

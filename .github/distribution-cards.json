@@ -50,8 +50,7 @@
         "packageId": "navi",
         "phpVersion": "8.6",
         "phpExtensions": "xsl, openswoole",
-        "mysql": true,
-        "bootstrapBranch": "8.1"
+        "mysql": true
       }
     },
     {
