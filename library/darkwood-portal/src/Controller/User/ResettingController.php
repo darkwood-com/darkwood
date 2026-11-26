@@ -146,6 +146,7 @@ class ResettingController extends AbstractController
                 }
                 if (str_contains($token, '.') && $this->isImportedAccountAwaitingActivation($user)) {
                     $user->setIsVerified(true);
+                    $user->setUniflowActivationRequired(false);
                 }
                 $user->setPassword($this->passwordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
                 $user->setResetToken(null);
@@ -172,7 +173,7 @@ class ResettingController extends AbstractController
 
     private function isImportedAccountAwaitingActivation(User $user): bool
     {
-        return str_starts_with((string) $user->getUsername(), 'uf_')
+        return ($user->isUniflowActivationRequired() || str_starts_with($user->getUsername(), 'uf_'))
             && !$user->isVerified() && '' === $user->getPassword();
     }
 

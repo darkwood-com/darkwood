@@ -140,6 +140,9 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     #[ORM\Column(options: ['default' => false])]
     private bool $emailVerificationRequired = true;
 
+    #[ORM\Column(options: ['default' => false])]
+    private bool $uniflowActivationRequired = false;
+
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $emailVerifiedAt = null;
 
@@ -578,6 +581,16 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    public function isUniflowActivationRequired(): bool
+    {
+        return $this->uniflowActivationRequired;
+    }
+
+    public function setUniflowActivationRequired(bool $required): void
+    {
+        $this->uniflowActivationRequired = $required;
     }
 
     public function isEmailVerificationPending(): bool
