@@ -1,4 +1,8 @@
 const localMode = localStorage.getItem('theme');
+const updateThemeTokens = () => {
+  document.documentElement.dataset.theme = localStorage.getItem('theme') ?? 'light';
+};
+updateThemeTokens();
 
 if (localMode === null) {
 
@@ -39,6 +43,7 @@ if (mode !== null) {
 
     }
 
+    updateThemeTokens();
   })
 
   window.matchMedia('(prefers-color-scheme: sepia)').addEventListener('change', event => {
@@ -55,6 +60,7 @@ if (mode !== null) {
 
     }
 
+    updateThemeTokens();
   })
 
   mode.addEventListener('click', () => {
@@ -82,6 +88,7 @@ if (mode !== null) {
     } else if(localStorage.getItem('theme') === 'light') {
       body.classList.add('data-light-mode');
     }
+    updateThemeTokens();
   });
 
   body.classList.remove('data-dark-mode');

@@ -8,4 +8,6 @@ const site = resolve(here, 'src');
 
 await mkdir(resolve(site, 'data'), { recursive: true });
 await copyFile(resolve(bundle, 'data/identity.json'), resolve(site, 'data/darkwood_identity.json'));
-await cp(resolve(bundle, 'assets'), resolve(site, 'static/darkwood'), { recursive: true });
+for (const directory of ['fonts', 'images', 'js', 'styles']) {
+    await cp(resolve(bundle, 'assets', directory), resolve(site, 'static/darkwood', directory), { recursive: true });
+}
