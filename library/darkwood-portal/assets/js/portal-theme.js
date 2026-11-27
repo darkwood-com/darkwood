@@ -1,7 +1,7 @@
-import palette from '../../vendor/darkwood/darkwood-bundle/public/icons/original.svg';
-import sun from '../../vendor/darkwood/darkwood-bundle/public/icons/light.svg';
-import moon from '../../vendor/darkwood/darkwood-bundle/public/icons/dark.svg';
-import cup from '../../vendor/darkwood/darkwood-bundle/public/icons/sepia.svg';
+import palette from '../../vendor/darkwood/darkwood-bundle/assets/images/themes/original.svg';
+import sun from '../../vendor/darkwood/darkwood-bundle/assets/images/themes/light.svg';
+import moon from '../../vendor/darkwood/darkwood-bundle/assets/images/themes/dark.svg';
+import cup from '../../vendor/darkwood/darkwood-bundle/assets/images/themes/sepia.svg';
 
 const body = document.body;
 const portal = body.matches('.layout-darkwood, .layout-paper, .layout-sky, .layout-photos, .layout-hello, .layout-api, .layout-podcasts');

@@ -8,9 +8,9 @@
 {{ include('blog/partials/article-highlights.html.twig') }}
 
 <h2>{{ 'blog.home.news_heading'|trans }}</h2>
-<ul class="itemlist">
+<ul class="itemlist article-preview-list">
     {% for article in articles %}
-        <li>{{ include('blog/partials/article-preview.html.twig', {article: article}) }}</li>
+        <li>{{ include('blog/partials/article-preview.html.twig', {article: article, show_description: true}) }}</li>
     {% endfor %}
 </ul>
 

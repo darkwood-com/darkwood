@@ -356,11 +356,16 @@
 {
 	margin: 15px 0px 15px 0px;
 	padding: 0;
+}
+
+.theme-darkwood ul.itemlist > li,
+.theme-darkwood .article-highlights__card
+{
 	background: #101010 none;
 	border: 2px solid #202020;
 }
 
-.theme-darkwood ul.itemlist li h3
+.theme-darkwood ul.itemlist:not(.article-preview-list) li h3
 {
 	margin: 0;
 	padding: 2px;

@@ -22,6 +22,10 @@
     overflow-wrap: anywhere;
 }
 
+.theme .theme-content.show_links .article-preview-list .article-preview h3 a:not(:hover, :focus-visible) {
+    text-decoration: none;
+}
+
 .article-highlights .article-preview {
     grid-template-columns: minmax(0, 1fr);
 }

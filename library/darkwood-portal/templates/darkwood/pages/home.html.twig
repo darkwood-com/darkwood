@@ -15,9 +15,9 @@
 {{ include('blog/partials/article-highlights.html.twig') }}
 
 <h2>{{ 'darkwood.home.news'|trans }}</h2>
-<ul class="itemlist">
+<ul class="itemlist article-preview-list">
     {% for article in news %}
-        <li>{{ include('blog/partials/article-preview.html.twig', {article: article}) }}</li>
+        <li>{{ include('blog/partials/article-preview.html.twig', {article: article, show_description: true}) }}</li>
     {% endfor %}
 </ul>
 {% endblock %}

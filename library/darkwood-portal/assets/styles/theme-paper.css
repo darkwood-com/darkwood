@@ -455,11 +455,16 @@
 {
     margin: 15px 0px 15px 0px;
     padding: 0;
+}
+
+.theme-paper ul.itemlist > li,
+.theme-paper .article-highlights__card
+{
     background:  #ffeac4 none;
     border: 2px solid #f3c790;
 }
 
-.theme-paper ul.itemlist li h3
+.theme-paper ul.itemlist:not(.article-preview-list) li h3
 {
     margin: 0;
     padding: 2px;

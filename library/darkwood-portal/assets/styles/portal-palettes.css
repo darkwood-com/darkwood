@@ -139,14 +139,14 @@ html[data-theme] .theme :is(.theme-body, .theme-body-top, .theme-content-top) {
 }
 
 html[data-theme] .theme .theme-content,
-html[data-theme] .theme :is(ul.itemlist > li, ul.comments .content, .article-reactions),
+html[data-theme] .theme :is(ul.itemlist > li, .article-highlights__card, ul.comments .content, .article-reactions),
 html[data-theme] .layout-podcasts .card {
   color: var(--dw-text);
   background: var(--dw-surface);
   border-color: var(--dw-border);
 }
 
-html[data-theme] .theme ul.itemlist :is(h2, h3),
+html[data-theme] .theme ul.itemlist:not(.article-preview-list) :is(h2, h3),
 html[data-theme] .theme .theme-content table :is(thead, th, td) {
   color: var(--dw-text);
   background: var(--dw-subtle);

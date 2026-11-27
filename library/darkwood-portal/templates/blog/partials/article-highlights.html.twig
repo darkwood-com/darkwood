@@ -8,10 +8,10 @@
 {% if highlights is not empty %}
     <section class="article-highlights" aria-labelledby="article-highlights-heading">
         <h2 id="article-highlights-heading">{{ 'blog.home.highlights_heading'|trans }}</h2>
-        <ul class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 list-unstyled ps-0 mb-4">
+        <ul class="article-preview-list row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 list-unstyled ps-0 mb-4">
             {% for article in highlights %}
                 <li class="col">
-                    <article class="h-100 p-3 border rounded">
+                    <article class="article-highlights__card h-100 p-3">
                         {{ include('blog/partials/article-preview.html.twig', {article: article}) }}
                     </article>
                 </li>
