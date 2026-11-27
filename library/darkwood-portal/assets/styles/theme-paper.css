@@ -663,8 +663,3 @@
     color: #692D00;
     cursor: default;
 }
-
-.theme-paper .theme-content.show_links a
-{
-    text-decoration: underline;
-}
