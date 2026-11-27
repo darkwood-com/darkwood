@@ -358,3 +358,10 @@ email_verification:
 
 hello.projects.items.job.title: Darkwood Job
 hello.projects.items.job.description: Jobs und freiberufliche Aufträge finden und Bewerbungen verfolgen.
+
+hello:
+    projects:
+        items:
+            slide:
+                title: Darkwood Slide
+                description: Interaktive Präsentationen von Darkwood ansehen.

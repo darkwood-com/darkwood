@@ -19,6 +19,7 @@ final class PublicProductCatalog
             ['id' => 'darkwaar', 'name' => 'Darkwaar Games', 'category' => 'games', 'url' => 'https://darkwaar.com/', 'status' => 'public', 'function' => 'Catalogue of independent browser games.', 'technologies' => ['PHP', 'Symfony', 'Godot']],
             ['id' => 'dj-matyo', 'name' => 'DJ Matyo', 'category' => 'media', 'url' => 'https://djmatyo91.darkwood.com/', 'status' => 'public', 'function' => 'Published original DJ sets and replayable musical timelines.', 'technologies' => ['PHP', 'Symfony', 'Web Audio']],
             ['id' => 'job', 'name' => 'Darkwood Job', 'category' => 'employment', 'url' => 'https://job.darkwood.com/', 'status' => 'public-product', 'function' => 'Job and freelance opportunity search.', 'technologies' => ['PHP', 'Symfony']],
+            ['id' => 'slide', 'name' => 'Darkwood Slide', 'category' => 'presentations', 'url' => 'https://slide.darkwood.com/', 'status' => 'public-product', 'function' => 'Catalogue and interactive player for Darkwood presentations.', 'technologies' => ['PHP', 'Laravel', 'Slidewire']],
             ['id' => 'heroclip', 'name' => 'HeroClip', 'category' => 'creative-ai', 'url' => 'https://heroclip.darkwood.com/', 'status' => 'public-product', 'function' => 'Creative studio for storyboards and video clips.', 'technologies' => ['PHP', 'Symfony', 'AI']],
         ];
     }

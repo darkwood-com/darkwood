@@ -420,14 +420,19 @@
                 </div>
             </div>
             <div class="row justify-content-center g-4">
-                {% set job = darkwood_identity.products.job %}
-                {% for project in hello.projects|merge([{id: 'job', name: job.name, primary_url: job.url, image_asset: 'darkwood/images/products/' ~ job.icon}]) %}
+                {% set featuredProducts = ['job', 'slide']|map(id => {
+                    id: id,
+                    name: darkwood_identity.products[id].name,
+                    primary_url: darkwood_identity.products[id].url,
+                    image_asset: 'darkwood/images/products/' ~ darkwood_identity.products[id].icon,
+                }) %}
+                {% for project in hello.projects|merge(featuredProducts) %}
                 <div class="col-lg-4 col-md-8 col-sm-9">
                     {% if project.primary_url %}
                     <a href="{{ project.primary_url }}" target="_blank" rel="noreferrer" class="single-block">
                         <div class="mt-30">
                             <div class="block-image">
-                                {% if project.id == 'job' %}
+                                {% if project.id in ['job', 'slide'] %}
                                 <img src="{{ asset(project.image_asset) }}" alt="{{ project.name }}">
                                 {% elseif project.image_asset %}
                                 <img src="{{ asset(project.image_asset)|imagine_filter('hello_blog') }}" alt="{{ project.name }}">

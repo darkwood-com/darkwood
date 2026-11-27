@@ -375,6 +375,9 @@ hello:
         uniflow:
             title: Uniflow
             description: Design, organize and run automated workflows.
+        slide:
+            title: Darkwood Slide
+            description: Browse and play interactive Darkwood presentations.
         job:
             title: Darkwood Job
             description: Job and freelance opportunity search, applications and follow-up.
