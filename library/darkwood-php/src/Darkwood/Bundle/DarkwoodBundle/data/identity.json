@@ -7,7 +7,8 @@
         "geo",
         "flow",
         "navi",
-        "uniflow"
+        "uniflow",
+        "jobs"
     ],
     "products": {
         "darkwood": {
@@ -54,6 +55,11 @@
             "name": "Slides",
             "url": "https://slides.darkwood.com",
             "icon": "slides.svg"
+        },
+        "jobs": {
+            "name": "Darkwood Jobs",
+            "url": "https://jobs.darkwood.com",
+            "icon": "jobs.svg"
         }
     },
     "contact": {
