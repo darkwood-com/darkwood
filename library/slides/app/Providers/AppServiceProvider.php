@@ -12,6 +12,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Laravel merges its built-in SQL connections into the project configuration.
+        $this->app['config']->set('database.connections', []);
+
         // Slidewire compiles the native Blade components directly.
         $this->app->bind(MakeSlideCommand::class, \App\Console\Commands\MakeSlideCommand::class);
     }

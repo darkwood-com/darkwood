@@ -61,6 +61,8 @@ class PublicPublicationManifestTest extends TestCase
     public function test_import_and_export_are_idempotent_without_database_or_network(): void
     {
         Http::preventStrayRequests();
+        $this->assertSame('disabled', config('database.default'));
+        $this->assertSame([], config('database.connections'));
         $data = $this->manifest->read(resource_path('data/publications.json'));
 
         $this->artisan('publications:manifest', ['--import' => resource_path('data/publications.json')])->assertSuccessful();
