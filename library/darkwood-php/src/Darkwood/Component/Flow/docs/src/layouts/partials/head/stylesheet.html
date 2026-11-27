@@ -1,11 +1,4 @@
-{{/* if eq (hugo.Environment) "development" -*/}}
-  {{ $options := (dict "targetPath" "main.css" "enableSourceMap" true "includePaths" (slice "node_modules")) -}}
-  {{ $css := resources.Get "scss/app.scss" | toCSS $options -}}
-  <link rel="stylesheet" href="{{ $css.Permalink | relURL }}">
-{{/* else -}}
-  {{ $options := (dict "targetPath" "main.css" "outputStyle" "compressed" "includePaths" (slice "node_modules")) -}}
-  {{ $css := resources.Get "scss/app.scss" | toCSS $options | postCSS (dict "config" "config/postcss.config.js") -}}
-  {{ $secureCSS := $css | resources.Fingerprint "sha512" -}}
-  <link rel="stylesheet" href="{{ $secureCSS.Permalink | relURL }}" integrity="{{ $secureCSS.Data.Integrity }}" crossorigin="anonymous">
-{{ end -*/}}
+{{ $options := dict "targetPath" "main.css" "enableSourceMap" true "includePaths" (slice "node_modules") -}}
+{{ $css := resources.Get "scss/app.scss" | toCSS $options | resources.Fingerprint "sha256" -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
 <noscript><style>img.lazyload { display: none; }</style></noscript>
