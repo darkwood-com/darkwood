@@ -46,7 +46,8 @@
         },
         "slides": {
             "name": "Slides",
-            "url": "https://slides.darkwood.com"
+            "url": "https://slides.darkwood.com",
+            "icon": "slides.svg"
         }
     },
     "contact": {
