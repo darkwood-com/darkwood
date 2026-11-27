@@ -445,11 +445,6 @@
 	cursor: default;
 }
 
-.theme-photos .theme-content.show_links a
-{
-	text-decoration: underline;
-}
-
 /* -> tables */
 .theme-photos .theme-content table
 {

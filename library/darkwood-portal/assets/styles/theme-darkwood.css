@@ -456,11 +456,6 @@
 	cursor: default;
 }
 
-.theme-darkwood .theme-content.show_links a
-{
-	text-decoration: underline;
-}
-
 /* -> tables */
 .theme-darkwood .theme-content table
 {
@@ -663,10 +658,6 @@
 	text-align: center;
 }
 
-.theme-darkwood .theme-content .hello ul.itemlist li span
-{
-	text-decoration: underline;
-}
 
 /* -> article reactions */
 .theme-darkwood .article-reactions

@@ -167,8 +167,6 @@
 
 .login-shell.login-theme-oidc .login-links a {
 	color: var(--login-link);
-	text-decoration: underline;
-	text-underline-offset: 0.15em;
 }
 
 .login-shell.login-theme-oidc :is(input, button, a):focus-visible {

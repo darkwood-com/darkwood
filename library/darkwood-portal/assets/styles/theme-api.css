@@ -371,11 +371,6 @@
 	cursor: default;
 }
 
-.theme-api .theme-content.show_links a
-{
-	text-decoration: underline;
-}
-
 /* -> tables */
 .theme-api .theme-content table
 {

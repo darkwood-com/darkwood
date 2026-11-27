@@ -422,11 +422,6 @@
     cursor: default;
 }
 
-.theme-sky .theme-content.show_links a
-{
-    text-decoration: underline;
-}
-
 /* -> tables */
 .theme-sky .theme-content table
 {
@@ -898,10 +893,6 @@
     text-align: left;
 }
 
-.theme-sky .theme-content table.ti89p a
-{
-    text-decoration: underline;
-}
 
 @media(max-width:767px) {
     .theme-sky
