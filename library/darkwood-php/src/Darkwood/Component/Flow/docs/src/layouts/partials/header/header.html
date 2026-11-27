@@ -11,7 +11,7 @@
 <header class="navbar navbar-expand-md navbar-light doks-navbar">
   <nav class="container-xxl flex-wrap flex-md-nowrap" aria-label="Main navigation">
     <a class="navbar-brand dw-product-brand p-0 me-auto" href="{{ "/" | relLangURL }}" aria-label="{{ .Site.Params.Title }}">
-      <img src="{{ "darkwood/images/products/flow.svg" | relURL }}" width="36" height="36" alt="">
+      <img src="{{ printf "darkwood/images/products/%s" .Site.Data.darkwood_identity.products.flow.icon | relURL }}" width="36" height="36" alt="">
       {{ .Site.Params.Title }}
     </a>
 

@@ -1,4 +1,5 @@
 {{ $identity := .Site.Data.darkwood_identity }}
+{{ $product := $identity.products.darkwood }}
 {{ $locale := .Site.Language.Lang }}
 <footer class="footer text-muted">
   <div class="container-xxl dw-product-footer">
@@ -15,12 +16,9 @@
       <a class="dw-identity__link" href="{{ index $identity.legal_mentions $locale | default $identity.legal_mentions.en }}">Legal mentions</a>
       <nav aria-label="Darkwood Identity" class="dw-identity__navigation">
         <ul class="dw-identity__products">
-          {{ range $key := $identity.default_keys }}
-            {{ $product := index $identity.products $key }}
-            <li><a class="dw-identity__link" href="{{ $product.url }}"{{ if eq $key "flow" }} aria-current="true"{{ end }}>
-              <img src="{{ printf "darkwood/images/products/%s" $product.icon | relURL }}" width="24" height="24" alt="{{ $product.name }}">
-            </a></li>
-          {{ end }}
+          <li><a class="dw-identity__link" href="{{ $product.url }}">
+            <img src="{{ printf "darkwood/images/products/%s" $product.icon | relURL }}" width="24" height="24" alt="{{ $product.name }}">
+          </a></li>
         </ul>
       </nav>
     </div>

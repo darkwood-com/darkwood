@@ -1,4 +1,4 @@
 <meta name="theme-color" content="{{ $.Site.Params.themeColor }}">
 <link rel="apple-touch-icon" sizes="180x180" href="{{ "apple-touch-icon.png" | absURL }}">
-<link rel="icon" type="image/svg+xml" href="{{ "darkwood/images/products/flow.svg" | relURL }}">
+<link rel="icon" type="image/svg+xml" href="{{ printf "darkwood/images/products/%s" .Site.Data.darkwood_identity.products.flow.icon | relURL }}">
 <link rel="manifest" crossorigin="use-credentials" href="{{ "site.webmanifest" | absURL }}">

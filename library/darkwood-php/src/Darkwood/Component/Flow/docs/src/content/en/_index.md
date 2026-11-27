@@ -10,40 +10,22 @@ images: []
 
 ## Usage
 
+**Partial function application in PHP 8.6** lets you use existing PHP functions as pipeline stages while fixing some of their arguments. In `substr(?, offset: 1)`, the `?` holds the string Flow supplies, and `offset: 1` skips its first character. The next stage takes the result and converts it to uppercase.
+
 ```php
 <?php
 
-use Flow\Flow\Flow;
 use Flow\FlowFactory;
 use Flow\Ip;
 
-class D1 {
-    public function __construct(public int $n1) {}
-}
-
-class D2 {
-    public function __construct(public int $n2) {}
-}
-
-class D3 {
-    public function __construct(public int $n3) {}
-}
-
-class D4 {
-    public function __construct(public int $n4) {}
-}
-
-$flow = (new FlowFactory())->create(static function() {
-    yield fn (D1 $data1) => new D2($data1->n1 += 1);
-    yield fn (D2 $data2) => new D3($data2->n2 * 2);
-    yield function(D3 $data3) {
-        printf("my number %d\n", $ip->data->n3)); // display 'my number 10'
-
-        return new D4($data3->n3);
+$pipeline = (new FlowFactory())->create(static function () {
+    yield substr(?, offset: 1);
+    yield strtoupper(...);
+    yield static function (string $output): void {
+        echo $output, PHP_EOL;
     };
 });
 
-$ip = new Ip(new D1(4));
-$flow($ip);
-$flow->await();
+$pipeline(new Ip('flow'));
+$pipeline->await(); // LOW
 ```
