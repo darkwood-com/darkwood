@@ -35,7 +35,7 @@ sur `gh-pages` du dépôt d'artefacts **existant**
 `darkwood-com/content-ai-mcp-symfony-hackathon`. Son nom ne change pas.
 La GitHub App de distribution conserve ses droits limités à ce dépôt.
 
-Le portail `pages.darkwood.com` est construit séparément par `library/pages` et
+Le portail `page.darkwood.com` est construit séparément par `library/pages` et
 publié par GitHub Actions Pages dans le dépôt racine. Ne pas mélanger les artefacts.
 
 ## Preuves et limites

@@ -49,7 +49,7 @@
     $destinations = [
         [$english ? 'Symfony submission' : 'Candidature Symfony', $entry],
         [$english ? 'MCP workshop' : 'Atelier MCP', $workshop],
-        [$english ? 'Darkwood catalogue' : 'Catalogue Darkwood', 'https://pages.darkwood.com/'],
+        [$english ? 'Darkwood catalogue' : 'Catalogue Darkwood', 'https://page.darkwood.com/'],
         [$english ? 'Flow documentation' : 'Documentation Flow', $flow],
         ['Darkwaar', 'https://darkwaar.com/games'],
         ['HeroClip', 'https://heroclip.darkwood.com/clips'],

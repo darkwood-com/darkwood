@@ -134,7 +134,7 @@
         "type": "github-pages",
         "builder": "library/pages/build.mjs",
         "artifact": "library/pages/dist",
-        "domain": "pages.darkwood.com"
+        "domain": "page.darkwood.com"
       }
     }
   ]

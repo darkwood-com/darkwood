@@ -2,7 +2,7 @@
 
 Public monorepo for Darkwood open-source projects.
 
-[Explore the public card portal](https://pages.darkwood.com/) generated from the canonical catalogue.
+[Explore the public card portal](https://page.darkwood.com/) generated from the canonical catalogue.
 Its generator, assets and distribution belong to the [Pages card](library/pages/).
 The [Symfony AI MCP workshop](library/content-darkwood-ai-mcp-symfony-hackathon/) owns its separate publication.
 

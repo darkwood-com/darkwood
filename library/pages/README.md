@@ -1,6 +1,6 @@
 # Darkwood public catalogue
 
-Canonical URL: <https://pages.darkwood.com/>. Hosting remains GitHub Pages for
+Canonical URL: <https://page.darkwood.com/>. Hosting remains GitHub Pages for
 `darkwood-com/darkwood`, using GitHub Actions (not a `gh-pages` branch).
 
 `publish-monorepo-pages.yml` builds `library/pages/build.mjs`
@@ -16,12 +16,9 @@ does not require or use the artifact CNAME for this publishing mode. Keep both
 settings and the versioned domain aligned. Every build validates all catalogue
 cards, their internal targets and metadata before upload.
 
-DNS is managed by Cloudflare. The intended GitHub Pages target is
-`darkwood-com.github.io`; the public resolver currently returns A records for
-`pages.darkwood.com`, not a visible CNAME (18 November 2026). This refactor does
-not alter DNS or proxy settings. No VPS service is involved. Configure
-the domain in repository Pages settings before creating its DNS record, then
-verify DNS and the GitHub-issued certificate and enable Enforce HTTPS.
+Cloudflare maps `page.darkwood.com` to `darkwood-com.github.io`.
+It redirects `pages.darkwood.com` permanently to the canonical host,
+preserving paths and query strings. GitHub Pages serves the catalogue over HTTPS.
 
 The former <https://darkwood-com.github.io/darkwood/> URL is retained by GitHub
 Pages and redirects to the custom domain. Validate both the homepage and card

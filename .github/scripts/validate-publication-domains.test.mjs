@@ -5,7 +5,7 @@ import { validatePublicationDomains } from "./validate-publication-domains.mjs";
 const manifest = (...domains) => ({ cards: domains.map((domain, index) => ({ id: `site-${index}`, pages: { domain } })) });
 
 test("preserve root and existing single-label names; accept flattened names", () => {
-  const names = ["darkwood.com", "pages.darkwood.com", "intent-content.darkwood.com", "ai-mcp-symfony-hackathon-content.darkwood.com"];
+  const names = ["darkwood.com", "page.darkwood.com", "intent-content.darkwood.com", "ai-mcp-symfony-hackathon-content.darkwood.com"];
   assert.deepEqual(validatePublicationDomains(manifest(...names)), names);
   assert.deepEqual(validatePublicationDomains({ cards: [{ id: "library-without-website" }] }), []);
 });

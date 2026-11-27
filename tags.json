@@ -1080,7 +1080,7 @@
       "id": "pages",
       "path": "library/pages",
       "domain": "darkwood",
-      "description": "Build and publication of the public Darkwood card catalogue on pages.darkwood.com.",
+      "description": "Build and publication of the public Darkwood card catalogue on page.darkwood.com.",
       "kind": "infrastructure",
       "status": "done",
       "dependencies": [],
