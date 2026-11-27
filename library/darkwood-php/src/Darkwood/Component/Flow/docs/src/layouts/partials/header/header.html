@@ -9,7 +9,7 @@
 {{/*<div class="header-bar"></div>*/}}
 
 <header class="navbar navbar-expand-md navbar-light doks-navbar">
-  <nav class="container-xxl flex-wrap flex-md-nowrap" aria-label="Main navigation">
+  <nav class="container-fluid flex-wrap flex-md-nowrap" aria-label="Main navigation">
     <a class="navbar-brand dw-product-brand p-0 me-auto" href="{{ "/" | relLangURL }}" aria-label="{{ .Site.Params.Title }}">
       <img src="{{ printf "darkwood/images/products/%s" .Site.Data.darkwood_identity.products.flow.icon | relURL }}" width="36" height="36" alt="">
       {{ .Site.Params.Title }}
@@ -97,7 +97,7 @@
 
 {{ if eq .Section "docs" -}}
 <nav class="doks-subnavbar py-2 sticky-lg-top{{ if eq .Site.Params.options.flexSearch false }} d-lg-none{{ end }}" aria-label="Secondary navigation">
-  <div class="container-xxl d-flex align-items-md-center">
+  <div class="container-fluid d-flex align-items-md-center">
 
     {{ if .Site.Params.options.flexSearch -}}
     <form class="doks-search position-relative flex-grow-1 me-auto">
@@ -131,7 +131,7 @@
   </div>
 </nav>
 
-<div class="container-xxl">
+<div class="container-fluid">
   <aside class="doks-sidebar">
     <nav id="doks-docs-nav" class="collapse d-lg-none" aria-label="Tertiary navigation">
       {{ partial "sidebar/docs-menu.html" . }}

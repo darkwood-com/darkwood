@@ -18,8 +18,8 @@
   {{ end -}}
   <body class="{{ .Scratch.Get "class" }} dw-product">
     {{ partial "header/header.html" . }}
-    <div class="wrap container-xxl {{ .Scratch.Get "class-container" }}" role="document">
-      <div class="content align-self-center">
+    <div class="wrap container-fluid {{ .Scratch.Get "class-container" }}" role="document">
+      <div class="content align-self-center w-100">
         {{ block "main" . }}{{ end }}
       </div>
     </div>
