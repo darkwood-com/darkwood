@@ -71,11 +71,11 @@ foreach (array_filter($paths) as $path) {
             explode(', ', $mirror['phpExtensions'] ?? ''),
         )))),
         ...$tools,
-        'prepare-dotenv' => $tools['phpunit'] && isset($files["$dir/tests/bootstrap.php"]) && !$hasDotenv,
+        'prepare-dotenv' => $tools['phpunit'] && !$hasDotenv && ($dir === 'library/slide' || isset($files["$dir/tests/bootstrap.php"])),
         // Bootstrapping deployed applications is separate from installing their CI dependencies.
         'composer-scripts' => !isset($composer['scripts']['auto-scripts']) || ($hasDotenv && !$runtimeBootBlocked),
         'mysql' => $mirror['mysql'] ?? in_array($card, ['darkwood-portal', 'uniflow'], true),
-        'prepare-task' => in_array($dir, ['library/darkwood-portal', 'library/slides'], true) ? 'ci-fixtures' : '',
+        'prepare-task' => in_array($dir, ['library/darkwood-portal', 'library/slide'], true) ? 'ci-fixtures' : '',
         'symfony-lsp' => ($mirror['packageId'] ?? '') === 'media-bundle'
             || (($mirror['packageId'] ?? '') === 'navi' && isset($files["$dir/bin/console"])),
         'nix-file' => '',
