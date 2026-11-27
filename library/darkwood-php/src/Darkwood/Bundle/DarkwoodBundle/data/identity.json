@@ -6,6 +6,7 @@
         "djmatyo91",
         "geo",
         "flow",
+        "navi",
         "uniflow"
     ],
     "products": {
@@ -38,6 +39,11 @@
             "name": "Flow",
             "url": "https://flow.darkwood.com",
             "icon": "flow.svg"
+        },
+        "navi": {
+            "name": "Navi",
+            "url": "https://navi.darkwood.com",
+            "icon": "navi.svg"
         },
         "uniflow": {
             "name": "Uniflow",
