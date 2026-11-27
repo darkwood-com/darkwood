@@ -81,3 +81,15 @@ sorties de compatibilité pour les consommateurs versionnés.
 AssetMapper versionne les feuilles de style et la police. Le site Hugo
 de Flow peut copier les fichiers compilés et les ressources associées vers
 son dossier statique. Les fichiers Sass restent des sources de maintenance.
+
+## Public X links
+
+Use public `https://x.com/` links and the X mark from the [official brand toolkit](https://about.x.com/en/who-we-are/brand-toolkit). Give icon-only links an accessible label. The shared icon follows the foreground color of the link.
+
+```twig
+<a href="https://x.com/darkwood_com" aria-label="Darkwood on X">
+    {{ include('@Darkwood/components/x-icon.html.twig') }}
+</a>
+```
+
+AssetMapper exposes the SVG as `darkwood/images/social/x.svg`. Static sites can use the same source file. Keep protocol-level API, OAuth, embed and card identifiers compatible with their providers.
