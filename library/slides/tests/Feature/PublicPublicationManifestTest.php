@@ -133,6 +133,30 @@ class PublicPublicationManifestTest extends TestCase
         }
     }
 
+    public function test_sync_public_updates_only_the_projection_from_the_registry(): void
+    {
+        mkdir($this->directory.'/resources/data', 0700, true);
+        copy(resource_path('presentations.json'), $this->directory.'/resources/presentations.json');
+        $public = $this->directory.'/resources/data/publications.json';
+        file_put_contents($public, '{"schema_version":1,"publications":[]}');
+        $this->app->setBasePath($this->directory);
+        $this->manifest->import($this->data());
+        $registry = file_get_contents($this->manifestPath);
+
+        $this->artisan('publications:manifest', [
+            '--registry' => $this->manifestPath,
+            '--sync-public' => true,
+        ])->assertSuccessful();
+        $this->assertSame($registry, file_get_contents($public));
+        $this->assertSame($registry, file_get_contents($this->manifestPath));
+
+        $this->expectException(RuntimeException::class);
+        (new PublicPublicationManifest)->associate(
+            $this->data()['publications'][0]['slide_id'], 'speakerdeck',
+            str_repeat('a', 32), 'https://speakerdeck.com/matyo91/example', true,
+        );
+    }
+
     public function test_invalid_publication_fields_and_duplicates_are_rejected(): void
     {
         $data = $this->data();

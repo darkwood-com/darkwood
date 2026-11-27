@@ -43,3 +43,7 @@ credential fournisseur. Les logs standards utilisent `RedactSensitiveData`.
 L’accueil réutilise exclusivement `PresentationCatalog::entries()` et l’ordre du registre. Le paramètre `?presentation=SLUG` sélectionne une présentation connue et fournit une URL partageable ; une valeur inconnue ou structurée est refusée. Un seul iframe, limité aux routes locales enregistrées, affiche le lecteur natif en 16:9. La sélection fonctionne sans JavaScript par navigation HTTP ; le script de l’accueil permet aussi le changement de lecteur sans rechargement et gère l’historique du navigateur.
 
 `resources/css/catalogue.css` et `resources/js/catalogue.js` appliquent uniquement le shell de bibliothèque : header de 61 px, sidebar de 180/240/300 px, Jost, pastille active, thèmes clair/sombre/sépia et icônes soleil/lune/tasse repris des conventions Uniflow. Le menu mobile sous 576 px occupe la largeur disponible, verrouille le scroll, gère Échap et le focus et se referme après sélection ou passage desktop. Le thème persisté concerne le shell ; les présentations intégrées conservent leur identité graphique et leurs contrôles.
+
+## Registre et base de données
+
+Le catalogue, les métadonnées et les associations publiques proviennent de fichiers JSON. Slides Core maintient le registre des publications et distribue sa projection au site. Slides démarre sans connexion SQL et utilise des sessions et un cache sur fichiers ainsi qu’une queue synchrone.

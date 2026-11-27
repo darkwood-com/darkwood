@@ -8,12 +8,16 @@ use Illuminate\Console\Command;
 
 class PublicationDiagnoseCommand extends Command
 {
-    protected $signature = 'publications:diagnose {--json}';
+    protected $signature = 'publications:diagnose {--json} {--registry= : Canonical Slides Core registry path}';
 
     protected $description = 'Read-only public mapping, missing associations and integrity counts; no errors, paths or credentials';
 
     public function handle(PresentationCatalog $catalog, PublicPublicationManifest $manifest): int
     {
+        if ($registry = $this->option('registry')) {
+            $manifest = new PublicPublicationManifest($registry);
+        }
+
         $entries = $catalog->entries();
         $data = $manifest->snapshot();
         $pairs = collect($data['publications'])->map(fn ($p) => $p['slide_id'].':'.$p['provider'])->all();

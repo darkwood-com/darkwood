@@ -98,20 +98,9 @@ class PublicPublicationManifest
         if ($dryRun) {
             return $this->merged($this->snapshot(), $data, $acceptMetadataUpdate);
         }
-        if (app()->isProduction()) {
-            throw new RuntimeException('Edit the public manifest in the authoring checkout and deploy it with Git.');
-        }
+        $path = $this->writableRegistry();
 
-        $path = $this->path ?? resource_path('data/publications.json');
-        $lock = fopen(dirname($path).'/.'.basename($path).'.lock', 'c');
-        if ($lock === false) {
-            throw new RuntimeException('Unable to open the public manifest lock.');
-        }
-
-        try {
-            if (! flock($lock, LOCK_EX)) {
-                throw new RuntimeException('Unable to lock the public manifest.');
-            }
+        return $this->withLock($path, function () use ($path, $data, $acceptMetadataUpdate): array {
             $current = $this->snapshot();
             $next = $this->merged($current, $data, $acceptMetadataUpdate);
             if ($next !== $current) {
@@ -119,6 +108,50 @@ class PublicPublicationManifest
             }
 
             return $next;
+        });
+    }
+
+    public function syncPublic(): void
+    {
+        $registry = $this->writableRegistry();
+        $public = resource_path('data/publications.json');
+        $this->withLock($registry, function () use ($public): void {
+            $registry = $this->snapshot();
+            $this->withLock($public, function () use ($public, $registry): void {
+                $previous = $this->read($public);
+                $merged = $this->merged($previous, $registry, true);
+                if ($merged !== $registry) {
+                    throw new RuntimeException('The public projection contains associations or metadata missing from the canonical registry. Reconcile them first.');
+                }
+                if ($previous !== $registry) {
+                    $this->write($public, $registry);
+                }
+            });
+        });
+    }
+
+    private function writableRegistry(): string
+    {
+        if (app()->isProduction() || $this->path === null
+            || realpath($this->path) === realpath(resource_path('data/publications.json'))) {
+            throw new RuntimeException('Write associations in the Slides Core authoring registry and deploy the generated public manifest with Git.');
+        }
+
+        return $this->path;
+    }
+
+    private function withLock(string $path, callable $operation): mixed
+    {
+        $lock = fopen(dirname($path).'/.'.basename($path).'.lock', 'c');
+        if ($lock === false) {
+            throw new RuntimeException('Unable to open the public manifest lock.');
+        }
+        try {
+            if (! flock($lock, LOCK_EX)) {
+                throw new RuntimeException('Unable to lock the public manifest.');
+            }
+
+            return $operation();
         } finally {
             fclose($lock);
         }
