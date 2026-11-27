@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89e1170243c4244116c3f8c773debffb",
+    "content-hash": "cf879d84dc7a20e8710dc3e8dc727548",
     "packages": [
         {
             "name": "amphp/amp",
@@ -165,54 +165,6 @@
             ],
             "time": "2026-10-29T09:13:34+00:00",
             "published-time": "2026-10-29T09:14:11+00:00"
-        },
-        {
-            "name": "darkwood/darkwood-bundle",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle.git",
-                "reference": "0bbe34a833c682e0867950f59abbc024acf28212"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/0bbe34a833c682e0867950f59abbc024acf28212",
-                "reference": "0bbe34a833c682e0867950f59abbc024acf28212",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.4",
-                "symfony/asset": "^7.4 || ^8.1",
-                "symfony/asset-mapper": "^7.4 || ^8.1",
-                "symfony/framework-bundle": "^7.4 || ^8.1",
-                "symfony/translation": "^7.4 || ^8.1",
-                "symfony/twig-bundle": "^7.4 || ^8.1"
-            },
-            "default-branch": true,
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-4": {
-                    "Darkwood\\Bundle\\DarkwoodBundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Shared Darkwood Identity templates and design assets for Symfony applications.",
-            "homepage": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle",
-            "keywords": [
-                "darkwood",
-                "design",
-                "symfony",
-                "twig"
-            ],
-            "support": {
-                "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/issues",
-                "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/tree/main"
-            },
-            "time": "2026-11-27T10:23:03+00:00",
-            "published-time": "2026-11-27T10:23:09+00:00"
         },
         {
             "name": "darkwood/flow",
@@ -11518,9 +11470,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "darkwood/darkwood-bundle": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

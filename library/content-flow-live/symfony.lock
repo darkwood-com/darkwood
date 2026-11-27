@@ -1,7 +1,4 @@
 {
-    "darkwood/darkwood-bundle": {
-        "version": "dev-main"
-    },
     "doctrine/doctrine-bundle": {
         "version": "2.12",
         "recipe": {

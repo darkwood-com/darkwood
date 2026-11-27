@@ -52,16 +52,13 @@
   }
 }
 
-.btn-twitter {
-  color: #fff;
-  background-color: rgb(29, 161, 242);
-  border-color: rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    color: #fff;
-    background-color: rgb(26, 145, 218);
-    border-color: rgba(0, 0, 0, 0.1);
-  }
+.x-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-color: currentColor;
+  mask: url("https://raw.githubusercontent.com/darkwood-com/darkwood/main/library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/images/social/x.svg") center / contain no-repeat;
 }
 
 .btn-github {
