@@ -374,8 +374,8 @@ hello:
         uniflow:
             title: Uniflow
             description: Concevez, organisez et exécutez des workflows automatisés.
-        jobs:
-            title: Darkwood Jobs
+        job:
+            title: Darkwood Job
             description: Recherche d’emploi et de missions freelance, candidatures et suivi de prospection.
         navi:
             title: Navi

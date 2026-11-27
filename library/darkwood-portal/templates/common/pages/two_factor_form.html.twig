@@ -18,7 +18,7 @@
 
 <div class="login-shell login-theme-{{ login_theme }}{% if login_theme != 'default' %} login-theme-oidc{% else %} two-factor-shell{% endif %}">
     {% if login_theme != 'default' %}
-        {% if login_theme in ['djmatyo91', 'geo', 'jobs'] %}
+        {% if login_theme in ['djmatyo91', 'geo', 'job'] %}
             {% include 'common/pages/oidc_login/product_brand.html.twig' with {product: darkwood_identity.products[login_theme], two_factor: true} only %}
         {% else %}
             {% include 'common/pages/oidc_login/' ~ login_theme ~ '_brand.html.twig' with {two_factor: true} only %}

@@ -420,14 +420,14 @@
                 </div>
             </div>
             <div class="row justify-content-center g-4">
-                {% set jobs = darkwood_identity.products.jobs %}
-                {% for project in hello.projects|merge([{id: 'jobs', name: jobs.name, primary_url: jobs.url, image_asset: 'darkwood/images/products/' ~ jobs.icon}]) %}
+                {% set job = darkwood_identity.products.job %}
+                {% for project in hello.projects|merge([{id: 'job', name: job.name, primary_url: job.url, image_asset: 'darkwood/images/products/' ~ job.icon}]) %}
                 <div class="col-lg-4 col-md-8 col-sm-9">
                     {% if project.primary_url %}
                     <a href="{{ project.primary_url }}" target="_blank" rel="noreferrer" class="single-block">
                         <div class="mt-30">
                             <div class="block-image">
-                                {% if project.id == 'jobs' %}
+                                {% if project.id == 'job' %}
                                 <img src="{{ asset(project.image_asset) }}" alt="{{ project.name }}">
                                 {% elseif project.image_asset %}
                                 <img src="{{ asset(project.image_asset)|imagine_filter('hello_blog') }}" alt="{{ project.name }}">

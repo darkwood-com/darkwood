@@ -18,7 +18,7 @@ final class PublicProductCatalog
             ['id' => 'geo', 'name' => 'Darkwood Geo', 'category' => 'geographic-data', 'url' => 'https://geo.darkwood.com/', 'status' => 'public', 'function' => 'Published European maps and sourced indicators.', 'technologies' => ['PHP', 'Symfony', 'Eurostat']],
             ['id' => 'darkwaar', 'name' => 'Darkwaar Games', 'category' => 'games', 'url' => 'https://darkwaar.com/', 'status' => 'public', 'function' => 'Catalogue of independent browser games.', 'technologies' => ['PHP', 'Symfony', 'Godot']],
             ['id' => 'dj-matyo', 'name' => 'DJ Matyo', 'category' => 'media', 'url' => 'https://djmatyo91.darkwood.com/', 'status' => 'public', 'function' => 'Published original DJ sets and replayable musical timelines.', 'technologies' => ['PHP', 'Symfony', 'Web Audio']],
-            ['id' => 'jobs', 'name' => 'Darkwood Jobs', 'category' => 'employment', 'url' => 'https://jobs.darkwood.com/', 'status' => 'public-product', 'function' => 'Job and freelance opportunity search.', 'technologies' => ['PHP', 'Symfony']],
+            ['id' => 'job', 'name' => 'Darkwood Job', 'category' => 'employment', 'url' => 'https://job.darkwood.com/', 'status' => 'public-product', 'function' => 'Job and freelance opportunity search.', 'technologies' => ['PHP', 'Symfony']],
             ['id' => 'heroclip', 'name' => 'HeroClip', 'category' => 'creative-ai', 'url' => 'https://heroclip.darkwood.com/', 'status' => 'public-product', 'function' => 'Creative studio for storyboards and video clips.', 'technologies' => ['PHP', 'Symfony', 'AI']],
         ];
     }

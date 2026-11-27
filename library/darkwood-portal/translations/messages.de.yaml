@@ -356,5 +356,5 @@ email_verification:
     profile_verified: "E-Mail-Adresse bestätigt."
     profile_unverified: "E-Mail-Adresse noch nicht bestätigt."
 
-hello.projects.items.jobs.title: Darkwood Jobs
-hello.projects.items.jobs.description: Jobs und freiberufliche Aufträge finden und Bewerbungen verfolgen.
+hello.projects.items.job.title: Darkwood Job
+hello.projects.items.job.description: Jobs und freiberufliche Aufträge finden und Bewerbungen verfolgen.
