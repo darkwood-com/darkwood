@@ -64,8 +64,11 @@ body.docs {
 }
 
 .home h1 {
-  /* font-size: calc(1.375rem + 1.5vw); */
-  font-size: calc(1.875rem + 1.5vw);
+  @include font-size($font-size-md * 2.5);
+}
+
+.home .hero-lead {
+  font-size: $font-size-md;
 }
 
 .section {
