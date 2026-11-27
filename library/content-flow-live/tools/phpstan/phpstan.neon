@@ -9,4 +9,5 @@ parameters:
 		- ../../src
 		- ../../tests
 	excludePaths:
-		- ../../config/reference.php
+		analyse:
+			- ../../config/reference.php (?)

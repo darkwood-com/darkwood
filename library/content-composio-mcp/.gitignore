@@ -9,3 +9,6 @@
 /vendor/
 /src/ComposioMcpTools.php
 ###< symfony/framework-bundle ###
+
+# Symfony generated configuration reference
+/config/reference.php

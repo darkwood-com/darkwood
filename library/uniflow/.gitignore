@@ -65,3 +65,6 @@ phpstan.neon
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+# Symfony generated configuration reference
+/config/reference.php

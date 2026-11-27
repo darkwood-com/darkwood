@@ -14,3 +14,6 @@ open.spotify.com_cookies.txt
 /download
 *cookies.txt
 *.log
+
+# Symfony generated configuration reference
+/config/reference.php

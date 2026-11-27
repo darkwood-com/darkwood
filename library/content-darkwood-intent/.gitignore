@@ -17,3 +17,6 @@
 
 # Generated distribution teaser, preserved locally and hosted on YouTube.
 /public/aftertrace/*.mp4
+
+# Symfony generated configuration reference
+/config/reference.php

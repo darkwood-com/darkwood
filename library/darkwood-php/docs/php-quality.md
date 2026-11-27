@@ -77,6 +77,30 @@ expands to the working directory.
 
 ## Darkwood discovery and publication
 
+### Generated Symfony configuration references
+
+For every new Symfony application, including nested bundle test applications,
+add this block to the application's own `.gitignore`:
+
+```gitignore
+# Symfony generated configuration reference
+/config/reference.php
+```
+
+Ignore `/config/schema.json` as well where Symfony generates it. Keep
+`config/preload.php`, source configuration and application lockfiles in Git.
+Symfony generates its PHP configuration reference when the debug container
+is compiled. Use `APP_ENV=dev APP_DEBUG=1 php bin/console cache:clear` in the
+project's configured local environment when an IDE needs a fresh copy.
+
+Quality jobs install Composer dependencies from a clean clone. The existing
+project fixture and kernel boot steps prepare Symfony as needed. If a new
+project uses types from the generated file, generate it as part of that
+project's quality preparation and keep it available to the analyser for
+symbol discovery. Exclude it from the analysed paths and CS Fixer scope.
+The shared workflow does not require a container build for projects whose
+checks can run without one.
+
 Run `php .github/scripts/php-quality-matrix.php` from the monorepo. The
 script reads tracked Composer manifests under `library/` and uses the
 first directory below it as the card identifier. Each package in
