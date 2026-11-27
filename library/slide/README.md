@@ -1,4 +1,4 @@
-# Slides
+# Slide
 
 Présentations Darkwood en Laravel et Blade, avec lecteur interactif, design
 system partagé, exports PDF et manifeste public portable.
@@ -15,7 +15,7 @@ npm run build
 php artisan serve --host=127.0.0.1 --port=8017
 ```
 
-Pour une première installation, préparer l'environnement et la base selon le [guide d'installation](docs/installation.md). Le catalogue est disponible sur `http://127.0.0.1:8017/` et les présentations sur `/slides/SLUG`.
+Pour une première installation, préparer l'environnement selon le [guide d'installation](docs/installation.md). Le catalogue est disponible sur `http://127.0.0.1:8017/` et les présentations sur `/slides/SLUG`.
 
 ## Documentation
 

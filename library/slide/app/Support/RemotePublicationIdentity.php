@@ -4,7 +4,7 @@ namespace App\Support;
 
 use InvalidArgumentException;
 
-/** Public data-integrity boundary. Provider operations live in Slides Core. */
+/** Public data-integrity boundary. Provider operations live in Slide Core. */
 class RemotePublicationIdentity
 {
     public function validate(string $provider, string $id, string $url): void

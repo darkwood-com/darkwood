@@ -1,5 +1,6 @@
 {
     "$schema": "https://www.schemastore.org/package.json",
+    "name": "darkwood-slide",
     "private": true,
     "type": "module",
     "scripts": {

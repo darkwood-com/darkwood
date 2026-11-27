@@ -24,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Provider orchestration is intentionally implemented in private Slides Core.
+        // Provider orchestration is intentionally implemented in private Slide Core.
     }
 }

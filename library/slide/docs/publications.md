@@ -1,17 +1,17 @@
 # PDF et manifeste public
 
-Slides est la source canonique des présentations. Les consultations, builds et
+Slide est la source canonique des présentations. Les consultations, builds et
 exports n'effectuent aucun upload vers un fournisseur externe.
 
 ## Interface publique stable
 
 ```sh
 php artisan publications:catalog
-php artisan publications:export UUID --static --interactive-base=https://slides.darkwood.com
+php artisan publications:export UUID --static --interactive-base=https://slide.darkwood.com
 php artisan publications:manifest
 php artisan publications:manifest --export
 php artisan publications:manifest --import=resources/data/publications.json --dry-run
-php artisan publications:associate UUID PROVIDER REMOTE_ID URL --confirmed-correspondence --registry=/chemin/vers/slides-core/resources/data/publications.json
+php artisan publications:associate UUID PROVIDER REMOTE_ID URL --confirmed-correspondence --registry=/chemin/vers/slide-core/resources/data/publications.json
 php artisan publications:diagnose --json
 ```
 
@@ -23,16 +23,16 @@ token ni cookie et ne téléversent aucun document.
 ## Identités et persistance
 
 - `resources/presentations.json` fixe les UUID et les sources Blade.
-- Le registre canonique est `library/slides-core/resources/data/publications.json`
-  dans le dépôt privé `darkwood-core`. Le fichier de même nom dans Slides
+- Le registre canonique est `library/slide-core/resources/data/publications.json`
+  dans le dépôt privé `darkwood-core`. Le fichier de même nom dans Slide
   est sa projection distribuée et versionnée.
 - Les artefacts PDF restent sous `storage/`, hors de Git.
 
 `publications:manifest` et `--export` lisent et impriment le manifeste validé.
 `--import=FICHIER --dry-run` prévisualise la fusion. Enlever `--dry-run` écrit
 sur le poste d’édition sous verrou et par remplacement atomique. Les écritures
-passent par la commande `slides-core`, qui transmet le chemin du registre.
-Après validation et commit du registre privé, lancer `slides-core sync-public`
+passent par la commande `slide-core`, qui transmet le chemin du registre.
+Après validation et commit du registre privé, lancer `slide-core sync-public`
 pour générer la projection, puis la committer dans le monorepo public. Le serveur
 accepte les lectures et simulations.
 

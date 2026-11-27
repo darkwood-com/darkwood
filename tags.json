@@ -812,10 +812,10 @@
       ]
     },
     {
-      "id": "slides",
-      "path": "library/slides",
+      "id": "slide",
+      "path": "library/slide",
       "domain": "darkwood",
-      "description": "Presentation authoring and controlled publication platform served at slides.darkwood.com.",
+      "description": "Presentation authoring and controlled publication platform served at slide.darkwood.com.",
       "kind": "product",
       "status": "working",
       "dependencies": [],

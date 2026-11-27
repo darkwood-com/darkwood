@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 
 class PublicationDiagnoseCommand extends Command
 {
-    protected $signature = 'publications:diagnose {--json} {--registry= : Canonical Slides Core registry path}';
+    protected $signature = 'publications:diagnose {--json} {--registry= : Canonical Slide Core registry path}';
 
     protected $description = 'Read-only public mapping, missing associations and integrity counts; no errors, paths or credentials';
 

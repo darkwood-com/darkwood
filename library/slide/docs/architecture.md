@@ -16,10 +16,10 @@ ainsi que les attestations publiques facultatives. La validation impose une
 association par `(slide_id, provider)` et un propriétaire canonique par
 `(provider, remote_id)`. Les commandes d’écriture valident le résultat puis
 remplacent le fichier sous verrou. Les procédures fournisseur et les journaux
-opérateur relèvent de Slides Core. Voir [l’interface publique](publications.md).
+opérateur relèvent de Slide Core. Voir [l’interface publique](publications.md).
 
 Les sessions et le cache Laravel utilisent les fichiers. La file est configurée
-en mode synchrone et Slides ne soumet aucun job. Le catalogue, le lecteur et
+en mode synchrone et Slide ne soumet aucun job. Le catalogue, le lecteur et
 les commandes de publication démarrent avec la connexion SQL désactivée.
 
 `resources/data/presentation-metadata.json` fournit les titres de couverture, auteurs et autres métadonnées publiques utilisés par les rapports. Ces informations ne portent aucune identité de publication distante.
@@ -46,4 +46,4 @@ L’accueil réutilise exclusivement `PresentationCatalog::entries()` et l’ord
 
 ## Registre et base de données
 
-Le catalogue, les métadonnées et les associations publiques proviennent de fichiers JSON. Slides Core maintient le registre des publications et distribue sa projection au site. Slides démarre sans connexion SQL et utilise des sessions et un cache sur fichiers ainsi qu’une queue synchrone.
+Le catalogue, les métadonnées et les associations publiques proviennent de fichiers JSON. Slide Core maintient le registre des publications et distribue sa projection au site. Slides démarre sans connexion SQL et utilise des sessions et un cache sur fichiers ainsi qu’une queue synchrone.

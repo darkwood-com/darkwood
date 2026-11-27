@@ -4,7 +4,7 @@
 
 Servir uniquement `public/` comme racine HTTP. Conserver la clé Laravel existante
 et configurer `APP_ENV=production`, `APP_DEBUG=false` et
-`APP_URL=https://slides.darkwood.com` dans le fichier privé `.env`. Le compte
+`APP_URL=https://slide.darkwood.com` dans le fichier privé `.env`. Le compte
 applicatif doit pouvoir écrire dans `storage/` et `bootstrap/cache/`. Les
 valeurs normales sont `SESSION_DRIVER=file`, `CACHE_STORE=file` et
 `QUEUE_CONNECTION=sync`. Les artefacts sous `storage/app/publications/`
@@ -29,7 +29,7 @@ Contrôler l’accueil, les routes `/slides/SLUG`, le lecteur et les assets apr�
 déploiement. Les associations publiques proviennent directement du fichier
 versionné. Pour les modifier, utiliser les commandes dans le checkout
 d’édition, faire relire le diff et le déployer par Git. Le serveur accepte
-les lectures et simulations, avec les procédures fournisseur dans Slides Core.
+les lectures et simulations, avec les procédures fournisseur dans Slide Core.
 
 ## Transition depuis PostgreSQL
 

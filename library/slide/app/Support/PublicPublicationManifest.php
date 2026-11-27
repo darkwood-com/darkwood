@@ -134,7 +134,7 @@ class PublicPublicationManifest
     {
         if (app()->isProduction() || $this->path === null
             || realpath($this->path) === realpath(resource_path('data/publications.json'))) {
-            throw new RuntimeException('Write associations in the Slides Core authoring registry and deploy the generated public manifest with Git.');
+            throw new RuntimeException('Write associations in the Slide Core authoring registry and deploy the generated public manifest with Git.');
         }
 
         return $this->path;

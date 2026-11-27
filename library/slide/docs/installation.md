@@ -15,7 +15,7 @@ nix --extra-experimental-features 'nix-command flakes' develop ../darkwood-porta
 
 ## Première installation
 
-Depuis la racine de Slides :
+Depuis la racine de Slide :
 
 ```sh
 composer install
