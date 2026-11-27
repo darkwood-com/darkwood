@@ -35,6 +35,11 @@ Existing published PHP package tags may predate the workflow.
 
 ## Local commands and tool ownership
 
+From `library/darkwood-php`, run `castor darkwood-theme` to compile
+the shared Sass theme or `castor darkwood-theme --check` to verify it.
+Install the DarkwoodBundle npm lockfile first. The task delegates to the
+same npm commands as the monorepo and mirror workflows.
+
 Projects with Castor expose the aliases `php-cs-fixer`, `phpstan` and
 `phpunit` in `castor.php` or `tools/castor.php`. Keep project-specific
 configuration and versions with the project. Composer installs the project
