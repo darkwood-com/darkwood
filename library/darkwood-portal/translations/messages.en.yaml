@@ -375,6 +375,9 @@ hello:
         uniflow:
             title: Uniflow
             description: Design, organize and run automated workflows.
+        jobs:
+            title: Darkwood Jobs
+            description: Job and freelance opportunity search, applications and follow-up.
         navi:
             title: Navi
             description: Personnal assistant
