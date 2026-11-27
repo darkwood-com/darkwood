@@ -1,0 +1,15 @@
+@font-face {
+    font-family: Jost;
+    src: url('../fonts/Jost-400-Book.otf') format('opentype');
+    font-weight: 400;
+    font-display: swap;
+}
+
+.dw-product {
+    font-family: var(--dw-font-sans);
+}
+
+.dw-theme {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

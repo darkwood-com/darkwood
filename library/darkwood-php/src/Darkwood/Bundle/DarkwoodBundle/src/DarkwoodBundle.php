@@ -21,6 +21,7 @@ final class DarkwoodBundle extends AbstractBundle
         $container->prependExtensionConfig('framework', [
             'asset_mapper' => [
                 'paths' => [$this->getPath().'/assets' => 'darkwood'],
+                'excluded_patterns' => [$this->getPath().'/assets/sass/*'],
             ],
         ]);
     }

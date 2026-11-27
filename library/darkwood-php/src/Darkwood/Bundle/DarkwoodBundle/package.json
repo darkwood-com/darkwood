@@ -1,0 +1,12 @@
+{
+  "name": "darkwood-theme",
+  "private": true,
+  "scripts": {
+    "build:css": "bash tools/theme.sh",
+    "check:css": "bash tools/theme.sh --check"
+  },
+  "devDependencies": {
+    "bootstrap": "5.3.9",
+    "sass": "1.77.6"
+  }
+}

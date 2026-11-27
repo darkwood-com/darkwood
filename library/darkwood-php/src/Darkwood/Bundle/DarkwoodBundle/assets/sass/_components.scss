@@ -1,0 +1,13 @@
+.dw-product-card {
+    border-radius: .5rem;
+}
+
+.dw-product-action {
+    min-height: 44px;
+    border-radius: .375rem;
+}
+
+.dw-product :where(header, footer) :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}

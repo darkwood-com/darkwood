@@ -19,6 +19,22 @@ permissions:
   contents: read
 
 jobs:
+  theme:
+    name: Darkwood Sass
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version: '22'
+      - run: npm ci --no-audit --no-fund
+      - run: npm run check:css
+
   discover:
     runs-on: ubuntu-24.04
     outputs:

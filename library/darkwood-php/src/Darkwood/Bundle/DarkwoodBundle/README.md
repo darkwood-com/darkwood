@@ -47,3 +47,37 @@ Le fichier [design.md](docs/design.md) documente la provenance des logos.
 Le catalogue `data/identity.json` définit l’ordre, les liens et les marques
 du sélecteur Darkwood Identity. La documentation Hugo de Flow le lit
 également pendant sa compilation statique.
+
+## Thème Sass
+
+Maintenir le thème dans `assets/sass/`. `_variables.scss` configure Bootstrap
+avant sa compilation. Les autres partiels déclarent les palettes claire,
+sombre et sépia, la typographie Jost, la disposition et les composants Identity.
+Les styles spécifiques à un produit restent dans son application.
+
+Le lockfile npm fixe Bootstrap 5.3.9, comme la boutique Uniflow et Portal,
+et Dart Sass 1.77.6. Depuis la racine du bundle, dans le shell Nix du projet
+avec Node.js 22, lancer les commandes suivantes.
+
+```sh
+npm ci
+npm run build:css
+npm run check:css
+```
+
+Committer les sources et la sortie du compilateur. Le contrôle recompilé
+compare les fichiers octet par octet. La CI du monorepo et la publication
+du proxy exécutent ce même contrôle. Sass et Node.js servent à la maintenance
+du bundle. Les consommateurs Composer chargent le CSS distribué.
+
+Une page qui utilise le Bootstrap du bundle peut charger
+`asset('darkwood/styles/darkwood.css')` avant son CSS applicatif.
+Une application qui fournit déjà son Bootstrap, comme Portal ou Uniflow,
+charge `asset('darkwood/styles/darkwood-shared.css')`. Cette sortie utilise
+les mêmes partiels Sass et comprend les tokens, Jost et Darkwood Identity.
+Les anciens chemins `product.css`, `identity.css` et `tokens.css` sont des
+sorties de compatibilité pour les consommateurs versionnés.
+
+AssetMapper versionne les feuilles de style et la police. Le site Hugo
+de Flow peut copier les fichiers compilés et les ressources associées vers
+son dossier statique. Les fichiers Sass restent des sources de maintenance.
