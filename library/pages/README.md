@@ -17,8 +17,8 @@ settings and the versioned domain aligned. Every build validates all catalogue
 cards, their internal targets and metadata before upload.
 
 Cloudflare maps `page.darkwood.com` to `darkwood-com.github.io`.
-It redirects `pages.darkwood.com` permanently to the canonical host,
-preserving paths and query strings. GitHub Pages serves the catalogue over HTTPS.
+GitHub Pages serves the catalogue over HTTPS. The former custom host
+`pages.darkwood.com` is retired.
 
 The former <https://darkwood-com.github.io/darkwood/> URL is retained by GitHub
 Pages and redirects to the custom domain. Validate both the homepage and card
