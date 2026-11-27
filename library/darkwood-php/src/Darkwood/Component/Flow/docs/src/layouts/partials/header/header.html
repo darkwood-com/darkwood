@@ -44,7 +44,16 @@
         <ul class="nav flex-column flex-md-row ms-md-auto me-md-n5 pe-md-2">
           {{ range .Site.Menus.social -}}
             <li class="nav-item">
-              <a class="nav-link ps-0 py-1" href="{{ .URL }}">{{ .Pre | safeHTML }}<small class="ms-2 d-md-none">{{ .Name | safeHTML }}</small></a>
+              <a class="nav-link ps-0 py-1" href="{{ .URL }}" aria-label="{{ .Name }}">
+                {{ if eq .Identifier "x" -}}
+                  <svg width="20" height="20" viewBox="0 0 1200 1227" fill="currentColor" aria-hidden="true" focusable="false">
+                    <use href="{{ "darkwood/images/social/x.svg" | relURL }}#x-logo"/>
+                  </svg>
+                {{ else -}}
+                  {{ .Pre | safeHTML }}
+                {{ end -}}
+                <small class="ms-2 d-md-none">{{ .Name }}</small>
+              </a>
             </li>
           {{ end -}}
         </ul>
