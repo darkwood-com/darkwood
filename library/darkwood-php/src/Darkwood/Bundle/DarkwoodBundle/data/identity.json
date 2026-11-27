@@ -51,10 +51,10 @@
             "url": "https://uniflow.io",
             "icon": "uniflow.svg"
         },
-        "slides": {
-            "name": "Slides",
-            "url": "https://slides.darkwood.com",
-            "icon": "slides.svg"
+        "slide": {
+            "name": "Slide",
+            "url": "https://slide.darkwood.com",
+            "icon": "slide.svg"
         },
         "job": {
             "name": "Darkwood Job",
