@@ -28,6 +28,8 @@
 
 .article-highlights .article-preview {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    height: 100%;
 }
 
 .article-highlights .article-preview__cover {
