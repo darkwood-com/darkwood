@@ -80,6 +80,7 @@ common:
     logout_btn: Abmelden
     register: Registrieren
   footer:
+    follow_x: Folge uns auf X
     sitemap: Sitemap
     hello: Hello
     author: Autor

@@ -25,12 +25,12 @@
                     </div>
                     <div class="follow">
                         <a
-                            href="https://twitter.com/{{ contributor.twitter[1:] }}"
+                            href="https://x.com/{{ contributor.twitter|trim('@') }}"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="btn btn-social btn-twitter"
+                            class="btn btn-dark d-inline-flex align-items-center gap-2"
                         >
-                            <twig:ux:icon name="lucide:twitter" class="svg-inline--fa" /> {{ contributor.twitter }}
+                            {{ include('@Darkwood/components/x-icon.html.twig') }} {{ contributor.twitter }}
                         </a>
                     </div>
                 </div>

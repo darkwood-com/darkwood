@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Darkwood\Bundle\DarkwoodBundle\DarkwoodBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use Symfony\Bundle\DebugBundle\DebugBundle;
@@ -20,6 +21,7 @@ use Symfonycasts\SassBundle\SymfonycastsSassBundle;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
 
 return [
+    DarkwoodBundle::class => ['all' => true],
     FrameworkBundle::class => ['all' => true],
     DoctrineBundle::class => ['all' => true],
     DoctrineMigrationsBundle::class => ['all' => true],

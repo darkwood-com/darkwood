@@ -80,6 +80,7 @@ common:
     register: Inscription
     profile: Profil
   footer:
+    follow_x: Suivez-nous sur X
     sitemap: Plan du Site
     hello: Hello
     blog: Blog

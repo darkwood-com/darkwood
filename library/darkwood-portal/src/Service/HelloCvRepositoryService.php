@@ -203,7 +203,7 @@ final readonly class HelloCvRepositoryService
                 ['label' => 'Blog', 'url' => 'https://blog.darkwood.com'],
                 ['label' => 'GitHub', 'url' => 'https://github.com/darkwood-com'],
                 ['label' => 'LinkedIn', 'url' => 'https://www.linkedin.com/in/mathieu-ledru'],
-                ['label' => 'Twitter', 'url' => 'https://twitter.com/matyo91'],
+                ['label' => 'X', 'url' => 'https://x.com/matyo91'],
                 ['label' => 'Discord', 'url' => 'https://discord.com/invite/tMDCF8RyvE'],
                 ['label' => 'YouTube', 'url' => 'https://www.youtube.com/@matyo91'],
                 ['label' => 'YouTube (DJ)', 'url' => 'https://www.youtube.com/@djmatyo91'],

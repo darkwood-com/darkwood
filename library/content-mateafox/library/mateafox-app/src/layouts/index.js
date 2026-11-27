@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
-import { faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import XIcon from '../components/x-icon'
 import Helmet from 'react-helmet'
 import { Link, graphql, StaticQuery } from 'gatsby'
 import { connect } from 'react-redux'
@@ -262,20 +263,18 @@ class Header extends Component {
             <li className="nav-item">
               <a
                 className="nav-link"
-                href="https://twitter.com/mateafox_com"
+                href="https://x.com/mateafox_com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Twitter"
+                aria-label="Mateafox · X"
               >
-                <FontAwesomeIcon icon={faTwitter} />
+                <XIcon />
               </a>
             </li>
             <li className="nav-item">
-              <a
-                className="nav-link"
-                href="https://twitter.com/mateafox_com"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                className="nav-link border-0 bg-transparent"
                 aria-label="Theme"
                 onClick={this.onChangeTheme}
               >
@@ -333,7 +332,7 @@ class Header extends Component {
                     <line x1="14" y1="1" x2="14" y2="4" />
                   </svg>
                 )}
-              </a>
+              </button>
             </li>
             {!auth.isAuthenticated && (
               <li className="nav-item">

@@ -17,6 +17,7 @@
         "ext-iconv": "*",
         "ext-openswoole": "*",
         "amphp/amp": "^3.0",
+        "darkwood/darkwood-bundle": "dev-main",
         "darkwood/flow": "^8.1.6",
         "doctrine/dbal": "^4",
         "doctrine/doctrine-bundle": "^3.4",

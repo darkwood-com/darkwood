@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import ArticleItem from './articleItem'
 import Img from 'gatsby-image'
-import { faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import XIcon from '../../components/x-icon'
 
 class Contributor extends Component {
   render() {
@@ -32,14 +31,14 @@ class Contributor extends Component {
                 </div>
                 <div className="follow">
                   <a
-                    href={`https://twitter.com/${contributor.twitter.substr(
+                    href={`https://x.com/${contributor.twitter.substr(
                       1
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-social btn-twitter"
+                    className="btn btn-dark"
                   >
-                    <FontAwesomeIcon icon={faTwitter} /> {contributor.twitter}
+                    <XIcon /> {contributor.twitter}
                   </a>
                 </div>
               </div>

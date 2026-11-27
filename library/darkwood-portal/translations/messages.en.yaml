@@ -79,6 +79,7 @@ common:
     logout_btn: Logout
     register: Register
   footer:
+    follow_x: Follow us on X
     sitemap: Sitemap
     hello: Hello
     author: Author

@@ -19,7 +19,7 @@ It's the best way to stay tuned on important updates by email.  📨
 
 Also you can update anytime your email subscription directly by the mails you receive or on your *[Settings](https://uniflow.io/settings)* panel when connected to your account. ✏️
 
-You can also follow us on [Twitter](https://twitter.com/uniflow_io) for accuracy highlighted news. 📣
+You can also follow us on [X](https://x.com/uniflow_io) for accuracy highlighted news. 📣
 
 Thanks to [David Leuliette](https://twitter.com/flexbox_) to help with this new feature so far 💪.
 
