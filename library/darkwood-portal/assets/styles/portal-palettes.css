@@ -98,6 +98,8 @@ html[data-theme] .layout {
   --theme-layout-footer-color: var(--dw-muted);
   --theme-layout-footer-link-color: var(--dw-primary-hover);
   --theme-layout-footer-link-hover-color: var(--dw-text);
+  --theme-layout-footer-social-color: var(--dw-text);
+  --theme-layout-footer-social-hover-color: var(--dw-primary-hover);
   --theme-nav-background: var(--dw-navbar);
   --theme-nav-brand-color: var(--dw-text);
   --theme-nav-brand-hover-color: var(--dw-primary-hover);
