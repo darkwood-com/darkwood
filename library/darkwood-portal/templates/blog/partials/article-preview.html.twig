@@ -1,7 +1,7 @@
 {% set translation = article.getOneTranslation(app.request.locale) %}
 {% set articleUrl = path('blog_article', {slug: translation.slug, _locale: translation.locale}) %}
 <div class="article-preview">
-    <a class="article-preview__cover" href="{{ articleUrl }}" aria-label="{{ translation.title }}">
+    <a class="article-preview__cover d-flex align-items-center justify-content-center mx-auto" href="{{ articleUrl }}" aria-label="{{ translation.title }}">
         {{ include('blog/partials/article-cover.html.twig', {translation: translation, thumbnail: true}) }}
     </a>
     <div class="article-preview__text">
