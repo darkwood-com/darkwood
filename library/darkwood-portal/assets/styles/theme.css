@@ -187,14 +187,24 @@
 }
 
 .layout .theme-nav__links a:hover,
-.layout .theme-nav__links a.active,
-.layout .theme-nav__links a.is-active,
+.layout .theme-nav__links a:focus-visible,
 .layout .theme-nav__locales a:hover,
 .layout .theme-nav__locales a.active,
 .layout .theme-nav__locales a.is-active
 {
 	border-color: var(--theme-nav-link-hover-color, currentColor);
 	color: var(--theme-nav-link-hover-color, currentColor);
+}
+
+.layout .theme-nav__links a:is(.active, .is-active, [aria-current="page"])
+{
+	color: var(--theme-nav-link-active-color, var(--theme-nav-link-hover-color));
+	border-color: currentColor;
+}
+
+.layout .theme-nav__links a:is(.active, .is-active, [aria-current="page"]):is(:hover, :focus-visible)
+{
+	color: var(--theme-nav-link-active-hover-color, var(--theme-nav-link-hover-color));
 }
 
 .layout .theme-nav .dropdown-menu

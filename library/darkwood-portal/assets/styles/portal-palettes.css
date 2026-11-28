@@ -91,6 +91,14 @@ html:not([data-theme]) .portal-theme-picker__toggle:focus-visible {
   padding: .25rem 1rem;
 }
 
+/* Shared navigation colors for the opt-in palettes. */
+html[data-theme] .theme-nav.dw-navbar {
+  --theme-nav-link-color: var(--dw-navbar-link-color);
+  --theme-nav-link-hover-color: var(--dw-navbar-link-hover-color);
+  --theme-nav-link-active-color: var(--dw-navbar-link-active-color);
+  --theme-nav-link-active-hover-color: var(--dw-navbar-link-active-hover-color);
+}
+
 /* Opt-in palettes preserve the original skin when no theme is selected. */
 html[data-theme] .layout {
   --theme-layout-background-color: var(--dw-background);
@@ -173,7 +181,7 @@ html[data-theme] .theme-hello .hello-mobile-nav {
   background: var(--dw-navbar);
 }
 
-html[data-theme] .theme-hello :is(.main-nav, .main-nav.navbar-shrink, .hello-mobile-nav) :is(a, .navbar-toggler) {
+html[data-theme] .theme-hello :is(.hello-mobile-nav a, .main-nav .navbar-toggler) {
   color: var(--dw-text);
 }
 

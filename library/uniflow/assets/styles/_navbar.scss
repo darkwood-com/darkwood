@@ -1,32 +1,3 @@
 .navbar {
   padding: 0 $spacer;
 }
-
-.navbar-top {
-  z-index: 20;
-  top: 0;
-  right: 0;
-  left: 0;
-  border-bottom: 1px solid var(--border-color);
-  flex-wrap: nowrap;
-  position: fixed;
-  transition: background-color 0.3s, border-color, 0.3s;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-}
-
-.navbar-nav {
-  .nav-link {
-    margin: 0;
-    padding-top: $spacer;
-    padding-bottom: $spacer;
-
-    &.active {
-      border-bottom: $border-width solid var(--primary-color) !important;
-
-      &:hover {
-        border-bottom-color: var(--primary-hover-color) !important;
-      }
-    }
-  }
-}
