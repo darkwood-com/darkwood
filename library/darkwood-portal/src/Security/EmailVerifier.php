@@ -8,10 +8,13 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
@@ -19,7 +22,11 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 final readonly class EmailVerifier
 {
     public function __construct(
-        private VerifyEmailHelperInterface $helper,
+        private VerifyEmailHelperInterface $legacyHelper,
+        private UriSigner $signer,
+        private UrlGeneratorInterface $urls,
+        #[Autowire('%env(int:DARKWOOD_EMAIL_VERIFICATION_TTL)%')]
+        private int $lifetime,
         private MailerInterface $mailer,
         private EntityManagerInterface $entityManager,
         private TranslatorInterface $translator,
@@ -28,14 +35,14 @@ final readonly class EmailVerifier
 
     public function sendEmailConfirmation(User $user, string $locale): void
     {
-        $signature = $this->helper->generateSignature(
+        $expiresAt = new \DateTimeImmutable('+' . $this->lifetime . ' seconds');
+        $verificationUrl = $this->urls->generate(
             'common_register_check',
-            $this->signatureSubject($user),
-            $user->getEmail(),
             ['_locale' => $locale, 'account' => $user->getUuid()],
+            UrlGeneratorInterface::ABSOLUTE_URL,
         );
         // The browser passes the proof in a POST body, outside access logs and referrers.
-        $url = str_replace('?', '#', $signature->getSignedUrl());
+        $url = str_replace('?', '#', $this->signer->sign($verificationUrl, $expiresAt, $this->verificationVersion($user)));
         $email = (new TemplatedEmail())
             ->from(new Address('no-reply@darkwood.fr', 'Darkwood'))
             ->to($user->getEmail())
@@ -43,7 +50,7 @@ final readonly class EmailVerifier
             ->locale($locale)
             ->htmlTemplate('common/mails/registration.html.twig')
             ->textTemplate('common/mails/registration.txt.twig')
-            ->context(['verificationUrl' => $url, 'expiresAt' => $signature->getExpiresAt()])
+            ->context(['verificationUrl' => $url, 'expiresAt' => $expiresAt])
         ;
 
         try {
@@ -66,13 +73,11 @@ final readonly class EmailVerifier
                 return false;
             }
             $this->entityManager->refresh($user);
-            if (!$user->isEnabled()) {
+            if (!$user->isEnabled() || $user->isVerified()) {
                 return false;
             }
 
-            try {
-                $this->helper->validateEmailConfirmationFromRequest($signedRequest, $this->signatureSubject($user), $user->getEmail());
-            } catch (VerifyEmailExceptionInterface) {
+            if (!$this->isValid($signedRequest, $user)) {
                 return false;
             }
 
@@ -82,8 +87,23 @@ final readonly class EmailVerifier
         });
     }
 
-    private function signatureSubject(User $user): string
+    private function isValid(Request $request, User $user): bool
     {
-        return $user->getUuid() . ':' . $user->getEmailVerificationVersion();
+        if ($request->query->has('_hash')) {
+            return $request->query->has('_expiration') && $this->signer->checkRequest($request, $this->verificationVersion($user));
+        }
+
+        try {
+            $this->legacyHelper->validateEmailConfirmationFromRequest($request, $user->getUuid() . ':' . $user->getEmailVerificationVersion(), $user->getEmail());
+
+            return true;
+        } catch (VerifyEmailExceptionInterface) {
+            return false;
+        }
+    }
+
+    private function verificationVersion(User $user): string
+    {
+        return implode("\0", ['verify-email', $user->getUuid(), $user->getEmail(), (string) $user->getEmailVerificationVersion(), $user->isVerified() ? 'verified' : 'pending']);
     }
 }

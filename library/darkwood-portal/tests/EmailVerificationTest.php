@@ -89,10 +89,10 @@ final class EmailVerificationTest extends WebTestCase
         self::assertEmailAddressContains($resend, 'To', $address);
 
         parse_str($parts[1], $pastQuery);
-        $pastQuery['expires'] = time() - 60;
-        unset($pastQuery['signature']);
-        $signer = new UriSigner($client->getContainer()->getParameter('kernel.secret'), 'signature');
-        $expired = $signer->sign('https://darkwood.localhost/register/verify-email?' . http_build_query($pastQuery));
+        unset($pastQuery['_hash'], $pastQuery['_expiration']);
+        $signer = new UriSigner($client->getContainer()->getParameter('kernel.secret'));
+        $version = implode("\0", ['verify-email', $user->getUuid(), $address, (string) $user->getEmailVerificationVersion(), 'pending']);
+        $expired = $signer->sign('https://darkwood.localhost/register/verify-email?' . http_build_query($pastQuery), time() - 60, $version);
         $expiredProof = parse_url($expired, PHP_URL_QUERY);
 
         foreach ([$parts[1] . 'tampered', $expiredProof, $parts[1], $parts[1]] as $index => $proof) {
@@ -101,7 +101,7 @@ final class EmailVerificationTest extends WebTestCase
             $client->submit($crawler->filter('#email-verification-confirm')->form(['proof' => $proof]));
             self::assertResponseRedirects('/register/resend-email', 303);
             $client->followRedirect();
-            self::assertSelectorTextContains('[role="status"]', $index < 2 ? 'This link is invalid' : 'Your email address has been verified.');
+            self::assertSelectorTextContains('[role="status"]', 2 === $index ? 'Your email address has been verified.' : 'This link is invalid');
         }
 
         $crawler = $client->request('GET', '/login');
