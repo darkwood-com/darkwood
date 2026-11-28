@@ -21,6 +21,7 @@ const {paginateStatic,showStaticPage} = require('./browser/static-pagination.cjs
         await page.goto(`${base}/slides/${manifest.slug}`, {waitUntil: 'networkidle'});
         if (await page.locator('.slidewire-frame').count() !== manifest.slides.length) throw Error('Compiled/browser slide count mismatch.');
         await page.emulateMedia({media: 'screen'});
+        await page.evaluate(() => { document.documentElement.dataset.slidePdfExport = ''; });
         await page.addStyleTag({content: '.slidewire-controls,.mermaidTooltip{display:none!important}'});
         for (let i = 0; i < manifest.slides.length; i++) {
             const fragments = manifest.slides[i].fragments;

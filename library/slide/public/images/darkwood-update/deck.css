@@ -183,3 +183,21 @@ html[data-update-theme] .slidewire-frame .update-theme { display: none; }
 .update-trace img { width: 100%; height: auto; border-radius: .35rem; }
 
 html[data-navi-video-capture="clean"] .update-theme { display: none; }
+
+/* Static PDFs use the standard Slide palette and keep the theme examples labeled. */
+html[data-slide-pdf-export]:has(.update-slide) {
+    --update-paper: #fff;
+    --update-ink: #000;
+    --update-muted: #000;
+    --update-surface: #fff;
+    --update-link: var(--dw-blue);
+}
+
+html[data-slide-pdf-export] .update-slide .sw-content .update-palettes [data-palette] {
+    background: #fff;
+    color: #000;
+    border-color: #000;
+}
+
+html[data-slide-pdf-export] .update-palettes [data-palette] img { filter: none; }
+html[data-slide-pdf-export] .update-theme { display: none; }
