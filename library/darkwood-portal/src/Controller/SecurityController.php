@@ -8,6 +8,7 @@ use App\Security\OidcLoginThemeResolver;
 use App\Security\WebAuthenticationHostResolver;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +27,8 @@ class SecurityController extends AbstractController
         private readonly ParameterBagInterface $parameterBag,
         private readonly WebAuthenticationHostResolver $authenticationHostResolver,
         private readonly OidcLoginThemeResolver $loginThemeResolver,
+        #[Autowire('%env(bool:DARKWOOD_PASSWORDLESS_ENABLED)%')]
+        private readonly bool $emailLoginEnabled,
     ) {}
 
     #[Route(path: ['fr' => '/fr/login', 'en' => '/login', 'de' => '/de/login'], name: 'security_login', defaults: ['ref' => 'login'], priority: 10)]
@@ -66,6 +69,7 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
             'showLinks' => true,
+            'email_login_enabled' => $this->emailLoginEnabled && $request->getHost() === $this->parameterBag->get('darkwood_host'),
             'login_theme' => $this->loginThemeResolver->resolve($request),
         ]);
     }

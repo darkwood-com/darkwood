@@ -520,3 +520,15 @@ email_verification:
     mail_ignore: "If you did not sign up, you can ignore this message."
     profile_verified: "Email address verified."
     profile_unverified: "Email address awaiting verification."
+
+email_login:
+    address: Email address
+    request_button: Send a sign-in link
+    request_result: If this address can sign in by email, you will receive a link.
+    confirm_title: Sign in to Darkwood
+    confirm_help: Confirm that you want to open your Darkwood session in this browser.
+    confirm_button: Sign in
+    return: Back to sign-in
+    mail_subject: Sign in to Darkwood
+    mail_intro: Use this link to sign in to Darkwood.
+    mail_help: The link is valid for 10 minutes and can be used once. If you did not ask for it, ignore this email.

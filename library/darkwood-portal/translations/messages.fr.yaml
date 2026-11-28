@@ -518,3 +518,15 @@ email_verification:
     mail_ignore: "Vous pouvez ignorer ce message si vous n’êtes pas à l’origine de l’inscription."
     profile_verified: "Adresse e-mail vérifiée."
     profile_unverified: "Adresse e-mail en attente de vérification."
+
+email_login:
+    address: Adresse e-mail
+    request_button: Recevoir un lien de connexion
+    request_result: Si cette adresse permet la connexion par e-mail, vous recevrez un lien.
+    confirm_title: Connexion à Darkwood
+    confirm_help: Confirmez l’ouverture de votre session Darkwood dans ce navigateur.
+    confirm_button: Se connecter
+    return: Retour à la connexion
+    mail_subject: Votre lien de connexion Darkwood
+    mail_intro: Utilisez ce lien pour vous connecter à Darkwood.
+    mail_help: Le lien est valable 10 minutes et utilisable une fois. Si vous ne l’avez pas demandé, ignorez ce message.

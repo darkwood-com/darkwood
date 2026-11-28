@@ -70,6 +70,14 @@ security:
             custom_authenticators:
                 - App\Security\LoginFormAuthenticator
                 #- App\Security\FacebookAuthenticator
+            login_link:
+                check_route: security_email_login_confirm
+                check_post_only: true
+                lifetime: 600
+                signature_properties: [uuid, emailVerificationVersion, emailLoginVersion, password]
+                default_target_path: security_login
+                always_use_default_target_path: true
+                failure_path: security_login
             entry_point: App\Security\LoginFormAuthenticator
             logout:
                 path: security_logout

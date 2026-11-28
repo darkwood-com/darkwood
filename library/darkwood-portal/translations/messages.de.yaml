@@ -366,3 +366,15 @@ hello:
             slide:
                 title: Darkwood Slide
                 description: Interaktive Präsentationen von Darkwood ansehen.
+
+email_login:
+    address: E-Mail-Adresse
+    request_button: Anmeldelink anfordern
+    request_result: Wenn diese Adresse für die Anmeldung per E-Mail freigegeben ist, erhalten Sie einen Link.
+    confirm_title: Bei Darkwood anmelden
+    confirm_help: Bestätigen Sie, dass Sie sich in diesem Browser bei Darkwood anmelden möchten.
+    confirm_button: Anmelden
+    return: Zurück zur Anmeldung
+    mail_subject: Ihr Darkwood-Anmeldelink
+    mail_intro: Verwenden Sie diesen Link, um sich bei Darkwood anzumelden.
+    mail_help: Der Link ist 10 Minuten gültig und kann einmal verwendet werden. Ignorieren Sie diese Nachricht, wenn Sie den Link nicht angefordert haben.

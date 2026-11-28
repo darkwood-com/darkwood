@@ -154,6 +154,9 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     #[ORM\Column(options: ['default' => 0])]
     private int $emailVerificationVersion = 0;
 
+    #[ORM\Column(options: ['default' => 0])]
+    private int $emailLoginVersion = 0;
+
     #[ORM\Column(options: ['default' => true])]
     private bool $enabled = true;
 
@@ -606,6 +609,16 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     public function getEmailVerificationVersion(): int
     {
         return $this->emailVerificationVersion;
+    }
+
+    public function getEmailLoginVersion(): int
+    {
+        return $this->emailLoginVersion;
+    }
+
+    public function consumeEmailLoginLink(): void
+    {
+        $this->emailLoginVersion++;
     }
 
     public function isEnabled(): bool

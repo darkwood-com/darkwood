@@ -11,15 +11,15 @@
         {% include 'common/pages/oidc_login/' ~ login_brand ~ '_brand.html.twig' with {two_factor: false} only %}
     {% endif %}
 
-    <form id="login_form" method="post" action="{{ path('security_login') }}" novalidate="novalidate">
-        {% if error %}
-            <div class="alert_error" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
         {% if app.user %}
             <div class="alert_success">
                 You are logged in as {{ app.user.username }}, {{ logout_button('common.menu.logout_btn'|trans, attr: {class: 'nav-link'}, form_attr: {class: 'm-0'}) }}
             </div>
+        {% endif %}
+
+    <form id="login_form" method="post" action="{{ path('security_login') }}" novalidate="novalidate">
+        {% if error %}
+            <div class="alert_error" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -32,6 +32,18 @@
 
         <input type="submit" id="login_login" name="login_login" value="{{ 'common.menu.login_btn'|trans }}">
     </form>
+
+    {% if email_login_enabled|default(false) and not app.user %}
+        {% for message in app.flashes('email_login_status') %}
+            <p class="alert alert-info" role="status">{{ message|trans }}</p>
+        {% endfor %}
+        <form id="email_login_request" method="post" action="{{ path('security_email_login_request') }}" class="mt-3">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('darkwood_email_login_request') }}">
+            <label for="email-login-address">{{ 'email_login.address'|trans }}</label>
+            <input id="email-login-address" name="email" type="email" autocomplete="email" required>
+            <button class="btn btn-outline-secondary" type="submit">{{ 'email_login.request_button'|trans }}</button>
+        </form>
+    {% endif %}
 
     <div class="login-links">
         <p>{{ 'common.login.no_account_intro'|trans }} <a href="{{ path('common_register') }}">{{ 'common.action.register'|trans|lower }}</a>{{ 'common.login.no_account_end'|trans }}</p>

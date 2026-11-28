@@ -1,0 +1,20 @@
+{% extends 'darkwood/base.html.twig' %}
+
+{% block content %}
+    <section class="container py-4">
+        <h1>{{ 'email_login.confirm_title'|trans }}</h1>
+        <p>{{ 'email_login.confirm_help'|trans }}</p>
+        <form id="email-login-confirm" method="post" action="{{ path('security_email_login_confirm') }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('darkwood_email_login_confirm') }}">
+            {% for name in ['user', 'expires', 'hash', 'hash_parameters', 'flow'] %}
+                <input type="hidden" name="{{ name }}">
+            {% endfor %}
+            <button type="submit" class="btn btn-primary" disabled>{{ 'email_login.confirm_button'|trans }}</button>
+        </form>
+        <p class="mt-3"><a href="{{ path('security_login') }}">{{ 'email_login.return'|trans }}</a></p>
+    </section>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ asset('js/email_login_confirm.js') }}" defer></script>
+{% endblock %}

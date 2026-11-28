@@ -124,6 +124,70 @@ final class EmailVerificationTest extends WebTestCase
         self::assertNull($client->getContainer()->get('security.token_storage')->getToken());
     }
 
+    public function testMailedLoginLinkRequiresPostAndIsConsumedOnlyOnce(): void
+    {
+        $server = $_SERVER;
+        $environment = $_ENV;
+        $_SERVER['DARKWOOD_PASSWORDLESS_ENABLED'] = $_ENV['DARKWOOD_PASSWORDLESS_ENABLED'] = '1';
+
+        try {
+            $client = self::createClient([], [
+                'HTTPS' => 'on',
+                'HTTP_HOST' => 'darkwood.localhost',
+                'REMOTE_ADDR' => '2001:db8::' . bin2hex(random_bytes(2)),
+            ]);
+            $entityManager = $client->getContainer()->get(EntityManagerInterface::class);
+            $this->seedPages($entityManager);
+            $username = 'passwordless-' . bin2hex(random_bytes(4));
+            $email = $username . '@example.com';
+            $user = new User();
+            $user->setUsername($username);
+            $user->setEmail($email);
+            $user->setIsVerified(true);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $crawler = $client->request('GET', '/login');
+            $client->submit($crawler->filter('#email_login_request')->form(['email' => $email]));
+            self::assertResponseRedirects('/login', 303);
+            self::assertEmailCount(1);
+            $message = self::getMailerMessage();
+            self::assertInstanceOf(Email::class, $message);
+            self::assertEmailAddressContains($message, 'To', $email);
+            self::assertSame(1, preg_match('~https://darkwood.localhost/login/email/confirm#([^\s]+)~', $message->getTextBody() ?? '', $match));
+            parse_str($match[1], $fields);
+
+            $crawler = $client->request('GET', '/login/email/confirm');
+            self::assertResponseIsSuccessful();
+            self::assertResponseHeaderSame('Referrer-Policy', 'no-referrer');
+            self::assertNull($client->getContainer()->get('security.token_storage')->getToken());
+            $client->request('POST', '/login/email/confirm', $fields);
+            self::assertResponseRedirects('/login');
+            self::assertNull($client->getContainer()->get('security.token_storage')->getToken());
+
+            $crawler = $client->request('GET', '/login/email/confirm');
+            $form = $crawler->filter('#email-login-confirm')->form();
+            $client->submit($form, $fields);
+            self::assertResponseRedirects('/login');
+            $token = $client->getContainer()->get('security.token_storage')->getToken();
+            self::assertNotNull($token);
+            self::assertArrayHasKey('email', $token->getAuthenticationProofs());
+            $entityManager = $client->getContainer()->get(EntityManagerInterface::class);
+            $stored = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+            self::assertInstanceOf(User::class, $stored);
+            self::assertSame(1, $stored->getEmailLoginVersion());
+
+            $client->restart();
+            $crawler = $client->request('GET', '/login/email/confirm');
+            $client->submit($crawler->filter('#email-login-confirm')->form(), $fields);
+            self::assertResponseRedirects('/login');
+            self::assertNull($client->getContainer()->get('security.token_storage')->getToken());
+        } finally {
+            $_SERVER = $server;
+            $_ENV = $environment;
+        }
+    }
+
     public function testRenamedUniflowAccountRetainsMailboxActivation(): void
     {
         $client = self::createClient([], ['HTTPS' => 'on', 'HTTP_HOST' => 'darkwood.localhost']);
