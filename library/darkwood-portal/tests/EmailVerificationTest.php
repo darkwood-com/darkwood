@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Security\Core\Authentication\AuthenticationMethod;
 
 final class EmailVerificationTest extends WebTestCase
 {
@@ -110,7 +111,9 @@ final class EmailVerificationTest extends WebTestCase
         self::assertStringNotContainsString('/login', (string) $client->getResponse()->headers->get('Location'));
 
         $client->request('GET', '/login');
-        self::assertNotNull($client->getContainer()->get('security.token_storage')->getToken());
+        $token = $client->getContainer()->get('security.token_storage')->getToken();
+        self::assertNotNull($token);
+        self::assertArrayHasKey(AuthenticationMethod::PASSWORD, $token->getAuthenticationProofs());
         $entityManager = $client->getContainer()->get(EntityManagerInterface::class);
         $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $address]);
         $user->setEnabled(false);
