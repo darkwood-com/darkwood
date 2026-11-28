@@ -286,6 +286,7 @@ apps:
 blog:
   embed:
     map: 'Afficher la carte'
+    job: 'Afficher l’offre'
     game: 'Jouer'
     clip: 'Regarder'
     set: 'Écouter'

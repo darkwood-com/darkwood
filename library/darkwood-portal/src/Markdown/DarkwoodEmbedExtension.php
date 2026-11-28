@@ -20,7 +20,7 @@ use function is_string;
 
 final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeRendererInterface
 {
-    public const string FRAME_POLICY = "frame-src https://darkwaar.com https://heroclip.darkwood.com https://djmatyo91.darkwood.com https://uniflow.io https://geo.darkwood.com; object-src 'none'";
+    public const string FRAME_POLICY = "frame-src https://darkwaar.com https://heroclip.darkwood.com https://djmatyo91.darkwood.com https://uniflow.io https://geo.darkwood.com https://job.darkwood.com; object-src 'none'";
 
     private const array PRODUCTS = [
         'game' => ['Darkwaar', 'darkwaar.com', 'games', '[a-z0-9]+(?:-[a-z0-9]+)*', 'assets/docs/(?:blog|games)/(?:[A-Za-z0-9_-]+/)+[A-Za-z0-9_-]+\.(?:png|jpe?g|webp)'],
@@ -28,6 +28,7 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
         'set' => ['DJ Matyo', 'djmatyo91.darkwood.com', 'sets', '[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', 'covers/[a-zA-Z0-9_-]+\.(?:svg|png|jpe?g|webp)'],
         'workflow' => ['Uniflow', 'uniflow.io', 'feed/public', '[a-z0-9]+(?:-[a-z0-9]+)*', 'assets/images/[A-Za-z0-9_-]+\.(?:svg|png|jpe?g|webp)', 'embed/flows'],
         'map' => ['Geo', 'geo.darkwood.com', 'maps', '[a-z0-9]+(?:-[a-z0-9]+)*', 'covers/[a-z0-9-]+\.svg'],
+        'job' => ['Darkwood Job', 'job.darkwood.com', 'offers', '[1-9][0-9]{0,9}/[a-z0-9]+(?:-[a-z0-9]+)*', null],
     ];
 
     public function __construct(private TranslatorInterface $translator) {}
@@ -66,13 +67,13 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
         }
 
         $coverUrl = $data['cover'] ?? null;
-        $cover = is_string($coverUrl) && preg_match('~\A' . preg_quote($origin, '~') . '/' . $coverPath . '\z~', $coverUrl) === 1
+        $cover = $coverPath !== null && is_string($coverUrl) && preg_match('~\A' . preg_quote($origin, '~') . '/' . $coverPath . '\z~', $coverUrl) === 1
             ? new HtmlElement('img', ['src' => $coverUrl, 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'referrerpolicy' => 'no-referrer'], '', true)
             : '';
         $description = is_string($data['description'] ?? null) ? mb_substr($data['description'], 0, 320) : '';
         $label = $this->translator->trans('blog.embed.' . $type);
         $ratio = match ($type) {
-            'set' => 'audio',
+            'set', 'job' => 'audio',
             'map', 'workflow' => 'map',
             'game' => 'portrait',
             default => 'landscape',
@@ -84,8 +85,8 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
         $iframe = new HtmlElement('iframe', [
             'src' => $origin . '/' . $embedPath . '/' . $matches[1],
             'title' => $product . ' — ' . $title,
-            'sandbox' => $type === 'clip' ? '' : 'allow-scripts allow-same-origin',
-            'allow' => in_array($type, ['set', 'map', 'workflow'], true) ? "autoplay 'none'" : "fullscreen; autoplay 'none'",
+            'sandbox' => in_array($type, ['clip', 'job'], true) ? '' : 'allow-scripts allow-same-origin',
+            'allow' => in_array($type, ['set', 'map', 'workflow', 'job'], true) ? "autoplay 'none'" : "fullscreen; autoplay 'none'",
             'loading' => 'lazy',
             'referrerpolicy' => 'no-referrer',
         ]);

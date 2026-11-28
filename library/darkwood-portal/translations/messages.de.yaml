@@ -287,6 +287,7 @@ apps:
 blog:
   embed:
     map: 'Karte anzeigen'
+    job: 'Stellenangebot anzeigen'
     game: 'Spielen'
     clip: 'Ansehen'
     set: 'Anhören'
