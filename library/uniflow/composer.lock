@@ -1683,12 +1683,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle.git",
-                "reference": "d0bf62a83c67b17383a0d0f3f1188d11d034142e"
+                "reference": "d0b3a7b2bc8a45f673456782d2c1cbbb9df23add"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/d0bf62a83c67b17383a0d0f3f1188d11d034142e",
-                "reference": "d0bf62a83c67b17383a0d0f3f1188d11d034142e",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/d0b3a7b2bc8a45f673456782d2c1cbbb9df23add",
+                "reference": "d0b3a7b2bc8a45f673456782d2c1cbbb9df23add",
                 "shasum": ""
             },
             "require": {
@@ -1722,8 +1722,8 @@
                 "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/issues",
                 "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/tree/main"
             },
-            "time": "2026-11-27T11:02:41+00:00",
-            "published-time": "2026-11-27T11:02:46+00:00"
+            "time": "2026-11-28T11:50:24+00:00",
+            "published-time": "2026-11-28T11:52:33+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

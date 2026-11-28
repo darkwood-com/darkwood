@@ -496,12 +496,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle.git",
-                "reference": "09f63f6b727461937f7becbc3352f05e39261d43"
+                "reference": "d0b3a7b2bc8a45f673456782d2c1cbbb9df23add"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/09f63f6b727461937f7becbc3352f05e39261d43",
-                "reference": "09f63f6b727461937f7becbc3352f05e39261d43",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/d0b3a7b2bc8a45f673456782d2c1cbbb9df23add",
+                "reference": "d0b3a7b2bc8a45f673456782d2c1cbbb9df23add",
                 "shasum": ""
             },
             "require": {
@@ -535,8 +535,8 @@
                 "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/issues",
                 "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/tree/main"
             },
-            "time": "2026-11-27T15:49:02+00:00",
-            "published-time": "2026-11-27T15:49:08+00:00"
+            "time": "2026-11-28T11:50:24+00:00",
+            "published-time": "2026-11-28T11:52:33+00:00"
         },
         {
             "name": "darkwood/ia-exception-bundle",
