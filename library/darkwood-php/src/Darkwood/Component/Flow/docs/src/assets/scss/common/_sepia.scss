@@ -220,7 +220,7 @@ body.data-sepia-mode .navbar-light .navbar-text a:focus {
   color: $navbar-sepia-active-color;
 }
 
-body.data-sepia-mode .navbar .btn-link {
+body.data-sepia-mode .navbar .btn-link:not(.dw-theme-toggle) {
   color: $navbar-sepia-color;
 }
 
@@ -232,11 +232,11 @@ body.data-sepia-mode .content .btn-link:hover {
   color: $link-color-sepia;
 }
 
-body.data-sepia-mode .navbar .btn-link:hover {
+body.data-sepia-mode .navbar .btn-link:not(.dw-theme-toggle):hover {
   color: $navbar-sepia-hover-color;
 }
 
-body.data-sepia-mode .navbar .btn-link:active {
+body.data-sepia-mode .navbar .btn-link:not(.dw-theme-toggle):active {
   color: $navbar-sepia-active-color;
 }
 

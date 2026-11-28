@@ -219,7 +219,7 @@ body.data-dark-mode .navbar-light .navbar-text a:focus {
   color: $navbar-dark-active-color;
 }
 
-body.data-dark-mode .navbar .btn-link {
+body.data-dark-mode .navbar .btn-link:not(.dw-theme-toggle) {
   color: $navbar-dark-color;
 }
 
@@ -231,11 +231,11 @@ body.data-dark-mode .content .btn-link:hover {
   color: $link-color-dark;
 }
 
-body.data-dark-mode .navbar .btn-link:hover {
+body.data-dark-mode .navbar .btn-link:not(.dw-theme-toggle):hover {
   color: $navbar-dark-hover-color;
 }
 
-body.data-dark-mode .navbar .btn-link:active {
+body.data-dark-mode .navbar .btn-link:not(.dw-theme-toggle):active {
   color: $navbar-dark-active-color;
 }
 

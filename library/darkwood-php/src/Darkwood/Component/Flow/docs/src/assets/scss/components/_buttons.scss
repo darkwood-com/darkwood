@@ -4,12 +4,13 @@
 }
 
 #mode {
+  color: var(--dw-text);
   padding-right: 0.25rem;
   padding-left: 0.25rem;
   margin-right: -0.25rem;
 }
 
-.btn-link:focus {
+.btn-link:not(.dw-theme-toggle):focus {
   outline: 0;
   box-shadow: none;
 }
@@ -29,11 +30,11 @@
   }
 }
 
-.navbar .btn-link:hover {
+.navbar .btn-link:not(.dw-theme-toggle):hover {
   color: $navbar-light-hover-color;
 }
 
-.navbar .btn-link:active {
+.navbar .btn-link:not(.dw-theme-toggle):active {
   color: $navbar-light-active-color;
 }
 

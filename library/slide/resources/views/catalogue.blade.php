@@ -8,11 +8,11 @@
 </head>
 <body class="sw-library theme-light">
 <a class="library-skip" href="#presentation">Aller à la présentation</a>
-<header class="library-header">
-    <a class="library-brand" href="{{ route('home') }}" aria-label="Slide — accueil"><span class="library-logo"><img src="/darkwood/logos/dw512x512-uni-dark.png" width="32" height="32" alt="Darkwood"></span><span>Slide</span></a>
+<header class="library-header dw-navbar">
+    <a class="library-brand" href="{{ route('home') }}" aria-label="Slide — accueil"><span class="library-logo"><img src="/darkwood/logos/dw512x512-uni-dark.png" width="32" height="32" alt="Darkwood"></span></a>
     <span class="library-section-label">Présentations</span>
     <div class="library-actions">
-        <button id="theme-switcher" type="button" aria-label="Changer de thème" title="Changer de thème"><span id="theme-icon" aria-hidden="true"></span></button>
+        <button id="theme-switcher" class="dw-theme-toggle" type="button" aria-label="Changer de thème" title="Changer de thème"><span id="theme-icon" aria-hidden="true"></span></button>
         <button id="library-menu" type="button" aria-expanded="false" aria-controls="library-sidebar" aria-label="Ouvrir les présentations"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path class="menu-open" d="M3 6h18M3 12h18M3 18h18"/><path class="menu-close" d="m6 6 12 12M18 6 6 18"/></svg></button>
     </div>
 </header>
