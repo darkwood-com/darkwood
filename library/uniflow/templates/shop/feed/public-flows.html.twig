@@ -1,6 +1,6 @@
 <dl class="row">
     {% for program in programs %}
-        <dt class="col-md-3">
+        <dt class="col-md-3 fw-normal">
             <a href="{{ path('app_shop_feed', {user: program.user, path: program.path}) }}">{{ program.name }}</a>
         </dt>
         <dd class="col-md-9">{{ program.description|striptags }}</dd>
