@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea05f0e1609a59cc5bb6614135b1e554",
+    "content-hash": "c6a4365322153dc9bf0c14db69640c44",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -1683,12 +1683,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle.git",
-                "reference": "d8bd5c76ce4278b989134a2ac4b0c688c40edce6"
+                "reference": "e765346986a8a74d76cb98a78ade2cf092c480e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/d8bd5c76ce4278b989134a2ac4b0c688c40edce6",
-                "reference": "d8bd5c76ce4278b989134a2ac4b0c688c40edce6",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-bundle/zipball/e765346986a8a74d76cb98a78ade2cf092c480e8",
+                "reference": "e765346986a8a74d76cb98a78ade2cf092c480e8",
                 "shasum": ""
             },
             "require": {
@@ -1722,8 +1722,8 @@
                 "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/issues",
                 "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-bundle/tree/main"
             },
-            "time": "2026-11-28T13:19:04+00:00",
-            "published-time": "2026-11-28T13:19:09+00:00"
+            "time": "2026-11-28T13:47:55+00:00",
+            "published-time": "2026-11-28T13:48:00+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -14967,61 +14967,6 @@
             },
             "time": "2025-11-11T15:35:10+00:00",
             "published-time": "2025-12-02T14:35:13+00:00"
-        },
-        {
-            "name": "symfonycasts/sass-bundle",
-            "version": "v0.8.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SymfonyCasts/sass-bundle.git",
-                "reference": "c6c4958f932cab8b74f2a95a87eaca5d58fb98d6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SymfonyCasts/sass-bundle/zipball/c6c4958f932cab8b74f2a95a87eaca5d58fb98d6",
-                "reference": "c6c4958f932cab8b74f2a95a87eaca5d58fb98d6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "symfony/asset-mapper": "^6.3|^7.0|^8.0",
-                "symfony/console": "^5.4|^6.3|^7.0|^8.0",
-                "symfony/filesystem": "^5.4|^6.3|^7.0|^8.0",
-                "symfony/http-client": "^5.4|^6.3|^7.0|^8.0",
-                "symfony/process": "^5.4|^6.3|^7.0|^8.0"
-            },
-            "require-dev": {
-                "matthiasnoback/symfony-config-test": "^5.0|^6.0",
-                "phpunit/phpunit": "^9.6",
-                "symfony/framework-bundle": "^6.3|^7.0|^8.0",
-                "symfony/phpunit-bridge": "^6.3.9|^7.0|^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfonycasts\\SassBundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mathéo Daninos",
-                    "homepage": "https://github.com/WebMamba"
-                }
-            ],
-            "description": "Delightful Sass Support for Symfony + AssetMapper",
-            "keywords": [
-                "asset-mapper",
-                "sass"
-            ],
-            "support": {
-                "issues": "https://github.com/SymfonyCasts/sass-bundle/issues",
-                "source": "https://github.com/SymfonyCasts/sass-bundle/tree/v0.8.3"
-            },
-            "time": "2025-08-26T15:45:57+00:00"
         },
         {
             "name": "twig/extra-bundle",

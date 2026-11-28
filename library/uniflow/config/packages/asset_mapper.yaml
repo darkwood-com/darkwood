@@ -4,8 +4,6 @@ framework:
         paths:
             - assets/
         excluded_patterns:
-            - '*/assets/styles/_*.scss'
-            - '*/assets/styles/**/_*.scss'
             - '*/assets/shop/**/*'
         missing_import_mode: strict
         # Enable JSX transformation with the JSX plugin

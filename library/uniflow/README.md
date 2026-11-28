@@ -28,14 +28,13 @@ directory.
 ```sh
 npm ci --ignore-scripts
 npm run build:prod -- --config-name app.shop
-php bin/console sass:build
 php bin/console asset-map:compile
 ```
 
-The shop Sass loads Bootstrap through the `bootstrap-shop` npm alias.
-Its version is pinned separately from the Bootstrap dependencies of Sylius and
-Tabler. Source packages stay in `node_modules/` and the public shop uses the
-compiled CSS.
+The storefront and flow embeds load Bootstrap, the common theme and the shop
+styles from DarkwoodBundle via AssetMapper. The shop Sass is maintained and
+compiled in DarkwoodBundle. Encore still builds the JavaScript for the flow
+editor and the other shop components.
 
 ## Domain BDD tests
 

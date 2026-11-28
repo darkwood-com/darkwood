@@ -65,7 +65,6 @@ use Symfony\UX\LiveComponent\LiveComponentBundle;
 use Symfony\UX\StimulusBundle\StimulusBundle;
 use Symfony\UX\TwigComponent\TwigComponentBundle;
 use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
-use Symfonycasts\SassBundle\SymfonycastsSassBundle;
 
 return [
     DarkwoodBundle::class => ['all' => true],
@@ -131,5 +130,4 @@ return [
     SyliusMolliePlugin::class => ['all' => true],
     DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     MakerBundle::class => ['dev' => true],
-    SymfonycastsSassBundle::class => ['all' => true],
 ];

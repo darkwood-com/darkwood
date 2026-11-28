@@ -26,7 +26,6 @@ php-serve: ## Start php server
 
 php-asset:
 	# php -d memory_limit=-1 bin/console importmap:install
-	# php -d memory_limit=-1 bin/console sass:build
 	php -d memory_limit=-1 bin/console asset-map:compile
 
 front:
@@ -46,7 +45,6 @@ run: ## run
 	@make -s up
 
 asset: ## Build
-	@ENV=$(ENV) DOCKER_USER=$(DOCKER_USER) $(DOCKER_COMPOSE) run --rm php bin/console sass:build
 	@ENV=$(ENV) DOCKER_USER=$(DOCKER_USER) $(DOCKER_COMPOSE) run --rm php bin/console asset-map:compile
 
 cache: ## Reconstruire le cache de production avec PHP 8.6 (Nix)

@@ -621,9 +621,6 @@
             "config/packages/workflow.yaml"
         ]
     },
-    "symfonycasts/sass-bundle": {
-        "version": "v0.8.2"
-    },
     "theofidry/alice-data-fixtures": {
         "version": "1.7",
         "recipe": {
