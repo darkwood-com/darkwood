@@ -14,7 +14,8 @@ const siteUrl = new URL(process.argv[3] ?? `https://${customDomain}/`).href;
 const repositoryUrl = "https://github.com/darkwood-com/darkwood";
 const sourceBaseUrl = `${repositoryUrl}/tree/main/`;
 const sourceAssets = resolve(root, "library/page/assets");
-const sourceFonts = resolve(root, "library/page/assets/fonts");
+const sourceFonts = resolve(sourceAssets, "fonts");
+const sharedStyles = resolve(root, "library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/styles");
 const themeIcons = Object.fromEntries(await Promise.all(["light", "dark", "sepia"].map(async (theme) => [
   theme,
   (await readFile(resolve(root, `library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/images/themes/${theme}.svg`), "utf8")).trim(),
@@ -25,6 +26,8 @@ const themeIconTemplates = Object.entries(themeIcons)
 const assetRevision = createHash("sha256")
   .update(await readFile(resolve(sourceAssets, "catalog.css")))
   .update(await readFile(resolve(sourceAssets, "catalog.js")))
+  .update(await readFile(resolve(sharedStyles, "tokens.css")))
+  .update(await readFile(resolve(sharedStyles, "navbar.css")))
   .update(themeIconTemplates)
   .digest("hex").slice(0, 12);
 const cardRedirects = new Map([
@@ -125,6 +128,8 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
   <link rel="canonical" href="${escape(canonical)}">
   <link rel="icon" href="${siteUrl}assets/mark.svg" type="image/svg+xml">
   <script>try{document.documentElement.dataset.theme=localStorage.getItem("darkwood-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){document.documentElement.dataset.theme="light"}</script>
+  <link rel="stylesheet" href="${siteUrl}assets/tokens.css?v=${assetRevision}">
+  <link rel="stylesheet" href="${siteUrl}assets/navbar.css?v=${assetRevision}">
   <link rel="stylesheet" href="${siteUrl}assets/catalog.css?v=${assetRevision}">
   <script type="module" src="${siteUrl}assets/catalog.js?v=${assetRevision}"></script>
   <title>${escape(title)}</title>
@@ -132,13 +137,13 @@ const pageShell = ({ title, description, canonical, body, pageClass = "" }) => `
 <body class="${escape(pageClass)}">
   ${themeIconTemplates}
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <a class="brand" href="${siteUrl}" aria-label="Darkwood home"><span class="brand__mark">D</span><span>Darkwood</span></a>
+  <header class="site-header dw-navbar">
+    <a class="brand" href="${siteUrl}" aria-label="Darkwood home"><span class="brand__mark" aria-hidden="true">D</span></a>
     <nav aria-label="Primary navigation">
-      <a href="${siteUrl}#projects">Projects</a>
-      <a href="${siteUrl}#catalogue">Catalogue</a>
-      <a href="${repositoryUrl}">GitHub ${icon("external")}</a>
-      <button class="theme-switcher" type="button" data-theme-switcher aria-label="Change color theme"><span data-theme-icon aria-hidden="true">${themeIcons.light}</span></button>
+      <a class="dw-nav-link" href="${siteUrl}#projects">Projects</a>
+      <a class="dw-nav-link" href="${siteUrl}#catalogue">Catalogue</a>
+      <a class="dw-nav-link" href="${repositoryUrl}">GitHub ${icon("external")}</a>
+      <button class="theme-switcher dw-theme-toggle" type="button" data-theme-switcher aria-label="Change color theme"><span data-theme-icon aria-hidden="true">${themeIcons.light}</span></button>
     </nav>
   </header>
   ${body}
@@ -212,6 +217,9 @@ await writeFile(resolve(output, "robots.txt"), `User-agent: *\nAllow: ${new URL(
 await copyFile(resolve(root, "library/page/CNAME"), resolve(output, "CNAME"));
 await writeFile(resolve(output, ".nojekyll"), "");
 await copyFile(resolve(sourceAssets, "catalog.css"), resolve(output, "assets/catalog.css"));
+for (const stylesheet of ["tokens.css", "navbar.css"]) {
+  await copyFile(resolve(sharedStyles, stylesheet), resolve(output, "assets", stylesheet));
+}
 await copyFile(resolve(sourceAssets, "catalog.js"), resolve(output, "assets/catalog.js"));
 await copyFile(resolve(sourceAssets, "mark.svg"), resolve(output, "assets/mark.svg"));
 for (const font of ["Jost-400-Book.otf", "Jost-500-Medium.otf", "Jost-600-Semi.otf", "Jost-700-Bold.otf", "OFL.txt"]) {

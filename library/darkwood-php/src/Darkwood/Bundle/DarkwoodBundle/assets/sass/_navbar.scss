@@ -1,0 +1,23 @@
+.dw-navbar {
+    background-color: var(--dw-navbar);
+    --bs-navbar-color: var(--dw-text);
+    --bs-navbar-hover-color: var(--dw-text);
+    --bs-navbar-active-color: var(--dw-primary-hover);
+}
+
+.dw-navbar :is(.nav-link, .dw-nav-link) {
+    color: var(--dw-text);
+}
+
+.dw-navbar :is(.nav-link, .dw-nav-link):is(:hover, .active, [aria-current]) {
+    color: var(--dw-primary-hover);
+}
+
+.dw-navbar .dw-theme-toggle:is(:hover, :focus) {
+    color: var(--dw-text);
+}
+
+.dw-navbar :is(a, button, summary):focus-visible {
+    outline: 2px solid var(--dw-primary-hover);
+    outline-offset: 2px;
+}

@@ -17,7 +17,6 @@
   --dw-warning: #997300;
   --dw-danger: #dc3545;
   --dw-info: #0b7285;
-  --dw-navbar: rgba(255, 255, 255, .88);
   --dw-shadow: rgba(18, 38, 63, .08);
   --dw-radius-sm: .25rem;
   --dw-radius: .375rem;
@@ -49,7 +48,6 @@
   --dw-warning: #d3ad55;
   --dw-danger: #ff7b85;
   --dw-info: #67c7d5;
-  --dw-navbar: rgba(9, 26, 40, .88);
   --dw-shadow: rgba(0, 0, 0, .22);
 }
 
@@ -68,7 +66,6 @@
   --dw-warning: #856400;
   --dw-danger: #9f2030;
   --dw-info: #176b78;
-  --dw-navbar: rgba(241, 231, 208, .88);
   --dw-shadow: rgba(67, 52, 34, .1);
 }
 
@@ -213,7 +210,6 @@ svg { width: 1em; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-li
   align-items: center;
   justify-content: space-between;
   padding-inline: max(1rem, calc((100vw - var(--container)) / 2));
-  background: var(--navbar-color);
   border-bottom: 1px solid var(--border-color);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);

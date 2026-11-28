@@ -34,6 +34,6 @@
 @import "layouts/sidebar";
 
 body,body.data-dark-mode,body.data-sepia-mode{color:var(--dw-text);background:var(--dw-background);font-family:var(--dw-font-sans)}
-body a:not(.btn),body.data-dark-mode a:not(.btn),body.data-sepia-mode a:not(.btn){color:var(--dw-primary-hover)}
+body a:not(.btn, .dw-navbar a),body.data-dark-mode a:not(.btn, .dw-navbar a),body.data-sepia-mode a:not(.btn, .dw-navbar a){color:var(--dw-primary-hover)}
 code,pre{font-family:var(--dw-font-mono)}
 .form-control,.form-select{color:var(--dw-text);background-color:var(--dw-input);border-color:var(--dw-border)}

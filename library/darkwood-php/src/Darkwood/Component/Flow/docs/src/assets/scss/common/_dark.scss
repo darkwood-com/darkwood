@@ -81,7 +81,6 @@ body.data-dark-mode .dropdown-menu {
 }
 */
 
-body.data-dark-mode .navbar,
 body.data-dark-mode .doks-subnavbar {
   background-color: #091a28;
   border-bottom: 1px solid $border-dark;
@@ -112,23 +111,23 @@ body.data-dark-mode .navbar-light .navbar-brand {
   color: $navbar-dark-color !important;
 }
 
-body.data-dark-mode .navbar-light .navbar-nav .nav-link {
+body.data-dark-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link {
   color: $navbar-dark-color;
 }
 
-body.data-dark-mode .navbar-light .navbar-nav .nav-link:hover,
-body.data-dark-mode .navbar-light .navbar-nav .nav-link:focus {
+body.data-dark-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link:hover,
+body.data-dark-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link:focus {
   color: $navbar-dark-hover-color;
 }
 
-body.data-dark-mode .navbar-light .navbar-nav .nav-link.disabled {
+body.data-dark-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link.disabled {
   color: $navbar-dark-disabled-color;
 }
 
-body.data-dark-mode .navbar-light .navbar-nav .show > .nav-link,
-body.data-dark-mode .navbar-light .navbar-nav .active > .nav-link,
-body.data-dark-mode .navbar-light .navbar-nav .nav-link.show,
-body.data-dark-mode .navbar-light .navbar-nav .nav-link.active {
+body.data-dark-mode .navbar-light:not(.dw-navbar) .navbar-nav .show > .nav-link,
+body.data-dark-mode .navbar-light:not(.dw-navbar) .navbar-nav .active > .nav-link,
+body.data-dark-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link.show,
+body.data-dark-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link.active {
   color: $navbar-dark-active-color;
 }
 

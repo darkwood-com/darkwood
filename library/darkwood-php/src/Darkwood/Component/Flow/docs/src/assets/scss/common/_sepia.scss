@@ -82,7 +82,6 @@ body.data-sepia-mode .dropdown-menu {
 }
 */
 
-body.data-sepia-mode .navbar,
 body.data-sepia-mode .doks-subnavbar {
   background-color: #f1e7d0;
   border-bottom: 1px solid $border-sepia;
@@ -113,23 +112,23 @@ body.data-sepia-mode .navbar-light .navbar-brand {
   color: $navbar-sepia-color !important;
 }
 
-body.data-sepia-mode .navbar-light .navbar-nav .nav-link {
+body.data-sepia-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link {
   color: $navbar-sepia-color;
 }
 
-body.data-sepia-mode .navbar-light .navbar-nav .nav-link:hover,
-body.data-sepia-mode .navbar-light .navbar-nav .nav-link:focus {
+body.data-sepia-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link:hover,
+body.data-sepia-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link:focus {
   color: $navbar-sepia-hover-color;
 }
 
-body.data-sepia-mode .navbar-light .navbar-nav .nav-link.disabled {
+body.data-sepia-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link.disabled {
   color: $navbar-sepia-disabled-color;
 }
 
-body.data-sepia-mode .navbar-light .navbar-nav .show > .nav-link,
-body.data-sepia-mode .navbar-light .navbar-nav .active > .nav-link,
-body.data-sepia-mode .navbar-light .navbar-nav .nav-link.show,
-body.data-sepia-mode .navbar-light .navbar-nav .nav-link.active {
+body.data-sepia-mode .navbar-light:not(.dw-navbar) .navbar-nav .show > .nav-link,
+body.data-sepia-mode .navbar-light:not(.dw-navbar) .navbar-nav .active > .nav-link,
+body.data-sepia-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link.show,
+body.data-sepia-mode .navbar-light:not(.dw-navbar) .navbar-nav .nav-link.active {
   color: $navbar-sepia-active-color;
 }
 
