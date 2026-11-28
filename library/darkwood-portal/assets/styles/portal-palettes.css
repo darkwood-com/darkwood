@@ -91,17 +91,7 @@ html:not([data-theme]) .portal-theme-picker__toggle:focus-visible {
   padding: .25rem 1rem;
 }
 
-/* The shared navbar applies to the main menu in every palette. */
-.layout .theme-nav.dw-navbar {
-  --theme-nav-brand-color: var(--dw-text);
-  --theme-nav-brand-hover-color: var(--dw-primary-hover);
-  --theme-nav-link-color: var(--dw-text);
-  --theme-nav-link-hover-color: var(--dw-primary-hover);
-  --theme-nav-profile-color: var(--dw-text);
-  --theme-nav-dropdown-background: var(--dw-surface);
-}
-
-/* The original skin styles own the rest of the default rendering. */
+/* Opt-in palettes preserve the original skin when no theme is selected. */
 html[data-theme] .layout {
   --theme-layout-background-color: var(--dw-background);
   --theme-layout-footer-background-color: var(--dw-surface);
