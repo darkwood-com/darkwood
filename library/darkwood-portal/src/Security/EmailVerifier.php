@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -35,13 +36,17 @@ final readonly class EmailVerifier
 
     public function sendEmailConfirmation(User $user, string $locale): void
     {
-        $expiresAt = new \DateTimeImmutable('+' . $this->lifetime . ' seconds');
+        $expiresAt = new DateTimeImmutable('+' . $this->lifetime . ' seconds');
         $verificationUrl = $this->urls->generate(
             'common_register_check',
             ['_locale' => $locale, 'account' => $user->getUuid()],
             UrlGeneratorInterface::ABSOLUTE_URL,
         );
-        // The browser passes the proof in a POST body, outside access logs and referrers.
+        /**
+         * The browser passes the proof in a POST body, outside access logs and referrers.
+         *
+         * @phpstan-ignore arguments.count (Symfony 8.2 reads the documented version argument with func_get_arg for BC.)
+         */
         $url = str_replace('?', '#', $this->signer->sign($verificationUrl, $expiresAt, $this->verificationVersion($user)));
         $email = (new TemplatedEmail())
             ->from(new Address('no-reply@darkwood.fr', 'Darkwood'))
@@ -90,6 +95,7 @@ final readonly class EmailVerifier
     private function isValid(Request $request, User $user): bool
     {
         if ($request->query->has('_hash')) {
+            // @phpstan-ignore arguments.count (Symfony 8.2 reads the documented version argument with func_get_arg for BC.)
             return $request->query->has('_expiration') && $this->signer->checkRequest($request, $this->verificationVersion($user));
         }
 

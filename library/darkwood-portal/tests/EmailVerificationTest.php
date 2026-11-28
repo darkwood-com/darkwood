@@ -93,6 +93,7 @@ final class EmailVerificationTest extends WebTestCase
         unset($pastQuery['_hash'], $pastQuery['_expiration']);
         $signer = new UriSigner($client->getContainer()->getParameter('kernel.secret'));
         $version = implode("\0", ['verify-email', $user->getUuid(), $address, (string) $user->getEmailVerificationVersion(), 'pending']);
+        // @phpstan-ignore arguments.count (Symfony 8.2 reads the documented version argument with func_get_arg for BC.)
         $expired = $signer->sign('https://darkwood.localhost/register/verify-email?' . http_build_query($pastQuery), time() - 60, $version);
         $expiredProof = parse_url($expired, PHP_URL_QUERY);
 
