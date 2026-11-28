@@ -138,7 +138,7 @@ Package the server as an MCPB bundle and install it in Claude Desktop to get too
 ### 1. Install MCPB (dev) and pack
 
 ```bash
-cd /path/to/darkwood-publish-article-mcp-apps
+cd /path/to/content-publish-article-mcp-app
 npm install
 composer install --no-dev
 npm run mcpb:pack
@@ -177,7 +177,7 @@ This produces a `.mcpb` file (e.g. `darkwood-php-mcp-apps-1.0.0.mcpb`). The repo
 ## Project layout
 
 ```
-darkwood-publish-article-mcp-apps/
+content-publish-article-mcp-app/
 ├── manifest.json       # MCPB manifest (server.type=binary, php server.php)
 ├── server.php          # Stdio MCP server (for .mcpb and stdio clients)
 ├── package.json        # npm scripts: mcpb:init, mcpb:pack

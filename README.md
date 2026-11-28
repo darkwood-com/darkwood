@@ -3,7 +3,7 @@
 Public monorepo for Darkwood open-source projects.
 
 [Explore the public card portal](https://page.darkwood.com/) generated from the canonical catalogue.
-Its generator, assets and distribution belong to the [Pages card](library/pages/).
+Its generator, assets and distribution belong to the [Page card](library/page/).
 The [Symfony AI MCP workshop](library/content-darkwood-ai-mcp-symfony-hackathon/) owns its separate publication.
 
 ## Projects
@@ -14,7 +14,7 @@ The [Symfony AI MCP workshop](library/content-darkwood-ai-mcp-symfony-hackathon/
 - [Crypto Trade](library/content-crypto-trade) — experimental cryptocurrency market-analysis application.
 - [Advent of Code](library/content-adventofcode) — archived Rust solutions for Advent of Code 2020.
 - [Darkwood PHP](library/darkwood-php) — PHP libraries and Symfony bundles, including [DarkwoodBundle](library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle) for shared design.
-- [Darkwood Publish Article MCP Apps](library/darkwood-publish-article-mcp-apps) — MCP application for article generation and publication workflows.
+- [Publish Article MCP App](library/content-publish-article-mcp-app) — MCP application for article generation and publication workflows.
 - [Darkwood Showreel](library/content-darkwood-showreel) — web and terminal showreel content built with Symfony TUI.
 - [Darkwood Memory](library/content-darkwood-memory) — interactive editorial demonstrations about preserving creative memory.
 - [Darkwood.com](library/darkwood-portal) — public website and application source.

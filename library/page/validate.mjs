@@ -3,8 +3,8 @@ import { readFile, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "../..");
-const output = resolve(root, process.argv[2] ?? "library/pages/dist");
-const domain = (await readFile(resolve(root, "library/pages/CNAME"), "utf8")).trim();
+const output = resolve(root, process.argv[2] ?? "library/page/dist");
+const domain = (await readFile(resolve(root, "library/page/CNAME"), "utf8")).trim();
 const base = `https://${domain}/`;
 const catalog = JSON.parse(await readFile(resolve(root, "tags.json"), "utf8"));
 const published = JSON.parse(await readFile(resolve(output, "data/cards.json"), "utf8"));

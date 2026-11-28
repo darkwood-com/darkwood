@@ -3,12 +3,12 @@
 Canonical URL: <https://page.darkwood.com/>. Hosting remains GitHub Pages for
 `darkwood-com/darkwood`, using GitHub Actions (not a `gh-pages` branch).
 
-`publish-monorepo-pages.yml` builds `library/pages/build.mjs`
-with Node 22 and uploads `library/pages/dist` using `upload-pages-artifact`.
+`publish-monorepo-pages.yml` builds `library/page/build.mjs`
+with Node 22 and uploads `library/page/dist` using `upload-pages-artifact`.
 `deploy-pages` publishes that artifact to the `github-pages` environment on
 pushes to `main` or a manual workflow dispatch.
 
-`library/pages/CNAME` is the versioned domain source. The builder derives its
+`library/page/CNAME` is the versioned domain source. The builder derives its
 default HTTPS base URL from it and copies it into the artifact. Canonicals,
 Open Graph, navigation, card JSON, sitemap and robots all use this base.
 GitHub Actions Pages stores the custom domain in repository settings; GitHub
@@ -27,13 +27,13 @@ paths after changes. Do not add `/darkwood/` to custom-domain paths.
 Local build and validation (Node 22 in the existing Nix environment):
 
 ```sh
-node library/pages/build.mjs
-node library/pages/validate.mjs
+node library/page/build.mjs
+node library/page/validate.mjs
 ```
 
 Rollback: revert the domain-related source commit without rewriting history,
 restore the previous Pages custom-domain setting, and redeploy through the same
-workflow. Remove only the `pages` DNS record if abandoning this custom domain.
+workflow. Remove only the `page` DNS record if abandoning this custom domain.
 Review domain ownership and DNS/HTTPS state before changing the live settings;
 do not modify other Darkwood service records.
 

@@ -53,11 +53,11 @@
       ]
     },
     {
-      "id": "darkwood-publish-article-mcp-apps",
-      "path": "library/darkwood-publish-article-mcp-apps",
+      "id": "content-publish-article-mcp-app",
+      "path": "library/content-publish-article-mcp-app",
       "domain": "darkwood",
       "description": "MCP application for article generation and publication workflows.",
-      "kind": "tool",
+      "kind": "content",
       "status": "working",
       "dependencies": [
         "darkwood-php"
@@ -1077,8 +1077,8 @@
       ]
     },
     {
-      "id": "pages",
-      "path": "library/pages",
+      "id": "page",
+      "path": "library/page",
       "domain": "darkwood",
       "description": "Build and publication of the public Darkwood card catalogue on page.darkwood.com.",
       "kind": "infrastructure",

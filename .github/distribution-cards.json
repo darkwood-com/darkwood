@@ -127,13 +127,13 @@
       }
     },
     {
-      "id": "pages",
-      "source": "library/pages",
+      "id": "page",
+      "source": "library/page",
       "repository": "darkwood-com/darkwood",
       "homepage": {
         "type": "github-pages",
-        "builder": "library/pages/build.mjs",
-        "artifact": "library/pages/dist",
+        "builder": "library/page/build.mjs",
+        "artifact": "library/page/dist",
         "domain": "page.darkwood.com"
       }
     }

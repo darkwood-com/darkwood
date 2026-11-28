@@ -24,7 +24,7 @@ jobs:
         with:
           sparse-checkout: |
             .github/distribution-cards.json
-            library/pages
+            library/page
             library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/images/themes
             .github/scripts/validate-publication-domains.mjs
             .github/scripts/validate-publication-domains.test.mjs
@@ -40,14 +40,14 @@ jobs:
       - name: Build the catalog
         run: |
           node --test .github/scripts/validate-publication-domains.test.mjs
-          node library/pages/build.mjs
-          test -s library/pages/dist/index.html
-          test "$(grep -o 'data-card' library/pages/dist/index.html | wc -l)" -ge "$(jq '.projects | length' tags.json)"
-          test "$(find library/pages/dist/cards -name index.html | wc -l)" -ge "$(jq '.projects | length' tags.json)"
-          test "$(jq 'length' library/pages/dist/data/cards.json)" -eq "$(jq '.projects | length' tags.json)"
-          test -s library/pages/dist/sitemap.xml
-          test -s library/pages/dist/robots.txt
-          node library/pages/validate.mjs
+          node library/page/build.mjs
+          test -s library/page/dist/index.html
+          test "$(grep -o 'data-card' library/page/dist/index.html | wc -l)" -ge "$(jq '.projects | length' tags.json)"
+          test "$(find library/page/dist/cards -name index.html | wc -l)" -ge "$(jq '.projects | length' tags.json)"
+          test "$(jq 'length' library/page/dist/data/cards.json)" -eq "$(jq '.projects | length' tags.json)"
+          test -s library/page/dist/sitemap.xml
+          test -s library/page/dist/robots.txt
+          node library/page/validate.mjs
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
@@ -55,7 +55,7 @@ jobs:
       - name: Upload the Pages artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
-          path: library/pages/dist
+          path: library/page/dist
 
   deploy:
     name: Deploy the public catalog

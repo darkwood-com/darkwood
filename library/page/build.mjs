@@ -4,17 +4,17 @@ import { resolve } from "node:path";
 import { validatePublicationDomains } from "../../.github/scripts/validate-publication-domains.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
-const output = resolve(root, process.argv[2] ?? "library/pages/dist");
+const output = resolve(root, process.argv[2] ?? "library/page/dist");
 const catalog = JSON.parse(await readFile(resolve(root, "tags.json"), "utf8"));
 const distribution = JSON.parse(await readFile(resolve(root, ".github/distribution-cards.json"), "utf8"));
 validatePublicationDomains(distribution);
 
-const customDomain = (await readFile(resolve(root, "library/pages/CNAME"), "utf8")).trim();
+const customDomain = (await readFile(resolve(root, "library/page/CNAME"), "utf8")).trim();
 const siteUrl = new URL(process.argv[3] ?? `https://${customDomain}/`).href;
 const repositoryUrl = "https://github.com/darkwood-com/darkwood";
 const sourceBaseUrl = `${repositoryUrl}/tree/main/`;
-const sourceAssets = resolve(root, "library/pages/assets");
-const sourceFonts = resolve(root, "library/pages/assets/fonts");
+const sourceAssets = resolve(root, "library/page/assets");
+const sourceFonts = resolve(root, "library/page/assets/fonts");
 const themeIcons = Object.fromEntries(await Promise.all(["light", "dark", "sepia"].map(async (theme) => [
   theme,
   (await readFile(resolve(root, `library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/images/themes/${theme}.svg`), "utf8")).trim(),
@@ -28,6 +28,8 @@ const assetRevision = createHash("sha256")
   .update(themeIconTemplates)
   .digest("hex").slice(0, 12);
 const cardRedirects = new Map([
+  ["pages", "page"],
+  ["darkwood-publish-article-mcp-apps", "content-publish-article-mcp-app"],
   ["adventofcode", "content-adventofcode"],
   ["php-pipe-operator", "content-php-pipe-operator"],
   ["flowvox-ios", "flowvox"],
@@ -207,7 +209,7 @@ await writeFile(resolve(output, "404.html"), notFound);
 await writeFile(resolve(output, "data/cards.json"), `${JSON.stringify(cardsJson)}\n`);
 await writeFile(resolve(output, "sitemap.xml"), sitemap);
 await writeFile(resolve(output, "robots.txt"), `User-agent: *\nAllow: ${new URL(siteUrl).pathname}\nSitemap: ${siteUrl}sitemap.xml\n`);
-await copyFile(resolve(root, "library/pages/CNAME"), resolve(output, "CNAME"));
+await copyFile(resolve(root, "library/page/CNAME"), resolve(output, "CNAME"));
 await writeFile(resolve(output, ".nojekyll"), "");
 await copyFile(resolve(sourceAssets, "catalog.css"), resolve(output, "assets/catalog.css"));
 await copyFile(resolve(sourceAssets, "catalog.js"), resolve(output, "assets/catalog.js"));
