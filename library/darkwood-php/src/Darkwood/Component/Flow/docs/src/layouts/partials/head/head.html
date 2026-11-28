@@ -5,8 +5,8 @@
   {{ block "head/resource-hints" . }}{{ partial "head/resource-hints.html" . }}{{ end }}
   {{/* block "head/script-header" . }}{{ partial "head/script-header.html" . }}{{ end */}}
   {{ block "head/stylesheet" . }}{{ partial "head/stylesheet.html" . }}{{ end }}
-  {{ $bundleStyles := "darkwood/styles/darkwood-shared.css" }}
-  {{ $stylesheet := resources.FromString $bundleStyles (readFile (printf "static/%s" $bundleStyles)) | fingerprint "sha256" }}
+  {{ $bundleStyles := readFile "static/darkwood/styles/darkwood-shared.css" }}
+  {{ $stylesheet := resources.FromString (printf "darkwood/styles/darkwood-shared-%s.css" ($bundleStyles | sha256)) $bundleStyles }}
   <link rel="stylesheet" href="{{ $stylesheet.RelPermalink }}">
   {{ block "head/seo" . }}{{ partial "head/seo.html" . }}{{ end }}
   {{ block "head/favicons" . }}{{ partial "head/favicons.html" . }}{{ end }}
