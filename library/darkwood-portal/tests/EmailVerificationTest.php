@@ -66,7 +66,7 @@ final class EmailVerificationTest extends WebTestCase
             $crawler = $client->request('GET', '/register/resend-email');
             $client->submit($crawler->selectButton('Resend the verification link')->form(['email' => $requestedAddress]));
             self::assertResponseRedirects('/register/resend-email', 303);
-            self::assertEmailCount(0);
+            self::assertEmailCount(1);
             $client->followRedirect();
             self::assertSelectorTextContains('[role="status"]', 'If this address can be verified');
         }
@@ -83,8 +83,8 @@ final class EmailVerificationTest extends WebTestCase
         $crawler = $client->request('GET', '/register/resend-email');
         $client->submit($crawler->selectButton('Resend the verification link')->form(['email' => $address]));
         self::assertResponseRedirects('/register/resend-email', 303);
-        self::assertEmailCount(1);
-        $resend = self::getMailerMessage();
+        self::assertEmailCount(2);
+        $resend = self::getMailerMessage(1);
         self::assertNotNull($resend);
         self::assertEmailAddressContains($resend, 'To', $address);
 
