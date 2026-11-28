@@ -10,6 +10,8 @@ security:
             id: sylius.shop_user_provider.email_or_name_based
         oidc_shop_user_provider:
             id: App\Security\OidcShopUserProvider
+        darkwood_shop_user_provider:
+            id: App\Security\DarkwoodShopUserProvider
         uid_provider:
             id: App\Provider\UidProvider
 
@@ -78,11 +80,21 @@ security:
         shop:
             switch_user: { role: ROLE_ALLOWED_TO_SWITCH }
             context: shop
-            entry_point: App\Security\DarkwoodShopAuthenticator
-            custom_authenticators: [App\Security\DarkwoodShopAuthenticator]
+            entry_point: App\Security\DarkwoodShopEntryPoint
             pattern: "%sylius.security.shop_regex%"
-            provider: sylius_shop_user_provider
-            user_checker: security.user_checker.chain.shop
+            provider: darkwood_shop_user_provider
+            oidc_login:
+                provider_uri: '%env(default:darkwood_oidc_issuer_default:DARKWOOD_OIDC_ISSUER)%'
+                client_id: '%env(default:darkwood_oidc_client_default:DARKWOOD_OIDC_CLIENT_ID)%'
+                client_authentication:
+                    client_secret_basic: '%env(default:darkwood_oidc_secret_default:DARKWOOD_OIDC_CLIENT_SECRET)%'
+                scope: [openid, profile, email]
+                user_data_source: id_token
+                check_path: app_shop_darkwood_callback
+                start_path: app_shop_darkwood_login
+                default_target_path: app_shop_feed
+                failure_path: app_shop_login
+            user_checker: App\Security\DarkwoodShopUserChecker
             logout:
                 path: sylius_shop_logout
                 target: sylius_shop_homepage
