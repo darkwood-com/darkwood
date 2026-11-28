@@ -92,7 +92,7 @@ security:
                 user_data_source: id_token
                 check_path: app_shop_darkwood_callback
                 start_path: app_shop_darkwood_login
-                default_target_path: app_shop_feed
+                success_handler: App\Security\DarkwoodShopLoginSuccessHandler
                 failure_path: app_shop_login
             user_checker: App\Security\DarkwoodShopUserChecker
             logout:
