@@ -20,7 +20,7 @@
     transition: border-color var(--dw-transition);
 }
 
-.dw-navbar--sticky {
+.dw-navbar.dw-navbar--sticky {
     @extend .dw-navbar--fixed;
     position: sticky;
     inset: 0 auto auto;
