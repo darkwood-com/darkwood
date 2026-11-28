@@ -50,23 +50,23 @@ darkwood_ia_exception:
   cache_ttl: 600                 # Cache TTL in seconds (0 = disabled)
   cache: 'cache.app'             # PSR-6 cache service
   include_trace: false           # Dev only; never true in production
-  async: false                   # When true, AI analysis loads asynchronously (see below)
+  async: true                    # Show a button and analyze only on request
   async_route_prefix: '__ai_exception'
   async_context_ttl: 300        # Seconds to keep exception context for async (min 60)
 ```
 
-### Async AI analysis (Symfony UX–style)
+### AI analysis on request
 
-When `async: true`, the exception page is returned **immediately** with standard content and a placeholder “AI analysis loading…”. No blocking AI call during `kernel.exception`. A small inline script then fetches the analysis from `GET /__ai_exception/{error_id}` and injects the result. If the request fails or times out (30s), a graceful fallback message is shown.
+Symfony renders the HTML error page. With both `kernel.debug` and `enabled` active, `async: true` adds a button that submits a POST to the bundle. The button needs no inline JavaScript or CSS. Symfony's renderer remains responsible for the error page's CSP nonces. If the app uses strict CSP, configure the renderer's nonces and allow same-origin forms.
 
-- **Requirement:** Your app must import the bundle routes so the async endpoint is registered. In `config/routes.yaml` (or equivalent):
+Import the route loader in `config/routes.yaml`:
 
 ```yaml
 darkwood_ia_exception:
   resource: '@DarkwoodIaExceptionBundle/Resources/config/routes.yaml'
 ```
 
-- **Production-safe:** Async is configurable; leave `async: false` in production if you prefer synchronous behavior or do not expose the route.
+Set `async: false` to explicitly run analysis while the debug response is rendered. With debug disabled, Symfony renders its standard errors and the analysis endpoint is absent.
 
 ### Enforcing Timeout
 
@@ -112,32 +112,15 @@ Returns a structured JSON response:
 }
 ```
 
-### HTML (default)
+### HTML diagnostics
 
-The HTML template shows:
+The optional panel shows an explanation, probable causes and suggested fixes. The synchronous renderer leaves JSON errors to Symfony. The on-demand endpoint can return JSON to clients that request it.
 
-- Error ID
-- AI-generated explanation
-- Probable causes
-- Suggested next steps
-- Confidence score
-- Original exception class and message
-- Disclaimer that results are hypotheses
+## Security and reliability
 
-## Security Considerations
+The AI receives the exception class, line number and optional stack frame names. Exception messages, full filesystem paths, stack arguments, headers and request payloads stay out of that context. The native debug page can contain sensitive information and should remain on private development environments. The analysis endpoint is enabled only in debug mode and its responses are not cacheable by clients.
 
-- **Never send secrets to the AI.** The bundle sends only:
-  - Exception class, message, file, line
-  - Optionally: stack trace (when `include_trace: true`)
-- No environment variables, cookies, headers, or request payloads are ever sent.
-- `include_trace` should be `true` only in dev; traces can reveal paths and structure.
-- Use in production only with sanitized input (exception context) and after reviewing your exception messages for sensitive data.
-
-## Reliability
-
-- **Fail-safe:** If the AI fails, times out, or throws any error, the bundle does not set a response. Symfony’s default 500 handling runs as usual.
-- **500 is always returned:** The response status remains 500; the bundle only augments the body.
-- **Caching:** Results are cached by a fingerprint (exception class, message, top frames hash) with configurable TTL to limit cost and repetition.
+A renderer, cache or provider failure leaves Symfony's regular error handling available. The error page preserves the original status and HTTP headers. Successful analyses are cached by diagnostic fingerprint for the configured TTL.
 
 ## License
 

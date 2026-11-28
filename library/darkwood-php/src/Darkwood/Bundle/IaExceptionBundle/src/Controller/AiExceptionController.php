@@ -21,11 +21,12 @@ final class AiExceptionController
         private readonly ExceptionAiAnalyzer $analyzer,
         private readonly Environment $twig,
         private readonly bool $enabled,
+        private readonly bool $debug,
     ) {}
 
     public function __invoke(Request $request, string $error_id): Response
     {
-        if (!$this->enabled) {
+        if (!$this->enabled || !$this->debug) {
             return new JsonResponse(['error' => 'AI exception analysis is disabled.'], Response::HTTP_FORBIDDEN);
         }
 
@@ -40,6 +41,7 @@ final class AiExceptionController
 
             return new Response($html, Response::HTTP_OK, [
                 'Content-Type' => 'text/html; charset=UTF-8',
+                'Cache-Control' => 'private, no-store',
             ]);
         }
 
@@ -52,6 +54,7 @@ final class AiExceptionController
 
             return new Response($html, Response::HTTP_OK, [
                 'Content-Type' => 'text/html; charset=UTF-8',
+                'Cache-Control' => 'private, no-store',
             ]);
         }
 
@@ -61,7 +64,7 @@ final class AiExceptionController
             'probable_causes' => $analysis->probableCauses,
             'suggested_fixes' => $analysis->suggestedFixes,
             'confidence' => $analysis->confidence,
-        ], Response::HTTP_OK);
+        ], Response::HTTP_OK, ['Cache-Control' => 'private, no-store']);
     }
 
     private function renderFallbackHtml(string $errorId): string

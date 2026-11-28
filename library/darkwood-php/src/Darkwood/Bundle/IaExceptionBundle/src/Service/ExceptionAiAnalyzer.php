@@ -49,31 +49,7 @@ PROMPT;
      */
     public function analyze(Throwable $exception): ?ExceptionAiAnalysis
     {
-        $fingerprint = $this->buildFingerprint($exception);
-
-        if ($this->cacheTtl > 0) {
-            $cached = $this->cache->getItem($fingerprint);
-            if ($cached->isHit()) {
-                $data = $cached->get();
-
-                return $this->hydrate($data);
-            }
-        }
-
-        try {
-            $analysis = $this->callAgent($exception);
-        } catch (Throwable $e) {
-            return null;
-        }
-
-        if ($analysis !== null && $this->cacheTtl > 0) {
-            $item = $this->cache->getItem($fingerprint);
-            $item->set($analysis->toArray());
-            $item->expiresAfter($this->cacheTtl);
-            $this->cache->save($item);
-        }
-
-        return $analysis;
+        return $this->analyzeFromContext(ExceptionContext::fromThrowable($exception));
     }
 
     /**
@@ -108,27 +84,11 @@ PROMPT;
         return $analysis;
     }
 
-    private function buildFingerprint(Throwable $exception): string
-    {
-        $parts = [
-            $exception::class,
-            $exception->getMessage(),
-        ];
-
-        if ($this->includeTrace) {
-            $trace = $exception->getTraceAsString();
-            $top = implode("\n", array_slice(explode("\n", $trace), 0, 10));
-            $parts[] = hash('xxh128', $top);
-        }
-
-        return 'darkwood_ia_exception_' . hash('xxh128', implode("\0", $parts));
-    }
-
     private function buildFingerprintFromContext(ExceptionContext $context): string
     {
         $parts = [
             $context->class,
-            $context->message,
+            (string) $context->line,
         ];
 
         if ($this->includeTrace && $context->trace !== '') {
@@ -136,14 +96,7 @@ PROMPT;
             $parts[] = hash('xxh128', $top);
         }
 
-        return 'darkwood_ia_exception_' . hash('xxh128', implode("\0", $parts));
-    }
-
-    private function callAgent(Throwable $exception): ?ExceptionAiAnalysis
-    {
-        $userContent = $this->buildUserContent($exception);
-
-        return $this->callAgentWithUserContent($userContent);
+        return 'darkwood_ia_exception_safe_' . hash('xxh128', implode("\0", $parts));
     }
 
     private function callAgentWithUserContent(string $userContent): ?ExceptionAiAnalysis
@@ -174,31 +127,12 @@ PROMPT;
     {
         $parts = [
             'Exception: ' . $context->class,
-            'Message: ' . $context->message,
-            'File: ' . $context->file,
             'Line: ' . (string) $context->line,
         ];
 
         if ($this->includeTrace && $context->trace !== '') {
             $parts[] = 'Trace:';
             $parts[] = $context->trace;
-        }
-
-        return implode("\n", $parts);
-    }
-
-    private function buildUserContent(Throwable $exception): string
-    {
-        $parts = [
-            'Exception: ' . $exception::class,
-            'Message: ' . $exception->getMessage(),
-            'File: ' . $exception->getFile(),
-            'Line: ' . (string) $exception->getLine(),
-        ];
-
-        if ($this->includeTrace) {
-            $parts[] = 'Trace:';
-            $parts[] = $exception->getTraceAsString();
         }
 
         return implode("\n", $parts);

@@ -6,7 +6,6 @@ namespace Darkwood\IaExceptionBundle\DependencyInjection;
 
 use Darkwood\IaExceptionBundle\Service\ExceptionAiAnalyzer;
 use Darkwood\IaExceptionBundle\Service\ExceptionContextStore;
-use Darkwood\IaExceptionBundle\Service\TraceFormatter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -43,11 +42,5 @@ final class DarkwoodIaExceptionExtension extends Extension
 
         $contextStoreDef = $container->getDefinition(ExceptionContextStore::class);
         $contextStoreDef->setArgument('$cache', new Reference($config['cache']));
-
-        if ($container->has('debug.file_link_formatter')) {
-            $container->getDefinition(TraceFormatter::class)
-                ->setArgument('$fileLinkFormat', new Reference('debug.file_link_formatter'))
-            ;
-        }
     }
 }

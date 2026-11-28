@@ -6,6 +6,8 @@ namespace Darkwood\IaExceptionBundle\Model;
 
 use Throwable;
 
+use function array_slice;
+
 /**
  * Serializable exception context for async AI analysis (stored in cache keyed by error_id).
  */
@@ -49,12 +51,19 @@ final class ExceptionContext
 
     public static function fromThrowable(Throwable $throwable): self
     {
+        $trace = [];
+        foreach (array_slice($throwable->getTrace(), 0, 15) as $frame) {
+            $class = $frame['class'] ?? '';
+            $trace[] = (str_contains($class, '@anonymous') ? 'anonymous class' : $class)
+                . ($frame['type'] ?? '') . $frame['function'];
+        }
+
         return new self(
-            class: $throwable::class,
-            message: $throwable->getMessage(),
-            file: $throwable->getFile(),
+            class: get_debug_type($throwable),
+            message: '',
+            file: '',
             line: $throwable->getLine(),
-            trace: $throwable->getTraceAsString(),
+            trace: implode("\n", $trace),
         );
     }
 }

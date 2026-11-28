@@ -3,10 +3,6 @@ services:
         autowire: true
         autoconfigure: true
 
-    Darkwood\IaExceptionBundle\Service\TraceFormatter:
-        arguments:
-            $fileLinkFormat: null
-
     Darkwood\IaExceptionBundle\Service\ExceptionAiAnalyzer:
         arguments:
             $cacheTtl: '%darkwood_ia_exception.cache_ttl%'
@@ -19,17 +15,18 @@ services:
 
     Darkwood\IaExceptionBundle\EventSubscriber\IaExceptionSubscriber:
         arguments:
+            $debug: '%kernel.debug%'
             $enabled: '%darkwood_ia_exception.enabled%'
             $onlyStatusCodes: '%darkwood_ia_exception.only_status_codes%'
-            $errorIdGenerator: '%darkwood_ia_exception.error_id_generator%'
+            $renderer: '@error_handler.error_renderer.html'
             $async: '%darkwood_ia_exception.async%'
-            $asyncRoutePrefix: '%darkwood_ia_exception.async_route_prefix%'
         tags:
             - { name: kernel.event_subscriber }
 
     Darkwood\IaExceptionBundle\Controller\AiExceptionController:
         public: true
         arguments:
+            $debug: '%kernel.debug%'
             $enabled: '%darkwood_ia_exception.enabled%'
         tags:
             - { name: controller.service_arguments }
@@ -37,6 +34,7 @@ services:
     Darkwood\IaExceptionBundle\Routing\RouteLoader:
         arguments:
             $routePrefix: '%darkwood_ia_exception.async_route_prefix%'
+            $debug: '%kernel.debug%'
             $asyncEnabled: '%darkwood_ia_exception.async%'
         tags:
             - { name: routing.loader }

@@ -17,6 +17,7 @@ final class RouteLoader extends Loader
     public function __construct(
         private readonly string $routePrefix,
         private readonly bool $asyncEnabled,
+        private readonly bool $debug,
     ) {
         parent::__construct();
     }
@@ -29,7 +30,7 @@ final class RouteLoader extends Loader
         $this->loaded = true;
 
         $routes = new RouteCollection();
-        if (!$this->asyncEnabled) {
+        if (!$this->asyncEnabled || !$this->debug) {
             return $routes;
         }
 
@@ -37,11 +38,11 @@ final class RouteLoader extends Loader
         $route = new Route(
             $path,
             ['_controller' => AiExceptionController::class],
-            ['error_id' => '[a-f0-9]{16}'],
+            ['error_id' => '[a-f0-9]{32}'],
             [],
             '',
             [],
-            ['GET']
+            ['POST']
         );
         $routes->add('darkwood_ia_exception_async', $route);
 

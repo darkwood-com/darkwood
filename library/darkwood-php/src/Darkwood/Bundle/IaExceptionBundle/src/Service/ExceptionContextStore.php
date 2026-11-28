@@ -14,7 +14,7 @@ use function is_array;
  */
 final class ExceptionContextStore
 {
-    private const CACHE_KEY_PREFIX = 'darkwood_ia_exception_context_';
+    private const CACHE_KEY_PREFIX = 'darkwood_ia_exception_safe_context_';
 
     public function __construct(
         private readonly CacheItemPoolInterface $cache,
