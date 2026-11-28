@@ -85,7 +85,11 @@ final readonly class DarkwoodEmbedExtension implements ExtensionInterface, NodeR
         $iframe = new HtmlElement('iframe', [
             'src' => $origin . '/' . $embedPath . '/' . $matches[1],
             'title' => $product . ' — ' . $title,
-            'sandbox' => in_array($type, ['clip', 'job'], true) ? '' : 'allow-scripts allow-same-origin',
+            'sandbox' => match ($type) {
+                'clip' => '',
+                'job' => 'allow-top-navigation-by-user-activation',
+                default => 'allow-scripts allow-same-origin',
+            },
             'allow' => in_array($type, ['set', 'map', 'workflow', 'job'], true) ? "autoplay 'none'" : "fullscreen; autoplay 'none'",
             'loading' => 'lazy',
             'referrerpolicy' => 'no-referrer',

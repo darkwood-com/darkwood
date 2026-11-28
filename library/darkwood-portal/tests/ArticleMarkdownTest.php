@@ -42,7 +42,7 @@ final class ArticleMarkdownTest extends TestCase
         self::assertStringContainsString('https://heroclip.darkwood.com/embed/clips/', $html);
         self::assertStringContainsString('https://djmatyo91.darkwood.com/embed/sets/', $html);
         self::assertStringContainsString('https://uniflow.io/embed/flows/lidar-canopy-classifier-2026-11-23', $html);
-        self::assertStringContainsString('src="https://job.darkwood.com/embed/offers/104/backend-symfony-developer" title="Darkwood Job — &lt;em&gt;Titre&lt;/em&gt;" sandbox=""', $html);
+        self::assertStringContainsString('src="https://job.darkwood.com/embed/offers/104/backend-symfony-developer" title="Darkwood Job — &lt;em&gt;Titre&lt;/em&gt;" sandbox="allow-top-navigation-by-user-activation"', $html);
         self::assertStringContainsString('href="https://darkwaar.com/games/prime-lanterns"', $html);
         self::assertStringContainsString('&lt;em&gt;Titre&lt;/em&gt;', $html);
         self::assertStringContainsString('<strong>Markdown ordinaire</strong>', $html);
