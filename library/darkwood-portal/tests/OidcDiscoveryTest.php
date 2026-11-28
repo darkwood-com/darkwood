@@ -21,4 +21,17 @@ final class OidcDiscoveryTest extends WebTestCase
         self::assertContains('openid', $metadata['scopes_supported']);
         self::assertStringEndsWith('/userinfo', $metadata['userinfo_endpoint']);
     }
+
+    public function testSigningKeyDeclaresItsPurposeForNativeOidcClients(): void
+    {
+        $client = self::createClient();
+        $client->request('GET', '/jwks');
+
+        self::assertResponseIsSuccessful();
+        $jwks = json_decode((string) $client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        self::assertNotEmpty($jwks['keys']);
+        self::assertSame('sig', $jwks['keys'][0]['use']);
+        self::assertSame('RS256', $jwks['keys'][0]['alg']);
+        self::assertNotEmpty($jwks['keys'][0]['kid']);
+    }
 }

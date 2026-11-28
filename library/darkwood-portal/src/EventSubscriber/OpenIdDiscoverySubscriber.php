@@ -17,7 +17,8 @@ final readonly class OpenIdDiscoverySubscriber
 
     public function __invoke(ResponseEvent $event): void
     {
-        if ('openid_connect_discovery' !== $event->getRequest()->attributes->get('_route')) {
+        $route = $event->getRequest()->attributes->get('_route');
+        if ('openid_connect_discovery' !== $route && 'openid_connect_jwks' !== $route) {
             return;
         }
 
@@ -27,6 +28,17 @@ final readonly class OpenIdDiscoverySubscriber
         }
 
         $metadata = json_decode($response->getContent() ?: '', true, flags: JSON_THROW_ON_ERROR);
+        if ('openid_connect_jwks' === $route) {
+            foreach ($metadata['keys'] as &$key) {
+                // These are the public keys used to sign the provider's RS256 ID tokens.
+                $key += ['use' => 'sig', 'alg' => 'RS256'];
+            }
+            unset($key);
+            $response->setData($metadata);
+
+            return;
+        }
+
         $metadata += [
             'userinfo_endpoint' => $this->urlGenerator->generate('openid_connect_userinfo', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'grant_types_supported' => ['authorization_code', 'refresh_token'],
