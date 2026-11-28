@@ -94,6 +94,7 @@
 	"config": {
 		"optimize-autoloader": true,
 		"preferred-install": {
+			"scheb/2fa-totp": "source",
 			"*": "dist"
 		},
 		"sort-packages": true,
