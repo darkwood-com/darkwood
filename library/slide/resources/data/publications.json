@@ -65,6 +65,24 @@
             "last_synced_at": "2026-11-08T17:40:46.000000Z"
         },
         {
+            "slide_id": "17c9442a-9821-4c75-98b1-efc7085807d9",
+            "provider": "speakerdeck",
+            "remote_id": "4c0ed7c9f33e47babce3e6e7ed339817",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-518b2b46-856f-43c3-98bf-f2240a4262fe",
+            "source_hash": "29f2b8c31673caf32109889d6e8edcdb98a81d0dfef99f466e75b403e86b7085",
+            "published_at": "2026-11-28T00:00:00.000000Z",
+            "last_synced_at": "2026-11-28T09:00:01.000000Z"
+        },
+        {
+            "slide_id": "1a13bafd-d8af-4caa-aa98-45b5ff766dfa",
+            "provider": "speakerdeck",
+            "remote_id": "e127328afd8b4f7d92d776e25e6d1eee",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-575bc8fe-44cc-426c-ad70-02f953704bd4",
+            "source_hash": "b9a3c728dea186444b36762280ba932e4c992c2b1c7292bd6d971ffe898852f5",
+            "published_at": "2026-11-28T00:00:00.000000Z",
+            "last_synced_at": "2026-11-28T09:00:01.000000Z"
+        },
+        {
             "slide_id": "21f1717c-f698-47ab-915a-d063c68bb140",
             "provider": "speakerdeck",
             "remote_id": "f4b810fb51b64968841676a1ecb89cee",
@@ -135,6 +153,15 @@
             "source_hash": "2c4d6e8033d782aa2ff635a4b20bddd4b331b67ea7fa5b5a5eada749099c5eab",
             "published_at": "2026-11-27T00:00:00.000000Z",
             "last_synced_at": "2026-11-27T16:38:52.000000Z"
+        },
+        {
+            "slide_id": "55ea6e1d-f9f8-4630-928f-e3f1445b09d4",
+            "provider": "speakerdeck",
+            "remote_id": "c896416179e54d0b9f41ccbc41847721",
+            "remote_url": "https://speakerdeck.com/matyo91/presentation-2220077f-ab0e-41a3-b8e4-70ec5a39b535",
+            "source_hash": "d41726be2810a4579fe5e75869acf2f263d7cd5d4fc2084228e9a7e3b9830db0",
+            "published_at": "2026-11-28T00:00:00.000000Z",
+            "last_synced_at": "2026-11-28T09:00:01.000000Z"
         },
         {
             "slide_id": "77738729-6ab9-4710-ae0a-02ab90011ad4",
