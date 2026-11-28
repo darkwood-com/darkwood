@@ -1,5 +1,4 @@
 body {
-  padding-top: 60px;
   padding-bottom: calc(66px + env(safe-area-inset-bottom));
 
   @include media-breakpoint-up(md) {
@@ -8,8 +7,6 @@ body {
 }
 
 #home {
-  padding-top: 0px;
-
   .navbar-top {
     border-bottom: 0;
   }

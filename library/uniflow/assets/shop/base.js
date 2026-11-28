@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const themeSwitcher = document.getElementById('theme-switcher');
-    const themeIcon = themeSwitcher?.querySelector('img');
     const themes = ['light', 'dark', 'sepia'];
     const labels = { light: 'Light', dark: 'Dark', sepia: 'Sepia' };
     let activeTheme;
@@ -12,9 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.dataset.theme = theme;
         document.body.dataset.bsTheme = theme;
         themeSwitcher?.setAttribute('aria-label', 'Color theme: ' + labels[theme] + '. Activate for next theme.');
-        if (themeIcon) {
-            themeIcon.src = themeSwitcher.dataset[theme];
-        }
     }
 
     themeSwitcher?.addEventListener('click', () => {

@@ -34,7 +34,6 @@
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 body {
   margin: 0;
-  padding-top: 60px;
   color: var(--text-color);
   background: var(--bg-color);
   font-size: 1.125rem;
@@ -51,7 +50,7 @@ svg { width: 1em; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-li
 .skip-link:focus { top: .75rem; }
 
 .site-header {
-  position: fixed;
+  position: sticky;
   z-index: 30;
   inset: 0 0 auto;
   height: 60px;

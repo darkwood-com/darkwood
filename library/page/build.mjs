@@ -217,6 +217,7 @@ await writeFile(resolve(output, ".nojekyll"), "");
 await copyFile(resolve(sourceAssets, "catalog.css"), resolve(output, "assets/catalog.css"));
 await copyFile(resolve(bundle, "assets", sharedStylesheet), resolve(output, "assets", sharedStylesheet));
 await cp(resolve(bundle, "assets/fonts"), resolve(output, "assets/fonts"), { recursive: true });
+await cp(resolve(bundle, "assets/images/themes"), resolve(output, "assets/images/themes"), { recursive: true });
 await copyFile(resolve(bundle, "docs/Jost-OFL.txt"), resolve(output, "assets/fonts/OFL.txt"));
 await copyFile(resolve(sourceAssets, "catalog.js"), resolve(output, "assets/catalog.js"));
 await copyFile(resolve(sourceAssets, "mark.svg"), resolve(output, "assets/mark.svg"));
