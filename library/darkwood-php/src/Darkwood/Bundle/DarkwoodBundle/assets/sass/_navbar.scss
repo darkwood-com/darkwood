@@ -20,6 +20,12 @@
     transition: border-color var(--dw-transition);
 }
 
+.dw-navbar--sticky {
+    @extend .dw-navbar--fixed;
+    position: sticky;
+    inset: 0 auto auto;
+}
+
 .dw-navbar :is(.nav-link, .dw-nav-link, .dw-theme-toggle) {
     color: var(--dw-navbar-link-color);
 }
@@ -36,8 +42,26 @@
     color: var(--dw-navbar-link-active-hover-color);
 }
 
-.dw-navbar .dw-theme-toggle:is(:hover, :focus) {
+.dw-navbar .dw-theme-toggle,
+.dw-navbar .dw-theme-toggle:is(:hover, :focus, :active) {
     color: var(--dw-navbar-link-color);
+}
+
+.dw-theme-toggle__icon {
+    display: inline-block;
+    inline-size: 20px;
+    block-size: 20px;
+    vertical-align: middle;
+    background-color: currentColor;
+    mask: var(--dw-theme-toggle-icon, url("../images/themes/light.svg")) center / contain no-repeat;
+}
+
+:is([data-theme="dark"], .theme-dark) .dw-theme-toggle__icon {
+    --dw-theme-toggle-icon: url("../images/themes/dark.svg");
+}
+
+:is([data-theme="sepia"], .theme-sepia) .dw-theme-toggle__icon {
+    --dw-theme-toggle-icon: url("../images/themes/sepia.svg");
 }
 
 .dw-navbar--tabs .navbar-nav .nav-link {
