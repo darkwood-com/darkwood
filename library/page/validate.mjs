@@ -36,10 +36,12 @@ for (const path of resourcePaths) {
   const target = resolve(output, `.${decodeURIComponent(path)}`, ...(path.endsWith("/") ? ["index.html"] : []));
   assert.ok((await stat(target)).isFile(), `Missing internal target: ${path}`);
 }
-const css = await readFile(resolve(output, "assets/catalog.css"), "utf8");
-for (const [, font] of css.matchAll(/url\(["']?([^)'"\s]+)["']?\)/g)) {
-  const url = new URL(font, `${base}assets/catalog.css`);
-  assert.equal(url.origin, new URL(base).origin);
-  assert.ok((await stat(resolve(output, `.${url.pathname}`))).isFile(), `Missing CSS asset: ${font}`);
+for (const stylesheet of [...resourcePaths].filter((path) => path.endsWith(".css"))) {
+  const css = await readFile(resolve(output, "." + stylesheet), "utf8");
+  for (const [, asset] of css.matchAll(/url\(["']?([^)'"\s]+)["']?\)/g)) {
+    const url = new URL(asset, new URL(stylesheet, base));
+    assert.equal(url.origin, new URL(base).origin);
+    assert.ok((await stat(resolve(output, `.${url.pathname}`))).isFile(), `Missing CSS asset: ${asset}`);
+  }
 }
 console.log(`Validated ${published.length} cards, canonical/Open Graph URLs, sitemap, robots and ${resourcePaths.size} internal targets.`);

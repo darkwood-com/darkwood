@@ -65,6 +65,6 @@ Identity endpoints and protocol DNS records remain unchanged.
 
 This card owns the generator, public assets and `dist/`. Inputs are the root public
 `tags.json` and `.github/distribution-cards.json`; private catalogues are never read.
-The Jost fonts and their OFL notice are shipped locally. No runtime dependency on
+The builder copies the compiled DarkwoodBundle styles, Jost fonts and their OFL notice. No runtime dependency on
 Uniflow or another card distribution is required. The separate Symfony AI MCP
 workshop owns its own distribution and keeps its existing artifact repository.

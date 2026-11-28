@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $selected['title'] }} — Slide</title>
-    @vite(['resources/css/app.css', 'resources/js/catalogue.js'])
+    @vite(['resources/css/app.css', 'resources/css/catalogue.css', 'resources/js/catalogue.js'])
 </head>
-<body class="sw-library theme-light">
+<body class="dw-product sw-library theme-light">
 <a class="library-skip" href="#presentation">Aller à la présentation</a>
 <header class="library-header dw-navbar">
     <a class="library-brand" href="{{ route('home') }}" aria-label="Slide — accueil"><span class="library-logo"><img src="/darkwood/logos/dw512x512-uni-dark.png" width="32" height="32" alt="Darkwood"></span></a>

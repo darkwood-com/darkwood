@@ -27,6 +27,8 @@ jobs:
             library/page
             library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/images/themes
             library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/styles
+            library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/assets/fonts
+            library/darkwood-php/src/Darkwood/Bundle/DarkwoodBundle/docs/Jost-OFL.txt
             .github/scripts/validate-publication-domains.mjs
             .github/scripts/validate-publication-domains.test.mjs
             README.md

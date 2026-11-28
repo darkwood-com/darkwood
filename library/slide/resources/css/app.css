@@ -3,7 +3,6 @@
 @import './themes/components.css';
 @import './themes/memory.css';
 @import './themes/intent.css';
-@import './catalogue.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/wendelladriel/slidewire/resources/views/**/*.blade.php';

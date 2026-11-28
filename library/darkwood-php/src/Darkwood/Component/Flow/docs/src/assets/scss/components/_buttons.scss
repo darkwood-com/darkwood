@@ -1,10 +1,12 @@
 .navbar .btn-link {
-  color: $navbar-light-color;
   padding: 0.4375rem 0;
 }
 
+.navbar .btn-link:not(.dw-theme-toggle) {
+  color: $navbar-light-color;
+}
+
 #mode {
-  color: var(--dw-text);
   padding-right: 0.25rem;
   padding-left: 0.25rem;
   margin-right: -0.25rem;
