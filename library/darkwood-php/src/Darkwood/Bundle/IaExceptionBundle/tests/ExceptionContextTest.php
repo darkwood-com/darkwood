@@ -8,6 +8,8 @@ use Darkwood\IaExceptionBundle\Model\ExceptionContext;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+use function sprintf;
+
 final class ExceptionContextTest extends TestCase
 {
     public function testDiagnosticContextExcludesSensitiveExceptionDetails(): void
