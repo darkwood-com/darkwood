@@ -53,7 +53,8 @@ du sélecteur Darkwood Identity. La documentation Hugo de Flow le lit
 Maintenir le thème dans `assets/sass/`. `_variables.scss` configure Bootstrap
 avant sa compilation. Les autres partiels déclarent les palettes claire,
 sombre et sépia, la typographie Jost, la disposition et les composants Identity.
-Les styles spécifiques à un produit restent dans son application.
+La barre de navigation partagée applique le lissage de police de Darkwaar.
+Les styles spécifiques à un produit restent séparés du thème commun.
 
 Le lockfile npm fixe Bootstrap 5.3.9, comme la boutique Uniflow et Portal,
 et Dart Sass 1.77.6. Depuis la racine du bundle, dans le shell Nix du projet
@@ -72,9 +73,12 @@ du bundle. Les consommateurs Composer chargent le CSS distribué.
 
 Une page qui utilise le Bootstrap du bundle peut charger
 `asset('darkwood/styles/darkwood.css')` avant son CSS applicatif.
-Une application qui fournit déjà son Bootstrap, comme Portal ou Uniflow,
+Une application qui fournit déjà son Bootstrap, comme Portal,
 charge `asset('darkwood/styles/darkwood-shared.css')`. Cette sortie utilise
 les mêmes partiels Sass et comprend les tokens, Jost et Darkwood Identity.
+Uniflow charge `darkwood/styles/darkwood.css` puis `darkwood/styles/uniflow.css`.
+Cette deuxième feuille compile les ajustements du shop dans
+`assets/sass/uniflow/` sans inclure une deuxième copie de Bootstrap.
 Les anciens chemins `product.css`, `identity.css` et `tokens.css` sont des
 sorties de compatibilité pour les consommateurs versionnés.
 

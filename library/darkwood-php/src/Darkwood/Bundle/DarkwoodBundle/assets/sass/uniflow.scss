@@ -1,0 +1,25 @@
+// Uniflow uses the compiled Darkwood theme for Bootstrap and shared styles.
+// Load only the Sass helpers needed by the shop's components.
+@import 'bootstrap/scss/functions';
+@import 'variables';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
+
+// bootstrap override
+@import 'uniflow/reboot';
+@import 'uniflow/images';
+@import 'uniflow/forms';
+@import 'uniflow/buttons';
+@import 'uniflow/nav';
+@import 'uniflow/navbar';
+@import 'uniflow/card';
+@import 'uniflow/badge';
+@import 'uniflow/utilities';
+
+// components
+@import 'uniflow/themes';
+@import 'uniflow/sidebar';
+@import 'uniflow/section';
+@import 'uniflow/timeline';
+@import 'uniflow/user';
+@import 'uniflow/_app';

@@ -1,0 +1,59 @@
+$app-themes: ();
+
+@import 'themes/light';
+@import 'themes/dark';
+@import 'themes/sepia';
+
+@each $app-theme, $app-colors in $app-themes {
+  body.theme-#{$app-theme} {
+    @each $name, $value in $app-colors {
+      --#{$name}-color: #{$value};
+    }
+
+    --text-hover-color: #{darken(map-get($app-colors, 'text'), 15%)};
+    --navbar-top-color: #{rgba(map-get($app-colors, 'bg'), 0.8)};
+
+    @each $color, $value in $theme-colors {
+      --#{$color}-input-color: #{color-contrast(darken(map-get($app-colors, $color), 15%))};
+      --#{$color}-hover-color: #{darken(map-get($app-colors, $color), 15%)};
+    }
+  }
+}
+
+/* Shop component aliases for the tokens loaded from DarkwoodBundle. */
+body[class*="theme-"] {
+  --text-color: var(--dw-text);
+  --bg-color: var(--dw-background);
+  --input-color: var(--dw-input);
+  --border-color: var(--dw-border);
+  --primary-color: var(--dw-primary);
+  --primary-hover-color: var(--dw-primary-hover);
+  --secondary-color: var(--dw-muted);
+  --success-color: var(--dw-success);
+  --warning-color: var(--dw-warning);
+  --danger-color: var(--dw-danger);
+  --info-color: var(--dw-info);
+  --navbar-top-color: var(--dw-navbar);
+  --secondary-hover-color: var(--dw-text);
+  font-family: var(--dw-font-sans);
+}
+code,pre{font-family:var(--dw-font-mono)}
+.btn{min-height:44px}
+.btn-primary,.btn-primary:hover{color:#fff;background:color-mix(in srgb,var(--dw-primary) 85%,#000);border-color:var(--dw-primary)}
+
+// The existing shop palette remains the single source for Bootstrap components.
+body[data-bs-theme] {
+  --bs-body-color: var(--dw-text);
+  --bs-body-bg: var(--dw-background);
+  --bs-emphasis-color: var(--dw-text);
+  --bs-secondary-color: var(--dw-muted);
+  --bs-secondary-bg: var(--dw-subtle);
+  --bs-tertiary-bg: var(--dw-surface);
+  --bs-border-color: var(--dw-border);
+  --bs-primary: var(--dw-primary);
+  --bs-link-color: var(--dw-primary);
+  --bs-link-hover-color: var(--dw-primary-hover);
+  --bs-success-text-emphasis: var(--dw-success);
+  --bs-warning-text-emphasis: var(--dw-warning);
+  --bs-danger-text-emphasis: var(--dw-danger);
+}
