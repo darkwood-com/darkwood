@@ -3,8 +3,7 @@ darkwood_ia_exception:
     # Use a parameter that depends on the environment to enable this only in dev
     enabled: '%env(bool:ENABLE_IA_EXCEPTION)%'
 
-    # When true: exception page returns immediately with "AI analysis loading…";
-    # analysis is fetched asynchronously via GET /__ai_exception/{error_id}
+    # In debug, show a manual button that submits a POST to request analysis.
     async: true
 
     # URL path for async endpoint (only used when async: true)
@@ -28,5 +27,5 @@ darkwood_ia_exception:
     # PSR-6 cache service
     cache: 'cache.app'
 
-    # Include stack trace in AI input (dev only; never in production)
+    # Include stack frame names in the diagnostic input.
     include_trace: true

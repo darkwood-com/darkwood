@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbec9f456148dec8d067d949ede40eb4",
+    "content-hash": "df0da4bc316fadfb1077884bd9c41095",
     "packages": [
         {
             "name": "ajgarlag/openid-connect-provider-bundle",
@@ -540,16 +540,16 @@
         },
         {
             "name": "darkwood/ia-exception-bundle",
-            "version": "v8.1.6",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle.git",
-                "reference": "bd7c3ac064c609b57abcf34ab07706ffc6cad55d"
+                "reference": "2531f62b05178d6f371972d053bc01f7030574c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/zipball/bd7c3ac064c609b57abcf34ab07706ffc6cad55d",
-                "reference": "bd7c3ac064c609b57abcf34ab07706ffc6cad55d",
+                "url": "https://api.github.com/repos/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/zipball/2531f62b05178d6f371972d053bc01f7030574c3",
+                "reference": "2531f62b05178d6f371972d053bc01f7030574c3",
                 "shasum": ""
             },
             "require": {
@@ -567,6 +567,7 @@
             "conflict": {
                 "symfony/symfony": "*"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "extra": {
                 "symfony": {
@@ -585,10 +586,10 @@
             ],
             "description": "Augments HTTP 500 errors with AI-based exception analysis using Symfony AI",
             "support": {
-                "issues": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/issues",
-                "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/tree/v8.1.6"
+                "source": "https://github.com/darkwood-com/darkwood-php-bundle-darkwood-ia-exception-bundle/tree/main"
             },
-            "time": "2026-09-01T15:19:05+00:00"
+            "time": "2026-11-28T14:43:05+00:00",
+            "published-time": "2026-11-28T14:43:10+00:00"
         },
         {
             "name": "darkwood/navi",
@@ -16546,7 +16547,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "darkwood/darkwood-bundle": 20
+        "darkwood/darkwood-bundle": 20,
+        "darkwood/ia-exception-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
