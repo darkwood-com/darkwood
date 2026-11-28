@@ -1,8 +1,13 @@
-@font-face {
-    font-family: Jost;
-    src: url('../fonts/Jost-400-Book.otf') format('opentype');
-    font-weight: 400;
-    font-display: swap;
+@each $weight, $name in (400: Book, 500: Medium, 600: Semi, 700: Bold) {
+  @each $style, $suffix in (normal: '', italic: Italic) {
+    @font-face {
+      font-family: Jost;
+      src: url('../fonts/Jost-#{$weight}-#{$name}#{$suffix}.otf') format('opentype');
+      font-weight: $weight;
+      font-style: $style;
+      font-display: swap;
+    }
+  }
 }
 
 .dw-product {

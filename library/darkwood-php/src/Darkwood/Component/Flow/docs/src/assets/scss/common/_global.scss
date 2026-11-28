@@ -63,6 +63,11 @@ body.docs {
   }
 }
 
+.flow-home-screen {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
 .home h1 {
   @include font-size($font-size-md * 2.5);
 }
