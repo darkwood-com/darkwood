@@ -62,10 +62,14 @@
   }
 }
 #theme-switcher {
+  display: inline-grid;
+  place-items: center;
   min-width: 44px;
   min-height: 44px;
   color: var(--dw-text);
 }
+
+body.theme-dark #theme-switcher img { filter: invert(1); }
 
 .mobile-more summary { cursor: pointer; list-style: none; }
 .mobile-more summary::-webkit-details-marker { display: none; }
