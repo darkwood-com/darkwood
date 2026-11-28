@@ -164,7 +164,7 @@ jobs:
           if [[ "$COMPOSER_SCRIPTS" != true ]]; then
             composer_args+=(--no-scripts)
           fi
-          composer install --no-interaction --no-progress --prefer-dist "${composer_args[@]}"
+          composer install --no-interaction --no-progress "${composer_args[@]}"
           for tool in php-cs-fixer phpstan phpunit; do
             case "$tool" in
               php-cs-fixer) enabled=$PHP_CS_FIXER ;;
