@@ -1,13 +1,13 @@
 {
     "default_keys": [
         "darkwood",
+        "navi",
+        "flow",
+        "uniflow",
         "darkwaar",
         "heroclip",
         "djmatyo91",
         "geo",
-        "flow",
-        "navi",
-        "uniflow",
         "job"
     ],
     "products": {
@@ -15,6 +15,21 @@
             "name": "Darkwood",
             "url": "https://darkwood.com",
             "icon": "darkwood.svg"
+        },
+        "navi": {
+            "name": "Navi",
+            "url": "https://navi.darkwood.com",
+            "icon": "navi.svg"
+        },
+        "flow": {
+            "name": "Flow",
+            "url": "https://flow.darkwood.com",
+            "icon": "flow.svg"
+        },
+        "uniflow": {
+            "name": "Uniflow",
+            "url": "https://uniflow.io",
+            "icon": "uniflow.svg"
         },
         "darkwaar": {
             "name": "Darkwaar",
@@ -35,21 +50,6 @@
             "name": "Geo",
             "url": "https://geo.darkwood.com",
             "icon": "geo.svg"
-        },
-        "flow": {
-            "name": "Flow",
-            "url": "https://flow.darkwood.com",
-            "icon": "flow.svg"
-        },
-        "navi": {
-            "name": "Navi",
-            "url": "https://navi.darkwood.com",
-            "icon": "navi.svg"
-        },
-        "uniflow": {
-            "name": "Uniflow",
-            "url": "https://uniflow.io",
-            "icon": "uniflow.svg"
         },
         "slide": {
             "name": "Slide",
