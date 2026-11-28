@@ -17,3 +17,4 @@ open.spotify.com_cookies.txt
 
 # Symfony generated configuration reference
 /config/reference.php
+/config/schema.json

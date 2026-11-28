@@ -16,3 +16,4 @@
 
 # Symfony generated configuration reference
 /config/reference.php
+/config/schema.json
