@@ -80,7 +80,7 @@ security:
             context: shop
             entry_point: App\Security\DarkwoodShopAuthenticator
             custom_authenticators: [App\Security\DarkwoodShopAuthenticator]
-            pattern: "%sylius.security.shop_regex%"
+            pattern: "^/$|%sylius.security.shop_regex%"
             provider: sylius_shop_user_provider
             user_checker: security.user_checker.chain.shop
             logout:
