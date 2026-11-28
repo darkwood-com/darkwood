@@ -85,9 +85,8 @@
         {% endif %}
         {% if app.user and is_granted('ROLE_USER') %}
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('sylius_shop_logout') }}">
-                <twig:ux:icon name="hugeicons:logout-04" class="svg-inline--fa" />
-            </a>
+            {% set logout_icon %}<twig:ux:icon name="hugeicons:logout-04" class="svg-inline--fa" />{% endset %}
+            {{ logout_button(logout_icon, attr: {class: 'nav-link border-0 bg-transparent', 'aria-label': 'Log out'}, form_attr: {class: 'm-0'}) }}
         </li>
         {% endif %}
     </ul>

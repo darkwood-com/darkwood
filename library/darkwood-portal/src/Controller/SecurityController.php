@@ -70,7 +70,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route(path: ['fr' => '/fr/logout', 'en' => '/logout', 'de' => '/de/logout'], name: 'security_logout', priority: 10)]
+    #[Route(path: ['fr' => '/fr/logout', 'en' => '/logout', 'de' => '/de/logout'], name: 'security_logout', methods: ['POST'], priority: 10)]
     public function logout(): never
     {
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');

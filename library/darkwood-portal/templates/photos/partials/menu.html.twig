@@ -44,11 +44,7 @@
                 <img src="{{ asset(vich_uploader_asset(app.user, 'image')|default('/common/images/profile/default.jpg'))|imagine_filter('user') }}" alt="{{ app.user.username }}">
                 <span>{{ app.user.username }}</span>
             </a>
-            <form action="{{ path('security_logout') }}" method="get">
-                <button type="submit" class="theme-nav__button theme-nav__button--logout">
-                    {{ 'common.menu.logout_btn'|trans }}
-                </button>
-            </form>
+            {{ logout_button('common.menu.logout_btn'|trans, attr: {class: 'theme-nav__button theme-nav__button--logout'}) }}
         {% else %}
             <a class="theme-nav__button theme-nav__button--login" href="{{ path('security_login') }}">
                 {{ 'common.menu.login_btn'|trans }}

@@ -4,6 +4,11 @@ sylius_shop:
     requirements: &shop_locale
         _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
 
+sylius_shop_logout:
+    path: /{_locale}/logout
+    methods: [POST]
+    requirements: *shop_locale
+
 sylius_shop_payum:
     resource: "@SyliusPayumBundle/Resources/config/routing/integrations/sylius_shop.yaml"
 

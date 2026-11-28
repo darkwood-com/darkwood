@@ -18,7 +18,7 @@
 
         {% if app.user %}
             <div class="alert_success">
-                You are logged in as {{ app.user.username }}, <a href="{{ path('security_logout') }}">Logout</a>
+                You are logged in as {{ app.user.username }}, {{ logout_button('common.menu.logout_btn'|trans, attr: {class: 'nav-link'}, form_attr: {class: 'm-0'}) }}
             </div>
         {% endif %}
 

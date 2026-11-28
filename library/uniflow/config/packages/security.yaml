@@ -86,6 +86,7 @@ security:
             logout:
                 path: sylius_shop_logout
                 target: sylius_shop_homepage
+                enable_csrf: true
                 invalidate_session: false
         
         api_uniflow:

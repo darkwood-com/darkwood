@@ -27,7 +27,7 @@
         <p>Two-factor authentication is already enabled for your account.</p>
         <div class="actions">
             <a class="link" href="{{ backUrl }}">Back</a>
-            <a class="link" href="{{ path('security_logout') }}">Logout</a>
+            {{ logout_button('common.menu.logout_btn'|trans, attr: {class: 'nav-link'}, form_attr: {class: 'm-0'}) }}
         </div>
     {% else %}
         <p>Two-factor authentication is optional. Save this secret in an authenticator app, then enter the current 6-digit code to finish setup.</p>
