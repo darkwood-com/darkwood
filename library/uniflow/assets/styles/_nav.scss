@@ -63,6 +63,7 @@
 }
 #theme-switcher {
   display: inline-grid;
+  grid-template-rows: minmax(1lh, auto);
   place-items: center;
   min-width: 44px;
   min-height: 44px;
