@@ -88,15 +88,21 @@ For every new Symfony application, including nested bundle test applications,
 add this block to the application's own `.gitignore`:
 
 ```gitignore
-# Symfony generated configuration reference
+# Symfony generated configuration references
 /config/reference.php
+/config/schema.json
 ```
 
-Ignore `/config/schema.json` as well where Symfony generates it. Keep
-`config/preload.php`, source configuration and application lockfiles in Git.
-Symfony generates its PHP configuration reference when the debug container
-is compiled. Use `APP_ENV=dev APP_DEBUG=1 php bin/console cache:clear` in the
-project's configured local environment when an IDE needs a fresh copy.
+Keep `config/preload.php`, source configuration and application lockfiles in
+Git. Symfony 8.2 generates the PHP reference and the JSON schema when the
+debug container is compiled. Use
+`APP_ENV=dev APP_DEBUG=1 php bin/console cache:clear` in the project's
+configured local environment when an IDE needs fresh copies.
+
+Applications that have migrated pin Symfony Flex to `8.2.*` and commit their
+application lockfiles. Public libraries retain their supported Symfony floors.
+See the [Symfony 8.2 guide](symfony-8.2-release.md) and the
+[feature review](symfony-8.2-features.md) for upgrade and adoption decisions.
 
 Quality jobs install Composer dependencies from a clean clone. The existing
 project fixture and kernel boot steps prepare Symfony as needed. If a new
