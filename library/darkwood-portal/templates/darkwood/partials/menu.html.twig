@@ -3,11 +3,10 @@
 {% set communityActive = currentRoute in communityRoutes %}
 {% set rankActive = currentRoute == 'darkwood_rank' %}
 
-<nav class="theme-nav row g-0 align-items-center" aria-label="Darkwood navigation">
+<nav class="theme-nav dw-navbar row g-0 align-items-center" aria-label="Darkwood navigation">
     <div class="theme-nav__primary col-md">
         <a class="theme-nav__brand" href="{{ path('darkwood_home') }}">
             <img src="{{ asset('logo.svg') }}" alt="Darkwood" class="theme-nav__brand-mark">
-            <span class="theme-nav__brand-text">Darkwood</span>
         </a>
 
         <ul class="theme-nav__links">

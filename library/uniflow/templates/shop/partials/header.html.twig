@@ -1,7 +1,7 @@
 {% set docsPath = path('app_shop_doc') %}
 {% set docsActive = app.current_route == 'app_shop_doc' or app.request.pathInfo == docsPath or app.request.pathInfo starts with docsPath ~ '/' %}
 {% set moreActive = docsActive or app.current_route in ['app_shop_settings', 'app_shop_admin'] or app.current_route starts with 'app_shop_blog' %}
-<header class="navbar navbar-top navbar-expand flex-row">
+<header class="dw-navbar navbar navbar-top navbar-expand flex-row">
     <!-- Logo/Brand -->
     <a class="navbar-brand dw-product-brand me-2" href="{{ path('app_shop_home') }}" aria-label="Uniflow">
         <img src="{{ asset('darkwood/images/products/uniflow.svg') }}" width="36" height="36" class="d-block" alt="Uniflow" />
@@ -72,7 +72,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <button type="button" class="nav-link border-0 bg-transparent" aria-label="Theme" id="theme-switcher"
+            <button type="button" class="nav-link border-0 bg-transparent dw-theme-toggle" aria-label="Theme" id="theme-switcher"
                 data-light="{{ asset('darkwood/images/themes/light.svg') }}"
                 data-dark="{{ asset('darkwood/images/themes/dark.svg') }}"
                 data-sepia="{{ asset('darkwood/images/themes/sepia.svg') }}">

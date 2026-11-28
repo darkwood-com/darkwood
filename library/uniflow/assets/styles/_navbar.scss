@@ -7,7 +7,6 @@
   top: 0;
   right: 0;
   left: 0;
-  background-color: var(--navbar-top-color);
   border-bottom: 1px solid var(--border-color);
   flex-wrap: nowrap;
   position: fixed;
@@ -22,20 +21,10 @@
     padding-top: $spacer;
     padding-bottom: $spacer;
 
-    color: var(--secondary-color);
-
-    &:hover,
-    &:focus {
-      color: var(--secondary-hover-color);
-    }
-
     &.active {
-      color: var(--primary-color);
       border-bottom: $border-width solid var(--primary-color) !important;
 
-      &:hover,
-      &:focus {
-        color: var(--primary-hover-color);
+      &:hover {
         border-bottom-color: var(--primary-hover-color) !important;
       }
     }
