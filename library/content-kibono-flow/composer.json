@@ -9,12 +9,12 @@
         "ext-iconv": "*",
         "darkwood/flow": "^8.1.6",
         "php-etl/pipeline": "^0.6.1",
-        "symfony/console": "8.1.*",
-        "symfony/dotenv": "8.1.*",
+        "symfony/console": "8.2.*",
+        "symfony/dotenv": "8.2.*",
         "symfony/flex": "^2.12",
-        "symfony/framework-bundle": "8.1.*",
-        "symfony/runtime": "8.1.*",
-        "symfony/yaml": "8.1.*"
+        "symfony/framework-bundle": "8.2.*",
+        "symfony/runtime": "8.2.*",
+        "symfony/yaml": "8.2.*"
     },
     "config": {
         "allow-plugins": {
@@ -68,7 +68,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.1.*"
+            "require": "8.2.*"
         }
     }
 }

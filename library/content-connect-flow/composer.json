@@ -13,14 +13,14 @@
         "symfony/ai-bundle": "1.0.0-BETA1",
         "symfony/ai-ollama-platform": "1.0.0-BETA1",
         "symfony/ai-platform": "1.0.0-BETA1",
-        "symfony/console": "8.1.*",
-        "symfony/dotenv": "8.1.*",
-        "symfony/expression-language": "8.1.*",
+        "symfony/console": "8.2.*",
+        "symfony/dotenv": "8.2.*",
+        "symfony/expression-language": "8.2.*",
         "symfony/flex": "^2.12",
-        "symfony/framework-bundle": "8.1.*",
-        "symfony/http-client": "8.1.*",
-        "symfony/runtime": "8.1.*",
-        "symfony/yaml": "8.1.*"
+        "symfony/framework-bundle": "8.2.*",
+        "symfony/http-client": "8.2.*",
+        "symfony/runtime": "8.2.*",
+        "symfony/yaml": "8.2.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^13.4.8"
@@ -63,7 +63,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.1.*"
+            "require": "8.2.*"
         }
     }
 }

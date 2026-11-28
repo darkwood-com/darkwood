@@ -10,17 +10,17 @@
         "nyholm/psr7": "^1.8.2",
         "symfony/ai-agent": "^0.15",
         "symfony/ai-anthropic-platform": "^0.15",
-        "symfony/console": "8.1.*",
-        "symfony/dotenv": "8.1.*",
+        "symfony/console": "8.2.*",
+        "symfony/dotenv": "8.2.*",
         "symfony/flex": "^2.12",
-        "symfony/framework-bundle": "8.1.*",
-        "symfony/http-client": "8.1.*",
+        "symfony/framework-bundle": "8.2.*",
+        "symfony/http-client": "8.2.*",
         "symfony/mcp-bundle": "^0.15",
-        "symfony/messenger": "8.1.*",
-        "symfony/runtime": "8.1.*",
-        "symfony/string": "8.1.*",
+        "symfony/messenger": "8.2.*",
+        "symfony/runtime": "8.2.*",
+        "symfony/string": "8.2.*",
         "symfony/translation-contracts": "^3.8.1",
-        "symfony/yaml": "8.1.*"
+        "symfony/yaml": "8.2.*"
     },
     "config": {
         "allow-plugins": {
@@ -69,7 +69,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.1.*"
+            "require": "8.2.*"
         }
     },
     "require-dev": {

@@ -10,19 +10,19 @@
         "ext-gd": "*",
         "ext-iconv": "*",
         "darkwood/flow": "^8.1.6",
-        "symfony/asset": "8.1.*",
-        "symfony/asset-mapper": "8.1.*",
-        "symfony/console": "8.1.*",
-        "symfony/dotenv": "8.1.*",
+        "symfony/asset": "8.2.*",
+        "symfony/asset-mapper": "8.2.*",
+        "symfony/console": "8.2.*",
+        "symfony/dotenv": "8.2.*",
         "symfony/flex": "^2.12",
-        "symfony/framework-bundle": "8.1.*",
-        "symfony/mime": "8.1.*",
-        "symfony/runtime": "8.1.*",
-        "symfony/twig-bundle": "8.1.*",
-        "symfony/uid": "8.1.*",
+        "symfony/framework-bundle": "8.2.*",
+        "symfony/mime": "8.2.*",
+        "symfony/runtime": "8.2.*",
+        "symfony/twig-bundle": "8.2.*",
+        "symfony/uid": "8.2.*",
         "symfony/ux-dropzone": "^3.7",
         "symfony/ux-turbo": "^3.7",
-        "symfony/yaml": "8.1.*"
+        "symfony/yaml": "8.2.*"
     },
     "config": {
         "allow-plugins": {
@@ -74,7 +74,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": "true",
-            "require": "8.1.*"
+            "require": "8.2.*"
         }
     }
 }

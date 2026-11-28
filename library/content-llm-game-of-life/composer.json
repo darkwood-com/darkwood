@@ -9,15 +9,15 @@
         "ext-iconv": "*",
         "darkwood/flow": "^8.1.6",
         "darkwood/navi": "^8.1.6",
-        "symfony/asset-mapper": "8.1.*",
-        "symfony/console": "8.1.*",
-        "symfony/dotenv": "8.1.*",
+        "symfony/asset-mapper": "8.2.*",
+        "symfony/console": "8.2.*",
+        "symfony/dotenv": "8.2.*",
         "symfony/flex": "^2.12",
-        "symfony/framework-bundle": "8.1.*",
-        "symfony/runtime": "8.1.*",
+        "symfony/framework-bundle": "8.2.*",
+        "symfony/runtime": "8.2.*",
         "symfony/stimulus-bundle": "^3.7",
-        "symfony/twig-bundle": "8.1.*",
-        "symfony/yaml": "8.1.*"
+        "symfony/twig-bundle": "8.2.*",
+        "symfony/yaml": "8.2.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^13.4.8"
@@ -72,7 +72,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.1.*"
+            "require": "8.2.*"
         }
     }
 }
