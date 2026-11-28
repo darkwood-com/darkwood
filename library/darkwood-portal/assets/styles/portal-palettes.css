@@ -93,7 +93,6 @@ html:not([data-theme]) .portal-theme-picker__toggle:focus-visible {
 
 /* The shared navbar applies to the main menu in every palette. */
 .layout .theme-nav.dw-navbar {
-  --theme-nav-background: var(--dw-navbar);
   --theme-nav-brand-color: var(--dw-text);
   --theme-nav-brand-hover-color: var(--dw-primary-hover);
   --theme-nav-link-color: var(--dw-text);
@@ -180,7 +179,7 @@ html[data-theme] .theme form :is(input:not([type=checkbox], [type=radio], [type=
   border-color: var(--dw-border);
 }
 
-html[data-theme] .theme-hello :is(.main-nav, .main-nav.navbar-shrink, .hello-mobile-nav) {
+html[data-theme] .theme-hello .hello-mobile-nav {
   background: var(--dw-navbar);
 }
 

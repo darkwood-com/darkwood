@@ -60,9 +60,13 @@
 .layout .theme-nav
 {
 	border-bottom: var(--theme-nav-border-bottom, 0 none transparent);
-	background: var(--theme-nav-background, transparent);
 	-webkit-backdrop-filter: var(--theme-nav-backdrop-filter, none);
 	backdrop-filter: var(--theme-nav-backdrop-filter, none);
+}
+
+.layout .theme-nav:not(.dw-navbar)
+{
+	background: var(--theme-nav-background, transparent);
 }
 
 .layout .theme-nav__primary

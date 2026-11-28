@@ -19,7 +19,6 @@
   --dw-warning: #997300;
   --dw-danger: #dc3545;
   --dw-info: #0b7285;
-  --dw-navbar: #f2f4f6;
   --dw-shadow: rgba(18, 38, 63, .08);
   --dw-radius-sm: .25rem;
   --dw-radius: .375rem;
@@ -51,7 +50,6 @@
   --dw-warning: #d3ad55;
   --dw-danger: #ff7b85;
   --dw-info: #67c7d5;
-  --dw-navbar: #152533;
   --dw-shadow: rgba(0, 0, 0, .22);
 }
 
@@ -70,16 +68,15 @@
   --dw-warning: #856400;
   --dw-danger: #9f2030;
   --dw-info: #176b78;
-  --dw-navbar: #eadec2;
   --dw-shadow: rgba(67, 52, 34, .1);
 }
 
 
 /* Library shell: Uniflow navbar, sidebar dimensions, Jost and theme tokens.
    Scoped to the home page; embedded decks keep their own presentation theme. */
-.sw-library { --text-color:var(--dw-text); --bg-color:var(--dw-background); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --secondary-color:var(--dw-muted); --navbar-top-color:var(--dw-navbar); margin:0; background:var(--bg-color); color:var(--text-color); font-family:Jost,Verdana,sans-serif; font-weight:400; font-size:16px; line-height:1.5; }
-.sw-library.theme-dark { --text-color:var(--dw-text); --bg-color:var(--dw-background); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --secondary-color:var(--dw-muted); --navbar-top-color:var(--dw-navbar); }
-.sw-library.theme-sepia { --text-color:var(--dw-text); --bg-color:var(--dw-background); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --secondary-color:var(--dw-muted); --navbar-top-color:var(--dw-navbar); }
+.sw-library { --text-color:var(--dw-text); --bg-color:var(--dw-background); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --secondary-color:var(--dw-muted); margin:0; background:var(--bg-color); color:var(--text-color); font-family:Jost,Verdana,sans-serif; font-weight:400; font-size:16px; line-height:1.5; }
+.sw-library.theme-dark { --text-color:var(--dw-text); --bg-color:var(--dw-background); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --secondary-color:var(--dw-muted); }
+.sw-library.theme-sepia { --text-color:var(--dw-text); --bg-color:var(--dw-background); --border-color:var(--dw-border); --primary-color:var(--dw-primary); --secondary-color:var(--dw-muted); }
 .sw-library *, .sw-library *::before, .sw-library *::after { box-sizing:border-box; }
 .sw-library a { color:var(--primary-color); text-decoration:none; }
 .sw-library button { font:inherit; cursor:pointer; }
